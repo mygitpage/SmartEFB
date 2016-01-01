@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void gridButtonClicked(int x, int y) {
-
+        //Dies ist eine zusaetzliche Zeile
         Toast.makeText(this,"Button clicked: " + x + "," + y , Toast.LENGTH_SHORT).show();
 
     }
