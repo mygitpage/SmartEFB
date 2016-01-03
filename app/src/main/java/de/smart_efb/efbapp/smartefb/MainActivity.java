@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int NUM_COLS = 5;
     private static final int NUM_ROWS = 15;
 
+    Button buttons[][] = new Button [NUM_ROWS][NUM_COLS];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,15 +71,18 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 tableRow.addView(button);
-
+                buttons[row][col] = button;
             }
 
         }
     }
 
-    private void gridButtonClicked(int x, int y) {
+    private void gridButtonClicked(int col, int row) {
         //Dies ist eine zusaetzliche Zeile
-        Toast.makeText(this,"Button clicked: " + x + "," + y , Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Button clicked: " + col + "," + row , Toast.LENGTH_SHORT).show();
+
+        Button button = buttons [row][col];
+        button.setBackgroundResource(R.drawable.action_lock_pink);
 
     }
 
