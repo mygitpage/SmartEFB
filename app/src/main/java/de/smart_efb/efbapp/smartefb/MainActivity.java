@@ -1,5 +1,9 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,8 +19,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int NUM_COLS = 5;
-    private static final int NUM_ROWS = 15;
+    private static final int NUM_COLS = 3;
+    private static final int NUM_ROWS = 6;
 
     Button buttons[][] = new Button [NUM_ROWS][NUM_COLS];
 
@@ -82,8 +86,51 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this,"Button clicked: " + col + "," + row , Toast.LENGTH_SHORT).show();
 
         Button button = buttons [row][col];
-        button.setBackgroundResource(R.drawable.action_lock_pink);
 
+        //Lock Button size
+        lockButtonSizes();
+
+
+        // ButtonImage wird nicht skaliert
+        //button.setBackgroundResource(R.drawable.action_lock_pink);
+
+        // ButtonImage wir skaliert
+        int newWidth = button.getWidth();
+        int newHeight = button.getHeight();
+        Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.action_lock_pink);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
+        Resources resource = getResources();
+        button.setBackground(new BitmapDrawable(resource, scaledBitmap));
+
+        // Change Button Text
+        //button.setTextSize(newWidth);
+
+        button.setText("" + col);
+
+
+
+
+    }
+
+    private void lockButtonSizes() {
+        for (int row=0; row < NUM_ROWS; row++) {
+            for (int col=0; col < NUM_COLS; col++) {
+
+                Button button = buttons[row][col];
+
+
+                int width = button.getWidth();
+                button.setMinWidth(width);
+                button.setMaxWidth(width);
+
+                int height = button.getHeight();
+                button.setMinHeight(height);
+                button.setMaxHeight(height);
+
+
+            }
+
+        }
     }
 
     @Override
