@@ -4,6 +4,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,12 +19,18 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int NUM_COLS = 3;
     private static final int NUM_ROWS = 6;
 
+    private static int ranCol, ranRow;
+
     Button buttons[][] = new Button [NUM_ROWS][NUM_COLS];
+    RippleDrawable buttonsBackgroundColors [][] = new RippleDrawable [NUM_ROWS][NUM_COLS];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +39,20 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        createRandomNumber();
+
         populateButtons();
         
         
+    }
+
+    private void createRandomNumber() {
+
+        Random r = new Random();
+        ranCol = r.nextInt(NUM_COLS);
+
+        ranRow = r.nextInt(NUM_ROWS);
+
     }
 
     private void populateButtons() {
@@ -70,12 +89,14 @@ public class MainActivity extends AppCompatActivity {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gridButtonClicked( FINAL_COL, FINAL_ROW);
+                        gridButtonClicked(FINAL_COL, FINAL_ROW);
                     }
                 });
 
                 tableRow.addView(button);
                 buttons[row][col] = button;
+
+                buttonsBackgroundColors[row][col] = (RippleDrawable) button.getBackground();
             }
 
         }
@@ -84,6 +105,15 @@ public class MainActivity extends AppCompatActivity {
     private void gridButtonClicked(int col, int row) {
         //Dies ist eine zusaetzliche Zeile
         Toast.makeText(this,"Button clicked: " + col + "," + row , Toast.LENGTH_SHORT).show();
+
+        if (col == ranCol && row == ranRow) {
+            Toast.makeText(this," LOESCHEN!!!!!!!! ", Toast.LENGTH_SHORT).show();
+
+            deleteButtonBackground();
+            createRandomNumber();
+            return;
+        }
+
 
         Button button = buttons [row][col];
 
@@ -111,6 +141,31 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    private void deleteButtonBackground() {
+
+        for (int row=0; row < NUM_ROWS; row++) {
+
+
+            for (int col = 0; col < NUM_COLS; col++) {
+
+                buttons[row][col].setBackgroundResource(0);
+
+                buttons[row][col].setText("" + col + "," + row);
+
+                buttons[row][col].setBackground(buttonsBackgroundColors[row][col]);
+
+
+
+
+            }
+        }
+
+    }
+
+
+
+
 
     private void lockButtonSizes() {
         for (int row=0; row < NUM_ROWS; row++) {
