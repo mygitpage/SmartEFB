@@ -13,13 +13,27 @@
     tools:showIn="@layout/activity_main">
 
     <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:stretchColumns="*"
-        android:id="@+id/tableForButtons">
+        android:id="@+id/tableForButtons"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="false">
 
     </TableLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Activity Two"
+        android:id="@+id/buttonActTwo"
+        android:layout_marginBottom="130dp"
+        android:clickable="false"
+        android:background="#6872db"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:padding="6dp" />
+
+
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,6 +39,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        Button buttonActivityTwo = (Button) findViewById(R.id.buttonActTwo);
+
+        buttonActivityTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getApplicationContext(), ActivityTwo.class);
+                startActivity(intent);
+            }
+        });
 
         createRandomNumber();
 
