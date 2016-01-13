@@ -33,6 +33,11 @@ public class MainActivity extends AppCompatActivity {
     RippleDrawable buttonsBackgroundColors [][] = new RippleDrawable [NUM_ROWS][NUM_COLS];
 
 
+    private String[] rowClicked = new String[NUM_COLS*NUM_ROWS];
+    private String[] colClicked = new String[NUM_COLS*NUM_ROWS];
+    private int countClicked = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +53,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getApplicationContext(), ActivityTwo.class);
+
+                intent.putExtra("clickedRow", rowClicked);
+                intent.putExtra("clickedCol", colClicked);
+                intent.putExtra("countClicked", countClicked);
+
+
                 startActivity(intent);
             }
         });
@@ -124,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
 
             deleteButtonBackground();
             createRandomNumber();
+
+            countClicked = 0;
+
             return;
         }
 
@@ -147,6 +161,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Change Button Text
         //button.setTextSize(newWidth);
+
+
+        rowClicked[countClicked] = String.valueOf(row);
+        colClicked[countClicked] = String.valueOf(col);
+        countClicked++;
+
 
         button.setText("" + col);
 
