@@ -17,4 +17,14 @@
         android:layout_centerHorizontal="true"
         android:text="Activity Two"
         android:padding="6dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtClickedView"
+        android:layout_below="@+id/TextActivityTwo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="113dp"
+        android:padding="5dp" />
+
 </RelativeLayout>

@@ -27,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int NUM_COLS = 3;
     private static final int NUM_ROWS = 6;
 
+    private static  final int REQUEST_CODE_FROM_ACTIVITY_TWO = 100;
+
+
+
     private static int ranCol, ranRow;
 
     Button buttons[][] = new Button [NUM_ROWS][NUM_COLS];
@@ -59,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("countClicked", countClicked);
 
 
-                startActivity(intent);
+//              startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_FROM_ACTIVITY_TWO);
+
             }
         });
 
@@ -125,6 +131,11 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+
+
+
+
 
     private void gridButtonClicked(int col, int row) {
         //Dies ist eine zusaetzliche Zeile
@@ -242,4 +253,18 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 }
