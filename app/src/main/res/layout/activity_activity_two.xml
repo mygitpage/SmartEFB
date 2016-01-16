@@ -15,8 +15,8 @@
         android:id="@+id/TextActivityTwo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Activity Two"
-        android:padding="6dp" />
+        android:padding="6dp"
+        android:text="Bitte etwas eingeben" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -26,5 +26,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="113dp"
         android:padding="5dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Werte Übergeben"
+        android:id="@+id/resultButton"
+        android:layout_marginTop="106dp"
+        android:layout_below="@+id/txtClickedView"
+        android:layout_centerHorizontal="true"
+        android:padding="6dp" />
 
 </RelativeLayout>

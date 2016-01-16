@@ -1,7 +1,10 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +26,25 @@ public class ActivityTwo extends AppCompatActivity {
 
         TextView txtClickedView = (TextView) findViewById(R.id.txtClickedView);
 
-        EditText txtInputView = (EditText) findViewById(R.id.TextActivityTwo);
+        final EditText txtInputView = (EditText) findViewById(R.id.TextActivityTwo);
+
+        Button resultButton = (Button) findViewById(R.id.resultButton);
+
+        resultButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent();
+
+
+                String resultString = txtInputView.getText().toString();
+                intent.putExtra("resultString", resultString);
+                setResult(RESULT_OK, intent);
+                finish();
+
+            }
+        });
+
 
         if (countClicked > -1) {
 
@@ -39,6 +60,9 @@ public class ActivityTwo extends AppCompatActivity {
             txtClickedView.setText(txtClickedString);
 
         }
+
+
+
 
 
     }

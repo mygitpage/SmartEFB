@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
@@ -37,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
     RippleDrawable buttonsBackgroundColors [][] = new RippleDrawable [NUM_ROWS][NUM_COLS];
 
 
+    TextView txtResultActivityTwoView;
+
+
+
     private String[] rowClicked = new String[NUM_COLS*NUM_ROWS];
     private String[] colClicked = new String[NUM_COLS*NUM_ROWS];
     private int countClicked = 0;
@@ -51,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         Button buttonActivityTwo = (Button) findViewById(R.id.buttonActTwo);
+
+
+        txtResultActivityTwoView = (TextView) findViewById(R.id.textViewActivityOne);
+
 
         buttonActivityTwo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,7 +270,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if (requestCode == REQUEST_CODE_FROM_ACTIVITY_TWO) {
 
+            if (resultCode == RESULT_OK) {
+
+                String resultStringFromActivityTwo = data.getStringExtra("resultString");
+
+                txtResultActivityTwoView.setText(resultStringFromActivityTwo);
+
+            }
+
+        }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
