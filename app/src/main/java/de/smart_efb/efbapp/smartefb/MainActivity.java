@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int NUM_ROWS = 6;
 
     private static  final int REQUEST_CODE_FROM_ACTIVITY_TWO = 100;
-
+    private static  final int REQUEST_CODE_FROM_ACTIVITY_THREE = 200;
 
 
     private static int ranCol, ranRow;
@@ -77,6 +77,23 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+        Button buttonActivityThree = (Button) findViewById(R.id.buttonActThree);
+
+        buttonActivityThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getApplicationContext(), ActivityThree.class);
+
+                startActivityForResult(intent, REQUEST_CODE_FROM_ACTIVITY_THREE);
+
+            }
+        });
+
+
 
         createRandomNumber();
 
@@ -279,6 +296,17 @@ public class MainActivity extends AppCompatActivity {
                 txtResultActivityTwoView.setText(resultStringFromActivityTwo);
 
             }
+
+        } else if (requestCode == REQUEST_CODE_FROM_ACTIVITY_THREE) {
+
+            if (resultCode == RESULT_OK) {
+
+                Toast.makeText(this," Zurück aus der Datenbank\n" + data.getStringExtra("resultString"), Toast.LENGTH_SHORT).show();
+
+            }
+
+
+
 
         }
 

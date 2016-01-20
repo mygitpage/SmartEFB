@@ -18,7 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityTwo"></activity>
+        <activity android:name=".ActivityTwo" />
+        <activity
+            android:name=".ActivityThree"
+            android:label="@string/title_activity_activity_three"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
