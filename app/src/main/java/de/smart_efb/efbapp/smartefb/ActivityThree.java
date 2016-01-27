@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ActivityThree extends AppCompatActivity {
 
@@ -65,10 +66,18 @@ public class ActivityThree extends AppCompatActivity {
 
         long newID = myDb.insertRow("Ich",8789,"Blue");
 
+        displayText ("Record added!");
+
+        Cursor cursor = myDb.getRow(newID);
+        displayRecordSet(cursor);
+
     }
 
     public void onClick_ClearAll (View v) {
         displayText("Clear all data");
+        myDb.deleteAll();
+
+
     }
 
     public void onClick_DisplayRecords (View v) {
@@ -94,8 +103,40 @@ public class ActivityThree extends AppCompatActivity {
 
     }
 
+
+
     private void displayRecordSet(Cursor cursor) {
-        String message ="Hi!";
+        String message ="";
+
+
+
+        if (cursor.moveToFirst()) {
+
+
+
+            Toast.makeText(this, "Rows:" + cursor.getCount() + "Col:" + cursor.getColumnCount(), Toast.LENGTH_SHORT).show();
+
+
+
+            do {
+                int id = cursor.getInt(DBAdapter.COL_ROWID);
+                String name = cursor.getString(DBAdapter.COL_NAME);
+                int studentNumber = cursor.getInt(DBAdapter.COL_STUDENTNUM);
+                String favColor = cursor.getString(DBAdapter.COL_FAVCOLOUR);
+
+
+                message += "id= " + id
+                        + ", Name= " + name
+                        + ", #= " + studentNumber
+                        + ", Color= " + favColor
+                        + "\n";
+            } while (cursor.moveToNext());
+
+        }
+
+        cursor.close();
+
+
 
 
         displayText(message);
