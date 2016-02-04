@@ -25,38 +25,77 @@
 
     </TableLayout>
 
-    <Button
-        android:layout_width="wrap_content"
+
+
+
+    <LinearLayout
+        android:id="@+id/ad_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Activity Two"
-        android:id="@+id/buttonActTwo"
-        android:clickable="false"
-        android:background="#6872db"
-        android:padding="6dp"
-        android:layout_marginBottom="54dp"
+        android:gravity="bottom"
+        android:orientation="vertical"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/tableForButtons"
-        android:layout_alignEnd="@+id/tableForButtons" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewActivityOne"
-        android:padding="6dp"
-        android:layout_above="@+id/buttonActTwo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="54dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Database"
-        android:id="@+id/buttonActThree"
-        android:padding="6dp"
-        android:background="#ea6e6e"
-        android:layout_alignTop="@+id/buttonActTwo"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="50dp">
 
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewActivityOne"
+            android:padding="6dp"
+            android:text="Dies ist Ipsum larum"/>
+
+        <LinearLayout
+            android:id="@+id/adda_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <!-- android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_alignBottom="@+id/tableForButtons"
+            android:gravity="bottom"-->
+
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Activity Two"
+                android:id="@+id/buttonActTwo"
+                android:clickable="false"
+                android:background="#6872db"
+                android:padding="6dp"
+                android:layout_alignParentLeft="true"/>
+                <!--android:layout_marginBottom="54dp"-->
+                <!--android:layout_alignParentBottom="true"
+                android:layout_alignRight="@+id/tableForButtons"
+                android:layout_alignEnd="@+id/tableForButtons"-->
+
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Database"
+                android:id="@+id/buttonActThree"
+                android:padding="6dp"
+                android:background="#ea6e6e" />
+                <!--android:layout_alignTop="@+id/buttonActTwo"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" -->
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Firtst Page"
+                android:id="@+id/buttonFirstPage"
+                android:padding="6dp"
+                android:background="#6872db"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 </RelativeLayout>
