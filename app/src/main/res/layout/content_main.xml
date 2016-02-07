@@ -32,7 +32,7 @@
         android:id="@+id/ad_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="bottom"
+        android:gravity="bottom|center_horizontal"
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -45,12 +45,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/textViewActivityOne"
             android:padding="6dp"
-            android:text="Dies ist Ipsum larum"/>
+            android:text="Dies ist Ipsum larum"
+            android:layout_gravity="center_horizontal" />
 
         <LinearLayout
             android:id="@+id/adda_layout"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
             <!-- android:orientation="horizontal"
             android:layout_alignParentBottom="true"
             android:layout_alignBottom="@+id/tableForButtons"
@@ -80,7 +82,8 @@
                 android:text="Database"
                 android:id="@+id/buttonActThree"
                 android:padding="6dp"
-                android:background="#ea6e6e" />
+                android:background="#ea6e6e"
+                android:layout_marginLeft="10dp" />
                 <!--android:layout_alignTop="@+id/buttonActTwo"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" -->
@@ -89,10 +92,12 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Firtst Page"
+                android:text="First Page"
                 android:id="@+id/buttonFirstPage"
                 android:padding="6dp"
-                android:background="#6872db"/>
+                android:background="#6872db"
+                android:layout_marginLeft="10dp"
+                android:onClick="onClick_CallFirstPage" />
 
 
         </LinearLayout>

@@ -314,4 +314,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+    public void onClick_CallFirstPage (View v) {
+        //Call the "First Page"
+
+        Intent intent = new Intent(getApplicationContext(), ActivityFirstPage.class);
+
+        startActivity(intent);
+    }
+
+
+
 }
