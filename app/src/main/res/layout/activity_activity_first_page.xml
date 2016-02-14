@@ -19,11 +19,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mein\nÜbergabebuch"
-            android:id="@+id/button"
+            android:id="@+id/btnConnectBook"
             android:layout_row="0"
             android:layout_column="0"
             android:padding="20dp"
-            android:background="#ff4081"
+            android:background="@color/colorPrimary"
             android:layout_margin="6dp"
             android:layout_gravity="fill" />
 
@@ -35,7 +35,7 @@
             android:layout_row="0"
             android:layout_column="1"
             android:padding="20dp"
-            android:background="#ff4081"
+            android:background="@color/colorPrimary"
             android:layout_margin="6dp"
             android:layout_gravity="fill" />
 
@@ -48,7 +48,7 @@
             android:layout_column="0"
             android:layout_margin="6dp"
             android:padding="20dp"
-            android:background="#ff4081"
+            android:background="@color/colorPrimary"
             android:layout_gravity="fill" />
 
         <Button
@@ -60,7 +60,7 @@
             android:layout_column="1"
             android:layout_margin="6dp"
             android:padding="20dp"
-            android:background="#ff4081"
+            android:background="@color/colorPrimary"
             android:layout_gravity="fill" />
 
         <Button
@@ -72,7 +72,7 @@
             android:layout_column="0"
             android:layout_margin="6dp"
             android:padding="20dp"
-            android:background="#ff4081"
+            android:background="@color/colorPrimary"
             android:layout_gravity="fill"
             android:layout_columnSpan="2" />
 
@@ -98,7 +98,7 @@
             android:layout_gravity="fill"
             android:layout_margin="6dp"
             android:layout_columnSpan="2"
-            android:background="#ff4081"
+            android:background="@color/colorPrimary"
             android:padding="20dp" />
 
     </GridLayout>

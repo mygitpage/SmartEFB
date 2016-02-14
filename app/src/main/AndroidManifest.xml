@@ -18,17 +18,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ActivityTwo" />
-
         <activity
             android:name=".ActivityThree"
             android:label="@string/title_activity_activity_three"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".ActivityFirstPage"
+        <activity
+            android:name=".ActivityFirstPage"
             android:label="@string/title_activity_first_page"
             android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".ActivityConnectBook"
+            android:label="@string/title_activity_activity_connect_book"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
