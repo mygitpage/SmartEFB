@@ -21,29 +21,36 @@ public class DBAdapter {
     private static final String TAG = "de.smart_efb.efbapp.smartefb.DBAdapter";
 
     // DB Fields
-    public static final String KEY_ROWID = "_id";
+    public static final String KEY_ROWID = "id";
     public static final int COL_ROWID = 0;
     /*
      * CHANGE 1:
      */
     // TODO: Setup your fields here:
-    public static final String KEY_NAME = "name";
-    public static final String KEY_STUDENTNUM = "studentnum";
-    public static final String KEY_FAVCOLOUR = "favcolour";
+    public static final String KEY_WRITE_TIME = "write_time";
+    public static final String KEY_AUTHOR_NAME = "author_name";
+    public static final String KEY_MESSAGE = "message";
+    public static final String KEY_ROLE = "role";
+    public static final String KEY_TX_TIME = "tx_time";
+
+
 
     // TODO: Setup your field numbers here (0 = KEY_ROWID, 1=...)
-    public static final int COL_NAME = 1;
-    public static final int COL_STUDENTNUM = 2;
-    public static final int COL_FAVCOLOUR = 3;
+    public static final int COL_WRITE_TIME = 1;
+    public static final int COL_AUTHOR_NAME = 2;
+    public static final int COL_MESSAGE = 3;
+    public static final int COL_ROLE = 4;
+    public static final int COL_TX_TIME = 5;
 
 
-    public static final String[] ALL_KEYS = new String[] {KEY_ROWID, KEY_NAME, KEY_STUDENTNUM, KEY_FAVCOLOUR};
+
+    public static final String[] ALL_KEYS = new String[] {KEY_ROWID, KEY_WRITE_TIME, KEY_AUTHOR_NAME, KEY_MESSAGE, KEY_ROLE, KEY_TX_TIME };
 
     // DB info: it's name, and the table we are using (just one).
     public static final String DATABASE_NAME = "MyDb";
-    public static final String DATABASE_TABLE = "mainTable";
+    public static final String DATABASE_TABLE = "chatMessageTable";
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 1;
 
     private static final String DATABASE_CREATE_SQL =
             "create table " + DATABASE_TABLE
@@ -59,9 +66,11 @@ public class DBAdapter {
                     //		(http://www.sqlite.org/datatype3.html)
                     //  - "not null" means it is a required field (must be given a value).
                     // NOTE: All must be comma separated (end of line!) Last one must have NO comma!!
-                    + KEY_NAME + " text not null, "
-                    + KEY_STUDENTNUM + " integer not null, "
-                    + KEY_FAVCOLOUR + " string not null"
+                    + KEY_WRITE_TIME + "integer not null, "
+                    + KEY_AUTHOR_NAME + " string not null, "
+                    + KEY_MESSAGE + " text not null, "
+                    + KEY_ROLE + " string not null, "
+                    + KEY_TX_TIME + " integer not null"
 
                     // Rest  of creation:
                     + ");";
@@ -93,7 +102,7 @@ public class DBAdapter {
     }
 
     // Add a new set of values to the database.
-    public long insertRow(String name, int studentNum, String favColour) {
+    public long insertRow(int write_time, String author_name, String message, String role, int tx_time) {
 		/*
 		 * CHANGE 3:
 		 */
@@ -101,9 +110,11 @@ public class DBAdapter {
         // TODO: Also change the function's arguments to be what you need!
         // Create row's data:
         ContentValues initialValues = new ContentValues();
-        initialValues.put(KEY_NAME, name);
-        initialValues.put(KEY_STUDENTNUM, studentNum);
-        initialValues.put(KEY_FAVCOLOUR, favColour);
+        initialValues.put(KEY_WRITE_TIME, write_time);
+        initialValues.put(KEY_AUTHOR_NAME, author_name);
+        initialValues.put(KEY_MESSAGE, message);
+        initialValues.put(KEY_ROLE, role);
+        initialValues.put(KEY_TX_TIME, tx_time);
 
         // Insert it into the database.
         return db.insert(DATABASE_TABLE, null, initialValues);
@@ -149,7 +160,7 @@ public class DBAdapter {
     }
 
     // Change an existing row to be equal to new data.
-    public boolean updateRow(long rowId, String name, int studentNum, String favColour) {
+    public boolean updateRow(long rowId, int write_time, String author_name, String message, String role, int tx_time) {
         String where = KEY_ROWID + "=" + rowId;
 
 		/*
@@ -159,9 +170,11 @@ public class DBAdapter {
         // TODO: Also change the function's arguments to be what you need!
         // Create row's data:
         ContentValues newValues = new ContentValues();
-        newValues.put(KEY_NAME, name);
-        newValues.put(KEY_STUDENTNUM, studentNum);
-        newValues.put(KEY_FAVCOLOUR, favColour);
+        newValues.put(KEY_WRITE_TIME, write_time);
+        newValues.put(KEY_AUTHOR_NAME, author_name);
+        newValues.put(KEY_MESSAGE, message);
+        newValues.put(KEY_ROLE, role);
+        newValues.put(KEY_TX_TIME, tx_time);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE, newValues, where, null) != 0;
