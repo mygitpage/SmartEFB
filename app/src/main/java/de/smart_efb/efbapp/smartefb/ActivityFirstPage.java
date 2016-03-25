@@ -13,6 +13,7 @@ import android.widget.Button;
 public class ActivityFirstPage extends AppCompatActivity {
 
 
+    DBAdapter myDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +35,37 @@ public class ActivityFirstPage extends AppCompatActivity {
         });
 
 
-
+        // Open the datebase
+        openDB();
 
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // Close the database
+        closeDB();
+    }
+
+
+    // Open the database
+    private void openDB() {
+
+        myDb = new DBAdapter(this);
+        myDb.open();
+
+    }
+
+
+    // Close the database
+    private void closeDB() {
+        myDb.close();
+
+    }
+
+
 
 
     /*protected void onStart() {

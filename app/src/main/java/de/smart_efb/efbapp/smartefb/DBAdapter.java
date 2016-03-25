@@ -1,5 +1,5 @@
 package de.smart_efb.efbapp.smartefb; /**
- * Created by ich on 20.01.16.
+ * Created by ich on 20.03.16.
  */
 
 
@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.sql.Timestamp;
 
 
 public class DBAdapter {
@@ -32,6 +34,7 @@ public class DBAdapter {
     public static final String KEY_MESSAGE = "message";
     public static final String KEY_ROLE = "role";
     public static final String KEY_TX_TIME = "tx_time";
+    public static final String KEY_STATUS = "status";
 
 
 
@@ -41,16 +44,17 @@ public class DBAdapter {
     public static final int COL_MESSAGE = 3;
     public static final int COL_ROLE = 4;
     public static final int COL_TX_TIME = 5;
+    public static final int COL_STATUS = 6;
 
 
 
-    public static final String[] ALL_KEYS = new String[] {KEY_ROWID, KEY_WRITE_TIME, KEY_AUTHOR_NAME, KEY_MESSAGE, KEY_ROLE, KEY_TX_TIME };
+    public static final String[] ALL_KEYS = new String[] {KEY_ROWID, KEY_WRITE_TIME, KEY_AUTHOR_NAME, KEY_MESSAGE, KEY_ROLE, KEY_TX_TIME, KEY_STATUS };
 
     // DB info: it's name, and the table we are using (just one).
     public static final String DATABASE_NAME = "MyDb";
     public static final String DATABASE_TABLE = "chatMessageTable";
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 6;
 
     private static final String DATABASE_CREATE_SQL =
             "create table " + DATABASE_TABLE
@@ -66,11 +70,12 @@ public class DBAdapter {
                     //		(http://www.sqlite.org/datatype3.html)
                     //  - "not null" means it is a required field (must be given a value).
                     // NOTE: All must be comma separated (end of line!) Last one must have NO comma!!
-                    + KEY_WRITE_TIME + "integer not null, "
-                    + KEY_AUTHOR_NAME + " string not null, "
-                    + KEY_MESSAGE + " text not null, "
-                    + KEY_ROLE + " string not null, "
-                    + KEY_TX_TIME + " integer not null"
+                    + KEY_WRITE_TIME + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+                    + KEY_AUTHOR_NAME + " STRING not null, "
+                    + KEY_MESSAGE + " TEXT not null, "
+                    + KEY_ROLE + " STRING not null, "
+                    + KEY_TX_TIME + " TIMESTAMP, "
+                    + KEY_STATUS + " INTEGER not null"
 
                     // Rest  of creation:
                     + ");";
@@ -102,19 +107,31 @@ public class DBAdapter {
     }
 
     // Add a new set of values to the database.
-    public long insertRow(int write_time, String author_name, String message, String role, int tx_time) {
+    public long insertRow(String author_name, String message, String role, int status) {
 		/*
 		 * CHANGE 3:
 		 */
         // TODO: Update data in the row with new fields.
         // TODO: Also change the function's arguments to be what you need!
         // Create row's data:
+
+
+        /*
+        int time = (int) (System.currentTimeMillis());
+
+        Timestamp tsTemp = new Timestamp(time);
+        String ts =  tsTemp.toString();
+        */
+
+
         ContentValues initialValues = new ContentValues();
-        initialValues.put(KEY_WRITE_TIME, write_time);
+        //initialValues.put(KEY_WRITE_TIME, ts);
         initialValues.put(KEY_AUTHOR_NAME, author_name);
         initialValues.put(KEY_MESSAGE, message);
         initialValues.put(KEY_ROLE, role);
-        initialValues.put(KEY_TX_TIME, tx_time);
+        //initialValues.put(KEY_TX_TIME, tx_time);
+        initialValues.put(KEY_STATUS, status);
+
 
         // Insert it into the database.
         return db.insert(DATABASE_TABLE, null, initialValues);
@@ -160,7 +177,7 @@ public class DBAdapter {
     }
 
     // Change an existing row to be equal to new data.
-    public boolean updateRow(long rowId, int write_time, String author_name, String message, String role, int tx_time) {
+    public boolean updateRow(long rowId, int write_time, String author_name, String message, String role, int tx_time, int status) {
         String where = KEY_ROWID + "=" + rowId;
 
 		/*
@@ -175,6 +192,7 @@ public class DBAdapter {
         newValues.put(KEY_MESSAGE, message);
         newValues.put(KEY_ROLE, role);
         newValues.put(KEY_TX_TIME, tx_time);
+        newValues.put(KEY_STATUS, tx_time);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE, newValues, where, null) != 0;

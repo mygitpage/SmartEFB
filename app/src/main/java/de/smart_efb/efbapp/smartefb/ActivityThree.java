@@ -13,6 +13,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.sql.Timestamp;
+
 public class ActivityThree extends AppCompatActivity {
 
 
@@ -64,7 +68,11 @@ public class ActivityThree extends AppCompatActivity {
     public void onClick_AddRecord (View v) {
         //displayText("Add a record");
 
-        long newID = myDb.insertRow("Ich",8789,"Blue");
+
+
+
+
+        long newID = myDb.insertRow("ich","Hier steht die Nachricht","mutter",1);
 
         displayText ("Record added!");
 
@@ -106,7 +114,7 @@ public class ActivityThree extends AppCompatActivity {
 
 
     private void displayRecordSet(Cursor cursor) {
-        String message ="";
+        String showMessageString ="";
 
 
 
@@ -118,17 +126,35 @@ public class ActivityThree extends AppCompatActivity {
 
 
 
+            /*
+            public static final int COL_WRITE_TIME = 1;
+    public static final int COL_AUTHOR_NAME = 2;
+    public static final int COL_MESSAGE = 3;
+    public static final int COL_ROLE = 4;
+    public static final int COL_TX_TIME = 5;
+    public static final int COL_STATUS = 6;
+             */
+
+
+
             do {
                 int id = cursor.getInt(DBAdapter.COL_ROWID);
-                String name = cursor.getString(DBAdapter.COL_NAME);
-                int studentNumber = cursor.getInt(DBAdapter.COL_STUDENTNUM);
-                String favColor = cursor.getString(DBAdapter.COL_FAVCOLOUR);
+
+                String write_time = cursor.getString(DBAdapter.COL_WRITE_TIME);
+                String author_name = cursor.getString(DBAdapter.COL_AUTHOR_NAME);
+                String message = cursor.getString(DBAdapter.COL_MESSAGE);
+                String role = cursor.getString(DBAdapter.COL_ROLE);
+                int status = cursor.getInt(DBAdapter.COL_STATUS);
 
 
-                message += "id= " + id
-                        + ", Name= " + name
-                        + ", #= " + studentNumber
-                        + ", Color= " + favColor
+
+
+                showMessageString += "id= " + id
+                        + ", W_Time= " + write_time
+                        + ", AName " + author_name
+                        + ", Message= " + message
+                        + ", Rolle= " + role
+                        + ", Status= " + status
                         + "\n";
             } while (cursor.moveToNext());
 
@@ -139,7 +165,7 @@ public class ActivityThree extends AppCompatActivity {
 
 
 
-        displayText(message);
+        displayText(showMessageString);
 
 
 
