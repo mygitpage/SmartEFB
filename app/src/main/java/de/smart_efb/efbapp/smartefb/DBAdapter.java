@@ -23,7 +23,7 @@ public class DBAdapter {
     private static final String TAG = "de.smart_efb.efbapp.smartefb.DBAdapter";
 
     // DB Fields
-    public static final String KEY_ROWID = "id";
+    public static final String KEY_ROWID = "_id";
     public static final int COL_ROWID = 0;
     /*
      * CHANGE 1:
@@ -54,7 +54,7 @@ public class DBAdapter {
     public static final String DATABASE_NAME = "MyDb";
     public static final String DATABASE_TABLE = "chatMessageTable";
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
 
     private static final String DATABASE_CREATE_SQL =
             "create table " + DATABASE_TABLE
