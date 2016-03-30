@@ -91,6 +91,20 @@ public class ActivityConnectBook extends AppCompatActivity {
         // LOOK AT: http://www.mysamplecode.com/2012/07/android-listview-cursoradapter-sqlite.html
         //
 
+
+        /*
+
+        Override View
+        http://stackoverflow.com/questions/4777272/android-listview-with-different-layout-for-each-row?rq=1
+
+        http://android.amberfog.com/?p=296
+
+
+
+
+         */
+
+
         //------------------------------------
         // The desired columns to be bound
         String[] columns = new String[] {
