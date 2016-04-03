@@ -17,7 +17,10 @@ import android.widget.Toast;
 public class ActivityConnectBook extends AppCompatActivity {
 
     DBAdapter myDb;
-    private SimpleCursorAdapter dataAdapter;
+    //private SimpleCursorAdapter dataAdapter;
+
+    ConnectBookCursorAdapter dataAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class ActivityConnectBook extends AppCompatActivity {
 
 
 
-                long newID = myDb.insertRow("ich", txtInputMsg.getText().toString(), "mutter", 2);
+                long newID = myDb.insertRow("ich", txtInputMsg.getText().toString(), 1, 2);
 
                 txtInputMsg.setText("");
 
@@ -107,6 +110,7 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         //------------------------------------
         // The desired columns to be bound
+        /*
         String[] columns = new String[] {
                 DBAdapter.KEY_WRITE_TIME,
                 DBAdapter.KEY_AUTHOR_NAME,
@@ -122,20 +126,31 @@ public class ActivityConnectBook extends AppCompatActivity {
                 R.id.message,
                 R.id.role
         };
-
+        */
 
         // create the adapter using the cursor pointing to the desired data
         //as well as the layout information
-
+        /*
         dataAdapter = new SimpleCursorAdapter(
                 this, R.layout.list_item_message_complet,
                 cursor,
                 columns,
                 to,
                 0);
-
+        */
         ListView listView = (ListView) findViewById(R.id.list_view_messages);
         // Assign adapter to ListView
+
+
+        dataAdapter = new ConnectBookCursorAdapter(
+                ActivityConnectBook.this,
+                cursor,
+                0);
+
+
+
+
+
         listView.setAdapter(dataAdapter);
 
 

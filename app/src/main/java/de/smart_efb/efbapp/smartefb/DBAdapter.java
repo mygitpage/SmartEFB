@@ -16,11 +16,15 @@ import java.sql.Timestamp;
 public class DBAdapter {
 
 
+    // Look at:
+    // http://www.androidhive.info/2013/09/android-sqlite-database-with-multiple-tables/
+
+
     /////////////////////////////////////////////////////////////////////
     //	Constants & Data
     /////////////////////////////////////////////////////////////////////
     // For logging:
-    private static final String TAG = "de.smart_efb.efbapp.smartefb.DBAdapter";
+    private static final String TAG = "smartefb.DBAdapter";
 
     // DB Fields
     public static final String KEY_ROWID = "_id";
@@ -54,7 +58,7 @@ public class DBAdapter {
     public static final String DATABASE_NAME = "MyDb";
     public static final String DATABASE_TABLE = "chatMessageTable";
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 8;
 
     private static final String DATABASE_CREATE_SQL =
             "create table " + DATABASE_TABLE
@@ -73,7 +77,7 @@ public class DBAdapter {
                     + KEY_WRITE_TIME + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
                     + KEY_AUTHOR_NAME + " STRING not null, "
                     + KEY_MESSAGE + " TEXT not null, "
-                    + KEY_ROLE + " STRING not null, "
+                    + KEY_ROLE + " INTEGER not null, "
                     + KEY_TX_TIME + " TIMESTAMP, "
                     + KEY_STATUS + " INTEGER not null"
 
@@ -107,7 +111,7 @@ public class DBAdapter {
     }
 
     // Add a new set of values to the database.
-    public long insertRow(String author_name, String message, String role, int status) {
+    public long insertRow(String author_name, String message, int role, int status) {
 		/*
 		 * CHANGE 3:
 		 */
@@ -177,7 +181,7 @@ public class DBAdapter {
     }
 
     // Change an existing row to be equal to new data.
-    public boolean updateRow(long rowId, int write_time, String author_name, String message, String role, int tx_time, int status) {
+    public boolean updateRow(long rowId, int write_time, String author_name, String message, int role, int tx_time, int status) {
         String where = KEY_ROWID + "=" + rowId;
 
 		/*
@@ -221,8 +225,7 @@ public class DBAdapter {
 
         @Override
         public void onUpgrade(SQLiteDatabase _db, int oldVersion, int newVersion) {
-            Log.w(TAG, "Upgrading application's database from version " + oldVersion
-                    + " to " + newVersion + ", which will destroy all old data!");
+            Log.w(TAG, "Upgrading to " + newVersion);
 
             // Destroy old database:
             _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);

@@ -72,7 +72,7 @@ public class ActivityThree extends AppCompatActivity {
 
 
 
-        long newID = myDb.insertRow("ich","Hier steht die Nachricht","mutter",1);
+        long newID = myDb.insertRow("ich","Hier steht die Nachricht",1,1);
 
         displayText ("Record added!");
 
@@ -143,7 +143,7 @@ public class ActivityThree extends AppCompatActivity {
                 String write_time = cursor.getString(DBAdapter.COL_WRITE_TIME);
                 String author_name = cursor.getString(DBAdapter.COL_AUTHOR_NAME);
                 String message = cursor.getString(DBAdapter.COL_MESSAGE);
-                String role = cursor.getString(DBAdapter.COL_ROLE);
+                int role = cursor.getInt(DBAdapter.COL_ROLE);
                 int status = cursor.getInt(DBAdapter.COL_STATUS);
 
 
