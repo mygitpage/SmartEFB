@@ -17,7 +17,7 @@ import android.widget.Toast;
 public class ActivityConnectBook extends AppCompatActivity {
 
     DBAdapter myDb;
-    //private SimpleCursorAdapter dataAdapter;
+
 
     ConnectBookCursorAdapter dataAdapter;
 
@@ -30,7 +30,7 @@ public class ActivityConnectBook extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        openDB();
+        myDb = new DBAdapter(getApplicationContext());
 
 
         Button buttonSendConnectBook = (Button) findViewById(R.id.btnSend);
@@ -42,8 +42,7 @@ public class ActivityConnectBook extends AppCompatActivity {
                 final EditText txtInputMsg = (EditText) findViewById(R.id.inputMsg);
 
 
-
-                long newID = myDb.insertRow("ich", txtInputMsg.getText().toString(), 1, 2);
+                long newID = myDb.insertRowChatMessage("ich", txtInputMsg.getText().toString(), 1, 2);
 
                 txtInputMsg.setText("");
 
@@ -68,27 +67,19 @@ public class ActivityConnectBook extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        closeDB();
-    }
-
-
-    private void openDB() {
-
-        myDb = new DBAdapter(this);
-        myDb.open();
 
     }
-    private void closeDB() {
-        myDb.close();
 
-    }
+
+
+
 
 
 
     public void displayMessageSet () {
         //displayText("Dispaly all resords");
 
-        Cursor cursor = myDb.getAllRows();
+        Cursor cursor = myDb.getAllRowsChatMessage();
 
         //
         // LOOK AT: http://www.mysamplecode.com/2012/07/android-listview-cursoradapter-sqlite.html

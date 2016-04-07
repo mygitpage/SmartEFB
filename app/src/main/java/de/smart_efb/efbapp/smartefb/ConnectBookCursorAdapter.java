@@ -38,12 +38,12 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
 
         public void bindView(View view, Context context, Cursor cursor) {
             TextView textViewMessage = (TextView) view.findViewById(R.id.txtMsg);
-            String title = cursor.getString( cursor.getColumnIndex( DBAdapter.KEY_MESSAGE ) );
+            String title = cursor.getString( cursor.getColumnIndex( DBAdapter.CHAT_MESSAGE_KEY_MESSAGE ) );
             textViewMessage.setText(title);
 
 
             TextView textViewAuthor = (TextView) view.findViewById(R.id.lblMsgFrom);
-            String author = cursor.getString( cursor.getColumnIndex( DBAdapter.KEY_AUTHOR_NAME ) );
+            String author = cursor.getString( cursor.getColumnIndex( DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME ) );
             textViewAuthor.setText(author);
 
 
@@ -52,7 +52,7 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
 
-            int role = cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROLE));
+            int role = cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_ROLE));
 
             switch (role) {
                 case 0: return cursorInflater.inflate(R.layout.list_item_message_left, parent, false);

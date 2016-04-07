@@ -42,20 +42,15 @@ public class ActivityThree extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        closeDB();
+
     }
 
 
     private void openDB() {
 
         myDb = new DBAdapter(this);
-        myDb.open();
-
     }
-    private void closeDB() {
-        myDb.close();
 
-    }
 
     private void displayText (String message) {
 
@@ -72,18 +67,18 @@ public class ActivityThree extends AppCompatActivity {
 
 
 
-        long newID = myDb.insertRow("ich","Hier steht die Nachricht",1,1);
+        long newID = myDb.insertRowChatMessage("ich", "Hier steht die Nachricht", 1, 1);
 
         displayText ("Record added!");
 
-        Cursor cursor = myDb.getRow(newID);
+        Cursor cursor = myDb.getRowChatMessage(newID);
         displayRecordSet(cursor);
 
     }
 
     public void onClick_ClearAll (View v) {
         displayText("Clear all data");
-        myDb.deleteAll();
+        myDb.deleteAllChatMessage();
 
 
     }
@@ -91,7 +86,7 @@ public class ActivityThree extends AppCompatActivity {
     public void onClick_DisplayRecords (View v) {
         //displayText("Dispaly all resords");
 
-        Cursor cursor = myDb.getAllRows();
+        Cursor cursor = myDb.getAllRowsChatMessage();
         displayRecordSet(cursor);
 
 
@@ -124,27 +119,14 @@ public class ActivityThree extends AppCompatActivity {
 
             Toast.makeText(this, "Rows:" + cursor.getCount() + "Col:" + cursor.getColumnCount(), Toast.LENGTH_SHORT).show();
 
-
-
-            /*
-            public static final int COL_WRITE_TIME = 1;
-    public static final int COL_AUTHOR_NAME = 2;
-    public static final int COL_MESSAGE = 3;
-    public static final int COL_ROLE = 4;
-    public static final int COL_TX_TIME = 5;
-    public static final int COL_STATUS = 6;
-             */
-
-
-
             do {
                 int id = cursor.getInt(DBAdapter.COL_ROWID);
 
-                String write_time = cursor.getString(DBAdapter.COL_WRITE_TIME);
-                String author_name = cursor.getString(DBAdapter.COL_AUTHOR_NAME);
-                String message = cursor.getString(DBAdapter.COL_MESSAGE);
-                int role = cursor.getInt(DBAdapter.COL_ROLE);
-                int status = cursor.getInt(DBAdapter.COL_STATUS);
+                String write_time = cursor.getString(DBAdapter.CHAT_MESSAGE_COL_WRITE_TIME);
+                String author_name = cursor.getString(DBAdapter.CHAT_MESSAGE_COL_AUTHOR_NAME);
+                String message = cursor.getString(DBAdapter.CHAT_MESSAGE_COL_MESSAGE);
+                int role = cursor.getInt(DBAdapter.CHAT_MESSAGE_COL_ROLE);
+                int status = cursor.getInt(DBAdapter.CHAT_MESSAGE_COL_STATUS);
 
 
 
