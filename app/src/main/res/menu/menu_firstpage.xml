@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="de.smart_efb.efbapp.smartefb.ActivityFirstPage">
+    <item
+        android:id="@+id/efb_settings"
+        android:orderInCategory="100"
+        android:title="@string/efb_settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/efb_about"
+        android:orderInCategory="100"
+        android:title="@string/efb_about"
+        app:showAsAction="never" />
+
+</menu>

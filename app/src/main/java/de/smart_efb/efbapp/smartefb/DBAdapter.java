@@ -212,7 +212,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
     // Change an existing row to be equal to new data.
-    public boolean updateRow(long rowId, int write_time, String author_name, String message, int role, int tx_time, int status) {
+    public boolean updateRowChatMessage(long rowId, int write_time, String author_name, String message, int role, int tx_time, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -233,6 +233,102 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     /********************************* End!! CROD for Chat Message ******************************************/
+
+
+
+
+
+    /********************************* CROD for APP_SETTINGS ******************************************/
+
+    // Add a new set of values to the database.
+    public long insertRowAppSettings(String value_name, String value) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues initialValues = new ContentValues();
+
+        initialValues.put(APP_SETTINGS_KEY_VALUE_NAME, value_name);
+        initialValues.put(APP_SETTINGS_KEY_VALUE, value);
+
+
+        // Insert it into the database.
+        return db.insert(DATABASE_TABLE_APP_SETTINGS, null, initialValues);
+    }
+
+    // Delete a row from the database, by rowId (primary key)
+    public boolean deleteRowAppSettings(long rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+        return db.delete(DATABASE_TABLE_APP_SETTINGS, where, null) != 0;
+    }
+
+    public void deleteAllAppSettings() {
+
+        Cursor c = getAllRowsAppSettings();
+        long rowId = c.getColumnIndexOrThrow(KEY_ROWID);
+
+        if (c.moveToFirst()) {
+            do {
+                deleteRowAppSettings(c.getLong((int) rowId));
+            } while (c.moveToNext());
+        }
+        c.close();
+    }
+
+    // Return all data in the database.
+    public Cursor getAllRowsAppSettings() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = null;
+        Cursor c = 	db.query(true, DATABASE_TABLE_APP_SETTINGS, APP_SETTINGS_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+    }
+
+    // Get a specific row (by rowId)
+    public Cursor getRowAppSettings(long rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+        Cursor c = 	db.query(true, DATABASE_TABLE_APP_SETTINGS, APP_SETTINGS_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+    }
+
+    // Change an existing row to be equal to new data.
+    public boolean updateRowAppSettings(long rowId, String value_name, String value) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row's data:
+        ContentValues newValues = new ContentValues();
+        newValues.put(APP_SETTINGS_KEY_VALUE_NAME, value_name);
+        newValues.put(APP_SETTINGS_KEY_VALUE, value);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null) != 0;
+    }
+
+
+    /********************************* End!! CROD for Chat Message ******************************************/
+
+
 
 
 

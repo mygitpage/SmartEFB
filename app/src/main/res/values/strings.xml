@@ -15,4 +15,10 @@
     <!-- End Strings Connect Book -->
 
 
+    <string name="efb_settings">Einstellungen</string>
+    <string name="efb_about">Über die App</string>
+    <string name="title_activity_einstellungen">Einstellungen</string>
+    <string name="title_activity_about_app">Über die App</string>
+
+
 </resources>

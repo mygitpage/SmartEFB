@@ -30,7 +30,17 @@
         <activity
             android:name=".ActivityConnectBook"
             android:label="@string/title_activity_activity_connect_book"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".ActivityEfbSettings"
+            android:label="@string/title_activity_einstellungen"
+            android:theme="@style/AppTheme.ActionBar" />
+
+        <activity
+            android:name=".ActivityEfbAbout"
+            android:label="@string/title_activity_about_app"
+            android:theme="@style/AppTheme.ActionBar" />
     </application>
 
 </manifest>
