@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="de.smart_efb.efbapp.smartefb.ActivityFirstPage">
     <item
+        android:id="@+id/efb_paaring"
+        android:orderInCategory="100"
+        android:title="@string/efb_paaring"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/efb_settings"
         android:orderInCategory="100"
         android:title="@string/efb_settings"

@@ -11,14 +11,27 @@
 
 
 
-
-    <Button
-        android:layout_width="wrap_content"
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Settings"
-        android:id="@+id/btnEfbAbout"
-        android:layout_marginTop="106dp"
-        android:layout_centerHorizontal="true"
-        android:padding="6dp" />
+        android:orientation="horizontal">
+        <RadioButton android:id="@+id/radio_role_mother"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radioRoleMother"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/radio_role_father"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radioRoleFather"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/radio_role_third"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/radioRoleThird"
+            android:onClick="onRadioButtonClicked"/>
+    </RadioGroup>
+
+
 
 </RelativeLayout>

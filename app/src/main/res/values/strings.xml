@@ -17,8 +17,18 @@
 
     <string name="efb_settings">Einstellungen</string>
     <string name="efb_about">Über die App</string>
+    <string name="efb_paaring">Mit Server verbinden</string>
+
     <string name="title_activity_einstellungen">Einstellungen</string>
     <string name="title_activity_about_app">Über die App</string>
+
+
+    <string name="radioRoleMother">Ma</string>
+    <string name="radioRoleFather">Pa</string>
+    <string name="radioRoleThird">Dritte</string>
+
+
+
 
 
 </resources>

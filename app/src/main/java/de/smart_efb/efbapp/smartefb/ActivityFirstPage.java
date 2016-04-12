@@ -75,6 +75,11 @@ public class ActivityFirstPage extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
+            case R.id.efb_paaring:
+                intent = new Intent(getApplicationContext(), ActivityEfbPaaring.class);
+                startActivity(intent);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
 
