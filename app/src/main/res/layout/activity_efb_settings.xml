@@ -7,14 +7,15 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="de.smart_efb.efbapp.smartefb.ActivityFirstPage">
+    tools:context="de.smart_efb.efbapp.smartefb.ActivityEfbSettings">
 
 
 
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/radioGroup">
         <RadioButton android:id="@+id/radio_role_mother"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,6 +32,30 @@
             android:text="@string/radioRoleThird"
             android:onClick="onRadioButtonClicked"/>
     </RadioGroup>
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtChatName"
+        android:padding="6dp"
+        android:layout_below="@+id/radioGroup"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="40dp" />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name speichern"
+        android:id="@+id/saveChatName"
+        android:padding="6dp"
+        android:layout_alignTop="@+id/txtChatName"
+        android:layout_alignRight="@+id/radioGroup"
+        android:layout_alignEnd="@+id/radioGroup"
+        android:onClick="onClick_saveChatName"/>
+
 
 
 

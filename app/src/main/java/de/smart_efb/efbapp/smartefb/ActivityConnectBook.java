@@ -1,6 +1,7 @@
 package de.smart_efb.efbapp.smartefb;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +23,8 @@ public class ActivityConnectBook extends AppCompatActivity {
     ConnectBookCursorAdapter dataAdapter;
 
 
+    SharedPreferences prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,16 +36,25 @@ public class ActivityConnectBook extends AppCompatActivity {
         myDb = new DBAdapter(getApplicationContext());
 
 
+        prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+
+
         Button buttonSendConnectBook = (Button) findViewById(R.id.btnSend);
 
         buttonSendConnectBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+
+
+                int roleConnectBook = prefs.getInt("connectBookRole", 0);
+                String nameConnectBook = prefs.getString("connectBookName", "Jon Dow");
+
+
                 final EditText txtInputMsg = (EditText) findViewById(R.id.inputMsg);
 
 
-                long newID = myDb.insertRowChatMessage("ich", txtInputMsg.getText().toString(), 1, 2);
+                long newID = myDb.insertRowChatMessage(nameConnectBook, txtInputMsg.getText().toString(), roleConnectBook, 2);
 
                 txtInputMsg.setText("");
 
@@ -69,6 +81,10 @@ public class ActivityConnectBook extends AppCompatActivity {
         super.onDestroy();
 
     }
+
+
+
+
 
 
 

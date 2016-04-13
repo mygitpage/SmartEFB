@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -57,6 +59,12 @@ public class ActivityEfbSettings extends AppCompatActivity {
 
         tmpRadioButton.setChecked(true);
 
+
+        EditText txtChatName = (EditText) findViewById(R.id.txtChatName);
+        String chatName = prefs.getString("connectBookName", "Jon Down");
+        txtChatName.setText(chatName);
+
+
     }
 
 
@@ -89,6 +97,24 @@ public class ActivityEfbSettings extends AppCompatActivity {
 
 
     }
+
+
+
+    public void onClick_saveChatName (View v) {
+
+
+        EditText txtChatName = (EditText) findViewById(R.id.txtChatName);
+
+        String stringChatName = txtChatName.getText().toString();
+
+        prefsEditor.putString("connectBookName", stringChatName);
+        prefsEditor.commit();
+
+        Toast.makeText(this, "Neuer Chat Name gespeichert ", Toast.LENGTH_SHORT).show();
+
+
+    }
+
 
 
 
