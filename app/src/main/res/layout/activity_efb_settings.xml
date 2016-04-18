@@ -42,7 +42,8 @@
         android:layout_below="@+id/radioGroup"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="40dp" />
+        android:layout_marginTop="40dp"
+        android:hint="@string/txtChatNameHint"/>
 
 
     <Button

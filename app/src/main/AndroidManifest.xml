@@ -38,9 +38,21 @@
             android:theme="@style/AppTheme.ActionBar" />
 
         <activity
+            android:name=".ActivityEfbHelp"
+            android:label="@string/title_activity_help_app"
+            android:theme="@style/AppTheme.ActionBar" />
+
+        <activity
             android:name=".ActivityEfbAbout"
             android:label="@string/title_activity_about_app"
             android:theme="@style/AppTheme.ActionBar" />
+
+        <activity
+            android:name=".ActivityDynamicButtons"
+            android:label="@string/title_activity_dynamic_button"
+            android:theme="@style/AppTheme.ActionBar" />
+
+
     </application>
 
 </manifest>

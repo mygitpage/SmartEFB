@@ -22,7 +22,7 @@ public class ActivityFirstPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_first_page);
 
-
+        // Button Connect Book
         Button buttonConnectBook = (Button) findViewById(R.id.btnConnectBook);
 
         buttonConnectBook.setOnClickListener(new View.OnClickListener() {
@@ -35,6 +35,22 @@ public class ActivityFirstPage extends AppCompatActivity {
 
             }
         });
+
+        //Dynamicly Buttons (Button Termin vereinbaren wird hier anders genutzt :-)
+        Button buttonDynamiclyChange = (Button) findViewById(R.id.btnNewDate);
+
+        buttonDynamiclyChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getApplicationContext(), ActivityDynamicButtons.class);
+
+                startActivity(intent);
+
+            }
+        });
+
+
 
 
 
@@ -69,6 +85,12 @@ public class ActivityFirstPage extends AppCompatActivity {
                 intent = new Intent(getApplicationContext(), ActivityEfbSettings.class);
                 startActivity(intent);
                 return true;
+
+            case R.id.efb_help:
+                intent = new Intent(getApplicationContext(), ActivityEfbHelp.class);
+                startActivity(intent);
+                return true;
+
 
             case R.id.efb_about:
                 intent = new Intent(getApplicationContext(), ActivityEfbAbout.class);

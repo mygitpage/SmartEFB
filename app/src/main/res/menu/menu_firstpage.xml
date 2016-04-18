@@ -13,6 +13,11 @@
         android:title="@string/efb_settings"
         app:showAsAction="never" />
     <item
+        android:id="@+id/efb_help"
+        android:orderInCategory="100"
+        android:title="@string/efb_help"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/efb_about"
         android:orderInCategory="100"
         android:title="@string/efb_about"
