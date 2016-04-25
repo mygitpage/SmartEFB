@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -51,6 +52,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
         GridLayout.Spec row2 = GridLayout.spec(1);
         GridLayout.Spec row3 = GridLayout.spec(2);
         GridLayout.Spec row4 = GridLayout.spec(3);
+        GridLayout.Spec row5 = GridLayout.spec(4);
 
         GridLayout.Spec col0 = GridLayout.spec(0);
         GridLayout.Spec col1 = GridLayout.spec(1);
@@ -62,7 +64,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
 
         GridLayout gridLayout = (GridLayout) findViewById(R.id.dynamicLayout);
         gridLayout.setColumnCount(2);
-        gridLayout.setRowCount(4);
+        gridLayout.setRowCount(5);
 
 
 
@@ -123,6 +125,34 @@ public class ActivityDynamicButtons extends AppCompatActivity {
         btnButton5.setBackgroundColor(Color.BLUE);
         btnButton5.setText("Erziehungsberatung Fragen + Antworten");
         gridLayout.addView(btnButton5, fifth);
+
+
+
+        TextView txtViewNewDate = new TextView(this);
+        GridLayout.LayoutParams sixth = new GridLayout.LayoutParams(row4, colspan2);
+        sixth.width = screenWidth - 2 * btnMargin;
+        sixth.height = quarterScreenWidth;
+        sixth.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
+        txtViewNewDate.setLayoutParams(fourth);
+        txtViewNewDate.setBackgroundColor(Color.WHITE);
+
+        txtViewNewDate.setTextColor(Color.DKGRAY);
+        txtViewNewDate.setGravity(Gravity.CENTER);
+        txtViewNewDate.setText("Hier steht dann der neue Termin");
+        gridLayout.addView(txtViewNewDate, sixth);
+
+
+
+
+        Button btnButton6 = new Button(this);
+        GridLayout.LayoutParams seventh = new GridLayout.LayoutParams(row5, colspan2);
+        seventh.width = screenWidth - 2 * btnMargin;
+        seventh.height = quarterScreenWidth;
+        seventh.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
+        btnButton6.setLayoutParams(fourth);
+        btnButton6.setBackgroundColor(Color.BLUE);
+        btnButton6.setText("Termin vereinbaren");
+        gridLayout.addView(btnButton6, seventh);
 
 
 

@@ -2,6 +2,7 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBarActivity;
@@ -49,6 +50,21 @@ public class ActivityFirstPage extends AppCompatActivity {
 
             }
         });
+
+
+        initPrefShared();
+
+
+    }
+
+    private void initPrefShared() {
+
+
+        SharedPreferences prefs;
+        SharedPreferences.Editor prefsEditor;
+
+        prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
 
 
