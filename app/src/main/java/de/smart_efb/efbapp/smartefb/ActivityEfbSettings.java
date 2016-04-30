@@ -6,6 +6,7 @@ import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -111,6 +112,54 @@ public class ActivityEfbSettings extends AppCompatActivity {
         prefsEditor.commit();
 
         Toast.makeText(this, "Neuer Chat Name gespeichert ", Toast.LENGTH_SHORT).show();
+
+
+    }
+
+
+    public void onCheckboxMenueButtonClicked(View view) {
+
+
+        SharedPreferences prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor;
+
+
+
+
+
+
+            String tmpMenueButtonsTitle = menueButtonsTitle[countBtn].replaceAll("[^a-zA-Z]", "_");
+
+            showMenueButton[countBtn] = prefs.getBoolean(tmpMenueButtonsTitle, false);
+
+
+
+
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        // Check which checkbox was clicked
+        switch(view.getId()) {
+            case R.id.menueButton_1:
+                if (checked) {
+                    Toast.makeText(this, "Button 1 anzeigen", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(this, "Button 1 nicht anzeigen", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.menueButton_2:
+                if (checked) {
+                    Toast.makeText(this, "Button 2 anzeigen", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(this, "Button 2 nicht anzeigen", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+
+
+
 
 
     }

@@ -1,6 +1,7 @@
 package de.smart_efb.efbapp.smartefb;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by ich on 18.04.16.
@@ -18,11 +20,68 @@ import android.widget.TextView;
 public class ActivityDynamicButtons extends AppCompatActivity {
 
 
+    // Maximium number of Buttons of the first activity
+    final int numberOfButtons = 6;
+
+    // The grid row and col (row * col must equal numberOfButtons!)
+    final int gridColumnCount = 2;
+    final int gridRowCount = 3;
+
+    // arry of buttons
+    Button menueButtons[] = new Button [numberOfButtons];
+
+    // margin between the buttons
+    final int btnMargin = 10;
+
+    // The Buttons title
+    final String[] menueButtonsTitle = {"Mein Übergabebuch", "Unsere Absprachen", "Meine + Deine Ziele", "Prävention", "N.N.", "N.N."};
+    // Show the button when true
+    boolean showMenueButton[] = {false,false,false,false,false,false};
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_efb_dynamic_buttons);
+
+
+
+        initShowMenueButton();
+
+        addMenueElements();
+
+
+
+    }
+
+    private void initShowMenueButton() {
+
+        SharedPreferences prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor;
+
+        String concatMenueButtonsTitle = "";
+
+        for (int countBtn = 0; countBtn < numberOfButtons; countBtn++) {
+
+
+            String tmpMenueButtonsTitle = menueButtonsTitle[countBtn].replaceAll("[^a-zA-Z]", "_");
+
+            showMenueButton[countBtn] = prefs.getBoolean(tmpMenueButtonsTitle, false);
+
+            concatMenueButtonsTitle = concatMenueButtonsTitle.concat(tmpMenueButtonsTitle);
+
+        }
+
+        Toast.makeText(this, "String: " + concatMenueButtonsTitle, Toast.LENGTH_LONG).show();
+
+
+    }
+
+
+    void addMenueElements () {
+
+
 
         /*
         Look at:
@@ -34,7 +93,16 @@ public class ActivityDynamicButtons extends AppCompatActivity {
         // http://stackoverflow.com/questions/20871690/dont-understand-how-to-use-gridlayout-spec?lq=1
         // http://stackoverflow.com/questions/10347846/how-to-make-a-gridlayout-fit-screen-size
 
-        final int btnMargin = 10;
+
+
+        int btnIndexNumber = 0;
+
+
+
+
+
+
+
 
 
         Point size = new Point();
@@ -47,7 +115,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
 
 
 
-
+    /*
         GridLayout.Spec row1 = GridLayout.spec(0);
         GridLayout.Spec row2 = GridLayout.spec(1);
         GridLayout.Spec row3 = GridLayout.spec(2);
@@ -59,14 +127,67 @@ public class ActivityDynamicButtons extends AppCompatActivity {
 
 
         GridLayout.Spec colspan2 = GridLayout.spec(0, 2);
-
+    */
 
 
         GridLayout gridLayout = (GridLayout) findViewById(R.id.dynamicLayout);
-        gridLayout.setColumnCount(2);
-        gridLayout.setRowCount(5);
+
+        gridLayout.setColumnCount(gridColumnCount);
+        gridLayout.setRowCount(gridRowCount);
 
 
+
+
+        int countRow = 0, countCol = 0;
+
+        GridLayout.Spec col,row;
+
+
+        for (int countBtn = 0; countBtn < numberOfButtons; countBtn++) {
+
+
+            if (showMenueButton[countBtn]) {
+
+
+                Button btnButton = new Button(this);
+
+
+
+                if (countCol >= gridColumnCount) {
+                    countCol = 0;
+                    countRow++;
+                }
+
+
+
+
+                col = GridLayout.spec(countCol);
+                row = GridLayout.spec(countRow);
+
+
+
+                GridLayout.LayoutParams first = new GridLayout.LayoutParams(row, col);
+                first.width = halfScreenWidth;
+                first.height = quarterScreenWidth;
+                first.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
+                btnButton.setLayoutParams(first);
+                btnButton.setBackgroundColor(Color.BLUE);
+                btnButton.setText(menueButtonsTitle[countBtn]);
+                gridLayout.addView(btnButton, first);
+
+
+                menueButtons[btnIndexNumber]= btnButton;
+
+                countCol++;
+                btnIndexNumber++;
+
+            }
+
+        }
+
+
+
+        /*
 
         Button btnButton1 = new Button(this);
         GridLayout.LayoutParams first = new GridLayout.LayoutParams(row1, col0);
@@ -154,29 +275,27 @@ public class ActivityDynamicButtons extends AppCompatActivity {
         btnButton6.setText("Termin vereinbaren");
         gridLayout.addView(btnButton6, seventh);
 
-
-
-
-        /*
-        LinearLayout layout = (LinearLayout) findViewById(R.id.dynamicLayout);
-        TextView textView = new TextView(this);
-        textView.setText("Text View ");
-        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        layout.addView(textView, p);
-
-        Button buttonView = new Button(this);
-        buttonView.setText("Button");
-        //buttonView.setOnClickListener(mThisButtonListener);
-        layout.addView(buttonView, p);
         */
-
 
 
     }
 
+
+
+    // Return the number of Buttons
+    public int getNumberOfButtons () {
+        return numberOfButtons;
+    }
+
+    //Return original title of menue button
+    public String menueButtonTitle (int position) {
+        return menueButtonsTitle[position];
+    }
+
+    //Return replaced title of menue button
+    public String replaceMenueButtonTitle (int position) {
+        return menueButtonsTitle[position].replaceAll("[^a-zA-Z]", "_");
+    }
 
 
 }
