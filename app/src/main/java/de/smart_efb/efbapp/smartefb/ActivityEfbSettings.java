@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -22,6 +23,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
 
+    ActivityDynamicButtons tmpDynamicButton;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -32,6 +34,8 @@ public class ActivityEfbSettings extends AppCompatActivity {
         prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
+        //New Object of DynamicButton
+        tmpDynamicButton = new ActivityDynamicButtons();
 
         preSelectElements();
 
@@ -40,6 +44,8 @@ public class ActivityEfbSettings extends AppCompatActivity {
     private void preSelectElements() {
 
         RadioButton tmpRadioButton;
+        CheckBox tmpCheckBox;
+
 
         int roleNew = prefs.getInt("connectBookRole", 0);
         switch (roleNew) {
@@ -64,6 +70,42 @@ public class ActivityEfbSettings extends AppCompatActivity {
         EditText txtChatName = (EditText) findViewById(R.id.txtChatName);
         String chatName = prefs.getString("connectBookName", "Jon Down");
         txtChatName.setText(chatName);
+
+
+        // set menueButtonsChecked
+        for (int numberOfButtons=0; numberOfButtons < tmpDynamicButton.getNumberOfButtons(); numberOfButtons++) {
+
+
+            String tmpRessourceName ="menueButton_" + (numberOfButtons+1);
+
+
+
+            try {
+
+                int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", this.getPackageName());
+                tmpCheckBox = (CheckBox) findViewById(resourceId);
+                tmpCheckBox.setText(tmpDynamicButton.menueButtonTitle(numberOfButtons));
+
+                if (prefs.getBoolean(tmpDynamicButton.replaceMenueButtonTitle(numberOfButtons), false)) {
+                    tmpCheckBox.setChecked(true);
+                }
+                else {
+                    tmpCheckBox.setChecked(false);
+                }
+
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                //return -1;
+
+            }
+
+
+
+
+
+        }
 
 
     }
@@ -120,20 +162,12 @@ public class ActivityEfbSettings extends AppCompatActivity {
     public void onCheckboxMenueButtonClicked(View view) {
 
 
-        SharedPreferences prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor;
 
 
 
+        int buttonNumber =0;
 
-
-
-            String tmpMenueButtonsTitle = menueButtonsTitle[countBtn].replaceAll("[^a-zA-Z]", "_");
-
-            showMenueButton[countBtn] = prefs.getBoolean(tmpMenueButtonsTitle, false);
-
-
-
+        boolean buttonBooleanValue=false;
 
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
@@ -142,24 +176,70 @@ public class ActivityEfbSettings extends AppCompatActivity {
         switch(view.getId()) {
             case R.id.menueButton_1:
                 if (checked) {
-                    Toast.makeText(this, "Button 1 anzeigen", Toast.LENGTH_SHORT).show();
+                    buttonBooleanValue=true;
+                    buttonNumber =0;
                 }
                 else {
-                    Toast.makeText(this, "Button 1 nicht anzeigen", Toast.LENGTH_SHORT).show();
+                    buttonBooleanValue=false;
+                    buttonNumber =0;
                 }
                 break;
             case R.id.menueButton_2:
                 if (checked) {
-                    Toast.makeText(this, "Button 2 anzeigen", Toast.LENGTH_SHORT).show();
+                    buttonBooleanValue=true;
+                    buttonNumber =1;
                 }
                 else {
-                    Toast.makeText(this, "Button 2 nicht anzeigen", Toast.LENGTH_SHORT).show();
+                    buttonBooleanValue=false;
+                    buttonNumber =1;
+                }
+                break;
+            case R.id.menueButton_3:
+                if (checked) {
+                    buttonBooleanValue=true;
+                    buttonNumber =2;
+                }
+                else {
+                    buttonBooleanValue=false;
+                    buttonNumber =2;
+                }
+                break;
+            case R.id.menueButton_4:
+                if (checked) {
+                    buttonBooleanValue=true;
+                    buttonNumber =3;
+                }
+                else {
+                    buttonBooleanValue=false;
+                    buttonNumber =3;
+                }
+                break;
+            case R.id.menueButton_5:
+                if (checked) {
+                    buttonBooleanValue=true;
+                    buttonNumber =4;
+                }
+                else {
+                    buttonBooleanValue=false;
+                    buttonNumber =4;
+                }
+                break;
+            case R.id.menueButton_6:
+                if (checked) {
+                    buttonBooleanValue=true;
+                    buttonNumber =5;
+                }
+                else {
+                    buttonBooleanValue=false;
+                    buttonNumber =5;
                 }
                 break;
         }
 
 
 
+        prefsEditor.putBoolean(tmpDynamicButton.replaceMenueButtonTitle(buttonNumber), buttonBooleanValue);
+        prefsEditor.commit();
 
 
     }

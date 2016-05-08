@@ -34,7 +34,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
     final int btnMargin = 10;
 
     // The Buttons title
-    final String[] menueButtonsTitle = {"Mein Übergabebuch", "Unsere Absprachen", "Meine + Deine Ziele", "Prävention", "N.N.", "N.N."};
+    final String[] menueButtonsTitle = {"Mein Übergabebuch", "Unsere Absprachen", "Meine + Deine Ziele", "Prävention", "Na.N.", "Nb.N."};
     // Show the button when true
     boolean showMenueButton[] = {false,false,false,false,false,false};
 
@@ -65,15 +65,12 @@ public class ActivityDynamicButtons extends AppCompatActivity {
         for (int countBtn = 0; countBtn < numberOfButtons; countBtn++) {
 
 
-            String tmpMenueButtonsTitle = menueButtonsTitle[countBtn].replaceAll("[^a-zA-Z]", "_");
+            showMenueButton[countBtn] = prefs.getBoolean(replaceMenueButtonTitle(countBtn), false);
 
-            showMenueButton[countBtn] = prefs.getBoolean(tmpMenueButtonsTitle, false);
-
-            concatMenueButtonsTitle = concatMenueButtonsTitle.concat(tmpMenueButtonsTitle);
 
         }
 
-        Toast.makeText(this, "String: " + concatMenueButtonsTitle, Toast.LENGTH_LONG).show();
+
 
 
     }
