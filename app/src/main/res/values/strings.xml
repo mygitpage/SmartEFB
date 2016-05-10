@@ -44,4 +44,12 @@
     <string name="efb_help">Hilfe</string>
 
 
+
+
+
+    <string name="ButtonMenueEmergencyHelp">Notfallhilfe</string>
+    <string name="ButtonMenueMakeMeeting">Termin vereinbaren</string>
+    <string name="ButtonMenueFaq">Erziehungsberatung Fragen+Antworten</string>
+
+
 </resources>
