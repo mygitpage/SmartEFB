@@ -169,77 +169,116 @@ public class ActivityEfbSettings extends AppCompatActivity {
 
         boolean buttonBooleanValue=false;
 
+
+        String prefsMenueButtonName ="";
+
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
 
         // Check which checkbox was clicked
         switch(view.getId()) {
             case R.id.menueButton_1:
+                prefsMenueButtonName = tmpDynamicButton.replaceMenueButtonTitle(0);
                 if (checked) {
                     buttonBooleanValue=true;
-                    buttonNumber =0;
                 }
                 else {
                     buttonBooleanValue=false;
-                    buttonNumber =0;
                 }
                 break;
             case R.id.menueButton_2:
+                prefsMenueButtonName = tmpDynamicButton.replaceMenueButtonTitle(1);
                 if (checked) {
                     buttonBooleanValue=true;
-                    buttonNumber =1;
                 }
                 else {
                     buttonBooleanValue=false;
-                    buttonNumber =1;
                 }
                 break;
             case R.id.menueButton_3:
+                prefsMenueButtonName = tmpDynamicButton.replaceMenueButtonTitle(2);
                 if (checked) {
                     buttonBooleanValue=true;
-                    buttonNumber =2;
                 }
                 else {
                     buttonBooleanValue=false;
-                    buttonNumber =2;
                 }
                 break;
             case R.id.menueButton_4:
+                prefsMenueButtonName = tmpDynamicButton.replaceMenueButtonTitle(3);
                 if (checked) {
                     buttonBooleanValue=true;
-                    buttonNumber =3;
                 }
                 else {
                     buttonBooleanValue=false;
-                    buttonNumber =3;
                 }
                 break;
             case R.id.menueButton_5:
+                prefsMenueButtonName = tmpDynamicButton.replaceMenueButtonTitle(4);
                 if (checked) {
                     buttonBooleanValue=true;
-                    buttonNumber =4;
                 }
                 else {
                     buttonBooleanValue=false;
-                    buttonNumber =4;
                 }
                 break;
             case R.id.menueButton_6:
+                prefsMenueButtonName = tmpDynamicButton.replaceMenueButtonTitle(5);
                 if (checked) {
                     buttonBooleanValue=true;
-                    buttonNumber =5;
                 }
                 else {
                     buttonBooleanValue=false;
-                    buttonNumber =5;
                 }
                 break;
+
+            case R.id.menueButton_7:
+                prefsMenueButtonName = "ButtonMenueFaq";
+                if (checked) {
+                    buttonBooleanValue=true;
+                }
+                else {
+                    buttonBooleanValue=false;
+                }
+                break;
+            case R.id.menueButton_8:
+                prefsMenueButtonName = "ButtonMakeMeeting";
+                if (checked) {
+                    buttonBooleanValue=true;
+                }
+                else {
+                    buttonBooleanValue=false;
+                }
+                break;
+            case R.id.menueButton_9:
+                prefsMenueButtonName = "ButtonEmergencyHelp";
+                if (checked) {
+                    buttonBooleanValue=true;
+                }
+                else {
+                    buttonBooleanValue=false;
+                }
+                break;
+            case R.id.menueButton_10:
+                prefsMenueButtonName = "ShowTextNextMeeting";
+                if (checked) {
+                    buttonBooleanValue=true;
+                }
+                else {
+                    buttonBooleanValue=false;
+                }
+                break;
+
+
+
         }
 
 
 
-        prefsEditor.putBoolean(tmpDynamicButton.replaceMenueButtonTitle(buttonNumber), buttonBooleanValue);
+
+        prefsEditor.putBoolean(prefsMenueButtonName, buttonBooleanValue);
         prefsEditor.commit();
+
 
 
     }

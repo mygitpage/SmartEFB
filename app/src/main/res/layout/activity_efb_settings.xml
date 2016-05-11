@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -111,7 +116,38 @@
             android:layout_height="wrap_content"
             android:text="Button6"
             android:onClick="onCheckboxMenueButtonClicked"/>
+
+        <View
+            android:id="@+id/separateLine3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/radioGroup"
+            android:layout_margin="20dp"
+            android:background="@android:color/darker_gray"/>
+
+        <CheckBox android:id="@+id/menueButton_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ButtonMenueFaq"
+            android:onClick="onCheckboxMenueButtonClicked"/>
+        <CheckBox android:id="@+id/menueButton_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ButtonMenueMakeMeeting"
+            android:onClick="onCheckboxMenueButtonClicked"/>
+        <CheckBox android:id="@+id/menueButton_9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ButtonMenueEmergencyHelp"
+            android:onClick="onCheckboxMenueButtonClicked"/>
+        <CheckBox android:id="@+id/menueButton_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Next Meeting"
+            android:onClick="onCheckboxMenueButtonClicked"/>
     </LinearLayout>
 
 
 </RelativeLayout>
+
+</ScrollView>

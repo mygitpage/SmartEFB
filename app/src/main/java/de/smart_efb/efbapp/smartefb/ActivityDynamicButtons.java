@@ -38,7 +38,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
     // Show the button when true
     boolean showMenueButton[] = {false,false,false,false,false,false};
 
-    // Show elementary Buttons
+    // Show elementary Buttons 0=ButtonMenueFaq; 1=ButtonMakeMeeting; 2=ButtonEmergencyHelp
     boolean showMenueElementaryButton[] = {false,false,false};
 
     // Show next meeting text
@@ -65,10 +65,8 @@ public class ActivityDynamicButtons extends AppCompatActivity {
     private void initShowMenueButton() {
 
         SharedPreferences prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor;
 
-        String concatMenueButtonsTitle = "";
-
+        // Init ShowMenueButtons
         for (int countBtn = 0; countBtn < numberOfButtons; countBtn++) {
 
 
@@ -76,6 +74,16 @@ public class ActivityDynamicButtons extends AppCompatActivity {
 
 
         }
+
+
+        // Init ShowElementaryMenueButtons, like Faq, Next Meeting or Emergency Help
+        showMenueElementaryButton[0] = prefs.getBoolean("ButtonMenueFaq", false);
+        showMenueElementaryButton[1] = prefs.getBoolean("ButtonMakeMeeting", false);
+        showMenueElementaryButton[2] = prefs.getBoolean("ButtonEmergencyHelp", false);
+
+        // Init Show Text Next Meeting
+        showMenueNextMeetingText = prefs.getBoolean("ShowTextNextMeeting", false);
+
 
 
 
@@ -100,14 +108,6 @@ public class ActivityDynamicButtons extends AppCompatActivity {
 
 
         int btnIndexNumber = 0;
-
-
-
-
-
-
-
-
 
         Point size = new Point();
         getWindowManager().getDefaultDisplay().getSize(size);
@@ -140,6 +140,8 @@ public class ActivityDynamicButtons extends AppCompatActivity {
         gridLayout.setRowCount(gridRowCount);
 
 
+        // Define colspan over two cols
+        GridLayout.Spec colspan2 = GridLayout.spec(0, 2);
 
 
         int countRow = 0, countCol = 0;
@@ -190,68 +192,83 @@ public class ActivityDynamicButtons extends AppCompatActivity {
         }
 
 
-        GridLayout.Spec colspan2 = GridLayout.spec(0, 2);
+
+
+        if (showMenueElementaryButton[0]) { // Show the FAQ-Button?
+
+            // Next row in the grid layout
+            countRow++;
+
+            // Define the Button FAQ and add him to the grid
+            Button btnButtonMenueFaq = new Button(this);
+            GridLayout.LayoutParams paramsButtonMenueFaq = new GridLayout.LayoutParams(GridLayout.spec(countRow), colspan2);
+            paramsButtonMenueFaq.width = screenWidth - 2 * btnMargin;
+            paramsButtonMenueFaq.height = quarterScreenWidth;
+            paramsButtonMenueFaq.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
+            btnButtonMenueFaq.setLayoutParams(paramsButtonMenueFaq);
+            btnButtonMenueFaq.setBackgroundColor(Color.BLUE);
+            btnButtonMenueFaq.setText(getResources().getString(R.string.ButtonMenueFaq));
+            gridLayout.addView(btnButtonMenueFaq, paramsButtonMenueFaq);
+
+        }
+
+        if (showMenueNextMeetingText) { // Show the next meeting text?
+
+            // Next row in the grid layout
+            countRow++;
+
+            // Define the text for the next meeting and add him to the grid
+            TextView txtViewNewDate = new TextView(this);
+            GridLayout.LayoutParams paramsTxtViewNewDate = new GridLayout.LayoutParams(GridLayout.spec(countRow), colspan2);
+            paramsTxtViewNewDate.width = screenWidth - 2 * btnMargin;
+            paramsTxtViewNewDate.height = quarterScreenWidth;
+            paramsTxtViewNewDate.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
+            txtViewNewDate.setLayoutParams(paramsTxtViewNewDate);
+            txtViewNewDate.setBackgroundColor(Color.WHITE);
+            txtViewNewDate.setTextColor(Color.DKGRAY);
+            txtViewNewDate.setGravity(Gravity.CENTER);
+            txtViewNewDate.setText("Hier steht dann der neue Termin");
+            gridLayout.addView(txtViewNewDate, paramsTxtViewNewDate);
+
+        }
 
 
 
-        countRow++;
+        if (showMenueElementaryButton[1]) { // Show the CreateNextMeeting-Button?
 
+            // Next row in the grid layout
+            countRow++;
 
+            // Define the Button CreateNextMeeting and add him to the grid
+            Button btnButtonMakeMeeting = new Button(this);
+            GridLayout.LayoutParams paramsButtonMakeMeeting = new GridLayout.LayoutParams(GridLayout.spec(countRow), colspan2);
+            paramsButtonMakeMeeting.width = screenWidth - 2 * btnMargin;
+            paramsButtonMakeMeeting.height = quarterScreenWidth;
+            paramsButtonMakeMeeting.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
+            btnButtonMakeMeeting.setLayoutParams(paramsButtonMakeMeeting);
+            btnButtonMakeMeeting.setBackgroundColor(Color.BLUE);
+            btnButtonMakeMeeting.setText(getResources().getString(R.string.ButtonMenueMakeMeeting));
+            gridLayout.addView(btnButtonMakeMeeting, paramsButtonMakeMeeting);
 
-        Button btnButtonMenueFaq = new Button(this);
-        GridLayout.LayoutParams paramsButtonMenueFaq = new GridLayout.LayoutParams(GridLayout.spec(countRow), colspan2);
-        paramsButtonMenueFaq.width = screenWidth - 2 * btnMargin;
-        paramsButtonMenueFaq.height = quarterScreenWidth;
-        paramsButtonMenueFaq.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
-        btnButtonMenueFaq.setLayoutParams(paramsButtonMenueFaq);
-        btnButtonMenueFaq.setBackgroundColor(Color.BLUE);
-        btnButtonMenueFaq.setText(getResources().getString(R.string.ButtonMenueFaq));
-        gridLayout.addView(btnButtonMenueFaq, paramsButtonMenueFaq);
+        }
 
+        if (showMenueElementaryButton[2]) { // Show the EmergencyHelp-Button?
 
-        countRow++;
+            // Next row in the grid layout
+            countRow++;
 
-        TextView txtViewNewDate = new TextView(this);
-        GridLayout.LayoutParams paramsTxtViewNewDate = new GridLayout.LayoutParams(GridLayout.spec(countRow), colspan2);
-        paramsTxtViewNewDate.width = screenWidth - 2 * btnMargin;
-        paramsTxtViewNewDate.height = quarterScreenWidth;
-        paramsTxtViewNewDate.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
-        txtViewNewDate.setLayoutParams(paramsTxtViewNewDate);
-        txtViewNewDate.setBackgroundColor(Color.WHITE);
-        txtViewNewDate.setTextColor(Color.DKGRAY);
-        txtViewNewDate.setGravity(Gravity.CENTER);
-        txtViewNewDate.setText("Hier steht dann der neue Termin");
-        gridLayout.addView(txtViewNewDate, paramsTxtViewNewDate);
+            // Define the Button EmergencyHelp and add him to the grid
+            Button btnButtonEmergencyHelp = new Button(this);
+            GridLayout.LayoutParams paramsButtonEmergencyHelp = new GridLayout.LayoutParams(GridLayout.spec(countRow), colspan2);
+            paramsButtonEmergencyHelp.width = screenWidth - 2 * btnMargin;
+            paramsButtonEmergencyHelp.height = quarterScreenWidth;
+            paramsButtonEmergencyHelp.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
+            btnButtonEmergencyHelp.setLayoutParams(paramsButtonEmergencyHelp);
+            btnButtonEmergencyHelp.setBackgroundColor(Color.BLUE);
+            btnButtonEmergencyHelp.setText(getResources().getString(R.string.ButtonMenueEmergencyHelp));
+            gridLayout.addView(btnButtonEmergencyHelp, paramsButtonEmergencyHelp);
 
-
-
-        countRow++;
-
-        Button btnButtonMakeMeeting = new Button(this);
-        GridLayout.LayoutParams paramsButtonMakeMeeting = new GridLayout.LayoutParams(GridLayout.spec(countRow), colspan2);
-        paramsButtonMakeMeeting.width = screenWidth - 2 * btnMargin;
-        paramsButtonMakeMeeting.height = quarterScreenWidth;
-        paramsButtonMakeMeeting.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
-        btnButtonMakeMeeting.setLayoutParams(paramsButtonMakeMeeting);
-        btnButtonMakeMeeting.setBackgroundColor(Color.BLUE);
-        btnButtonMakeMeeting.setText(getResources().getString(R.string.ButtonMenueMakeMeeting));
-        gridLayout.addView(btnButtonMakeMeeting, paramsButtonMakeMeeting );
-
-
-
-        countRow++;
-
-        Button btnButtonEmergencyHelp = new Button(this);
-        GridLayout.LayoutParams paramsButtonEmergencyHelp = new GridLayout.LayoutParams(GridLayout.spec(countRow), colspan2);
-        paramsButtonEmergencyHelp.width = screenWidth - 2 * btnMargin;
-        paramsButtonEmergencyHelp.height = quarterScreenWidth;
-        paramsButtonEmergencyHelp.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
-        btnButtonEmergencyHelp.setLayoutParams(paramsButtonMakeMeeting);
-        btnButtonEmergencyHelp.setBackgroundColor(Color.BLUE);
-        btnButtonEmergencyHelp.setText(getResources().getString(R.string.ButtonMenueEmergencyHelp));
-        gridLayout.addView(btnButtonEmergencyHelp, paramsButtonEmergencyHelp );
-
-
+        }
 
 
 
