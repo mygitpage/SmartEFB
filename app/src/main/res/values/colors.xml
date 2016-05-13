@@ -25,6 +25,14 @@
 
     <!-- End Colors for Connect Book-->
 
-    <!-- 3F51B5 -->
+
+    <!-- Colors for Main Menue -->
+
+    <color name="bg_btn_main_menue">#1e6258</color>
+    <color name="txt_btn_main_menue">#ffffff</color>
+
+    <!-- End Colors for Main Menue -->
+
+
 
 </resources>

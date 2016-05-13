@@ -101,9 +101,36 @@ public class ActivityEfbSettings extends AppCompatActivity {
 
             }
 
+        }
 
 
 
+
+        // Pre select the elemtentary buttons
+        String [] tmpElemtentaryButtonsArray = {"ButtonMenueFaq","ButtonMakeMeeting","ButtonEmergencyHelp","ShowTextNextMeeting"};
+
+        for (int tmpElentaryButtons=7; tmpElentaryButtons<11; tmpElentaryButtons++) {
+
+
+            String tmpRessourceName ="menueButton_" + tmpElentaryButtons;
+
+            try {
+                int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", this.getPackageName());
+                tmpCheckBox = (CheckBox) findViewById(resourceId);
+
+                if (prefs.getBoolean(tmpElemtentaryButtonsArray[tmpElentaryButtons-7], false)) {
+                    tmpCheckBox.setChecked(true);
+                }
+                else {
+                    tmpCheckBox.setChecked(false);
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                //return -1;
+
+            }
 
         }
 

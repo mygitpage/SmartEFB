@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
@@ -149,6 +150,11 @@ public class ActivityDynamicButtons extends AppCompatActivity {
         GridLayout.Spec col,row;
 
 
+        // Get the BG and txt-color from ressource
+        int bgColorButtonMainMenue = ContextCompat.getColor(this, R.color.bg_btn_main_menue);
+        int txtColorButtonMainMenue = ContextCompat.getColor(this, R.color.txt_btn_main_menue);
+
+
         for (int countBtn = 0; countBtn < numberOfButtons; countBtn++) {
 
 
@@ -170,16 +176,26 @@ public class ActivityDynamicButtons extends AppCompatActivity {
                 col = GridLayout.spec(countCol);
                 row = GridLayout.spec(countRow);
 
-
+                String tmpMainMenueButtonName ="mainMenueButtonId_" + (numberOfButtons+1);
 
                 GridLayout.LayoutParams first = new GridLayout.LayoutParams(row, col);
                 first.width = halfScreenWidth;
                 first.height = quarterScreenWidth;
                 first.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
                 btnButton.setLayoutParams(first);
-                btnButton.setBackgroundColor(Color.BLUE);
+                btnButton.setBackgroundColor(bgColorButtonMainMenue);
+                btnButton.setTextColor(txtColorButtonMainMenue);
                 btnButton.setText(menueButtonsTitle[countBtn]);
+                btnButton.setId(this.getResources().getIdentifier(tmpMainMenueButtonName, "id", this.getPackageName()));
+                btnButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mainMenueButtonClicked();
+                    }
+                });
                 gridLayout.addView(btnButton, first);
+
+
 
 
                 menueButtons[btnIndexNumber]= btnButton;
@@ -206,7 +222,8 @@ public class ActivityDynamicButtons extends AppCompatActivity {
             paramsButtonMenueFaq.height = quarterScreenWidth;
             paramsButtonMenueFaq.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
             btnButtonMenueFaq.setLayoutParams(paramsButtonMenueFaq);
-            btnButtonMenueFaq.setBackgroundColor(Color.BLUE);
+            btnButtonMenueFaq.setBackgroundColor(bgColorButtonMainMenue);
+            btnButtonMenueFaq.setTextColor(txtColorButtonMainMenue);
             btnButtonMenueFaq.setText(getResources().getString(R.string.ButtonMenueFaq));
             gridLayout.addView(btnButtonMenueFaq, paramsButtonMenueFaq);
 
@@ -246,7 +263,8 @@ public class ActivityDynamicButtons extends AppCompatActivity {
             paramsButtonMakeMeeting.height = quarterScreenWidth;
             paramsButtonMakeMeeting.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
             btnButtonMakeMeeting.setLayoutParams(paramsButtonMakeMeeting);
-            btnButtonMakeMeeting.setBackgroundColor(Color.BLUE);
+            btnButtonMakeMeeting.setBackgroundColor(bgColorButtonMainMenue);
+            btnButtonMakeMeeting.setTextColor(txtColorButtonMainMenue);
             btnButtonMakeMeeting.setText(getResources().getString(R.string.ButtonMenueMakeMeeting));
             gridLayout.addView(btnButtonMakeMeeting, paramsButtonMakeMeeting);
 
@@ -264,7 +282,8 @@ public class ActivityDynamicButtons extends AppCompatActivity {
             paramsButtonEmergencyHelp.height = quarterScreenWidth;
             paramsButtonEmergencyHelp.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
             btnButtonEmergencyHelp.setLayoutParams(paramsButtonEmergencyHelp);
-            btnButtonEmergencyHelp.setBackgroundColor(Color.BLUE);
+            btnButtonEmergencyHelp.setBackgroundColor(bgColorButtonMainMenue);
+            btnButtonEmergencyHelp.setTextColor(txtColorButtonMainMenue);
             btnButtonEmergencyHelp.setText(getResources().getString(R.string.ButtonMenueEmergencyHelp));
             gridLayout.addView(btnButtonEmergencyHelp, paramsButtonEmergencyHelp);
 
@@ -368,6 +387,12 @@ public class ActivityDynamicButtons extends AppCompatActivity {
 
     }
 
+    private View.OnClickListener mainMenueButtonClicked() {
+
+        Toast.makeText(this," Main Menue Button Clicked ", Toast.LENGTH_SHORT).show();
+
+        return null;
+    }
 
 
     // Return the number of Buttons
