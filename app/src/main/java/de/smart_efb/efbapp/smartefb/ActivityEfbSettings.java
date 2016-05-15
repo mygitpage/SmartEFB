@@ -71,13 +71,16 @@ public class ActivityEfbSettings extends AppCompatActivity {
         String chatName = prefs.getString("connectBookName", "Jon Down");
         txtChatName.setText(chatName);
 
+        String tmpRessourceName ="";
+        String tmpMainMenueElementName ="";
 
         // set menueButtonsChecked
         for (int numberOfButtons=0; numberOfButtons < tmpDynamicButton.getNumberOfButtons(); numberOfButtons++) {
 
 
-            String tmpRessourceName ="menueButton_" + (numberOfButtons+1);
+            tmpRessourceName ="menueButton_" + (numberOfButtons+1);
 
+            tmpMainMenueElementName ="mainMenueElementId_" + numberOfButtons;;
 
 
             try {
@@ -86,7 +89,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
                 tmpCheckBox = (CheckBox) findViewById(resourceId);
                 tmpCheckBox.setText(tmpDynamicButton.menueButtonTitle(numberOfButtons));
 
-                if (prefs.getBoolean(tmpDynamicButton.replaceMenueButtonTitle(numberOfButtons), false)) {
+                if (prefs.getBoolean(tmpMainMenueElementName, false)) {
                     tmpCheckBox.setChecked(true);
                 }
                 else {
@@ -97,43 +100,9 @@ public class ActivityEfbSettings extends AppCompatActivity {
             } catch (Exception e) {
 
                 e.printStackTrace();
-                //return -1;
-
             }
 
         }
-
-
-
-
-        // Pre select the elemtentary buttons
-        String [] tmpElemtentaryButtonsArray = {"ButtonMenueFaq","ButtonMakeMeeting","ButtonEmergencyHelp","ShowTextNextMeeting"};
-
-        for (int tmpElentaryButtons=7; tmpElentaryButtons<11; tmpElentaryButtons++) {
-
-
-            String tmpRessourceName ="menueButton_" + tmpElentaryButtons;
-
-            try {
-                int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", this.getPackageName());
-                tmpCheckBox = (CheckBox) findViewById(resourceId);
-
-                if (prefs.getBoolean(tmpElemtentaryButtonsArray[tmpElentaryButtons-7], false)) {
-                    tmpCheckBox.setChecked(true);
-                }
-                else {
-                    tmpCheckBox.setChecked(false);
-                }
-
-            } catch (Exception e) {
-
-                e.printStackTrace();
-                //return -1;
-
-            }
-
-        }
-
 
     }
 
@@ -205,7 +174,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
         // Check which checkbox was clicked
         switch(view.getId()) {
             case R.id.menueButton_1:
-                prefsMenueButtonName = tmpDynamicButton.replaceMenueButtonTitle(0);
+                prefsMenueButtonName = "mainMenueElementId_0";
                 if (checked) {
                     buttonBooleanValue=true;
                 }
@@ -214,7 +183,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
                 }
                 break;
             case R.id.menueButton_2:
-                prefsMenueButtonName = tmpDynamicButton.replaceMenueButtonTitle(1);
+                prefsMenueButtonName = "mainMenueElementId_1";
                 if (checked) {
                     buttonBooleanValue=true;
                 }
@@ -223,7 +192,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
                 }
                 break;
             case R.id.menueButton_3:
-                prefsMenueButtonName = tmpDynamicButton.replaceMenueButtonTitle(2);
+                prefsMenueButtonName = "mainMenueElementId_2";
                 if (checked) {
                     buttonBooleanValue=true;
                 }
@@ -232,7 +201,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
                 }
                 break;
             case R.id.menueButton_4:
-                prefsMenueButtonName = tmpDynamicButton.replaceMenueButtonTitle(3);
+                prefsMenueButtonName = "mainMenueElementId_3";
                 if (checked) {
                     buttonBooleanValue=true;
                 }
@@ -241,7 +210,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
                 }
                 break;
             case R.id.menueButton_5:
-                prefsMenueButtonName = tmpDynamicButton.replaceMenueButtonTitle(4);
+                prefsMenueButtonName = "mainMenueElementId_4";
                 if (checked) {
                     buttonBooleanValue=true;
                 }
@@ -250,7 +219,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
                 }
                 break;
             case R.id.menueButton_6:
-                prefsMenueButtonName = tmpDynamicButton.replaceMenueButtonTitle(5);
+                prefsMenueButtonName = "mainMenueElementId_5";
                 if (checked) {
                     buttonBooleanValue=true;
                 }
@@ -260,7 +229,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
                 break;
 
             case R.id.menueButton_7:
-                prefsMenueButtonName = "ButtonMenueFaq";
+                prefsMenueButtonName = "mainMenueElementId_6";
                 if (checked) {
                     buttonBooleanValue=true;
                 }
@@ -269,7 +238,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
                 }
                 break;
             case R.id.menueButton_8:
-                prefsMenueButtonName = "ButtonMakeMeeting";
+                prefsMenueButtonName = "mainMenueElementId_7";
                 if (checked) {
                     buttonBooleanValue=true;
                 }
@@ -278,7 +247,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
                 }
                 break;
             case R.id.menueButton_9:
-                prefsMenueButtonName = "ButtonEmergencyHelp";
+                prefsMenueButtonName = "mainMenueElementId_8";
                 if (checked) {
                     buttonBooleanValue=true;
                 }
@@ -287,7 +256,16 @@ public class ActivityEfbSettings extends AppCompatActivity {
                 }
                 break;
             case R.id.menueButton_10:
-                prefsMenueButtonName = "ShowTextNextMeeting";
+                prefsMenueButtonName = "mainMenueElementId_9";
+                if (checked) {
+                    buttonBooleanValue=true;
+                }
+                else {
+                    buttonBooleanValue=false;
+                }
+                break;
+            case R.id.menueButton_11:
+                prefsMenueButtonName = "mainMenueElementId_10";
                 if (checked) {
                     buttonBooleanValue=true;
                 }
@@ -296,6 +274,24 @@ public class ActivityEfbSettings extends AppCompatActivity {
                 }
                 break;
 
+            case R.id.menueButton_12:
+                prefsMenueButtonName = "mainMenueElementId_11";
+                if (checked) {
+                    buttonBooleanValue=true;
+                }
+                else {
+                    buttonBooleanValue=false;
+                }
+                break;
+            case R.id.menueButton_13:
+                prefsMenueButtonName = "mainMenueElementId_12";
+                if (checked) {
+                    buttonBooleanValue=true;
+                }
+                else {
+                    buttonBooleanValue=false;
+                }
+                break;
 
 
         }
@@ -314,3 +310,36 @@ public class ActivityEfbSettings extends AppCompatActivity {
 
 
 }
+
+
+
+
+/*
+        // Pre select the elemtentary buttons
+        String [] tmpElemtentaryButtonsArray = {"ButtonMenueFaq","ButtonMakeMeeting","ButtonEmergencyHelp","ShowTextNextMeeting"};
+
+        for (int tmpElentaryButtons=7; tmpElentaryButtons<11; tmpElentaryButtons++) {
+
+
+            String tmpRessourceName ="menueButton_" + tmpElentaryButtons;
+
+            try {
+                int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", this.getPackageName());
+                tmpCheckBox = (CheckBox) findViewById(resourceId);
+
+                if (prefs.getBoolean(tmpElemtentaryButtonsArray[tmpElentaryButtons-7], false)) {
+                    tmpCheckBox.setChecked(true);
+                }
+                else {
+                    tmpCheckBox.setChecked(false);
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                //return -1;
+
+            }
+
+        }
+        */

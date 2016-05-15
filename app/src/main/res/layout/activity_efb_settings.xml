@@ -116,34 +116,40 @@
             android:layout_height="wrap_content"
             android:text="Button6"
             android:onClick="onCheckboxMenueButtonClicked"/>
-
-        <View
-            android:id="@+id/separateLine3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/radioGroup"
-            android:layout_margin="20dp"
-            android:background="@android:color/darker_gray"/>
-
         <CheckBox android:id="@+id/menueButton_7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ButtonMenueFaq"
+            android:text="Button7"
             android:onClick="onCheckboxMenueButtonClicked"/>
         <CheckBox android:id="@+id/menueButton_8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ButtonMenueMakeMeeting"
+            android:text="Button8"
             android:onClick="onCheckboxMenueButtonClicked"/>
         <CheckBox android:id="@+id/menueButton_9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ButtonMenueEmergencyHelp"
+            android:text="Button9"
             android:onClick="onCheckboxMenueButtonClicked"/>
         <CheckBox android:id="@+id/menueButton_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Show Next Meeting"
+            android:text="Button10"
+            android:onClick="onCheckboxMenueButtonClicked"/>
+        <CheckBox android:id="@+id/menueButton_11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button11"
+            android:onClick="onCheckboxMenueButtonClicked"/>
+        <CheckBox android:id="@+id/menueButton_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button12"
+            android:onClick="onCheckboxMenueButtonClicked"/>
+        <CheckBox android:id="@+id/menueButton_13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button13"
             android:onClick="onCheckboxMenueButtonClicked"/>
     </LinearLayout>
 

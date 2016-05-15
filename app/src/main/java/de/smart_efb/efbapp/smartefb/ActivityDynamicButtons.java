@@ -1,6 +1,6 @@
 package de.smart_efb.efbapp.smartefb;
 
-import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -11,9 +11,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 /**
  * Created by ich on 18.04.16.
@@ -21,29 +21,23 @@ import android.widget.Toast;
 public class ActivityDynamicButtons extends AppCompatActivity {
 
 
-    // Maximium number of Buttons of the first activity
-    final int numberOfButtons = 6;
+    // Number of MainMenue elements of the first activity
+    final int numberOfElements = 13;
 
     // The grid row and col
     final int gridColumnCount = 2;
-    final int gridRowCount = 7;
+    final int gridRowCount = 10;
 
-    // array of buttons
-    Button menueButtons[] = new Button [numberOfButtons];
 
     // margin between the buttons
-    final int btnMargin = 10;
+    final int elemMargin = 10;
 
-    // The Buttons title
-    final String[] menueButtonsTitle = {"Mein Übergabebuch", "Unsere Absprachen", "Meine + Deine Ziele", "Prävention", "Na.N.", "Nb.N."};
-    // Show the button when true
-    boolean showMenueButton[] = {false,false,false,false,false,false};
-
-    // Show elementary Buttons 0=ButtonMenueFaq; 1=ButtonMakeMeeting; 2=ButtonEmergencyHelp
-    boolean showMenueElementaryButton[] = {false,false,false};
-
-    // Show next meeting text
-    boolean showMenueNextMeetingText = false;
+    // The Elementtitle
+    final String[] mainMenueElementTitle = {"textDummy1", "Mein Übergabebuch", "Unsere Absprachen", "Meine + Deine Ziele", "Prävention", "Na.N.", "Nb.N.","textDummy2", "Erziehungsberatung Fragen+Antworten","textDummy3", "Termin vereinbaren", "Notfallhilfe", "textDummy4"};
+    // Show the element when true
+    boolean showMainMenueElement[] = {false,false,false,false,false,false,false,false,false,false,false,false,false};
+    // The kind of element (=0: half Button, =1: full button, =2: Textfield, )
+    int mainMenueElementKind[] = {2,0,0,0,0,0,0,2,1,2,1,1,2};
 
 
 
@@ -53,89 +47,39 @@ public class ActivityDynamicButtons extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_efb_dynamic_buttons);
 
+        initShowMainMenueElement();
 
-
-        initShowMenueButton();
-
-        addMenueElements();
-
-
+        addMainMenueElements();
 
     }
 
-    private void initShowMenueButton() {
+
+    private void initShowMainMenueElement() {
 
         SharedPreferences prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
 
         // Init ShowMenueButtons
-        for (int countBtn = 0; countBtn < numberOfButtons; countBtn++) {
+        for (int countElem = 0; countElem < numberOfElements; countElem++) {
 
-
-            showMenueButton[countBtn] = prefs.getBoolean(replaceMenueButtonTitle(countBtn), false);
-
+            String tmpMainMenuePrefseName ="mainMenueElementId_" + countElem;
+            showMainMenueElement[countElem] = prefs.getBoolean(tmpMainMenuePrefseName, false);
 
         }
-
-
-        // Init ShowElementaryMenueButtons, like Faq, Next Meeting or Emergency Help
-        showMenueElementaryButton[0] = prefs.getBoolean("ButtonMenueFaq", false);
-        showMenueElementaryButton[1] = prefs.getBoolean("ButtonMakeMeeting", false);
-        showMenueElementaryButton[2] = prefs.getBoolean("ButtonEmergencyHelp", false);
-
-        // Init Show Text Next Meeting
-        showMenueNextMeetingText = prefs.getBoolean("ShowTextNextMeeting", false);
-
-
-
-
 
     }
 
 
-    void addMenueElements () {
+    void addMainMenueElements () {
 
-
-
-        /*
-        Look at:
-        http: stackoverflow.com/questions/15082432/how-to-create-button-dynamically-in-android
-        */
-
-
-        // http://stackoverflow.com/questions/21455495/gridlayoutnot-gridview-spaces-between-the-cells
-        // http://stackoverflow.com/questions/20871690/dont-understand-how-to-use-gridlayout-spec?lq=1
-        // http://stackoverflow.com/questions/10347846/how-to-make-a-gridlayout-fit-screen-size
-
-
-
-        int btnIndexNumber = 0;
 
         Point size = new Point();
         getWindowManager().getDefaultDisplay().getSize(size);
         int screenWidth = size.x;
         int screenHeight = size.y;
-        int halfScreenWidth = (int)((screenWidth *0.5) - 2*btnMargin);
+        int halfScreenWidth = (int)((screenWidth *0.5) - 2*elemMargin);
         int quarterScreenWidth = (int)(halfScreenWidth * 0.5);
 
-
-
-
-    /*
-        GridLayout.Spec row1 = GridLayout.spec(0);
-        GridLayout.Spec row2 = GridLayout.spec(1);
-        GridLayout.Spec row3 = GridLayout.spec(2);
-        GridLayout.Spec row4 = GridLayout.spec(3);
-        GridLayout.Spec row5 = GridLayout.spec(4);
-
-        GridLayout.Spec col0 = GridLayout.spec(0);
-        GridLayout.Spec col1 = GridLayout.spec(1);
-
-
-        GridLayout.Spec colspan2 = GridLayout.spec(0, 2);
-    */
-
-
-        GridLayout gridLayout = (GridLayout) findViewById(R.id.dynamicLayout);
+       GridLayout gridLayout = (GridLayout) findViewById(R.id.dynamicLayout);
 
         gridLayout.setColumnCount(gridColumnCount);
         gridLayout.setRowCount(gridRowCount);
@@ -147,31 +91,158 @@ public class ActivityDynamicButtons extends AppCompatActivity {
 
         int countRow = 0, countCol = 0;
 
-        GridLayout.Spec col,row;
-
 
         // Get the BG and txt-color from ressource
         int bgColorButtonMainMenue = ContextCompat.getColor(this, R.color.bg_btn_main_menue);
         int txtColorButtonMainMenue = ContextCompat.getColor(this, R.color.txt_btn_main_menue);
 
+        Button btnButton;
+        TextView txtViewElement;
 
-        for (int countBtn = 0; countBtn < numberOfButtons; countBtn++) {
+        String tmpMainMenueButtonName="";
+
+        GridLayout.LayoutParams elemParams;
+
+        for (int countElem = 0; countElem < numberOfElements; countElem++) {
 
 
-            if (showMenueButton[countBtn]) {
+            if (showMainMenueElement[countElem]) { // Show the element in the main menue?
 
 
+
+
+                switch (mainMenueElementKind[countElem]) { // what kind of element?
+
+
+
+                    case 0: // its a half button!
+                        btnButton = new Button(this);
+
+                        if (countCol >= gridColumnCount) {
+                            countCol = 0;
+                            countRow++;
+                        }
+                        // generate the buttons id
+                        tmpMainMenueButtonName ="mainMenueElementId_" + countElem;
+
+                        elemParams = new GridLayout.LayoutParams(GridLayout.spec(countRow), GridLayout.spec(countCol));
+                        elemParams.width = halfScreenWidth;
+                        elemParams.height = quarterScreenWidth;
+                        elemParams.setMargins(elemMargin, elemMargin, elemMargin, elemMargin);
+                        btnButton.setLayoutParams(elemParams);
+                        btnButton.setBackgroundColor(bgColorButtonMainMenue);
+                        btnButton.setTextColor(txtColorButtonMainMenue);
+                        btnButton.setText(mainMenueElementTitle[countElem]);
+                        btnButton.setId(this.getResources().getIdentifier(tmpMainMenueButtonName, "id", this.getPackageName()));
+                        btnButton.setOnClickListener(mainMenueElementClicked);
+                        gridLayout.addView(btnButton, elemParams);
+
+                        countCol++;
+                        break;
+
+                    case 1: // its a full button!
+                        // new Button
+                        btnButton = new Button(this);
+                        // Next row in the grid layout?
+                        if (countCol != 0) {
+                            countRow++;
+                        }
+                        // generate the buttons id
+                        tmpMainMenueButtonName ="mainMenueElementId_" + countElem;
+
+                        // Define the full button
+                        elemParams = new GridLayout.LayoutParams(GridLayout.spec(countRow), colspan2);
+                        elemParams.width = screenWidth - 2 * elemMargin;
+                        elemParams.height = quarterScreenWidth;
+                        elemParams.setMargins(elemMargin, elemMargin, elemMargin, elemMargin);
+                        btnButton.setLayoutParams(elemParams);
+                        btnButton.setBackgroundColor(bgColorButtonMainMenue);
+                        btnButton.setTextColor(txtColorButtonMainMenue);
+                        btnButton.setText(mainMenueElementTitle[countElem]);
+                        btnButton.setId(this.getResources().getIdentifier(tmpMainMenueButtonName, "id", this.getPackageName()));
+                        btnButton.setOnClickListener(mainMenueElementClicked);
+                        gridLayout.addView(btnButton, elemParams);
+
+                        if (countCol < gridColumnCount) {
+                            countRow++;
+                        }
+                        break;
+
+                    case 2: // its a full textfield
+
+                        // new textfield
+                        txtViewElement = new TextView(this);
+                        if (countCol != 0) {
+                            countRow++;
+                        }
+
+                        // generate the buttons id
+                        tmpMainMenueButtonName ="mainMenueElementId_" + countElem;
+
+                        // Define the textfield
+                        elemParams = new GridLayout.LayoutParams(GridLayout.spec(countRow), colspan2);
+                        elemParams.width = screenWidth - 2 * elemMargin;
+                        elemParams.height = quarterScreenWidth;
+                        elemParams.setMargins(elemMargin, elemMargin, elemMargin, elemMargin);
+                        txtViewElement.setLayoutParams(elemParams);
+                        txtViewElement.setBackgroundColor(Color.WHITE);
+                        txtViewElement.setTextColor(Color.DKGRAY);
+                        txtViewElement.setGravity(Gravity.CENTER);
+                        txtViewElement.setId(this.getResources().getIdentifier(tmpMainMenueButtonName, "id", this.getPackageName()));
+                        txtViewElement.setText("Hier steht dann der neue Termin"); // TODO: texte aus den Prefs auslesen und in ein Array schreiben und hier eintragen
+                        gridLayout.addView(txtViewElement, elemParams);
+
+                        if (countCol < gridColumnCount) {
+                            countRow++;
+                        }
+                        break;
+                    default:
+                        break;
+
+                }
+
+
+            }
+
+        }
+
+    }
+
+
+    private View.OnClickListener mainMenueElementClicked = new View.OnClickListener() {
+
+        public void onClick (View v) {
+
+            Toast.makeText(ActivityDynamicButtons.this," Main Menue Button Clicked ", Toast.LENGTH_SHORT).show();
+
+        }
+
+    };
+
+
+    // Return the number of Buttons
+    public int getNumberOfButtons () {
+        return numberOfElements;
+    }
+
+    //Return original title of menue button
+    public String menueButtonTitle (int position) {
+        return mainMenueElementTitle[position];
+    }
+
+
+
+}
+
+
+
+/*
                 Button btnButton = new Button(this);
-
-
 
                 if (countCol >= gridColumnCount) {
                     countCol = 0;
                     countRow++;
                 }
-
-
-
 
                 col = GridLayout.spec(countCol);
                 row = GridLayout.spec(countRow);
@@ -187,33 +258,17 @@ public class ActivityDynamicButtons extends AppCompatActivity {
                 btnButton.setTextColor(txtColorButtonMainMenue);
                 btnButton.setText(menueButtonsTitle[countBtn]);
                 btnButton.setId(this.getResources().getIdentifier(tmpMainMenueButtonName, "id", this.getPackageName()));
-                btnButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mainMenueButtonClicked();
-                    }
-                });
+                btnButton.setOnClickListener(mainMenueButtonClicked);
                 gridLayout.addView(btnButton, first);
 
-
-
-
-                menueButtons[btnIndexNumber]= btnButton;
-
                 countCol++;
-                btnIndexNumber++;
-
-            }
-
-        }
+               */
 
 
-
-
+/*
         if (showMenueElementaryButton[0]) { // Show the FAQ-Button?
 
-            // Next row in the grid layout
-            countRow++;
+
 
             // Define the Button FAQ and add him to the grid
             Button btnButtonMenueFaq = new Button(this);
@@ -225,6 +280,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
             btnButtonMenueFaq.setBackgroundColor(bgColorButtonMainMenue);
             btnButtonMenueFaq.setTextColor(txtColorButtonMainMenue);
             btnButtonMenueFaq.setText(getResources().getString(R.string.ButtonMenueFaq));
+            btnButtonMenueFaq.setOnClickListener(mainMenueButtonClicked);
             gridLayout.addView(btnButtonMenueFaq, paramsButtonMenueFaq);
 
         }
@@ -266,6 +322,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
             btnButtonMakeMeeting.setBackgroundColor(bgColorButtonMainMenue);
             btnButtonMakeMeeting.setTextColor(txtColorButtonMainMenue);
             btnButtonMakeMeeting.setText(getResources().getString(R.string.ButtonMenueMakeMeeting));
+            btnButtonMakeMeeting.setOnClickListener(mainMenueButtonClicked);
             gridLayout.addView(btnButtonMakeMeeting, paramsButtonMakeMeeting);
 
         }
@@ -285,130 +342,8 @@ public class ActivityDynamicButtons extends AppCompatActivity {
             btnButtonEmergencyHelp.setBackgroundColor(bgColorButtonMainMenue);
             btnButtonEmergencyHelp.setTextColor(txtColorButtonMainMenue);
             btnButtonEmergencyHelp.setText(getResources().getString(R.string.ButtonMenueEmergencyHelp));
+            btnButtonEmergencyHelp.setOnClickListener(mainMenueButtonClicked);
             gridLayout.addView(btnButtonEmergencyHelp, paramsButtonEmergencyHelp);
 
         }
-
-
-
-
-
-
-        /*
-
-        Button btnButton1 = new Button(this);
-        GridLayout.LayoutParams first = new GridLayout.LayoutParams(row1, col0);
-        first.width = halfScreenWidth;
-        first.height = quarterScreenWidth;
-        first.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
-        btnButton1.setLayoutParams(first);
-        btnButton1.setBackgroundColor(Color.BLUE);
-        btnButton1.setText("Mein Übergabebuch");
-        gridLayout.addView(btnButton1, first);
-
-
-
-        Button btnButton2 = new Button(this);
-        GridLayout.LayoutParams second = new GridLayout.LayoutParams(row1, col1);
-        second.width = halfScreenWidth;
-        second.height = quarterScreenWidth;
-        second.setMargins(btnMargin,btnMargin,btnMargin,btnMargin);
-        btnButton2.setLayoutParams(second);
-        btnButton2.setBackgroundColor(Color.BLUE);
-        btnButton2.setText("Unsere Absprachen");
-        gridLayout.addView(btnButton2, second);
-
-
-
-
-        Button btnButton3 = new Button(this);
-        GridLayout.LayoutParams third = new GridLayout.LayoutParams(row2, col0);
-        third.width = halfScreenWidth;
-        third.height = quarterScreenWidth;
-        third.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
-        btnButton3.setLayoutParams(third);
-        btnButton3.setBackgroundColor(Color.BLUE);
-        btnButton3.setText("Meine+Deine Ziele");
-        gridLayout.addView(btnButton3, third);
-
-
-        Button btnButton4 = new Button(this);
-        GridLayout.LayoutParams fourth = new GridLayout.LayoutParams(row2, col1);
-        fourth.width = halfScreenWidth;
-        fourth.height = quarterScreenWidth;
-        fourth.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
-        btnButton4.setLayoutParams(fourth);
-        btnButton4.setBackgroundColor(Color.BLUE);
-        btnButton4.setText("Prävention");
-        gridLayout.addView(btnButton4, fourth);
-
-
-
-        Button btnButton5 = new Button(this);
-        GridLayout.LayoutParams fifth = new GridLayout.LayoutParams(row3, colspan2);
-        fifth.width = screenWidth - 2 * btnMargin;
-        fifth.height = quarterScreenWidth;
-        fifth.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
-        btnButton5.setLayoutParams(fourth);
-        btnButton5.setBackgroundColor(Color.BLUE);
-        btnButton5.setText("Erziehungsberatung Fragen + Antworten");
-        gridLayout.addView(btnButton5, fifth);
-
-
-
-        TextView txtViewNewDate = new TextView(this);
-        GridLayout.LayoutParams sixth = new GridLayout.LayoutParams(row4, colspan2);
-        sixth.width = screenWidth - 2 * btnMargin;
-        sixth.height = quarterScreenWidth;
-        sixth.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
-        txtViewNewDate.setLayoutParams(fourth);
-        txtViewNewDate.setBackgroundColor(Color.WHITE);
-
-        txtViewNewDate.setTextColor(Color.DKGRAY);
-        txtViewNewDate.setGravity(Gravity.CENTER);
-        txtViewNewDate.setText("Hier steht dann der neue Termin");
-        gridLayout.addView(txtViewNewDate, sixth);
-
-
-
-
-        Button btnButton6 = new Button(this);
-        GridLayout.LayoutParams seventh = new GridLayout.LayoutParams(row5, colspan2);
-        seventh.width = screenWidth - 2 * btnMargin;
-        seventh.height = quarterScreenWidth;
-        seventh.setMargins(btnMargin, btnMargin, btnMargin, btnMargin);
-        btnButton6.setLayoutParams(fourth);
-        btnButton6.setBackgroundColor(Color.BLUE);
-        btnButton6.setText("Termin vereinbaren");
-        gridLayout.addView(btnButton6, seventh);
-
         */
-
-
-    }
-
-    private View.OnClickListener mainMenueButtonClicked() {
-
-        Toast.makeText(this," Main Menue Button Clicked ", Toast.LENGTH_SHORT).show();
-
-        return null;
-    }
-
-
-    // Return the number of Buttons
-    public int getNumberOfButtons () {
-        return numberOfButtons;
-    }
-
-    //Return original title of menue button
-    public String menueButtonTitle (int position) {
-        return menueButtonsTitle[position];
-    }
-
-    //Return replaced title of menue button
-    public String replaceMenueButtonTitle (int position) {
-        return menueButtonsTitle[position].replaceAll("[^a-zA-Z]", "_");
-    }
-
-
-}
