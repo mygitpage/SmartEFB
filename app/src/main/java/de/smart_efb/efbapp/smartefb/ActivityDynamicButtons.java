@@ -32,6 +32,9 @@ public class ActivityDynamicButtons extends AppCompatActivity {
     // margin between the buttons
     final int elemMargin = 10;
 
+    // id-name of main menue buttons + number
+    final String MAIN_MENUE_ID_BUTTON_NAME = "mainMenueElementId_";
+
     // The Elementtitle
     final String[] mainMenueElementTitle = {"textDummy1", "Mein Übergabebuch", "Unsere Absprachen", "Meine + Deine Ziele", "Prävention", "Na.N.", "Nb.N.","textDummy2", "Erziehungsberatung Fragen+Antworten","textDummy3", "Termin vereinbaren", "Notfallhilfe", "textDummy4"};
     // Show the element when true
@@ -61,7 +64,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
         // Init ShowMenueButtons
         for (int countElem = 0; countElem < numberOfElements; countElem++) {
 
-            String tmpMainMenuePrefseName ="mainMenueElementId_" + countElem;
+            String tmpMainMenuePrefseName = MAIN_MENUE_ID_BUTTON_NAME + countElem;
             showMainMenueElement[countElem] = prefs.getBoolean(tmpMainMenuePrefseName, false);
 
         }
@@ -123,7 +126,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
                             countRow++;
                         }
                         // generate the buttons id
-                        tmpMainMenueButtonName ="mainMenueElementId_" + countElem;
+                        tmpMainMenueButtonName = MAIN_MENUE_ID_BUTTON_NAME + countElem;
 
                         elemParams = new GridLayout.LayoutParams(GridLayout.spec(countRow), GridLayout.spec(countCol));
                         elemParams.width = halfScreenWidth;
@@ -134,7 +137,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
                         btnButton.setTextColor(txtColorButtonMainMenue);
                         btnButton.setText(mainMenueElementTitle[countElem]);
                         btnButton.setId(this.getResources().getIdentifier(tmpMainMenueButtonName, "id", this.getPackageName()));
-                        btnButton.setOnClickListener(mainMenueElementClicked);
+                        btnButton.setOnClickListener(new DynamicButtonOnClickListener(ActivityDynamicButtons.this, countElem));
                         gridLayout.addView(btnButton, elemParams);
 
                         countCol++;
@@ -148,7 +151,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
                             countRow++;
                         }
                         // generate the buttons id
-                        tmpMainMenueButtonName ="mainMenueElementId_" + countElem;
+                        tmpMainMenueButtonName = MAIN_MENUE_ID_BUTTON_NAME + countElem;
 
                         // Define the full button
                         elemParams = new GridLayout.LayoutParams(GridLayout.spec(countRow), colspan2);
@@ -160,7 +163,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
                         btnButton.setTextColor(txtColorButtonMainMenue);
                         btnButton.setText(mainMenueElementTitle[countElem]);
                         btnButton.setId(this.getResources().getIdentifier(tmpMainMenueButtonName, "id", this.getPackageName()));
-                        btnButton.setOnClickListener(mainMenueElementClicked);
+                        btnButton.setOnClickListener(new DynamicButtonOnClickListener(ActivityDynamicButtons.this,countElem));
                         gridLayout.addView(btnButton, elemParams);
 
                         if (countCol < gridColumnCount) {
@@ -177,7 +180,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
                         }
 
                         // generate the buttons id
-                        tmpMainMenueButtonName ="mainMenueElementId_" + countElem;
+                        tmpMainMenueButtonName = MAIN_MENUE_ID_BUTTON_NAME + countElem;
 
                         // Define the textfield
                         elemParams = new GridLayout.LayoutParams(GridLayout.spec(countRow), colspan2);
@@ -212,6 +215,8 @@ public class ActivityDynamicButtons extends AppCompatActivity {
     private View.OnClickListener mainMenueElementClicked = new View.OnClickListener() {
 
         public void onClick (View v) {
+
+
 
             Toast.makeText(ActivityDynamicButtons.this," Main Menue Button Clicked ", Toast.LENGTH_SHORT).show();
 
