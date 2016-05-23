@@ -36,7 +36,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
     final String MAIN_MENUE_ID_BUTTON_NAME = "mainMenueElementId_";
 
     // The Elementtitle
-    final String[] mainMenueElementTitle = {"textDummy1", "Mein Übergabebuch", "Unsere Absprachen", "Meine + Deine Ziele", "Prävention", "Na.N.", "Nb.N.","textDummy2", "Erziehungsberatung Fragen+Antworten","textDummy3", "Termin vereinbaren", "Notfallhilfe", "textDummy4"};
+    String[] mainMenueElementTitle = {"textDummy1", "uebergabebuch", "absprachen", "ziele", "praevention", "n.n.", "n.n.","textDummy2", "faq","textDummy3", "vereinbaren", "hilfe", "textDummy4"};
     // Show the element when true
     boolean showMainMenueElement[] = {false,false,false,false,false,false,false,false,false,false,false,false,false};
     // The kind of element (=0: half Button, =1: full button, =2: Textfield, )
@@ -61,13 +61,37 @@ public class ActivityDynamicButtons extends AppCompatActivity {
 
         SharedPreferences prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
 
+        int resIdMainMenueElements;
+        String tmpMainMenuePrefseName;
+        
         // Init ShowMenueButtons
         for (int countElem = 0; countElem < numberOfElements; countElem++) {
 
-            String tmpMainMenuePrefseName = MAIN_MENUE_ID_BUTTON_NAME + countElem;
+            tmpMainMenuePrefseName = MAIN_MENUE_ID_BUTTON_NAME + countElem;
             showMainMenueElement[countElem] = prefs.getBoolean(tmpMainMenuePrefseName, false);
 
+
+
+            resIdMainMenueElements = getResources().getIdentifier(tmpMainMenuePrefseName, "string", getPackageName());
+            if (resIdMainMenueElements != 0) {
+
+                mainMenueElementTitle[countElem] = getResources().getString(resIdMainMenueElements);
+            }
+
+
+
+            /*
+            Beispiel zur Anzeige von Zahlen. Beispielsweise: Sie habe 20 neue Nachrichten
+            <string name="welcome_messages">Hello, %1$s! You have %2$d new messages.</string>
+
+            Resources res = getResources();
+            String text = String.format(res.getString(R.string.welcome_messages), username, mailCount);
+
+
+            */
+
         }
+
 
     }
 
@@ -111,12 +135,7 @@ public class ActivityDynamicButtons extends AppCompatActivity {
 
             if (showMainMenueElement[countElem]) { // Show the element in the main menue?
 
-
-
-
                 switch (mainMenueElementKind[countElem]) { // what kind of element?
-
-
 
                     case 0: // its a half button!
                         btnButton = new Button(this);
@@ -133,8 +152,23 @@ public class ActivityDynamicButtons extends AppCompatActivity {
                         elemParams.height = quarterScreenWidth;
                         elemParams.setMargins(elemMargin, elemMargin, elemMargin, elemMargin);
                         btnButton.setLayoutParams(elemParams);
-                        btnButton.setBackgroundColor(bgColorButtonMainMenue);
+
+
+                        //btnButton.setBackgroundColor(bgColorButtonMainMenue);
+
+
                         btnButton.setTextColor(txtColorButtonMainMenue);
+
+                        btnButton.setTextSize(10);
+
+
+
+
+
+                        btnButton.setBackgroundResource(R.drawable.main_menue_drawable_background);
+
+
+
                         btnButton.setText(mainMenueElementTitle[countElem]);
                         btnButton.setId(this.getResources().getIdentifier(tmpMainMenueButtonName, "id", this.getPackageName()));
                         btnButton.setOnClickListener(new DynamicButtonOnClickListener(ActivityDynamicButtons.this, countElem));
@@ -159,8 +193,21 @@ public class ActivityDynamicButtons extends AppCompatActivity {
                         elemParams.height = quarterScreenWidth;
                         elemParams.setMargins(elemMargin, elemMargin, elemMargin, elemMargin);
                         btnButton.setLayoutParams(elemParams);
-                        btnButton.setBackgroundColor(bgColorButtonMainMenue);
+                        //btnButton.setBackgroundColor(bgColorButtonMainMenue);
                         btnButton.setTextColor(txtColorButtonMainMenue);
+
+
+                        btnButton.setTextSize(10);
+
+
+
+
+
+                        btnButton.setBackgroundResource(R.drawable.main_menue_drawable_background);
+
+
+
+
                         btnButton.setText(mainMenueElementTitle[countElem]);
                         btnButton.setId(this.getResources().getIdentifier(tmpMainMenueButtonName, "id", this.getPackageName()));
                         btnButton.setOnClickListener(new DynamicButtonOnClickListener(ActivityDynamicButtons.this,countElem));
@@ -212,19 +259,6 @@ public class ActivityDynamicButtons extends AppCompatActivity {
     }
 
 
-    private View.OnClickListener mainMenueElementClicked = new View.OnClickListener() {
-
-        public void onClick (View v) {
-
-
-
-            Toast.makeText(ActivityDynamicButtons.this," Main Menue Button Clicked ", Toast.LENGTH_SHORT).show();
-
-        }
-
-    };
-
-
     // Return the number of Buttons
     public int getNumberOfButtons () {
         return numberOfElements;
@@ -234,7 +268,6 @@ public class ActivityDynamicButtons extends AppCompatActivity {
     public String menueButtonTitle (int position) {
         return mainMenueElementTitle[position];
     }
-
 
 
 }

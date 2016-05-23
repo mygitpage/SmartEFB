@@ -11,14 +11,16 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.ActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".ActivityTwo" />
+
         <activity
             android:name=".ActivityThree"
             android:label="@string/title_activity_activity_three"
@@ -29,7 +31,7 @@
             android:theme="@style/AppTheme.ActionBar" />
         <activity
             android:name=".ActivityConnectBook"
-            android:label="@string/title_activity_activity_connect_book"
+            android:label="@string/mainMenueElementId_1"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity

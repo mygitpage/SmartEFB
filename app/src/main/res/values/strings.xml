@@ -47,9 +47,21 @@
 
 
 
-    <string name="ButtonMenueEmergencyHelp">Notfallhilfe</string>
-    <string name="ButtonMenueMakeMeeting">Termin vereinbaren</string>
-    <string name="ButtonMenueFaq">Erziehungsberatung Fragen+Antworten</string>
+    <!-- Main Menue Element Strings Start-->
+    <!--<string name="mainMenueElementId_0">Text fuer ein Textfeld</string>-->
+    <string name="mainMenueElementId_1">Mein Übergabebuch</string>
+    <string name="mainMenueElementId_2">Unsere Absprachen</string>
+    <string name="mainMenueElementId_3">Meine + Deine Ziele</string>
+    <string name="mainMenueElementId_4">Prävention</string>
+    <string name="mainMenueElementId_5">N.N.</string>
+    <string name="mainMenueElementId_6">N.N.</string>
+    <!--<string name="mainMenueElementId_7">Text fuer ein Textfeld</string>-->
+    <string name="mainMenueElementId_8">Erziehungsberatung Fragen + Antworten</string>
+    <!--<string name="mainMenueElementId_9">Text fuer ein Textfeld</string>-->
+    <string name="mainMenueElementId_10">Termin vereinbaren</string>
+    <string name="mainMenueElementId_11">Notfallhilfe</string>
+    <!--<string name="mainMenueElementId_12">Text fuer ein textfeld</string>-->
+    <!-- Main Menue Element Strings End-->
 
 
 </resources>
