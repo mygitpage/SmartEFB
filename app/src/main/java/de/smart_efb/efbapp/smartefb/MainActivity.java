@@ -7,15 +7,12 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 
 public class MainActivity extends AppCompatActivity {
@@ -71,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_efb_main);
 
         initShowMainMenueElement();
 
@@ -252,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
 
                         btnButton.setText(mainMenueElementTitle[countElem]+"\n(Hinweistext Anzahl)");
                         btnButton.setId(this.getResources().getIdentifier(tmpMainMenueButtonName, "id", this.getPackageName()));
-                        btnButton.setOnClickListener(new DynamicButtonOnClickListener(MainActivity.this, countElem));
+                        btnButton.setOnClickListener(new mainMenueOnClickListener(MainActivity.this, countElem));
                         gridLayout.addView(btnButton, elemParams);
 
                         countCol++;
@@ -291,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
 
                         btnButton.setText(mainMenueElementTitle[countElem]);
                         btnButton.setId(this.getResources().getIdentifier(tmpMainMenueButtonName, "id", this.getPackageName()));
-                        btnButton.setOnClickListener(new DynamicButtonOnClickListener(MainActivity.this,countElem));
+                        btnButton.setOnClickListener(new mainMenueOnClickListener(MainActivity.this,countElem));
                         gridLayout.addView(btnButton, elemParams);
 
                         if (countCol < gridColumnCount) {

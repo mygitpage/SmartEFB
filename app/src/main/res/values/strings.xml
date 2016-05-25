@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Smart EFB</string>
-    <string name="action_settings">Settings</string>
+
     <string name="title_activity_activity_three">ActivityThree</string>
     <string name="title_activity_first_page">Smart EFB</string>
-    <string name="title_activity_activity_connect_book">MEIN ÜBERGABEBUCH</string>
 
-    <string name="title_activity_dynamic_button">Dynamisch Buttons tauschen</string>
+
+
 
 
 
@@ -21,16 +21,23 @@
     <!-- End Strings Connect Book -->
 
 
-    <string name="efb_settings">Einstellungen</string>
-    <string name="efb_about">Über die App</string>
-    <string name="efb_paaring">Mit Server verbinden</string>
+    <!-- options menue main -->
+    <string name="option_main_settings">Einstellungen</string>
+    <string name="option_main_about">Über die App</string>
+    <string name="option_main_paaring">Mit Server verbinden</string>
+    <string name="option_main_help">Hilfe</string>
+
+
+
+    <!-- String Activity Our Arrangement -->
+    <string name="option_our_arrangement_history">Ältere Absprachen</string>
 
 
 
 
-    <string name="title_activity_einstellungen">Einstellungen</string>
-    <string name="title_activity_about_app">Über die App</string>
-    <string name="title_activity_help_app">Hilfe</string>
+
+
+
 
 
 
@@ -41,7 +48,7 @@
     <string name="radioRoleMother">Ma</string>
     <string name="radioRoleFather">Pa</string>
     <string name="radioRoleThird">Dritte</string>
-    <string name="efb_help">Hilfe</string>
+
 
 
 

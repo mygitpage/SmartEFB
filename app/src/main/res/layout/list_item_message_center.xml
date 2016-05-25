@@ -15,7 +15,8 @@
         android:padding="5dp"
         android:textColor="@color/lblFromName"
         android:textSize="12dp"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:background="@color/bg_msg_third"/>
 
     <TextView
         android:id="@+id/txtMsg"
@@ -28,7 +29,8 @@
         android:paddingRight="10dp"
         android:paddingTop="5dp"
         android:textColor="@color/text_msg_input"
-        android:textSize="16dp" />
+        android:textSize="16dp"
+        android:background="@color/bg_msg_third"/>
 
     <!--android:background="@drawable/bg_msg_you"-->
 

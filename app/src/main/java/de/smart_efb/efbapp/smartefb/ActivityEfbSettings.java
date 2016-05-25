@@ -23,7 +23,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
 
-    ActivityDynamicButtons tmpDynamicButton;
+    MainActivity tmpDynamicButton;
 
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -35,7 +35,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
         prefsEditor = prefs.edit();
 
         //New Object of DynamicButton
-        tmpDynamicButton = new ActivityDynamicButtons();
+        tmpDynamicButton = new MainActivity();
 
         preSelectElements();
 

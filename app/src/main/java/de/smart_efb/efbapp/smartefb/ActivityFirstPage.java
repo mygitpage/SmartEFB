@@ -37,19 +37,7 @@ public class ActivityFirstPage extends AppCompatActivity {
             }
         });
 
-        //Dynamicly Buttons (Button Termin vereinbaren wird hier anders genutzt :-)
-        Button buttonDynamiclyChange = (Button) findViewById(R.id.btnNewDate);
 
-        buttonDynamiclyChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getApplicationContext(), ActivityDynamicButtons.class);
-
-                startActivity(intent);
-
-            }
-        });
 
 
         initPrefShared();

@@ -53,7 +53,7 @@
 
 
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/content_efb_main" />
 
 </android.support.design.widget.CoordinatorLayout>
 -->

@@ -43,7 +43,7 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
 
 
             TextView textViewAuthor = (TextView) view.findViewById(R.id.lblMsgFrom);
-            String author = cursor.getString( cursor.getColumnIndex( DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME ) );
+            String author = cursor.getString( cursor.getColumnIndex( DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME ) ) + " [TT.MM.JJJJ-HH:MM]";
             textViewAuthor.setText(author);
 
 

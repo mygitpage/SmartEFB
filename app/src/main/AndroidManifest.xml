@@ -21,6 +21,46 @@
 
         <activity android:name=".ActivityTwo" />
 
+
+        <activity
+            android:name=".ActivityConnectBook"
+            android:label="@string/mainMenueElementId_1"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".ActivityOurArrangement"
+            android:label="@string/mainMenueElementId_2"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+
+
+
+
+
+
+        <activity
+            android:name=".ActivityEfbSettings"
+            android:label="@string/option_main_settings"
+            android:theme="@style/AppTheme.ActionBar" />
+
+        <activity
+            android:name=".ActivityEfbHelp"
+            android:label="@string/option_main_help"
+            android:theme="@style/AppTheme.ActionBar" />
+
+        <activity
+            android:name=".ActivityEfbAbout"
+            android:label="@string/option_main_about"
+            android:theme="@style/AppTheme.ActionBar" />
+        <activity
+            android:name=".ActivityEfbPaaring"
+            android:label="@string/option_main_paaring"
+            android:theme="@style/AppTheme.ActionBar" />
+
+
+
+
+
         <activity
             android:name=".ActivityThree"
             android:label="@string/title_activity_activity_three"
@@ -29,31 +69,6 @@
             android:name=".ActivityFirstPage"
             android:label="@string/title_activity_first_page"
             android:theme="@style/AppTheme.ActionBar" />
-        <activity
-            android:name=".ActivityConnectBook"
-            android:label="@string/mainMenueElementId_1"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity
-            android:name=".ActivityEfbSettings"
-            android:label="@string/title_activity_einstellungen"
-            android:theme="@style/AppTheme.ActionBar" />
-
-        <activity
-            android:name=".ActivityEfbHelp"
-            android:label="@string/title_activity_help_app"
-            android:theme="@style/AppTheme.ActionBar" />
-
-        <activity
-            android:name=".ActivityEfbAbout"
-            android:label="@string/title_activity_about_app"
-            android:theme="@style/AppTheme.ActionBar" />
-
-        <activity
-            android:name=".ActivityDynamicButtons"
-            android:label="@string/title_activity_dynamic_button"
-            android:theme="@style/AppTheme.ActionBar" />
-
 
     </application>
 

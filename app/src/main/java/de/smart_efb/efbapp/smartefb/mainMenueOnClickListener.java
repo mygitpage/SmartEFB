@@ -6,15 +6,15 @@ import android.view.View;
 import android.widget.Toast;
 
 /**
- * Created by ich on 18.05.16.
+ * Created by ich on 24.05.16.
  */
-public class DynamicButtonOnClickListener implements View.OnClickListener {
+public class mainMenueOnClickListener implements View.OnClickListener {
 
 
     int buttonNumber;
     Context context;
 
-    public DynamicButtonOnClickListener (Context context ,int buttonNumber) {
+    public mainMenueOnClickListener (Context context ,int buttonNumber) {
         this.buttonNumber = buttonNumber;
         this.context = context;
     }
@@ -35,9 +35,8 @@ public class DynamicButtonOnClickListener implements View.OnClickListener {
                 context.startActivity(intent);
                 break;
             case 2: // Button "our arrangement"
-                Toast.makeText(context," Unsere Vereinbarungen ", Toast.LENGTH_SHORT).show();
-                //intent = new Intent(context, .class);
-                //context.startActivity(intent);
+                intent = new Intent(context, ActivityOurArrangement.class);
+                context.startActivity(intent);
                 break;
             case 3: // Button "my+your goals"
                 Toast.makeText(context," Meine + Deine Ziele ", Toast.LENGTH_SHORT).show();

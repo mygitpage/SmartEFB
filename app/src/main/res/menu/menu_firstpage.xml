@@ -5,22 +5,22 @@
     <item
         android:id="@+id/efb_paaring"
         android:orderInCategory="100"
-        android:title="@string/efb_paaring"
+        android:title="@string/option_main_paaring"
         app:showAsAction="never" />
     <item
         android:id="@+id/efb_settings"
         android:orderInCategory="100"
-        android:title="@string/efb_settings"
+        android:title="@string/option_main_settings"
         app:showAsAction="never" />
     <item
         android:id="@+id/efb_help"
         android:orderInCategory="100"
-        android:title="@string/efb_help"
+        android:title="@string/option_main_help"
         app:showAsAction="never" />
     <item
         android:id="@+id/efb_about"
         android:orderInCategory="100"
-        android:title="@string/efb_about"
+        android:title="@string/option_main_about"
         app:showAsAction="never" />
 
 </menu>
