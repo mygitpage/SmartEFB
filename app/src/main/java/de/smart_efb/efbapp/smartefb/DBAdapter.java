@@ -32,7 +32,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 9;
+    public static final int DATABASE_VERSION = 11;
 
 
     // Context of application who uses us.
@@ -89,11 +89,11 @@ public class DBAdapter extends SQLiteOpenHelper {
     // SQL String to create chat-message-table
     private static final String DATABASE_CREATE_SQL_CHAT_MESSAGE =
             "create table " + DATABASE_TABLE_CHAT_MESSAGE + " (" + KEY_ROWID + " integer primary key autoincrement, "
-                    + CHAT_MESSAGE_KEY_WRITE_TIME + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+                    + CHAT_MESSAGE_KEY_WRITE_TIME + " INTEGER not null, "
                     + CHAT_MESSAGE_KEY_AUTHOR_NAME + " STRING not null, "
                     + CHAT_MESSAGE_KEY_MESSAGE + " TEXT not null, "
                     + CHAT_MESSAGE_KEY_ROLE + " INTEGER not null, "
-                    + CHAT_MESSAGE_KEY_TX_TIME + " TIMESTAMP, "
+                    + CHAT_MESSAGE_KEY_TX_TIME + " INTEGER, "
                     + CHAT_MESSAGE_KEY_STATUS + " INTEGER not null"
                     + ");";
 
@@ -142,13 +142,14 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* CROD for Chat Message ******************************************/
 
     // Add a new set of values to the database.
-    public long insertRowChatMessage(String author_name, String message, int role, int status) {
+    public long insertRowChatMessage(String author_name, long writeTime, String message, int role, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues initialValues = new ContentValues();
 
         initialValues.put(CHAT_MESSAGE_KEY_AUTHOR_NAME, author_name);
+        initialValues.put(CHAT_MESSAGE_KEY_WRITE_TIME, writeTime);
         initialValues.put(CHAT_MESSAGE_KEY_MESSAGE, message);
         initialValues.put(CHAT_MESSAGE_KEY_ROLE, role);
         initialValues.put(CHAT_MESSAGE_KEY_STATUS, status);

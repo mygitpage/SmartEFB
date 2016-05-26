@@ -45,6 +45,12 @@ public class ActivityConnectBook extends AppCompatActivity {
         // init the connect book
         initConnectBook();
 
+
+        final EditText txtInputMsg = (EditText) findViewById(R.id.inputMsg);
+
+
+
+
         // send button init
         Button buttonSendConnectBook = (Button) findViewById(R.id.btnSend);
 
@@ -53,9 +59,9 @@ public class ActivityConnectBook extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final EditText txtInputMsg = (EditText) findViewById(R.id.inputMsg);
 
-                long newID = myDb.insertRowChatMessage(userNameConnectBook, txtInputMsg.getText().toString(), roleConnectBook, 2);
+
+                long newID = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), txtInputMsg.getText().toString(), roleConnectBook, 2);
 
                 txtInputMsg.setText("");
 

@@ -67,7 +67,7 @@ public class ActivityThree extends AppCompatActivity {
 
 
 
-        long newID = myDb.insertRowChatMessage("ich", "Hier steht die Nachricht", 1, 1);
+        long newID = myDb.insertRowChatMessage("ich", System.currentTimeMillis(), "Hier steht die Nachricht", 1, 1);
 
         displayText ("Record added!");
 

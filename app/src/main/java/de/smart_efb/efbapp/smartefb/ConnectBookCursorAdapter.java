@@ -2,13 +2,15 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 // https://coderwall.com/p/fmavhg/android-cursoradapter-with-custom-layout-and-how-to-use-it
@@ -43,7 +45,21 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
 
 
             TextView textViewAuthor = (TextView) view.findViewById(R.id.lblMsgFrom);
-            String author = cursor.getString( cursor.getColumnIndex( DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME ) ) + " [TT.MM.JJJJ-HH:MM]";
+
+            long writeTime = cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME));
+
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+            // Create a calendar object that will convert the date and time value in milliseconds to date.
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+
+
+
+
+            String author = cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME)) + " " + formatter.format(calendar.getTime());
+
+
             textViewAuthor.setText(author);
 
 
