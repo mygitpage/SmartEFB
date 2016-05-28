@@ -50,7 +50,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbarOurArrangement);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setSubtitle("Untertitel");
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -60,6 +59,13 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // init the prefs
         prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
 
+        //get current date of arrangement
+        long currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
+        // and set undertitle of activity
+        getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", getPackageName()));
+
+
+        toolbar.setSubtitle(getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy"));
 
 
     }

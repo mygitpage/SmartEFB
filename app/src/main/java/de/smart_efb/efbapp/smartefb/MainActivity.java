@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
 
                         btnButton.setText(mainMenueElementTitle[countElem]+"\n(Hinweistext Anzahl)");
                         btnButton.setId(this.getResources().getIdentifier(tmpMainMenueButtonName, "id", this.getPackageName()));
-                        btnButton.setOnClickListener(new mainMenueOnClickListener(MainActivity.this, countElem));
+                        btnButton.setOnClickListener(new MainMenueOnClickListener(MainActivity.this, countElem));
                         gridLayout.addView(btnButton, elemParams);
 
                         countCol++;
@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
 
                         btnButton.setText(mainMenueElementTitle[countElem]);
                         btnButton.setId(this.getResources().getIdentifier(tmpMainMenueButtonName, "id", this.getPackageName()));
-                        btnButton.setOnClickListener(new mainMenueOnClickListener(MainActivity.this,countElem));
+                        btnButton.setOnClickListener(new MainMenueOnClickListener(MainActivity.this,countElem));
                         gridLayout.addView(btnButton, elemParams);
 
                         if (countCol < gridColumnCount) {

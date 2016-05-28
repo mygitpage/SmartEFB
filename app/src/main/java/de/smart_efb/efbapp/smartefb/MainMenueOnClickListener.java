@@ -8,13 +8,13 @@ import android.widget.Toast;
 /**
  * Created by ich on 24.05.16.
  */
-public class mainMenueOnClickListener implements View.OnClickListener {
+public class MainMenueOnClickListener implements View.OnClickListener {
 
 
     int buttonNumber;
     Context context;
 
-    public mainMenueOnClickListener (Context context ,int buttonNumber) {
+    public MainMenueOnClickListener(Context context, int buttonNumber) {
         this.buttonNumber = buttonNumber;
         this.context = context;
     }

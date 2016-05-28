@@ -21,16 +21,13 @@
     <!-- End Strings Connect Book -->
 
 
-    <!-- options menue main -->
-    <string name="option_main_settings">Einstellungen</string>
-    <string name="option_main_about">Über die App</string>
-    <string name="option_main_paaring">Mit Server verbinden</string>
-    <string name="option_main_help">Hilfe</string>
+
 
 
 
     <!-- String Activity Our Arrangement -->
     <string name="option_our_arrangement_history">Ältere Absprachen</string>
+    <string name="currentArrangementDateFrom">Stand vom</string>
 
 
 
@@ -40,11 +37,8 @@
 
 
 
-
+    <!-- String Activity Settings -->
     <string name="txtChatNameHint">Bitte Namen eingeben</string>
-
-
-
     <string name="radioRoleMother">Ma</string>
     <string name="radioRoleFather">Pa</string>
     <string name="radioRoleThird">Dritte</string>
@@ -54,6 +48,7 @@
 
 
 
+    <!-- Main Activity Start -->
     <!-- Main Menue Element Strings Start-->
     <!--<string name="mainMenueElementId_0">Text fuer ein Textfeld</string>-->
     <string name="mainMenueElementId_1">Mein Übergabebuch</string>
@@ -69,6 +64,15 @@
     <string name="mainMenueElementId_11">Notfallhilfe</string>
     <!--<string name="mainMenueElementId_12">Text fuer ein textfeld</string>-->
     <!-- Main Menue Element Strings End-->
+
+    <!-- options menue main -->
+    <string name="option_main_settings">Einstellungen</string>
+    <string name="option_main_about">Über die App</string>
+    <string name="option_main_paaring">Mit Server verbinden</string>
+    <string name="option_main_help">Hilfe</string>
+
+    <!-- Main Activity End -->
+
 
 
 </resources>

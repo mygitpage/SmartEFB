@@ -40,25 +40,15 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
 
         public void bindView(View view, Context context, Cursor cursor) {
             TextView textViewMessage = (TextView) view.findViewById(R.id.txtMsg);
-            String title = cursor.getString( cursor.getColumnIndex( DBAdapter.CHAT_MESSAGE_KEY_MESSAGE ) );
+            String title = cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_MESSAGE));
             textViewMessage.setText(title);
 
 
             TextView textViewAuthor = (TextView) view.findViewById(R.id.lblMsgFrom);
 
-            long writeTime = cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME));
+            long writeTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME));
 
-
-            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-            // Create a calendar object that will convert the date and time value in milliseconds to date.
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-
-
-
-
-            String author = cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME)) + " " + formatter.format(calendar.getTime());
-
+            String author = cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME)) + " " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy HH:mm:ss");
 
             textViewAuthor.setText(author);
 

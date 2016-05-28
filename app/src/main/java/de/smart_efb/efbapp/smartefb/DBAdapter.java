@@ -28,7 +28,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "efbDb";
 
     // Tables name
-    public static final String DATABASE_TABLE_APP_SETTINGS = "appSettingsTable";
+    public static final String DATABASE_TABLE_OUR_ARRANGEMENT = "ourArrangementTable";
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
@@ -49,21 +49,25 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     /************************ Begin of table definitions **********************************************************************/
 
-    // App Settings - column names and numbers
-    public static final String APP_SETTINGS_KEY_VALUE_NAME = "value_name";
-    public static final String APP_SETTINGS_KEY_VALUE = "value";
+    // Our Arrangement - column names and numbers
+    public static final String OUR_ARRANGEMENT_KEY_ARRANGEMENT = "arrangement";
+    public static final String OUR_ARRANGEMENT_KEY_AUTHOR_NAME = "author_name";
+    public static final String OUR_ARRANGEMENT_KEY_WRITE_TIME = "arrangement_time";
 
-    public static final int APP_SETTINGS_COL_WRITE_TIME = 1;
-    public static final int APP_SETTINGS_COL_AUTHOR_NAME = 2;
+    public static final int OUR_ARRANGEMENT_COL_ARRANGEMENT = 1;
+    public static final int OUR_ARRANGEMENT_COL_AUTHOR_NAME = 2;
+    public static final int OUR_ARRANGEMENT_COL_WRITE_TIME = 3;
+
 
     // All keys from table app settings in a String
-    public static final String[] APP_SETTINGS_ALL_KEYS = new String[] {KEY_ROWID, APP_SETTINGS_KEY_VALUE_NAME, APP_SETTINGS_KEY_VALUE };
+    public static final String[] OUR_ARRANGEMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_KEY_ARRANGEMENT, OUR_ARRANGEMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_KEY_WRITE_TIME };
 
     // SQL String to create chat-message-table
-    private static final String DATABASE_CREATE_SQL_APP_SETTINGS =
-            "create table " + DATABASE_TABLE_APP_SETTINGS + " (" + KEY_ROWID + " integer primary key autoincrement, "
-                    + APP_SETTINGS_KEY_VALUE_NAME + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
-                    + APP_SETTINGS_KEY_VALUE + " STRING not null"
+    private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT =
+            "create table " + DATABASE_TABLE_OUR_ARRANGEMENT + " (" + KEY_ROWID + " integer primary key autoincrement, "
+                    + OUR_ARRANGEMENT_KEY_ARRANGEMENT + " TEXT not null, "
+                    + OUR_ARRANGEMENT_KEY_AUTHOR_NAME + " STRING not null, "
+                    + OUR_ARRANGEMENT_KEY_WRITE_TIME + " INTEGER not null"
                     + ");";
 
     /**********************************************************************************************/
@@ -116,7 +120,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase _db) {
 
         // Create app settings table
-        _db.execSQL(DATABASE_CREATE_SQL_APP_SETTINGS);
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT);
         // Create chat message table
         _db.execSQL(DATABASE_CREATE_SQL_CHAT_MESSAGE);
     }
@@ -128,7 +132,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         Log.w(TAG, "Upgrading to " + newVersion);
 
         // Destroy app settings table
-        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_APP_SETTINGS);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT);
 
         // Destroy chat message table
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_CHAT_MESSAGE);
@@ -239,52 +243,55 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    /********************************* CROD for APP_SETTINGS ******************************************/
+    /********************************* CROD for Our Arrangement ******************************************/
 
     // Add a new set of values to the database.
-    public long insertRowAppSettings(String value_name, String value) {
+    public long insertRowOurArrangement(String arrangement, String author_name, long arrangementTime) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues initialValues = new ContentValues();
 
-        initialValues.put(APP_SETTINGS_KEY_VALUE_NAME, value_name);
-        initialValues.put(APP_SETTINGS_KEY_VALUE, value);
+        initialValues.put(OUR_ARRANGEMENT_KEY_ARRANGEMENT, arrangement);
+        initialValues.put(OUR_ARRANGEMENT_KEY_AUTHOR_NAME, author_name);
+        initialValues.put(OUR_ARRANGEMENT_KEY_WRITE_TIME, arrangementTime);
 
 
         // Insert it into the database.
-        return db.insert(DATABASE_TABLE_APP_SETTINGS, null, initialValues);
+        return db.insert(DATABASE_TABLE_OUR_ARRANGEMENT, null, initialValues);
     }
 
     // Delete a row from the database, by rowId (primary key)
-    public boolean deleteRowAppSettings(long rowId) {
+    public boolean deleteRowOurArrangement(long rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = KEY_ROWID + "=" + rowId;
-        return db.delete(DATABASE_TABLE_APP_SETTINGS, where, null) != 0;
+        return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT, where, null) != 0;
     }
 
-    public void deleteAllAppSettings() {
+    /*
+    public void deleteAllOurArrangement() {
 
-        Cursor c = getAllRowsAppSettings();
+        Cursor c = getAllRowsOurArrangement();
         long rowId = c.getColumnIndexOrThrow(KEY_ROWID);
 
         if (c.moveToFirst()) {
             do {
-                deleteRowAppSettings(c.getLong((int) rowId));
+                deleteRowOurArrangement(c.getLong((int) rowId));
             } while (c.moveToNext());
         }
         c.close();
     }
+    */
 
     // Return all data in the database.
-    public Cursor getAllRowsAppSettings() {
+    public Cursor getCurrentRowsOurArrangement() {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = null;
-        Cursor c = 	db.query(true, DATABASE_TABLE_APP_SETTINGS, APP_SETTINGS_ALL_KEYS,
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
         if (c != null) {
@@ -295,12 +302,12 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
     // Get a specific row (by rowId)
-    public Cursor getRowAppSettings(long rowId) {
+    public Cursor getRowOurArrangement(long rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = KEY_ROWID + "=" + rowId;
-        Cursor c = 	db.query(true, DATABASE_TABLE_APP_SETTINGS, APP_SETTINGS_ALL_KEYS,
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
         if (c != null) {
@@ -311,7 +318,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
     // Change an existing row to be equal to new data.
-    public boolean updateRowAppSettings(long rowId, String value_name, String value) {
+    public boolean updateRowAppSettings(long rowId, String arrangement, String author_name, long arrangementTime) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -319,15 +326,17 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Create row's data:
         ContentValues newValues = new ContentValues();
-        newValues.put(APP_SETTINGS_KEY_VALUE_NAME, value_name);
-        newValues.put(APP_SETTINGS_KEY_VALUE, value);
+
+        newValues.put(OUR_ARRANGEMENT_KEY_ARRANGEMENT, arrangement);
+        newValues.put(OUR_ARRANGEMENT_KEY_AUTHOR_NAME, author_name);
+        newValues.put(OUR_ARRANGEMENT_KEY_WRITE_TIME, arrangementTime);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null) != 0;
     }
 
 
-    /********************************* End!! CROD for Chat Message ******************************************/
+    /********************************* End!! CROD for Our Arrangement ******************************************/
 
 
 
