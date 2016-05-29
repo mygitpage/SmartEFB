@@ -32,7 +32,8 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:weightSum="3" >
+        android:weightSum="3"
+        android:visibility="visible">
 
         <EditText
             android:id="@+id/arrangementText"

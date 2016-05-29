@@ -1,5 +1,6 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -7,12 +8,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import java.lang.reflect.Field;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 
 /**
  * Created by ich on 09.04.16.
@@ -155,11 +161,8 @@ public class ActivityEfbSettings extends AppCompatActivity {
     }
 
 
-    public void onCheckboxMenueButtonClicked(View view) {
 
-
-
-
+     public void onCheckboxMenueButtonClicked(View view) {
 
         int buttonNumber =0;
 
@@ -309,6 +312,56 @@ public class ActivityEfbSettings extends AppCompatActivity {
 
 
 
+    public void onClick_showDateChooserForCurrentArrangement (View v) {
+
+
+        Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dialog = new DatePickerDialog(ActivityEfbSettings.this, new saveDateForCurrentArrangement(), mYear, mMonth, mDay);
+        dialog.show();
+
+
+    }
+
+
+
+    private class saveDateForCurrentArrangement implements DatePickerDialog.OnDateSetListener {
+
+
+        SharedPreferences prefs;
+        SharedPreferences.Editor prefsEditor;
+
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+            int mYear = year;
+            int mMonth = monthOfYear+1;
+            int mDay = dayOfMonth;
+            Date date = null;
+
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+            try {
+                date = formatter.parse(mDay+"-"+mMonth+"-"+year);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            prefs = ActivityEfbSettings.this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+            prefsEditor = prefs.edit();
+
+            prefsEditor.putLong("currentDateOfArrangement", date.getTime());
+            prefsEditor.commit();
+
+            Toast.makeText(ActivityEfbSettings.this, "Stamp:" + date.getTime(), Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
 }
 
 

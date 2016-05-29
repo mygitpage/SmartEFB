@@ -155,6 +155,25 @@
     </LinearLayout>
 
 
+    <View
+        android:id="@+id/separateLine3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/linearLayout"
+        android:layout_margin="20dp"
+        android:background="@android:color/darker_gray"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DatePicker Dialog für Datum Vereinbarungen"
+        android:id="@+id/showDatePickerDialog"
+        android:padding="6dp"
+        android:layout_below="@+id/separateLine3"
+        android:onClick="onClick_showDateChooserForCurrentArrangement"/>
+
+
+
 </RelativeLayout>
 
 </ScrollView>
