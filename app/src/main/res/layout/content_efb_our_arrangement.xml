@@ -10,12 +10,12 @@
     <ListView
         android:id="@+id/listOurArrangement"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@null"
         android:divider="@null"
         android:transcriptMode="alwaysScroll"
-        android:stackFromBottom="true">
+        android:stackFromBottom="false">
     </ListView>
 
     <View

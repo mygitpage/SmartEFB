@@ -32,7 +32,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 11;
+    public static final int DATABASE_VERSION = 12;
 
 
     // Context of application who uses us.
@@ -261,36 +261,13 @@ public class DBAdapter extends SQLiteOpenHelper {
         return db.insert(DATABASE_TABLE_OUR_ARRANGEMENT, null, initialValues);
     }
 
-    // Delete a row from the database, by rowId (primary key)
-    public boolean deleteRowOurArrangement(long rowId) {
+
+    // Return all data from the database where write_time = currentDateOfArrangement
+    public Cursor getAllRowsCurrentOurArrangement(long currentDateOfArrangement) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = KEY_ROWID + "=" + rowId;
-        return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT, where, null) != 0;
-    }
-
-    /*
-    public void deleteAllOurArrangement() {
-
-        Cursor c = getAllRowsOurArrangement();
-        long rowId = c.getColumnIndexOrThrow(KEY_ROWID);
-
-        if (c.moveToFirst()) {
-            do {
-                deleteRowOurArrangement(c.getLong((int) rowId));
-            } while (c.moveToNext());
-        }
-        c.close();
-    }
-    */
-
-    // Return all data in the database.
-    public Cursor getCurrentRowsOurArrangement() {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String where = null;
+        String where = "arrangement_time = " + currentDateOfArrangement;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
@@ -316,25 +293,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         return c;
     }
-
-    // Change an existing row to be equal to new data.
-    public boolean updateRowAppSettings(long rowId, String arrangement, String author_name, long arrangementTime) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String where = KEY_ROWID + "=" + rowId;
-
-        // Create row's data:
-        ContentValues newValues = new ContentValues();
-
-        newValues.put(OUR_ARRANGEMENT_KEY_ARRANGEMENT, arrangement);
-        newValues.put(OUR_ARRANGEMENT_KEY_AUTHOR_NAME, author_name);
-        newValues.put(OUR_ARRANGEMENT_KEY_WRITE_TIME, arrangementTime);
-
-        // Insert it into the database.
-        return db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null) != 0;
-    }
-
 
     /********************************* End!! CROD for Our Arrangement ******************************************/
 

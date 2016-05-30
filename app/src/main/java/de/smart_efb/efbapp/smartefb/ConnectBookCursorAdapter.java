@@ -31,13 +31,13 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
         // Default constructor
         public ConnectBookCursorAdapter(Context context, Cursor cursor, int flags) {
             super(context, cursor, flags);
-            cursorInflater = (LayoutInflater) context.getSystemService(
-                    Context.LAYOUT_INFLATER_SERVICE);
+            cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             switschLeftRight = 0;
 
         }
 
+        @Override
         public void bindView(View view, Context context, Cursor cursor) {
             TextView textViewMessage = (TextView) view.findViewById(R.id.txtMsg);
             String title = cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_MESSAGE));
@@ -55,6 +55,7 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
 
         }
 
+        @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
 
