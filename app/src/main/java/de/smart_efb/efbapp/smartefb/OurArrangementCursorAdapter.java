@@ -2,6 +2,9 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +37,28 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
         TextView textViewArrangement = (TextView) view.findViewById(R.id.listTextArrangement);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(title);
+
+        TextView numberOfArrangement = (TextView) view.findViewById(R.id.listArrangementNumber);
+        int number = cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
+
+        textViewArrangement.setText("1");
+
+
+
+        TextView linkCommentAnArrangement = (TextView) view.findViewById(R.id.linkCommentAnArrangement);
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("smart.efb.ilink")
+                .authority("www.myawesomesite.com")
+                .appendPath("turtles")
+                .appendPath("types")
+                .appendQueryParameter("type", "1")
+                .appendQueryParameter("sort", "relevance")
+                .fragment("section-name");
+
+        linkCommentAnArrangement.setText(Html.fromHtml("<a href=\"" + builder.build().toString() + "\">Kommentieren</a>"));
+        linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
+
+
 
     }
 
