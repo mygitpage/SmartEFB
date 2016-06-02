@@ -1,6 +1,7 @@
 package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.Html;
@@ -27,34 +28,31 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
         super(context, cursor, flags);
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+
     }
 
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
+        // create the arrangement
 
         TextView textViewArrangement = (TextView) view.findViewById(R.id.listTextArrangement);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(title);
 
+
+        // create the number of arrangement
         TextView numberOfArrangement = (TextView) view.findViewById(R.id.listArrangementNumber);
         int number = cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
+        numberOfArrangement.setText(Integer.toString(number));
 
-        textViewArrangement.setText("1");
-
-
-
+        // create the comment link
         TextView linkCommentAnArrangement = (TextView) view.findViewById(R.id.linkCommentAnArrangement);
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("smart.efb.ilink")
-                .authority("www.myawesomesite.com")
-                .appendPath("turtles")
-                .appendPath("types")
-                .appendQueryParameter("type", "1")
-                .appendQueryParameter("sort", "relevance")
-                .fragment("section-name");
-
+                .authority("www.smart-efb.de")
+                .appendQueryParameter("id", Integer.toString(number));
         linkCommentAnArrangement.setText(Html.fromHtml("<a href=\"" + builder.build().toString() + "\">Kommentieren</a>"));
         linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
 

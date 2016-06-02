@@ -31,6 +31,13 @@
             android:name=".ActivityOurArrangement"
             android:label="@string/mainMenueElementId_2"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+
+        <activity
+            android:name=".ActivityOurArrangementComment"
+            android:label="@string/arrangementComment"
+            android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -40,8 +47,6 @@
 
 
         </activity>
-
-
 
 
 
