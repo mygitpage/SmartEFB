@@ -2,49 +2,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:gravity="left">
 
 
     <TextView
-        android:id="@+id/arrangementCommentRules"
-        android:layout_width="wrap_content"
+        android:id="@+id/arrangementCommentIntro"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
+        android:textSize="13dp"
         android:textColor="@color/title_gray"
-        android:gravity="left"/>
+        android:gravity="left"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:paddingBottom="10dp"/>
 
 
     <TextView
         android:id="@+id/choosenArrangement"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16dp"
-        android:textColor="@color/title_gray"
-        android:gravity="left"/>
+        android:textColor="@color/colorPrimary"
+        android:gravity="left"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:paddingBottom="10dp"/>
 
 
 
 
     <EditText
         android:id="@+id/inputArrangementComment"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/bg_msg_input"
         android:textColor="@color/text_msg_input"
         android:paddingLeft="6dp"
         android:paddingRight="6dp"
-        android:hint="Hier bitte den Kommentar eingeben" />
+        android:hint="Hier bitte den Kommentar eingeben"
+        android:layout_weight="1"
+        android:gravity="left|top"/>
 
     <Button
         android:id="@+id/btnSendArrangementComment"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:background="@color/bg_btn_join"
         android:textColor="@color/white"
-        android:text="@string/btnSendArrangementComment" />
+        android:text="@string/btnSendArrangementComment"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:gravity="center_vertical"/>
 
 
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:gravity="left">
+    android:gravity="center_vertical|left">
 
 
     <TextView
@@ -13,11 +13,12 @@
         android:layout_height="wrap_content"
         android:textSize="35dp"
         android:textColor="@color/title_gray"
-        android:gravity="center_vertical|right"/>
+        android:gravity="center_vertical|right"
+        android:paddingLeft="10dp"/>
 
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="left"
@@ -28,7 +29,7 @@
 
     <TextView
         android:id="@+id/listTextArrangement"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16dp"
         android:textColor="@color/title_gray"
