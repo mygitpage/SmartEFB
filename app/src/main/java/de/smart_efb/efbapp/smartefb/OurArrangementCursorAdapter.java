@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.preference.Preference;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -35,6 +36,10 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
+
+        SharedPreferences prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
+
+
         // create the arrangement
 
         TextView textViewArrangement = (TextView) view.findViewById(R.id.listTextArrangement);
@@ -47,14 +52,19 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
         int number = cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
         numberOfArrangement.setText(Integer.toString(number));
 
-        // create the comment link
-        TextView linkCommentAnArrangement = (TextView) view.findViewById(R.id.linkCommentAnArrangement);
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("smart.efb.ilink")
-                .authority("www.smart-efb.de")
-                .appendQueryParameter("id", Integer.toString(number));
-        linkCommentAnArrangement.setText(Html.fromHtml("<a href=\"" + builder.build().toString() + "\">Kommentieren</a>"));
-        linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+
+        if (prefs.getBoolean("showArrangementComment", false)) {
+            // create the comment link
+            TextView linkCommentAnArrangement = (TextView) view.findViewById(R.id.linkCommentAnArrangement);
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme("smart.efb.ilink")
+                    .authority("www.smart-efb.de")
+                    .appendQueryParameter("id", Integer.toString(number));
+            linkCommentAnArrangement.setText(Html.fromHtml("<a href=\"" + builder.build().toString() + "\">Kommentieren</a>"));
+            linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
+        }
 
 
 

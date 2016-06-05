@@ -37,13 +37,12 @@ public class ActivityOurArrangementComment extends AppCompatActivity {
     Toolbar toolbar;
     ActionBar actionBar;
 
-    // the current date of arrangement -> the other are history
-    long currentDateOfArrangement;
-
     // uri to handle the data from the link
     Uri commentLinkData;
 
 
+    // id of the given arrangement
+    int arrangementId = 0;
 
 
     @Override
@@ -55,24 +54,29 @@ public class ActivityOurArrangementComment extends AppCompatActivity {
         initOurArrangementComment();
 
 
-
+        // commentLinkData correct?
         if (commentLinkData.equals(null)) {
             Toast.makeText(this, "Keine Daten vorhanden", Toast.LENGTH_SHORT).show();
             finish();
         }
-
-
         else {
-            String arrangementDbId = commentLinkData.getQueryParameter("id");
-            Toast.makeText(this, "Die ID lautet: " + arrangementDbId, Toast.LENGTH_SHORT).show();
 
-            displayArrangementSet(Long.parseLong(arrangementDbId, 10));
 
+            arrangementId = Integer.parseInt(commentLinkData.getQueryParameter("id"));
 
 
 
+            Toast.makeText(this, "Die ID lautet: " + arrangementId, Toast.LENGTH_SHORT).show();
 
+            displayArrangementSet(arrangementId);
         }
+
+
+
+
+
+
+
 
 
 
@@ -105,20 +109,45 @@ public class ActivityOurArrangementComment extends AppCompatActivity {
 
 
 
-    public void displayArrangementSet (long arrangementId) {
+    public void displayArrangementSet (int tmpArrangementId) {
 
-        Cursor cursor = myDb.getRowOurArrangement(arrangementId);
+        // get the choosen arrangement
+        Cursor cursorArrangement = myDb.getRowOurArrangement(tmpArrangementId);
+
+        // get all comments to the arrangement
+        Cursor cursorArrangementComment = myDb.getAllRowsOurArrangementComment(tmpArrangementId);
 
 
-        //textview für the intro
+
+
+        //textview for the comment intro
         TextView textCommentIntro = (TextView) findViewById(R.id.arrangementCommentIntro);
         textCommentIntro.setText(this.getResources().getString(R.string.arrangementCommentIntro));
 
 
         // textview for the arrangement
         TextView textViewArrangement = (TextView) findViewById(R.id.choosenArrangement);
-        String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
+        String title = cursorArrangement.getString(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(title);
+
+
+
+
+
+        // textview intro for the hostory of comments
+        TextView textCommentHistoryIntro = (TextView) findViewById(R.id.commentHistoryIntro);
+        if (cursorArrangementComment.getColumnCount() > 0) {
+
+
+            textCommentHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryIntroText));
+            Toast.makeText(this, "Anzahl Kommentare: " + cursorArrangementComment.getColumnCount(), Toast.LENGTH_SHORT).show();
+
+
+
+        } else {
+            textCommentHistoryIntro.setVisibility(View.INVISIBLE);
+        }
+
 
 
 

@@ -40,7 +40,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
         prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
-        //New Object of DynamicButton
+        //New Object of MainMenue (Activity Main)
         tmpDynamicButton = new MainActivity();
 
         preSelectElements();
@@ -109,6 +109,32 @@ public class ActivityEfbSettings extends AppCompatActivity {
             }
 
         }
+
+
+        // Preselect the arrangement settings (History Comment)
+        tmpCheckBox = (CheckBox) findViewById(R.id.showCommentLinkArrangement);
+        if (prefs.getBoolean("showArrangementComment", false)) {
+            tmpCheckBox.setChecked(true);
+        }
+        else {
+            tmpCheckBox.setChecked(false);
+        }
+        tmpCheckBox = (CheckBox) findViewById(R.id.showArrangementHistory);
+        if (prefs.getBoolean("showArrangementHistory", false)) {
+            tmpCheckBox.setChecked(true);
+        }
+        else {
+            tmpCheckBox.setChecked(false);
+        }
+
+
+
+
+
+
+
+
+
 
     }
 
@@ -362,6 +388,51 @@ public class ActivityEfbSettings extends AppCompatActivity {
         }
 
     }
+
+
+
+
+
+    public void onCheckboxShowArrangementElements(View view) {
+
+
+        boolean showBooleanValue = false;
+        String prefsArrangementName = "";
+
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        // Check which checkbox was clicked
+        switch (view.getId()) {
+            case R.id.showCommentLinkArrangement:
+                prefsArrangementName = "showArrangementComment";
+                if (checked) {
+                    showBooleanValue = true;
+                } else {
+                    showBooleanValue = false;
+                }
+                break;
+            case R.id.showArrangementHistory:
+                prefsArrangementName = "showArrangementHistory";
+                if (checked) {
+                    showBooleanValue = true;
+                } else {
+                    showBooleanValue = false;
+                }
+                break;
+        }
+
+
+        prefsEditor.putBoolean(prefsArrangementName, showBooleanValue);
+        prefsEditor.commit();
+
+
+
+    }
+
+
+
+
 }
 
 

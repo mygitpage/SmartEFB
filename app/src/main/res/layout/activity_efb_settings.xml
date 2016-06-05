@@ -172,6 +172,21 @@
         android:layout_below="@+id/separateLine3"
         android:onClick="onClick_showDateChooserForCurrentArrangement"/>
 
+    <CheckBox android:id="@+id/showCommentLinkArrangement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Comment-Link in Our Arrangement"
+        android:onClick="onCheckboxShowArrangementElements"
+        android:layout_below="@+id/showDatePickerDialog"/>
+
+
+    <CheckBox android:id="@+id/showArrangementHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show History in Our Arrangement"
+        android:onClick="onCheckboxShowArrangementElements"
+        android:layout_below="@+id/showCommentLinkArrangement"/>
+
 
 
 </RelativeLayout>
