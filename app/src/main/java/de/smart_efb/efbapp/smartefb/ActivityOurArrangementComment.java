@@ -134,7 +134,7 @@ public class ActivityOurArrangementComment extends AppCompatActivity {
 
 
 
-        // textview intro for the hostory of comments
+        // textview intro for the history of comments
         TextView textCommentHistoryIntro = (TextView) findViewById(R.id.commentHistoryIntro);
         if (cursorArrangementComment.getColumnCount() > 0) {
 

@@ -39,9 +39,8 @@ public class MainMenueOnClickListener implements View.OnClickListener {
                 context.startActivity(intent);
                 break;
             case 3: // Button "my+your goals"
-                Toast.makeText(context," Meine + Deine Ziele ", Toast.LENGTH_SHORT).show();
-                //intent = new Intent(context, .class);
-                //context.startActivity(intent);
+                intent = new Intent(context, ActivityOurGoals.class);
+                context.startActivity(intent);
                 break;
             case 4: // Button "prevention"
                 Toast.makeText(context," Praevention ", Toast.LENGTH_SHORT).show();

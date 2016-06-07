@@ -38,15 +38,22 @@
             android:name=".ActivityOurArrangementComment"
             android:label="@string/arrangementComment"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="android.intent.action.VIEW" />
                 <data android:scheme="smart.efb.ilink" />
             </intent-filter>
-
-
         </activity>
+
+
+        <activity
+            android:name=".ActivityOurGoals"
+            android:label="@string/mainMenueElementId_3"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+
+
 
 
 
