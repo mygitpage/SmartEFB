@@ -48,21 +48,36 @@ public class ActivityOurGoals extends AppCompatActivity {
 
 
         viewPagerOurGoals = (ViewPager) findViewById(R.id.viewPagerOurGoals);
+        OurGoalsViewPagerAdapter ourGoalsViewPagerAdapter = new OurGoalsViewPagerAdapter(getSupportFragmentManager());
+        viewPagerOurGoals.setAdapter(ourGoalsViewPagerAdapter);
+
 
 
         tabLayoutOurGoals = (TabLayout) findViewById(R.id.tabLayoutOurGoals);
         tabLayoutOurGoals.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        /*
+
         tabLayoutOurGoals.setupWithViewPager(viewPagerOurGoals);
 
         tabLayoutOurGoals.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
 
+
+                viewPagerOurGoals.setCurrentItem(tab.getPosition());
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
         });
-        */
-
-
-
 
 
     }
