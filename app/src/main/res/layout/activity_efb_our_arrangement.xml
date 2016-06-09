@@ -17,7 +17,21 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+
+            <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:id="@+id/historyOurArrangementButton"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="right"
+                android:drawable="@drawable/history_our_arrangements"
+                android:clickable="true"
+                android:visibility="visible"/>
+
+        </android.support.v7.widget.Toolbar>
+
 
     </android.support.design.widget.AppBarLayout>
 

@@ -19,7 +19,7 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    </android.support.design.widget.AppBarLayout>
+
 
 
     <android.support.design.widget.TabLayout
@@ -29,6 +29,9 @@
         android:theme="@style/AppTheme.AppBarOverlay"
         android:background="?attr/colorPrimary"/>
 
+
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"

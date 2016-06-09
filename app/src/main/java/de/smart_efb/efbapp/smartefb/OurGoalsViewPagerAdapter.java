@@ -14,7 +14,7 @@ public class OurGoalsViewPagerAdapter extends FragmentPagerAdapter {
     String ourGoalsTabTitleNames[] = {"Klaus", "Dagmar", "Dennis", "Gerda"};
 
     // number of tabs
-    final static int ourGoalsTabCount = 2;
+    final static int ourGoalsTabCount = 3;
 
 
 
@@ -38,6 +38,9 @@ public class OurGoalsViewPagerAdapter extends FragmentPagerAdapter {
 
             case 1:
                 return new OurGoalsFragmentB();
+
+            case 2:
+                return new OurGoalsFragmentC();
 
             default:
                 return new OurGoalsFragmentA();
