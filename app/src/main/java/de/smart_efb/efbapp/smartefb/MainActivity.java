@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         initShowMainMenueElement();
 
-        addMainMenueElements();
+        //addMainMenueElements();
 
 
 
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                         elemParams = new GridLayout.LayoutParams(GridLayout.spec(countRow), GridLayout.spec(countCol));
                         elemParams.width = halfScreenWidth;
                         elemParams.height = quarterScreenWidth;
-                        elemParams.setMargins(elemMargin, elemMargin, elemMargin, elemMargin);
+                        //elemParams.setMargins(elemMargin, elemMargin, elemMargin, elemMargin);
                         btnButton.setLayoutParams(elemParams);
 
 
@@ -236,14 +236,14 @@ public class MainActivity extends AppCompatActivity {
 
 
                         btnButton.setTextColor(txtColorButtonMainMenue);
-                        btnButton.setTransformationMethod(null);
+                        //btnButton.setTransformationMethod(null);
                         btnButton.setTextSize(10);
 
 
 
 
 
-                        btnButton.setBackgroundResource(R.drawable.main_menue_drawable_background);
+                        //btnButton.setBackgroundResource(R.drawable.main_menue_drawable_background);
 
 
 
@@ -269,11 +269,11 @@ public class MainActivity extends AppCompatActivity {
                         elemParams = new GridLayout.LayoutParams(GridLayout.spec(countRow), colspan2);
                         elemParams.width = screenWidth - 2 * elemMargin;
                         elemParams.height = quarterScreenWidth;
-                        elemParams.setMargins(elemMargin, elemMargin, elemMargin, elemMargin);
+                        //elemParams.setMargins(elemMargin, elemMargin, elemMargin, elemMargin);
                         btnButton.setLayoutParams(elemParams);
                         //btnButton.setBackgroundColor(bgColorButtonMainMenue);
                         btnButton.setTextColor(txtColorButtonMainMenue);
-                        btnButton.setTransformationMethod(null);
+                        //btnButton.setTransformationMethod(null);
 
                         btnButton.setTextSize(10);
 
@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                        btnButton.setBackgroundResource(R.drawable.main_menue_drawable_background);
+                        //btnButton.setBackgroundResource(R.drawable.main_menue_drawable_background);
 
 
 

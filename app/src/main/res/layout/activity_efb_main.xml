@@ -5,7 +5,87 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
+
     <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/dynamicMainMenueLayout"
+        android:rowCount="2"
+        android:columnCount="2"
+        android:background="#000000">
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="#ff0000">
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:src="@drawable/history_our_arrangements"
+                android:layout_weight="1"
+                android:contentDescription="Test" />
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:src="@drawable/history_our_arrangements"
+                android:layout_weight="1"
+                android:contentDescription="Beratung" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:background="#0000ff">
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:src="@drawable/history_our_arrangements"
+                android:layout_weight="1"
+                android:contentDescription="@null" />
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:src="@drawable/history_our_arrangements"
+                android:layout_weight="1"
+                android:contentDescription="@null" />
+
+        </LinearLayout>
+
+
+
+
+
+
+    </GridLayout>
+
+
+
+
+
+
+
+</ScrollView>
+
+
+
+
+<!--
+
+
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
@@ -14,12 +94,8 @@
 
     </GridLayout>
 
-</ScrollView>
 
 
-
-
-<!--
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
