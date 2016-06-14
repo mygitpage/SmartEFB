@@ -70,6 +70,11 @@ public class MainMenueOnClickListener implements View.OnClickListener {
                 //context.startActivity(intent);
                 break;
             case 11: // Button "emergency help"
+
+                intent = new Intent(context, ActivityGridTest.class);
+                context.startActivity(intent);
+
+
                 //intent = new Intent(context, .class);
                 //context.startActivity(intent);
                 break;

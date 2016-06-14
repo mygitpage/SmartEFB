@@ -55,6 +55,13 @@
 
 
 
+        <activity
+            android:name=".ActivityGridTest"
+            android:label="GridTest"
+            android:theme="@style/AppTheme.ActionBar">
+        </activity>
+
+
 
 
         <activity
