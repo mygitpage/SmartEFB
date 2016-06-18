@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="mainMenueElementTitle">
+        <item>Übergabe</item>
+        <item>Absprachen</item>
+        <item>Ziele</item>
+        <item>Prävention</item>
+        <item>FAQ</item>
+        <item>Termine</item>
+        <item>Notfallhilfe</item>
+        <item>Einstellungen</item>
+    </string-array>
+
+
+    <string-array name="mainMenueElementColor">
+        <item>#FFFFE600</item>
+        <item>#FF59FF00</item>
+        <item>#FF0062FF</item>
+        <item>#FFFFE600</item>
+        <item>#FF59FF00</item>
+        <item>#FF0062FF</item>
+        <item>#FFFFE600</item>
+        <item>#FF59FF00</item>
+    </string-array>
+
+
+
+    <string-array name="mainMenueElementColorLight">
+        <item>#66FFE600</item>
+        <item>#6659FF00</item>
+        <item>#660062FF</item>
+        <item>#66FFE600</item>
+        <item>#6659FF00</item>
+        <item>#660062FF</item>
+        <item>#66FFE600</item>
+        <item>#6659FF00</item>
+    </string-array>
+
+
+    <string-array name="mainMenueElementImage">
+        <item>ic_supervisor_account_white_48dp</item><!--Uebergabe-->
+        <item>ic_comment_white_48dp</item><!--Absprachen-->
+        <item>ic_thumb_up_white_48dp</item><!--Ziele-->
+        <item>ic_visibility_white_48dp</item><!--Praevention-->
+        <item>ic_lightbulb_outline_white_48dp</item><!--FAQ-->
+        <item>ic_alarm_white_48dp</item><!--Termine-->
+        <item>ic_report_problem_white_48dp</item><!--Hilfe-->
+        <item>ic_build_white_48dp</item><!--Einstellungen-->
+    </string-array>
+
+
+</resources>

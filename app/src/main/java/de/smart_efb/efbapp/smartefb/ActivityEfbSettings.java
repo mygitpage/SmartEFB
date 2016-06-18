@@ -86,7 +86,7 @@ public class ActivityEfbSettings extends AppCompatActivity {
 
             tmpRessourceName ="menueButton_" + (numberOfButtons+1);
 
-            tmpMainMenueElementName ="mainMenueElementId_" + numberOfButtons;;
+            tmpMainMenueElementName ="mainMenueElementId_" + numberOfButtons;
 
 
             try {

@@ -1,6 +1,8 @@
 package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,27 +23,29 @@ import android.widget.Toast;
 public class ActivityGridTest extends AppCompatActivity {
 
 
-
-    private Integer[] mThumbIds = {
-            R.drawable.ic_sentiment_satisfied_black_24dp,
-            R.drawable.ic_sentiment_satisfied_black_24dp,
-            R.drawable.ic_sentiment_satisfied_black_24dp,
-            R.drawable.ic_sentiment_satisfied_black_24dp,
-            R.drawable.ic_sentiment_satisfied_black_24dp,
-            R.drawable.ic_sentiment_satisfied_black_24dp,
-            R.drawable.ic_sentiment_satisfied_black_24dp,
-            R.drawable.ic_sentiment_satisfied_black_24dp,
-            R.drawable.ic_sentiment_satisfied_black_24dp,
-            R.drawable.ic_sentiment_satisfied_black_24dp,
-            R.drawable.ic_sentiment_satisfied_black_24dp,
-            R.drawable.ic_sentiment_satisfied_black_24dp
-    };
+    private Integer[] argsm = {R.drawable.ic_sentiment_satisfied_black_24dp};
 
 
+    // total number of elements
+    private static int mainMenueNumberOfElements=8;
 
-    private String [] linearLayoutBgColor = {"#FFFFE600","#FF59FF00","#FF0062FF","#FFFFE600","#FF59FF00","#FF0062FF","#FFFFE600","#FF59FF00","#FF0062FF","#FFFFE600","#FF59FF00","#FF0062FF"};
+
+    // title of main Menue Elements
+    private String[] mainMenueElementTitle = new String [mainMenueNumberOfElements];
+    // color of active grid element
+    private String[] mainMenueElementColor = new String [mainMenueNumberOfElements];
+    // color of inactive element
+    private String[] mainMenueElementColorLight = new String [mainMenueNumberOfElements];
+    // background ressource of element
+    private int[] mainMenueElementBackgroundRessources = new int[mainMenueNumberOfElements];
+    // show the menue element
+    private boolean[] showMainMenueElement = new boolean[mainMenueNumberOfElements];
 
 
+    Context mainContext;
+
+    // point to shared preferences
+    SharedPreferences prefs;
 
 
     @Override
@@ -49,6 +53,10 @@ public class ActivityGridTest extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid_test);
+
+        // init the elements arrays (title, color, colorLight, backgroundImage)
+        initMainMenueElementsArrays();
+
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new MyAdapter(this));
@@ -58,21 +66,116 @@ public class ActivityGridTest extends AppCompatActivity {
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(getApplicationContext(), "Position "+position+" geklickt!", Toast.LENGTH_SHORT).show();
+
+
+                if (showMainMenueElement[position]) {
+
+                    Intent intent;
+
+                    switch (position) {
+
+                        case 0: // grid "uebergabe"
+                            intent = new Intent(mainContext, ActivityConnectBook.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
+                            break;
+                        case 1: // grid "absprachen"
+                            intent = new Intent(mainContext, ActivityOurArrangement.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
+                            break;
+                        case 2: // grid "absprachen"
+                            intent = new Intent(mainContext, ActivityOurGoals.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
+                            break;
+                        case 3: // grid "praevention"
+                            //intent = new Intent(getApplicationContext(), ActivityPrevention.class);
+                            //intent.putExtra("position", position);
+                            //intent.putExtra("title", mainMenueElementTitle[position]);
+                            //getApplicationContext().startActivity(intent);
+                            break;
+                        case 4: // grid "faq"
+                            //intent = new Intent(getApplicationContext(), ActivityEfbFaq.class);
+                            //intent.putExtra("position", position);
+                            //intent.putExtra("title", mainMenueElementTitle[position]);
+                            //getApplicationContext().startActivity(intent);
+                            break;
+                        case 5: // grid "termine"
+                            //intent = new Intent(getApplicationContext(), ActivityEfbMeeting.class);
+                            //intent.putExtra("position", position);
+                            //intent.putExtra("title", mainMenueElementTitle[position]);
+                            //getApplicationContext().startActivity(intent);
+                            break;
+                        case 6: // grid "hilfe"
+                            //intent = new Intent(getApplicationContext(), ActivityEmergencyHelp.class);
+                            //intent.putExtra("position", position);
+                            //intent.putExtra("title", mainMenueElementTitle[position]);
+                            //getApplicationContext().startActivity(intent);
+                            break;
+                        case 7:
+                            // grid "einstellungen"
+                            //intent = new Intent(getApplicationContext(), ActivityAppSettings.class);
+                            //intent.putExtra("position", position);
+                            //intent.putExtra("title", mainMenueElementTitle[position]);
+                            //getApplicationContext().startActivity(intent);
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
 
             }
         });
 
 
+    }
 
 
 
+    // init the elements arrays (title, color, colorLight, backgroundImage)
+    private void initMainMenueElementsArrays() {
+
+
+        String[] tmpBackgroundRessources;
+
+        // init the context
+        mainContext = this;
+
+        // get the shared preferences
+        prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+
+        mainMenueElementTitle = getResources().getStringArray(R.array.mainMenueElementTitle);
+
+        mainMenueElementColor = getResources().getStringArray(R.array.mainMenueElementColor);
+
+        mainMenueElementColorLight = getResources().getStringArray(R.array.mainMenueElementColorLight);
+
+        tmpBackgroundRessources = getResources().getStringArray(R.array.mainMenueElementImage);
+
+
+        for (int i=0; i<mainMenueNumberOfElements; i++) {
+            mainMenueElementBackgroundRessources[i] = getResources().getIdentifier(tmpBackgroundRessources[i], "drawable", "de.smart_efb.efbapp.smartefb");
+        }
+
+
+        for (int i=0; i<mainMenueNumberOfElements; i++) {
+
+            String tmpMainMenueElementName ="mainMenueElementId_" + i;
+
+            showMainMenueElement[i] = false;
+            if (prefs.getBoolean(tmpMainMenueElementName, false)) {
+                showMainMenueElement[i] = true;
+            }
+        }
 
 
 
     }
-
-
 
 
 
@@ -89,12 +192,12 @@ public class ActivityGridTest extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return mThumbIds.length;
+            return mainMenueNumberOfElements;
         }
 
         @Override
         public Object getItem(int arg0) {
-            return mThumbIds[arg0];
+            return mainMenueElementBackgroundRessources[arg0];
         }
 
         @Override
@@ -107,6 +210,9 @@ public class ActivityGridTest extends AppCompatActivity {
 
             View grid;
 
+            // init the layout color with light color
+            String tmpLinearLayoutBackgroundColor = mainMenueElementColorLight[position];
+
             if(convertView==null){
                 //grid = new View(mContext);
                 LayoutInflater inflater=getLayoutInflater();
@@ -116,10 +222,17 @@ public class ActivityGridTest extends AppCompatActivity {
             }
 
             ImageView imageView = (ImageView) grid.findViewById(R.id.grid_item_image);
-            imageView.setImageResource(mThumbIds[position]);
+            imageView.setImageResource(mainMenueElementBackgroundRessources[position]);
+
+            TextView txtView = (TextView) grid.findViewById(R.id.grid_item_label);
+            txtView.setText(mainMenueElementTitle[position]);
 
             LinearLayout linearLayoutView = (LinearLayout) grid.findViewById(R.id.grid_linear_layout);
-            linearLayoutView.setBackgroundColor(Color.parseColor(linearLayoutBgColor[position]));
+            if (showMainMenueElement[position]) {
+                tmpLinearLayoutBackgroundColor = mainMenueElementColor[position];
+            }
+
+            linearLayoutView.setBackgroundColor(Color.parseColor(tmpLinearLayoutBackgroundColor));
 
 
             return grid;
