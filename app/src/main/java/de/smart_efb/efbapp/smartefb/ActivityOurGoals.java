@@ -15,15 +15,11 @@ import android.view.MenuItem;
 public class ActivityOurGoals extends AppCompatActivity {
 
 
-
-
     Toolbar toolbarOurGoals;
     ActionBar actionBar;
 
     ViewPager viewPagerOurGoals;
     TabLayout tabLayoutOurGoals;
-
-
 
 
     @Override
@@ -32,10 +28,6 @@ public class ActivityOurGoals extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_efb_our_goals);
 
-
-
-
-
         toolbarOurGoals = (Toolbar) findViewById(R.id.toolbarOurGoals);
         setSupportActionBar(toolbarOurGoals);
         toolbarOurGoals.setTitleTextColor(Color.WHITE);
@@ -43,15 +35,9 @@ public class ActivityOurGoals extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 
-
-
-
-
         viewPagerOurGoals = (ViewPager) findViewById(R.id.viewPagerOurGoals);
         OurGoalsViewPagerAdapter ourGoalsViewPagerAdapter = new OurGoalsViewPagerAdapter(getSupportFragmentManager());
         viewPagerOurGoals.setAdapter(ourGoalsViewPagerAdapter);
-
-
 
         tabLayoutOurGoals = (TabLayout) findViewById(R.id.tabLayoutOurGoals);
         tabLayoutOurGoals.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -81,10 +67,6 @@ public class ActivityOurGoals extends AppCompatActivity {
 
 
     }
-
-
-
-
 
 
     @Override

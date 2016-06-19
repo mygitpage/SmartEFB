@@ -2,38 +2,38 @@
 <resources>
 
     <string-array name="mainMenueElementTitle">
-        <item>Übergabe</item>
-        <item>Absprachen</item>
-        <item>Ziele</item>
-        <item>Prävention</item>
-        <item>FAQ</item>
-        <item>Termine</item>
-        <item>Notfallhilfe</item>
-        <item>Einstellungen</item>
+        <item>@string/mainMenueElementId_1</item>
+        <item>@string/mainMenueElementId_2</item>
+        <item>@string/mainMenueElementId_3</item>
+        <item>@string/mainMenueElementId_4</item>
+        <item>@string/mainMenueElementId_5</item>
+        <item>@string/mainMenueElementId_6</item>
+        <item>@string/mainMenueElementId_7</item>
+        <item>@string/mainMenueElementId_8</item>
     </string-array>
 
 
     <string-array name="mainMenueElementColor">
-        <item>#FFFFE600</item>
+        <item>#d500ff</item>
         <item>#FF59FF00</item>
         <item>#FF0062FF</item>
-        <item>#FFFFE600</item>
+        <item>#FFD500FF</item>
         <item>#FF59FF00</item>
         <item>#FF0062FF</item>
-        <item>#FFFFE600</item>
+        <item>#FFD500FF</item>
         <item>#FF59FF00</item>
     </string-array>
 
 
 
     <string-array name="mainMenueElementColorLight">
-        <item>#66FFE600</item>
+        <item>#66D500FF</item>
         <item>#6659FF00</item>
         <item>#660062FF</item>
-        <item>#66FFE600</item>
+        <item>#66D500FF</item>
         <item>#6659FF00</item>
         <item>#660062FF</item>
-        <item>#66FFE600</item>
+        <item>#66D500FF</item>
         <item>#6659FF00</item>
     </string-array>
 

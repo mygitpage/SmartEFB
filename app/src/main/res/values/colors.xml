@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1e6258</color>
+    <color name="colorPrimary">#150656</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
@@ -23,7 +23,7 @@
     <color name="bg_msg_third">#ff721a</color>
 
     <color name="msg_border_color">#a1a1a1</color>
-    <color name="bg_btn_join">#1e6258</color>
+    <color name="bg_btn_join">#150656</color>
     <color name="bg_msg_input">#d6d6d6</color>
     <color name="text_msg_input">#626262</color>
     <color name="lblFromName">#ffffff</color>

@@ -1,5 +1,6 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -8,15 +9,52 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity {
 
+
+    // total number of elements
+    private static int mainMenueNumberOfElements=8;
+
+
+    // title of main Menue Elements
+    private String[] mainMenueElementTitle = new String [mainMenueNumberOfElements];
+    // color of active grid element
+    private String[] mainMenueElementColor = new String [mainMenueNumberOfElements];
+    // color of inactive element
+    private String[] mainMenueElementColorLight = new String [mainMenueNumberOfElements];
+    // background ressource of element
+    private int[] mainMenueElementBackgroundRessources = new int[mainMenueNumberOfElements];
+    // show the menue element
+    private boolean[] showMainMenueElement = new boolean[mainMenueNumberOfElements];
+
+
+    Context mainContext;
+
+    // point to shared preferences
+    SharedPreferences prefs;
+
+
+
+
+
+
+
+    /* Stand vom 19.06.2016
 
     // Number of MainMenue elements of the first activity
     final int numberOfElements = 13;
@@ -38,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     boolean showMainMenueElement[] = {false,false,false,false,false,false,false,false,false,false,false,false,false};
     // The kind of element (=0: half Button, =1: full button, =2: Textfield, )
     int mainMenueElementKind[] = {2,0,0,0,0,0,0,2,1,2,1,1,2};
-
+    */
 
 
     /*
@@ -68,12 +106,100 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_grid_test);
+
+        // init the elements arrays (title, color, colorLight, backgroundImage)
+        initMainMenueElementsArrays();
+
+
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setAdapter(new MyAdapter(this));
+        gridview.setNumColumns(2);
+
+
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+
+                if (showMainMenueElement[position]) {
+
+                    Intent intent;
+
+                    switch (position) {
+
+                        case 0: // grid "uebergabe"
+                            intent = new Intent(mainContext, ActivityConnectBook.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
+                            break;
+                        case 1: // grid "absprachen"
+                            intent = new Intent(mainContext, ActivityOurArrangement.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
+                            break;
+                        case 2: // grid "absprachen"
+                            intent = new Intent(mainContext, ActivityOurGoals.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
+                            break;
+                        case 3: // grid "praevention"
+                            //intent = new Intent(getApplicationContext(), ActivityPrevention.class);
+                            //intent.putExtra("position", position);
+                            //intent.putExtra("title", mainMenueElementTitle[position]);
+                            //getApplicationContext().startActivity(intent);
+                            break;
+                        case 4: // grid "faq"
+                            //intent = new Intent(getApplicationContext(), ActivityEfbFaq.class);
+                            //intent.putExtra("position", position);
+                            //intent.putExtra("title", mainMenueElementTitle[position]);
+                            //getApplicationContext().startActivity(intent);
+                            break;
+                        case 5: // grid "termine"
+                            //intent = new Intent(getApplicationContext(), ActivityEfbMeeting.class);
+                            //intent.putExtra("position", position);
+                            //intent.putExtra("title", mainMenueElementTitle[position]);
+                            //getApplicationContext().startActivity(intent);
+                            break;
+                        case 6: // grid "hilfe"
+                            //intent = new Intent(getApplicationContext(), ActivityEmergencyHelp.class);
+                            //intent.putExtra("position", position);
+                            //intent.putExtra("title", mainMenueElementTitle[position]);
+                            //getApplicationContext().startActivity(intent);
+                            break;
+                        case 7:
+                            // grid "einstellungen"
+                            //intent = new Intent(getApplicationContext(), ActivityAppSettings.class);
+                            //intent.putExtra("position", position);
+                            //intent.putExtra("title", mainMenueElementTitle[position]);
+                            //getApplicationContext().startActivity(intent);
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+
+            }
+        });
+
+
+
+
+
+
+
+        /*
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_efb_main);
 
         initShowMainMenueElement();
 
         addMainMenueElements();
-
+        */
 
 
 
@@ -133,8 +259,45 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    // init the elements arrays (title, color, colorLight, backgroundImage)
+    private void initMainMenueElementsArrays() {
 
-    private void initShowMainMenueElement() {
+        String[] tmpBackgroundRessources;
+
+        // init the context
+        mainContext = this;
+
+        // get the shared preferences
+        prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+
+        mainMenueElementTitle = getResources().getStringArray(R.array.mainMenueElementTitle);
+
+        mainMenueElementColor = getResources().getStringArray(R.array.mainMenueElementColor);
+
+        mainMenueElementColorLight = getResources().getStringArray(R.array.mainMenueElementColorLight);
+
+        tmpBackgroundRessources = getResources().getStringArray(R.array.mainMenueElementImage);
+
+
+        for (int i=0; i<mainMenueNumberOfElements; i++) {
+            mainMenueElementBackgroundRessources[i] = getResources().getIdentifier(tmpBackgroundRessources[i], "drawable", "de.smart_efb.efbapp.smartefb");
+        }
+
+
+        for (int i=0; i<mainMenueNumberOfElements; i++) {
+
+            String tmpMainMenueElementName ="mainMenueElementId_" + i;
+
+            showMainMenueElement[i] = false;
+            if (prefs.getBoolean(tmpMainMenueElementName, false)) {
+                showMainMenueElement[i] = true;
+            }
+        }
+
+
+
+
+        /* Stand vom 19.06.2016
 
         SharedPreferences prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
 
@@ -155,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
                 mainMenueElementTitle[countElem] = getResources().getString(resIdMainMenueElements);
             }
 
-
+        */
 
             /*
             Beispiel zur Anzeige von Zahlen. Beispielsweise: Sie habe 20 neue Nachrichten
@@ -167,13 +330,13 @@ public class MainActivity extends AppCompatActivity {
 
             */
 
-        }
-
-
     }
 
 
 
+
+
+    /*
     void addMainMenueElements () {
 
 
@@ -335,11 +498,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
+    */
 
     // Return the number of Buttons
     public int getNumberOfButtons () {
-        return numberOfElements;
+        return mainMenueNumberOfElements;
     }
 
     //Return original title of menue button
@@ -391,6 +554,68 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
+
+
+
+    public class MyAdapter extends BaseAdapter {
+
+        private Context mContext;
+
+        public MyAdapter(Context c) {
+            mContext = c;
+        }
+
+        @Override
+        public int getCount() {
+            return mainMenueNumberOfElements;
+        }
+
+        @Override
+        public Object getItem(int arg0) {
+            return mainMenueElementBackgroundRessources[arg0];
+        }
+
+        @Override
+        public long getItemId(int arg0) {
+            return arg0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            View grid;
+
+            // init the layout color with light color
+            String tmpLinearLayoutBackgroundColor = mainMenueElementColorLight[position];
+
+            if(convertView==null){
+                //grid = new View(mContext);
+                LayoutInflater inflater=getLayoutInflater();
+                grid=inflater.inflate(R.layout.gridview_main_layout, parent, false);
+            }else{
+                grid = (View)convertView;
+            }
+
+            ImageView imageView = (ImageView) grid.findViewById(R.id.grid_item_image);
+            imageView.setImageResource(mainMenueElementBackgroundRessources[position]);
+
+            TextView txtView = (TextView) grid.findViewById(R.id.grid_item_label);
+            txtView.setText(mainMenueElementTitle[position]);
+
+            LinearLayout linearLayoutView = (LinearLayout) grid.findViewById(R.id.grid_linear_layout);
+            if (showMainMenueElement[position]) {
+                tmpLinearLayoutBackgroundColor = mainMenueElementColor[position];
+            }
+
+            linearLayoutView.setBackgroundColor(Color.parseColor(tmpLinearLayoutBackgroundColor));
+
+
+            return grid;
+        }
+    }
+
 
 
 
@@ -623,3 +848,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
+
+
+
+
+
+
+
+
