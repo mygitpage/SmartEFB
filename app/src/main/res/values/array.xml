@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- title of main menue elements (these are links, original in strings.xml) -->
     <string-array name="mainMenueElementTitle">
         <item>@string/mainMenueElementId_1</item>
         <item>@string/mainMenueElementId_2</item>
@@ -27,17 +28,18 @@
 
 
     <string-array name="mainMenueElementColorLight">
-        <item>#66D500FF</item>
-        <item>#6659FF00</item>
-        <item>#660062FF</item>
-        <item>#66D500FF</item>
-        <item>#6659FF00</item>
-        <item>#660062FF</item>
-        <item>#66D500FF</item>
-        <item>#6659FF00</item>
+        <item>#22D500FF</item>
+        <item>#2259FF00</item>
+        <item>#220062FF</item>
+        <item>#22D500FF</item>
+        <item>#2259FF00</item>
+        <item>#220062FF</item>
+        <item>#22D500FF</item>
+        <item>#2259FF00</item>
     </string-array>
 
 
+    <!-- drawable for grid in maim menue-->
     <string-array name="mainMenueElementImage">
         <item>ic_supervisor_account_white_48dp</item><!--Uebergabe-->
         <item>ic_comment_white_48dp</item><!--Absprachen-->
@@ -49,5 +51,13 @@
         <item>ic_build_white_48dp</item><!--Einstellungen-->
     </string-array>
 
+
+
+    <string-array name="settingsEfbTabTitle">
+        <item>@string/settingsEfbTabTitleId_1</item>
+        <item>@string/settingsEfbTabTitleId_2</item>
+        <item>@string/settingsEfbTabTitleId_3</item>
+        <item>@string/settingsEfbTabTitleId_4</item>
+    </string-array>
 
 </resources>

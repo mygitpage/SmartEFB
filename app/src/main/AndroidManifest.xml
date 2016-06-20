@@ -52,6 +52,12 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity
+            android:name=".ActivitySettingsEfb"
+            android:label="@string/mainMenueElementId_8"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
 
 
 

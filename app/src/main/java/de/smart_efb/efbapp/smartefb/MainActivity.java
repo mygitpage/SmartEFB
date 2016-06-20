@@ -172,10 +172,10 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case 7:
                             // grid "einstellungen"
-                            //intent = new Intent(getApplicationContext(), ActivityAppSettings.class);
-                            //intent.putExtra("position", position);
-                            //intent.putExtra("title", mainMenueElementTitle[position]);
-                            //getApplicationContext().startActivity(intent);
+                            intent = new Intent(getApplicationContext(), ActivitySettingsEfb.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
                             break;
                         default:
                             break;
