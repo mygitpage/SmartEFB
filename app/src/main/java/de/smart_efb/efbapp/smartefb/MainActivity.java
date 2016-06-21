@@ -27,7 +27,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
 
-    // total number of elements
+    // total number of elements (in test-mode please edit variable in class SettingsEfbFragmentD please too!!!!!!!!!!!!!)
     private static int mainMenueNumberOfElements=8;
 
 
