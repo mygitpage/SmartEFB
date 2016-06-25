@@ -1,5 +1,6 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,9 +9,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by ich on 20.06.16.
@@ -66,13 +76,24 @@ public class SettingsEfbFragmentD extends Fragment {
 
 
 
-
+    //
+    // pre select elements of fragment D (like ragioButtons, checkBoxes, Buttons, EditText, etc.)
+    //
     private void preSelectElements() {
 
+        //
+        // set onclickListener for chat role checkboxes
+        //
+        RadioButton tmpRoleChatRadioButton;
+        tmpRoleChatRadioButton = (RadioButton) viewFragmentD.findViewById(R.id.radio_role_mother);
+        tmpRoleChatRadioButton.setOnClickListener(new chatRadioButtonListener(0));
+        tmpRoleChatRadioButton = (RadioButton) viewFragmentD.findViewById(R.id.radio_role_father);
+        tmpRoleChatRadioButton.setOnClickListener(new chatRadioButtonListener(1));
+        tmpRoleChatRadioButton = (RadioButton) viewFragmentD.findViewById(R.id.radio_role_third);
+        tmpRoleChatRadioButton.setOnClickListener(new chatRadioButtonListener(2));
+
+        // pre select chat role
         RadioButton tmpRadioButton;
-        CheckBox tmpCheckBox;
-
-
         int roleNew = prefs.getInt("connectBookRole", 0);
         switch (roleNew) {
             case 0:
@@ -89,33 +110,49 @@ public class SettingsEfbFragmentD extends Fragment {
                 tmpRadioButton = (RadioButton) viewFragmentD.findViewById(R.id.radio_role_mother);
                 break;
         }
+        tmpRadioButton.setChecked(true); //and set it!
 
-        tmpRadioButton.setChecked(true);
-
-
+        //
+        // show chat name in textfield
+        //
         EditText txtChatName = (EditText) viewFragmentD.findViewById(R.id.txtChatName);
         String chatName = prefs.getString("connectBookName", "Jon Down");
         txtChatName.setText(chatName);
+        // set onClickListener button save new chatName
+        Button tmpSaveChatNameButton = (Button) viewFragmentD.findViewById(R.id.saveChatName);
+        tmpSaveChatNameButton.setOnClickListener(new View.OnClickListener() { // OnclickListener for button save chat name
+
+            @Override
+            public void onClick(View v) {
+
+                EditText txtChatName = (EditText) viewFragmentD.findViewById(R.id.txtChatName);
+                String stringChatName = txtChatName.getText().toString();
+
+                prefsEditor.putString("connectBookName", stringChatName);
+                prefsEditor.commit();
+
+                Toast.makeText(fragmentContextD, "Neuer Chat Name gespeichert", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
+        //
+        // pre select checkBoxes mainMenueItems
+        //
         String tmpRessourceName ="";
         String tmpMainMenueElementName ="";
-
+        CheckBox tmpCheckBox;
         mainMenueElementTitle = getResources().getStringArray(R.array.mainMenueElementTitle);
 
         // set menueButtonsChecked
         for (int numberOfButtons=0; numberOfButtons < mainMenueNumberOfElements; numberOfButtons++) {
-
-
             tmpRessourceName ="menueButton_" + (numberOfButtons+1);
-
             tmpMainMenueElementName ="mainMenueElementId_" + numberOfButtons;
-
-
             try {
-
                 int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", fragmentContextD.getPackageName());
                 tmpCheckBox = (CheckBox) viewFragmentD.findViewById(resourceId);
+                tmpCheckBox.setOnClickListener(new mainMenueItemCheckBoxListener(numberOfButtons));
                 tmpCheckBox.setText(mainMenueElementTitle[numberOfButtons]);
 
                 if (prefs.getBoolean(tmpMainMenueElementName, false)) {
@@ -125,31 +162,214 @@ public class SettingsEfbFragmentD extends Fragment {
                     tmpCheckBox.setChecked(false);
                 }
 
-
             } catch (Exception e) {
-
                 e.printStackTrace();
             }
-
         }
 
-
-        // Preselect the arrangement settings (History Comment)
+        //
+        // pre select the arrangement comment settings
+        //
         tmpCheckBox = (CheckBox) viewFragmentD.findViewById(R.id.showCommentLinkArrangement);
+
         if (prefs.getBoolean("showArrangementComment", false)) {
             tmpCheckBox.setChecked(true);
         }
         else {
             tmpCheckBox.setChecked(false);
         }
-        tmpCheckBox = (CheckBox) viewFragmentD.findViewById(R.id.showArrangementHistory);
-        if (prefs.getBoolean("showArrangementHistory", false)) {
-            tmpCheckBox.setChecked(true);
-        }
-        else {
-            tmpCheckBox.setChecked(false);
+        tmpCheckBox.setOnClickListener(new View.OnClickListener() { // OnclickListener for arrangement comment
+
+            @Override
+            public void onClick(View v) {
+
+                boolean checkBoxBooleanValue=false;
+                String aktiv_passivText ="";
+
+                // Is the view now checked?
+                boolean checked = ((CheckBox) v).isChecked();
+
+                if (checked) {
+                    checkBoxBooleanValue=true;
+                    aktiv_passivText = "aktiviert";
+                }
+                else {
+                    checkBoxBooleanValue=false;
+                    aktiv_passivText = "deaktiviert";
+                }
+
+                prefsEditor.putBoolean("showArrangementComment", checkBoxBooleanValue);
+                prefsEditor.commit();
+
+                Toast.makeText(fragmentContextD, "Vereinbarungen Kommentare " + aktiv_passivText, Toast.LENGTH_SHORT).show();
+
+            }
+        });;
+
+    }
+
+    //
+    // onClickListener for radioButtons chat role
+    //
+    public class chatRadioButtonListener implements View.OnClickListener {
+
+        int radioButtonNumber;
+
+        public chatRadioButtonListener (int number) {
+            this.radioButtonNumber = number;
         }
 
+        @Override
+        public void onClick(View v) {
+
+            int roleNew = 0;
+
+            switch (radioButtonNumber) {
+
+                case 0: // radioButton mother
+                    roleNew = 0;
+                    break;
+                case 1: // radioButton father
+                    roleNew = 1;
+                    break;
+                case 2: // radioButton third
+                    roleNew = 2;
+                    break;
+
+                default:
+                    roleNew = 0;
+                    break;
+            }
+
+            prefsEditor.putInt("connectBookRole", roleNew);
+            prefsEditor.commit();
+
+            Toast.makeText(fragmentContextD, "Neue Rolle gespeichert", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+
+    //
+    // onClickListener for mainMenueItemCheckboxes
+    //
+    public class mainMenueItemCheckBoxListener implements View.OnClickListener {
+
+        int checkBoxButtonNumber;
+
+        public mainMenueItemCheckBoxListener (int number) {
+            this.checkBoxButtonNumber = number;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            // Is the view now checked?
+            boolean checked = ((CheckBox) v).isChecked();
+
+            boolean buttonBooleanValue=false;
+            String prefsMenueButtonName ="";
+            String aktiv_passivText ="";
+
+            switch (checkBoxButtonNumber) {
+
+                case 0:
+                    prefsMenueButtonName = "mainMenueElementId_0";
+                    if (checked) {
+                        buttonBooleanValue=true;
+                        aktiv_passivText = "aktiviert";
+                    }
+                    else {
+                        buttonBooleanValue=false;
+                        aktiv_passivText = "deaktiviert";
+                    }
+                    break;
+                case 1:
+                    prefsMenueButtonName = "mainMenueElementId_1";
+                    if (checked) {
+                        buttonBooleanValue=true;
+                        aktiv_passivText = "aktiviert";
+                    }
+                    else {
+                        buttonBooleanValue=false;
+                        aktiv_passivText = "deaktiviert";
+                    }
+                    break;
+                case 2:
+                    prefsMenueButtonName = "mainMenueElementId_2";
+                    if (checked) {
+                        buttonBooleanValue=true;
+                        aktiv_passivText = "aktiviert";
+                    }
+                    else {
+                        buttonBooleanValue=false;
+                        aktiv_passivText = "deaktiviert";
+                    }
+                    break;
+                case 3:
+                    prefsMenueButtonName = "mainMenueElementId_3";
+                    if (checked) {
+                        buttonBooleanValue=true;
+                        aktiv_passivText = "aktiviert";
+                    }
+                    else {
+                        buttonBooleanValue=false;
+                        aktiv_passivText = "deaktiviert";
+                    }
+                    break;
+                case 4:
+                    prefsMenueButtonName = "mainMenueElementId_4";
+                    if (checked) {
+                        buttonBooleanValue=true;
+                        aktiv_passivText = "aktiviert";
+                    }
+                    else {
+                        buttonBooleanValue=false;
+                        aktiv_passivText = "deaktiviert";
+                    }
+                    break;
+                case 5:
+                    prefsMenueButtonName = "mainMenueElementId_5";
+                    if (checked) {
+                        buttonBooleanValue=true;
+                        aktiv_passivText = "aktiviert";
+                    }
+                    else {
+                        buttonBooleanValue=false;
+                        aktiv_passivText = "deaktiviert";
+                    }
+                    break;
+
+                case 6:
+                    prefsMenueButtonName = "mainMenueElementId_6";
+                    if (checked) {
+                        buttonBooleanValue=true;
+                        aktiv_passivText = "aktiviert";
+                    }
+                    else {
+                        buttonBooleanValue=false;
+                        aktiv_passivText = "deaktiviert";
+                    }
+                    break;
+                case 7:
+                    prefsMenueButtonName = "mainMenueElementId_7";
+                    if (checked) {
+                        buttonBooleanValue=true;
+                        aktiv_passivText = "aktiviert";
+                    }
+                    else {
+                        buttonBooleanValue=false;
+                        aktiv_passivText = "deaktiviert";
+                    }
+                    break;
+           }
+
+            prefsEditor.putBoolean(prefsMenueButtonName, buttonBooleanValue);
+            prefsEditor.commit();
+
+            Toast.makeText(fragmentContextD, "Menue Button " + aktiv_passivText, Toast.LENGTH_SHORT).show();
+
+        }
     }
 
 

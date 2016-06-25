@@ -87,6 +87,7 @@ public class SettingsEfbViewPagerAdapter extends FragmentPagerAdapter {
         return settingsEfbTabTitleNames[position];
 
     }
+
 }
 
 

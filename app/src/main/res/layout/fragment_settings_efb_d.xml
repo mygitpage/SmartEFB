@@ -21,28 +21,33 @@
             android:paddingRight="6dp"
             android:paddingTop="10dp" />
 
+        <View
+            android:id="@+id/separateLine0"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/introSettingsText"
+            android:layout_margin="20dp"
+            android:background="@android:color/darker_gray"/>
+
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/radioGroup"
-            android:layout_below="@+id/introSettingsText">
+            android:layout_below="@+id/separateLine0">
 
             <RadioButton android:id="@+id/radio_role_mother"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/radioRoleMother"
-                android:onClick="onRadioButtonClicked"/>
+                android:text="@string/radioRoleMother"/>
             <RadioButton android:id="@+id/radio_role_father"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/radioRoleFather"
-                android:onClick="onRadioButtonClicked"/>
+                android:text="@string/radioRoleFather" />
             <RadioButton android:id="@+id/radio_role_third"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/radioRoleThird"
-                android:onClick="onRadioButtonClicked"/>
+                android:text="@string/radioRoleThird" />
 
         </RadioGroup>
 
@@ -70,14 +75,13 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name speichern"
+            android:text="Chatname speichern"
             android:id="@+id/saveChatName"
             android:padding="6dp"
             android:layout_below="@+id/separateLine1"
             android:layout_alignTop="@+id/txtChatName"
             android:layout_alignRight="@+id/radioGroup"
-            android:layout_alignEnd="@+id/radioGroup"
-            android:onClick="onClick_saveChatName"/>
+            android:layout_alignEnd="@+id/radioGroup"/>
 
 
         <View
@@ -98,43 +102,35 @@
             <CheckBox android:id="@+id/menueButton_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button1"
-                android:onClick="onCheckboxMenueButtonClicked"/>
+                android:text="Button1" />
             <CheckBox android:id="@+id/menueButton_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button2"
-                android:onClick="onCheckboxMenueButtonClicked"/>
+                android:text="Button2" />
             <CheckBox android:id="@+id/menueButton_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button3"
-                android:onClick="onCheckboxMenueButtonClicked"/>
+                android:text="Button3" />
             <CheckBox android:id="@+id/menueButton_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button4"
-                android:onClick="onCheckboxMenueButtonClicked"/>
+                android:text="Button4" />
             <CheckBox android:id="@+id/menueButton_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button5"
-                android:onClick="onCheckboxMenueButtonClicked"/>
+                android:text="Button5" />
             <CheckBox android:id="@+id/menueButton_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button6"
-                android:onClick="onCheckboxMenueButtonClicked"/>
+                android:text="Button6"/>
             <CheckBox android:id="@+id/menueButton_7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button7"
-                android:onClick="onCheckboxMenueButtonClicked"/>
+                android:text="Button7"/>
             <CheckBox android:id="@+id/menueButton_8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button8"
-                android:onClick="onCheckboxMenueButtonClicked"/>
+                android:text="Button8"/>
 
         </LinearLayout>
 
@@ -162,15 +158,6 @@
             android:text="Show Comment-Link in Our Arrangement"
             android:onClick="onCheckboxShowArrangementElements"
             android:layout_below="@+id/showDatePickerDialog"/>
-
-
-        <CheckBox android:id="@+id/showArrangementHistory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Show History in Our Arrangement"
-            android:onClick="onCheckboxShowArrangementElements"
-            android:layout_below="@+id/showCommentLinkArrangement"/>
-
 
 
     </RelativeLayout>

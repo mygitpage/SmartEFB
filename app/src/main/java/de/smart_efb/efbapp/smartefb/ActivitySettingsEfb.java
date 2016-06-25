@@ -4,6 +4,8 @@ package de.smart_efb.efbapp.smartefb;
  * Created by ich on 20.06.16.
  */
 
+import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -12,6 +14,18 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by ich on 07.06.16.
@@ -24,6 +38,11 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
     ViewPager viewPagerSettingsEfb;
     TabLayout tabLayoutSettingsEfb;
+
+
+    // shared prefs for the app
+    SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
 
     @Override
@@ -87,6 +106,122 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         }
 
     }
+
+
+
+
+    // ************************************************************************
+    // on clicked method for fragment D (settings)
+    // DatePicker for arrangements
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void onClick_showDateChooserForCurrentArrangement (View v) {
+
+
+        Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dialog = new DatePickerDialog(this, new saveDateForCurrentArrangement(), mYear, mMonth, mDay);
+        dialog.show();
+
+
+    }
+
+
+
+    private class saveDateForCurrentArrangement implements DatePickerDialog.OnDateSetListener {
+
+
+        SharedPreferences prefs;
+        SharedPreferences.Editor prefsEditor;
+
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+            int mYear = year;
+            int mMonth = monthOfYear+1;
+            int mDay = dayOfMonth;
+            Date date = null;
+
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+            try {
+                date = formatter.parse(mDay+"-"+mMonth+"-"+year);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            prefs = getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+            prefsEditor = prefs.edit();
+
+            prefsEditor.putLong("currentDateOfArrangement", date.getTime());
+            prefsEditor.commit();
+
+            Toast.makeText(ActivitySettingsEfb.this, "Stamp:" + date.getTime(), Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+
+
+
+
+    public void onCheckboxShowArrangementElements(View view) {
+
+
+        boolean showBooleanValue = false;
+        String prefsArrangementName = "";
+
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        // Check which checkbox was clicked
+        switch (view.getId()) {
+            case R.id.showCommentLinkArrangement:
+                prefsArrangementName = "showArrangementComment";
+                if (checked) {
+                    showBooleanValue = true;
+                } else {
+                    showBooleanValue = false;
+                }
+                break;
+
+        }
+
+
+        prefsEditor.putBoolean(prefsArrangementName, showBooleanValue);
+        prefsEditor.commit();
+
+
+
+    }
+
+
+    // End on clicked method for fragment D
+    // ************************************************************************
+
+
+
+
+
+
+
 
 
 
