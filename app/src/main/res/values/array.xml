@@ -13,7 +13,7 @@
         <item>@string/mainMenueElementId_8</item>
     </string-array>
 
-
+    // Main menue button color active
     <string-array name="mainMenueElementColor">
         <item>#d500ff</item>
         <item>#FF59FF00</item>
@@ -26,7 +26,7 @@
     </string-array>
 
 
-
+    // Main menue button color passiv
     <string-array name="mainMenueElementColorLight">
         <item>#22D500FF</item>
         <item>#2259FF00</item>
@@ -52,12 +52,22 @@
     </string-array>
 
 
-
+    <!-- tab titles for Activity Settings (these are links, original in strings.xml) -->
     <string-array name="settingsEfbTabTitle">
         <item>@string/settingsEfbTabTitleId_1</item>
         <item>@string/settingsEfbTabTitleId_2</item>
         <item>@string/settingsEfbTabTitleId_3</item>
         <item>@string/settingsEfbTabTitleId_4</item>
     </string-array>
+
+
+
+
+    <!-- tab titles for Activity Our Arrangement (these are links, original in strings.xml) -->
+    <string-array name="ourArrangementTabTitle">
+        <item>@string/ourArrangementTabTitle_1</item>
+        <item>@string/ourArrangementTabTitle_2</item>
+    </string-array>
+
 
 </resources>

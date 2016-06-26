@@ -25,15 +25,6 @@
 
 
 
-    <!-- String Activity Our Arrangement -->
-    <string name="option_our_arrangement_history">Ältere Absprachen</string>
-    <string name="currentArrangementDateFrom">Stand vom</string>
-    <string name="arrangementComment">Absprachen kommentieren</string>
-    <string name="btnSendArrangementComment">Kommentar abschicken</string>
-    <string name="arrangementCommentIntro">Bitte kommentieren Sie Ihre gewählte Absprache. Ihren Kommentar können Sie nach dem klicken auf den unten stehenden Button nicht mehr ändern. Der Kommentar wird auf das System Ihrer Beraterin/ Berater übertragen.</string>
-    <string name="commentHistoryIntroText">Unten sehen Sie alle bisher zu dieser Vereinbarung von Ihnen abgegebenen Kommentare.</string>
-
-
 
 
 
@@ -56,7 +47,7 @@
 
 
 
-
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Main Activity Start -->
     <!-- Main Menue Element Strings Start-->
     <!--<string name="mainMenueElementId_0">Text fuer ein Textfeld</string>-->
@@ -73,9 +64,9 @@
     <string name="mainMenueElementId_11">Notfallhilfe</string>
     <!--<string name="mainMenueElementId_12">Text fuer ein textfeld</string>-->
     <!-- Main Menue Element Strings End-->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-
-
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Activity Settings -->
 
     <!-- Strings for tab title in activity settings -->
@@ -85,8 +76,29 @@
     <string name="settingsEfbTabTitleId_4">SetUp</string>
 
     <!-- Activity Settings End -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
+
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- String Activity Our Arrangement -->
+    <string name="option_our_arrangement_history">Ältere Absprachen</string>
+    <string name="currentArrangementDateFrom">Stand vom</string>
+    <string name="arrangementComment">Absprachen kommentieren</string>
+    <string name="btnSendArrangementComment">Kommentar abschicken</string>
+    <string name="arrangementCommentIntro">Bitte kommentieren Sie Ihre gewählte Absprache. Ihren Kommentar können Sie nach dem klicken auf den unten stehenden Button nicht mehr ändern. Der Kommentar wird auf das System Ihrer Beraterin/ Berater übertragen.</string>
+    <string name="commentHistoryIntroText">Unten sehen Sie alle bisher zu dieser Vereinbarung von Ihnen abgegebenen Kommentare.</string>
+
+
+
+
+    <!-- Strings for tab title in activity our arrangement -->
+    <string name="ourArrangementTabTitle_1">Aktuell</string>
+    <string name="ourArrangementTabTitle_2">Vergangener</string>
+
+    <!-- Activity our arrangement End -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
 

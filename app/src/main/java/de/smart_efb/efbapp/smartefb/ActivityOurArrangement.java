@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,8 +36,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
     Toolbar toolbar;
     ActionBar actionBar;
 
-    // the current date of arrangement -> the other are history
+    // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
+
+    // viewpager and tablayout for the view
+    ViewPager viewPagerOurArrangement;
+    TabLayout tabLayoutOurArrangement;
 
 
 
@@ -47,6 +53,55 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // init our arragement
         initOurArrangement();
 
+
+
+        // Aufruf eines Fragmentes durch ein anderes
+        // http://stackoverflow.com/questions/14627829/call-fragment-from-fragment
+        //
+        // Link: Austausch ein Fragment gegen ein anderes mit ViewPager
+        // http://stackoverflow.com/questions/18588944/replace-one-fragment-with-another-in-viewpager
+
+
+
+
+        viewPagerOurArrangement = (ViewPager) findViewById(R.id.viewPagerOurArrangement);
+        OurArrangementViewPagerAdapter ourArrangementViewPagerAdapter = new OurArrangementViewPagerAdapter(getSupportFragmentManager(), this);
+        viewPagerOurArrangement.setAdapter(ourArrangementViewPagerAdapter);
+
+        tabLayoutOurArrangement = (TabLayout) findViewById(R.id.tabLayoutOurArrangement);
+        tabLayoutOurArrangement.setTabGravity(TabLayout.GRAVITY_FILL);
+
+
+        tabLayoutOurArrangement.setupWithViewPager(viewPagerOurArrangement);
+
+        tabLayoutOurArrangement.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+
+                viewPagerOurArrangement.setCurrentItem(tab.getPosition());
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
+
+
+
+
+
+
+        /*
         // show the arrangements
         displayArrangementSet();
 
@@ -70,7 +125,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
             }
         });
         // end test input
-
+        */
 
 
 

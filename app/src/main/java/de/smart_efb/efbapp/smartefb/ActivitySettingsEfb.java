@@ -110,25 +110,8 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
 
 
-    // ************************************************************************
-    // on clicked method for fragment D (settings)
-    // DatePicker for arrangements
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void onClick_showDateChooserForCurrentArrangement (View v) {
-
 
         Calendar c = Calendar.getInstance();
         int mYear = c.get(Calendar.YEAR);
@@ -137,7 +120,6 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
         DatePickerDialog dialog = new DatePickerDialog(this, new saveDateForCurrentArrangement(), mYear, mMonth, mDay);
         dialog.show();
-
 
     }
 
@@ -177,53 +159,6 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         }
 
     }
-
-
-
-
-
-    public void onCheckboxShowArrangementElements(View view) {
-
-
-        boolean showBooleanValue = false;
-        String prefsArrangementName = "";
-
-        // Is the view now checked?
-        boolean checked = ((CheckBox) view).isChecked();
-
-        // Check which checkbox was clicked
-        switch (view.getId()) {
-            case R.id.showCommentLinkArrangement:
-                prefsArrangementName = "showArrangementComment";
-                if (checked) {
-                    showBooleanValue = true;
-                } else {
-                    showBooleanValue = false;
-                }
-                break;
-
-        }
-
-
-        prefsEditor.putBoolean(prefsArrangementName, showBooleanValue);
-        prefsEditor.commit();
-
-
-
-    }
-
-
-    // End on clicked method for fragment D
-    // ************************************************************************
-
-
-
-
-
-
-
-
-
 
 
 }
