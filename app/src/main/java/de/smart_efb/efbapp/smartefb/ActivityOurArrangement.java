@@ -33,8 +33,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
     SharedPreferences prefs;
 
     // reference for the toolbar
-    Toolbar toolbar;
-    ActionBar actionBar;
+    Toolbar toolbar = null;
+    ActionBar actionBar = null;
 
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
@@ -44,6 +44,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
     TabLayout tabLayoutOurArrangement;
 
 
+    // Strings for subtitle ("Aktuelle vom...", "Älter als...")
+    String currentArrangementSubtitleText = "";
+    String olderArrangementSubtitleText = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +81,29 @@ public class ActivityOurArrangement extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
+                // Change the subtitle of the activity
+                switch (tab.getPosition()) {
 
+                    case 0:
+                        toolbar.setSubtitle(currentArrangementSubtitleText);
+                        break;
+
+                    case 1:
+                        toolbar.setSubtitle(olderArrangementSubtitleText);
+                        break;
+
+                    case 2: // Change to subtitle for Fragment Comment - when needed
+                        toolbar.setSubtitle(currentArrangementSubtitleText);
+                        break;
+
+                    default:
+                        toolbar.setSubtitle(currentArrangementSubtitleText);
+                        break;
+
+
+                }
+
+                // call viewpager
                 viewPagerOurArrangement.setCurrentItem(tab.getPosition());
 
             }
@@ -151,10 +176,15 @@ public class ActivityOurArrangement extends AppCompatActivity {
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
         // and set undertitle of activity
-        getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", getPackageName()));
+        //getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", getPackageName()));
 
 
-        toolbar.setSubtitle(getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy"));
+        // set current and older subtitle text string
+        currentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
+        olderArrangementSubtitleText = getResources().getString(getResources().getIdentifier("olderArrangementDateFrom", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
+
+        // init subtitle first time
+        toolbar.setSubtitle(currentArrangementSubtitleText);
 
 
     }

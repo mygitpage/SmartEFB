@@ -43,19 +43,16 @@ public class OurArrangementViewPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
 
             case 0:
-                return new SettingsEfbFragmentA();
+                return new OurArrangementFragmentNow();
 
             case 1:
-                return new SettingsEfbFragmentB();
+                return new OurArrangementFragmentOld();
 
-            case 2:
-                return new SettingsEfbFragmentC();
-
-            case 3:
-                return new SettingsEfbFragmentD();
+            case 2: // Change to Fragment Comment - when needed
+                return new OurArrangementFragmentNow();
 
             default:
-                return new SettingsEfbFragmentA();
+                return new OurArrangementFragmentNow();
 
 
         }
