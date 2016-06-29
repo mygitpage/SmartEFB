@@ -108,9 +108,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid_test);
 
-        // init the elements arrays (title, color, colorLight, backgroundImage)
-        initMainMenueElementsArrays();
-
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new MyAdapter(this));
@@ -256,6 +253,20 @@ public class MainActivity extends AppCompatActivity {
         */
         
     }
+
+
+
+    @Override
+    public void onStart() {
+
+        super.onStart();
+
+        // init the elements arrays (title, color, colorLight, backgroundImage)
+        initMainMenueElementsArrays();
+
+
+    }
+
 
 
 

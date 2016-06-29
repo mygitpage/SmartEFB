@@ -64,6 +64,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // Link: Austausch ein Fragment gegen ein anderes mit ViewPager
         // http://stackoverflow.com/questions/18588944/replace-one-fragment-with-another-in-viewpager
 
+        // Fragmentaufruf durch Intent
+        // http://stackoverflow.com/questions/9831728/start-a-fragment-via-intent-within-a-fragment
+
 
 
 

@@ -63,7 +63,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     // All keys from table app settings in a String
     public static final String[] OUR_ARRANGEMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_KEY_ARRANGEMENT, OUR_ARRANGEMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_KEY_WRITE_TIME };
 
-    // SQL String to create chat-message-table
+    // SQL String to create our arrangement table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT =
             "create table " + DATABASE_TABLE_OUR_ARRANGEMENT + " (" + KEY_ROWID + " integer primary key autoincrement, "
                     + OUR_ARRANGEMENT_KEY_ARRANGEMENT + " TEXT not null, "
@@ -89,7 +89,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     // All keys from table app settings in a String
     public static final String[] OUR_ARRANGEMENT_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT };
 
-    // SQL String to create chat-message-table
+    // SQL String to create our arrangement comment table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_COMMENT =
             "create table " + DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT + " (" + KEY_ROWID + " integer primary key autoincrement, "
                     + OUR_ARRANGEMENT_COMMENT_KEY_COMMENT + " TEXT not null, "

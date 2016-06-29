@@ -23,6 +23,7 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
 
 
 
+
     // Default constructor
     public OurArrangementCursorAdapter(Context context, Cursor cursor, int flags) {
 
@@ -49,8 +50,9 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
 
         // create the number of arrangement
         TextView numberOfArrangement = (TextView) view.findViewById(R.id.listArrangementNumber);
-        int number = cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
-        numberOfArrangement.setText(Integer.toString(number));
+        //countNumberOfCurrentArrangement = cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
+        numberOfArrangement.setText(Integer.toString(cursor.getPosition()+1));
+
 
 
 
@@ -61,8 +63,9 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
             Uri.Builder builder = new Uri.Builder();
             builder.scheme("smart.efb.ilink")
                     .authority("www.smart-efb.de")
-                    .appendQueryParameter("id", Integer.toString(number));
-            linkCommentAnArrangement.setText(Html.fromHtml("<a href=\"" + builder.build().toString() + "\">Kommentieren</a>"));
+                    .appendQueryParameter("id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
+                    .appendQueryParameter("com", "comment");;
+            linkCommentAnArrangement.setText(Html.fromHtml("<a href=\"" + builder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>"));
             linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
         }
 

@@ -90,7 +90,7 @@
     <string name="olderArrangementDateFrom">Älter als</string>
 
 
-
+    <string name="ourArrangementCommentString">Kommentieren</string>
 
     <string name="arrangementComment">Absprachen kommentieren</string>
     <string name="btnSendArrangementComment">Kommentar abschicken</string>
