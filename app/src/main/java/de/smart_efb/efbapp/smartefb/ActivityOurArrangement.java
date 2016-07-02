@@ -3,6 +3,7 @@ package de.smart_efb.efbapp.smartefb;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -43,10 +44,23 @@ public class ActivityOurArrangement extends AppCompatActivity {
     ViewPager viewPagerOurArrangement;
     TabLayout tabLayoutOurArrangement;
 
+    // viewpager adapter
+    OurArrangementViewPagerAdapter ourArrangementViewPagerAdapter;
+
 
     // Strings for subtitle ("Aktuelle vom...", "Älter als...")
     String currentArrangementSubtitleText = "";
     String olderArrangementSubtitleText = "";
+
+
+
+    // uri to handle the data from the link
+    Uri commentLinkData;
+    // id of the given arrangement
+    int commentArrangementIdFromLink = 0;
+    // link command
+    String commandFromLink = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +85,15 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
         viewPagerOurArrangement = (ViewPager) findViewById(R.id.viewPagerOurArrangement);
-        OurArrangementViewPagerAdapter ourArrangementViewPagerAdapter = new OurArrangementViewPagerAdapter(getSupportFragmentManager(), this);
+        ourArrangementViewPagerAdapter = new OurArrangementViewPagerAdapter(getSupportFragmentManager(), this);
         viewPagerOurArrangement.setAdapter(ourArrangementViewPagerAdapter);
-
         tabLayoutOurArrangement = (TabLayout) findViewById(R.id.tabLayoutOurArrangement);
         tabLayoutOurArrangement.setTabGravity(TabLayout.GRAVITY_FILL);
+
+
+
+
+
 
 
         tabLayoutOurArrangement.setupWithViewPager(viewPagerOurArrangement);
@@ -92,7 +110,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
                         break;
 
                     case 1:
+
                         toolbar.setSubtitle(olderArrangementSubtitleText);
+
                         break;
 
                     case 2: // Change to subtitle for Fragment Comment - when needed
@@ -114,6 +134,15 @@ public class ActivityOurArrangement extends AppCompatActivity {
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
+                // Change the subtitle of the activity
+                switch (tab.getPosition()) {
+
+                    case 0:
+                        ourArrangementViewPagerAdapter.notifyDataSetChanged();
+                        Toast.makeText(ActivityOurArrangement.this, "Call DataSet Change", Toast.LENGTH_SHORT).show();
+                        break;
+
+                }
             }
 
             @Override
@@ -161,6 +190,43 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
 
+    @Override
+    public void onStart() {
+
+        super.onStart();
+
+        // get the link data
+        commentLinkData = getIntent().getData();
+
+
+        /*
+        // commentLinkData correct?
+        if (commentLinkData.equals(null)) {
+            Toast.makeText(this, "Keine Daten vorhanden", Toast.LENGTH_SHORT).show();
+        }
+        else {
+
+            commentArrangementIdFromLink = Integer.parseInt(commentLinkData.getQueryParameter("id"));
+
+            commandFromLink = commentLinkData.getQueryParameter("com");
+
+            if (commandFromLink.equals("show_comment")) {
+                Toast.makeText(this, "Kommentare zeigen für " + commentArrangementIdFromLink, Toast.LENGTH_SHORT).show();
+            } else if (commandFromLink.equals("comment")) {
+                Toast.makeText(this, "Kommentieren für " + commentArrangementIdFromLink, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Keinen Befehl erkannt mit ID: " + commentArrangementIdFromLink, Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        */
+
+
+    }
+
+
+
+
     private void initOurArrangement() {
 
         // init the toolbar
@@ -188,6 +254,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         // init subtitle first time
         toolbar.setSubtitle(currentArrangementSubtitleText);
+
+
+
 
 
     }

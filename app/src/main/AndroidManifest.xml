@@ -31,6 +31,11 @@
             android:name=".ActivityOurArrangement"
             android:label="@string/mainMenueElementId_2"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="smart.efb.ilink_comment" />
+            </intent-filter>
         </activity>
 
 
@@ -38,11 +43,7 @@
             android:name=".ActivityOurArrangementComment"
             android:label="@string/arrangementComment"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-                <action android:name="android.intent.action.VIEW" />
-                <data android:scheme="smart.efb.ilink" />
-            </intent-filter>
+
         </activity>
 
 

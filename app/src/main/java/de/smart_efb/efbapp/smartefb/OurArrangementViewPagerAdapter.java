@@ -4,11 +4,13 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.widget.Toast;
 
 /**
  * Created by ich on 26.06.16.
  */
-public class OurArrangementViewPagerAdapter extends FragmentPagerAdapter {
+public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
 
     // number of tabs
@@ -21,7 +23,14 @@ public class OurArrangementViewPagerAdapter extends FragmentPagerAdapter {
     // calling context
     Context pagerAdapterContext = null;
 
-    //{"Aktuell", "Vergangene"}
+
+
+    boolean fragmentChooser = true;
+    Fragment fragArraNow, fragArraNowComment;
+
+
+
+
 
 
 
@@ -33,6 +42,12 @@ public class OurArrangementViewPagerAdapter extends FragmentPagerAdapter {
 
         ourArrangementTabTitleNames = pagerAdapterContext.getResources().getStringArray(R.array.ourArrangementTabTitle);
 
+        fragmentChooser = true;
+
+        fragArraNow = new OurArrangementFragmentNow();
+        fragArraNowComment = new OurArrangementFragmentNowComment();
+
+
     }
 
 
@@ -43,7 +58,19 @@ public class OurArrangementViewPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
 
             case 0:
-                return new OurArrangementFragmentNow();
+
+                if (fragmentChooser) {
+                    fragmentChooser = false;
+                    Toast.makeText(pagerAdapterContext, "Fragment Chooser TRUE", Toast.LENGTH_SHORT).show();
+                    return fragArraNow;
+                } else {
+                    fragmentChooser = true;
+                    Toast.makeText(pagerAdapterContext, "!!!!!!!Fragment Chooser FASLE", Toast.LENGTH_SHORT).show();
+                    return fragArraNowComment;
+                }
+
+                //return new OurArrangementFragmentNow();
+
 
             case 1:
                 return new OurArrangementFragmentOld();
@@ -58,6 +85,32 @@ public class OurArrangementViewPagerAdapter extends FragmentPagerAdapter {
         }
 
     }
+
+
+
+    @Override
+    public int getItemPosition(Object object)
+    {
+        /*if (object instanceof FacturasFragment &&
+                mFragmentAtPos0 instanceof DetallesFacturaFragment) {
+            return POSITION_NONE;
+        }
+        if (object instanceof DetallesFacturaFragment &&
+                mFragmentAtPos0 instanceof FacturasFragment) {
+            return POSITION_NONE;
+        }
+        return POSITION_UNCHANGED;*/
+
+        Toast.makeText(pagerAdapterContext, "POSITION NONE!!!!", Toast.LENGTH_SHORT).show();
+
+        return POSITION_NONE;
+
+
+
+
+    }
+
+
 
 
     @Override

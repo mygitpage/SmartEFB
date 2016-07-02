@@ -55,17 +55,30 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
 
 
 
-
-
+        // Show link for comment in our arrangement
         if (prefs.getBoolean("showArrangementComment", false)) {
             // create the comment link
             TextView linkCommentAnArrangement = (TextView) view.findViewById(R.id.linkCommentAnArrangement);
-            Uri.Builder builder = new Uri.Builder();
-            builder.scheme("smart.efb.ilink")
+
+            // make link to comment arrangement
+            Uri.Builder commentLinkBuilder = new Uri.Builder();
+            commentLinkBuilder.scheme("smart.efb.ilink_comment")
                     .authority("www.smart-efb.de")
                     .appendQueryParameter("id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
-                    .appendQueryParameter("com", "comment");;
-            linkCommentAnArrangement.setText(Html.fromHtml("<a href=\"" + builder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>"));
+                    .appendQueryParameter("com", "comment");
+
+
+            // make link to show comment for arrangement
+            Uri.Builder showCommentLinkBuilder = new Uri.Builder();
+            showCommentLinkBuilder.scheme("smart.efb.ilink_comment")
+                    .authority("www.smart-efb.de")
+                    .appendQueryParameter("id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
+                    .appendQueryParameter("com", "show_comment");;
+
+
+
+
+            linkCommentAnArrangement.setText(Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementShowCommentString", "string", context.getPackageName()))+"</a> &middot;" + " <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>"));
             linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
