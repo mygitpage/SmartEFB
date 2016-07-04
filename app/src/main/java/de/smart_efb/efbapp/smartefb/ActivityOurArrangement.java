@@ -1,5 +1,6 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -71,33 +72,21 @@ public class ActivityOurArrangement extends AppCompatActivity {
         initOurArrangement();
 
 
-
-        // Aufruf eines Fragmentes durch ein anderes
-        // http://stackoverflow.com/questions/14627829/call-fragment-from-fragment
-        //
-        // Link: Austausch ein Fragment gegen ein anderes mit ViewPager
-        // http://stackoverflow.com/questions/18588944/replace-one-fragment-with-another-in-viewpager
-
-        // Fragmentaufruf durch Intent
-        // http://stackoverflow.com/questions/9831728/start-a-fragment-via-intent-within-a-fragment
-
-
-
-
+        // find viewpager in view
         viewPagerOurArrangement = (ViewPager) findViewById(R.id.viewPagerOurArrangement);
+        // new pager adapter for OurArrangement
         ourArrangementViewPagerAdapter = new OurArrangementViewPagerAdapter(getSupportFragmentManager(), this);
+        // set pagerAdapter to viewpager
         viewPagerOurArrangement.setAdapter(ourArrangementViewPagerAdapter);
+
+        //find tablayout and set gravity
         tabLayoutOurArrangement = (TabLayout) findViewById(R.id.tabLayoutOurArrangement);
         tabLayoutOurArrangement.setTabGravity(TabLayout.GRAVITY_FILL);
 
-
-
-
-
-
-
+        // and set tablayout with viewpager
         tabLayoutOurArrangement.setupWithViewPager(viewPagerOurArrangement);
 
+        // init listener for tab selected
         tabLayoutOurArrangement.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -151,57 +140,19 @@ public class ActivityOurArrangement extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
-
-
-        /*
-        // show the arrangements
-        displayArrangementSet();
-
-
-        // produces test date and write to the db
-        final EditText txtInputArrangement = (EditText) findViewById(R.id.arrangementText);
-        Button buttonSendArrangement = (Button) findViewById(R.id.arrangementTextSend);
-        // onClick send button
-        buttonSendArrangement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                long newID = myDb.insertRowOurArrangement(txtInputArrangement.getText().toString(), "testuser", currentDateOfArrangement);
-
-                txtInputArrangement.setText("");
-
-                displayArrangementSet();
-
-                Toast.makeText(ActivityOurArrangement.this, " Vereinbarung eingetragen ", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        // end test input
-        */
-
-
-
     }
 
 
-
+    // Look for new intents (like link to comment or show comments)
     @Override
-    public void onStart() {
-
-        super.onStart();
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
 
         // get the link data
-        commentLinkData = getIntent().getData();
+        commentLinkData = intent.getData();
 
-
-        /*
         // commentLinkData correct?
-        if (commentLinkData.equals(null)) {
+        if (commentLinkData == null) {
             Toast.makeText(this, "Keine Daten vorhanden", Toast.LENGTH_SHORT).show();
         }
         else {
@@ -219,14 +170,11 @@ public class ActivityOurArrangement extends AppCompatActivity {
             }
 
         }
-        */
-
 
     }
 
 
-
-
+    // init the activity
     private void initOurArrangement() {
 
         // init the toolbar
@@ -256,9 +204,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
         toolbar.setSubtitle(currentArrangementSubtitleText);
 
 
-
-
-
     }
 
 
@@ -276,28 +221,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
         }
 
     }
-
-
-
-    public void displayArrangementSet () {
-
-        Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfArrangement);
-
-        // find the listview
-        ListView listView = (ListView) findViewById(R.id.listOurArrangement);
-
-
-        // new dataadapter
-        dataAdapter = new OurArrangementCursorAdapter(
-                ActivityOurArrangement.this,
-                cursor,
-                0);
-
-        // Assign adapter to ListView
-        listView.setAdapter(dataAdapter);
-
-    }
-
 
 
 

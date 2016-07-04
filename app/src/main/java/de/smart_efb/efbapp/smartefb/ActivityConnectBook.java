@@ -52,7 +52,7 @@ public class ActivityConnectBook extends AppCompatActivity {
 
 
         // send button init
-        Button buttonSendConnectBook = (Button) findViewById(R.id.btnSend);
+        Button buttonSendConnectBook = (Button) findViewById(R.id.buttonSendMessage);
 
         // onClick send button
         buttonSendConnectBook.setOnClickListener(new View.OnClickListener() {

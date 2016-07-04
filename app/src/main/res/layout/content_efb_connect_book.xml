@@ -37,13 +37,13 @@
             android:paddingRight="6dp"/>
 
         <Button
-            android:id="@+id/btnSend"
+            android:id="@+id/buttonSendMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/bg_btn_join"
             android:textColor="@color/white"
-            android:text="@string/btn_send" />
+            android:text="@string/buttonSendMessage" />
     </LinearLayout>
 
 </LinearLayout>

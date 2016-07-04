@@ -5,7 +5,7 @@
     android:background="#FF00EAFF">
 
     <GridView
-        android:id="@+id/gridview"
+        android:id="@+id/mainMenueGridView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:numColumns="auto_fit"
@@ -13,94 +13,5 @@
         android:gravity="center"
         android:scrollbars="none" />
 
+
 </RelativeLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- Stand vom 19.06.2016
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-
-    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:id="@+id/dynamicMainMenueLayout">
-
-    </GridLayout>
-
-
-
-
-
-
-</ScrollView>
-
--->
-
-
-<!-- Stand aelter als Mai 2016
-
-
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:id="@+id/dynamicMainMenueLayout">
-
-    </GridLayout>
-
-
-
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="de.smart_efb.efbapp.smartefb.MainActivity">
-
-
-
-
-
-
-
-
-
-
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
-
-
-
-    <include layout="@layout/content_efb_main" />
-
-</android.support.design.widget.CoordinatorLayout>
--->

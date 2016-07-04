@@ -49,7 +49,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings_efb_a);
+        setContentView(R.layout.activity_settings_efb);
 
         toolbarSettingsEfb = (Toolbar) findViewById(R.id.toolbarSettingsEfb);
         setSupportActionBar(toolbarSettingsEfb);

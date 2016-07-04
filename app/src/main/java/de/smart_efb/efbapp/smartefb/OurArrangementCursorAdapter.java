@@ -80,6 +80,12 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
 
             linkCommentAnArrangement.setText(Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementShowCommentString", "string", context.getPackageName()))+"</a> &middot;" + " <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>"));
             linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+
+
+
+
         }
 
 

@@ -1,6 +1,7 @@
 package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -84,6 +85,11 @@ public class OurArrangementFragmentNow extends Fragment {
 
                 Toast.makeText(fragmentNowContext, "Neue Absprache eingetragen", Toast.LENGTH_SHORT).show();
 
+
+                //Intent intent = new Intent(getActivity(), MainActivity.class);
+                //startActivity(intent);
+
+
             }
         });
         // end test input
@@ -124,7 +130,7 @@ public class OurArrangementFragmentNow extends Fragment {
 
         // new dataadapter
         dataAdapter = new OurArrangementCursorAdapter(
-                fragmentNowContext,
+                getActivity(),
                 cursor,
                 0);
 

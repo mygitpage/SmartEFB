@@ -1,49 +1,18 @@
 <resources>
     <string name="app_name">Smart EFB</string>
 
-    <string name="title_activity_activity_three">ActivityThree</string>
-    <string name="title_activity_first_page">Smart EFB</string>
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Activity Connect Book -->
+    <!-- String Activity Connect Book -->
 
 
+    <string name="buttonSendMessage">SENDEN</string>
 
 
-
-
-
-
-
-
-    <!-- Strings Connect Book -->
-
-    <string name="btn_join">JOIN</string>
-    <string name="btn_send">SENDEN</string>
-
-    <!-- End Strings Connect Book -->
-
-
-
-
-
-
-
-
-
-
-    <!-- String Activity Our Goals -->
-
-
-
-
-
-
-
-    <!-- String Activity Settings -->
-    <string name="txtChatNameHint">Bitte Namen eingeben</string>
-    <string name="radioRoleMother">Ma</string>
-    <string name="radioRoleFather">Pa</string>
-    <string name="radioRoleThird">Dritte</string>
-
-
+    <!-- End String Activity Connect Book -->
+    <!-- End Activity Connect Book -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
 
@@ -66,6 +35,7 @@
     <!-- Main Menue Element Strings End-->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
+
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Activity Settings -->
 
@@ -75,6 +45,14 @@
     <string name="settingsEfbTabTitleId_3">Hilfe</string>
     <string name="settingsEfbTabTitleId_4">SetUp</string>
 
+
+    <!-- settings username in connect book -->
+    <string name="txtChatNameHint">Bitte Namen eingeben</string>
+    <string name="radioRoleMother">Ma</string>
+    <string name="radioRoleFather">Pa</string>
+    <string name="radioRoleThird">Dritte</string>
+
+
     <!-- Activity Settings End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
@@ -82,8 +60,8 @@
 
 
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Activity Our Arrangements -->
     <!-- String Activity Our Arrangement -->
-    <string name="option_our_arrangement_history">Ältere Absprachen</string>
 
 
     <string name="currentArrangementDateFrom">Aktuell vom</string>
@@ -94,33 +72,18 @@
 
     <string name="ourArrangementShowCommentString">Keine Kommentare vorhanden</string>
 
-
-
     <string name="arrangementComment">Absprachen kommentieren</string>
     <string name="btnSendArrangementComment">Kommentar abschicken</string>
     <string name="arrangementCommentIntro">Bitte kommentieren Sie Ihre gewählte Absprache. Ihren Kommentar können Sie nach dem klicken auf den unten stehenden Button nicht mehr ändern. Der Kommentar wird auf das System Ihrer Beraterin/ Berater übertragen.</string>
     <string name="commentHistoryIntroText">Unten sehen Sie alle bisher zu dieser Vereinbarung von Ihnen abgegebenen Kommentare.</string>
 
-
-
-
     <!-- Strings for tab title in activity our arrangement -->
     <string name="ourArrangementTabTitle_1">Aktuell</string>
     <string name="ourArrangementTabTitle_2">Vergangene</string>
 
+
     <!-- Activity our arrangement End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-
-
-    <!-- options menue main -->
-    <string name="option_main_settings">Einstellungen</string>
-    <string name="option_main_about">Über die App</string>
-    <string name="option_main_paaring">Mit Server verbinden</string>
-    <string name="option_main_help">Hilfe</string>
-
-    <!-- Main Activity End -->
-
 
 
 </resources>

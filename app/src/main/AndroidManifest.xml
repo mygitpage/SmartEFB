@@ -19,8 +19,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ActivityTwo" />
-
 
         <activity
             android:name=".ActivityConnectBook"
@@ -30,22 +28,16 @@
         <activity
             android:name=".ActivityOurArrangement"
             android:label="@string/mainMenueElementId_2"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
+
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="android.intent.action.VIEW" />
                 <data android:scheme="smart.efb.ilink_comment" />
             </intent-filter>
-        </activity>
-
-
-        <activity
-            android:name=".ActivityOurArrangementComment"
-            android:label="@string/arrangementComment"
-            android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-
 
         <activity
             android:name=".ActivityOurGoals"
@@ -59,49 +51,6 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-
-
-
-        <activity
-            android:name=".ActivityGridTest"
-            android:label="GridTest"
-            android:theme="@style/AppTheme.ActionBar">
-        </activity>
-
-
-
-
-        <activity
-            android:name=".ActivityEfbSettings"
-            android:label="@string/option_main_settings"
-            android:theme="@style/AppTheme.ActionBar" />
-
-        <activity
-            android:name=".ActivityEfbHelp"
-            android:label="@string/option_main_help"
-            android:theme="@style/AppTheme.ActionBar" />
-
-        <activity
-            android:name=".ActivityEfbAbout"
-            android:label="@string/option_main_about"
-            android:theme="@style/AppTheme.ActionBar" />
-        <activity
-            android:name=".ActivityEfbPaaring"
-            android:label="@string/option_main_paaring"
-            android:theme="@style/AppTheme.ActionBar" />
-
-
-
-
-
-        <activity
-            android:name=".ActivityThree"
-            android:label="@string/title_activity_activity_three"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ActivityFirstPage"
-            android:label="@string/title_activity_first_page"
-            android:theme="@style/AppTheme.ActionBar" />
 
     </application>
 
