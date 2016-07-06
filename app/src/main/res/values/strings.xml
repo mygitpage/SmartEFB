@@ -66,6 +66,9 @@
 
     <string name="currentArrangementDateFrom">Aktuell vom</string>
     <string name="olderArrangementDateFrom">Älter als</string>
+    <string name="commentArrangementsubtitle">Absprache kommentieren</string>
+
+
 
 
     <string name="ourArrangementCommentString">Kommentieren</string>

@@ -24,9 +24,11 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
     Context pagerAdapterContext = null;
 
 
+    // command to choose a fragment in getItem
+    static int fragmentChooser;
 
-    boolean fragmentChooser = true;
-    Fragment fragArraNow, fragArraNowComment;
+    // the fragment
+    Fragment fragArraNow, fragArraNowComment, fragArraOld, fragArraShowComment;
 
 
 
@@ -42,11 +44,11 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
         ourArrangementTabTitleNames = pagerAdapterContext.getResources().getStringArray(R.array.ourArrangementTabTitle);
 
-        fragmentChooser = true;
+        fragmentChooser = 0;
 
         fragArraNow = new OurArrangementFragmentNow();
         fragArraNowComment = new OurArrangementFragmentNowComment();
-
+        fragArraOld = new OurArrangementFragmentOld();
 
     }
 
@@ -59,7 +61,28 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
             case 0:
 
-                if (fragmentChooser) {
+
+                switch (fragmentChooser) {
+
+
+                    case 0:
+                        return fragArraNow;
+
+                    case 1:
+                        return fragArraNowComment;
+
+                    case 2:
+                        //return fragArraShowComment;
+                        break;
+
+
+
+                }
+
+
+
+                /*
+                if (fragmentChooser == 0) {
                     fragmentChooser = false;
                     Toast.makeText(pagerAdapterContext, "Fragment Chooser TRUE", Toast.LENGTH_SHORT).show();
                     return fragArraNow;
@@ -71,12 +94,10 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
                 //return new OurArrangementFragmentNow();
 
+             */
 
             case 1:
-                return new OurArrangementFragmentOld();
-
-            case 2: // Change to Fragment Comment - when needed
-                return new OurArrangementFragmentNow();
+                return fragArraOld;
 
             default:
                 return new OurArrangementFragmentNow();
@@ -101,7 +122,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
         }
         return POSITION_UNCHANGED;*/
 
-        Toast.makeText(pagerAdapterContext, "POSITION NONE!!!!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(pagerAdapterContext, "POSITION NONE!!!!", Toast.LENGTH_SHORT).show();
 
         return POSITION_NONE;
 
@@ -125,6 +146,36 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
         return ourArrangementTabTitleNames[position];
 
     }
+
+
+
+    // set variable for switching between fragments for tab 0
+    public static void setFragmentTabZero(String subFragmentCommand) {
+
+        switch (subFragmentCommand) {
+
+            case "show_arrangement_now": // set fragment on tab zero to OurArrangementFragmentNow
+                fragmentChooser = 0;
+                break;
+
+            case "comment_an_arrangement": // set fragment on tab zero to OurArrangementFragmentNowComment
+                fragmentChooser = 1;
+                break;
+
+            case "show_comment_for_arrangement": // set fragment on tab zero to OurArrangementFragmentShowComment
+                fragmentChooser = 2;
+                break;
+
+
+        }
+
+
+
+
+
+    }
+
+
 
 
 
