@@ -35,27 +35,57 @@
     <EditText
         android:id="@+id/inputArrangementComment"
         android:layout_width="match_parent"
-        android:layout_height="101dp"
+        android:layout_height="100dp"
         android:background="@color/bg_msg_input"
         android:textColor="@color/text_msg_input"
         android:paddingLeft="6dp"
         android:paddingRight="6dp"
-        android:hint="Hier bitte den Kommentar eingeben"
+        android:hint="@string/commentArrangementTextFieldHintText"
         android:gravity="left|top"
         android:paddingBottom="10dp"/>
 
-    <Button
-        android:id="@+id/btnSendArrangementComment"
+
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/bg_btn_join"
-        android:textColor="@color/white"
-        android:text="@string/btnSendArrangementComment"
-        android:paddingLeft="6dp"
-        android:paddingRight="6dp"
-        android:paddingBottom="10dp"
-        android:layout_gravity="center_horizontal" />
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal">
 
+        <Button
+            android:id="@+id/buttonSendArrangementComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_btn_join"
+            android:textColor="@color/white"
+            android:text="@string/btnSendArrangementComment"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="5dp"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/buttonAbortComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_btn_join"
+            android:textColor="@color/white"
+            android:text="@string/btnAbortComment"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="5dp"
+            android:padding="10dp" />
+
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/separateLineCommentArrangement1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="20dp"
+        android:background="@android:color/darker_gray"/>
 
     <TextView
         android:id="@+id/commentHistoryIntro"
@@ -78,7 +108,8 @@
         android:divider="@null"
         android:transcriptMode="alwaysScroll"
         android:stackFromBottom="false"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_gravity="left">
     </ListView>
 
 

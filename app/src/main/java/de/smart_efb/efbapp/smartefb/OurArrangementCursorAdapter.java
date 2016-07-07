@@ -65,7 +65,7 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
             commentLinkBuilder.scheme("smart.efb.ilink_comment")
                     .authority("www.smart-efb.de")
                     .appendQueryParameter("id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
-                    .appendQueryParameter("com", "comment");
+                    .appendQueryParameter("com", "comment_an_arrangement");
 
 
             // make link to show comment for arrangement
@@ -73,7 +73,7 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
             showCommentLinkBuilder.scheme("smart.efb.ilink_comment")
                     .authority("www.smart-efb.de")
                     .appendQueryParameter("id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
-                    .appendQueryParameter("com", "show_comment");;
+                    .appendQueryParameter("com", "show_comment_for_arrangement");;
 
 
 

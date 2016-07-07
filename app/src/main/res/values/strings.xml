@@ -63,27 +63,36 @@
     <!-- Activity Our Arrangements -->
     <!-- String Activity Our Arrangement -->
 
-
+    <!-- Subtitle under Title Our Arrangement -->
     <string name="currentArrangementDateFrom">Aktuell vom</string>
     <string name="olderArrangementDateFrom">Älter als</string>
     <string name="commentArrangementsubtitle">Absprache kommentieren</string>
+    <string name="showCommentArrangementsubtitle">Kommentare zeigen</string>
+    <!-- End subtitle -->
 
 
-
-
+    <!-- Link text for comment, show comments -->
     <string name="ourArrangementCommentString">Kommentieren</string>
-
     <string name="ourArrangementShowCommentString">Keine Kommentare vorhanden</string>
+    <!-- End link text -->
 
+    <!-- String Fragment comment arrangement -->
     <string name="arrangementComment">Absprachen kommentieren</string>
     <string name="btnSendArrangementComment">Kommentar abschicken</string>
+    <string name="btnAbortComment">Abbrechen</string>
     <string name="arrangementCommentIntro">Bitte kommentieren Sie Ihre gewählte Absprache. Ihren Kommentar können Sie nach dem klicken auf den unten stehenden Button nicht mehr ändern. Der Kommentar wird auf das System Ihrer Beraterin/ Berater übertragen.</string>
     <string name="commentHistoryIntroText">Unten sehen Sie alle bisher zu dieser Vereinbarung von Ihnen abgegebenen Kommentare.</string>
 
+    <string name ="commentArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein und klicken dann auf Abschicken. Zurück kommen Sie, indem Sie auf Abbrechen drücken.</string>
+    <!-- End String Fragment comment -->
+
+
     <!-- Strings for tab title in activity our arrangement -->
     <string name="ourArrangementTabTitle_1">Aktuell</string>
+    <string name="ourArrangementTabTitle_1a">Kommentieren</string>
+    <string name="ourArrangementTabTitle_1b">Alle Kommentare</string>
     <string name="ourArrangementTabTitle_2">Vergangene</string>
-
+    <!-- End tab title -->
 
     <!-- Activity our arrangement End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->

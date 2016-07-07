@@ -48,14 +48,15 @@ public class ActivityOurArrangement extends AppCompatActivity {
     OurArrangementViewPagerAdapter ourArrangementViewPagerAdapter;
 
 
-    // Strings for subtitle ("Aktuelle vom...", "Älter als...", "Absprache kommentieren")
+    // Strings for subtitle ("Aktuelle vom...", "Älter als...", "Absprache kommentieren", "Kommentare zeigen" )
     String currentArrangementSubtitleText = "";
     String olderArrangementSubtitleText = "";
     String commentArrangementSubtitleText = "";
+    String showCommentArrangementSubtitleText = "";
 
 
-
-
+    // what to show in tab zero (like show_comment_for_arrangement, comment_an_arrangement, show_arrangement_now)
+    String showCommandFragmentTabZero = "";
 
 
     @Override
@@ -78,10 +79,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
         tabLayoutOurArrangement.setTabGravity(TabLayout.GRAVITY_FILL);
 
 
-
-
-
-
         // and set tablayout with viewpager
         tabLayoutOurArrangement.setupWithViewPager(viewPagerOurArrangement);
 
@@ -94,7 +91,18 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 switch (tab.getPosition()) {
 
                     case 0:
-                        toolbar.setSubtitle(currentArrangementSubtitleText);
+                        switch (showCommandFragmentTabZero) {
+
+                            case "show_arrangement_now":
+                                toolbar.setSubtitle(currentArrangementSubtitleText);
+                                break;
+                            case "comment_an_arrangement":
+                                toolbar.setSubtitle(commentArrangementSubtitleText);
+                                break;
+                            case "show_comment_for_arrangement":
+                                toolbar.setSubtitle(commentArrangementSubtitleText);
+                                break;
+                        }
                         break;
 
                     case 1:
@@ -137,9 +145,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
         Uri commentLinkData;
         // id of the given arrangement
         //int commentArrangementIdFromLink = 0;
-        // link command
-        String commandFromLink = "";
-
 
         super.onNewIntent(intent);
 
@@ -151,8 +156,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             //commentArrangementIdFromLink = Integer.parseInt(commentLinkData.getQueryParameter("id"));
 
-            commandFromLink = commentLinkData.getQueryParameter("com");
-            executeIntentCommand (commandFromLink);
+            executeIntentCommand (commentLinkData.getQueryParameter("com"));
 
 
         }
@@ -162,7 +166,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
     private void executeIntentCommand (String command) {
 
-        if (command.equals("show_comment")) {
+        if (command.equals("show_comment_for_arrangement")) {
 
 
             //OurArrangementViewPagerAdapter.setFragmentTabZero("show_comment_for_arrangement");
@@ -170,18 +174,22 @@ public class ActivityOurArrangement extends AppCompatActivity {
             Toast.makeText(this, "Kommentare zeigen", Toast.LENGTH_SHORT).show();
 
 
-        } else if (command.equals("comment")) {
+        } else if (command.equals("comment_an_arrangement")) {
 
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("comment_an_arrangement");
+
             // set correct subtitle in toolbar in tab zero
             toolbar.setSubtitle(commentArrangementSubtitleText);
+
             // set correct tab zero titel
+            tabLayoutOurArrangement.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1a", "string", getPackageName())));
 
+            // set command show variable
+            showCommandFragmentTabZero = "comment_an_arrangement";
 
-            // call notofy data change
+            // call notify data change
             ourArrangementViewPagerAdapter.notifyDataSetChanged();
-            //Toast.makeText(this, "Kommentieren für", Toast.LENGTH_SHORT).show();
 
 
         } else {
@@ -218,10 +226,15 @@ public class ActivityOurArrangement extends AppCompatActivity {
         //getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", getPackageName()));
 
 
-        // set current and older subtitle text string
+        // init show on tab zero arrangemet now
+        showCommandFragmentTabZero = "show_arrangement_now";
+
+
+        // set variables for subtitle text string
         currentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
         olderArrangementSubtitleText = getResources().getString(getResources().getIdentifier("olderArrangementDateFrom", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
         commentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("commentArrangementsubtitle", "string", getPackageName()));
+        showCommentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("showCommentArrangementsubtitle", "string", getPackageName()));
 
         // init subtitle first time
         toolbar.setSubtitle(currentArrangementSubtitleText);
