@@ -58,6 +58,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // what to show in tab zero (like show_comment_for_arrangement, comment_an_arrangement, show_arrangement_now)
     String showCommandFragmentTabZero = "";
 
+    // arrangement id - for comment or show comment
+    int arrangementIdFromLink = 0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,17 +158,15 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // commentLinkData correct?
         if (commentLinkData != null) {
 
-            //commentArrangementIdFromLink = Integer.parseInt(commentLinkData.getQueryParameter("id"));
-
-            executeIntentCommand (commentLinkData.getQueryParameter("com"));
-
+            // get command and execute it
+            executeIntentCommand (commentLinkData.getQueryParameter("com"), commentLinkData);
 
         }
 
     }
 
 
-    private void executeIntentCommand (String command) {
+    private void executeIntentCommand (String command, Uri linkData) {
 
         if (command.equals("show_comment_for_arrangement")) {
 
@@ -175,6 +177,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
         } else if (command.equals("comment_an_arrangement")) {
+
+            // get data that comes with intent-link
+            arrangementIdFromLink = Integer.parseInt(linkData.getQueryParameter("id"));
 
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("comment_an_arrangement");
@@ -255,6 +260,15 @@ public class ActivityOurArrangement extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+    }
+
+
+
+    // geter for DB-Id of arrangement
+    public int getArrangementIdFromLink () {
+
+        return arrangementIdFromLink;
 
     }
 

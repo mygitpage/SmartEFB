@@ -40,6 +40,10 @@ public class SettingsEfbFragmentD extends Fragment {
     View viewFragmentD;
 
 
+    // reference to the DB
+    DBAdapter myDb;
+
+
     // total number of elements (in test-mode please edit variable in class MainActivity please too!!!!!!!!!!!!!)
     private static int mainMenueNumberOfElements=8;
     // title of main Menue Elements
@@ -68,6 +72,11 @@ public class SettingsEfbFragmentD extends Fragment {
 
         prefs = fragmentContextD.getSharedPreferences("smartEfbSettings", fragmentContextD.MODE_PRIVATE);
         prefsEditor = prefs.edit();
+
+
+        // init the DB
+        myDb = new DBAdapter(fragmentContextD);
+
 
         preSelectElements();
 
@@ -204,9 +213,40 @@ public class SettingsEfbFragmentD extends Fragment {
                 Toast.makeText(fragmentContextD, "Vereinbarungen Kommentare " + aktiv_passivText, Toast.LENGTH_SHORT).show();
 
             }
-        });;
+        });
+
+
+
+        // textfield and button -> insert new test arrangement
+        final EditText txtInputArrangement = (EditText) viewFragmentD.findViewById(R.id.arrangementText);
+        Button buttonSendArrangement = (Button) viewFragmentD.findViewById(R.id.arrangementTextSend);
+        // onClick send button
+        buttonSendArrangement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                long newID = myDb.insertRowOurArrangement(txtInputArrangement.getText().toString(), "testuser", prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()));
+
+                txtInputArrangement.setText("");
+
+
+                Toast.makeText(fragmentContextD, "Neue Testabsprache eingetragen", Toast.LENGTH_SHORT).show();
+
+
+                //Intent intent = new Intent(getActivity(), MainActivity.class);
+                //startActivity(intent);
+
+
+            }
+        });
+        // end insert new test arrangement
+
+
+
 
     }
+
+
 
     //
     // onClickListener for radioButtons chat role

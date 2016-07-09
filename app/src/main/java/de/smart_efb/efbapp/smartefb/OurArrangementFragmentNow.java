@@ -67,39 +67,6 @@ public class OurArrangementFragmentNow extends Fragment {
         displayActualArrangementSet();
 
 
-
-
-        // produces test date and write to the db
-        final EditText txtInputArrangement = (EditText) viewFragmentNow.findViewById(R.id.arrangementText);
-        Button buttonSendArrangement = (Button) viewFragmentNow.findViewById(R.id.arrangementTextSend);
-        // onClick send button
-        buttonSendArrangement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                long newID = myDb.insertRowOurArrangement(txtInputArrangement.getText().toString(), "testuser", currentDateOfArrangement);
-
-                txtInputArrangement.setText("");
-
-                displayActualArrangementSet();
-
-                Toast.makeText(fragmentNowContext, "Neue Absprache eingetragen", Toast.LENGTH_SHORT).show();
-
-
-                //Intent intent = new Intent(getActivity(), MainActivity.class);
-                //startActivity(intent);
-
-
-            }
-        });
-        // end test input
-
-
-
-
-
-
-
     }
 
 
@@ -136,6 +103,7 @@ public class OurArrangementFragmentNow extends Fragment {
 
         // Assign adapter to ListView
         listView.setAdapter(dataAdapter);
+
 
     }
 
