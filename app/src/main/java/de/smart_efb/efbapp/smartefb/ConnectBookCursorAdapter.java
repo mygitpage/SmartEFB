@@ -13,9 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
-// https://coderwall.com/p/fmavhg/android-cursoradapter-with-custom-layout-and-how-to-use-it
-
-
 
 /**
  * Created by ich on 31.03.16.
@@ -23,17 +20,13 @@ import java.util.Calendar;
 public class ConnectBookCursorAdapter extends CursorAdapter {
 
 
-
         private LayoutInflater cursorInflater;
 
-        private int switschLeftRight;
 
         // Default constructor
         public ConnectBookCursorAdapter(Context context, Cursor cursor, int flags) {
             super(context, cursor, flags);
             cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            switschLeftRight = 0;
 
         }
 
@@ -73,10 +66,6 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
             return cursorInflater.inflate(R.layout.list_item_message_center, parent, false);
 
         }
-
-
-
-
 
 
 }

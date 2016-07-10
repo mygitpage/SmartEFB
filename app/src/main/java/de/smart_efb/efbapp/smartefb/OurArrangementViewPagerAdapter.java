@@ -75,26 +75,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
                         //return fragArraShowComment;
                         break;
 
-
-
                 }
-
-
-
-                /*
-                if (fragmentChooser == 0) {
-                    fragmentChooser = false;
-                    Toast.makeText(pagerAdapterContext, "Fragment Chooser TRUE", Toast.LENGTH_SHORT).show();
-                    return fragArraNow;
-                } else {
-                    fragmentChooser = true;
-                    Toast.makeText(pagerAdapterContext, "!!!!!!!Fragment Chooser FASLE", Toast.LENGTH_SHORT).show();
-                    return fragArraNowComment;
-                }
-
-                //return new OurArrangementFragmentNow();
-
-             */
 
             case 1:
                 return fragArraOld;
@@ -112,22 +93,8 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getItemPosition(Object object)
     {
-        /*if (object instanceof FacturasFragment &&
-                mFragmentAtPos0 instanceof DetallesFacturaFragment) {
-            return POSITION_NONE;
-        }
-        if (object instanceof DetallesFacturaFragment &&
-                mFragmentAtPos0 instanceof FacturasFragment) {
-            return POSITION_NONE;
-        }
-        return POSITION_UNCHANGED;*/
-
-        //Toast.makeText(pagerAdapterContext, "POSITION NONE!!!!", Toast.LENGTH_SHORT).show();
 
         return POSITION_NONE;
-
-
-
 
     }
 

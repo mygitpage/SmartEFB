@@ -10,11 +10,10 @@
         android:id="@+id/arrangementCommentIntro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="13dp"
+        android:textSize="18dp"
         android:textColor="@color/title_gray"
-        android:gravity="left"
-        android:paddingLeft="6dp"
-        android:paddingRight="6dp"
+        android:gravity="center"
+        android:paddingTop="10dp"
         android:paddingBottom="10dp"/>
 
 

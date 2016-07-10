@@ -125,10 +125,10 @@ public class SettingsEfbFragmentD extends Fragment {
         // show chat name in textfield
         //
         EditText txtChatName = (EditText) viewFragmentD.findViewById(R.id.txtChatName);
-        String chatName = prefs.getString("connectBookName", "Jon Down");
+        String chatName = prefs.getString("userName", "Jon Down");
         txtChatName.setText(chatName);
         // set onClickListener button save new chatName
-        Button tmpSaveChatNameButton = (Button) viewFragmentD.findViewById(R.id.saveChatName);
+        Button tmpSaveChatNameButton = (Button) viewFragmentD.findViewById(R.id.saveUserName);
         tmpSaveChatNameButton.setOnClickListener(new View.OnClickListener() { // OnclickListener for button save chat name
 
             @Override
@@ -137,10 +137,10 @@ public class SettingsEfbFragmentD extends Fragment {
                 EditText txtChatName = (EditText) viewFragmentD.findViewById(R.id.txtChatName);
                 String stringChatName = txtChatName.getText().toString();
 
-                prefsEditor.putString("connectBookName", stringChatName);
+                prefsEditor.putString("userName", stringChatName);
                 prefsEditor.commit();
 
-                Toast.makeText(fragmentContextD, "Neuer Chat Name gespeichert", Toast.LENGTH_SHORT).show();
+                Toast.makeText(fragmentContextD, "Neuer Username gespeichert", Toast.LENGTH_SHORT).show();
 
             }
         });

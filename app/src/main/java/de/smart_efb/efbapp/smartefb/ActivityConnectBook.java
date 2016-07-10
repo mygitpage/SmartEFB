@@ -96,7 +96,7 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         // init the connect book variables
         roleConnectBook = prefs.getInt("connectBookRole", 0);
-        userNameConnectBook = prefs.getString("connectBookName", "Jon Dow");
+        userNameConnectBook = prefs.getString("userName", "Jon Dow");
 
 
     }
@@ -148,57 +148,6 @@ public class ActivityConnectBook extends AppCompatActivity {
         // Assign adapter to ListView
         listView.setAdapter(dataAdapter);
 
-
-
-
-        //
-        // LOOK AT: http://www.mysamplecode.com/2012/07/android-listview-cursoradapter-sqlite.html
-        //
-
-
-        /*
-
-        Override View
-        http://stackoverflow.com/questions/4777272/android-listview-with-different-layout-for-each-row?rq=1
-
-        http://android.amberfog.com/?p=296
-
-
-
-
-         */
-
-
-        //------------------------------------
-        // The desired columns to be bound
-        /*
-        String[] columns = new String[] {
-                DBAdapter.KEY_WRITE_TIME,
-                DBAdapter.KEY_AUTHOR_NAME,
-                DBAdapter.KEY_MESSAGE,
-                DBAdapter.KEY_ROLE
-        };
-
-        // the XML defined views which the data will be bound to
-
-                int[] to = new int[] {
-                R.id.writetime,
-                R.id.name,
-                R.id.message,
-                R.id.role
-        };
-        */
-
-        // create the adapter using the cursor pointing to the desired data
-        //as well as the layout information
-        /*
-        dataAdapter = new SimpleCursorAdapter(
-                this, R.layout.list_item_message_complet,
-                cursor,
-                columns,
-                to,
-                0);
-        */
 
     }
 

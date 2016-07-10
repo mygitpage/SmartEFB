@@ -54,12 +54,16 @@ public class ActivityOurArrangement extends AppCompatActivity {
     String commentArrangementSubtitleText = "";
     String showCommentArrangementSubtitleText = "";
 
+    // Uri from intent that holds data
+    Uri intentLinkData;
 
     // what to show in tab zero (like show_comment_for_arrangement, comment_an_arrangement, show_arrangement_now)
     String showCommandFragmentTabZero = "";
 
-    // arrangement id - for comment or show comment
-    int arrangementIdFromLink = 0;
+    // arrangement db-id - for comment or show comment
+    int arrangementDbIdFromLink = 0;
+    //arrangement number in listview
+    int arrangementNumberInListView = 0;
 
 
 
@@ -145,30 +149,25 @@ public class ActivityOurArrangement extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
 
-        // uri to handle the data from the link
-        Uri commentLinkData;
-        // id of the given arrangement
-        //int commentArrangementIdFromLink = 0;
-
         super.onNewIntent(intent);
 
         // get the link data
-        commentLinkData = intent.getData();
+        intentLinkData = intent.getData();
 
         // commentLinkData correct?
-        if (commentLinkData != null) {
+        if (intentLinkData != null) {
 
             // get command and execute it
-            executeIntentCommand (commentLinkData.getQueryParameter("com"), commentLinkData);
+            executeIntentCommand (intentLinkData.getQueryParameter("com"));
 
         }
 
     }
 
 
-    private void executeIntentCommand (String command, Uri linkData) {
+    public void executeIntentCommand (String command) {
 
-        if (command.equals("show_comment_for_arrangement")) {
+        if (command.equals("show_comment_for_arrangement")) { // Show fragment all comments
 
 
             //OurArrangementViewPagerAdapter.setFragmentTabZero("show_comment_for_arrangement");
@@ -176,10 +175,11 @@ public class ActivityOurArrangement extends AppCompatActivity {
             Toast.makeText(this, "Kommentare zeigen", Toast.LENGTH_SHORT).show();
 
 
-        } else if (command.equals("comment_an_arrangement")) {
+        } else if (command.equals("comment_an_arrangement")) { // Show fragment comment arrangement
 
             // get data that comes with intent-link
-            arrangementIdFromLink = Integer.parseInt(linkData.getQueryParameter("id"));
+            arrangementDbIdFromLink = Integer.parseInt(intentLinkData.getQueryParameter("db_id")); // arrangement DB-ID
+            arrangementNumberInListView = Integer.parseInt(intentLinkData.getQueryParameter("arr_num"));
 
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("comment_an_arrangement");
@@ -197,11 +197,23 @@ public class ActivityOurArrangement extends AppCompatActivity {
             ourArrangementViewPagerAdapter.notifyDataSetChanged();
 
 
-        } else {
+        } else { // Show fragment arrangement now
 
+            //set fragment in tab zero to comment
+            OurArrangementViewPagerAdapter.setFragmentTabZero("show_arrangement_now");
 
+            // set correct subtitle in toolbar in tab zero
+            toolbar.setSubtitle(currentArrangementSubtitleText);
 
-            Toast.makeText(this, "Keinen Befehl erkannt mit ID", Toast.LENGTH_SHORT).show();
+            // set correct tab zero titel
+            tabLayoutOurArrangement.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1", "string", getPackageName())));
+
+            // set command show variable
+            showCommandFragmentTabZero = "show_arrangement_now";
+
+            // call notify data change
+            ourArrangementViewPagerAdapter.notifyDataSetChanged();
+
         }
 
 
@@ -266,12 +278,19 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
     // geter for DB-Id of arrangement
-    public int getArrangementIdFromLink () {
+    public int getArrangementDbIdFromLink () {
 
-        return arrangementIdFromLink;
+        return arrangementDbIdFromLink;
 
     }
 
+
+    // geter for arrangement number i8n listview
+    public int getArrangementNumberInListview () {
+
+        return arrangementNumberInListView;
+
+    }
 
 
 }
