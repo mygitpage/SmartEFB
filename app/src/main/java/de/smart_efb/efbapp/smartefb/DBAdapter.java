@@ -1,4 +1,7 @@
-package de.smart_efb.efbapp.smartefb; /**
+package de.smart_efb.efbapp.smartefb;
+
+
+/**
  * Created by ich on 20.03.16.
  */
 
@@ -33,7 +36,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 13;
+    public static final int DATABASE_VERSION = 14;
 
 
     // Context of application who uses us.
@@ -365,7 +368,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = "id_arrangement = " + arrangementId;
+        String where = OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT + "=" + arrangementId;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 

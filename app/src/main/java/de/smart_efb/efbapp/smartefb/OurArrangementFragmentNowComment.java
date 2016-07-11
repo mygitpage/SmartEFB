@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -111,11 +113,16 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
         // textview intro for the history of comments
         TextView textCommentHistoryIntro = (TextView) viewFragmentNowComment.findViewById(R.id.commentHistoryIntro);
-        if (cursorArrangementAllComments.getColumnCount() > 0) {
-            textCommentHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryIntroText));
-            Toast.makeText(fragmentNowCommentContext, "Anzahl Kommentare: " + cursorArrangementAllComments.getColumnCount(), Toast.LENGTH_SHORT).show();
+        if (cursorArrangementAllComments.getCount() > 0) {
+
+            textCommentHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryIntroText)+ " " + arrangementNumberInListView + ":");
+            Toast.makeText(fragmentNowCommentContext, cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)), Toast.LENGTH_SHORT).show();
+
         } else {
-            textCommentHistoryIntro.setVisibility(View.INVISIBLE);
+
+            LinearLayout comentHistoryLinearLayoutContainer = (LinearLayout) viewFragmentNowComment.findViewById(R.id.commentHistoryContainer);
+            comentHistoryLinearLayoutContainer.setVisibility(View.INVISIBLE);
+
         }
 
 
@@ -167,6 +174,29 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
 
     }
+
+
+    public void displayActualCommentSet () {
+
+
+        // find the listview for comment history
+        ListView commentHistorylistView = (ListView) viewFragmentNowComment.findViewById(R.id.listCommentHistory);
+
+
+        // new dataadapter
+        OurArrangementCommentHistoryCursorAdapter commentHistoryDataAdapter = new OurArrangementCommentHistoryCursorAdapter(
+                getActivity(),
+                cursorArrangementAllComments,
+                0);
+
+        // Assign adapter to ListView
+        commentHistorylistView.setAdapter(commentHistoryDataAdapter);
+
+
+    }
+
+
+
 
 
 

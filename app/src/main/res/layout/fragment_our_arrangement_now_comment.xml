@@ -26,7 +26,9 @@
         android:gravity="left"
         android:paddingLeft="6dp"
         android:paddingRight="6dp"
-        android:paddingBottom="10dp"/>
+        android:paddingBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp" />
 
 
 
@@ -50,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="5dp"
+        android:layout_margin="15dp"
         android:gravity="center"
         android:layout_gravity="center_horizontal">
 
@@ -79,37 +81,43 @@
     </LinearLayout>
 
 
-    <View
-        android:id="@+id/separateLineCommentArrangement1"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_margin="20dp"
-        android:background="@android:color/darker_gray"/>
 
-    <TextView
-        android:id="@+id/commentHistoryIntro"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textColor="@color/colorPrimary"
+        android:orientation="vertical"
         android:gravity="left"
-        android:paddingLeft="6dp"
-        android:paddingRight="6dp"
-        android:paddingBottom="10dp"
-        android:visibility="visible"/>
+        android:layout_gravity="left"
+        android:id="@+id/commentHistoryContainer"
+        android:visibility="visible">
 
-    <ListView
-        android:id="@+id/listCommentHistory"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@null"
-        android:divider="@null"
-        android:transcriptMode="alwaysScroll"
-        android:stackFromBottom="false"
-        android:visibility="visible"
-        android:layout_gravity="left">
-    </ListView>
+        <View
+            android:id="@+id/separateLineCommentInContainer"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <TextView
+            android:id="@+id/commentHistoryIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:paddingBottom="10dp"/>
+
+        <ListView
+            android:id="@+id/listCommentHistory"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:divider="@null"
+            android:transcriptMode="alwaysScroll"
+            android:stackFromBottom="false"
+            android:layout_gravity="left">
+        </ListView>
+    </LinearLayout>
 
 
 

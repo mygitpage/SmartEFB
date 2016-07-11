@@ -78,10 +78,10 @@
 
     <!-- String Fragment comment arrangement -->
     <string name="arrangementComment">Absprachen kommentieren</string>
-    <string name="btnSendArrangementComment">Kommentar abschicken</string>
+    <string name="btnSendArrangementComment">Kommentar senden</string>
     <string name="btnAbortComment">Abbrechen</string>
     <string name="arrangementCommentIntro">Bitte kommentieren Sie Absprache</string>
-    <string name="commentHistoryIntroText">Unten sehen Sie alle bisher zu dieser Vereinbarung von Ihnen abgegebenen Kommentare.</string>
+    <string name="commentHistoryIntroText">Alle bisherigen Kommentare zu Absprache</string>
 
     <string name ="commentArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein und klicken dann auf Abschicken. Zurück kommen Sie, indem Sie auf Abbrechen drücken.</string>
     <string name="commentSuccsesfulySend">Kommentar erfolgreich gesendet</string>
