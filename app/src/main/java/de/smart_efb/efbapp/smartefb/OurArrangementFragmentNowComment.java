@@ -28,6 +28,8 @@ public class OurArrangementFragmentNowComment extends Fragment {
     // fragment context
     Context fragmentNowCommentContext = null;
 
+    // layout inflater for fragment
+    LayoutInflater layoutInflaterForFragment;
 
 
     // reference to the DB
@@ -53,6 +55,8 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
+
+        layoutInflaterForFragment = layoutInflater;
 
         viewFragmentNowComment = layoutInflater.inflate(R.layout.fragment_our_arrangement_now_comment, null);
 
@@ -116,7 +120,11 @@ public class OurArrangementFragmentNowComment extends Fragment {
         if (cursorArrangementAllComments.getCount() > 0) {
 
             textCommentHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryIntroText)+ " " + arrangementNumberInListView + ":");
-            Toast.makeText(fragmentNowCommentContext, cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)), Toast.LENGTH_SHORT).show();
+            //displayActualCommentSet();
+            //Toast.makeText(fragmentNowCommentContext, cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)), Toast.LENGTH_SHORT).show();
+
+            addActualCommentSetToView ();
+
 
         } else {
 
@@ -197,6 +205,59 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
 
 
+    public void addActualCommentSetToView () {
+
+        LinearLayout commentHolderLayout = (LinearLayout) viewFragmentNowComment.findViewById(R.id.commentHolder);
+
+
+        View child = layoutInflaterForFragment.inflate(R.layout.list_our_arrangement_comment_history, null);
+        commentHolderLayout.addView(child);
+        TextView textViewCommentHistory = (TextView) viewFragmentNowComment.findViewById(R.id.listTextCommentHistory);
+        textViewCommentHistory.setText(cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)));
+        textViewCommentHistory.setId(12);
+
+        cursorArrangementAllComments.moveToNext();
+
+        /*
+        child = layoutInflaterForFragment.inflate(R.layout.list_our_arrangement_comment_history, null);
+        commentHolderLayout.addView(child);
+        textViewCommentHistory = (TextView) viewFragmentNowComment.findViewById(R.id.listTextCommentHistory);
+        textViewCommentHistory.setText(cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)));
+        textViewCommentHistory.setId(13);
+        */
+
+        /*
+        int i = 1;
+
+        try {
+
+            cursorArrangementAllComments.moveToFirst();
+            while (cursorArrangementAllComments.moveToNext()) {
+
+                View child = layoutInflaterForFragment.inflate(R.layout.list_our_arrangement_comment_history, null);
+                commentHolderLayout.addView(child);
+                TextView textViewCommentHistory = (TextView) viewFragmentNowComment.findViewById(R.id.listTextCommentHistory);
+                textViewCommentHistory.setText(cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)));
+                textViewCommentHistory.setId(i);
+                i++;
+
+            }
+        } finally {
+            cursorArrangementAllComments.close();
+        }
+        */
+
+
+
+
+
+
+
+
+
+
+
+    }
 
 
 

@@ -91,7 +91,7 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-                return cursorInflater.inflate(R.layout.list_our_arrangement_left, parent, false);
+                return cursorInflater.inflate(R.layout.list_our_arrangement_now, parent, false);
 
     }
 

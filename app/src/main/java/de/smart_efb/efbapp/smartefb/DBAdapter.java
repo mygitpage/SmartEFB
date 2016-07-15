@@ -370,7 +370,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         String where = OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT + "=" + arrangementId;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
-                where, null, null, null, null, null);
+                where, null, null, null, OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " DESC", null);
 
         if (c != null) {
             c.moveToFirst();

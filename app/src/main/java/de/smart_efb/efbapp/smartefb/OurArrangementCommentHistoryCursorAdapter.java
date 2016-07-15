@@ -3,9 +3,6 @@ package de.smart_efb.efbapp.smartefb;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,21 +37,26 @@ public class OurArrangementCommentHistoryCursorAdapter extends CursorAdapter {
         SharedPreferences prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
 
 
-        // create the arrangement
+        // create the comment text
+        TextView textViewCommentHistory = (TextView) view.findViewById(R.id.listTextCommentHistory);
+        String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT));
+        textViewCommentHistory.setText(title);
+
+
+        // create the number of comment
+        TextView numberOfComment = (TextView) view.findViewById(R.id.listCommentHistoryNumber);
+        //countNumberOfCurrentComment = cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
+        numberOfComment.setText(Integer.toString(cursor.getPosition()+1));
+
+
+        // create author and date text
+        TextView textViewAuthorAndDate = (TextView) view.findViewById(R.id.commentHistoryAuthorAndDate);
+        String authorAndDate = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME))+ ", " + EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy HH:mm:ss");
+        textViewAuthorAndDate.setText(authorAndDate);
+
+
 
         /*
-        TextView textViewArrangement = (TextView) view.findViewById(R.id.listTextArrangement);
-        String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
-        textViewArrangement.setText(title);
-
-
-        // create the number of arrangement
-        TextView numberOfArrangement = (TextView) view.findViewById(R.id.listArrangementNumber);
-        //countNumberOfCurrentArrangement = cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
-        numberOfArrangement.setText(Integer.toString(cursor.getPosition()+1));
-
-
-
         // Show link for comment in our arrangement
         if (prefs.getBoolean("showArrangementComment", false)) {
             // create the comment link
@@ -92,7 +94,7 @@ public class OurArrangementCommentHistoryCursorAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-        return cursorInflater.inflate(R.layout.list_our_arrangement_left, parent, false);
+        return cursorInflater.inflate(R.layout.list_our_arrangement_comment_history, parent, false);
 
     }
 
