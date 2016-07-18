@@ -73,7 +73,7 @@
 
     <!-- Link text for comment, show comments -->
     <string name="ourArrangementCommentString">Kommentieren</string>
-    <string name="ourArrangementShowCommentString">Keine Kommentare vorhanden</string>
+    <string name="ourArrangementShowCommentString">Keine Kommentare</string>
     <!-- End link text -->
 
     <!-- String Fragment comment arrangement -->

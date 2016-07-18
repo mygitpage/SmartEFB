@@ -47,7 +47,8 @@
         android:layout_height="wrap_content"
         android:textSize="12dp"
         android:textColor="@color/title_gray"
-        android:gravity="right"/>
+        android:gravity="right"
+        android:textColorLink="@color/colorPrimary"/>
 
 
     </LinearLayout>
