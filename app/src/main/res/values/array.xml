@@ -15,27 +15,27 @@
 
     // Main menue button color active
     <string-array name="mainMenueElementColor">
-        <item>#d500ff</item>
-        <item>#FF59FF00</item>
-        <item>#FF0062FF</item>
-        <item>#FFD500FF</item>
-        <item>#FF59FF00</item>
-        <item>#FF0062FF</item>
-        <item>#FFD500FF</item>
-        <item>#FF59FF00</item>
+        <item>#FF9FAC81</item>
+        <item>#FF007188</item>
+        <item>#FFD5B40B</item>
+        <item>#FF9EC6C0</item>
+        <item>#FF796776</item>
+        <item>#FFED686A</item>
+        <item>#FF354644</item>
+        <item>#FFACAAA4</item>
     </string-array>
 
 
     // Main menue button color passiv
     <string-array name="mainMenueElementColorLight">
-        <item>#22D500FF</item>
-        <item>#2259FF00</item>
-        <item>#220062FF</item>
-        <item>#22D500FF</item>
-        <item>#2259FF00</item>
-        <item>#220062FF</item>
-        <item>#22D500FF</item>
-        <item>#2259FF00</item>
+        <item>#AA9FAC81</item>
+        <item>#AA007188</item>
+        <item>#AAD5B40B</item>
+        <item>#AA9EC6C0</item>
+        <item>#AA796776</item>
+        <item>#AAED686A</item>
+        <item>#AA354644</item>
+        <item>#AAACAAA4</item>
     </string-array>
 
 

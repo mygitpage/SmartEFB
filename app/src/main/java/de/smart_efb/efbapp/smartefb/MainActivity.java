@@ -255,7 +255,6 @@ public class MainActivity extends AppCompatActivity {
 
             linearLayoutView.setBackgroundColor(Color.parseColor(tmpLinearLayoutBackgroundColor));
 
-
             return grid;
         }
     }

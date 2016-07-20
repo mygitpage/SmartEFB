@@ -6,7 +6,7 @@
     android:padding="5dp"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="#00eaff">
+    android:background="@null">
 
     <ImageView
         android:id="@+id/grid_item_image"
