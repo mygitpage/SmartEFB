@@ -22,11 +22,11 @@
             android:id="@+id/arrangementCommentIntro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="16dp"
             android:textColor="@color/text_color"
-            android:gravity="center"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"/>
+            android:gravity="left"
+            android:padding="10dp"
+            android:textStyle="bold" />
 
 
         <TextView
@@ -34,13 +34,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/text_color"
             android:gravity="left"
-            android:paddingLeft="6dp"
-            android:paddingRight="6dp"
-            android:paddingBottom="10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp" />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"/>
 
 
 
@@ -48,14 +46,14 @@
         <EditText
             android:id="@+id/inputArrangementComment"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/bg_msg_input"
-            android:textColor="@color/text_msg_input"
-            android:paddingLeft="6dp"
-            android:paddingRight="6dp"
+            android:layout_height="150dp"
+            android:textColor="@color/text_color_white"
             android:hint="@string/commentArrangementTextFieldHintText"
             android:gravity="left|top"
-            android:paddingBottom="10dp"/>
+            android:background="@color/inputfield_background"
+            android:layout_margin="10dp"
+            android:textColorHint="@color/text_color_white"
+            android:inputType="textNoSuggestions|text|textMultiLine" />
 
 
 
@@ -103,11 +101,7 @@
             android:id="@+id/commentHistoryContainer"
             android:visibility="visible">
 
-            <View
-                android:id="@+id/separateLineCommentInContainer"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"/>
+
 
             <TextView
                 android:id="@+id/commentHistoryIntro"
@@ -116,7 +110,8 @@
                 android:textSize="16dp"
                 android:textColor="@color/text_color"
                 android:gravity="left"
-                android:paddingBottom="10dp"/>
+                android:padding="10dp"
+                android:textStyle="bold" />
 
 
 
@@ -125,7 +120,8 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center_vertical|left"
-                android:id="@+id/commentHolder"/>
+                android:id="@+id/commentHolder"
+                android:padding="10dp" />
 
             <!--
             <ListView

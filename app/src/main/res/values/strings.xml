@@ -83,7 +83,7 @@
     <string name="arrangementCommentIntro">Bitte kommentieren Sie Absprache</string>
     <string name="commentHistoryIntroText">Alle bisherigen Kommentare zu Absprache</string>
 
-    <string name ="commentArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein und klicken dann auf Abschicken. Zurück kommen Sie, indem Sie auf Abbrechen drücken.</string>
+    <string name ="commentArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
     <string name="commentSuccsesfulySend">Kommentar erfolgreich gesendet</string>
     <string name="commentToShort">Ihr Kommentar ist zu kurz!</string>
 

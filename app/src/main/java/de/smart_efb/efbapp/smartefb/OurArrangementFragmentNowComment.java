@@ -110,7 +110,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         // build the view
         //textview for the comment intro
         TextView textCommentIntro = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementCommentIntro);
-        textCommentIntro.setText(this.getResources().getString(R.string.arrangementCommentIntro) + " " + arrangementNumberInListView + ":");
+        textCommentIntro.setText(this.getResources().getString(R.string.arrangementCommentIntro) + " " + arrangementNumberInListView);
 
         // textview for the arrangement
         TextView textViewArrangement = (TextView) viewFragmentNowComment.findViewById(R.id.choosenArrangement);
@@ -122,7 +122,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         TextView textCommentHistoryIntro = (TextView) viewFragmentNowComment.findViewById(R.id.commentHistoryIntro);
         if (cursorArrangementAllComments.getCount() > 0) {
 
-            textCommentHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryIntroText)+ " " + arrangementNumberInListView + ":");
+            textCommentHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryIntroText)+ " " + arrangementNumberInListView);
             //displayActualCommentSet();
             //Toast.makeText(fragmentNowCommentContext, cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)), Toast.LENGTH_SHORT).show();
 
@@ -237,6 +237,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
 
             //add textView for comment number
+            /*
             TextView txtViewCommentNumber = new TextView (fragmentNowCommentContext);
             txtViewCommentNumber.setText(Integer.toString(actualCursorNumber));
             txtViewCommentNumber.setId(actualCursorNumber);
@@ -245,7 +246,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
             txtViewCommentNumber.setTextSize(35);
             txtViewCommentNumber.setGravity(Gravity.RIGHT);
             txtViewCommentNumber.setPadding(10,0,0,0);
-
+            */
 
 
 
@@ -256,11 +257,11 @@ public class OurArrangementFragmentNowComment extends Fragment {
             TextView txtViewCommentText = new TextView (fragmentNowCommentContext);
             txtViewCommentText.setText(cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)));
             txtViewCommentText.setId(actualCursorNumber);
-            txtViewCommentText.setTextColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.title_gray));
+            txtViewCommentText.setTextColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.text_color));
             txtViewCommentText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             txtViewCommentText.setTextSize(16);
             txtViewCommentText.setGravity(Gravity.LEFT);
-            txtViewCommentText.setPadding(10,0,10,0);
+            //txtViewCommentText.setPadding(20,0,20,0);
 
 
 
@@ -268,25 +269,29 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
             //add textView for comment author and date
             TextView txtViewCommentAuthorAndDate = new TextView (fragmentNowCommentContext);
-            txtViewCommentAuthorAndDate.setText(cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME)));
+
+
+            long writeTime = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
+            String authorAndDate = cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME)) + ", " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy - HH:mm");
+            txtViewCommentAuthorAndDate.setText(authorAndDate);
             txtViewCommentAuthorAndDate.setId(actualCursorNumber);
-            txtViewCommentAuthorAndDate.setTextColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.title_gray));
+            txtViewCommentAuthorAndDate.setTextColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.text_color));
             txtViewCommentAuthorAndDate.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             txtViewCommentAuthorAndDate.setTextSize(14);
             txtViewCommentAuthorAndDate.setGravity(Gravity.RIGHT);
-            txtViewCommentAuthorAndDate.setPadding(0,10,0,0);
+            txtViewCommentAuthorAndDate.setPadding(0,0,0,55);
 
 
             //
             l_inner_layout.addView (txtViewCommentText);
             l_inner_layout.addView (txtViewCommentAuthorAndDate);
 
-            l_layout.addView (txtViewCommentNumber);
-            l_layout.addView (l_inner_layout);
+            //l_layout.addView (txtViewCommentNumber);
+            //l_layout.addView (l_inner_layout);
 
 
 
-            commentHolderLayout.addView(l_layout);
+            commentHolderLayout.addView(l_inner_layout);
 
 
 
