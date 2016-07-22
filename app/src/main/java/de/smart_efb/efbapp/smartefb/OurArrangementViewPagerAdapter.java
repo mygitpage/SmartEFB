@@ -32,10 +32,6 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
 
 
-
-
-
-
     public OurArrangementViewPagerAdapter (FragmentManager ourArrangementFragmentManager, Context context) {
 
         super (ourArrangementFragmentManager);
@@ -49,6 +45,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
         fragArraNow = new OurArrangementFragmentNow();
         fragArraNowComment = new OurArrangementFragmentNowComment();
         fragArraOld = new OurArrangementFragmentOld();
+        fragArraShowComment = new OurArrangementFragmentShowComment();
 
     }
 
@@ -72,7 +69,10 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
                         return fragArraNowComment;
 
                     case 2:
-                        //return fragArraShowComment;
+                        return fragArraShowComment;
+
+                    case 3:
+                        //return fragArraEvaluateComment;
                         break;
 
                 }
@@ -131,6 +131,10 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
             case "show_comment_for_arrangement": // set fragment on tab zero to OurArrangementFragmentShowComment
                 fragmentChooser = 2;
+                break;
+
+            case "evaluate_an_arrangement": // set fragment on tab zero to OurArrangementFragmentEvaluateComment
+                fragmentChooser = 3;
                 break;
 
 

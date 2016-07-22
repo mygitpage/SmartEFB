@@ -67,13 +67,15 @@
     <string name="currentArrangementDateFrom">Aktuell vom</string>
     <string name="olderArrangementDateFrom">Älter als</string>
     <string name="commentArrangementsubtitle">Absprache kommentieren</string>
-    <string name="showCommentArrangementsubtitle">Kommentare zeigen</string>
+    <string name="showCommentArrangementsubtitle">Gewählte Kommentare zeigen</string>
     <!-- End subtitle -->
 
 
-    <!-- Link text for comment, show comments -->
+    <!-- Link text for comment, show comments and evaluate-->
     <string name="ourArrangementCommentString">Kommentieren</string>
     <string name="ourArrangementShowCommentString">Keine Kommentare</string>
+    <string name="ourArrangementEvaluateString">Bewerten</string>
+
     <!-- End link text -->
 
     <!-- String Fragment comment arrangement -->

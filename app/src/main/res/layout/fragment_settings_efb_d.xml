@@ -7,7 +7,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/body_background">
+        android:background="#FFD7BCBC">
 
 
         <TextView
@@ -160,6 +160,13 @@
             android:onClick="onCheckboxShowArrangementElements"
             android:layout_below="@+id/showDatePickerDialog"/>
 
+        <CheckBox android:id="@+id/showEvaluateLinkArrangement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Evaluate-Link in Our Arrangement"
+            android:onClick="onCheckboxShowArrangementElements"
+            android:layout_below="@+id/showCommentLinkArrangement"/>
+
 
 
         <LinearLayout
@@ -169,7 +176,7 @@
             android:background="@color/white"
             android:orientation="horizontal"
             android:weightSum="3"
-            android:layout_below="@+id/showCommentLinkArrangement">
+            android:layout_below="@+id/showEvaluateLinkArrangement">
 
             <EditText
                 android:id="@+id/arrangementText"

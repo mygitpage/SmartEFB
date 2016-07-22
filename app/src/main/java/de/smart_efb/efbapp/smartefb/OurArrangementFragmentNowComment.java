@@ -120,22 +120,16 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
         // textview intro for the history of comments
         TextView textCommentHistoryIntro = (TextView) viewFragmentNowComment.findViewById(R.id.commentHistoryIntro);
-        if (cursorArrangementAllComments.getCount() > 0) {
-
+        if (cursorArrangementAllComments.getCount() > 0) { // show comments for arrangement when count comments > 0
+            // show intro for comments
             textCommentHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryIntroText)+ " " + arrangementNumberInListView);
-            //displayActualCommentSet();
-            //Toast.makeText(fragmentNowCommentContext, cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)), Toast.LENGTH_SHORT).show();
-
+            // show comments
             addActualCommentSetToView ();
 
-
-        } else {
-
+        } else { // else show nothing
             LinearLayout comentHistoryLinearLayoutContainer = (LinearLayout) viewFragmentNowComment.findViewById(R.id.commentHistoryContainer);
             comentHistoryLinearLayoutContainer.setVisibility(View.INVISIBLE);
-
         }
-
 
         // comment textfield -> insert new comment
         final EditText txtInputArrangementComment = (EditText) viewFragmentNowComment.findViewById(R.id.inputArrangementComment);
@@ -167,7 +161,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
             }
         });
 
-
         // button abbort
         Button buttonAbbortArrangementComment = (Button) viewFragmentNowComment.findViewById(R.id.buttonAbortComment);
         // onClick listener button abbort
@@ -187,71 +180,20 @@ public class OurArrangementFragmentNowComment extends Fragment {
     }
 
 
-    public void displayActualCommentSet () {
-
-
-        // find the listview for comment history
-        ListView commentHistorylistView = (ListView) viewFragmentNowComment.findViewById(R.id.listCommentHistory);
-
-
-        // new dataadapter
-        OurArrangementCommentHistoryCursorAdapter commentHistoryDataAdapter = new OurArrangementCommentHistoryCursorAdapter(
-                getActivity(),
-                cursorArrangementAllComments,
-                0);
-
-        // Assign adapter to ListView
-        commentHistorylistView.setAdapter(commentHistoryDataAdapter);
-
-
-    }
-
-
-
     public void addActualCommentSetToView () {
 
         LinearLayout commentHolderLayout = (LinearLayout) viewFragmentNowComment.findViewById(R.id.commentHolder);
 
-
         cursorArrangementAllComments.moveToFirst();
-
 
         do {
 
-
             int actualCursorNumber = cursorArrangementAllComments.getPosition()+1;
 
-
-
-            LinearLayout l_layout = new LinearLayout(fragmentNowCommentContext);
             LinearLayout l_inner_layout = new LinearLayout(fragmentNowCommentContext);
-
-
-            l_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            l_layout.setOrientation(LinearLayout.HORIZONTAL);
-
 
             l_inner_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             l_inner_layout.setOrientation(LinearLayout.VERTICAL);
-
-
-
-            //add textView for comment number
-            /*
-            TextView txtViewCommentNumber = new TextView (fragmentNowCommentContext);
-            txtViewCommentNumber.setText(Integer.toString(actualCursorNumber));
-            txtViewCommentNumber.setId(actualCursorNumber);
-            txtViewCommentNumber.setTextColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.title_gray));
-            txtViewCommentNumber.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            txtViewCommentNumber.setTextSize(35);
-            txtViewCommentNumber.setGravity(Gravity.RIGHT);
-            txtViewCommentNumber.setPadding(10,0,0,0);
-            */
-
-
-
-
-
 
             //add textView for comment text
             TextView txtViewCommentText = new TextView (fragmentNowCommentContext);
@@ -261,16 +203,9 @@ public class OurArrangementFragmentNowComment extends Fragment {
             txtViewCommentText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             txtViewCommentText.setTextSize(16);
             txtViewCommentText.setGravity(Gravity.LEFT);
-            //txtViewCommentText.setPadding(20,0,20,0);
-
-
-
-
 
             //add textView for comment author and date
             TextView txtViewCommentAuthorAndDate = new TextView (fragmentNowCommentContext);
-
-
             long writeTime = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
             String authorAndDate = cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME)) + ", " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy - HH:mm");
             txtViewCommentAuthorAndDate.setText(authorAndDate);
@@ -281,73 +216,14 @@ public class OurArrangementFragmentNowComment extends Fragment {
             txtViewCommentAuthorAndDate.setGravity(Gravity.RIGHT);
             txtViewCommentAuthorAndDate.setPadding(0,0,0,55);
 
-
-            //
+            // add elements to inner linear layout
             l_inner_layout.addView (txtViewCommentText);
             l_inner_layout.addView (txtViewCommentAuthorAndDate);
 
-            //l_layout.addView (txtViewCommentNumber);
-            //l_layout.addView (l_inner_layout);
-
-
-
+            // add inner layout to comment holder (linear layout in xml-file)
             commentHolderLayout.addView(l_inner_layout);
 
-
-
         } while (cursorArrangementAllComments.moveToNext());
-
-
-
-
-
-
-
-        /*
-        View child = layoutInflaterForFragment.inflate(R.layout.list_our_arrangement_comment_history, null);
-        commentHolderLayout.addView(child);
-        TextView textViewCommentHistory = (TextView) viewFragmentNowComment.findViewById(R.id.listTextCommentHistory);
-        textViewCommentHistory.setText(cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)));
-        textViewCommentHistory.setId(12);
-
-        cursorArrangementAllComments.moveToNext();
-        */
-        /*
-        child = layoutInflaterForFragment.inflate(R.layout.list_our_arrangement_comment_history, null);
-        commentHolderLayout.addView(child);
-        textViewCommentHistory = (TextView) viewFragmentNowComment.findViewById(R.id.listTextCommentHistory);
-        textViewCommentHistory.setText(cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)));
-        textViewCommentHistory.setId(13);
-        */
-
-        /*
-        int i = 1;
-
-        try {
-
-            cursorArrangementAllComments.moveToFirst();
-            while (cursorArrangementAllComments.moveToNext()) {
-
-                View child = layoutInflaterForFragment.inflate(R.layout.list_our_arrangement_comment_history, null);
-                commentHolderLayout.addView(child);
-                TextView textViewCommentHistory = (TextView) viewFragmentNowComment.findViewById(R.id.listTextCommentHistory);
-                textViewCommentHistory.setText(cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)));
-                textViewCommentHistory.setId(i);
-                i++;
-
-            }
-        } finally {
-            cursorArrangementAllComments.close();
-        }
-        */
-
-
-
-
-
-
-
-
 
 
 

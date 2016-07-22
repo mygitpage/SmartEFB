@@ -108,7 +108,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
                                 toolbar.setSubtitle(commentArrangementSubtitleText);
                                 break;
                             case "show_comment_for_arrangement":
-                                toolbar.setSubtitle(commentArrangementSubtitleText);
+                                toolbar.setSubtitle(showCommentArrangementSubtitleText);
                                 break;
                         }
                         break;
@@ -167,12 +167,27 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
     public void executeIntentCommand (String command) {
 
-        if (command.equals("show_comment_for_arrangement")) { // Show fragment all comments
+        if (command.equals("show_comment_for_arrangement")) { // Show fragment all comments for arrangement
 
 
-            //OurArrangementViewPagerAdapter.setFragmentTabZero("show_comment_for_arrangement");
-            //ourArrangementViewPagerAdapter.notifyDataSetChanged();
-            Toast.makeText(this, "Kommentare zeigen", Toast.LENGTH_SHORT).show();
+            // get data that comes with intent-link
+            arrangementDbIdFromLink = Integer.parseInt(intentLinkData.getQueryParameter("db_id")); // arrangement DB-ID
+            arrangementNumberInListView = Integer.parseInt(intentLinkData.getQueryParameter("arr_num"));
+
+            //set fragment in tab zero to comment
+            OurArrangementViewPagerAdapter.setFragmentTabZero("show_comment_for_arrangement");
+
+            // set correct subtitle in toolbar in tab zero
+            toolbar.setSubtitle(showCommentArrangementSubtitleText);
+
+            // set correct tab zero titel
+            tabLayoutOurArrangement.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1b", "string", getPackageName())));
+
+            // set command show variable
+            showCommandFragmentTabZero = "show_comment_for_arrangement";
+
+            // call notify data change
+            ourArrangementViewPagerAdapter.notifyDataSetChanged();
 
 
         } else if (command.equals("comment_an_arrangement")) { // Show fragment comment arrangement
@@ -195,6 +210,14 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // call notify data change
             ourArrangementViewPagerAdapter.notifyDataSetChanged();
+
+
+        } else if (command.equals("evaluate_an_arrangement")) { // Show evaluiate a comment
+
+            // set command show variable
+            //showCommandFragmentTabZero = "evaluate_an_arrangement";
+
+            Toast.makeText(this, "Kommentare Bewerten", Toast.LENGTH_SHORT).show();
 
 
         } else { // Show fragment arrangement now

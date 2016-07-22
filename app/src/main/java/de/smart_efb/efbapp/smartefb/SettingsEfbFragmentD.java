@@ -216,6 +216,50 @@ public class SettingsEfbFragmentD extends Fragment {
         });
 
 
+        //
+        // pre select the arrangement evaluate settings
+        //
+        tmpCheckBox = (CheckBox) viewFragmentD.findViewById(R.id.showEvaluateLinkArrangement);
+
+        if (prefs.getBoolean("showArrangementEvaluate", false)) {
+            tmpCheckBox.setChecked(true);
+        }
+        else {
+            tmpCheckBox.setChecked(false);
+        }
+        tmpCheckBox.setOnClickListener(new View.OnClickListener() { // OnclickListener for arrangement comment
+
+            @Override
+            public void onClick(View v) {
+
+                boolean checkBoxBooleanValue=false;
+                String aktiv_passivText ="";
+
+                // Is the view now checked?
+                boolean checked = ((CheckBox) v).isChecked();
+
+                if (checked) {
+                    checkBoxBooleanValue=true;
+                    aktiv_passivText = "aktiviert";
+                }
+                else {
+                    checkBoxBooleanValue=false;
+                    aktiv_passivText = "deaktiviert";
+                }
+
+                prefsEditor.putBoolean("showArrangementEvaluate", checkBoxBooleanValue);
+                prefsEditor.commit();
+
+                Toast.makeText(fragmentContextD, "Kommentar Bewertungen " + aktiv_passivText, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+
+
+
+
 
         // textfield and button -> insert new test arrangement
         final EditText txtInputArrangement = (EditText) viewFragmentD.findViewById(R.id.arrangementText);
