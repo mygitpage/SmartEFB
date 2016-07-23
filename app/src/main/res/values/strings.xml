@@ -92,12 +92,19 @@
 
     <!-- End String Fragment comment -->
 
+    <!-- String Fragment show comment -->
+    <string name="btnAbortShowComment">Zurück zu den Absprachen</string>
+    <string name="showCommentIntroText">Die Kommentare zu Ihrer gewählten Absprache</string>
+    <string name="ourArrangementShowCommentBackLink">Zurück zu den Absprachen</string>
+
+    <!-- End String Fragment show comment -->
+
 
     <!-- Strings for tab title in activity our arrangement -->
     <string name="ourArrangementTabTitle_1">Aktuell</string>
     <string name="ourArrangementTabTitle_1a">Kommentieren</string>
-    <string name="ourArrangementTabTitle_1b">Alle Kommentare</string>
-    <string name="ourArrangementTabTitle_2">Vergangene</string>
+    <string name="ourArrangementTabTitle_1b">Kommentare</string>
+    <string name="ourArrangementTabTitle_2">Ältere Absprachen</string>
     <!-- End tab title -->
 
     <!-- Activity our arrangement End -->

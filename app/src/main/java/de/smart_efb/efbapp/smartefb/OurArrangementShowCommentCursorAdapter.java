@@ -76,7 +76,33 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-        return cursorInflater.inflate(R.layout.list_our_arrangement_show_comment, parent, false);
+        View inflatedView = null;
+
+        if (cursor.getPosition() == 0) {
+            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment_first, parent, false);
+
+            // make link to comment arrangement
+            Uri.Builder commentLinkBuilder = new Uri.Builder();
+            commentLinkBuilder.scheme("smart.efb.ilink_comment")
+                    .authority("www.smart-efb.de")
+                    .appendQueryParameter("db_id", "0")
+                    .appendQueryParameter("arr_num", "0")
+                    .appendQueryParameter("com", "show_arrangement_now");
+
+            // create the comment link
+            TextView linkShowCommentBackLink = (TextView) inflatedView.findViewById(R.id.arrangementShowCommentBackLink);
+            linkShowCommentBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementShowCommentBackLink", "string", context.getPackageName()))+"</a>"));
+            linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
+
+        }
+        else if (cursor.getPosition() == cursor.getCount()-1) {
+            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment_last, parent, false);
+        }
+        else {
+            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment, parent, false);
+        }
+
+        return inflatedView;
 
     }
 
