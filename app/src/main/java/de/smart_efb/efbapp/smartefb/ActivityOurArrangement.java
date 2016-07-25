@@ -54,9 +54,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
     String commentArrangementSubtitleText = "";
     String showCommentArrangementSubtitleText = "";
 
-    // Uri from intent that holds data
-    Uri intentLinkData;
-
     // what to show in tab zero (like show_comment_for_arrangement, comment_an_arrangement, show_arrangement_now)
     String showCommandFragmentTabZero = "";
 
@@ -145,34 +142,51 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
-    // Look for new intents (like link to comment or show comments)
+    // Look for new intents (with data from URI or putExtra)
     @Override
     protected void onNewIntent(Intent intent) {
 
+        // Uri from intent that holds data
+        Uri intentLinkData = null;
+
+        // Extras from intent that holds data
+        Bundle intentExtras = null;
+
+        arrangementDbIdFromLink = 0;
+        arrangementNumberInListView = 0;
+
+        // call super
         super.onNewIntent(intent);
 
-        // get the link data
+        // get the link data from URI and from the extra
         intentLinkData = intent.getData();
+        intentExtras = intent.getExtras();
 
-        // commentLinkData correct?
+        // is there URI Data?
         if (intentLinkData != null) {
-
+            // get data that comes with intent-link
+            arrangementDbIdFromLink = Integer.parseInt(intentLinkData.getQueryParameter("db_id")); // arrangement DB-ID
+            arrangementNumberInListView = Integer.parseInt(intentLinkData.getQueryParameter("arr_num"));
             // get command and execute it
             executeIntentCommand (intentLinkData.getQueryParameter("com"));
 
+        } else if (intentExtras != null) {
+           // get data that comes with extras
+            arrangementDbIdFromLink = intentExtras.getInt("db_id",0);
+            arrangementNumberInListView = intentExtras.getInt("arr_num",0);
+            // get command and execute it
+            executeIntentCommand (intentExtras.getString("com"));
         }
 
     }
 
 
+
     public void executeIntentCommand (String command) {
+
 
         if (command.equals("show_comment_for_arrangement")) { // Show fragment all comments for arrangement
 
-
-            // get data that comes with intent-link
-            arrangementDbIdFromLink = Integer.parseInt(intentLinkData.getQueryParameter("db_id")); // arrangement DB-ID
-            arrangementNumberInListView = Integer.parseInt(intentLinkData.getQueryParameter("arr_num"));
 
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("show_comment_for_arrangement");
@@ -191,10 +205,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
         } else if (command.equals("comment_an_arrangement")) { // Show fragment comment arrangement
-
-            // get data that comes with intent-link
-            arrangementDbIdFromLink = Integer.parseInt(intentLinkData.getQueryParameter("db_id")); // arrangement DB-ID
-            arrangementNumberInListView = Integer.parseInt(intentLinkData.getQueryParameter("arr_num"));
 
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("comment_an_arrangement");

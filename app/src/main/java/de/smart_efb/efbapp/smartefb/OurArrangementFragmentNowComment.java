@@ -150,8 +150,16 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     // Toast "Comment sucsessfull send"
                     Toast.makeText(fragmentNowCommentContext, fragmentNowCommentContext.getResources().getString(R.string.commentSuccsesfulySend), Toast.LENGTH_SHORT).show();
 
+
+
+                    Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.putExtra("com","show_arrangement_now");
+                    getActivity().startActivity(intent);
+
+
                     // Change fragment to Show Arrangement Now
-                    ((ActivityOurArrangement) getActivity()).executeIntentCommand("show_arrangement_now");
+                    //((ActivityOurArrangement) getActivity()).executeIntentCommand("show_arrangement_now");
 
                 } else {
                     // Toast "Comment to short"
@@ -168,8 +176,14 @@ public class OurArrangementFragmentNowComment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("com","show_arrangement_now");
+                getActivity().startActivity(intent);
+
+
                 // Abbort and change fragment to Show Arrangement Now
-                ((ActivityOurArrangement)getActivity()).executeIntentCommand("show_arrangement_now");
+                //((ActivityOurArrangement)getActivity()).executeIntentCommand("show_arrangement_now");
 
             }
         });

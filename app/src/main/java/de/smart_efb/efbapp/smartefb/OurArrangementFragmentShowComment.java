@@ -84,6 +84,16 @@ public class OurArrangementFragmentShowComment extends Fragment {
         displayActualCommentSet();
 
 
+
+
+
+
+
+
+
+
+
+
     }
 
 
