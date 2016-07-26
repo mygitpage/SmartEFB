@@ -12,6 +12,9 @@
     // gernal text color white fragments and activitys
     <color name="text_color_white">#ffffff</color>
 
+    // gernal text accent color fragments and activitys
+    <color name="text_accent_color">#e92f32</color>
+
 
 
 

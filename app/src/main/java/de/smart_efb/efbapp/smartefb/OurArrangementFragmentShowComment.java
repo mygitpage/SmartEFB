@@ -47,13 +47,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // arrangement number in list view
     int arrangementNumberInListView = 0;
 
-    // cursor for the choosen arrangement
-    Cursor cursorChoosenArrangement;
-
-    // cursor for all comments to the choosen arrangement
-    Cursor cursorArrangementAllComments;
-
-
 
 
 
@@ -84,16 +77,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
         displayActualCommentSet();
 
 
-
-
-
-
-
-
-
-
-
-
     }
 
 
@@ -110,22 +93,11 @@ public class OurArrangementFragmentShowComment extends Fragment {
         currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
 
 
-
-
         arrangementDbIdToShow = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
         if (arrangementDbIdToShow < 0) arrangementDbIdToShow = 0; // check borders
 
         arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
         if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
-
-        // get choosen arrangement
-        cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToShow);
-
-        // get all comments for choosen arrangement
-        //cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementDbIdToShow);
-
-
-
 
 
     }
@@ -134,7 +106,13 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
     public void displayActualCommentSet () {
 
+
         Cursor cursor = myDb.getAllRowsOurArrangementComment(arrangementDbIdToShow);
+
+        String arrangement = "";
+        Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToShow);
+        arrangement = choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
+
 
         // find the listview
         ListView listView = (ListView) viewFragmentShowComment.findViewById(R.id.listOurArrangementShowComment);
@@ -144,14 +122,16 @@ public class OurArrangementFragmentShowComment extends Fragment {
         showCommentCursorAdapter = new OurArrangementShowCommentCursorAdapter(
                 getActivity(),
                 cursor,
-                0);
+                0,
+                arrangementDbIdToShow,
+                arrangementNumberInListView,
+                arrangement);
 
         // Assign adapter to ListView
         listView.setAdapter(showCommentCursorAdapter);
 
 
     }
-
 
 
 

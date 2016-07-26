@@ -81,7 +81,7 @@
     <!-- String Fragment comment arrangement -->
     <string name="arrangementComment">Absprachen kommentieren</string>
     <string name="btnSendArrangementComment">Kommentar senden</string>
-    <string name="btnAbortComment">Abbrechen</string>
+    <string name="btnAbortComment">Zurück</string>
     <string name="arrangementCommentIntro">Bitte kommentieren Sie Absprache</string>
     <string name="commentHistoryIntroText">Alle bisherigen Kommentare zu Absprache</string>
 
@@ -94,7 +94,10 @@
 
     <!-- String Fragment show comment -->
     <string name="btnAbortShowComment">Zurück zu den Absprachen</string>
-    <string name="showCommentIntroText">Die Kommentare zu Ihrer gewählten Absprache</string>
+    <string name="showCommentIntroText">Die Kommentare zur Absprache</string>
+
+    <string name="showArrangementIntroText">Absprache</string>
+
     <string name="ourArrangementShowCommentBackLink">Zurück zu den Absprachen</string>
 
     <!-- End String Fragment show comment -->

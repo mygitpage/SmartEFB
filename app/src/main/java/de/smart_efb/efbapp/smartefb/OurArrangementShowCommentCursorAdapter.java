@@ -34,14 +34,32 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
 
     final Context contextForActivity;
 
+    // DB-Id of arrangement
+    int arrangementDbIdToShow = 0;
+
+    // arrangement number in list view of fragment show arrangement now
+    int arrangementNumberInListView = 0;
+
+    String choosenArrangement = "";
+
 
     // Default constructor
-    public OurArrangementShowCommentCursorAdapter(Context context, Cursor cursor, int flags) {
+    public OurArrangementShowCommentCursorAdapter(Context context, Cursor cursor, int flags, int dbId, int numberInLIst, String arrangement) {
 
         super(context, cursor, flags);
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        // context of activity OurArrangement
         contextForActivity = context;
+
+        // set db id for arrangement
+        arrangementDbIdToShow = dbId;
+
+        // set arrangement number in list view
+        arrangementNumberInListView = numberInLIst;
+
+        // set choosen arrangement
+        choosenArrangement = arrangement;
 
     }
 
@@ -53,38 +71,62 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
         SharedPreferences prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
 
 
-        // create the comment show
+        // show "NEW" when comment is new
         TextView textViewShowActualNewMarker = (TextView) view.findViewById(R.id.listActualTextNewComment);
-        String newMarker = cursor.getString(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
-        textViewShowActualNewMarker.setText(newMarker);
+        textViewShowActualNewMarker.setText("Neu");
 
-
+        // show actual comment
         TextView textViewShowActualComment = (TextView) view.findViewById(R.id.listActualTextComment);
         String actualComment = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT));
         textViewShowActualComment.setText(actualComment);
 
-
+        // show author and date
         TextView textViewShowActualAuthorAndDate = (TextView) view.findViewById(R.id.listActualCommentAuthorAndDate);
         long writeTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
         String authorAndDate = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME)) + ", " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy - HH:mm");
         textViewShowActualAuthorAndDate.setText(authorAndDate);
 
 
-        // generate link "zurueck zu den Absprachen", when cursor position == zero
+        // generate link "zurueck zu den Absprachen" and set text intro "Die kommentare zur Absprache ...", when cursor position == zero
         if (cursor.getPosition() == 0) {
 
-            // make link to comment arrangement
+
+
+            // set text intro "Absprache ..."
+            TextView textViewShowArrangementIntro = (TextView) view.findViewById(R.id.arrangementShowArrangementIntro);
+            String txtArrangementIntro = contextForActivity.getResources().getString(R.string.showArrangementIntroText)+ " " + arrangementNumberInListView;
+            textViewShowArrangementIntro.setText(txtArrangementIntro);
+            textViewShowArrangementIntro.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+            // make link back to show arrangement
             Uri.Builder commentLinkBuilder = new Uri.Builder();
             commentLinkBuilder.scheme("smart.efb.ilink_comment")
                     .authority("www.smart-efb.de")
                     .appendQueryParameter("db_id", "0")
                     .appendQueryParameter("arr_num", "0")
                     .appendQueryParameter("com", "show_arrangement_now");
-
-            // create the comment link
             TextView linkShowCommentBackLink = (TextView) view.findViewById(R.id.arrangementShowCommentBackLink);
-            linkShowCommentBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementShowCommentBackLink", "string", context.getPackageName()))+"</a>"));
+            Spanned tmpBackLink = Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementShowCommentBackLink", "string", context.getPackageName()))+"</a>");
+            linkShowCommentBackLink.setText(tmpBackLink);
             linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+
+
+            // show choosen arrangement
+            TextView textViewShowChoosenArrangement = (TextView) view.findViewById(R.id.actualCommentTextInShowComment);
+            textViewShowChoosenArrangement.setText(actualComment);
+
+
+            // set text intro "Die Kommentare zur Absprache ..."
+            TextView textViewShowCommentIntro = (TextView) view.findViewById(R.id.arrangementShowCommentIntro);
+            String txtCommentIntro = contextForActivity.getResources().getString(R.string.showCommentIntroText)+ " " + arrangementNumberInListView;
+            textViewShowCommentIntro.setText(txtCommentIntro);
+
+
+
+
 
         }
 
