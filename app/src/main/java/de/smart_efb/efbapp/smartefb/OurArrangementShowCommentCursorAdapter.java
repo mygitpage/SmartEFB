@@ -96,7 +96,7 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
             TextView textViewShowArrangementIntro = (TextView) view.findViewById(R.id.arrangementShowArrangementIntro);
             String txtArrangementIntro = contextForActivity.getResources().getString(R.string.showArrangementIntroText)+ " " + arrangementNumberInListView;
             textViewShowArrangementIntro.setText(txtArrangementIntro);
-            textViewShowArrangementIntro.setMovementMethod(LinkMovementMethod.getInstance());
+
 
 
             // make link back to show arrangement

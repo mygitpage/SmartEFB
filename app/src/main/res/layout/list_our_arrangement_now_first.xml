@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,6 +8,16 @@
     android:paddingTop="5dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
+
+    <TextView
+        android:id="@+id/ourArrangementIntroText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:gravity="left"
+        android:textStyle="bold"
+        android:paddingBottom="10dp"/>
 
     <TextView
         android:id="@+id/listArrangementNumberText"
@@ -44,4 +53,4 @@
 
 
 
- </LinearLayout>
+</LinearLayout>

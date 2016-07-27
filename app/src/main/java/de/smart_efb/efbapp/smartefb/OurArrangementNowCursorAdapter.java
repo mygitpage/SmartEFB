@@ -20,7 +20,7 @@ import org.w3c.dom.Text;
 /**
  * Created by ich on 30.05.16.
  */
-public class OurArrangementCursorAdapter extends CursorAdapter {
+public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
 
     private LayoutInflater cursorInflater;
@@ -29,7 +29,7 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
 
 
     // Default constructor
-    public OurArrangementCursorAdapter(Context context, Cursor cursor, int flags) {
+    public OurArrangementNowCursorAdapter(Context context, Cursor cursor, int flags) {
 
         super(context, cursor, flags);
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -50,24 +50,27 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
         SharedPreferences prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
 
 
+        if (cursor.getPosition() == 0 ) { // listview for first element
+            TextView numberOfArrangement = (TextView) view.findViewById(R.id.ourArrangementIntroText);
+            String txtArrangementNumber = context.getResources().getString(R.string.ourArrangementIntroText) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), "dd.MM.yyyy");;
+            numberOfArrangement.setText(txtArrangementNumber);
+        }
 
 
 
-        // create the arrangement
 
+        // put arrangement number
+        TextView numberOfArrangement = (TextView) view.findViewById(R.id.listArrangementNumberText);
+        String txtArrangementNumber = context.getResources().getString(R.string.showArrangementIntroText)+ " " + Integer.toString(cursor.getPosition()+1);
+        numberOfArrangement.setText(txtArrangementNumber);
+
+
+        // put arrangement text
         TextView textViewArrangement = (TextView) view.findViewById(R.id.listTextArrangement);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(title);
 
-
-        // create the number of arrangement
-        TextView numberOfArrangement = (TextView) view.findViewById(R.id.listArrangementNumber);
-        //countNumberOfCurrentArrangement = cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
-        numberOfArrangement.setText(Integer.toString(cursor.getPosition()+1));
-
-
-
-        // Show link for evaluate an arrangement
+        // generate link for evaluate an arrangement
         if (prefs.getBoolean("showArrangementEvaluate", false)) {
 
             // make link to evaluate arrangement
@@ -81,7 +84,6 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
             showEvaluateCommentLinkTmp = Html.fromHtml("<a href=\"" + evaluateLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateString", "string", context.getPackageName()))+"</a>");
 
         }
-
 
 
         // Show link for comment in our arrangement
@@ -116,7 +118,7 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
         }
 
 
-
+        // show genaerate links for evaluate or/and comment
         if (prefs.getBoolean("showArrangementComment", false) || prefs.getBoolean("showArrangementEvaluate", false) ) {
 
             // create the comment link
@@ -137,16 +139,22 @@ public class OurArrangementCursorAdapter extends CursorAdapter {
 
         }
 
-
-
-
     }
 
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-                return cursorInflater.inflate(R.layout.list_our_arrangement_now, parent, false);
+        View inflatedView = null;
+
+        if (cursor.getPosition() == 0 ) { // listview for first element
+            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_now_first, parent, false);
+        }
+        else { // listview for "normal" element
+            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_now, parent, false);
+        }
+
+        return inflatedView;
 
     }
 

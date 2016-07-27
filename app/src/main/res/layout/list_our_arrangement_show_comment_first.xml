@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="15dp">
+        android:paddingBottom="5dp">
 
 
         <TextView
@@ -30,7 +30,7 @@
 
         <TextView
             android:id="@+id/arrangementShowCommentBackLink"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="12dp"
             android:textColor="@color/text_color"
@@ -50,7 +50,8 @@
         android:textColor="@color/text_color"
         android:textColorLink="@color/colorPrimary"
         android:gravity="left"
-        android:paddingBottom="15dp"/>
+        android:paddingBottom="15dp"
+        android:paddingLeft="10dp"/>
 
 
 
@@ -80,7 +81,7 @@
         android:textSize="16dp"
         android:textColor="@color/text_color"
         android:gravity="top|left"
-        android:paddingBottom="5dp"/>
+        android:paddingLeft="10dp"/>
 
 
 

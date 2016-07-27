@@ -63,6 +63,15 @@
     <!-- Activity Our Arrangements -->
     <!-- String Activity Our Arrangement -->
 
+
+
+    <!-- fragment actual arrangements -->
+
+    <string name="ourArrangementIntroText">Die aktuellen Absprachen vom</string>
+
+    <!-- End fragment actual arrangements -->
+
+
     <!-- Subtitle under Title Our Arrangement -->
     <string name="currentArrangementDateFrom">Aktuell vom</string>
     <string name="olderArrangementDateFrom">Älter als</string>
@@ -93,14 +102,19 @@
     <!-- End String Fragment comment -->
 
     <!-- String Fragment show comment -->
-    <string name="btnAbortShowComment">Zurück zu den Absprachen</string>
+    <string name="btnAbortShowComment">Zurück zu allen Absprachen</string>
     <string name="showCommentIntroText">Die Kommentare zur Absprache</string>
 
     <string name="showArrangementIntroText">Absprache</string>
 
-    <string name="ourArrangementShowCommentBackLink">Zurück zu den Absprachen</string>
+    <string name="ourArrangementShowCommentBackLink">Zurück zu allen Absprachen</string>
 
     <!-- End String Fragment show comment -->
+
+
+
+
+
 
 
     <!-- Strings for tab title in activity our arrangement -->

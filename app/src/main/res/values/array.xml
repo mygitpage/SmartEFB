@@ -28,14 +28,14 @@
 
     // Main menue button color passiv
     <string-array name="mainMenueElementColorLight">
-        <item>#AA9FAC81</item>
-        <item>#AA007188</item>
-        <item>#AAD5B40B</item>
-        <item>#AA9EC6C0</item>
-        <item>#AA796776</item>
-        <item>#AAED686A</item>
-        <item>#AA354644</item>
-        <item>#AAACAAA4</item>
+        <item>#FFCFD5C0</item>
+        <item>#FF99C6CF</item>
+        <item>#FFEEE19D</item>
+        <item>#FFCEE2DF</item>
+        <item>#FFC9C2C8</item>
+        <item>#FFF8C4C3</item>
+        <item>#FFAEB5B4</item>
+        <item>#FFDEDDDB</item>
     </string-array>
 
 

@@ -15,17 +15,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="left"
-        android:background="@color/body_background">
+        android:background="@color/body_background"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
 
         <TextView
-            android:id="@+id/arrangementCommentIntro"
+            android:id="@+id/arrangementCommentNumberIntro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/text_color"
             android:gravity="left"
-            android:padding="10dp"
             android:textStyle="bold"/>
 
 
@@ -37,11 +40,18 @@
             android:textColor="@color/text_color"
             android:gravity="left"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="10dp"/>
+            android:paddingBottom="5dp"/>
 
 
 
+        <TextView
+            android:id="@+id/arrangementCommentIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:textStyle="bold"/>
 
         <EditText
             android:id="@+id/inputArrangementComment"
@@ -54,8 +64,6 @@
             android:layout_margin="10dp"
             android:textColorHint="@color/text_color_white"
             android:inputType="textNoSuggestions|text|textMultiLine" />
-
-
 
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -74,8 +82,7 @@
                 android:textColor="@color/white"
                 android:text="@string/btnSendArrangementComment"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginRight="5dp"
-                android:padding="10dp" />
+                android:layout_marginRight="5dp"/>
 
             <Button
                 android:id="@+id/buttonAbortComment"
@@ -85,8 +92,7 @@
                 android:textColor="@color/white"
                 android:text="@string/btnAbortComment"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="5dp"
-                android:padding="10dp" />
+                android:layout_marginLeft="5dp"/>
 
         </LinearLayout>
 
@@ -110,7 +116,6 @@
                 android:textSize="16dp"
                 android:textColor="@color/text_color"
                 android:gravity="left"
-                android:padding="10dp"
                 android:textStyle="bold" />
 
 
@@ -120,31 +125,11 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center_vertical|left"
-                android:id="@+id/commentHolder"
-                android:padding="10dp" />
-
-            <!--
-            <ListView
-                android:id="@+id/listCommentHistory"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:divider="@null"
-                android:transcriptMode="alwaysScroll"
-                android:stackFromBottom="false"
-                android:layout_gravity="left">
-            </ListView>
-            -->
-
-
-
+                android:id="@+id/commentHolder"/>
 
 
         </LinearLayout>
 
-
-
-
     </LinearLayout>
+
 </ScrollView>

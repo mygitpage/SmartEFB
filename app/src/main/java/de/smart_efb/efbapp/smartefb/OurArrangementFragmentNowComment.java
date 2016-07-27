@@ -109,13 +109,17 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
         // build the view
         //textview for the comment intro
-        TextView textCommentIntro = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementCommentIntro);
-        textCommentIntro.setText(this.getResources().getString(R.string.arrangementCommentIntro) + " " + arrangementNumberInListView);
+        TextView textCommentNumberIntro = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementCommentNumberIntro);
+        textCommentNumberIntro.setText(this.getResources().getString(R.string.showArrangementIntroText) + " " + arrangementNumberInListView);
 
         // textview for the arrangement
         TextView textViewArrangement = (TextView) viewFragmentNowComment.findViewById(R.id.choosenArrangement);
         String arrangement = cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(arrangement);
+
+        //textview for the comment intro
+        TextView textCommentIntro = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementCommentIntro);
+        textCommentIntro.setText(this.getResources().getString(R.string.arrangementCommentIntro) + " " + arrangementNumberInListView);
 
 
         // textview intro for the history of comments
@@ -217,6 +221,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
             txtViewCommentText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             txtViewCommentText.setTextSize(16);
             txtViewCommentText.setGravity(Gravity.LEFT);
+            txtViewCommentText.setPadding(10,0,0,0);
 
             //add textView for comment author and date
             TextView txtViewCommentAuthorAndDate = new TextView (fragmentNowCommentContext);
