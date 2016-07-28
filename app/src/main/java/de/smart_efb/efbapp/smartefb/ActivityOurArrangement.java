@@ -28,7 +28,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
     // reference to the DB
-    DBAdapter myDb;
+    //DBAdapter myDb;
 
     // shared prefs for the settings
     SharedPreferences prefs;
@@ -265,7 +265,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         // init the DB
-        myDb = new DBAdapter(getApplicationContext());
+        //myDb = new DBAdapter(getApplicationContext());
 
         // init the prefs
         prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);

@@ -4,10 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,7 +38,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
     // layout inflater for fragment
     LayoutInflater layoutInflaterForFragment;
 
-
     // reference to the DB
     DBAdapter myDb;
 
@@ -55,7 +58,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
 
 
-
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
@@ -66,8 +68,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
         return viewFragmentNowComment;
 
     }
-
-
 
 
     @Override
@@ -84,7 +84,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
     }
 
 
-
     // inits the fragment for use
     private void initFragmentNowComment() {
 
@@ -94,9 +93,10 @@ public class OurArrangementFragmentNowComment extends Fragment {
         // init the prefs
         prefs = fragmentNowCommentContext.getSharedPreferences("smartEfbSettings", fragmentNowCommentContext.MODE_PRIVATE);
 
+        // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
         arrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
         if (arrangementDbIdToComment < 0) arrangementDbIdToComment = 0; // check borders
-
+        // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
         arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
         if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
 
@@ -106,11 +106,23 @@ public class OurArrangementFragmentNowComment extends Fragment {
         // get all comments for choosen arrangement
         cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementDbIdToComment);
 
-
         // build the view
         //textview for the comment intro
         TextView textCommentNumberIntro = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementCommentNumberIntro);
         textCommentNumberIntro.setText(this.getResources().getString(R.string.showArrangementIntroText) + " " + arrangementNumberInListView);
+
+
+        // generate back link "zurueck zu allen Absprachen"
+        Uri.Builder commentLinkBuilder = new Uri.Builder();
+        commentLinkBuilder.scheme("smart.efb.ilink_comment")
+                .authority("www.smart-efb.de")
+                .appendQueryParameter("db_id", "0")
+                .appendQueryParameter("arr_num", "0")
+                .appendQueryParameter("com", "show_arrangement_now");
+        TextView linkShowCommentBackLink = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementShowCommentBackLinkNow);
+        linkShowCommentBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+fragmentNowCommentContext.getResources().getString(fragmentNowCommentContext.getResources().getIdentifier("ourArrangementBackLinkToArrangement", "string", fragmentNowCommentContext.getPackageName()))+"</a>"));
+        linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
+
 
         // textview for the arrangement
         TextView textViewArrangement = (TextView) viewFragmentNowComment.findViewById(R.id.choosenArrangement);
@@ -154,16 +166,11 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     // Toast "Comment sucsessfull send"
                     Toast.makeText(fragmentNowCommentContext, fragmentNowCommentContext.getResources().getString(R.string.commentSuccsesfulySend), Toast.LENGTH_SHORT).show();
 
-
-
+                    // build intent to get back to OurArrangementFragmentNow
                     Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.putExtra("com","show_arrangement_now");
                     getActivity().startActivity(intent);
-
-
-                    // Change fragment to Show Arrangement Now
-                    //((ActivityOurArrangement) getActivity()).executeIntentCommand("show_arrangement_now");
 
                 } else {
                     // Toast "Comment to short"
@@ -185,15 +192,10 @@ public class OurArrangementFragmentNowComment extends Fragment {
                 intent.putExtra("com","show_arrangement_now");
                 getActivity().startActivity(intent);
 
-
-                // Abbort and change fragment to Show Arrangement Now
-                //((ActivityOurArrangement)getActivity()).executeIntentCommand("show_arrangement_now");
-
             }
         });
 
         // End build the view
-
 
     }
 
@@ -244,10 +246,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
         } while (cursorArrangementAllComments.moveToNext());
 
-
-
     }
-
-
 
 }

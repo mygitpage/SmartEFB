@@ -1,8 +1,5 @@
 package de.smart_efb.efbapp.smartefb;
 
-
-
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +11,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +41,7 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
     String choosenArrangement = "";
 
 
-    // Default constructor
+    // own constructor!!!
     public OurArrangementShowCommentCursorAdapter(Context context, Cursor cursor, int flags, int dbId, int numberInLIst, String arrangement) {
 
         super(context, cursor, flags);
@@ -67,10 +65,6 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-
-        SharedPreferences prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
-
-
         // show "NEW" when comment is new
         TextView textViewShowActualNewMarker = (TextView) view.findViewById(R.id.listActualTextNewComment);
         textViewShowActualNewMarker.setText("Neu");
@@ -86,18 +80,13 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
         String authorAndDate = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME)) + ", " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy - HH:mm");
         textViewShowActualAuthorAndDate.setText(authorAndDate);
 
-
-        // generate link "zurueck zu den Absprachen" and set text intro "Die kommentare zur Absprache ...", when cursor position == zero
-        if (cursor.getPosition() == 0) {
-
-
+        // generate link "zurueck zu den Absprachen" and set text intro "Die kommentare zur Absprache ...", when cursor position is first
+        if (cursor.isFirst()) {
 
             // set text intro "Absprache ..."
             TextView textViewShowArrangementIntro = (TextView) view.findViewById(R.id.arrangementShowArrangementIntro);
             String txtArrangementIntro = contextForActivity.getResources().getString(R.string.showArrangementIntroText)+ " " + arrangementNumberInListView;
             textViewShowArrangementIntro.setText(txtArrangementIntro);
-
-
 
             // make link back to show arrangement
             Uri.Builder commentLinkBuilder = new Uri.Builder();
@@ -107,31 +96,23 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
                     .appendQueryParameter("arr_num", "0")
                     .appendQueryParameter("com", "show_arrangement_now");
             TextView linkShowCommentBackLink = (TextView) view.findViewById(R.id.arrangementShowCommentBackLink);
-            Spanned tmpBackLink = Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementShowCommentBackLink", "string", context.getPackageName()))+"</a>");
+            Spanned tmpBackLink = Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementBackLinkToArrangement", "string", context.getPackageName()))+"</a>");
             linkShowCommentBackLink.setText(tmpBackLink);
             linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
 
-
-
-
             // show choosen arrangement
             TextView textViewShowChoosenArrangement = (TextView) view.findViewById(R.id.actualCommentTextInShowComment);
-            textViewShowChoosenArrangement.setText(actualComment);
-
+            textViewShowChoosenArrangement.setText(choosenArrangement);
 
             // set text intro "Die Kommentare zur Absprache ..."
             TextView textViewShowCommentIntro = (TextView) view.findViewById(R.id.arrangementShowCommentIntro);
             String txtCommentIntro = contextForActivity.getResources().getString(R.string.showCommentIntroText)+ " " + arrangementNumberInListView;
             textViewShowCommentIntro.setText(txtCommentIntro);
 
-
-
-
-
         }
 
         // generate onclicklistener for Button "zurueck zu den Absprachen"
-        if (cursor.getPosition() == cursor.getCount()-1) {
+        if (cursor.isLast()) {
 
             // button abbort "zurueck zu den Absprachen"
             Button buttonBackToArrangement = (Button) view.findViewById(R.id.buttonAbortShowComment);
@@ -157,16 +138,15 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-        View inflatedView = null;
+        View inflatedView;
 
-
-        if (cursor.getPosition() == 0 && cursor.getCount() > 1) { // listview for first element, when cursor has more then one element
+        if (cursor.isFirst() && cursor.getCount() > 1) { // listview for first element, when cursor has more then one element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment_first, parent, false);
         }
-        else if (cursor.getPosition() == 0 && cursor.getCount() == 1) { // listview for first element, when cursor has only one element
+        else if (cursor.isFirst() && cursor.getCount() == 1) { // listview for first element, when cursor has only one element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment_firstandlast, parent, false);
         }
-        else if (cursor.getPosition() == cursor.getCount()-1) { // listview for last element
+        else if (cursor.isLast()) { // listview for last element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment_last, parent, false);
         }
         else { // listview for "normal" element
@@ -176,6 +156,22 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
         return inflatedView;
 
     }
+
+
+    // Turn off view recycling in listview, because there are different views (first, normal, last)
+    // getViewTypeCount(), getItemViewType
+    @Override
+    public int getViewTypeCount () {
+
+        return getCount();
+    }
+
+    @Override
+    public int getItemViewType (int position) {
+
+        return position;
+    }
+
 
 }
 

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -22,18 +23,29 @@ import org.w3c.dom.Text;
  */
 public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
-
+    // hold layoutInflater
     private LayoutInflater cursorInflater;
 
+    // reference to the DB
+    private DBAdapter myDb;
 
+
+    // number for count comments for arrangement (12 numbers!)
+    private String[] numberCountForComments = new String [12];
 
 
     // Default constructor
     public OurArrangementNowCursorAdapter(Context context, Cursor cursor, int flags) {
 
         super(context, cursor, flags);
+
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        // init the DB
+        myDb = new DBAdapter(context);
+
+        // init array for count comments
+        numberCountForComments = context.getResources().getStringArray(R.array.ourArrangementCountComments);
 
     }
 
@@ -46,9 +58,8 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         // link to evaluate arrangement
         Spanned showEvaluateCommentLinkTmp = null;
 
-
+        // open sharedPrefs
         SharedPreferences prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
-
 
         if (cursor.getPosition() == 0 ) { // listview for first element
             TextView numberOfArrangement = (TextView) view.findViewById(R.id.ourArrangementIntroText);
@@ -56,14 +67,10 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
             numberOfArrangement.setText(txtArrangementNumber);
         }
 
-
-
-
         // put arrangement number
         TextView numberOfArrangement = (TextView) view.findViewById(R.id.listArrangementNumberText);
         String txtArrangementNumber = context.getResources().getString(R.string.showArrangementIntroText)+ " " + Integer.toString(cursor.getPosition()+1);
         numberOfArrangement.setText(txtArrangementNumber);
-
 
         // put arrangement text
         TextView textViewArrangement = (TextView) view.findViewById(R.id.listTextArrangement);
@@ -81,13 +88,25 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "evaluate_an_arrangement");
 
-            showEvaluateCommentLinkTmp = Html.fromHtml("<a href=\"" + evaluateLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateString", "string", context.getPackageName()))+"</a>");
+            showEvaluateCommentLinkTmp = Html.fromHtml("<a href=\"" + evaluateLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateString", "string", context.getPackageName()))+"</a> &middot; ");
 
         }
 
-
         // Show link for comment in our arrangement
         if (prefs.getBoolean("showArrangementComment", false)) {
+
+            // get all comments for choosen arrangement (getCount)
+            Cursor cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
+            // generate the number of comments to show
+            String tmpCountComments;
+            int tmpIntCountComments = cursorArrangementAllComments.getCount();
+            if (cursorArrangementAllComments.getCount() > 10) {
+                tmpCountComments = numberCountForComments[11];
+
+            }
+            else {
+                tmpCountComments = numberCountForComments[cursorArrangementAllComments.getCount()];
+            }
 
             // make link to comment arrangement
             Uri.Builder commentLinkBuilder = new Uri.Builder();
@@ -97,7 +116,6 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "comment_an_arrangement");
 
-
             // make link to show comment for arrangement
             Uri.Builder showCommentLinkBuilder = new Uri.Builder();
             showCommentLinkBuilder.scheme("smart.efb.ilink_comment")
@@ -106,14 +124,13 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "show_comment_for_arrangement");;
 
-            if (showEvaluateCommentLinkTmp != null) {
-                showAndCommentLinkTmp = Html.fromHtml(" &middot; <a href=\"" + showCommentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementShowCommentString", "string", context.getPackageName()))+"</a> &middot;" + " <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
+            if (tmpIntCountComments == 0) {
+                showAndCommentLinkTmp = Html.fromHtml(tmpCountComments + " &middot;" + " <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
             }
             else {
-                showAndCommentLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementShowCommentString", "string", context.getPackageName()))+"</a> &middot;" + " <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
+                showAndCommentLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountComments + "</a> &middot;" + " <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
 
             }
-
 
         }
 
@@ -133,7 +150,6 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
             else {
                 linkCommentAnArrangement.setText(showEvaluateCommentLinkTmp);
             }
-
 
             linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -157,9 +173,5 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         return inflatedView;
 
     }
-
-
-
-
 
 }

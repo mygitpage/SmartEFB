@@ -62,6 +62,9 @@ public class OurArrangementFragmentNow extends Fragment {
         // show actual arrangement set
         displayActualArrangementSet();
 
+        // close database-connection
+        myDb.close();
+
 
     }
 
@@ -99,6 +102,9 @@ public class OurArrangementFragmentNow extends Fragment {
 
         // Assign adapter to ListView
         listView.setAdapter(dataAdapter);
+
+        // close cursor
+        //cursor.close();
 
 
     }

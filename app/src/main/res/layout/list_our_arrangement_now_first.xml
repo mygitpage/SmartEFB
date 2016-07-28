@@ -9,6 +9,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
 
+
     <TextView
         android:id="@+id/ourArrangementIntroText"
         android:layout_width="match_parent"

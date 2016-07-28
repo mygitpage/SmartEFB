@@ -22,15 +22,36 @@
         android:paddingRight="10dp">
 
 
-        <TextView
-            android:id="@+id/arrangementCommentNumberIntro"
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/text_color"
-            android:gravity="left"
-            android:textStyle="bold"/>
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
 
+
+            <TextView
+                android:id="@+id/arrangementCommentNumberIntro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/arrangementShowCommentBackLinkNow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:textColor="@color/text_color"
+                android:textColorLink="@color/colorPrimary"
+                android:gravity="right"/>
+
+
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/choosenArrangement"
@@ -63,7 +84,8 @@
             android:background="@color/inputfield_background"
             android:layout_margin="10dp"
             android:textColorHint="@color/text_color_white"
-            android:inputType="textNoSuggestions|text|textMultiLine" />
+            android:inputType="textNoSuggestions|text|textMultiLine"
+            android:padding="5dp"/>
 
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -82,7 +104,8 @@
                 android:textColor="@color/white"
                 android:text="@string/btnSendArrangementComment"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginRight="5dp"/>
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
 
             <Button
                 android:id="@+id/buttonAbortComment"
@@ -92,7 +115,8 @@
                 android:textColor="@color/white"
                 android:text="@string/btnAbortComment"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:padding="5dp"/>
 
         </LinearLayout>
 

@@ -19,19 +19,17 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
     // array of tab title
     String ourArrangementTabTitleNames[] = new String[ourArrangementTabCount];
 
-
     // calling context
     Context pagerAdapterContext = null;
-
 
     // command to choose a fragment in getItem
     static int fragmentChooser;
 
-    // the fragment
+    // the fragments
     Fragment fragArraNow, fragArraNowComment, fragArraOld, fragArraShowComment;
 
 
-
+    // default constructor
     public OurArrangementViewPagerAdapter (FragmentManager ourArrangementFragmentManager, Context context) {
 
         super (ourArrangementFragmentManager);
@@ -58,10 +56,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
             case 0:
 
-
                 switch (fragmentChooser) {
-
-
                     case 0:
                         return fragArraNow;
 
@@ -74,7 +69,6 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
                     case 3:
                         //return fragArraEvaluateComment;
                         break;
-
                 }
 
             case 1:
@@ -82,7 +76,6 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
             default:
                 return new OurArrangementFragmentNow();
-
 
         }
 
@@ -99,8 +92,6 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
     }
 
 
-
-
     @Override
     public int getCount() {
         return ourArrangementTabCount;
@@ -113,7 +104,6 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
         return ourArrangementTabTitleNames[position];
 
     }
-
 
 
     // set variable for switching between fragments for tab 0
@@ -140,29 +130,6 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
         }
 
-
-
-
-
     }
 
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

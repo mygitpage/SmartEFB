@@ -39,14 +39,11 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // reference cursorAdapter for the listview
     OurArrangementShowCommentCursorAdapter showCommentCursorAdapter;
 
-
-
     // DB-Id of arrangement to comment
     int arrangementDbIdToShow = 0;
 
     // arrangement number in list view
     int arrangementNumberInListView = 0;
-
 
 
 
@@ -60,11 +57,8 @@ public class OurArrangementFragmentShowComment extends Fragment {
     }
 
 
-
-
     @Override
     public void onViewCreated (View view, @Nullable Bundle saveInstanceState) {
-
 
         super.onViewCreated(view, saveInstanceState);
 
@@ -75,7 +69,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
         // show actual comment set for arrangement
         displayActualCommentSet();
-
 
     }
 
@@ -92,13 +85,12 @@ public class OurArrangementFragmentShowComment extends Fragment {
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
 
-
+        // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
         arrangementDbIdToShow = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
         if (arrangementDbIdToShow < 0) arrangementDbIdToShow = 0; // check borders
-
+        // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
         arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
         if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
-
 
     }
 
@@ -106,19 +98,18 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
     public void displayActualCommentSet () {
 
-
+        // get the data (all comments from an arrangement) from DB
         Cursor cursor = myDb.getAllRowsOurArrangementComment(arrangementDbIdToShow);
 
+        // get the data (the choosen arrangement) from the DB
         String arrangement = "";
         Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToShow);
         arrangement = choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
 
-
         // find the listview
         ListView listView = (ListView) viewFragmentShowComment.findViewById(R.id.listOurArrangementShowComment);
 
-
-        // new dataadapter
+        // new dataadapter with custom constructor
         showCommentCursorAdapter = new OurArrangementShowCommentCursorAdapter(
                 getActivity(),
                 cursor,
@@ -130,10 +121,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
         // Assign adapter to ListView
         listView.setAdapter(showCommentCursorAdapter);
 
-
     }
-
-
 
 }
 

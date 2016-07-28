@@ -63,7 +63,7 @@
     <!-- Activity Our Arrangements -->
     <!-- String Activity Our Arrangement -->
 
-
+    <string name="ourArrangementBackLinkToArrangement">Zurück zu allen Absprachen</string>
 
     <!-- fragment actual arrangements -->
 
@@ -107,7 +107,8 @@
 
     <string name="showArrangementIntroText">Absprache</string>
 
-    <string name="ourArrangementShowCommentBackLink">Zurück zu allen Absprachen</string>
+
+
 
     <!-- End String Fragment show comment -->
 
