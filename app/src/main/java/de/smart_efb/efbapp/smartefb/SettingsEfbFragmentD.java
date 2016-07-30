@@ -250,13 +250,52 @@ public class SettingsEfbFragmentD extends Fragment {
                 prefsEditor.putBoolean("showArrangementEvaluate", checkBoxBooleanValue);
                 prefsEditor.commit();
 
-                Toast.makeText(fragmentContextD, "Kommentar Bewertungen " + aktiv_passivText, Toast.LENGTH_SHORT).show();
+                Toast.makeText(fragmentContextD, "Vereinbarungen Bewertungen " + aktiv_passivText, Toast.LENGTH_SHORT).show();
 
             }
         });
 
 
 
+
+        //
+        // pre select show old arrangements
+        //
+        tmpCheckBox = (CheckBox) viewFragmentD.findViewById(R.id.showOldArrangements);
+
+        if (prefs.getBoolean("showOldArrangements", false)) {
+            tmpCheckBox.setChecked(true);
+        }
+        else {
+            tmpCheckBox.setChecked(false);
+        }
+        tmpCheckBox.setOnClickListener(new View.OnClickListener() { // OnclickListener for arrangement comment
+
+            @Override
+            public void onClick(View v) {
+
+                boolean checkBoxBooleanValue=false;
+                String aktiv_passivText ="";
+
+                // Is the view now checked?
+                boolean checked = ((CheckBox) v).isChecked();
+
+                if (checked) {
+                    checkBoxBooleanValue=true;
+                    aktiv_passivText = "aktiviert";
+                }
+                else {
+                    checkBoxBooleanValue=false;
+                    aktiv_passivText = "deaktiviert";
+                }
+
+                prefsEditor.putBoolean("showOldArrangements", checkBoxBooleanValue);
+                prefsEditor.commit();
+
+                Toast.makeText(fragmentContextD, "Ältere Vereinbarungen zeigen " + aktiv_passivText, Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
 

@@ -161,9 +161,9 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-        View inflatedView = null;
+        View inflatedView;
 
-        if (cursor.getPosition() == 0 ) { // listview for first element
+        if (cursor.isFirst() ) { // listview for first element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_now_first, parent, false);
         }
         else { // listview for "normal" element
@@ -172,6 +172,21 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
         return inflatedView;
 
+    }
+
+
+    // Turn off view recycling in listview, because there are different views (first, normal)
+    // getViewTypeCount(), getItemViewType
+    @Override
+    public int getViewTypeCount () {
+
+        return getCount();
+    }
+
+    @Override
+    public int getItemViewType (int position) {
+
+        return position;
     }
 
 }

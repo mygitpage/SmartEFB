@@ -51,7 +51,6 @@ public class OurArrangementFragmentNow extends Fragment {
     @Override
     public void onViewCreated (View view, @Nullable Bundle saveInstanceState) {
 
-
         super.onViewCreated(view, saveInstanceState);
 
         fragmentNowContext = getActivity().getApplicationContext();
@@ -78,9 +77,9 @@ public class OurArrangementFragmentNow extends Fragment {
 
         // init the prefs
         prefs = fragmentNowContext.getSharedPreferences("smartEfbSettings", fragmentNowContext.MODE_PRIVATE);
+
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
-
 
     }
 

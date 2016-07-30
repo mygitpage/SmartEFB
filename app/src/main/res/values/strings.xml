@@ -72,6 +72,17 @@
     <!-- End fragment actual arrangements -->
 
 
+
+
+    <!-- fragment show old arrangements -->
+
+    <string name="ourArrangementOldArrangementFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
+
+    <!-- End fragment show old arrangements -->
+
+
+
+
     <!-- Subtitle under Title Our Arrangement -->
     <string name="currentArrangementDateFrom">Aktuell vom</string>
     <string name="olderArrangementDateFrom">Älter als</string>
