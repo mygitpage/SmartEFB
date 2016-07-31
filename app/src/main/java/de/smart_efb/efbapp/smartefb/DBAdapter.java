@@ -303,14 +303,30 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    // Return all data from the database (table ourArrangement) where write_time = currentDateOfArrangement
-    public Cursor getAllRowsCurrentOurArrangement(long currentDateOfArrangement) {
+    // Return all data from the database (table ourArrangement) (equal: write_time = currentDateOfArrangement, smaller: write_time < currentDateOfArrangement)
+    // the result is sorted by DESC
+    public Cursor getAllRowsCurrentOurArrangement(long currentDateOfArrangement, String equalGreater) {
+
+        String where = "";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = "arrangement_time = " + currentDateOfArrangement;
+
+        switch (equalGreater) {
+
+            case "equal":
+                where = OUR_ARRANGEMENT_KEY_WRITE_TIME + " = " + currentDateOfArrangement;
+                break;
+            case "smaller":
+                where = OUR_ARRANGEMENT_KEY_WRITE_TIME + " < " + currentDateOfArrangement;
+                break;
+            default:
+                where = OUR_ARRANGEMENT_KEY_WRITE_TIME + " = " + currentDateOfArrangement;
+                break;
+        }
+
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
-                where, null, null, null, null, null);
+                where, null, null, null, OUR_ARRANGEMENT_KEY_WRITE_TIME + " DESC", null);
 
         if (c != null) {
             c.moveToFirst();
@@ -318,6 +334,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         return c;
     }
+
 
     // Get a specific row from the arrangement (by rowId)
     public Cursor getRowOurArrangement(int rowId) {
@@ -364,6 +381,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return all data from the database (table ourArrangementComment) where arrangement_id = id
+    // the result is sorted by DESC
     public Cursor getAllRowsOurArrangementComment(int arrangementId) {
 
         SQLiteDatabase db = this.getWritableDatabase();

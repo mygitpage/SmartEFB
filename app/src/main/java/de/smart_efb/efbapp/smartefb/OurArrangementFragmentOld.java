@@ -95,38 +95,52 @@ public class OurArrangementFragmentOld extends Fragment {
         // find the listview
         ListView listView = (ListView) viewFragmentOld.findViewById(R.id.listOurArrangementOld);
 
+        // text to show, when arrangement old function not available or count old arrangement is zero
+        String tmpAlternativText = "";
 
-        if (prefs.getBoolean("showOldArrangement", false)) { // Function showOldArrangement is available!!!!
+        // show alternativ text? true -> yes, false -> no
+        Boolean tmpShowAlternativText = false;
 
-            listView.setVisibility(View.VISIBLE);
+
+        if (prefs.getBoolean("showOldArrangements", false)) { // Function showOldArrangement is available!!!!
 
             // get all actual arrangement from DB
-            Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfArrangement);
+            Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfArrangement,"smaller");
 
-            // new dataadapter
-            dataAdapter = new OurArrangementOldCursorAdapter(
-                    getActivity(),
-                    cursor,
-                    0);
+            if (cursor.getCount() > 0) {
 
-            // Assign adapter to ListView
-            listView.setAdapter(dataAdapter);
+                // new dataadapter
+                dataAdapter = new OurArrangementOldCursorAdapter(
+                        getActivity(),
+                        cursor,
+                        0);
 
-            // close cursor
-            //cursor.close();
+                // Assign adapter to ListView
+                listView.setAdapter(dataAdapter);
+            }
+            else {
+                tmpShowAlternativText = true;
+                tmpAlternativText = fragmentOldContext.getResources().getString(fragmentOldContext.getResources().getIdentifier("ourArrangementOldArrangementNothingThere", "string", fragmentOldContext.getPackageName()));
+            }
+
         }
         else { // Function showOldArrangement is not available
 
+            tmpShowAlternativText = true;
+            tmpAlternativText = fragmentOldContext.getResources().getString(fragmentOldContext.getResources().getIdentifier("ourArrangementOldArrangementFunctionNotAvailable", "string", fragmentOldContext.getPackageName()));
+        }
+
+        // when tmpShowAlternativText -> TRUE show alternativ text
+        if (tmpShowAlternativText) {
 
             LinearLayout oldArrangementHolderLayout = (LinearLayout) viewFragmentOld.findViewById(R.id.listOurArrangementOldHolder);
 
             // remove listView in Layout
             oldArrangementHolderLayout.removeViewInLayout(listView);
 
-
             //add textView for intro text
             TextView txtViewFunctionNotAvailable = new TextView (fragmentOldContext);
-            txtViewFunctionNotAvailable.setText(fragmentOldContext.getResources().getString(fragmentOldContext.getResources().getIdentifier("ourArrangementOldArrangementFunctionNotAvailable", "string", fragmentOldContext.getPackageName())));
+            txtViewFunctionNotAvailable.setText(tmpAlternativText);
             txtViewFunctionNotAvailable.setTextColor(ContextCompat.getColor(fragmentOldContext, R.color.text_color));
             txtViewFunctionNotAvailable.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             txtViewFunctionNotAvailable.setTextSize(16);
@@ -137,12 +151,8 @@ public class OurArrangementFragmentOld extends Fragment {
             // add text view to arrangement holder holder (linear layout in xml-file)
             oldArrangementHolderLayout.addView(txtViewFunctionNotAvailable);
 
-
         }
 
     }
-
-
-
 
 }

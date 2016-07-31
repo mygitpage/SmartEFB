@@ -87,7 +87,7 @@ public class OurArrangementFragmentNow extends Fragment {
 
     public void displayActualArrangementSet () {
 
-        Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfArrangement);
+        Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfArrangement, "equal");
 
         // find the listview
         ListView listView = (ListView) viewFragmentNow.findViewById(R.id.listOurArrangementNow);

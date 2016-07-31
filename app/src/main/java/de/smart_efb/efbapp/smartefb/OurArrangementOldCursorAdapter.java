@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
 
 /**
  * Created by ich on 30.07.16.
@@ -19,9 +20,11 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
     // reference to the DB
     private DBAdapter myDb;
 
+    // actual arrangement date, which is "at work"
+    long actualArrangementDate = 0;
 
-
-
+    // old arrangement change true -> change, false -> no change, same Date!
+    Boolean oldArrangementDateChange = false;
 
 
     // Default constructor
@@ -42,6 +45,17 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
 
+        if (oldArrangementDateChange) { // listview for first element or date change
+            TextView tmpOldArrangementDate = (TextView) view.findViewById(R.id.listOldArrangementDate);
+            String txtArrangementNumber = context.getResources().getString(R.string.ourArrangementOldArrangementDateIntro) + " " + EfbHelperClass.timestampToDateFormat(actualArrangementDate, "dd.MM.yyyy");
+            tmpOldArrangementDate.setText(txtArrangementNumber);
+        }
+
+
+        // set old arrangement text
+        TextView textViewArrangement = (TextView) view.findViewById(R.id.listOldTextArrangement);
+        String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
+        textViewArrangement.setText(title);
 
 
     }
@@ -53,11 +67,14 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
 
         View inflatedView;
 
-        if (cursor.isFirst() ) { // listview for first element
-            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_old_first, parent, false);
+        if (cursor.isFirst() || actualArrangementDate != cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_WRITE_TIME))) { // listview for first element
+            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_old_start, parent, false);
+            actualArrangementDate = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_WRITE_TIME));
+            oldArrangementDateChange = true;
         }
         else { // listview for "normal" element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_old, parent, false);
+            oldArrangementDateChange = false;
         }
 
         return inflatedView;

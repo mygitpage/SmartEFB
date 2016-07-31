@@ -61,7 +61,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         // open sharedPrefs
         SharedPreferences prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
 
-        if (cursor.getPosition() == 0 ) { // listview for first element
+        if (cursor.isFirst() ) { // listview for first element
             TextView numberOfArrangement = (TextView) view.findViewById(R.id.ourArrangementIntroText);
             String txtArrangementNumber = context.getResources().getString(R.string.ourArrangementIntroText) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), "dd.MM.yyyy");;
             numberOfArrangement.setText(txtArrangementNumber);

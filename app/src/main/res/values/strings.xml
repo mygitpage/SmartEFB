@@ -78,6 +78,17 @@
 
     <string name="ourArrangementOldArrangementFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
 
+    <string name="ourArrangementOldArrangementNothingThere">Es sind keine älteren Absprachen vorhanden!</string>
+
+    <string name="ourArrangementOldArrangementDateIntro">Absprachen vom</string>
+
+
+
+
+
+
+
+
     <!-- End fragment show old arrangements -->
 
 
