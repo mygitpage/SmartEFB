@@ -2,6 +2,7 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
             TextView tmpOldArrangementDate = (TextView) view.findViewById(R.id.listOldArrangementDate);
             String txtArrangementNumber = context.getResources().getString(R.string.ourArrangementOldArrangementDateIntro) + " " + EfbHelperClass.timestampToDateFormat(actualArrangementDate, "dd.MM.yyyy");
             tmpOldArrangementDate.setText(txtArrangementNumber);
+            oldArrangementDateChange = false;
         }
 
 
@@ -56,7 +58,6 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
         TextView textViewArrangement = (TextView) view.findViewById(R.id.listOldTextArrangement);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(title);
-
 
     }
 

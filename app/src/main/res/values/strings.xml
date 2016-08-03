@@ -91,6 +91,10 @@
 
     <!-- End fragment show old arrangements -->
 
+    <!-- fragment show now arrangements -->
+    <string name="ourArrangementNowArrangementNothingThere">Es sind keine aktuellen Absprachen vorhanden!</string>
+
+    <!-- End show now arrangements -->
 
 
 

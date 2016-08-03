@@ -117,6 +117,8 @@ public class OurArrangementFragmentOld extends Fragment {
 
                 // Assign adapter to ListView
                 listView.setAdapter(dataAdapter);
+
+
             }
             else {
                 tmpShowAlternativText = true;

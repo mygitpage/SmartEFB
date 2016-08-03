@@ -121,6 +121,8 @@ public class OurArrangementFragmentShowComment extends Fragment {
         // Assign adapter to ListView
         listView.setAdapter(showCommentCursorAdapter);
 
+
+
     }
 
 }
