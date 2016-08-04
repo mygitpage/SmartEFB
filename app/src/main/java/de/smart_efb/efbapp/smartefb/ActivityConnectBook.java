@@ -59,9 +59,7 @@ public class ActivityConnectBook extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-
-                long newID = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), txtInputMsg.getText().toString(), roleConnectBook, 2);
+                long newID = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), txtInputMsg.getText().toString(), roleConnectBook, 2, false);
 
                 txtInputMsg.setText("");
 

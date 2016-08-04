@@ -36,7 +36,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 14;
+    public static final int DATABASE_VERSION = 15;
 
 
     // Context of application who uses us.
@@ -57,21 +57,24 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_ARRANGEMENT_KEY_ARRANGEMENT = "arrangement";
     public static final String OUR_ARRANGEMENT_KEY_AUTHOR_NAME = "author_name";
     public static final String OUR_ARRANGEMENT_KEY_WRITE_TIME = "arrangement_time";
+    public static final String OUR_ARRANGEMENT_KEY_NEW_ENTRY = "new_entry";
 
     public static final int OUR_ARRANGEMENT_COL_ARRANGEMENT = 1;
     public static final int OUR_ARRANGEMENT_COL_AUTHOR_NAME = 2;
     public static final int OUR_ARRANGEMENT_COL_WRITE_TIME = 3;
+    public static final int OUR_ARRANGEMENT_COL_NEW_ENTRY = 4;
 
 
     // All keys from table app settings in a String
-    public static final String[] OUR_ARRANGEMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_KEY_ARRANGEMENT, OUR_ARRANGEMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_KEY_WRITE_TIME };
+    public static final String[] OUR_ARRANGEMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_KEY_ARRANGEMENT, OUR_ARRANGEMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_KEY_NEW_ENTRY };
 
     // SQL String to create our arrangement table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT =
             "create table " + DATABASE_TABLE_OUR_ARRANGEMENT + " (" + KEY_ROWID + " integer primary key autoincrement, "
                     + OUR_ARRANGEMENT_KEY_ARRANGEMENT + " TEXT not null, "
                     + OUR_ARRANGEMENT_KEY_AUTHOR_NAME + " STRING not null, "
-                    + OUR_ARRANGEMENT_KEY_WRITE_TIME + " INTEGER not null"
+                    + OUR_ARRANGEMENT_KEY_WRITE_TIME + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0"
                     + ");";
 
 
@@ -82,15 +85,17 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME = "author_name";
     public static final String OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME = "comment_time";
     public static final String OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT = "id_arrangement";
+    public static final String OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY = "new_entry";
 
     public static final int OUR_ARRANGEMENT_COMMENT_COL_COMMENT = 1;
     public static final int OUR_ARRANGEMENT_COMMENT_COL_AUTHOR_NAME = 2;
     public static final int OUR_ARRANGEMENT_COMMENT_COL_WRITE_TIME = 3;
     public static final int OUR_ARRANGEMENT_COMMENT_COL_ID_ARRANGEMENT = 4;
+    public static final int OUR_ARRANGEMENT_COMMENT_COL_NEW_ENTRY = 5;
 
 
     // All keys from table app settings in a String
-    public static final String[] OUR_ARRANGEMENT_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT };
+    public static final String[] OUR_ARRANGEMENT_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT, OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY };
 
     // SQL String to create our arrangement comment table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_COMMENT =
@@ -98,7 +103,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_ARRANGEMENT_COMMENT_KEY_COMMENT + " TEXT not null, "
                     + OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME + " STRING not null, "
                     + OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " INTEGER not null, "
-                    + OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT + " INTEGER not null"
+                    + OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0"
                     + ");";
 
 
@@ -112,6 +118,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String CHAT_MESSAGE_KEY_ROLE = "role";
     public static final String CHAT_MESSAGE_KEY_TX_TIME = "tx_time";
     public static final String CHAT_MESSAGE_KEY_STATUS = "status";
+    public static final String CHAT_MESSAGE_KEY_NEW_ENTRY = "new_entry";
 
     public static final int CHAT_MESSAGE_COL_WRITE_TIME = 1;
     public static final int CHAT_MESSAGE_COL_AUTHOR_NAME = 2;
@@ -119,9 +126,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final int CHAT_MESSAGE_COL_ROLE = 4;
     public static final int CHAT_MESSAGE_COL_TX_TIME = 5;
     public static final int CHAT_MESSAGE_COL_STATUS = 6;
+    public static final int CHAT_MESSAGE_COL_NEW_ENTRY = 7;
 
     // All keys from table chat messages in a String
-    public static final String[] CHAT_MESSAGE_ALL_KEYS = new String[] {KEY_ROWID, CHAT_MESSAGE_KEY_WRITE_TIME, CHAT_MESSAGE_KEY_AUTHOR_NAME, CHAT_MESSAGE_KEY_MESSAGE, CHAT_MESSAGE_KEY_ROLE, CHAT_MESSAGE_KEY_TX_TIME, CHAT_MESSAGE_KEY_STATUS };
+    public static final String[] CHAT_MESSAGE_ALL_KEYS = new String[] {KEY_ROWID, CHAT_MESSAGE_KEY_WRITE_TIME, CHAT_MESSAGE_KEY_AUTHOR_NAME, CHAT_MESSAGE_KEY_MESSAGE, CHAT_MESSAGE_KEY_ROLE, CHAT_MESSAGE_KEY_TX_TIME, CHAT_MESSAGE_KEY_STATUS, CHAT_MESSAGE_KEY_NEW_ENTRY };
 
     // SQL String to create chat-message-table
     private static final String DATABASE_CREATE_SQL_CHAT_MESSAGE =
@@ -131,7 +139,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + CHAT_MESSAGE_KEY_MESSAGE + " TEXT not null, "
                     + CHAT_MESSAGE_KEY_ROLE + " INTEGER not null, "
                     + CHAT_MESSAGE_KEY_TX_TIME + " INTEGER, "
-                    + CHAT_MESSAGE_KEY_STATUS + " INTEGER not null"
+                    + CHAT_MESSAGE_KEY_STATUS + " INTEGER not null, "
+                    + CHAT_MESSAGE_KEY_NEW_ENTRY + " INTEGER DEFAULT 0"
                     + ");";
 
     /************************ End of table definitions **********************************************************************/
@@ -142,10 +151,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     /////////////////////////////////////////////////////////////////////
 
 
-    DBAdapter (Context ctx) {
+    DBAdapter (Context context) {
 
-        super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = ctx;
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
 
@@ -186,7 +195,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* CROD for Chat Message ******************************************/
 
     // Add a new set of values to the database.
-    public long insertRowChatMessage(String author_name, long writeTime, String message, int role, int status) {
+    public long insertRowChatMessage(String author_name, long writeTime, String message, int role, int status, Boolean newEntry) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -198,9 +207,18 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(CHAT_MESSAGE_KEY_ROLE, role);
         initialValues.put(CHAT_MESSAGE_KEY_STATUS, status);
 
+        // is it a new entry?
+        if (newEntry) {
+            initialValues.put(CHAT_MESSAGE_KEY_NEW_ENTRY, 1);
+        } else {
+            initialValues.put(CHAT_MESSAGE_KEY_NEW_ENTRY, 0);
+        }
+
         // Insert it into the database.
         return db.insert(DATABASE_TABLE_CHAT_MESSAGE, null, initialValues);
+
     }
+
 
     // Delete a row from the database, by rowId (primary key)
     public boolean deleteRowChatMessage(long rowId) {
@@ -257,7 +275,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
     // Change an existing row to be equal to new data.
-    public boolean updateRowChatMessage(long rowId, int write_time, String author_name, String message, int role, int tx_time, int status) {
+    public boolean updateRowChatMessage(long rowId, int write_time, String author_name, String message, int role, int tx_time, int status, Boolean newEntry) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -271,6 +289,13 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(CHAT_MESSAGE_KEY_ROLE, role);
         newValues.put(CHAT_MESSAGE_KEY_TX_TIME, tx_time);
         newValues.put(CHAT_MESSAGE_KEY_STATUS, tx_time);
+
+        // is it a new entry?
+        if (newEntry) {
+            newValues.put(CHAT_MESSAGE_KEY_NEW_ENTRY, 1);
+        } else {
+            newValues.put(CHAT_MESSAGE_KEY_NEW_ENTRY, 0);
+        }
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null) != 0;
@@ -286,7 +311,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* CROD for Our Arrangement ******************************************/
 
     // Add a new set of values to ourArrangement .
-    public long insertRowOurArrangement(String arrangement, String authorName, long arrangementTime) {
+    public long insertRowOurArrangement(String arrangement, String authorName, long arrangementTime, Boolean newEntry) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -296,6 +321,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(OUR_ARRANGEMENT_KEY_AUTHOR_NAME, authorName);
         initialValues.put(OUR_ARRANGEMENT_KEY_WRITE_TIME, arrangementTime);
 
+        // is it a new entry?
+        if (newEntry) {
+            initialValues.put(OUR_ARRANGEMENT_KEY_NEW_ENTRY, 1);
+        } else {
+            initialValues.put(OUR_ARRANGEMENT_KEY_NEW_ENTRY, 0);
+        }
 
         // Insert it into the database.
         return db.insert(DATABASE_TABLE_OUR_ARRANGEMENT, null, initialValues);
@@ -352,6 +383,26 @@ public class DBAdapter extends SQLiteOpenHelper {
         return c;
     }
 
+
+
+    // Get the number of new rows in arrangement (new entrys)
+    public int getCountNewEntryOurArrangement() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // new_entry = 1 (true)?
+        String where = OUR_ARRANGEMENT_KEY_NEW_ENTRY + "=1";
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c.getCount();
+    }
+
+
     /********************************* End!! CROD for Our Arrangement ******************************************/
 
 
@@ -362,7 +413,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* CROD for Our Arrangement Comment ******************************************/
 
     // Add a new set of values to ourArrangementComment .
-    public long insertRowOurArrangementComment(String comment, String authorName, long commentTime, int idArrangement) {
+    public long insertRowOurArrangementComment(String comment, String authorName, long commentTime, int idArrangement, Boolean newEntry) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -372,6 +423,13 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, authorName);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, commentTime);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT, idArrangement);
+
+        // is it a new entry?
+        if (newEntry) {
+            initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY, 1);
+        } else {
+            initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY, 0);
+        }
 
         // Insert it into the database.
         return db.insert(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, null, initialValues);
@@ -398,10 +456,22 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+    // Get the number of new rows in comment (new entrys)
+    public int getCountNewEntryOurArrangementComment() {
 
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        // new_entry = 1 (true)?
+        String where = OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY + "=1";
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
+                where, null, null, null, null, null);
 
+        if (c != null) {
+            c.moveToFirst();
+        }
 
+        return c.getCount();
+    }
 
 
     /********************************* End!! CROD for Our Arrangement ******************************************/

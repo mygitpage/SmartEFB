@@ -72,6 +72,18 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         String txtArrangementNumber = context.getResources().getString(R.string.showArrangementIntroText)+ " " + Integer.toString(cursor.getPosition()+1);
         numberOfArrangement.setText(txtArrangementNumber);
 
+
+        // check if arrangement entry new?
+        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_NEW_ENTRY)) == 1) {
+            TextView newEntryOfArrangement = (TextView) view.findViewById(R.id.listArrangementNewArrangementText);
+            String txtnewEntryOfArrangement = context.getResources().getString(R.string.newEntryText);
+            newEntryOfArrangement.setText(txtnewEntryOfArrangement);
+        }
+
+
+
+
+
         // put arrangement text
         TextView textViewArrangement = (TextView) view.findViewById(R.id.listTextArrangement);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));

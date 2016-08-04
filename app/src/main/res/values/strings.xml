@@ -65,6 +65,10 @@
 
     <string name="ourArrangementBackLinkToArrangement">Zurück zu allen Absprachen</string>
 
+    <string name="newEntryText">Neu</string>
+
+
+
     <!-- fragment actual arrangements -->
 
     <string name="ourArrangementIntroText">Die aktuellen Absprachen vom</string>

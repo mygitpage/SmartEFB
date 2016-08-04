@@ -308,7 +308,7 @@ public class SettingsEfbFragmentD extends Fragment {
             @Override
             public void onClick(View v) {
 
-                long newID = myDb.insertRowOurArrangement(txtInputArrangement.getText().toString(), "testuser", prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()));
+                long newID = myDb.insertRowOurArrangement(txtInputArrangement.getText().toString(), "testuser", prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), true);
 
                 txtInputArrangement.setText("");
 

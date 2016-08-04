@@ -10,14 +10,30 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
 
-    <TextView
-        android:id="@+id/listArrangementNumberText"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textColor="@color/text_color"
-        android:gravity="left"
-        android:textStyle="bold"/>
+        android:orientation="horizontal"
+        android:paddingBottom="5dp">
+
+        <TextView
+            android:id="@+id/listArrangementNumberText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/listArrangementNewArrangementText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"/>
+
+    </LinearLayout>
 
 
     <TextView
