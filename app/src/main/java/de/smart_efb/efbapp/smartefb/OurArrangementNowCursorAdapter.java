@@ -9,6 +9,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,17 +73,13 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         String txtArrangementNumber = context.getResources().getString(R.string.showArrangementIntroText)+ " " + Integer.toString(cursor.getPosition()+1);
         numberOfArrangement.setText(txtArrangementNumber);
 
-
         // check if arrangement entry new?
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_NEW_ENTRY)) == 1) {
             TextView newEntryOfArrangement = (TextView) view.findViewById(R.id.listArrangementNewArrangementText);
             String txtnewEntryOfArrangement = context.getResources().getString(R.string.newEntryText);
             newEntryOfArrangement.setText(txtnewEntryOfArrangement);
+            myDb.deleteStatusNewEntryOurArrangement(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
         }
-
-
-
-
 
         // put arrangement text
         TextView textViewArrangement = (TextView) view.findViewById(R.id.listTextArrangement);

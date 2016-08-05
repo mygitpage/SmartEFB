@@ -403,10 +403,26 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+
+
+    // delete status new entry in table ourArrangement.
+    public boolean deleteStatusNewEntryOurArrangement (int rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row new_entry = 0 (not new!)
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(OUR_ARRANGEMENT_KEY_NEW_ENTRY, 0);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null) != 0;
+    }
+
+
     /********************************* End!! CROD for Our Arrangement ******************************************/
-
-
-
 
 
 
@@ -471,6 +487,23 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         return c.getCount();
+    }
+
+
+    // delete status new entry in table ourArrangementComment.
+    public boolean deleteStatusNewEntryOurArrangementComment (int rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row new_entry = 0 (not new!)
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY, 0);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null) != 0;
     }
 
 

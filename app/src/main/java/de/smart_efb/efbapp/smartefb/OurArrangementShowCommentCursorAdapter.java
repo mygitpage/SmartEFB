@@ -66,8 +66,21 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         // show "NEW" when comment is new
-        TextView textViewShowActualNewMarker = (TextView) view.findViewById(R.id.listActualTextNewComment);
-        textViewShowActualNewMarker.setText("Neu");
+        //TextView textViewShowActualNewMarker = (TextView) view.findViewById(R.id.listActualTextNewComment);
+        //textViewShowActualNewMarker.setText("Neu");
+
+        // check if arrangement entry new?
+        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
+            TextView newEntryOfArrangement = (TextView) view.findViewById(R.id.listActualTextNewComment);
+            String txtnewEntryOfArrangement = context.getResources().getString(R.string.newEntryText);
+            newEntryOfArrangement.setText(txtnewEntryOfArrangement);
+            //myDb.deleteStatusNewEntryOurArrangement(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
+        }
+
+
+
+
+
 
         // show actual comment
         TextView textViewShowActualComment = (TextView) view.findViewById(R.id.listActualTextComment);
