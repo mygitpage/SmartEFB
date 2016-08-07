@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // total number of elements (in test-mode please edit variable in class SettingsEfbFragmentD please too!!!!!!!!!!!!!)
-    private static int mainMenueNumberOfElements=8;
+    private static int mainMenueNumberOfElements=9;
 
     // number of grid columns
     final private int numberOfGridColumns = 2;
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("title", mainMenueElementTitle[position]);
                             mainContext.startActivity(intent);
                             break;
-                        case 2: // grid "absprachen"
+                        case 2: // grid "ziele"
                             intent = new Intent(mainContext, ActivityOurGoals.class);
                             intent.putExtra("position", position);
                             intent.putExtra("title", mainMenueElementTitle[position]);
@@ -118,7 +118,13 @@ public class MainActivity extends AppCompatActivity {
                             //intent.putExtra("title", mainMenueElementTitle[position]);
                             //getApplicationContext().startActivity(intent);
                             break;
-                        case 7:
+                        case 7: // grid "evaluation"
+                            //intent = new Intent(getApplicationContext(), ActivityEmergencyHelp.class);
+                            //intent.putExtra("position", position);
+                            //intent.putExtra("title", mainMenueElementTitle[position]);
+                            //getApplicationContext().startActivity(intent);
+                            break;
+                        case 8:
                             // grid "einstellungen"
                             intent = new Intent(getApplicationContext(), ActivitySettingsEfb.class);
                             intent.putExtra("position", position);

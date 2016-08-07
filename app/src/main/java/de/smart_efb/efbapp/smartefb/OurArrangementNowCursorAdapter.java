@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.preference.Preference;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -59,6 +60,9 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         // link to evaluate arrangement
         Spanned showEvaluateCommentLinkTmp = null;
 
+        // text for new comment entry
+        String tmpTextNewEntryComment = "";
+
         // open sharedPrefs
         SharedPreferences prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
 
@@ -104,7 +108,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         // Show link for comment in our arrangement
         if (prefs.getBoolean("showArrangementComment", false)) {
 
-            // get all comments for choosen arrangement (getCount)
+            // get from DB  all comments for choosen arrangement (getCount)
             Cursor cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
             // generate the number of comments to show
             String tmpCountComments;
@@ -116,6 +120,15 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
             else {
                 tmpCountComments = numberCountForComments[cursorArrangementAllComments.getCount()];
             }
+
+            // check comments for new entry, the cursor is sorted DESC, so first element is newest!!! new entry is markt by == 1
+            if (cursorArrangementAllComments.getCount() > 0) {
+                cursorArrangementAllComments.moveToFirst();
+                if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
+                    tmpTextNewEntryComment = "<font color='"+ ContextCompat.getColor(context, R.color.text_accent_color) + "'>"+ context.getResources().getString(R.string.newEntryText) + "</font>";
+                }
+            }
+
 
             // make link to comment arrangement
             Uri.Builder commentLinkBuilder = new Uri.Builder();
@@ -137,7 +150,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                 showAndCommentLinkTmp = Html.fromHtml(tmpCountComments + " &middot;" + " <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
             }
             else {
-                showAndCommentLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountComments + "</a> &middot;" + " <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
+                showAndCommentLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountComments + "</a> " + tmpTextNewEntryComment + " &middot;" + " <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
 
             }
 

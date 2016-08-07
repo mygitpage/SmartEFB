@@ -210,8 +210,8 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
             int actualCursorNumber = cursorArrangementAllComments.getPosition()+1;
 
+            // Linear Layout holds comment text and linear layout with author,date and new entry text
             LinearLayout l_inner_layout = new LinearLayout(fragmentNowCommentContext);
-
             l_inner_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             l_inner_layout.setOrientation(LinearLayout.VERTICAL);
 
@@ -223,7 +223,27 @@ public class OurArrangementFragmentNowComment extends Fragment {
             txtViewCommentText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             txtViewCommentText.setTextSize(16);
             txtViewCommentText.setGravity(Gravity.LEFT);
-            txtViewCommentText.setPadding(10,0,0,0);
+            txtViewCommentText.setPadding(15,0,0,0);
+
+            // Linear Layout holds author, date and text new entry
+            LinearLayout aadn_inner_layout = new LinearLayout(fragmentNowCommentContext);
+            aadn_inner_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            aadn_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
+
+            if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
+                //add textView for text new entry
+                TextView txtViewCommentNewEntry = new TextView (fragmentNowCommentContext);
+                txtViewCommentNewEntry.setText(this.getResources().getString(R.string.newEntryText));
+                txtViewCommentNewEntry.setId(actualCursorNumber);
+                txtViewCommentNewEntry.setTextColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.text_accent_color));
+                txtViewCommentNewEntry.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                txtViewCommentNewEntry.setTextSize(14);
+                txtViewCommentNewEntry.setGravity(Gravity.LEFT);
+                txtViewCommentNewEntry.setPadding(15,0,0,0);
+
+                // add new entry text to linear layout
+                aadn_inner_layout.addView (txtViewCommentNewEntry);
+            }
 
             //add textView for comment author and date
             TextView txtViewCommentAuthorAndDate = new TextView (fragmentNowCommentContext);
@@ -237,14 +257,53 @@ public class OurArrangementFragmentNowComment extends Fragment {
             txtViewCommentAuthorAndDate.setGravity(Gravity.RIGHT);
             txtViewCommentAuthorAndDate.setPadding(0,0,0,55);
 
+            aadn_inner_layout.addView (txtViewCommentAuthorAndDate);
+
             // add elements to inner linear layout
             l_inner_layout.addView (txtViewCommentText);
-            l_inner_layout.addView (txtViewCommentAuthorAndDate);
+            l_inner_layout.addView (aadn_inner_layout);
 
             // add inner layout to comment holder (linear layout in xml-file)
             commentHolderLayout.addView(l_inner_layout);
 
         } while (cursorArrangementAllComments.moveToNext());
+
+
+
+        // Linear Layout holds author, date and text new entry
+        LinearLayout btnBack_inner_layout = new LinearLayout(fragmentNowCommentContext);
+        btnBack_inner_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        btnBack_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
+        btnBack_inner_layout.setGravity(Gravity.CENTER);
+
+
+        // create back button (to arrangement)
+        Button btnBackToArrangement = new Button (fragmentNowCommentContext);
+        btnBackToArrangement.setText(this.getResources().getString(R.string.btnAbortShowComment));
+        btnBackToArrangement.setTextColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.text_color_white));
+        btnBackToArrangement.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        btnBackToArrangement.setTextSize(14);
+        btnBackToArrangement.setGravity(Gravity.CENTER);
+        btnBackToArrangement.setBackgroundColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.bg_btn_join));
+        btnBackToArrangement.setPadding(10,10,10,10);
+        btnBackToArrangement.setTop(25);
+        btnBackToArrangement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("com","show_arrangement_now");
+                getActivity().startActivity(intent);
+
+            }
+        });
+
+        // add elements to inner linear layout
+        btnBack_inner_layout.addView (btnBackToArrangement);
+
+        // add back button to comment holder (linear layout in xml-file)
+        commentHolderLayout.addView(btnBack_inner_layout);
 
     }
 

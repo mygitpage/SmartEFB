@@ -11,6 +11,7 @@
         <item>@string/mainMenueElementId_6</item>
         <item>@string/mainMenueElementId_7</item>
         <item>@string/mainMenueElementId_8</item>
+        <item>@string/mainMenueElementId_9</item>
     </string-array>
 
     // Main menue button color active
@@ -23,6 +24,7 @@
         <item>#FFED686A</item>
         <item>#FF354644</item>
         <item>#FFACAAA4</item>
+        <item>#FFFBBE5E</item>
     </string-array>
 
 
@@ -36,6 +38,7 @@
         <item>#FFF8C4C3</item>
         <item>#FFAEB5B4</item>
         <item>#FFDEDDDB</item>
+        <item>#FFFDDEAE</item>
     </string-array>
 
 
@@ -48,6 +51,7 @@
         <item>ic_lightbulb_outline_white_48dp</item><!--FAQ-->
         <item>ic_alarm_white_48dp</item><!--Termine-->
         <item>ic_report_problem_white_48dp</item><!--Hilfe-->
+        <item>ic_import_contacts_white_48dp</item><!--Evaluation-->
         <item>ic_build_white_48dp</item><!--Einstellungen-->
     </string-array>
 

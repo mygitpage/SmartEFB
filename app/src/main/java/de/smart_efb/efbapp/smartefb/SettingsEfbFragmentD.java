@@ -45,7 +45,7 @@ public class SettingsEfbFragmentD extends Fragment {
 
 
     // total number of elements (in test-mode please edit variable in class MainActivity please too!!!!!!!!!!!!!)
-    private static int mainMenueNumberOfElements=8;
+    private static int mainMenueNumberOfElements=9;
     // title of main Menue Elements
     private String[] mainMenueElementTitle = new String [mainMenueNumberOfElements];
 
@@ -324,11 +324,7 @@ public class SettingsEfbFragmentD extends Fragment {
         });
         // end insert new test arrangement
 
-
-
-
     }
-
 
 
     //
@@ -494,9 +490,5 @@ public class SettingsEfbFragmentD extends Fragment {
 
         }
     }
-
-
-
-
 
 }

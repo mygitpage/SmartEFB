@@ -10,14 +10,6 @@
         android:paddingRight="10dp">
 
         <TextView
-            android:id="@+id/listActualTextNewComment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="12dp"
-            android:textColor="@color/text_accent_color"
-            android:gravity="left"/>
-
-        <TextView
             android:id="@+id/listActualTextComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,14 +18,30 @@
             android:gravity="top|left"
             android:paddingLeft="10dp"/>
 
-        <TextView
-            android:id="@+id/listActualCommentAuthorAndDate"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="12dp"
-            android:textColor="@color/text_color"
-            android:gravity="right"/>
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
 
+            <TextView
+                android:id="@+id/listActualTextNewComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:textColor="@color/text_accent_color"
+                android:gravity="left"
+                android:paddingLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/listActualCommentAuthorAndDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:textColor="@color/text_color"
+                android:gravity="right"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

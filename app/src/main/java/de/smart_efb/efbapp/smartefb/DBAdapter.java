@@ -454,7 +454,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    // Return all data from the database (table ourArrangementComment) where arrangement_id = id
+    // Return all commens from the database for arrangement with arrangement_id = id (table ourArrangementComment)
     // the result is sorted by DESC
     public Cursor getAllRowsOurArrangementComment(int arrangementId) {
 
@@ -472,8 +472,8 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // Get the number of new rows in comment (new entrys)
-    public int getCountNewEntryOurArrangementComment() {
+    // Get the number of new rows in all comment for all arrangement (new entrys)
+    public int getCountAllNewEntryOurArrangementComment() {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -488,6 +488,28 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         return c.getCount();
     }
+
+
+
+    // Get the number of new rows in comment for choosen arrangement, look arrangementRowId (new entrys)
+    public int getCountNewEntryOurArrangementComment(int arrangementRowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // new_entry = 1 (true) and choosen arrangement like arrangementRowId?
+        String where = OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT + "=" + arrangementRowId;
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c.getCount();
+    }
+
+
+
 
 
     // delete status new entry in table ourArrangementComment.
