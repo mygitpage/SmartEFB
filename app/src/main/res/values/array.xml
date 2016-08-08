@@ -56,6 +56,21 @@
     </string-array>
 
 
+    <!-- drawable for grid in maim menue-->
+    <string-array name="mainMenueElementImageNewEntry">
+        <item>ic_supervisor_account_white_48dp</item><!--Uebergabe-->
+        <item>main_pic_arrangement_new_entry</item><!--Absprachen-->
+        <item>ic_supervisor_account_white_48dp</item><!--Ziele-->
+        <item>ic_supervisor_account_white_48dp</item><!--Praevention-->
+        <item>ic_supervisor_account_white_48dp</item><!--FAQ-->
+        <item>ic_supervisor_account_white_48dp</item><!--Termine-->
+        <item>ic_supervisor_account_white_48dp</item><!--Hilfe-->
+        <item>ic_supervisor_account_white_48dp</item><!--Evaluation-->
+        <item>ic_supervisor_account_white_48dp</item><!--Einstellungen-->
+    </string-array>
+
+
+
     <!-- tab titles for Activity Settings (these are links, original in strings.xml) -->
     <string-array name="settingsEfbTabTitle">
         <item>@string/settingsEfbTabTitleId_1</item>

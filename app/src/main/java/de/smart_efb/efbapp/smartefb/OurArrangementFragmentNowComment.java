@@ -230,6 +230,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
             aadn_inner_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             aadn_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
 
+            // check if comment new entry
             if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
                 //add textView for text new entry
                 TextView txtViewCommentNewEntry = new TextView (fragmentNowCommentContext);
@@ -243,6 +244,9 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
                 // add new entry text to linear layout
                 aadn_inner_layout.addView (txtViewCommentNewEntry);
+
+                // delet status new entry in db
+                myDb.deleteStatusNewEntryOurArrangementComment(cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
             }
 
             //add textView for comment author and date

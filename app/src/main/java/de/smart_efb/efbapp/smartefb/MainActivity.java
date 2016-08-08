@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
     // number of grid columns
     final private int numberOfGridColumns = 2;
 
+    // grid view adapter
+    mainMenueGridViewApdapter mainMenueGridViewApdapter;
+
 
     // title of main Menue Elements
     private String[] mainMenueElementTitle = new String [mainMenueNumberOfElements];
@@ -40,8 +44,15 @@ public class MainActivity extends AppCompatActivity {
     private String[] mainMenueElementColor = new String [mainMenueNumberOfElements];
     // color of inactive element
     private String[] mainMenueElementColorLight = new String [mainMenueNumberOfElements];
-    // background ressource of element
+
+    // background ressource of normal elements (image icon)
     private int[] mainMenueElementBackgroundRessources = new int[mainMenueNumberOfElements];
+    // background ressource of new entry elements (image icon)
+    private int[] mainMenueElementBackgroundRessourcesNewEntry = new int[mainMenueNumberOfElements];
+    // background ressource of elemts to show!
+    private int[] mainMenueShowElementBackgroundRessources = new int[mainMenueNumberOfElements];
+
+
     // show the menue element
     private boolean[] showMainMenueElement = new boolean[mainMenueNumberOfElements];
 
@@ -50,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
 
     // point to shared preferences
     SharedPreferences prefs;
+
+    // reference to the DB
+    DBAdapter myDb;
 
 
 
@@ -60,15 +74,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_efb_main);
 
 
+        // init the elements arrays (title, color, colorLight, backgroundImage)
+        initMainMenueElementsArrays();
+
+        // create background ressources to show in grid
+        createMainMenueElementBackgroundRessources();
+
+
         GridView gridview = (GridView) findViewById(R.id.mainMenueGridView);
-        gridview.setAdapter(new mainMenueGridViewApdapter(this));
+
+        mainMenueGridViewApdapter = new mainMenueGridViewApdapter(this);
+
+        gridview.setAdapter(mainMenueGridViewApdapter);
         gridview.setNumColumns(numberOfGridColumns);
-
-
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
 
                 if (showMainMenueElement[position]) {
 
@@ -143,31 +164,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public void onStart() {
 
         super.onStart();
 
-        // init the elements arrays (title, color, colorLight, backgroundImage)
-        initMainMenueElementsArrays();
+        Log.d("onStart","Start");
+
+
+        createMainMenueElementBackgroundRessources ();
+
+        mainMenueGridViewApdapter.notifyDataSetChanged();
 
 
     }
 
-
-
-
     // init the elements arrays (title, color, colorLight, backgroundImage)
     private void initMainMenueElementsArrays() {
 
-        String[] tmpBackgroundRessources;
+        String[] tmpBackgroundRessources, tmpBackgroundRessourcesNewEntry;
+
+
 
         // init the context
         mainContext = this;
 
         // get the shared preferences
         prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+
+
+        // init the DB
+        myDb = new DBAdapter(this);
+
 
         mainMenueElementTitle = getResources().getStringArray(R.array.mainMenueElementTitle);
 
@@ -176,14 +204,15 @@ public class MainActivity extends AppCompatActivity {
         mainMenueElementColorLight = getResources().getStringArray(R.array.mainMenueElementColorLight);
 
         tmpBackgroundRessources = getResources().getStringArray(R.array.mainMenueElementImage);
+        tmpBackgroundRessourcesNewEntry = getResources().getStringArray(R.array.mainMenueElementImageNewEntry);
 
 
         for (int i=0; i<mainMenueNumberOfElements; i++) {
             mainMenueElementBackgroundRessources[i] = getResources().getIdentifier(tmpBackgroundRessources[i], "drawable", "de.smart_efb.efbapp.smartefb");
+            mainMenueElementBackgroundRessourcesNewEntry[i] = getResources().getIdentifier(tmpBackgroundRessourcesNewEntry[i], "drawable", "de.smart_efb.efbapp.smartefb");
         }
 
-
-        for (int i=0; i<mainMenueNumberOfElements; i++) {
+       for (int i=0; i<mainMenueNumberOfElements; i++) {
 
             String tmpMainMenueElementName ="mainMenueElementId_" + i;
 
@@ -196,15 +225,65 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // Return the number of Buttons
-    public int getNumberOfButtons () {
-        return mainMenueNumberOfElements;
+
+    // creates the background ressources for the grid (like new entry or normal image)
+    private void createMainMenueElementBackgroundRessources () {
+
+
+
+        for (int countElements=0; countElements < mainMenueNumberOfElements; countElements++) {
+
+
+            switch (countElements) {
+
+                case 0:
+                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    break;
+                case 1:
+
+                    if (myDb.getCountAllNewEntryOurArrangementComment() > 0) {
+                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
+                    }
+                    else {
+                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    }
+
+
+                    break;
+                case 2:
+                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    break;
+                case 3:
+                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    break;
+                case 4:
+                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    break;
+                case 5:
+                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    break;
+                case 6:
+                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    break;
+                case 7:
+                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    break;
+                case 8:
+                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    break;
+                default:
+                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    break;
+
+
+            }
+        }
+
+
+
     }
 
-    //Return original title of menue button
-    public String menueButtonTitle (int position) {
-        return mainMenueElementTitle[position];
-    }
+
 
 
 
@@ -214,26 +293,34 @@ public class MainActivity extends AppCompatActivity {
         private Context mContext;
 
         public mainMenueGridViewApdapter(Context c) {
+
             mContext = c;
         }
 
         @Override
         public int getCount() {
+
+            Log.d("getCount","C");
             return mainMenueNumberOfElements;
         }
 
         @Override
-        public Object getItem(int arg0) {
-            return mainMenueElementBackgroundRessources[arg0];
+        public Object getItem(int item) {
+
+            //return mainMenueElementBackgroundRessources[item];
+            Log.d("getItem","I:"+item);
+            return mainMenueElementBackgroundRessourcesNewEntry[item];
         }
 
         @Override
-        public long getItemId(int arg0) {
-            return arg0;
+        public long getItemId(int itemId) {
+
+            Log.d("getItemId","I:"+itemId);
+            return itemId;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView (int position, View convertView, ViewGroup parent) {
 
             View grid;
 
@@ -241,15 +328,27 @@ public class MainActivity extends AppCompatActivity {
             String tmpLinearLayoutBackgroundColor = mainMenueElementColorLight[position];
 
             if(convertView==null){
-                //grid = new View(mContext);
-                LayoutInflater inflater=getLayoutInflater();
-                grid=inflater.inflate(R.layout.gridview_main_layout, parent, false);
-            }else{
-                grid = (View)convertView;
+                LayoutInflater inflater = getLayoutInflater();
+                grid = inflater.inflate (R.layout.gridview_main_layout, parent, false);
+
+                Log.d("cV=null","P:"+position);
+
+            }
+            else {
+
+                grid = convertView;
+
+                Log.d("cV!=null","P:"+position);
             }
 
             ImageView imageView = (ImageView) grid.findViewById(R.id.grid_item_image);
-            imageView.setImageResource(mainMenueElementBackgroundRessources[position]);
+            imageView.setImageResource(mainMenueShowElementBackgroundRessources[position]);
+
+
+
+            //imageView.setId(position);
+            //imageView.setImageResource(mainMenueElementBackgroundRessources[position]);
+
 
             TextView txtView = (TextView) grid.findViewById(R.id.grid_item_label);
             txtView.setText(mainMenueElementTitle[position]);

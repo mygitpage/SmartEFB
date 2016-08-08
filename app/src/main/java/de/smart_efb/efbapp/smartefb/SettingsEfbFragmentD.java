@@ -377,6 +377,7 @@ public class SettingsEfbFragmentD extends Fragment {
         int checkBoxButtonNumber;
 
         public mainMenueItemCheckBoxListener (int number) {
+
             this.checkBoxButtonNumber = number;
         }
 

@@ -40,6 +40,9 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
 
     String choosenArrangement = "";
 
+    // reference to the DB
+    private DBAdapter myDb;
+
 
     // own constructor!!!
     public OurArrangementShowCommentCursorAdapter(Context context, Cursor cursor, int flags, int dbId, int numberInLIst, String arrangement) {
@@ -59,6 +62,9 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
         // set choosen arrangement
         choosenArrangement = arrangement;
 
+        // init the DB
+        myDb = new DBAdapter(context);
+
     }
 
 
@@ -67,12 +73,13 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
 
 
         // check if arrangement entry new?
-        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
+        if (cursor.getInt(cursor.getColumnIndex(myDb.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
             TextView newEntryOfArrangement = (TextView) view.findViewById(R.id.listActualTextNewComment);
             String txtnewEntryOfArrangement = context.getResources().getString(R.string.newEntryText);
             newEntryOfArrangement.setText(txtnewEntryOfArrangement);
-            // TODO mark old entry in DB
-            //myDb.deleteStatusNewEntryOurArrangement(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
+
+            // delet status new entry in db
+            myDb.deleteStatusNewEntryOurArrangementComment(cursor.getInt(cursor.getColumnIndex(myDb.KEY_ROWID)));
         }
 
         // show actual comment
