@@ -42,32 +42,48 @@
     </string-array>
 
 
-    <!-- drawable for grid in maim menue-->
+    <!-- drawable for grid in maim menue for normal show-->
     <string-array name="mainMenueElementImage">
-        <item>ic_supervisor_account_white_48dp</item><!--Uebergabe-->
-        <item>ic_comment_white_48dp</item><!--Absprachen-->
-        <item>ic_thumb_up_white_48dp</item><!--Ziele-->
-        <item>ic_visibility_white_48dp</item><!--Praevention-->
-        <item>ic_lightbulb_outline_white_48dp</item><!--FAQ-->
-        <item>ic_alarm_white_48dp</item><!--Termine-->
-        <item>ic_report_problem_white_48dp</item><!--Hilfe-->
-        <item>ic_import_contacts_white_48dp</item><!--Evaluation-->
-        <item>ic_build_white_48dp</item><!--Einstellungen-->
+        <item>main_pic_connectbook_normal</item><!--Uebergabe-->
+        <item>main_pic_arrangement_normal</item><!--Absprachen-->
+        <item>main_pic_goal_normal</item><!--Ziele-->
+        <item>main_pic_prevetion_normal</item><!--Praevention-->
+        <item>main_pic_faq_normal</item><!--FAQ-->
+        <item>main_pic_event_normal</item><!--Termine-->
+        <item>main_pic_emergencyhelp_normal</item><!--Hilfe-->
+        <item>main_pic_evaluation_normal</item><!--Evaluation-->
+        <item>main_pic_setting_normal</item><!--Einstellungen-->
     </string-array>
 
 
-    <!-- drawable for grid in maim menue-->
+    <!-- drawable for grid in maim menue for new entry show-->
     <string-array name="mainMenueElementImageNewEntry">
-        <item>ic_supervisor_account_white_48dp</item><!--Uebergabe-->
+        <item>main_pic_connectbook_new_entry</item><!--Uebergabe-->
         <item>main_pic_arrangement_new_entry</item><!--Absprachen-->
-        <item>ic_supervisor_account_white_48dp</item><!--Ziele-->
-        <item>ic_supervisor_account_white_48dp</item><!--Praevention-->
-        <item>ic_supervisor_account_white_48dp</item><!--FAQ-->
-        <item>ic_supervisor_account_white_48dp</item><!--Termine-->
-        <item>ic_supervisor_account_white_48dp</item><!--Hilfe-->
-        <item>ic_supervisor_account_white_48dp</item><!--Evaluation-->
-        <item>ic_supervisor_account_white_48dp</item><!--Einstellungen-->
+        <item>main_pic_goal_new_entry</item><!--Ziele-->
+        <item>main_pic_prevention_new_entry</item><!--Praevention-->
+        <item>main_pic_faq_new_entry</item><!--FAQ-->
+        <item>main_pic_event_new_entry</item><!--Termine-->
+        <item>main_pic_emergencyhelp_normal</item><!--Hilfe - there is no need for new entry-->
+        <item>main_pic_evaluation_normal</item><!--Evaluation - there is no need for new entry-->
+        <item>main_pic_setting_normal</item><!--Einstellungen - there is no need for new entry-->
     </string-array>
+
+
+    <!-- drawable for grid in maim menue for inactiv show-->
+    <string-array name="mainMenueElementImageInactiv">
+        <item>main_pic_connectbook_inactiv</item><!--Uebergabe-->
+        <item>main_pic_arrangement_inactiv</item><!--Absprachen-->
+        <item>main_pic_goal_inactiv</item><!--Ziele-->
+        <item>main_pic_prevetion_inactiv</item><!--Praevention-->
+        <item>main_pic_faq_inactiv</item><!--FAQ-->
+        <item>main_pic_event_inactiv</item><!--Termine-->
+        <item>main_pic_emergencyhelp_inactiv</item><!--Hilfe-->
+        <item>main_pic_evaluation_inactiv</item><!--Evaluation-->
+        <item>main_pic_setting_inactiv</item><!--Einstellungen-->
+    </string-array>
+
+
 
 
 

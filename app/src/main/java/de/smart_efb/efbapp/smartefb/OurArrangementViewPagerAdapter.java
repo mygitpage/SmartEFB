@@ -26,7 +26,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
     static int fragmentChooser;
 
     // the fragments
-    Fragment fragArraNow, fragArraNowComment, fragArraOld, fragArraShowComment;
+    Fragment fragArraNow, fragArraNowComment, fragArraOld, fragArraShowComment, fragArraEvaluate;
 
 
     // default constructor
@@ -44,6 +44,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
         fragArraNowComment = new OurArrangementFragmentNowComment();
         fragArraOld = new OurArrangementFragmentOld();
         fragArraShowComment = new OurArrangementFragmentShowComment();
+        fragArraEvaluate = new OurArrangementFragmentEvaluate();
 
     }
 
@@ -67,8 +68,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
                         return fragArraShowComment;
 
                     case 3:
-                        //return fragArraEvaluateComment;
-                        break;
+                        return fragArraEvaluate;
                 }
 
             case 1:
@@ -123,7 +123,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
                 fragmentChooser = 2;
                 break;
 
-            case "evaluate_an_arrangement": // set fragment on tab zero to OurArrangementFragmentEvaluateComment
+            case "evaluate_an_arrangement": // set fragment on tab zero to OurArrangementFragmentEvaluate
                 fragmentChooser = 3;
                 break;
 

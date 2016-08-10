@@ -405,7 +405,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    // delete status new entry in table ourArrangement.
+    // delete status new entry in table ourArrangement for arrangment rowId.
     public boolean deleteStatusNewEntryOurArrangement (int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();

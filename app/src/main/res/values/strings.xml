@@ -103,6 +103,8 @@
     <string name="olderArrangementDateFrom">Älter als</string>
     <string name="commentArrangementsubtitle">Absprache kommentieren</string>
     <string name="showCommentArrangementsubtitle">Gewählte Kommentare zeigen</string>
+    <string name="evaluateArrangementsubtitle">Absprache bewerten</string>
+
     <!-- End subtitle -->
 
 
@@ -148,6 +150,7 @@
     <string name="ourArrangementTabTitle_1">Aktuell</string>
     <string name="ourArrangementTabTitle_1a">Kommentieren</string>
     <string name="ourArrangementTabTitle_1b">Kommentare</string>
+    <string name="ourArrangementTabTitle_1c">Bewerten</string>
     <string name="ourArrangementTabTitle_2">Ältere Absprachen</string>
     <!-- End tab title -->
 

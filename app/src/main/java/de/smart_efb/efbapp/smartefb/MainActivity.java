@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private int[] mainMenueElementBackgroundRessources = new int[mainMenueNumberOfElements];
     // background ressource of new entry elements (image icon)
     private int[] mainMenueElementBackgroundRessourcesNewEntry = new int[mainMenueNumberOfElements];
+    // background ressource of inactiv elements (image icon)
+    private int[] mainMenueElementBackgroundRessourcesInactiv = new int[mainMenueNumberOfElements];
     // background ressource of elemts to show!
     private int[] mainMenueShowElementBackgroundRessources = new int[mainMenueNumberOfElements];
 
@@ -72,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_efb_main);
-
 
         // init the elements arrays (title, color, colorLight, backgroundImage)
         initMainMenueElementsArrays();
@@ -169,22 +170,22 @@ public class MainActivity extends AppCompatActivity {
 
         super.onStart();
 
-        Log.d("onStart","Start");
+        // init array show elements
+        initShowElementArray();
 
+        // create background ressources to show in grid
+        if (createMainMenueElementBackgroundRessources()) { // new things in grid?
 
-        createMainMenueElementBackgroundRessources ();
+            mainMenueGridViewApdapter.notifyDataSetChanged();
 
-        mainMenueGridViewApdapter.notifyDataSetChanged();
-
+        }
 
     }
 
     // init the elements arrays (title, color, colorLight, backgroundImage)
     private void initMainMenueElementsArrays() {
 
-        String[] tmpBackgroundRessources, tmpBackgroundRessourcesNewEntry;
-
-
+        String[] tmpBackgroundRessources, tmpBackgroundRessourcesNewEntry, tmpBackgroundRessourcesInactiv;
 
         // init the context
         mainContext = this;
@@ -205,14 +206,23 @@ public class MainActivity extends AppCompatActivity {
 
         tmpBackgroundRessources = getResources().getStringArray(R.array.mainMenueElementImage);
         tmpBackgroundRessourcesNewEntry = getResources().getStringArray(R.array.mainMenueElementImageNewEntry);
-
+        tmpBackgroundRessourcesInactiv =  getResources().getStringArray(R.array.mainMenueElementImageInactiv);
 
         for (int i=0; i<mainMenueNumberOfElements; i++) {
             mainMenueElementBackgroundRessources[i] = getResources().getIdentifier(tmpBackgroundRessources[i], "drawable", "de.smart_efb.efbapp.smartefb");
             mainMenueElementBackgroundRessourcesNewEntry[i] = getResources().getIdentifier(tmpBackgroundRessourcesNewEntry[i], "drawable", "de.smart_efb.efbapp.smartefb");
+            mainMenueElementBackgroundRessourcesInactiv[i] = getResources().getIdentifier(tmpBackgroundRessourcesInactiv[i], "drawable", "de.smart_efb.efbapp.smartefb");
         }
 
-       for (int i=0; i<mainMenueNumberOfElements; i++) {
+        // init array show elements
+        initShowElementArray();
+
+    }
+
+    // init array show elements
+    private void initShowElementArray () {
+
+        for (int i=0; i<mainMenueNumberOfElements; i++) {
 
             String tmpMainMenueElementName ="mainMenueElementId_" + i;
 
@@ -225,69 +235,67 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     // creates the background ressources for the grid (like new entry or normal image)
-    private void createMainMenueElementBackgroundRessources () {
+    private boolean createMainMenueElementBackgroundRessources () {
 
-
+        boolean tmpNew = false;
 
         for (int countElements=0; countElements < mainMenueNumberOfElements; countElements++) {
 
-
             switch (countElements) {
 
-                case 0:
+                case 0: // menue item "Uebergabe"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-                case 1:
+                case 1: // menue item "Absprachen"
+                    if (showMainMenueElement[countElements]) { // is element aktiv?
 
-                    if (myDb.getCountAllNewEntryOurArrangementComment() > 0) {
-                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
+                        if (myDb.getCountAllNewEntryOurArrangementComment() > 0 || myDb.getCountNewEntryOurArrangement() > 0) {
+                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
+                        } else {
+                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                        }
+                        tmpNew = true;
                     }
-                    else {
-                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    else { // element is inaktiv
+                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesInactiv[countElements];
+                        tmpNew = true;
                     }
-
-
                     break;
-                case 2:
+                case 2: // menue item "Ziele"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-                case 3:
+                case 3: // menue item "Praevention"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-                case 4:
+                case 4: // menue item "FAQ"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-                case 5:
+                case 5: // menue item "Termine"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-                case 6:
+                case 6: // menue item "Notfallhilfe"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-                case 7:
+                case 7: // menue item "Evaluation"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-                case 8:
+                case 8: // menue item "Einstellungen"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
                 default:
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
 
-
             }
         }
 
-
+        return tmpNew;
 
     }
 
 
-
-
-
-    //
+    // inner class grid view adapter
     public class mainMenueGridViewApdapter extends BaseAdapter {
 
         private Context mContext;
@@ -300,22 +308,19 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
 
-            Log.d("getCount","C");
             return mainMenueNumberOfElements;
         }
 
         @Override
         public Object getItem(int item) {
 
-            //return mainMenueElementBackgroundRessources[item];
-            Log.d("getItem","I:"+item);
-            return mainMenueElementBackgroundRessourcesNewEntry[item];
+            return mainMenueElementBackgroundRessources[item];
+
         }
 
         @Override
         public long getItemId(int itemId) {
 
-            Log.d("getItemId","I:"+itemId);
             return itemId;
         }
 
@@ -331,24 +336,15 @@ public class MainActivity extends AppCompatActivity {
                 LayoutInflater inflater = getLayoutInflater();
                 grid = inflater.inflate (R.layout.gridview_main_layout, parent, false);
 
-                Log.d("cV=null","P:"+position);
-
             }
             else {
 
                 grid = convertView;
 
-                Log.d("cV!=null","P:"+position);
             }
 
             ImageView imageView = (ImageView) grid.findViewById(R.id.grid_item_image);
             imageView.setImageResource(mainMenueShowElementBackgroundRessources[position]);
-
-
-
-            //imageView.setId(position);
-            //imageView.setImageResource(mainMenueElementBackgroundRessources[position]);
-
 
             TextView txtView = (TextView) grid.findViewById(R.id.grid_item_label);
             txtView.setText(mainMenueElementTitle[position]);
