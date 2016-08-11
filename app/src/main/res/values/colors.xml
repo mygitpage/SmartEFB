@@ -16,6 +16,10 @@
     <color name="text_accent_color">#e92f32</color>
 
 
+    // main menue element inactiv text color
+    <color name="main_menue_text_inactiv_color">#007188</color>
+
+
 
 
     // general background color text input fields

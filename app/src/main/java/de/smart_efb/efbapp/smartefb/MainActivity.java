@@ -349,6 +349,15 @@ public class MainActivity extends AppCompatActivity {
             TextView txtView = (TextView) grid.findViewById(R.id.grid_item_label);
             txtView.setText(mainMenueElementTitle[position]);
 
+
+            /*
+            if (!showMainMenueElement[position]) {
+                txtView.setTextColor(ContextCompat.getColor(mContext, R.color.main_menue_text_inactiv_color));
+            }
+            */
+
+
+
             LinearLayout linearLayoutView = (LinearLayout) grid.findViewById(R.id.grid_linear_layout);
             if (showMainMenueElement[position]) {
                 tmpLinearLayoutBackgroundColor = mainMenueElementColor[position];

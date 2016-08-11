@@ -84,9 +84,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
         tabLayoutOurArrangement = (TabLayout) findViewById(R.id.tabLayoutOurArrangement);
         tabLayoutOurArrangement.setTabGravity(TabLayout.GRAVITY_FILL);
 
-
         // and set tablayout with viewpager
         tabLayoutOurArrangement.setupWithViewPager(viewPagerOurArrangement);
+
 
         // init listener for tab selected
         tabLayoutOurArrangement.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
