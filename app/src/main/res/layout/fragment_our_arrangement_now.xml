@@ -11,11 +11,11 @@
         android:id="@+id/listOurArrangementNow"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@null"
-        android:divider="@null"
         android:transcriptMode="alwaysScroll"
-        android:stackFromBottom="false">
+        android:layout_weight="1"
+        android:stackFromBottom="false"
+        android:background="@null"
+        android:divider="@null">
     </ListView>
 
 </LinearLayout>

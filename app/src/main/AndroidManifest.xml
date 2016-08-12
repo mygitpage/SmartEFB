@@ -19,12 +19,14 @@
             </intent-filter>
         </activity>
 
-
+        <!-- Activity Connect Book -->
         <activity
             android:name=".ActivityConnectBook"
             android:label="@string/mainMenueElementId_1"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
+        <!-- Activity Our Arrangement -->
         <activity
             android:name=".ActivityOurArrangement"
             android:label="@string/mainMenueElementId_2"
@@ -39,17 +41,35 @@
 
         </activity>
 
+        <!-- Activity Our Goals -->
         <activity
             android:name=".ActivityOurGoals"
             android:label="@string/mainMenueElementId_3"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <!-- Activity FAQ -->
+        <activity
+            android:name=".ActivityFaq"
+            android:label="@string/mainMenueElementId_5"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <!-- Activity Settings -->
         <activity
             android:name=".ActivitySettingsEfb"
             android:label="@string/mainMenueElementId_8"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
+
+
+        <receiver android:name=".AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
 
 
     </application>

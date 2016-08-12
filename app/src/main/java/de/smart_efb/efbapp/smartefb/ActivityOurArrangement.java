@@ -199,8 +199,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
             toolbar.setSubtitle(showCommentArrangementSubtitleText);
 
             // set correct tab zero titel
-            tabLayoutOurArrangement.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1b", "string", getPackageName())));
-
+            try {
+                tabLayoutOurArrangement.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1b", "string", getPackageName())));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
             // set command show variable
             showCommandFragmentTabZero = "show_comment_for_arrangement";
 

@@ -97,6 +97,7 @@ public class OurArrangementFragmentNow extends Fragment {
         // find the listview
         ListView listView = (ListView) viewFragmentNow.findViewById(R.id.listOurArrangementNow);
 
+
         if (cursor.getCount() > 0) {
 
             // new dataadapter
@@ -107,6 +108,7 @@ public class OurArrangementFragmentNow extends Fragment {
 
             // Assign adapter to ListView
             listView.setAdapter(dataAdapter);
+
 
 
         }

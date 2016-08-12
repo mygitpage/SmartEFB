@@ -28,6 +28,10 @@
     <string name="mainMenueElementId_7">Notfallhilfe</string>
     <string name="mainMenueElementId_8">Evaluation</string>
     <string name="mainMenueElementId_9">Einstellungen</string>
+
+
+    <string name="main_menue_text_inactiv">Inaktiv</string>
+
     <!-- Main Menue Element Strings End-->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
@@ -156,6 +160,26 @@
 
     <!-- Activity our arrangement End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Activity FAQ -->
+
+    <!-- Strings for tab title in activity faq -->
+    <string name="faqTabTitleSection_1">Übersicht FAQ</string>
+    <string name="faqTabTitleSection_2">FAQ App</string>
+    <string name="faqTabTitleSection_3">Erziehungsberatung</string>
+    <string name="faqTabTitleSection_4">Beratungsstellen</string>
+    <string name="faqTabTitleSection_5">Erziehungsfragen</string>
+    <!-- End tab title -->
+
+
+
+
+
+
 
 
 </resources>

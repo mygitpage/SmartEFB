@@ -106,6 +106,18 @@
 
 
 
+    <!-- tab titles for Activity Our Arrangement (these are links, original in strings.xml) -->
+    <string-array name="faqTabTitle">
+        <item>@string/faqTabTitleSection_1</item>
+        <item>@string/faqTabTitleSection_2</item>
+        <item>@string/faqTabTitleSection_3</item>
+        <item>@string/faqTabTitleSection_4</item>
+        <item>@string/faqTabTitleSection_5</item>
+    </string-array>
+
+
+
+
     <!-- Our Arrangement count comments -->
     <string-array name="ourArrangementCountComments">
         <item>Keine Kommentare</item>
@@ -119,7 +131,7 @@
         <item>8 Kommentare</item>
         <item>9 Kommentare</item>
         <item>10 Kommentare</item>
-        <item>10+ Kommentare</item>
+        <item>10++ Kommentare</item>
     </string-array>
 
 </resources>

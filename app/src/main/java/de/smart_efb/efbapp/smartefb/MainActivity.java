@@ -1,5 +1,7 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +25,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -59,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean[] showMainMenueElement = new boolean[mainMenueNumberOfElements];
 
 
+    //pending intent
+    private PendingIntent pendingIntentOurArrangementEvaluate;
+
     Context mainContext;
 
     // point to shared preferences
@@ -74,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_efb_main);
+
+
+        // init the app
+        initMainApp();
 
         // init the elements arrays (title, color, colorLight, backgroundImage)
         initMainMenueElementsArrays();
@@ -120,31 +130,31 @@ public class MainActivity extends AppCompatActivity {
                             //intent = new Intent(getApplicationContext(), ActivityPrevention.class);
                             //intent.putExtra("position", position);
                             //intent.putExtra("title", mainMenueElementTitle[position]);
-                            //getApplicationContext().startActivity(intent);
+                            //mainContext.startActivity(intent);
                             break;
                         case 4: // grid "faq"
-                            //intent = new Intent(getApplicationContext(), ActivityEfbFaq.class);
-                            //intent.putExtra("position", position);
-                            //intent.putExtra("title", mainMenueElementTitle[position]);
-                            //getApplicationContext().startActivity(intent);
+                            intent = new Intent(getApplicationContext(), ActivityFaq.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
                             break;
                         case 5: // grid "termine"
                             //intent = new Intent(getApplicationContext(), ActivityEfbMeeting.class);
                             //intent.putExtra("position", position);
                             //intent.putExtra("title", mainMenueElementTitle[position]);
-                            //getApplicationContext().startActivity(intent);
+                            //mainContext.startActivity(intent);
                             break;
                         case 6: // grid "hilfe"
                             //intent = new Intent(getApplicationContext(), ActivityEmergencyHelp.class);
                             //intent.putExtra("position", position);
                             //intent.putExtra("title", mainMenueElementTitle[position]);
-                            //getApplicationContext().startActivity(intent);
+                            //mainContext.startActivity(intent);
                             break;
                         case 7: // grid "evaluation"
                             //intent = new Intent(getApplicationContext(), ActivityEmergencyHelp.class);
                             //intent.putExtra("position", position);
                             //intent.putExtra("title", mainMenueElementTitle[position]);
-                            //getApplicationContext().startActivity(intent);
+                            //mainContext.startActivity(intent);
                             break;
                         case 8:
                             // grid "einstellungen"
@@ -181,6 +191,29 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    // init all things for the app
+    private void initMainApp() {
+
+
+        Intent alarmIntent = new Intent(MainActivity.this, AlarmReceiver.class);
+        pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, 0);
+
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        int interval = 8000;
+
+
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntentOurArrangementEvaluate);
+        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+
+
+
+
+
+
+
+    }
+
 
     // init the elements arrays (title, color, colorLight, backgroundImage)
     private void initMainMenueElementsArrays() {
@@ -344,23 +377,21 @@ public class MainActivity extends AppCompatActivity {
             }
 
             ImageView imageView = (ImageView) grid.findViewById(R.id.grid_item_image);
-            imageView.setImageResource(mainMenueShowElementBackgroundRessources[position]);
-
-            TextView txtView = (TextView) grid.findViewById(R.id.grid_item_label);
-            txtView.setText(mainMenueElementTitle[position]);
-
-
-            /*
-            if (!showMainMenueElement[position]) {
-                txtView.setTextColor(ContextCompat.getColor(mContext, R.color.main_menue_text_inactiv_color));
-            }
-            */
-
-
-
             LinearLayout linearLayoutView = (LinearLayout) grid.findViewById(R.id.grid_linear_layout);
+            TextView txtView = (TextView) grid.findViewById(R.id.grid_item_label);
+
+            // Element aktiv?
             if (showMainMenueElement[position]) {
+
+                imageView.setImageResource(mainMenueShowElementBackgroundRessources[position]);
+                txtView.setText(mainMenueElementTitle[position]);
+                txtView.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_white));
                 tmpLinearLayoutBackgroundColor = mainMenueElementColor[position];
+            }
+            else { //Element is inaktiv
+                txtView.setText(getResources().getString(getResources().getIdentifier("main_menue_text_inactiv", "string", getPackageName())));
+                txtView.setTextColor(ContextCompat.getColor(mContext, R.color.main_menue_text_inactiv_color));
+                linearLayoutView.removeView(imageView);
             }
 
             linearLayoutView.setBackgroundColor(Color.parseColor(tmpLinearLayoutBackgroundColor));
