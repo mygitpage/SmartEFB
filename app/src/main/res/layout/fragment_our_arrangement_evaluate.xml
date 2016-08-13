@@ -31,7 +31,7 @@
 
 
             <TextView
-                android:id="@+id/arrangementCommentNumberIntro"
+                android:id="@+id/arrangementEvalauteIntroText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
@@ -40,7 +40,7 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/arrangementShowCommentBackLinkNow"
+                android:id="@+id/arrangementShowEvaluateBackLink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12dp"
@@ -53,7 +53,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/choosenArrangement"
+            android:id="@+id/evaluateArrangement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
@@ -64,14 +64,110 @@
 
 
 
+
+
         <TextView
-            android:id="@+id/arrangementCommentIntro"
+            android:id="@+id/questionOneEvaluate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:textStyle="bold"
+            android:text="@string/questionOneEvaluateMySelf"/>
+
+
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/radioGroupQuestionOne"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:divider="@color/text_color_white"
+            android:showDividers="middle|beginning|end"
+            android:background="@color/colorPrimary">
+
+
+            <RadioButton android:id="@+id/questionOne_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <RadioButton android:id="@+id/questionOne_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <RadioButton android:id="@+id/questionOne_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <RadioButton android:id="@+id/questionOne_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <RadioButton android:id="@+id/questionOne_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RadioGroup>
+
+
+
+
+        <TextView
+            android:id="@+id/questionTwoEvaluate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:textStyle="bold"
+            android:text="@string/questionTwoEvaluateMyEx"/>
+
+
+
+
+
+
+        <TextView
+            android:id="@+id/questionThreeEvaluate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:textStyle="bold"
+            android:text="@string/questionThreeEvaluateChildreen"/>
+
+
+
+
+
+
+
+
+        <TextView
+            android:id="@+id/questionFourEvaluate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:textStyle="bold"
+            android:text="@string/questionFourEvaluateThirdPeople"/>
+
+
+
+
+
+
+        <TextView
+            android:id="@+id/commentEvaluateText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/text_color"
             android:gravity="left"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:text="@string/commentTextEvaluateResult"/>
 
         <EditText
             android:id="@+id/inputArrangementComment"
@@ -101,7 +197,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/bg_btn_join"
                 android:textColor="@color/white"
-                android:text="@string/btnSendArrangementComment"
+                android:text="@string/btnSendEvaluateResult"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="5dp"
                 android:padding="5dp"/>
@@ -112,7 +208,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/bg_btn_join"
                 android:textColor="@color/white"
-                android:text="@string/btnAbortComment"
+                android:text="@string/btnAbortEvaluate"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="5dp"
                 android:padding="5dp"/>

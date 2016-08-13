@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // init the app
-        initMainApp();
+        //initMainApp();
 
         // init the elements arrays (title, color, colorLight, backgroundImage)
         initMainMenueElementsArrays();
@@ -207,7 +207,8 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
 
 
-
+        // siehe !!!!!!
+        // http://stacktips.com/tutorials/android/repeat-alarm-example-in-android
 
 
 

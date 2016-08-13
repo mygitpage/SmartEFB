@@ -86,14 +86,9 @@
 
     <string name="ourArrangementOldArrangementDateIntro">Absprachen vom</string>
 
-
-
-
-
-
-
-
     <!-- End fragment show old arrangements -->
+
+
 
     <!-- fragment show now arrangements -->
     <string name="ourArrangementNowArrangementNothingThere">Es sind keine aktuellen Absprachen vorhanden!</string>
@@ -139,13 +134,26 @@
 
     <string name="showArrangementIntroText">Absprache</string>
 
-
-
-
     <!-- End String Fragment show comment -->
 
 
+    <!-- String Fragment evaluate arrangement -->
+    <string name="showEvaluateArrangementIntroText">Bewerten Sie Absprache</string>
 
+    <string name="btnSendEvaluateResult">Bewertung abschhicken</string>
+    <string name="btnAbortEvaluate">Zurück</string>
+
+    <string name="questionOneEvaluateMySelf">Wie haben Sie selbst die Absprache eingehalten?</string>
+
+    <string name="questionTwoEvaluateMyEx">Wie hat Ihr Ex-Partner die Absprache aus Ihrer Sicht eingehalten?</string>
+
+    <string name="questionThreeEvaluateChildreen">Wie haben Ihre Kinder die Absprache aus Ihrer Sicht eingehalten?</string>
+
+    <string name="questionFourEvaluateThirdPeople">Wie haben die weiteren beteiligten Personen diese Absprache eingehalten?</string>
+
+    <string name="commentTextEvaluateResult">Ihre Anmerkungen zu Ihrer Bewertung</string>
+
+    <!-- End Fragment evaluate arrangement -->
 
 
 
