@@ -140,7 +140,7 @@
     <!-- String Fragment evaluate arrangement -->
     <string name="showEvaluateArrangementIntroText">Bewerten Sie Absprache</string>
 
-    <string name="btnSendEvaluateResult">Bewertung abschhicken</string>
+    <string name="btnSendEvaluateResult">Abschicken -> Zur nächsten Bewertung</string>
     <string name="btnAbortEvaluate">Zurück</string>
 
     <string name="questionOneEvaluateMySelf">Wie haben Sie selbst die Absprache eingehalten?</string>
@@ -152,6 +152,15 @@
     <string name="questionFourEvaluateThirdPeople">Wie haben die weiteren beteiligten Personen diese Absprache eingehalten?</string>
 
     <string name="commentTextEvaluateResult">Ihre Anmerkungen zu Ihrer Bewertung</string>
+
+
+    <string name="evaluateSuggestionAlways">Immer</string>
+    <string name="evaluateSuggestionNever">Nie</string>
+    <string name="evaluateSuggestionNotAffected">Nicht\nbetroffen</string>
+
+    <string name="commentEvaluateResultTextFieldHintText">Bitte geben Sie Ihre Anmerkungen hier ein.</string>
+
+
 
     <!-- End Fragment evaluate arrangement -->
 

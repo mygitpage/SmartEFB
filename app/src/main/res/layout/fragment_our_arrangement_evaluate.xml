@@ -62,10 +62,6 @@
             android:paddingLeft="10dp"
             android:paddingBottom="5dp"/>
 
-
-
-
-
         <TextView
             android:id="@+id/questionOneEvaluate"
             android:layout_width="wrap_content"
@@ -74,42 +70,67 @@
             android:textColor="@color/text_color"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/questionOneEvaluateMySelf"/>
+            android:text="@string/questionOneEvaluateMySelf"
+            android:paddingBottom="5dp"/>
 
 
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/radioGroupQuestionOne"
-            android:layout_gravity="center"
-            android:padding="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:divider="@color/text_color_white"
-            android:showDividers="middle|beginning|end"
-            android:background="@color/colorPrimary">
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/radioGroupQuestionOne"
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/inputfield_background">
 
+                <RadioButton android:id="@+id/questionOne_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/evaluateSuggestionAlways"
+                    android:textColor="@color/text_color_white"
+                    android:textStyle="bold"
+                    android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                    android:theme="@style/radioButtonStyleEvaluateArrangement"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:layout_weight="0.2" />
+                <RadioButton android:id="@+id/questionOne_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                    android:theme="@style/radioButtonStyleEvaluateArrangement"
+                    android:button="@null"
+                    android:layout_weight="0.2" />
+                <RadioButton android:id="@+id/questionOne_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                    android:theme="@style/radioButtonStyleEvaluateArrangement"
+                    android:button="@null"
+                    android:layout_weight="0.2" />
+                <RadioButton android:id="@+id/questionOne_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                    android:theme="@style/radioButtonStyleEvaluateArrangement"
+                    android:button="@null"
+                    android:layout_weight="0.2" />
+                <RadioButton android:id="@+id/questionOne_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_color_white"
+                    android:text="@string/evaluateSuggestionNever"
+                    android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                    android:theme="@style/radioButtonStyleEvaluateArrangement"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:layout_weight="0.2" />
 
-            <RadioButton android:id="@+id/questionOne_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <RadioButton android:id="@+id/questionOne_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <RadioButton android:id="@+id/questionOne_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <RadioButton android:id="@+id/questionOne_4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <RadioButton android:id="@+id/questionOne_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </RadioGroup>
-
-
+            </RadioGroup>
 
 
         <TextView
@@ -120,9 +141,78 @@
             android:textColor="@color/text_color"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/questionTwoEvaluateMyEx"/>
+            android:text="@string/questionTwoEvaluateMyEx"
+            android:paddingTop="20dp"
+            android:paddingBottom="5dp"/>
 
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/radioGroupQuestionTwo"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/inputfield_background">
 
+            <RadioButton android:id="@+id/questionTwo_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/evaluateSuggestionAlways"
+                android:textColor="@color/text_color_white"
+                android:textStyle="bold"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionTwo_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionTwo_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionTwo_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionTwo_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateSuggestionNever"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionTwo_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateSuggestionNotAffected"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_weight="0.2" />
+
+        </RadioGroup>
 
 
 
@@ -135,9 +225,78 @@
             android:textColor="@color/text_color"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/questionThreeEvaluateChildreen"/>
+            android:text="@string/questionThreeEvaluateChildreen"
+            android:paddingTop="20dp"
+            android:paddingBottom="5dp"/>
 
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/radioGroupQuestionThree"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/inputfield_background">
 
+            <RadioButton android:id="@+id/questionThree_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/evaluateSuggestionAlways"
+                android:textColor="@color/text_color_white"
+                android:textStyle="bold"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionThree_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionThree_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionThree_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionThree_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateSuggestionNever"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionThree_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateSuggestionNotAffected"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_weight="0.2" />
+
+        </RadioGroup>
 
 
 
@@ -152,10 +311,79 @@
             android:textColor="@color/text_color"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/questionFourEvaluateThirdPeople"/>
+            android:text="@string/questionFourEvaluateThirdPeople"
+            android:paddingTop="20dp"
+            android:paddingBottom="5dp"/>
 
 
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/radioGroupQuestionFour"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/inputfield_background">
 
+            <RadioButton android:id="@+id/questionFour_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/evaluateSuggestionAlways"
+                android:textColor="@color/text_color_white"
+                android:textStyle="bold"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionFour_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionFour_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionFour_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionFour_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateSuggestionNever"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/questionFour_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateSuggestionNotAffected"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_weight="0.2" />
+
+        </RadioGroup>
 
 
 
@@ -167,14 +395,16 @@
             android:textColor="@color/text_color"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/commentTextEvaluateResult"/>
+            android:text="@string/commentTextEvaluateResult"
+            android:paddingTop="20dp"
+            android:paddingBottom="5dp"/>
 
         <EditText
             android:id="@+id/inputArrangementComment"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:textColor="@color/text_color_white"
-            android:hint="@string/commentArrangementTextFieldHintText"
+            android:hint="@string/commentEvaluateResultTextFieldHintText"
             android:gravity="left|top"
             android:background="@color/inputfield_background"
             android:layout_margin="10dp"
@@ -217,37 +447,6 @@
 
 
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="left"
-            android:layout_gravity="left"
-            android:id="@+id/commentHistoryContainer"
-            android:visibility="visible">
-
-
-
-            <TextView
-                android:id="@+id/commentHistoryIntro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/text_color"
-                android:gravity="left"
-                android:textStyle="bold" />
-
-
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center_vertical|left"
-                android:id="@+id/commentHolder"/>
-
-
-        </LinearLayout>
 
     </LinearLayout>
 
