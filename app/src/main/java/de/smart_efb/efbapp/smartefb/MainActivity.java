@@ -139,10 +139,10 @@ public class MainActivity extends AppCompatActivity {
                             mainContext.startActivity(intent);
                             break;
                         case 5: // grid "termine"
-                            //intent = new Intent(getApplicationContext(), ActivityEfbMeeting.class);
-                            //intent.putExtra("position", position);
-                            //intent.putExtra("title", mainMenueElementTitle[position]);
-                            //mainContext.startActivity(intent);
+                            intent = new Intent(getApplicationContext(), ActivityMeeting.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
                             break;
                         case 6: // grid "hilfe"
                             //intent = new Intent(getApplicationContext(), ActivityEmergencyHelp.class);

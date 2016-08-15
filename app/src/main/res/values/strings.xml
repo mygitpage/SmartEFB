@@ -140,7 +140,7 @@
     <!-- String Fragment evaluate arrangement -->
     <string name="showEvaluateArrangementIntroText">Bewerten Sie Absprache</string>
 
-    <string name="btnSendEvaluateResult">Abschicken -> Zur nächsten Bewertung</string>
+    <string name="btnSendEvaluateResult">Speichern</string>
     <string name="btnAbortEvaluate">Zurück</string>
 
     <string name="questionOneEvaluateMySelf">Wie haben Sie selbst die Absprache eingehalten?</string>
@@ -160,7 +160,7 @@
 
     <string name="commentEvaluateResultTextFieldHintText">Bitte geben Sie Ihre Anmerkungen hier ein.</string>
 
-
+    <string name="evaluateSaveAndBackButtonIntroText">Bitte klicken Sie auf Speichern. Sie gelangen dann zur nächsten zu bewertenden Absprache. Die Absprache %1$d haben Sie bisher mit %2$d Prozent <u>immer</u> eingehalten.</string>
 
     <!-- End Fragment evaluate arrangement -->
 

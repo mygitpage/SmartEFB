@@ -116,11 +116,21 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         String arrangement = cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(arrangement);
 
-        //textview for question ONE
-        TextView textQuestionOne = (TextView) viewFragmentEvaluate.findViewById(R.id.questionOneEvaluate);
-        textQuestionOne.setText(this.getResources().getString(R.string.questionOneEvaluateMySelf));
 
 
+
+
+
+
+
+        TextView textSaveAndBackButtonIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateSaveAndBackButtonIntro);
+        String tmpSaveAndBackButtonIntroText = String.format(this.getResources().getString(R.string.evaluateSaveAndBackButtonIntroText), arrangementNumberInListView, 100);
+        textSaveAndBackButtonIntro.setText(Html.fromHtml(tmpSaveAndBackButtonIntroText));
+
+
+
+        // String manipulieren mit Platzhaltern
+        // https://developer.android.com/guide/topics/resources/string-resource.html
 
     }
 

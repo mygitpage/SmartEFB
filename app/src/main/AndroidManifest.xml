@@ -63,6 +63,14 @@
         </activity>
 
 
+        <!-- Activity Meeting -->
+        <activity
+            android:name=".ActivityMeeting"
+            android:label="@string/mainMenueElementId_6"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+
 
         <receiver android:name=".AlarmReceiver">
             <intent-filter>

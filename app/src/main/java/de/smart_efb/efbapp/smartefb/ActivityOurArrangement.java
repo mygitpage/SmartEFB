@@ -26,10 +26,6 @@ import android.widget.Toast;
 public class ActivityOurArrangement extends AppCompatActivity {
 
 
-
-    // reference to the DB
-    //DBAdapter myDb;
-
     // shared prefs for the settings
     SharedPreferences prefs;
 
@@ -188,6 +184,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
     public void executeIntentCommand (String command) {
 
+        String tmpTabTitle = "";
 
         if (command.equals("show_comment_for_arrangement")) { // Show fragment all comments for arrangement
 
@@ -200,7 +197,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // set correct tab zero titel
             try {
-                tabLayoutOurArrangement.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1b", "string", getPackageName())));
+                tmpTabTitle = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1b", "string", getPackageName()));
+                tabLayoutOurArrangement.getTabAt(0).setText(tmpTabTitle);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -269,9 +267,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         }
 
-
     }
-
 
 
     // init the activity
@@ -284,21 +280,14 @@ public class ActivityOurArrangement extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        // init the DB
-        //myDb = new DBAdapter(getApplicationContext());
-
         // init the prefs
         prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
 
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
-        // and set undertitle of activity
-        //getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", getPackageName()));
-
 
         // init show on tab zero arrangemet now
         showCommandFragmentTabZero = "show_arrangement_now";
-
 
         // set variables for subtitle text string
         currentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
@@ -308,7 +297,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
         evaluateArrangementSubtitleText = getResources().getString(getResources().getIdentifier("evaluateArrangementsubtitle", "string", getPackageName()));
         // init subtitle first time
         toolbar.setSubtitle(currentArrangementSubtitleText);
-
 
     }
 
