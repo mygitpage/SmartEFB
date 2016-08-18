@@ -162,6 +162,12 @@
 
     <string name="evaluateSaveAndBackButtonIntroText">Bitte klicken Sie auf Speichern. Sie gelangen dann zur nächsten zu bewertenden Absprache. Die Absprache %1$d haben Sie bisher mit %2$d Prozent <u>immer</u> eingehalten.</string>
 
+
+    <string name="evaluateResultSuccsesfulySend">Vielen Dank für Ihre Bewertung!</string>
+
+    <string name="evaluateResultNotCompletely">Ihre Bewertung ist nicht vollständig!</string>
+
+
     <!-- End Fragment evaluate arrangement -->
 
 

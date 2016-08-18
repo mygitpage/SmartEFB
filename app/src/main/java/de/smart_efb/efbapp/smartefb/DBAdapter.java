@@ -19,36 +19,21 @@ import java.sql.Timestamp;
 public class DBAdapter extends SQLiteOpenHelper {
 
 
-    // Look at:
-    // http://www.androidhive.info/2013/09/android-sqlite-database-with-multiple-tables/
-
-
-    /////////////////////////////////////////////////////////////////////
-    //	Constants & Data
-    /////////////////////////////////////////////////////////////////////
-
     // DB name
     public static final String DATABASE_NAME = "efbDb";
 
     // Tables name
     public static final String DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT = "ourArrangementCommentTable";
     public static final String DATABASE_TABLE_OUR_ARRANGEMENT = "ourArrangementTable";
+    public static final String DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE = "ourArrangementEvaluateTable";
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 15;
+    public static final int DATABASE_VERSION = 21;
 
-
-    // Context of application who uses us.
-    private final Context context;
-
-
-    // For logging:
-    private static final String TAG = "smartefb.DBAdapter";
 
     // Common column names
     public static final String KEY_ROWID = "_id";
-    public static final int COL_ROWID = 0;
 
 
     /************************ Begin of table definitions **********************************************************************/
@@ -58,15 +43,11 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_ARRANGEMENT_KEY_AUTHOR_NAME = "author_name";
     public static final String OUR_ARRANGEMENT_KEY_WRITE_TIME = "arrangement_time";
     public static final String OUR_ARRANGEMENT_KEY_NEW_ENTRY = "new_entry";
-
-    public static final int OUR_ARRANGEMENT_COL_ARRANGEMENT = 1;
-    public static final int OUR_ARRANGEMENT_COL_AUTHOR_NAME = 2;
-    public static final int OUR_ARRANGEMENT_COL_WRITE_TIME = 3;
-    public static final int OUR_ARRANGEMENT_COL_NEW_ENTRY = 4;
+    public static final String OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE = "eval_possible";
 
 
     // All keys from table app settings in a String
-    public static final String[] OUR_ARRANGEMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_KEY_ARRANGEMENT, OUR_ARRANGEMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_KEY_NEW_ENTRY };
+    public static final String[] OUR_ARRANGEMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_KEY_ARRANGEMENT, OUR_ARRANGEMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE };
 
     // SQL String to create our arrangement table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT =
@@ -74,7 +55,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_ARRANGEMENT_KEY_ARRANGEMENT + " TEXT not null, "
                     + OUR_ARRANGEMENT_KEY_AUTHOR_NAME + " STRING not null, "
                     + OUR_ARRANGEMENT_KEY_WRITE_TIME + " INTEGER not null, "
-                    + OUR_ARRANGEMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0"
+                    + OUR_ARRANGEMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
+                    + OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE + " INTEGER DEFAULT 0"
                     + ");";
 
 
@@ -86,12 +68,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME = "comment_time";
     public static final String OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT = "id_arrangement";
     public static final String OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY = "new_entry";
-
-    public static final int OUR_ARRANGEMENT_COMMENT_COL_COMMENT = 1;
-    public static final int OUR_ARRANGEMENT_COMMENT_COL_AUTHOR_NAME = 2;
-    public static final int OUR_ARRANGEMENT_COMMENT_COL_WRITE_TIME = 3;
-    public static final int OUR_ARRANGEMENT_COMMENT_COL_ID_ARRANGEMENT = 4;
-    public static final int OUR_ARRANGEMENT_COMMENT_COL_NEW_ENTRY = 5;
+    public static final String OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME = "arrangement_time";
 
 
     // All keys from table app settings in a String
@@ -104,13 +81,48 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME + " STRING not null, "
                     + OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " INTEGER not null, "
                     + OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT + " INTEGER not null, "
-                    + OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0"
+                    + OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
+                    + OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME + " INTEGER not null"
                     + ");";
 
 
 
     /**********************************************************************************************/
 
+
+    /**********************************************************************************************/
+    // Our Arrangement Evaluate- column names and numbers
+    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME = "arrangement_time";
+    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_ID = "arrangement_id";
+    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1 = "result_q_a";
+    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2 = "result_q_b";
+    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3 = "result_q_c";
+    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4 = "result_q_d";
+    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION5 = "result_q_e";
+    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS = "result_remarks";
+    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME = "result_time";
+    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME = "username";
+
+    // All keys from table app settings in a String
+    public static final String[] OUR_ARRANGEMENT_EVALUATE_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_ID, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION5, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME};
+
+    // SQL String to create our arrangement comment table
+    private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_EVALUATE =
+            "create table " + DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE + " (" + KEY_ROWID + " integer primary key autoincrement, "
+                    + OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_ID + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1 + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2 + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3 + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4 + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION5 + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS + " TEXT not null, "
+                    + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME + " STRING not null"
+                    + ");";
+
+
+    /**********************************************************************************************/
     // Chat Messages - column names and numbers
     public static final String CHAT_MESSAGE_KEY_WRITE_TIME = "write_time";
     public static final String CHAT_MESSAGE_KEY_AUTHOR_NAME = "author_name";
@@ -120,13 +132,6 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String CHAT_MESSAGE_KEY_STATUS = "status";
     public static final String CHAT_MESSAGE_KEY_NEW_ENTRY = "new_entry";
 
-    public static final int CHAT_MESSAGE_COL_WRITE_TIME = 1;
-    public static final int CHAT_MESSAGE_COL_AUTHOR_NAME = 2;
-    public static final int CHAT_MESSAGE_COL_MESSAGE = 3;
-    public static final int CHAT_MESSAGE_COL_ROLE = 4;
-    public static final int CHAT_MESSAGE_COL_TX_TIME = 5;
-    public static final int CHAT_MESSAGE_COL_STATUS = 6;
-    public static final int CHAT_MESSAGE_COL_NEW_ENTRY = 7;
 
     // All keys from table chat messages in a String
     public static final String[] CHAT_MESSAGE_ALL_KEYS = new String[] {KEY_ROWID, CHAT_MESSAGE_KEY_WRITE_TIME, CHAT_MESSAGE_KEY_AUTHOR_NAME, CHAT_MESSAGE_KEY_MESSAGE, CHAT_MESSAGE_KEY_ROLE, CHAT_MESSAGE_KEY_TX_TIME, CHAT_MESSAGE_KEY_STATUS, CHAT_MESSAGE_KEY_NEW_ENTRY };
@@ -145,20 +150,16 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     /************************ End of table definitions **********************************************************************/
 
-
-    /////////////////////////////////////////////////////////////////////
-    //	Public methods:
-    /////////////////////////////////////////////////////////////////////
-
-
+    //construtor of DBAdapter
     DBAdapter (Context context) {
 
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
+
     }
 
 
     @Override
+    // create the tables
     public void onCreate(SQLiteDatabase _db) {
 
         // Create table OurArrangementComment
@@ -167,21 +168,26 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Create table OurArrangement
         _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT);
 
+        // Create table OurArrangementEvaluate
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_EVALUATE);
+
         // Create table ChatMessage
         _db.execSQL(DATABASE_CREATE_SQL_CHAT_MESSAGE);
     }
 
 
     @Override
+    // on upgrade -> delete the tables when exits
     public void onUpgrade(SQLiteDatabase _db, int oldVersion, int newVersion) {
-
-        Log.w(TAG, "Upgrading to " + newVersion);
 
         // Destroy table OurArrangementComment
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT);
 
         // Destroy table OurArrangement
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT);
+
+        // Destroy table OurArrangementEvaluate
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE);
 
         // Destroy table ChatMessage
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_CHAT_MESSAGE);
@@ -192,7 +198,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    /********************************* CROD for Chat Message ******************************************/
+    /********************************* TABLES FOR FUNCTION: Chat Message  ******************************************/
 
     // Add a new set of values to the database.
     public long insertRowChatMessage(String author_name, long writeTime, String message, int role, int status, Boolean newEntry) {
@@ -302,15 +308,15 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    /********************************* End!! CROD for Chat Message ******************************************/
+    /********************************* End!! TABLES FOR FUNCTION: Chat Message ******************************************/
+    /********************************************************************************************************************/
 
 
 
 
+    /********************************* TABLES FOR FUNCTION: Our Arrangement ******************************************/
 
-    /********************************* CROD for Our Arrangement ******************************************/
-
-    // Add a new set of values to ourArrangement .
+    // Add a new set of values (arrangement) to ourArrangement .
     public long insertRowOurArrangement(String arrangement, String authorName, long arrangementTime, Boolean newEntry) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -346,18 +352,22 @@ public class DBAdapter extends SQLiteOpenHelper {
         switch (equalGreater) {
 
             case "equal":
-                where = OUR_ARRANGEMENT_KEY_WRITE_TIME + " = " + currentDateOfArrangement;
+                where = OUR_ARRANGEMENT_KEY_WRITE_TIME + "=" + currentDateOfArrangement;
                 break;
             case "smaller":
-                where = OUR_ARRANGEMENT_KEY_WRITE_TIME + " < " + currentDateOfArrangement;
+                where = OUR_ARRANGEMENT_KEY_WRITE_TIME + "<" + currentDateOfArrangement;
                 break;
             default:
-                where = OUR_ARRANGEMENT_KEY_WRITE_TIME + " = " + currentDateOfArrangement;
+                where = OUR_ARRANGEMENT_KEY_WRITE_TIME + "=" + currentDateOfArrangement;
                 break;
         }
 
+        // sort string
+        String sort = OUR_ARRANGEMENT_KEY_WRITE_TIME + " DESC, " + KEY_ROWID + " DESC";
+
+
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
-                where, null, null, null, OUR_ARRANGEMENT_KEY_WRITE_TIME + " DESC", null);
+                where, null, null, null, sort, null);
 
         if (c != null) {
             c.moveToFirst();
@@ -385,13 +395,14 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    // Get the number of new rows in arrangement (new entrys)
-    public int getCountNewEntryOurArrangement() {
+    // Get the number of new rows in arrangement (new entrys) where date is current arrangement date -> no older one!
+    public int getCountNewEntryOurArrangement(long currentDateOfArrangement) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // new_entry = 1 (true)?
-        String where = OUR_ARRANGEMENT_KEY_NEW_ENTRY + "=1";
+        // new_entry = 1 (true) AND arrangement time is actual?
+        String where = OUR_ARRANGEMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_ARRANGEMENT_KEY_WRITE_TIME + "=" + currentDateOfArrangement;
+
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
@@ -399,10 +410,9 @@ public class DBAdapter extends SQLiteOpenHelper {
             c.moveToFirst();
         }
 
+        // return how many
         return c.getCount();
     }
-
-
 
 
     // delete status new entry in table ourArrangement for arrangment rowId.
@@ -422,14 +432,14 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    /********************************* End!! CROD for Our Arrangement ******************************************/
+    /********************************* End!! TABLES FOR FUNCTION: Our Arrangement ******************************************/
+    /***********************************************************************************************************************/
 
 
-
-    /********************************* CROD for Our Arrangement Comment ******************************************/
+    /********************************* TABLES FOR FUNCTION: Our Arrangement Comment ******************************************/
 
     // Add a new set of values to ourArrangementComment .
-    public long insertRowOurArrangementComment(String comment, String authorName, long commentTime, int idArrangement, Boolean newEntry) {
+    public long insertRowOurArrangementComment(String comment, String authorName, long commentTime, int idArrangement, Boolean newEntry, long currentDateOfArrangement) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -439,6 +449,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, authorName);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, commentTime);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT, idArrangement);
+        initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME, currentDateOfArrangement);
 
         // is it a new entry?
         if (newEntry) {
@@ -460,9 +471,15 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
+
+        // data filter
         String where = OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT + "=" + arrangementId;
+
+        // sort string
+        String sort = OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " DESC";
+
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
-                where, null, null, null, OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " DESC", null);
+                where, null, null, null, sort, null);
 
         if (c != null) {
             c.moveToFirst();
@@ -472,13 +489,13 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // Get the number of new rows in all comment for all arrangement (new entrys)
-    public int getCountAllNewEntryOurArrangementComment() {
+    // Get the number of new rows in all comment for all arrangement (new entrys) where date is current arrangement date -> no older one!
+    public int getCountAllNewEntryOurArrangementComment(long currentDateOfArrangement) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         // new_entry = 1 (true)?
-        String where = OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY + "=1";
+        String where = OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME + "=" + currentDateOfArrangement;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
@@ -486,6 +503,7 @@ public class DBAdapter extends SQLiteOpenHelper {
             c.moveToFirst();
         }
 
+        // return how many
         return c.getCount();
     }
 
@@ -505,11 +523,9 @@ public class DBAdapter extends SQLiteOpenHelper {
             c.moveToFirst();
         }
 
+        // return how many
         return c.getCount();
     }
-
-
-
 
 
     // delete status new entry in table ourArrangementComment.
@@ -529,9 +545,8 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    /********************************* End!! CROD for Our Arrangement ******************************************/
-
-
+    /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Comment ***************************************/
+    /****************************************************************************************************************************/
 
 
 

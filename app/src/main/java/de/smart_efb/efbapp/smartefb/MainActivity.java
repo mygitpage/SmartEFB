@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
                 case 1: // menue item "Absprachen"
                     if (showMainMenueElement[countElements]) { // is element aktiv?
 
-                        if (myDb.getCountAllNewEntryOurArrangementComment() > 0 || myDb.getCountNewEntryOurArrangement() > 0) {
+                        if (myDb.getCountAllNewEntryOurArrangementComment(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis())) > 0) {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                         } else {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
@@ -384,7 +384,19 @@ public class MainActivity extends AppCompatActivity {
             // Element aktiv?
             if (showMainMenueElement[position]) {
 
-                imageView.setImageResource(mainMenueShowElementBackgroundRessources[position]);
+                if (imageView != null) {
+                    imageView.setImageResource(mainMenueShowElementBackgroundRessources[position]);
+                }
+                else {
+                    imageView = new ImageView(mContext);
+                    imageView.setId(R.id.grid_item_image);
+                    imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    imageView.setImageResource(mainMenueShowElementBackgroundRessources[position]);
+                    linearLayoutView.addView(imageView,0);
+
+                }
+
+
                 txtView.setText(mainMenueElementTitle[position]);
                 txtView.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_white));
                 tmpLinearLayoutBackgroundColor = mainMenueElementColor[position];

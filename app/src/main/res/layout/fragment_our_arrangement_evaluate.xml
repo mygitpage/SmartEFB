@@ -393,7 +393,7 @@
             android:paddingBottom="5dp"/>
 
         <EditText
-            android:id="@+id/inputArrangementComment"
+            android:id="@+id/inputEvaluateResultComment"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:textColor="@color/text_color_white"
@@ -425,7 +425,7 @@
             android:layout_gravity="center_horizontal">
 
             <Button
-                android:id="@+id/buttonSendArrangementComment"
+                android:id="@+id/buttonSendEvaluateResult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/bg_btn_join"
@@ -436,7 +436,7 @@
                 android:padding="5dp"/>
 
             <Button
-                android:id="@+id/buttonAbortComment"
+                android:id="@+id/buttonAbortEvaluate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/bg_btn_join"
