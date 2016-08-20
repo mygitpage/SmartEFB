@@ -1,5 +1,8 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -68,6 +71,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         // init our arragement
         initOurArrangement();
+
+
+        // init alarm manager
+        setAlarmManagerOurArrangement ();
 
          // find viewpager in view
         viewPagerOurArrangement = (ViewPager) findViewById(R.id.viewPagerOurArrangement);
@@ -299,6 +306,30 @@ public class ActivityOurArrangement extends AppCompatActivity {
         toolbar.setSubtitle(currentArrangementSubtitleText);
 
     }
+
+
+
+
+    void setAlarmManagerOurArrangement () {
+
+        PendingIntent pendingIntentOurArrangementEvaluate;
+
+        Intent evalauteAlarmIntent = new Intent(ActivityOurArrangement.this, AlarmReceiverOurArrangement.class);
+        evalauteAlarmIntent.putExtra("evaluateState","pause");
+
+        pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(ActivityOurArrangement.this, 0, evalauteAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        int interval = 8000;
+
+
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntentOurArrangementEvaluate);
+        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+
+
+    }
+
+
 
 
     @Override

@@ -93,16 +93,20 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         // generate link for evaluate an arrangement
         if (prefs.getBoolean("showArrangementEvaluate", false)) {
 
-            // make link to evaluate arrangement
-            Uri.Builder evaluateLinkBuilder = new Uri.Builder();
-            evaluateLinkBuilder.scheme("smart.efb.ilink_comment")
-                    .authority("www.smart-efb.de")
-                    .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
-                    .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
-                    .appendQueryParameter("com", "evaluate_an_arrangement");
+            // make link to evaluate arrangement, when evaluation is possible for this arrangement
+            if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE)) == 1) {
+                Uri.Builder evaluateLinkBuilder = new Uri.Builder();
+                evaluateLinkBuilder.scheme("smart.efb.ilink_comment")
+                        .authority("www.smart-efb.de")
+                        .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
+                        .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition() + 1))
+                        .appendQueryParameter("com", "evaluate_an_arrangement");
 
-            showEvaluateCommentLinkTmp = Html.fromHtml("<a href=\"" + evaluateLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateString", "string", context.getPackageName()))+"</a> &middot; ");
+                showEvaluateCommentLinkTmp = Html.fromHtml("<a href=\"" + evaluateLinkBuilder.build().toString() + "\">" + context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateString", "string", context.getPackageName())) + "</a> &middot; ");
+            } else { // link is not possible, so do it with text
 
+                showEvaluateCommentLinkTmp = Html.fromHtml("(" + context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateString", "string", context.getPackageName())) + ") &middot; ");
+            }
         }
 
         // Show link for comment in our arrangement

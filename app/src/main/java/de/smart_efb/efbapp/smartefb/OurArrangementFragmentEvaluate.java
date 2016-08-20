@@ -34,6 +34,9 @@ public class OurArrangementFragmentEvaluate extends Fragment {
     // reference to the DB
     DBAdapter myDb;
 
+    // shared prefs for the evaluate arrangement
+    SharedPreferences prefs;
+
     // DB-Id of arrangement to comment
     int arrangementDbIdToEvaluate = 0;
 
@@ -45,8 +48,13 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
 
 
-    // Number of radio button for question 1,2,3,4,5
-    final int numberRadioButtonQuestion1 = 5;
+    // number of questions
+    final int countQuestionNumber = 4;
+
+    // number of items in every question
+    int[] numberRadioButtonQuestion = {6,6,6,6};
+    // part strin in ressource radiobutton question
+    String[] partRessourceNameQuestion =  { "One_", "Two_", "Three_", "Four_" };
 
 
     // Evaluate question result
@@ -54,8 +62,12 @@ public class OurArrangementFragmentEvaluate extends Fragment {
     int evaluateResultQuestion2 = 0;
     int evaluateResultQuestion3 = 0;
     int evaluateResultQuestion4 = 0;
-    int evaluateResultQuestion5 = 0;
 
+
+
+
+    // String manipulieren mit Platzhaltern
+    // https://developer.android.com/guide/topics/resources/string-resource.html
 
 
 
@@ -88,17 +100,14 @@ public class OurArrangementFragmentEvaluate extends Fragment {
     }
 
 
-
-
-
-
     // inits the fragment for use
     private void initFragmentEvaluate() {
 
         // init the DB
         myDb = new DBAdapter(fragmentEvaluateContext);
 
-
+        // init the prefs
+        prefs = fragmentEvaluateContext.getSharedPreferences("smartEfbSettings", fragmentEvaluateContext.MODE_PRIVATE);
 
         // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
         arrangementDbIdToEvaluate = ((ActivityOurArrangement) getActivity()).getArrangementDbIdFromLink();
@@ -109,8 +118,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         // get choosen arrangement
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToEvaluate);
-
-
 
         // build the view
         //textview for the comment intro
@@ -141,55 +148,30 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         String tmpSaveAndBackButtonIntroText = String.format(this.getResources().getString(R.string.evaluateSaveAndBackButtonIntroText), arrangementNumberInListView, 100);
         textSaveAndBackButtonIntro.setText(Html.fromHtml(tmpSaveAndBackButtonIntroText));
 
-
-
-        // String manipulieren mit Platzhaltern
-        // https://developer.android.com/guide/topics/resources/string-resource.html
-
-
-
-        // Button save evaluate result OR abort
-
-
-
-
-        // get input fields from evaluate fragment!
-
-
-
+        // set onClickListener for radio button in radio group question 1-4
         String tmpRessourceName ="";
         RadioButton tmpRadioButtonQuestion;
-        // set onClickListener for radio button in radio group question 1
-        for (int numberOfButtons=0; numberOfButtons < numberRadioButtonQuestion1; numberOfButtons++) {
-            tmpRessourceName ="questionOne_" + (numberOfButtons+1);
-            try {
-                int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", fragmentEvaluateContext.getPackageName());
+        for (int countQuestion = 0; countQuestion < countQuestionNumber; countQuestion++) {
 
-                tmpRadioButtonQuestion = (RadioButton) viewFragmentEvaluate.findViewById(resourceId);
-                tmpRadioButtonQuestion.setOnClickListener(new evaluateRadioButtonListenerQuestion1(numberOfButtons,0));
+            for (int numberOfButtons=0; numberOfButtons < numberRadioButtonQuestion[countQuestion]; numberOfButtons++) {
+                tmpRessourceName ="question" + partRessourceNameQuestion[countQuestion] + (numberOfButtons+1);
+                try {
+                    int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", fragmentEvaluateContext.getPackageName());
 
+                    tmpRadioButtonQuestion = (RadioButton) viewFragmentEvaluate.findViewById(resourceId);
+                    tmpRadioButtonQuestion.setOnClickListener(new evaluateRadioButtonListenerQuestion1(numberOfButtons,countQuestion));
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+
         }
 
-
-
-
-
-
-
-
-
-        //final EditText txtInputEvaluateResultComment = (EditText) viewFragmentEvaluate.findViewById(R.id.inputEvaluateResultComment);
-
-
-
+        // Button save evaluate result OR abort
         // button send evaluate result
         Button buttonSendEvaluateResult = (Button) viewFragmentEvaluate.findViewById(R.id.buttonSendEvaluateResult);
-
-        // onClick listener send arrangement comment
+        // onClick listener send evaluate result
         buttonSendEvaluateResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,15 +179,62 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
                 Boolean evaluateNoError = true;
 
+                TextView tmpErrorTextView;
 
+                // check result question 1
+                tmpErrorTextView = (TextView) viewFragmentEvaluate.findViewById(R.id.questionOneEvaluateError);
+                if ( evaluateResultQuestion1 == 0 && tmpErrorTextView != null) {
+                    evaluateNoError = false;
+                    tmpErrorTextView.setVisibility(View.VISIBLE);
+                } else if (tmpErrorTextView != null) {
+                    tmpErrorTextView.setVisibility(View.GONE);
+                }
+
+                // check result question 2
+                tmpErrorTextView = (TextView) viewFragmentEvaluate.findViewById(R.id.questionTwoEvaluateError);
+                if ( evaluateResultQuestion2 == 0 && tmpErrorTextView != null) {
+                    evaluateNoError = false;
+                    tmpErrorTextView.setVisibility(View.VISIBLE);
+                } else if (tmpErrorTextView != null) {
+                    tmpErrorTextView.setVisibility(View.GONE);
+                }
+
+                // check result question 3
+                tmpErrorTextView = (TextView) viewFragmentEvaluate.findViewById(R.id.questionThreeEvaluateError);
+                if ( evaluateResultQuestion3 == 0 && tmpErrorTextView != null) {
+                    evaluateNoError = false;
+                    tmpErrorTextView.setVisibility(View.VISIBLE);
+                } else if (tmpErrorTextView != null) {
+                    tmpErrorTextView.setVisibility(View.GONE);
+                }
+
+                // check result question 4
+                tmpErrorTextView = (TextView) viewFragmentEvaluate.findViewById(R.id.questionFourEvaluateError);
+                if ( evaluateResultQuestion4 == 0 && tmpErrorTextView != null) {
+                    evaluateNoError = false;
+                    tmpErrorTextView.setVisibility(View.VISIBLE);
+                } else if (tmpErrorTextView != null) {
+                    tmpErrorTextView.setVisibility(View.GONE);
+                }
+
+                // get evaluate result comment
+                EditText tmpInputEvaluateResultComment = (EditText) viewFragmentEvaluate.findViewById(R.id.inputEvaluateResultComment);
+                String txtInputEvaluateResultComment = "";
+                if (tmpInputEvaluateResultComment != null) {
+                    txtInputEvaluateResultComment = tmpInputEvaluateResultComment.getText().toString();
+                }
 
                 if (evaluateNoError) {
 
                     // insert comment in DB
-                    //long newID = myDb.insertRowOurArrangementComment(txtInputArrangementComment.getText().toString(), prefs.getString("userName", "John Doe"), System.currentTimeMillis() , arrangementDbIdToComment, true, prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()));
+                    myDb.insertRowOurArrangementEvaluate(arrangementDbIdToEvaluate, prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString("userName", "John Doe"));
 
-                    // Toast "Comment sucsessfull send"
-                    Toast.makeText(fragmentEvaluateContext, fragmentEvaluateContext.getResources().getString(R.string.evaluateResultSuccsesfulySend) + " -> " + evaluateResultQuestion1, Toast.LENGTH_SHORT).show();
+                    // delete status evaluation possible for arrangement
+                    myDb.changeStatusEvaluationPossibleOurArrangement(arrangementDbIdToEvaluate, "delete");
+
+
+                    // Toast "Evaluate result sucsessfull send"
+                    Toast.makeText(fragmentEvaluateContext, fragmentEvaluateContext.getResources().getString(R.string.evaluateResultSuccsesfulySend) + " -> " + evaluateResultQuestion1 + evaluateResultQuestion2 + evaluateResultQuestion3 + evaluateResultQuestion4, Toast.LENGTH_SHORT).show();
 
                     // reset evaluate results
                     resetEvaluateResult ();
@@ -245,7 +274,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
     }
 
-
+    // reset evaluation results
     private void resetEvaluateResult () {
 
         // reset results
@@ -253,12 +282,8 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         evaluateResultQuestion2 = 0;
         evaluateResultQuestion3 = 0;
         evaluateResultQuestion4 = 0;
-        evaluateResultQuestion5 = 0;
 
     }
-
-
-
 
     //
     // onClickListener for radioButtons in fragment layout evaluate
@@ -321,25 +346,16 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 case 3: // question 4
                     evaluateResultQuestion4 = tmpResultQuestion;
                     break;
-                case 4:
-                    evaluateResultQuestion5 = tmpResultQuestion;
-                    break;
                 default:
                     evaluateResultQuestion1 = 0;
                     evaluateResultQuestion2 = 0;
                     evaluateResultQuestion3 = 0;
                     evaluateResultQuestion4 = 0;
-                    evaluateResultQuestion5 = 0;
                     break;
             }
 
         }
 
     }
-
-
-
-
-
 
 }

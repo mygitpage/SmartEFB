@@ -40,8 +40,6 @@
                 android:textColorLink="@color/colorPrimary"
                 android:gravity="right"/>
 
-
-
         </LinearLayout>
 
         <TextView
@@ -66,6 +64,16 @@
             android:paddingTop="20dp"
             android:paddingBottom="5dp"/>
 
+        <TextView
+            android:id="@+id/questionOneEvaluateError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="@string/evaluateErrorTextByQuestion"
+            android:paddingBottom="5dp"/>
 
             <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
@@ -122,9 +130,19 @@
                     android:button="@null"
                     android:gravity="center"
                     android:layout_weight="0.2" />
+                <RadioButton android:id="@+id/questionOne_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_color_white"
+                    android:text="@string/evaluateSuggestionNotAffected"
+                    android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                    android:theme="@style/radioButtonStyleEvaluateArrangement"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:layout_weight="0.2" />
 
             </RadioGroup>
-
 
         <TextView
             android:id="@+id/questionTwoEvaluate"
@@ -136,6 +154,17 @@
             android:textStyle="bold"
             android:text="@string/questionTwoEvaluateMyEx"
             android:paddingTop="20dp"
+            android:paddingBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/questionTwoEvaluateError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="@string/evaluateErrorTextByQuestion"
             android:paddingBottom="5dp"/>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
@@ -207,9 +236,6 @@
 
         </RadioGroup>
 
-
-
-
         <TextView
             android:id="@+id/questionThreeEvaluate"
             android:layout_width="wrap_content"
@@ -220,6 +246,17 @@
             android:textStyle="bold"
             android:text="@string/questionThreeEvaluateChildreen"
             android:paddingTop="20dp"
+            android:paddingBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/questionThreeEvaluateError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="@string/evaluateErrorTextByQuestion"
             android:paddingBottom="5dp"/>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
@@ -291,11 +328,6 @@
 
         </RadioGroup>
 
-
-
-
-
-
         <TextView
             android:id="@+id/questionFourEvaluate"
             android:layout_width="wrap_content"
@@ -306,6 +338,17 @@
             android:textStyle="bold"
             android:text="@string/questionFourEvaluateThirdPeople"
             android:paddingTop="20dp"
+            android:paddingBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/questionFourEvaluateError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="@string/evaluateErrorTextByQuestion"
             android:paddingBottom="5dp"/>
 
 
@@ -378,8 +421,6 @@
 
         </RadioGroup>
 
-
-
         <TextView
             android:id="@+id/commentEvaluateText"
             android:layout_width="match_parent"
@@ -447,9 +488,6 @@
                 android:padding="5dp"/>
 
         </LinearLayout>
-
-
-
 
     </LinearLayout>
 

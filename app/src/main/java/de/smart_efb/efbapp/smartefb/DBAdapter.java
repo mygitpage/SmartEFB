@@ -98,7 +98,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2 = "result_q_b";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3 = "result_q_c";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4 = "result_q_d";
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION5 = "result_q_e";
+    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION5 = "result_q_e"; // this colum could be delete by next database update
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS = "result_remarks";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME = "result_time";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME = "username";
@@ -432,6 +432,71 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+
+
+    // change (delete/set) status evaluation poosible in table ourArrangement
+    public boolean changeStatusEvaluationPossibleOurArrangement (int rowId, String state) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row
+        ContentValues newValues = new ContentValues();
+
+        switch (state) {
+
+            case "set":
+                newValues.put(OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE, 1);
+                break;
+            case "delete":
+                newValues.put(OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE, 0);
+                break;
+            default:
+                newValues.put(OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE, 0);
+                break;
+
+        }
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null) != 0;
+    }
+
+
+    // change (delete/set) status evaluation poosible in table ourArrangement for all arrangement with current arrangement time
+    public boolean changeStatusEvaluationPossibleAllOurArrangement (long arrangementTime, String state) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_ARRANGEMENT_KEY_WRITE_TIME + "=" + arrangementTime;
+
+        // Create row
+        ContentValues newValues = new ContentValues();
+
+        switch (state) {
+
+            case "set":
+                newValues.put(OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE, 1);
+                break;
+            case "delete":
+                newValues.put(OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE, 0);
+                break;
+            default:
+                newValues.put(OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE, 0);
+                break;
+
+        }
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null) != 0;
+    }
+
+
+
+
+
+
+
     /********************************* End!! TABLES FOR FUNCTION: Our Arrangement ******************************************/
     /***********************************************************************************************************************/
 
@@ -543,6 +608,41 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Insert it into the database.
         return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null) != 0;
     }
+
+
+
+
+    /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Comment ***************************************/
+    /****************************************************************************************************************************/
+
+
+
+
+
+    /********************************* TABLES FOR FUNCTION: Our Arrangement Evaluate ******************************************/
+
+    // Add a new set of values to ourArrangementEvaluate .
+    public long insertRowOurArrangementEvaluate(int arrangementId, long currentDateOfArrangement, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues initialValues = new ContentValues();
+
+        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_ID, arrangementId);
+        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME, currentDateOfArrangement);
+        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1, resultQuestion1);
+        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2, resultQuestion2);
+        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3, resultQuestion3);
+        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4, resultQuestion4);
+        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION5, 0); // this colum could be delete by next database update
+        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS, resultRemarks);
+        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, resultTime);
+        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME, userName);
+
+        // Insert it into the database.
+        return db.insert(DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE, null, initialValues);
+    }
+
 
 
     /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Comment ***************************************/

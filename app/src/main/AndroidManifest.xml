@@ -41,6 +41,14 @@
 
         </activity>
 
+        <receiver android:name=".AlarmReceiverOurArrangement">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+
+
         <!-- Activity Our Goals -->
         <activity
             android:name=".ActivityOurGoals"
@@ -72,11 +80,7 @@
 
 
 
-        <receiver android:name=".AlarmReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
+
 
 
 
