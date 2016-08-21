@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by ich on 26.06.16.
@@ -91,20 +92,17 @@ public class OurArrangementFragmentOld extends Fragment {
 
     public void displayOldArrangementSet () {
 
-
         // find the listview
         ListView listView = (ListView) viewFragmentOld.findViewById(R.id.listOurArrangementOld);
 
-        // text to show, when arrangement old function not available or count old arrangement is zero
-        String tmpAlternativText = "";
+        if (prefs.getBoolean("showOldArrangements", false) && listView != null) { // Function showOldArrangement is available!!!!
 
-        // show alternativ text? true -> yes, false -> no
-        Boolean tmpShowAlternativText = false;
+            // show the list view for the old arrangements, hide textview "Function not available" and "nothing there"
+            setVisibilityListViewOldArrangements ("show");
+            setVisibilityTextViewNothingThere ("hide");
+            setVisibilityTextViewFunctionNotAvailable ("hide");
 
-
-        if (prefs.getBoolean("showOldArrangements", false)) { // Function showOldArrangement is available!!!!
-
-            // get all actual arrangement from DB
+            // get all old arrangement from DB
             Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfArrangement,"smaller");
 
             if (cursor.getCount() > 0) {
@@ -118,43 +116,97 @@ public class OurArrangementFragmentOld extends Fragment {
                 // Assign adapter to ListView
                 listView.setAdapter(dataAdapter);
 
-
             }
             else {
-                tmpShowAlternativText = true;
-                tmpAlternativText = fragmentOldContext.getResources().getString(fragmentOldContext.getResources().getIdentifier("ourArrangementOldArrangementNothingThere", "string", fragmentOldContext.getPackageName()));
+
+                // hide the list view for the old arrangements, hide textview "Function not available", show textview "nothing there"
+                setVisibilityListViewOldArrangements ("hide");
+                setVisibilityTextViewFunctionNotAvailable ("hide");
+                setVisibilityTextViewNothingThere ("show");
+
             }
 
         }
         else { // Function showOldArrangement is not available
 
-            tmpShowAlternativText = true;
-            tmpAlternativText = fragmentOldContext.getResources().getString(fragmentOldContext.getResources().getIdentifier("ourArrangementOldArrangementFunctionNotAvailable", "string", fragmentOldContext.getPackageName()));
-        }
-
-        // when tmpShowAlternativText -> TRUE show alternativ text
-        if (tmpShowAlternativText) {
-
-            LinearLayout oldArrangementHolderLayout = (LinearLayout) viewFragmentOld.findViewById(R.id.listOurArrangementOldHolder);
-
-            // remove listView in Layout
-            oldArrangementHolderLayout.removeViewInLayout(listView);
-
-            //add textView for intro text
-            TextView txtViewFunctionNotAvailable = new TextView (fragmentOldContext);
-            txtViewFunctionNotAvailable.setText(tmpAlternativText);
-            txtViewFunctionNotAvailable.setTextColor(ContextCompat.getColor(fragmentOldContext, R.color.text_color));
-            txtViewFunctionNotAvailable.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            txtViewFunctionNotAvailable.setTextSize(16);
-            txtViewFunctionNotAvailable.setGravity(Gravity.LEFT);
-            txtViewFunctionNotAvailable.setPadding(15,15,0,0);
-            txtViewFunctionNotAvailable.setTypeface(null, Typeface.BOLD);
-
-            // add text view to arrangement holder holder (linear layout in xml-file)
-            oldArrangementHolderLayout.addView(txtViewFunctionNotAvailable);
+            // show the list view for the old arrangements, show textview "Function not available" and hide "nothing there"
+            setVisibilityListViewOldArrangements ("hide");
+            setVisibilityTextViewNothingThere ("hide");
+            setVisibilityTextViewFunctionNotAvailable ("show");
 
         }
 
     }
+
+
+
+    private void setVisibilityListViewOldArrangements (String visibility) {
+
+        ListView tmplistView = (ListView) viewFragmentOld.findViewById(R.id.listOurArrangementOld);
+
+        if (tmplistView != null) {
+
+            switch (visibility) {
+
+                case "show":
+                    tmplistView.setVisibility(View.VISIBLE);
+                    break;
+                case "hide":
+                    tmplistView.setVisibility(View.GONE);
+                    break;
+
+            }
+
+        }
+
+    }
+
+
+
+    private void setVisibilityTextViewFunctionNotAvailable (String visibility) {
+
+        TextView tmpNotAvailable = (TextView) viewFragmentOld.findViewById(R.id.textViewOldArrangementFunctionNotAvailable);
+
+        if (tmpNotAvailable != null) {
+
+            switch (visibility) {
+
+                case "show":
+                    tmpNotAvailable.setVisibility(View.VISIBLE);
+                    break;
+                case "hide":
+                    tmpNotAvailable.setVisibility(View.GONE);
+                    break;
+
+            }
+
+        }
+
+    }
+
+
+    private void setVisibilityTextViewNothingThere (String visibility) {
+
+        TextView tmpNothingThere = (TextView) viewFragmentOld.findViewById(R.id.textViewOldArrangementNothingThere);
+
+        if (tmpNothingThere != null) {
+
+            switch (visibility) {
+
+                case "show":
+                    tmpNothingThere.setVisibility(View.VISIBLE);
+                    break;
+                case "hide":
+                    tmpNothingThere.setVisibility(View.GONE);
+                    break;
+
+            }
+
+        }
+
+    }
+
+
+
 
 }

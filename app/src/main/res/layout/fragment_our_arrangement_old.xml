@@ -7,6 +7,34 @@
     android:orientation="vertical"
     android:background="@color/body_background">
 
+
+    <TextView
+        android:id="@+id/textViewOldArrangementNothingThere"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:gravity="left"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:text="@string/ourArrangementOldArrangementNothingThere"
+        android:paddingTop="15dp"
+        android:paddingLeft="15dp"/>
+
+    <TextView
+        android:id="@+id/textViewOldArrangementFunctionNotAvailable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:gravity="left"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:text="@string/ourArrangementOldArrangementFunctionNotAvailable"
+        android:paddingTop="15dp"
+        android:paddingLeft="15dp"/>
+
+
     <ListView
         android:id="@+id/listOurArrangementOld"
         android:layout_width="fill_parent"
