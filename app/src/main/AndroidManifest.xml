@@ -39,6 +39,11 @@
                 <data android:scheme="smart.efb.ilink_comment" />
             </intent-filter>
 
+
+
+
+
+
         </activity>
 
         <receiver android:name=".AlarmReceiverOurArrangement">

@@ -1,6 +1,9 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -8,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by ich on 26.06.16.
@@ -46,9 +51,42 @@ public class OurArrangementFragmentNow extends Fragment {
 
         viewFragmentNow = layoutInflater.inflate(R.layout.fragment_our_arrangement_now, null);
 
+
+
+        // register intent filter for action ARRANGEMENT_EVALUATE_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ARRANGEMENT_EVALUATE_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentNowBrodcastReceiver, filter);
+
+
+
+
+
+
+
+
         return viewFragmentNow;
 
+
+
+
+
+
+
     }
+
+
+
+    private BroadcastReceiver ourArrangementFragmentNowBrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Log.d("FragmentReceiver","DRIN!!!!!!!!!");
+            Toast.makeText(context, "Aktualisiere ListView!!!!", Toast.LENGTH_SHORT).show();
+
+        }
+    };
+
 
 
 
@@ -71,6 +109,15 @@ public class OurArrangementFragmentNow extends Fragment {
 
 
     }
+
+
+
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentNowBrodcastReceiver);
+    }
+
+
 
 
 
