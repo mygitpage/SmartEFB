@@ -7,6 +7,20 @@
     android:background="@color/body_background"
     android:id="@+id/listOurArrangementNowHolder">
 
+    <TextView
+        android:id="@+id/textViewArrangementNowNothingThere"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:gravity="left"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:text="@string/ourArrangementNowArrangementNothingThere"
+        android:paddingTop="15dp"
+        android:paddingLeft="15dp"/>
+
+
     <ListView
         android:id="@+id/listOurArrangementNow"
         android:layout_width="fill_parent"

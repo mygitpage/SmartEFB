@@ -7,9 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
-import android.widget.Toast;
-
 import java.util.Calendar;
 
 /**
@@ -18,17 +15,21 @@ import java.util.Calendar;
 public class AlarmReceiverOurArrangement extends BroadcastReceiver {
 
 
+    // evaluate pause time and active time (get from prefs)
+    int evaluatePauseTime = 0;
+    int evaluateActivTime = 0;
+
     // reference to the DB
     DBAdapter myDb;
 
     // shared prefs for the comment arrangement
     SharedPreferences prefs;
 
-
-
+    // Pending intent for alarm manager
     PendingIntent pendingIntentOurArrangementEvaluate;
 
-    Intent evalauteAlarmIntent;
+    // intent for this alarm receiver
+    Intent evaluateAlarmIntent;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -40,7 +41,24 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
         // init the prefs
         prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
 
+        // alarm time from the prefs
+        int tmpAlarmTime = 0;
 
+        // get evaluate pause time and active time
+        evaluatePauseTime = prefs.getInt("evaluatePauseTimeInSeconds", 43200); // default value 43200 is 12 hours
+        evaluateActivTime = prefs.getInt("evaluateActivTimeInSeconds", 43200); // default value 43200 is 12 hours
+
+        // get alarmManager
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        // get calendar and init
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
+        // create new intent for pending intent to send and receive
+        evaluateAlarmIntent = new Intent(context, AlarmReceiverOurArrangement.class);
+
+        //get extra data from received intent
         String evaluateState = "";
         try {
             evaluateState = intent.getExtras().getString("evaluateState");
@@ -50,78 +68,43 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
         }
 
 
-
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        int interval = 60000;
-
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.SECOND, 60);
-
-
-
         switch (evaluateState) {
 
-            case "pause":
-
-
-                evalauteAlarmIntent = new Intent(context, AlarmReceiverOurArrangement.class);
-                evalauteAlarmIntent.putExtra("evaluateState","evaluate");
-
-
-                Log.d("Alarm"," - Aus Pause! -");
-
+            case "pause": // alarm comes out of pause
+                // next cycle is evaluiate -> set evaluate time
+                calendar.add(Calendar.SECOND, evaluateActivTime);
+                tmpAlarmTime = evaluateActivTime;
+                // set intent -> next state evaluate
+                evaluateAlarmIntent.putExtra("evaluateState","evaluate");
+                // update table ourArrangement in db -> evaluation enable
                 myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),"set");
-
-
-
-
-
-
-
-
-
-
-
-
-
-                Toast.makeText(context, "Komme aus der Pause", Toast.LENGTH_SHORT).show();
                 break;
-            case "evaluate":
-
-                evalauteAlarmIntent = new Intent(context, AlarmReceiverOurArrangement.class);
-                evalauteAlarmIntent.putExtra("evaluateState","pause");
-
-                Log.d("Alarm"," - Aus Evaluation! -");
-
+            case "evaluate": // alarm comes out of evaluate
+                // next cycle is pause -> set pause time
+                calendar.add(Calendar.SECOND, evaluatePauseTime);
+                tmpAlarmTime = evaluatePauseTime;
+                // set intent -> next state pause
+                evaluateAlarmIntent.putExtra("evaluateState","pause");
+                // update table ourArrangement in db -> evaluation disable
                 myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),"delete");
-
-
-                Toast.makeText(context, "Aus der Evaluation", Toast.LENGTH_SHORT).show();
                 break;
             default:
-                Toast.makeText(context, "Ohne Status", Toast.LENGTH_SHORT).show();
-                evalauteAlarmIntent = new Intent(context, AlarmReceiverOurArrangement.class);
-                evalauteAlarmIntent.putExtra("evaluateState","pause");
-
-
-
+                // next cycle is pause -> set pause time
+                calendar.add(Calendar.SECOND, evaluatePauseTime);
+                tmpAlarmTime = evaluatePauseTime;
+                // set intent -> next state pause
+                evaluateAlarmIntent.putExtra("evaluateState","pause");
         }
 
-        pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evalauteAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // crealte pending intent
+        pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // set alarm manager
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpAlarmTime, pendingIntentOurArrangementEvaluate);
 
-        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), interval, pendingIntentOurArrangementEvaluate);
-
-
-
-
-        /*------------------------*/
+        // send intent to receiver in OurArrangementFragmentNow to update listVIew OurArrangement (when active)
         Intent tmpIntent = new Intent();
         tmpIntent.setAction("ARRANGEMENT_EVALUATE_STATUS_UPDATE");
         context.sendBroadcast(tmpIntent);
-
-
 
     }
 }

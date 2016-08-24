@@ -33,6 +33,10 @@ import java.util.Calendar;
 public class ActivityOurArrangement extends AppCompatActivity {
 
 
+    // evaluate pause time and active time (get from prefs)
+    int evaluatePauseTime = 0;
+    int evaluateActivTime = 0;
+
     // shared prefs for the settings
     SharedPreferences prefs;
 
@@ -296,6 +300,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        // init the DB
+        myDb = new DBAdapter(getApplicationContext());
+
         // init the prefs
         prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
 
@@ -323,17 +330,42 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         PendingIntent pendingIntentOurArrangementEvaluate;
 
-        Intent evalauteAlarmIntent = new Intent(ActivityOurArrangement.this, AlarmReceiverOurArrangement.class);
-        evalauteAlarmIntent.putExtra("evaluateState","pause");
+        // get referenc to alarm manager
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
+        // create intent for backcall to broadcast receiver
+        Intent evalauteAlarmIntent = new Intent(ActivityOurArrangement.this, AlarmReceiverOurArrangement.class);
+        evalauteAlarmIntent.putExtra("evaluateState","evaluate");
+
+        // create call (pending intent) for alarm manager
         pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(ActivityOurArrangement.this, 0, evalauteAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        int interval = 8000;
 
 
-        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntentOurArrangementEvaluate);
-        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+        // get evaluate pause time and active time
+        evaluatePauseTime = prefs.getInt("evaluatePauseTimeInSeconds", 43200); // default value 43200 is 12 hours
+        evaluateActivTime = prefs.getInt("evaluateActivTimeInSeconds", 43200); // default value 43200 is 12 hours
+
+
+        Long startEvaluationDate = prefs.getLong("startDataEvaluationInMills", System.currentTimeMillis());
+        Long endEvaluationDate = prefs.getLong("endDataEvaluationInMills", System.currentTimeMillis());
+
+
+        if (System.currentTimeMillis() >= startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
+            manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, startEvaluationDate, evaluateActivTime, pendingIntentOurArrangementEvaluate);
+            // update table ourArrangement in db -> evaluation enable
+            myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),"set");
+            Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+
+
+
+
+
+
 
 
     }

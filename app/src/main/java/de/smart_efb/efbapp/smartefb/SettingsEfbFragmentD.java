@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +90,20 @@ public class SettingsEfbFragmentD extends Fragment {
     // pre select elements of fragment D (like ragioButtons, checkBoxes, Buttons, EditText, etc.)
     //
     private void preSelectElements() {
+
+
+        // put pause time and active time for evaluation in OurArrangement in prefs
+        // put start data and end data of evaluation in prefs
+        // in future comes from coach over internet
+        prefsEditor.putInt("evaluatePauseTimeInSeconds", 60);
+        prefsEditor.putInt("evaluateActivTimeInSeconds", 60);
+
+        prefsEditor.putLong("startDataEvaluationInMills", System.currentTimeMillis());
+        prefsEditor.putLong("endDataEvaluationInMills", System.currentTimeMillis()+1500000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        prefsEditor.commit();
+
+        Log.d("SystemTime","Zeit: " + System.currentTimeMillis());
 
         //
         // set onclickListener for chat role checkboxes

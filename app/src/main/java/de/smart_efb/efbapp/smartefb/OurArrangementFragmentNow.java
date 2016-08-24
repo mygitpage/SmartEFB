@@ -42,7 +42,7 @@ public class OurArrangementFragmentNow extends Fragment {
     long currentDateOfArrangement;
 
     // reference cursorAdapter for the listview
-    OurArrangementNowCursorAdapter dataAdapter;
+    OurArrangementNowCursorAdapter dataAdapterListViewOurArrangement = null;
 
 
 
@@ -51,44 +51,14 @@ public class OurArrangementFragmentNow extends Fragment {
 
         viewFragmentNow = layoutInflater.inflate(R.layout.fragment_our_arrangement_now, null);
 
-
-
-        // register intent filter for action ARRANGEMENT_EVALUATE_STATUS_UPDATE
+        // register broadcast receiver and intent filter for action ARRANGEMENT_EVALUATE_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ARRANGEMENT_EVALUATE_STATUS_UPDATE");
         getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentNowBrodcastReceiver, filter);
-
-
-
-
-
-
-
 
         return viewFragmentNow;
 
 
-
-
-
-
-
     }
-
-
-
-    private BroadcastReceiver ourArrangementFragmentNowBrodcastReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            Log.d("FragmentReceiver","DRIN!!!!!!!!!");
-            Toast.makeText(context, "Aktualisiere ListView!!!!", Toast.LENGTH_SHORT).show();
-
-        }
-    };
-
-
-
 
 
     @Override
@@ -104,21 +74,39 @@ public class OurArrangementFragmentNow extends Fragment {
         // show actual arrangement set
         displayActualArrangementSet();
 
-        // close database-connection
-        myDb.close();
-
 
     }
 
 
-
+    // fragment is destroyed
     public void onDestroyView() {
         super.onDestroyView();
+
+        // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentNowBrodcastReceiver);
+
+
     }
 
 
+    // Broadcast receiver for action ARRANGEMENT_EVALUATE_STATUS_UPDATE -> comes from alarmmanager ourArrangement
+    private BroadcastReceiver ourArrangementFragmentNowBrodcastReceiver = new BroadcastReceiver() {
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // notify listView that data has changed (evaluate-link is activ or passiv)
+            if (dataAdapterListViewOurArrangement != null) {
+                // get new data from db
+                Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfArrangement, "equal");
+                // and notify listView
+                dataAdapterListViewOurArrangement.changeCursor(cursor);
+                dataAdapterListViewOurArrangement.notifyDataSetChanged();
+
+            }
+
+        }
+    };
 
 
     // inits the fragment for use
@@ -136,7 +124,7 @@ public class OurArrangementFragmentNow extends Fragment {
     }
 
 
-
+    // show listView with current arrangements or info: mothing there
     public void displayActualArrangementSet () {
 
         Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfArrangement, "equal");
@@ -145,46 +133,82 @@ public class OurArrangementFragmentNow extends Fragment {
         ListView listView = (ListView) viewFragmentNow.findViewById(R.id.listOurArrangementNow);
 
 
-        if (cursor.getCount() > 0) {
+        if (cursor.getCount() > 0 && listView != null) {
+
+            // set listView visible and textView hide
+            setVisibilityListViewNowArrangements("show");
+            setVisibilityTextViewNowNotAvailable("hide");
 
             // new dataadapter
-            dataAdapter = new OurArrangementNowCursorAdapter(
+            dataAdapterListViewOurArrangement = new OurArrangementNowCursorAdapter(
                     getActivity(),
                     cursor,
                     0);
 
             // Assign adapter to ListView
-            listView.setAdapter(dataAdapter);
-
-
+            listView.setAdapter(dataAdapterListViewOurArrangement);
 
         }
         else {
 
-            LinearLayout nowArrangementHolderLayout = (LinearLayout) viewFragmentNow.findViewById(R.id.listOurArrangementNowHolder);
-
-            String tmpAlternativText = fragmentNowContext.getResources().getString(fragmentNowContext.getResources().getIdentifier("ourArrangementNowArrangementNothingThere", "string", fragmentNowContext.getPackageName()));
-
-            // remove listView in Layout
-            nowArrangementHolderLayout.removeViewInLayout(listView);
-
-            //add textView for intro text
-            TextView txtViewFunctionNotAvailable = new TextView (fragmentNowContext);
-            txtViewFunctionNotAvailable.setText(tmpAlternativText);
-            txtViewFunctionNotAvailable.setTextColor(ContextCompat.getColor(fragmentNowContext, R.color.text_color));
-            txtViewFunctionNotAvailable.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            txtViewFunctionNotAvailable.setTextSize(16);
-            txtViewFunctionNotAvailable.setGravity(Gravity.LEFT);
-            txtViewFunctionNotAvailable.setPadding(15,15,0,0);
-            txtViewFunctionNotAvailable.setTypeface(null, Typeface.BOLD);
-
-            // add text view to arrangement holder holder (linear layout in xml-file)
-            nowArrangementHolderLayout.addView(txtViewFunctionNotAvailable);
+            // set listView hide and textView visible
+            setVisibilityListViewNowArrangements("show");
+            setVisibilityTextViewNowNotAvailable("hide");
 
         }
 
+    }
+
+
+
+    // set visibility of listViewOurArrangement
+    private void setVisibilityListViewNowArrangements (String visibility) {
+
+        ListView tmplistView = (ListView) viewFragmentNow.findViewById(R.id.listOurArrangementNow);
+
+        if (tmplistView != null) {
+
+            switch (visibility) {
+
+                case "show":
+                    tmplistView.setVisibility(View.VISIBLE);
+                    break;
+                case "hide":
+                    tmplistView.setVisibility(View.GONE);
+                    break;
+
+            }
+
+        }
 
     }
+
+
+    // set visibility of textView "nothing there"
+    private void setVisibilityTextViewNowNotAvailable (String visibility) {
+
+        TextView tmpNotAvailable = (TextView) viewFragmentNow.findViewById(R.id.textViewArrangementNowNothingThere);
+
+        if (tmpNotAvailable != null) {
+
+            switch (visibility) {
+
+                case "show":
+                    tmpNotAvailable.setVisibility(View.VISIBLE);
+                    break;
+                case "hide":
+                    tmpNotAvailable.setVisibility(View.GONE);
+                    break;
+
+            }
+
+        }
+
+    }
+
+
+
+
 
 
 }
