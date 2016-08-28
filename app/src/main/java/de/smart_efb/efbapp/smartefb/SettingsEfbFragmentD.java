@@ -95,11 +95,11 @@ public class SettingsEfbFragmentD extends Fragment {
         // put pause time and active time for evaluation in OurArrangement in prefs
         // put start data and end data of evaluation in prefs
         // in future comes from coach over internet
-        prefsEditor.putInt("evaluatePauseTimeInSeconds", 60);
-        prefsEditor.putInt("evaluateActivTimeInSeconds", 60);
+        prefsEditor.putInt("evaluatePauseTimeInSeconds", 30);
+        prefsEditor.putInt("evaluateActivTimeInSeconds", 30);
 
         prefsEditor.putLong("startDataEvaluationInMills", System.currentTimeMillis());
-        prefsEditor.putLong("endDataEvaluationInMills", System.currentTimeMillis()+1500000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        prefsEditor.putLong("endDataEvaluationInMills", System.currentTimeMillis()+150000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         prefsEditor.commit();
 

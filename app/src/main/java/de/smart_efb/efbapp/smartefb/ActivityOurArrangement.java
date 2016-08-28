@@ -336,7 +336,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         // create intent for backcall to broadcast receiver
-        Intent evalauteAlarmIntent = new Intent(ActivityOurArrangement.this, AlarmReceiverOurArrangement.class);
+        Intent evaluateAlarmIntent = new Intent(ActivityOurArrangement.this, AlarmReceiverOurArrangement.class);
 
         // get evaluate pause time and active time
         evaluatePauseTime = prefs.getInt("evaluatePauseTimeInSeconds", 43200); // default value 43200 is 12 hours
@@ -378,15 +378,15 @@ public class ActivityOurArrangement extends AppCompatActivity {
             myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),tmpChangeDbEvaluationStatus);
 
             // put extras to intent -> "evaluate" or "delete"
-            evalauteAlarmIntent.putExtra("evaluateState",tmpIntentExtra);
+            evaluateAlarmIntent.putExtra("evaluateState",tmpIntentExtra);
 
             // create call (pending intent) for alarm manager
-            pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(ActivityOurArrangement.this, 0, evalauteAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(ActivityOurArrangement.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             // set alarm
             manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurArrangementEvaluate);
 
-            Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+            Log.d("End A - Alarm:"," Alarm SET!!!!!!! ");
         }
         else { // delete alarm - it is out of time
 
@@ -394,6 +394,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // update table ourArrangement in db -> evaluation disable
             myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),"delete");
 
+            // crealte pending intent
+            pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(ActivityOurArrangement.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            // delete alarm
+            manager.cancel(pendingIntentOurArrangementEvaluate);
 
             Log.d("End A - Alarm:"," CANCELED!!!!!!! ");
 
