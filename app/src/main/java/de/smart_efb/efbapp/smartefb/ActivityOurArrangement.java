@@ -249,7 +249,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
             ourArrangementViewPagerAdapter.notifyDataSetChanged();
 
 
-        } else if (command.equals("evaluate_an_arrangement")) { // Show evaluiate a comment
+        } else if (command.equals("evaluate_an_arrangement")) { // Show evaluate a arrangement
 
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("evaluate_an_arrangement");
@@ -266,7 +266,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // call notify data change
             ourArrangementViewPagerAdapter.notifyDataSetChanged();
 
-            //Toast.makeText(this, "Kommentare Bewerten", Toast.LENGTH_SHORT).show();
+
 
 
         } else { // Show fragment arrangement now
@@ -403,19 +403,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         }
 
-
-
-
-
-
-
-
-
-
-
     }
-
-
 
 
     @Override
@@ -443,118 +431,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
-    // geter for arrangement number i8n listview
+    // geter for arrangement number in listview
     public int getArrangementNumberInListview () {
 
         return arrangementNumberInListView;
 
     }
-
-
-
-
-
-
-    /*
-    public static class AlarmReceiverOurArrangement extends BroadcastReceiver {
-
-
-
-
-
-        PendingIntent pendingIntentOurArrangementEvaluate;
-
-        Intent evalauteAlarmIntent;
-
-
-
-
-
-
-
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-
-            String evaluateState = "";
-            try {
-                evaluateState = intent.getExtras().getString("evaluateState");
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-
-            AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            int interval = 60000;
-
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.add(Calendar.SECOND, 60);
-
-
-
-            switch (evaluateState) {
-
-                case "pause":
-
-
-                    Log.d("Alarm"," - Pause - ");
-
-                    evalauteAlarmIntent = new Intent(context, AlarmReceiverOurArrangement.class);
-                    evalauteAlarmIntent.putExtra("evaluateState","evaluate");
-
-
-
-
-
-
-
-
-
-
-
-                    Toast.makeText(context, "Komme aus der Pause", Toast.LENGTH_SHORT).show();
-                    break;
-                case "evaluate":
-
-                    Log.d("Alarm"," - Evaluation - ");
-
-                    evalauteAlarmIntent = new Intent(context, AlarmReceiverOurArrangement.class);
-                    evalauteAlarmIntent.putExtra("evaluateState","pause");
-
-                    Toast.makeText(context, "Aus der Evaluation", Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    Toast.makeText(context, "Ohne Status", Toast.LENGTH_SHORT).show();
-                    evalauteAlarmIntent = new Intent(context, AlarmReceiverOurArrangement.class);
-                    evalauteAlarmIntent.putExtra("evaluateState","pause");
-
-
-
-            }
-
-            pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evalauteAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), interval, pendingIntentOurArrangementEvaluate);
-
-
-
-
-
-        }
-    }
-
-   */
-
-
-
-
-
-
 
 
 }

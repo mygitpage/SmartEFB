@@ -168,6 +168,10 @@
     <string name="evaluateResultNotCompletely">Ihre Bewertung ist nicht vollständig! Bitte kontrollieren Sie die markierten Fragen!</string>
     <string name="evaluateErrorTextByQuestion">Bitte kontrollieren Sie diese Frage!</string>
 
+    <string name="showNextArrangementToEvaluateIntroText">Bitte bewerten Sie als nächstes Absprache %1$d.</string>
+
+    <string name="showNothingNextArrangementToEvaluateText">Es sind keine weiteren Absprachen zu bewerten.</string>
+
 
     <!-- End Fragment evaluate arrangement -->
 

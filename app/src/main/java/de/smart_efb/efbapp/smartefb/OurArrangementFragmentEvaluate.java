@@ -45,6 +45,12 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
     // cursor for the choosen arrangement
     Cursor cursorChoosenArrangement;
+    // cursor for all actual arrangement to choos the next one to evaluate
+    Cursor cursorNextArrangementToEvaluate;
+
+    // values for the next arrangement to evaluate
+    int nextArrangementDbIdToEvaluate = 0;
+    int nextArrangementListPositionToEvaluate = 0;
 
 
 
@@ -92,11 +98,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         // init the fragment now
         initFragmentEvaluate();
 
-
-        // close database-connection
-        myDb.close();
-
-
     }
 
 
@@ -118,6 +119,9 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         // get choosen arrangement
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToEvaluate);
+
+        // get all actual arrangements
+        cursorNextArrangementToEvaluate = myDb.getAllRowsCurrentOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), "equal");
 
         // build the view
         //textview for the comment intro
@@ -141,6 +145,39 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         TextView textViewArrangement = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateArrangement);
         String arrangement = cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(arrangement);
+
+
+        // set textview for the next arrangement to evaluate
+        TextView textViewNextArrangementEvaluateIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.arrangementNextToEvaluateIntroText);
+        nextArrangementDbIdToEvaluate = 0;
+        nextArrangementListPositionToEvaluate = 0;
+        if (cursorNextArrangementToEvaluate != null) { // is there another arrangement to evaluate?
+
+            cursorNextArrangementToEvaluate.moveToFirst();
+            do {
+
+                if (cursorNextArrangementToEvaluate.getInt(cursorNextArrangementToEvaluate.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE)) == 1 && cursorNextArrangementToEvaluate.getInt(cursorNextArrangementToEvaluate.getColumnIndex(DBAdapter.KEY_ROWID)) != arrangementDbIdToEvaluate) { // evaluation possible for arrangement?
+                    nextArrangementDbIdToEvaluate = cursorNextArrangementToEvaluate.getInt(cursorNextArrangementToEvaluate.getColumnIndex(DBAdapter.KEY_ROWID));
+                    nextArrangementListPositionToEvaluate = cursorNextArrangementToEvaluate.getPosition() + 1;
+                }
+
+            } while (cursorNextArrangementToEvaluate.moveToNext());
+
+        }
+
+        // set textview textViewNextArrangementEvaluateIntro
+        if (nextArrangementDbIdToEvaluate != 0) { // with text: next arrangement to evaluate
+
+            //textViewNextArrangementEvaluateIntro.setText(this.getResources().getString(R.string.showNextArrangementToEvaluateIntroText) + " " + nextArrangementListPositionToEvaluate);
+            textViewNextArrangementEvaluateIntro.setText(String.format(this.getResources().getString(R.string.showNextArrangementToEvaluateIntroText), nextArrangementListPositionToEvaluate));
+        }
+        else { // nothing more to evaluate
+
+            textViewNextArrangementEvaluateIntro.setText(this.getResources().getString(R.string.showNothingNextArrangementToEvaluateText));
+        }
+
+
+
 
 
         // view the intro text SaveAndBackButton, calculate the percent and set it in the text
@@ -234,16 +271,36 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
 
                     // Toast "Evaluate result sucsessfull send"
-                    Toast.makeText(fragmentEvaluateContext, fragmentEvaluateContext.getResources().getString(R.string.evaluateResultSuccsesfulySend) + " -> " + evaluateResultQuestion1 + evaluateResultQuestion2 + evaluateResultQuestion3 + evaluateResultQuestion4, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(fragmentEvaluateContext, fragmentEvaluateContext.getResources().getString(R.string.evaluateResultSuccsesfulySend), Toast.LENGTH_SHORT).show();
 
                     // reset evaluate results
                     resetEvaluateResult ();
 
-                    // build intent to get back to OurArrangementFragmentNow
+                    // build and send intent to next evaluation arrangement or back to OurArrangementNow
+                    if (nextArrangementDbIdToEvaluate != 0) { // is there another arrangement to evaluate?
+
+                        Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.putExtra("com","evaluate_an_arrangement");
+                        intent.putExtra("db_id",Integer.toString(nextArrangementDbIdToEvaluate));
+                        intent.putExtra("arr_num",Integer.toString(nextArrangementListPositionToEvaluate));
+                        getActivity().startActivity(intent);
+
+
+
+                    }
+
+                    // no arrangement to evaluate anymore! -> go back to OurArrangementNowFragment
                     Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.putExtra("com","show_arrangement_now");
                     getActivity().startActivity(intent);
+
+
+
+
+
+
 
                 } else {
                     // Toast "Evaluate not completly"

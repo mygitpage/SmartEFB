@@ -645,6 +645,38 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
+
+
+    // get next arrangement id to evaluate
+    // when there is no arrangement anymore the result ID is Zero
+    /*
+    public int getNextArrangementIdToEvaluate(Long currentDateOfArrangement) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        // data filter
+        String where = OUR_ARRANGEMENT_KEY_WRITE_TIME + "=" + currentDateOfArrangement + " AND " + OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE + "=1";
+
+        // sort string
+        String sort = KEY_ROWID + " DESC";
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
+                where, null, null, null, sort, null);
+
+        if (c != null) { // is there an arrangement?
+            c.moveToFirst();
+            return c.getInt(c.getColumnIndex(DBAdapter.KEY_ROWID)); // return arrangement id
+        }
+
+        return 0; // no -> return Zero
+
+
+    }
+    */
+
+
+
     /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Comment ***************************************/
     /****************************************************************************************************************************/
 

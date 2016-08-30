@@ -19,9 +19,6 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-
-
-
                 <Button android:id="@+id/helpOurArrangementNow"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
@@ -29,18 +26,6 @@
                     android:layout_marginRight="15dp"
                     android:background="@drawable/activity_help_toolbar_icon" />
 
-
-
-            <!--
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:background="@drawable/activity_help_toolbar_icon"
-            android:scaleType=""
-            android:layout_margin="10dp"
-            />
-            -->
 
         </android.support.v7.widget.Toolbar>
 
