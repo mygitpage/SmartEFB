@@ -251,7 +251,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         } else if (command.equals("evaluate_an_arrangement")) { // Show evaluate a arrangement
 
-            //set fragment in tab zero to comment
+            //set fragment in tab zero to evaluate
             OurArrangementViewPagerAdapter.setFragmentTabZero("evaluate_an_arrangement");
 
             // set correct subtitle in toolbar in tab zero
@@ -265,9 +265,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // call notify data change
             ourArrangementViewPagerAdapter.notifyDataSetChanged();
-
-
-
 
         } else { // Show fragment arrangement now
 
@@ -327,7 +324,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
 
-
+    // set alarmmaneger for evaluation time
     void setAlarmManagerOurArrangement () {
 
         PendingIntent pendingIntentOurArrangementEvaluate;

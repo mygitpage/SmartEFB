@@ -6,10 +6,12 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -176,10 +178,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
             textViewNextArrangementEvaluateIntro.setText(this.getResources().getString(R.string.showNothingNextArrangementToEvaluateText));
         }
 
-
-
-
-
         // view the intro text SaveAndBackButton, calculate the percent and set it in the text
         TextView textSaveAndBackButtonIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateSaveAndBackButtonIntro);
         String tmpSaveAndBackButtonIntroText = String.format(this.getResources().getString(R.string.evaluateSaveAndBackButtonIntroText), arrangementNumberInListView, 100);
@@ -282,25 +280,24 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                         Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.putExtra("com","evaluate_an_arrangement");
-                        intent.putExtra("db_id",Integer.toString(nextArrangementDbIdToEvaluate));
-                        intent.putExtra("arr_num",Integer.toString(nextArrangementListPositionToEvaluate));
+                        intent.putExtra("db_id", (int) nextArrangementDbIdToEvaluate);
+                        intent.putExtra("arr_num", (int) nextArrangementListPositionToEvaluate);
+
+                        Log.d("Next Evaluation","DB-ID:"+nextArrangementDbIdToEvaluate);
+                        Log.d("Next Evaluation","List-Num:"+nextArrangementListPositionToEvaluate);
+
+
                         getActivity().startActivity(intent);
 
 
 
+                    } else {
+                        // no arrangement to evaluate anymore! -> go back to OurArrangementNowFragment
+                        Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.putExtra("com","show_arrangement_now");
+                        getActivity().startActivity(intent);
                     }
-
-                    // no arrangement to evaluate anymore! -> go back to OurArrangementNowFragment
-                    Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent.putExtra("com","show_arrangement_now");
-                    getActivity().startActivity(intent);
-
-
-
-
-
-
 
                 } else {
                     // Toast "Evaluate not completly"
@@ -327,7 +324,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
             }
         });
-
 
     }
 
