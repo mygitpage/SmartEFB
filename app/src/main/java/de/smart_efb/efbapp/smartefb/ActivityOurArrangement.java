@@ -1,6 +1,7 @@
 package de.smart_efb.efbapp.smartefb;
 
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -70,7 +71,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
     int arrangementDbIdFromLink = 0;
     //arrangement number in listview
     int arrangementNumberInListView = 0;
-
+    // evaluate next arrangement true -> yes, there is a next arrangement to evaluate; false -> there is nothing more
+    boolean evaluateNextArrangement = false;
 
 
     // reference to the DB
@@ -175,6 +177,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         arrangementDbIdFromLink = 0;
         arrangementNumberInListView = 0;
+        evaluateNextArrangement = false;
 
         // call super
         super.onNewIntent(intent);
@@ -188,6 +191,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // get data that comes with intent-link
             arrangementDbIdFromLink = Integer.parseInt(intentLinkData.getQueryParameter("db_id")); // arrangement DB-ID
             arrangementNumberInListView = Integer.parseInt(intentLinkData.getQueryParameter("arr_num"));
+            evaluateNextArrangement = Boolean.parseBoolean(intentLinkData.getQueryParameter("eval_next"));
             // get command and execute it
             executeIntentCommand (intentLinkData.getQueryParameter("com"));
 
@@ -195,6 +199,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
            // get data that comes with extras
             arrangementDbIdFromLink = intentExtras.getInt("db_id",0);
             arrangementNumberInListView = intentExtras.getInt("arr_num",0);
+            evaluateNextArrangement = intentExtras.getBoolean("eval_next");
             // get command and execute it
             executeIntentCommand (intentExtras.getString("com"));
         }
@@ -320,6 +325,50 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // init subtitle first time
         toolbar.setSubtitle(currentArrangementSubtitleText);
 
+        createHelpDialog();
+
+    }
+
+
+
+    void createHelpDialog () {
+
+        Button tmpHelpButtonOurArrangement = (Button) findViewById(R.id.helpOurArrangementNow);
+
+
+        // add button listener
+        tmpHelpButtonOurArrangement.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                // create custom dialog
+                final Dialog dialog = new Dialog(ActivityOurArrangement.this);
+                dialog.setContentView(R.layout.dialog_help_our_arrangement);
+                dialog.setTitle("Einstellung Vereinbarungen");
+
+
+                Button dialogButton = (Button) dialog.findViewById(R.id.buttonDialogOurArrangementOk);
+                // if button is clicked, close the custom dialog
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+            }
+        });
+
+
+
+
+
+
+
+
+
     }
 
 
@@ -434,6 +483,19 @@ public class ActivityOurArrangement extends AppCompatActivity {
         return arrangementNumberInListView;
 
     }
+
+
+
+    // geter for evaluate next arrangement
+    public boolean getEvaluateNextArrangement () {
+
+        return evaluateNextArrangement;
+
+    }
+
+
+
+
 
 
 }

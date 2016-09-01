@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,9 @@ public class OurArrangementFragmentEvaluate extends Fragment {
     // values for the next arrangement to evaluate
     int nextArrangementDbIdToEvaluate = 0;
     int nextArrangementListPositionToEvaluate = 0;
+
+    // evaluate next arrangement
+    Boolean evaluateNextArrangement = false;
 
 
 
@@ -118,6 +122,8 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
         arrangementNumberInListView = ((ActivityOurArrangement) getActivity()).getArrangementNumberInListview();
         if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
+        // call getter-methode getEvaluateNextArrangement() in ActivityOurArrangement for evaluation next arrangement?
+        evaluateNextArrangement = ((ActivityOurArrangement) getActivity()).getEvaluateNextArrangement();
 
         // get choosen arrangement
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToEvaluate);
@@ -151,6 +157,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         // set textview for the next arrangement to evaluate
         TextView textViewNextArrangementEvaluateIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.arrangementNextToEvaluateIntroText);
+        TextView textViewThankAndEvaluateNext = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateThankAndNextEvaluation);
         nextArrangementDbIdToEvaluate = 0;
         nextArrangementListPositionToEvaluate = 0;
         if (cursorNextArrangementToEvaluate != null) { // is there another arrangement to evaluate?
@@ -172,11 +179,29 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
             //textViewNextArrangementEvaluateIntro.setText(this.getResources().getString(R.string.showNextArrangementToEvaluateIntroText) + " " + nextArrangementListPositionToEvaluate);
             textViewNextArrangementEvaluateIntro.setText(String.format(this.getResources().getString(R.string.showNextArrangementToEvaluateIntroText), nextArrangementListPositionToEvaluate));
+
+            // Show text "Danke fuer Bewertung und naechste bewerten"
+            if (evaluateNextArrangement) {
+                textViewThankAndEvaluateNext.setVisibility(View.VISIBLE);
+            }
+
         }
         else { // nothing more to evaluate
 
             textViewNextArrangementEvaluateIntro.setText(this.getResources().getString(R.string.showNothingNextArrangementToEvaluateText));
+
+            // Show text "Danke fuer Bewertung letzte Vereinbarung"
+            if (evaluateNextArrangement) {
+                textViewThankAndEvaluateNext.setText(this.getResources().getString(R.string.evaluateThankAndNextEvaluationLastText));
+                textViewThankAndEvaluateNext.setVisibility(View.VISIBLE);
+            }
+
         }
+
+
+
+
+
 
         // view the intro text SaveAndBackButton, calculate the percent and set it in the text
         TextView textSaveAndBackButtonIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateSaveAndBackButtonIntro);
@@ -195,6 +220,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
                     tmpRadioButtonQuestion = (RadioButton) viewFragmentEvaluate.findViewById(resourceId);
                     tmpRadioButtonQuestion.setOnClickListener(new evaluateRadioButtonListenerQuestion1(numberOfButtons,countQuestion));
+                    //tmpRadioButtonQuestion.setChecked(false);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -268,8 +294,10 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     myDb.changeStatusEvaluationPossibleOurArrangement(arrangementDbIdToEvaluate, "delete");
 
 
-                    // Toast "Evaluate result sucsessfull send"
-                    Toast.makeText(fragmentEvaluateContext, fragmentEvaluateContext.getResources().getString(R.string.evaluateResultSuccsesfulySend), Toast.LENGTH_SHORT).show();
+                    // When last evaluation show toast, because textView is not visible -> new fragment
+                    if (nextArrangementDbIdToEvaluate == 0 ) {
+                        Toast.makeText(fragmentEvaluateContext, fragmentEvaluateContext.getResources().getString(R.string.evaluateResultSuccsesfulySend), Toast.LENGTH_SHORT).show();
+                    }
 
                     // reset evaluate results
                     resetEvaluateResult ();
@@ -282,6 +310,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                         intent.putExtra("com","evaluate_an_arrangement");
                         intent.putExtra("db_id", (int) nextArrangementDbIdToEvaluate);
                         intent.putExtra("arr_num", (int) nextArrangementListPositionToEvaluate);
+                        intent.putExtra("eval_next", true );
 
                         Log.d("Next Evaluation","DB-ID:"+nextArrangementDbIdToEvaluate);
                         Log.d("Next Evaluation","List-Num:"+nextArrangementListPositionToEvaluate);
@@ -296,10 +325,17 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                         Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.putExtra("com","show_arrangement_now");
+                        intent.putExtra("eval_next", false );
                         getActivity().startActivity(intent);
                     }
 
                 } else {
+
+                    // Hide text "Danke fuer Bewertung..." when is error occurs and text is shown?
+                    if (evaluateNextArrangement) {
+                        TextView textViewThankAndEvaluateNext = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateThankAndNextEvaluation);
+                        textViewThankAndEvaluateNext.setVisibility(View.GONE);
+                    }
                     // Toast "Evaluate not completly"
                     Toast.makeText(fragmentEvaluateContext, fragmentEvaluateContext.getResources().getString(R.string.evaluateResultNotCompletely), Toast.LENGTH_SHORT).show();
                 }
@@ -335,6 +371,22 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         evaluateResultQuestion2 = 0;
         evaluateResultQuestion3 = 0;
         evaluateResultQuestion4 = 0;
+
+        // Clear radio groups for next evaluation
+        RadioGroup tmpRadioGroupClear;
+        tmpRadioGroupClear = (RadioGroup) viewFragmentEvaluate.findViewById(R.id.radioGroupQuestionOne);
+        tmpRadioGroupClear.clearCheck();
+        tmpRadioGroupClear = (RadioGroup) viewFragmentEvaluate.findViewById(R.id.radioGroupQuestionTwo);
+        tmpRadioGroupClear.clearCheck();
+        tmpRadioGroupClear = (RadioGroup) viewFragmentEvaluate.findViewById(R.id.radioGroupQuestionThree);
+        tmpRadioGroupClear.clearCheck();
+        tmpRadioGroupClear = (RadioGroup) viewFragmentEvaluate.findViewById(R.id.radioGroupQuestionFour);
+        tmpRadioGroupClear.clearCheck();
+
+        // Clear comment text field for next evaluation
+        EditText tmpInputEvaluateResultComment = (EditText) viewFragmentEvaluate.findViewById(R.id.inputEvaluateResultComment);
+        tmpInputEvaluateResultComment.setText("");
+
 
     }
 

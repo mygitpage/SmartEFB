@@ -52,6 +52,22 @@
             android:paddingLeft="10dp"
             android:paddingBottom="5dp"/>
 
+
+        <TextView
+            android:id="@+id/evaluateThankAndNextEvaluation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="@string/evaluateThankAndNextEvaluationText"
+            android:paddingTop="20dp"
+            android:paddingBottom="5dp"/>
+
+
+
+
         <TextView
             android:id="@+id/questionOneEvaluate"
             android:layout_width="wrap_content"
@@ -494,7 +510,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/text_accent_color"
             android:gravity="center"/>
 
     </LinearLayout>
