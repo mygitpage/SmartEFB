@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -14,9 +15,11 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -77,6 +80,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
     // reference to the DB
     DBAdapter myDb;
+
+    // reference to dialog settings
+    AlertDialog alertDialogSettings;
 
 
 
@@ -342,6 +348,75 @@ public class ActivityOurArrangement extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                TextView tmpdialogTextView;
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityOurArrangement.this);
+                // Get the layout inflater
+                LayoutInflater inflater = ActivityOurArrangement.this.getLayoutInflater();
+                View dialogSettings = inflater.inflate(R.layout.dialog_help_our_arrangement, null);
+
+
+
+                // show intro for settings
+                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsIntro);
+                tmpdialogTextView.setText(ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsIntro));
+
+                // show the settings for evaluation (like evaluation period, on/off-status, ...)
+                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsEvaluate);
+                if (prefs.getBoolean("showArrangementEvaluate", false)) {
+
+                    String tmpTxtEvaluate = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsEvaluateEnable);
+                    String tmpTxtEvaluate1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsEvaluatePeriod);
+                    //String.format(this.getResources().getString(R.string.showNextArrangementToEvaluateIntroText), nextArrangementListPositionToEvaluate);
+                    tmpdialogTextView.setText(tmpTxtEvaluate + " " + tmpTxtEvaluate1);
+                }
+                else {
+                    String tmpTxtEvaluate = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsEvaluateDisable);
+                    tmpdialogTextView.setText(tmpTxtEvaluate);
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // Inflate and set the layout for the dialog
+                // Pass null as the parent view because its going in the dialog layout
+                builder.setView(dialogSettings)
+
+                        /*
+                        // Add action buttons
+                        .setPositiveButton(R.string.signin, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                // sign in the user ...
+                            }
+                        })
+                        */
+                        .setNegativeButton("Schließen", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                alertDialogSettings.cancel();
+                            }
+                        })
+
+                        .setTitle("Einstellungen");
+
+
+                alertDialogSettings = builder.create();
+
+                builder.show();
+
+
+
+                /*
                 // create custom dialog
                 final Dialog dialog = new Dialog(ActivityOurArrangement.this);
                 dialog.setContentView(R.layout.dialog_help_our_arrangement);
@@ -358,6 +433,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 });
 
                 dialog.show();
+                */
+
             }
         });
 

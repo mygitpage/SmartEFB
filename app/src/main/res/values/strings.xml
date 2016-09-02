@@ -176,6 +176,24 @@
     <string name="evaluateThankAndNextEvaluationLastText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die letzte Absprache.</string>
 
 
+
+
+    <!-- dialog settings -->
+    <string name="textDialogOurArrangementSettingsIntro">Für die Funktion Absprachen gelten folgende Einstellungen.</string>
+
+
+    <string name="textDialogOurArrangementSettingsEvaluateEnable">Sie können Absprachen bewerten.</string>
+    <string name="textDialogOurArrangementSettingsEvaluateDisable">Sie können keine Absprachen bewerten.</string>
+    <string name="textDialogOurArrangementSettingsEvaluatePeriod">Der Bewertungszeitraum beginnt am %1$s und endet am %2$d. </string>
+
+
+    <!-- End dialog settings -->
+
+
+
+
+
+
     <!-- End Fragment evaluate arrangement -->
 
 
