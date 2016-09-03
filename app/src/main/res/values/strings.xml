@@ -184,7 +184,17 @@
 
     <string name="textDialogOurArrangementSettingsEvaluateEnable">Sie können Absprachen bewerten.</string>
     <string name="textDialogOurArrangementSettingsEvaluateDisable">Sie können keine Absprachen bewerten.</string>
-    <string name="textDialogOurArrangementSettingsEvaluatePeriod">Der Bewertungszeitraum beginnt am %1$s und endet am %2$d. </string>
+    <string name="textDialogOurArrangementSettingsEvaluatePeriod">Der Bewertungszeitraum beginnt am %1$s um %2$s Uhr und endet am %3$s um %4$s Uhr.</string>
+
+    <string name="textDialogOurArrangementSettingsCommentEnable">Sie können Absprachen kommentieren.</string>
+    <string name="textDialogOurArrangementSettingsCommentDisable">Sie können Absprachen nicht kommentieren.</string>
+    <string name="textDialogOurArrangementSettingsCommentCountInfinitely">Sie können beliebig viele Kommentare schreiben.</string>
+    <string name="textDialogOurArrangementSettingsCommentCountPlural">Sie können maximal %1$d Kommentare schreiben.</string>
+    <string name="textDialogOurArrangementSettingsCommentCountSingular">Sie können maximal einen Kommentar schreiben.</string>
+    <string name="textDialogOurArrangementSettingsCommentCountNumberPlural">Bisher haben Sie %1$d Kommentare geschrieben.</string>
+    <string name="textDialogOurArrangementSettingsCommentCountNumberSingular">Bisher haben Sie einen Kommentar geschrieben.</string>
+    <string name="textDialogOurArrangementSettingsCommentCountNumberOff">Sie haben Ihre möglichen Kommentare geschrieben.</string>
+
 
 
     <!-- End dialog settings -->

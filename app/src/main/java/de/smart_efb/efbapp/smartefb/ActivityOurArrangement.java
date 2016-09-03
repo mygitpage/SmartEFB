@@ -36,6 +36,9 @@ import java.util.Calendar;
  */
 public class ActivityOurArrangement extends AppCompatActivity {
 
+    // Max number of comments <-> Over this number you can write infinitely comments
+    final int commentLimitationBorder = 1000;
+
 
     // evaluate pause time and active time (get from prefs)
     int evaluatePauseTime = 0;
@@ -349,11 +352,17 @@ public class ActivityOurArrangement extends AppCompatActivity {
             public void onClick(View v) {
 
                 TextView tmpdialogTextView;
+                LayoutInflater dialogInflater;
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(ActivityOurArrangement.this);
                 // Get the layout inflater
-                LayoutInflater inflater = ActivityOurArrangement.this.getLayoutInflater();
-                View dialogSettings = inflater.inflate(R.layout.dialog_help_our_arrangement, null);
+
+
+                dialogInflater = (LayoutInflater) ActivityOurArrangement.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
+                //LayoutInflater inflater = ActivityOurArrangement.this.getLayoutInflater();
+                View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_our_arrangement, null);
 
 
 
@@ -367,8 +376,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                     String tmpTxtEvaluate = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsEvaluateEnable);
                     String tmpTxtEvaluate1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsEvaluatePeriod);
-                    //String.format(this.getResources().getString(R.string.showNextArrangementToEvaluateIntroText), nextArrangementListPositionToEvaluate);
-                    tmpdialogTextView.setText(tmpTxtEvaluate + " " + tmpTxtEvaluate1);
+                    String tmpCompleteTxtEvaluate1String = String.format(tmpTxtEvaluate1, EfbHelperClass.timestampToDateFormat(prefs.getLong("startDataEvaluationInMills", System.currentTimeMillis()), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(prefs.getLong("startDataEvaluationInMills", System.currentTimeMillis()), "kk.mm"), EfbHelperClass.timestampToDateFormat(prefs.getLong("endDataEvaluationInMills", System.currentTimeMillis()), "dd.MM.yyyy"),EfbHelperClass.timestampToDateFormat(prefs.getLong("endDataEvaluationInMills", System.currentTimeMillis()), "kk.mm"));
+                    tmpdialogTextView.setText(tmpTxtEvaluate + " " + tmpCompleteTxtEvaluate1String);
                 }
                 else {
                     String tmpTxtEvaluate = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsEvaluateDisable);
@@ -377,6 +386,38 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
 
+                // show the settings for comment (like on/off-status, count comment...)
+                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsComment);
+                String tmpTxtComment, tmpTxtComment1;
+
+                if (prefs.getBoolean("showArrangementComment", false)) {
+
+                    tmpTxtComment = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentEnable);
+
+                    if (prefs.getInt("commentOurArrangementMaxComment",0) < commentLimitationBorder) { // write infinitely comments?
+
+                        if (prefs.getInt("commentOurArrangementMaxComment",0) == 1) {
+                            tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountSingular);
+
+                        }
+                        else {
+                            tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountPlural);
+                            tmpTxtComment1 = String.format(tmpTxtComment1, prefs.getInt("commentOurArrangementMaxComment",0));
+                        }
+
+
+                    }
+                    else {
+                        tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountInfinitely);
+                    }
+
+
+                    tmpdialogTextView.setText(tmpTxtComment + " " + tmpTxtComment1);
+                }
+                else {
+                    tmpTxtComment = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentDisable);
+                    tmpdialogTextView.setText(tmpTxtComment);
+                }
 
 
 
@@ -415,26 +456,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 builder.show();
 
 
-
-                /*
-                // create custom dialog
-                final Dialog dialog = new Dialog(ActivityOurArrangement.this);
-                dialog.setContentView(R.layout.dialog_help_our_arrangement);
-                dialog.setTitle("Einstellung Vereinbarungen");
-
-
-                Button dialogButton = (Button) dialog.findViewById(R.id.buttonDialogOurArrangementOk);
-                // if button is clicked, close the custom dialog
-                dialogButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-                */
-
             }
         });
 
@@ -469,18 +490,16 @@ public class ActivityOurArrangement extends AppCompatActivity {
         Long startEvaluationDate = prefs.getLong("startDataEvaluationInMills", System.currentTimeMillis());
         Long endEvaluationDate = prefs.getLong("endDataEvaluationInMills", System.currentTimeMillis());
 
-
         Long tmpSystemTimeInMills = System.currentTimeMillis();
         int tmpEvalutePaAcTime = evaluateActivTime * 1000;
         String tmpIntentExtra = "evaluate";
         String tmpChangeDbEvaluationStatus = "set";
 
-
         // get calendar and init
         Calendar calendar = Calendar.getInstance();
 
-        // set alarm manager when current time is between start date and end date
-        if (System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
+        // set alarm manager when current time is between start date and end date and evaluation is enable
+        if (prefs.getBoolean("showArrangementEvaluate", false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
 
             calendar.setTimeInMillis(startEvaluationDate);
 
@@ -509,18 +528,19 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // set alarm
             manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurArrangementEvaluate);
 
+
+
             Log.d("End A - Alarm:"," Alarm SET!!!!!!! ");
         }
         else { // delete alarm - it is out of time
 
-
             // update table ourArrangement in db -> evaluation disable
             myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),"delete");
-
             // crealte pending intent
             pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(ActivityOurArrangement.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             // delete alarm
             manager.cancel(pendingIntentOurArrangementEvaluate);
+
 
             Log.d("End A - Alarm:"," CANCELED!!!!!!! ");
 
@@ -533,7 +553,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-
 
             case android.R.id.home:
                 onBackPressed();
@@ -569,10 +588,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
         return evaluateNextArrangement;
 
     }
-
-
-
-
 
 
 }

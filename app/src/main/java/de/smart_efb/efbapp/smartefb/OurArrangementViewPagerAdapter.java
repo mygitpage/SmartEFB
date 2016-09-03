@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,11 +30,16 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
     // the fragments
     Fragment fragArraNow, fragArraNowComment, fragArraOld, fragArraShowComment, fragArraEvaluate;
 
+    // Reference to fragment manager
+    FragmentManager ourArrangementFragmentManager;
+
 
     // default constructor
-    public OurArrangementViewPagerAdapter (FragmentManager ourArrangementFragmentManager, Context context) {
+    public OurArrangementViewPagerAdapter (FragmentManager ourArrangementFragmentMana, Context context) {
 
-        super (ourArrangementFragmentManager);
+        super (ourArrangementFragmentMana);
+
+        this.ourArrangementFragmentManager = ourArrangementFragmentMana;
 
         this.pagerAdapterContext = context;
 
@@ -60,6 +66,14 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
                 switch (fragmentChooser) {
                     case 0:
+
+                        FragmentTransaction fragmentTransAction = ourArrangementFragmentManager.beginTransaction();
+
+
+                        fragmentTransAction.addToBackStack(null);
+                        fragmentTransAction.commit();
+
+
                         return fragArraNow;
 
                     case 1:
@@ -79,6 +93,8 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
                 return new OurArrangementFragmentNow();
 
         }
+
+
 
     }
 
@@ -130,6 +146,9 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
 
         }
+
+
+
 
     }
 

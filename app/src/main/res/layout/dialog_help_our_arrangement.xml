@@ -31,7 +31,6 @@
             android:paddingBottom="10dp"/>
 
 
-
         <TextView
             android:id="@+id/textViewDialogOurArrangementSettingsEvaluate"
             android:layout_width="match_parent"
@@ -39,20 +38,33 @@
             android:textSize="16dp"
             android:textColor="@color/text_color"
             android:gravity="left"
-            android:paddingBottom="10dp"
+            android:paddingBottom="5dp"
             android:paddingLeft="5dp"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:background="@android:color/darker_gray"/>
+
         <TextView
-            android:id="@+id/textViewDialogOurArrangementHelpIntroText1"
+            android:id="@+id/textViewDialogOurArrangementSettingsComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/text_color"
             android:gravity="left"
-            android:textStyle="bold"
-            android:text="Hier stehen dann viele Einstellungen zur Info!"
-            android:paddingTop="20dp"
-            android:paddingBottom="5dp"/>
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:background="@android:color/darker_gray"/>
 
         <TextView
             android:id="@+id/textViewDialogOurArrangementHelpIntroText2"

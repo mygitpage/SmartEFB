@@ -73,10 +73,8 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
             e.printStackTrace();
         }
 
-
-
-        // set alarm manager when current time is between start date and end date
-        if (System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
+        // set alarm manager when current time is between start date and end date and evaluation is enable
+        if (prefs.getBoolean("showArrangementEvaluate", false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
 
             switch (evaluateState) {
 
@@ -88,6 +86,8 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
                     evaluateAlarmIntent.putExtra("evaluateState","evaluate");
                     // update table ourArrangement in db -> evaluation enable
                     myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),"set");
+
+
 
                     Log.d("AlarmReceiver","Aus Pause --------->");
 
@@ -101,6 +101,8 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
                     evaluateAlarmIntent.putExtra("evaluateState","pause");
                     // update table ourArrangement in db -> evaluation disable
                     myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),"delete");
+
+
 
                     Log.d("AlarmReceiver","Aus Evaluation <---------");
 
@@ -125,10 +127,8 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
         }
         else { // delete alarm - it is out of time
 
-
             // update table ourArrangement in db -> evaluation disable
             myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),"delete");
-
 
             // crealte pending intent
             pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -141,13 +141,10 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
 
         }
 
-
         // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
         Intent tmpIntent = new Intent();
         tmpIntent.setAction("ARRANGEMENT_EVALUATE_STATUS_UPDATE");
         context.sendBroadcast(tmpIntent);
-
-
 
     }
 }
