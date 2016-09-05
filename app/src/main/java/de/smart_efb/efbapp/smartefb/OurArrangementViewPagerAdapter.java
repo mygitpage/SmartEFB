@@ -66,14 +66,6 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
                 switch (fragmentChooser) {
                     case 0:
-
-                        FragmentTransaction fragmentTransAction = ourArrangementFragmentManager.beginTransaction();
-
-
-                        fragmentTransAction.addToBackStack(null);
-                        fragmentTransAction.commit();
-
-
                         return fragArraNow;
 
                     case 1:

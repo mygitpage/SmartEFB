@@ -388,7 +388,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                 // show the settings for comment (like on/off-status, count comment...)
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsComment);
-                String tmpTxtComment, tmpTxtComment1;
+                String tmpTxtComment, tmpTxtComment1, tmpTxtComment2, tmpTxtCommentSum;
 
                 if (prefs.getBoolean("showArrangementComment", false)) {
 
@@ -412,7 +412,39 @@ public class ActivityOurArrangement extends AppCompatActivity {
                     }
 
 
-                    tmpdialogTextView.setText(tmpTxtComment + " " + tmpTxtComment1);
+                    if (prefs.getInt("commentOurArrangementCountComment",0) < prefs.getInt("commentOurArrangementMaxComment",0)) {
+
+
+                        switch (prefs.getInt("commentOurArrangementCountComment", 0)) {
+                            case 0:
+                                tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCountCommentZero);
+                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong("commentOurArrangementTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"));
+
+
+
+
+
+
+                                break;
+                            case 1:
+                                tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberSingular);
+                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong("commentOurArrangementTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"));
+
+                                break;
+                            default:
+                                tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberPlural);
+                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong("commentOurArrangementTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt("commentOurArrangementCountComment",0));
+                                break;
+                        }
+                    }
+                    else {
+                        tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberOff);
+                    }
+
+
+                    tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2;
+
+                    tmpdialogTextView.setText(tmpTxtCommentSum);
                 }
                 else {
                     tmpTxtComment = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentDisable);

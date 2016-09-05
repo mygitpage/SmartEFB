@@ -106,6 +106,11 @@ public class SettingsEfbFragmentD extends Fragment {
         // in future comes from coach over internet
         prefsEditor.putInt("commentOurArrangementMaxComment", 1001); // > 1000 -> no limitation with comments
         prefsEditor.putInt("commentOurArrangementCountComment", 0);
+        // since this time count comments
+        prefsEditor.putLong("commentOurArrangementTimeSinceInMills", System.currentTimeMillis()); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
 
 
         prefsEditor.commit();

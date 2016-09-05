@@ -43,6 +43,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
     // shared prefs for the comment arrangement
     SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
     // DB-Id of arrangement to comment
     int arrangementDbIdToComment = 0;
@@ -92,6 +93,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
         // init the prefs
         prefs = fragmentNowCommentContext.getSharedPreferences("smartEfbSettings", fragmentNowCommentContext.MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
         // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
         arrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
@@ -165,6 +167,11 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
                     // Toast "Comment sucsessfull send"
                     Toast.makeText(fragmentNowCommentContext, fragmentNowCommentContext.getResources().getString(R.string.commentSuccsesfulySend), Toast.LENGTH_SHORT).show();
+
+                    // increment comment count
+                    int countCommentSum = prefs.getInt("commentOurArrangementCountComment",0) + 1;
+                    prefsEditor.putInt("commentOurArrangementCountComment", countCommentSum);
+                    prefsEditor.commit();
 
                     // build intent to get back to OurArrangementFragmentNow
                     Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
