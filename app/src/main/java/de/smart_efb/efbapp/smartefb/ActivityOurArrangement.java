@@ -404,32 +404,21 @@ public class ActivityOurArrangement extends AppCompatActivity {
                             tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountPlural);
                             tmpTxtComment1 = String.format(tmpTxtComment1, prefs.getInt("commentOurArrangementMaxComment",0));
                         }
-
-
                     }
                     else {
                         tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountInfinitely);
                     }
 
-
+                    // count comment - status
                     if (prefs.getInt("commentOurArrangementCountComment",0) < prefs.getInt("commentOurArrangementMaxComment",0)) {
-
-
                         switch (prefs.getInt("commentOurArrangementCountComment", 0)) {
                             case 0:
                                 tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCountCommentZero);
                                 tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong("commentOurArrangementTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"));
-
-
-
-
-
-
                                 break;
                             case 1:
                                 tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberSingular);
                                 tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong("commentOurArrangementTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"));
-
                                 break;
                             default:
                                 tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberPlural);
@@ -440,7 +429,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                     else {
                         tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberOff);
                     }
-
 
                     tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2;
 
@@ -453,7 +441,30 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
 
+                // show the settings for old arrangement
+                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsOldArrangement);
+                if (prefs.getBoolean("showOldArrangements", false)) {
 
+                    String tmpTxtOldArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsOldArrangementEnable);
+                    tmpdialogTextView.setText(tmpTxtOldArrangement);
+                }
+                else {
+                    String tmpTxtOldArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsOldArrangementDisable);
+                    tmpdialogTextView.setText(tmpTxtOldArrangement);
+                }
+
+
+                // show the settings for sketch arrangement
+                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsSketchArrangement);
+                if (prefs.getBoolean("showSketchArrangements", false)) {
+
+                    String tmpTxtOldArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchArrangementEnable);
+                    tmpdialogTextView.setText(tmpTxtOldArrangement);
+                }
+                else {
+                    String tmpTxtOldArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchArrangementDisable);
+                    tmpdialogTextView.setText(tmpTxtOldArrangement);
+                }
 
 
 
@@ -620,6 +631,22 @@ public class ActivityOurArrangement extends AppCompatActivity {
         return evaluateNextArrangement;
 
     }
+
+
+
+    // geter for border for comments
+    public boolean isCommentLimitationBorderSet () {
+
+        if (prefs.getInt("commentOurArrangementMaxComment",0) < commentLimitationBorder) { // is there a border for comments
+            return true; // comments are limited!
+        }
+
+        return  false; // write infinitely comments!
+
+    }
+
+
+
 
 
 }

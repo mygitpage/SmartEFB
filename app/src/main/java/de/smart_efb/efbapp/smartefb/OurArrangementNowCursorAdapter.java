@@ -31,6 +31,9 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
     // reference to the DB
     private DBAdapter myDb;
 
+    //limitation in count comments true-> yes, there is a border; no, there is no border, wirte infitisly comments
+    Boolean commentLimitationBorder;
+
 
     // number for count comments for arrangement (12 numbers!)
     private String[] numberCountForComments = new String [12];
@@ -49,14 +52,18 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         // init array for count comments
         numberCountForComments = context.getResources().getStringArray(R.array.ourArrangementCountComments);
 
+        commentLimitationBorder = ((ActivityOurArrangement)context).isCommentLimitationBorderSet();
+
     }
 
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        // link to comment and show comment
-        Spanned showAndCommentLinkTmp = null;
+        // link to show comments
+        Spanned showCommentsLinkTmp = null;
+        // link to comment an arrangement
+        Spanned showCommentArrangementLinkTmp = null;
         // link to evaluate arrangement
         Spanned showEvaluateCommentLinkTmp = null;
 
@@ -150,11 +157,23 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "show_comment_for_arrangement");;
 
-            if (tmpIntCountComments == 0) {
-                showAndCommentLinkTmp = Html.fromHtml(tmpCountComments + " &middot;" + " <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
+
+            if (prefs.getInt("commentOurArrangementCountComment",0) < prefs.getInt("commentOurArrangementMaxComment",0) || !commentLimitationBorder) {
+
+                showCommentArrangementLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
+
             }
             else {
-                showAndCommentLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountComments + "</a> " + tmpTextNewEntryComment + " &middot;" + " <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
+                showCommentArrangementLinkTmp = Html.fromHtml(" ("+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+")");
+
+            }
+
+
+            if (tmpIntCountComments == 0) {
+                showCommentsLinkTmp = Html.fromHtml(tmpCountComments + " &middot;");
+            }
+            else {
+                showCommentsLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountComments + "</a> " + tmpTextNewEntryComment + " &middot;");
 
             }
 
@@ -167,11 +186,11 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
             // create the comment link
             TextView linkCommentAnArrangement = (TextView) view.findViewById(R.id.linkCommentAnArrangement);
 
-            if (showEvaluateCommentLinkTmp != null && showAndCommentLinkTmp != null) {
-                linkCommentAnArrangement.setText(TextUtils.concat(showEvaluateCommentLinkTmp, showAndCommentLinkTmp));
+            if (showEvaluateCommentLinkTmp != null && showCommentsLinkTmp != null && showCommentArrangementLinkTmp != null) {
+                linkCommentAnArrangement.setText(TextUtils.concat(showEvaluateCommentLinkTmp, showCommentsLinkTmp, showCommentArrangementLinkTmp));
             }
-            else if (showEvaluateCommentLinkTmp == null && showAndCommentLinkTmp != null) {
-                linkCommentAnArrangement.setText(showAndCommentLinkTmp);
+            else if (showEvaluateCommentLinkTmp == null && showCommentsLinkTmp != null && showCommentArrangementLinkTmp != null) {
+                linkCommentAnArrangement.setText(TextUtils.concat(showCommentsLinkTmp, showCommentArrangementLinkTmp));
             }
             else {
                 linkCommentAnArrangement.setText(showEvaluateCommentLinkTmp);

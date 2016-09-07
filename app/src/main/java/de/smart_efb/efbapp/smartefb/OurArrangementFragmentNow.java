@@ -44,6 +44,8 @@ public class OurArrangementFragmentNow extends Fragment {
     // reference cursorAdapter for the listview
     OurArrangementNowCursorAdapter dataAdapterListViewOurArrangement = null;
 
+    //limitation in count comments true-> yes, there is a border; no, there is no border, wirte infitisly comments
+    Boolean commentLimitationBorder;
 
 
     @Override
@@ -120,6 +122,10 @@ public class OurArrangementFragmentNow extends Fragment {
 
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
+
+        // ask methode isCommentLimitationBorderSet() in ActivityOurArrangement to limitation in comments? true-> yes, linitation; false-> no
+        commentLimitationBorder = ((ActivityOurArrangement) getActivity()).isCommentLimitationBorderSet();
+
 
     }
 
@@ -208,7 +214,13 @@ public class OurArrangementFragmentNow extends Fragment {
 
 
 
+    // geter for border for comments
+    public boolean isCommentLimitationBorderSet () {
 
+        // true-> comments are limited; false-> no limit
+        return  commentLimitationBorder;
+
+    }
 
 
 }

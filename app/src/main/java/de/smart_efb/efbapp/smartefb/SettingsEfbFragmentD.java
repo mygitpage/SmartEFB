@@ -104,7 +104,7 @@ public class SettingsEfbFragmentD extends Fragment {
 
         // put max count of comments and current count of comments in prefs
         // in future comes from coach over internet
-        prefsEditor.putInt("commentOurArrangementMaxComment", 1001); // > 1000 -> no limitation with comments
+        prefsEditor.putInt("commentOurArrangementMaxComment", 5); // > 1000 -> no limitation with comments
         prefsEditor.putInt("commentOurArrangementCountComment", 0);
         // since this time count comments
         prefsEditor.putLong("commentOurArrangementTimeSinceInMills", System.currentTimeMillis()); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -320,6 +320,46 @@ public class SettingsEfbFragmentD extends Fragment {
                 prefsEditor.commit();
 
                 Toast.makeText(fragmentContextD, "Ältere Vereinbarungen zeigen " + aktiv_passivText, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+        //
+        // pre select show sketch arrangements
+        //
+        tmpCheckBox = (CheckBox) viewFragmentD.findViewById(R.id.showSketchArrangements);
+
+        if (prefs.getBoolean("showSketchArrangements", false)) {
+            tmpCheckBox.setChecked(true);
+        }
+        else {
+            tmpCheckBox.setChecked(false);
+        }
+        tmpCheckBox.setOnClickListener(new View.OnClickListener() { // OnclickListener for arrangement comment
+
+            @Override
+            public void onClick(View v) {
+
+                boolean checkBoxBooleanValue=false;
+                String aktiv_passivText ="";
+
+                // Is the view now checked?
+                boolean checked = ((CheckBox) v).isChecked();
+
+                if (checked) {
+                    checkBoxBooleanValue=true;
+                    aktiv_passivText = "aktiviert";
+                }
+                else {
+                    checkBoxBooleanValue=false;
+                    aktiv_passivText = "deaktiviert";
+                }
+
+                prefsEditor.putBoolean("showSketchArrangements", checkBoxBooleanValue);
+                prefsEditor.commit();
+
+                Toast.makeText(fragmentContextD, "Vereinbarungen Entwürfe sind " + aktiv_passivText, Toast.LENGTH_SHORT).show();
 
             }
         });

@@ -175,6 +175,13 @@
             android:onClick="onCheckboxShowArrangementElements"
             android:layout_below="@+id/showEvaluateLinkArrangement"/>
 
+        <CheckBox android:id="@+id/showSketchArrangements"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show sketch Arrangements"
+            android:onClick="onCheckboxShowArrangementElements"
+            android:layout_below="@+id/showOldArrangements"/>
+
 
 
         <LinearLayout
@@ -184,7 +191,7 @@
             android:background="@color/white"
             android:orientation="horizontal"
             android:weightSum="3"
-            android:layout_below="@+id/showOldArrangements">
+            android:layout_below="@+id/showSketchArrangements">
 
             <EditText
                 android:id="@+id/arrangementText"

@@ -198,6 +198,11 @@
     <string name="textDialogOurArrangementSettingsCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Kommentare geschrieben.</string>
     <string name="textDialogOurArrangementSettingsCountCommentZero">Seit dem %1$s haben Sie noch keinen Kommentar geschrieben.</string>
 
+    <string name="textDialogOurArrangementSettingsOldArrangementEnable">Ihnen stehen die älteren Absprachen zur Verfügung.</string>
+    <string name="textDialogOurArrangementSettingsOldArrangementDisable">Ihnen stehen die älteren Absprachen nicht zur Verfügung.</string>
+
+    <string name="textDialogOurArrangementSettingsSketchArrangementEnable">Ihnen stehen die Entwürfe der Absprachen zur Verfügung.</string>
+    <string name="textDialogOurArrangementSettingsSketchArrangementDisable">Ihnen stehen die Entwürfe der Absprachen micht zur Verfügung.</string>
 
     <!-- End dialog settings -->
 
