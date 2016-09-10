@@ -198,11 +198,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         }
 
-
-
-
-
-
         // view the intro text SaveAndBackButton, calculate the percent and set it in the text
         TextView textSaveAndBackButtonIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateSaveAndBackButtonIntro);
         String tmpSaveAndBackButtonIntroText = String.format(this.getResources().getString(R.string.evaluateSaveAndBackButtonIntroText), arrangementNumberInListView, 100);

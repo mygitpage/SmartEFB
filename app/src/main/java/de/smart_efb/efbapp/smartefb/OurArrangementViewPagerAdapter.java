@@ -16,7 +16,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
 
     // number of tabs
-    final static int ourArrangementTabCount = 2;
+    final static int ourArrangementTabCount = 3;
 
     // array of tab title
     String ourArrangementTabTitleNames[] = new String[ourArrangementTabCount];
@@ -28,7 +28,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
     static int fragmentChooser;
 
     // the fragments
-    Fragment fragArraNow, fragArraNowComment, fragArraOld, fragArraShowComment, fragArraEvaluate;
+    Fragment fragArraNow, fragArraNowComment, fragArraOld, fragArraShowComment, fragArraEvaluate, fragArraSketch;
 
     // Reference to fragment manager
     FragmentManager ourArrangementFragmentManager;
@@ -52,6 +52,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
         fragArraOld = new OurArrangementFragmentOld();
         fragArraShowComment = new OurArrangementFragmentShowComment();
         fragArraEvaluate = new OurArrangementFragmentEvaluate();
+        fragArraSketch = new OurArrangementFragmentSketch();
 
     }
 
@@ -79,6 +80,9 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
                 }
 
             case 1:
+                return fragArraSketch;
+
+            case 2:
                 return fragArraOld;
 
             default:

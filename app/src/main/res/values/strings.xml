@@ -103,6 +103,7 @@
     <string name="commentArrangementsubtitle">Absprache kommentieren</string>
     <string name="showCommentArrangementsubtitle">Gewählte Kommentare zeigen</string>
     <string name="evaluateArrangementsubtitle">Absprache bewerten</string>
+    <string name="sketchArrangementsubtitle">Entwürfe Absprachen</string>
 
     <!-- End subtitle -->
 
@@ -127,6 +128,7 @@
 
 
     <!-- End String Fragment comment -->
+
 
     <!-- String Fragment show comment -->
     <string name="btnAbortShowComment">Zurück zu allen Absprachen</string>
@@ -176,9 +178,43 @@
     <string name="evaluateThankAndNextEvaluationLastText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die letzte Absprache.</string>
 
 
+    <!-- End Fragment evaluate arrangement -->
 
 
-    <!-- dialog settings -->
+
+
+    <!-- Strings for tab title in activity our arrangement -->
+    <string name="ourArrangementTabTitle_1">Aktuell</string>
+    <string name="ourArrangementTabTitle_1a">Kommentieren</string>
+    <string name="ourArrangementTabTitle_1b">Kommentare</string>
+    <string name="ourArrangementTabTitle_1c">Bewerten</string>
+    <string name="ourArrangementTabTitle_2">Entwürfe</string>
+    <string name="ourArrangementTabTitle_3">Ältere Absprachen</string>
+    <!-- End tab title -->
+
+
+
+    <!-- String Fragment sketch arrangement -->
+    <string name="ourArrangementSketchArrangementNothingThere">Es sind keine Entwürfe für Absprachen vorhanden!</string>
+
+    <string name="ourArrangementSketchArrangementFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
+
+
+    <string name="ourArrangementSketchIntroText">%1$s hat am %2$s folgende Entwürfe für Absprachen eingestellt.</string>
+
+    <string name="showSketchArrangementNumberText">Entwurf Absprache</string>
+
+
+
+    <!-- End Fragment sketch arrangement -->
+
+
+
+
+    <!-- our arrangement dialog settings -->
+
+    <string name="textDialogOurArrangementCloseDialog">Schließen</string>
+    <string name="textDialogOurArrangementTitleDialog">Einstellungen Absprachen</string>
     <string name="textDialogOurArrangementSettingsIntro">Für die Funktion Absprachen gelten folgende Einstellungen.</string>
 
 
@@ -202,27 +238,13 @@
     <string name="textDialogOurArrangementSettingsOldArrangementDisable">Ihnen stehen die älteren Absprachen nicht zur Verfügung.</string>
 
     <string name="textDialogOurArrangementSettingsSketchArrangementEnable">Ihnen stehen die Entwürfe der Absprachen zur Verfügung.</string>
-    <string name="textDialogOurArrangementSettingsSketchArrangementDisable">Ihnen stehen die Entwürfe der Absprachen micht zur Verfügung.</string>
+    <string name="textDialogOurArrangementSettingsSketchArrangementDisable">Ihnen stehen die Entwürfe der Absprachen nicht zur Verfügung.</string>
 
-    <!-- End dialog settings -->
-
-
+    <!-- End our arrangement dialog settings -->
 
 
 
 
-    <!-- End Fragment evaluate arrangement -->
-
-
-
-
-    <!-- Strings for tab title in activity our arrangement -->
-    <string name="ourArrangementTabTitle_1">Aktuell</string>
-    <string name="ourArrangementTabTitle_1a">Kommentieren</string>
-    <string name="ourArrangementTabTitle_1b">Kommentare</string>
-    <string name="ourArrangementTabTitle_1c">Bewerten</string>
-    <string name="ourArrangementTabTitle_2">Ältere Absprachen</string>
-    <!-- End tab title -->
 
     <!-- Activity our arrangement End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->

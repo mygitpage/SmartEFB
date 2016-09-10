@@ -102,6 +102,7 @@
     <string-array name="ourArrangementTabTitle">
         <item>@string/ourArrangementTabTitle_1</item>
         <item>@string/ourArrangementTabTitle_2</item>
+        <item>@string/ourArrangementTabTitle_3</item>
     </string-array>
 
 

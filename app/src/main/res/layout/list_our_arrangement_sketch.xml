@@ -16,7 +16,7 @@
         android:paddingBottom="5dp">
 
         <TextView
-            android:id="@+id/listArrangementNumberText"
+            android:id="@+id/listArrangementSketchNumberText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
@@ -25,7 +25,7 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/listArrangementNewArrangementText"
+            android:id="@+id/listArrangementNewSketchText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14dp"
@@ -37,7 +37,7 @@
 
 
     <TextView
-        android:id="@+id/listTextArrangement"
+        android:id="@+id/listTextSketchArrangement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16dp"
@@ -48,7 +48,7 @@
 
 
     <TextView
-        android:id="@+id/linkCommentAnArrangement"
+        android:id="@+id/linkCommentAnSketchArrangement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="12dp"
@@ -60,4 +60,4 @@
 
 
 
- </LinearLayout>
+</LinearLayout>

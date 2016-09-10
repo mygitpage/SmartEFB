@@ -111,11 +111,14 @@ public class SettingsEfbFragmentD extends Fragment {
 
 
 
+        // put name and date of sketch arrangements in Prefs
+        prefsEditor.putString("authorOfSketchArrangement", "Herr Testmann");
+        prefsEditor.putLong("currentDateOfSketchArrangement", System.currentTimeMillis());
 
 
         prefsEditor.commit();
 
-        Log.d("SystemTime","Zeit: " + System.currentTimeMillis());
+
 
         //
         // set onclickListener for chat role checkboxes

@@ -63,12 +63,13 @@ public class ActivityOurArrangement extends AppCompatActivity {
     OurArrangementViewPagerAdapter ourArrangementViewPagerAdapter;
 
 
-    // Strings for subtitle ("Aktuelle vom...", "Älter als...", "Absprache kommentieren", "Kommentare zeigen", "Absprache bewerten" )
+    // Strings for subtitle ("Aktuelle vom...", "Älter als...", "Absprache kommentieren", "Kommentare zeigen", "Absprache bewerten", "Entwuerfe Absprachen" )
     String currentArrangementSubtitleText = "";
     String olderArrangementSubtitleText = "";
     String commentArrangementSubtitleText = "";
     String showCommentArrangementSubtitleText = "";
     String evaluateArrangementSubtitleText = "";
+    String sketchArrangementSubtitleText = "";
 
     // what to show in tab zero (like show_comment_for_arrangement, comment_an_arrangement, show_arrangement_now)
     String showCommandFragmentTabZero = "";
@@ -143,6 +144,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
                         break;
 
                     case 1:
+
+                        toolbar.setSubtitle(sketchArrangementSubtitleText);
+
+                        break;
+
+                    case 2:
 
                         toolbar.setSubtitle(olderArrangementSubtitleText);
 
@@ -331,6 +338,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         commentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("commentArrangementsubtitle", "string", getPackageName()));
         showCommentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("showCommentArrangementsubtitle", "string", getPackageName()));
         evaluateArrangementSubtitleText = getResources().getString(getResources().getIdentifier("evaluateArrangementsubtitle", "string", getPackageName()));
+        sketchArrangementSubtitleText = getResources().getString(getResources().getIdentifier("sketchArrangementsubtitle", "string", getPackageName()));
         // init subtitle first time
         toolbar.setSubtitle(currentArrangementSubtitleText);
 
@@ -474,41 +482,27 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                 // Inflate and set the layout for the dialog
                 // Pass null as the parent view because its going in the dialog layout
+                String tmpTextCloseDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementCloseDialog);
+                String tmpTextTitleDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementTitleDialog);
+
                 builder.setView(dialogSettings)
 
-                        /*
-                        // Add action buttons
-                        .setPositiveButton(R.string.signin, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                // sign in the user ...
-                            }
-                        })
-                        */
-                        .setNegativeButton("Schließen", new DialogInterface.OnClickListener() {
+                        // Add close button
+                        .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 alertDialogSettings.cancel();
                             }
                         })
-
-                        .setTitle("Einstellungen");
+                        // add title
+                        .setTitle(tmpTextTitleDialog);
 
 
                 alertDialogSettings = builder.create();
 
                 builder.show();
 
-
             }
         });
-
-
-
-
-
-
-
-
 
     }
 
@@ -633,7 +627,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
-
     // geter for border for comments
     public boolean isCommentLimitationBorderSet () {
 
@@ -644,9 +637,5 @@ public class ActivityOurArrangement extends AppCompatActivity {
         return  false; // write infinitely comments!
 
     }
-
-
-
-
 
 }
