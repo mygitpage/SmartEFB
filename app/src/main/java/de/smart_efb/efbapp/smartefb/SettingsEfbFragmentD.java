@@ -378,21 +378,44 @@ public class SettingsEfbFragmentD extends Fragment {
             @Override
             public void onClick(View v) {
 
-                long newID = myDb.insertRowOurArrangement(txtInputArrangement.getText().toString(), "testuser", prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), true);
+                long newID = myDb.insertRowOurArrangement(txtInputArrangement.getText().toString(), "testuser", prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), true, false, 0);
 
                 txtInputArrangement.setText("");
 
 
-                Toast.makeText(fragmentContextD, "Neue Testabsprache eingetragen", Toast.LENGTH_SHORT).show();
-
-
-                //Intent intent = new Intent(getActivity(), MainActivity.class);
-                //startActivity(intent);
+                Toast.makeText(fragmentContextD, "Neue aktuelle Testabsprache eingetragen", Toast.LENGTH_SHORT).show();
 
 
             }
         });
         // end insert new test arrangement
+
+
+
+        // textfield and button -> insert new test sketch arrangement
+        final EditText txtInputSketchArrangement = (EditText) viewFragmentD.findViewById(R.id.arrangementSketchText);
+        Button buttonSendSketchArrangement = (Button) viewFragmentD.findViewById(R.id.arrangementSketchTextSend);
+        // onClick send button
+        buttonSendSketchArrangement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                long newID = myDb.insertRowOurArrangement(txtInputSketchArrangement.getText().toString(), "testuser", 0, true, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()));
+
+                txtInputArrangement.setText("");
+
+
+                Toast.makeText(fragmentContextD, "Neuen Entwurf für Testabsprache eingetragen", Toast.LENGTH_SHORT).show();
+
+
+
+
+            }
+        });
+        // end insert new test sketch arrangement
+
+
+
 
     }
 

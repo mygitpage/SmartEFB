@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -32,6 +33,7 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
 
 
 
+
     // Default constructor
     public OurArrangementSketchCursorAdapter (Context context, Cursor cursor, int flags) {
 
@@ -41,7 +43,6 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
 
         // init the DB
         myDb = new DBAdapter(context);
-
 
     }
 
@@ -240,6 +241,7 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
 
         return position;
     }
+
 
 
 

@@ -55,6 +55,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
 
+    // the date of sketch arrangement
+    long currentDateOfSketchArrangement;
+
+
     // viewpager and tablayout for the view
     ViewPager viewPagerOurArrangement;
     TabLayout tabLayoutOurArrangement;
@@ -141,17 +145,25 @@ public class ActivityOurArrangement extends AppCompatActivity {
                                 toolbar.setSubtitle(evaluateArrangementSubtitleText);
                                 break;
                         }
+
+
+                        Log.d("Activity On Tab","Now Sup: "+showCommandFragmentTabZero);
+
                         break;
 
                     case 1:
 
                         toolbar.setSubtitle(sketchArrangementSubtitleText);
 
+                        Log.d("Activity On Tab","Sketch Sup");
+
                         break;
 
                     case 2:
 
                         toolbar.setSubtitle(olderArrangementSubtitleText);
+
+                        Log.d("Activity On Tab","Old Sup");
 
                         break;
 
@@ -328,6 +340,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
+        //get date of sketch arrangement
+        currentDateOfSketchArrangement = prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis());
 
         // init show on tab zero arrangemet now
         showCommandFragmentTabZero = "show_arrangement_now";
@@ -338,7 +352,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         commentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("commentArrangementsubtitle", "string", getPackageName()));
         showCommentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("showCommentArrangementsubtitle", "string", getPackageName()));
         evaluateArrangementSubtitleText = getResources().getString(getResources().getIdentifier("evaluateArrangementsubtitle", "string", getPackageName()));
-        sketchArrangementSubtitleText = getResources().getString(getResources().getIdentifier("sketchArrangementsubtitle", "string", getPackageName()));
+        sketchArrangementSubtitleText = getResources().getString(getResources().getIdentifier("sketchArrangementsubtitle", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfSketchArrangement, "dd.MM.yyyy");
         // init subtitle first time
         toolbar.setSubtitle(currentArrangementSubtitleText);
 
@@ -635,6 +649,44 @@ public class ActivityOurArrangement extends AppCompatActivity {
         }
 
         return  false; // write infinitely comments!
+
+    }
+
+    // setter for subtitle in OurArrangement toolbar
+    public void setOurArrangementToolbarSubtitle (String subtitleText, String subtitleChoose) {
+
+       switch (subtitleChoose) {
+
+           case "sketch":
+               sketchArrangementSubtitleText = subtitleText;
+               break;
+           case "old":
+               olderArrangementSubtitleText = subtitleText;
+               break;
+           case "now":
+               currentArrangementSubtitleText = subtitleText;
+               break;
+
+       }
+
+
+        Log.d("Activity","CH:"+subtitleChoose+" TXT:"+subtitleText);
+
+        //toolbar.setSubtitle(subtitleText);
+
+        /*
+        currentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
+        olderArrangementSubtitleText = getResources().getString(getResources().getIdentifier("olderArrangementDateFrom", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
+        commentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("commentArrangementsubtitle", "string", getPackageName()));
+        showCommentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("showCommentArrangementsubtitle", "string", getPackageName()));
+        evaluateArrangementSubtitleText = getResources().getString(getResources().getIdentifier("evaluateArrangementsubtitle", "string", getPackageName()));
+        sketchArrangementSubtitleText = getResources().getString(getResources().getIdentifier("sketchArrangementsubtitle", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfSketchArrangement, "dd.MM.yyyy");
+        // init subtitle first time
+        toolbar.setSubtitle(currentArrangementSubtitleText);
+
+         */
+
+
 
     }
 

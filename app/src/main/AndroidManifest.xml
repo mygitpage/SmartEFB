@@ -71,7 +71,7 @@
         <!-- Activity Settings -->
         <activity
             android:name=".ActivitySettingsEfb"
-            android:label="@string/mainMenueElementId_8"
+            android:label="@string/mainMenueElementId_9"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 

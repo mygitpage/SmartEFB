@@ -145,6 +145,12 @@ public class OurArrangementFragmentNow extends Fragment {
             setVisibilityListViewNowArrangements("show");
             setVisibilityTextViewNowNotAvailable("hide");
 
+
+            // Set correct subtitle in Activity -> "Absprachen vom ..."
+            String tmpSubtitle = getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", fragmentNowContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
+            ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"now");
+
+
             // new dataadapter
             dataAdapterListViewOurArrangement = new OurArrangementNowCursorAdapter(
                     getActivity(),
@@ -158,8 +164,12 @@ public class OurArrangementFragmentNow extends Fragment {
         else {
 
             // set listView hide and textView visible
-            setVisibilityListViewNowArrangements("show");
-            setVisibilityTextViewNowNotAvailable("hide");
+            setVisibilityListViewNowArrangements("hide");
+            setVisibilityTextViewNowNotAvailable("show");
+
+            // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
+            String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNothingThere", "string", fragmentNowContext.getPackageName()));
+            ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"now");
 
         }
 

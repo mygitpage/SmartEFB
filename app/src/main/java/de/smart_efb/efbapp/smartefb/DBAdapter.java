@@ -29,7 +29,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 21;
+    public static final int DATABASE_VERSION = 22;
 
 
     // Common column names
@@ -44,19 +44,23 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_ARRANGEMENT_KEY_WRITE_TIME = "arrangement_time";
     public static final String OUR_ARRANGEMENT_KEY_NEW_ENTRY = "new_entry";
     public static final String OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE = "eval_possible";
+    public static final String OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT = "sketch";
+    public static final String OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME = "sketch_time";
 
 
     // All keys from table app settings in a String
-    public static final String[] OUR_ARRANGEMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_KEY_ARRANGEMENT, OUR_ARRANGEMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE };
+    public static final String[] OUR_ARRANGEMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_KEY_ARRANGEMENT, OUR_ARRANGEMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE, OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT, OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME };
 
     // SQL String to create our arrangement table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT =
             "create table " + DATABASE_TABLE_OUR_ARRANGEMENT + " (" + KEY_ROWID + " integer primary key autoincrement, "
                     + OUR_ARRANGEMENT_KEY_ARRANGEMENT + " TEXT not null, "
                     + OUR_ARRANGEMENT_KEY_AUTHOR_NAME + " STRING not null, "
-                    + OUR_ARRANGEMENT_KEY_WRITE_TIME + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_KEY_WRITE_TIME + " INTEGER DEFAULT 0, "
                     + OUR_ARRANGEMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
-                    + OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE + " INTEGER DEFAULT 0"
+                    + OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE + " INTEGER DEFAULT 0, "
+                    + OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + " INTEGER DEFAULT 0, "
+                    + OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME + " INTEGER DEFAULT 0"
                     + ");";
 
 
@@ -316,8 +320,16 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     /********************************* TABLES FOR FUNCTION: Our Arrangement ******************************************/
 
-    // Add a new set of values (arrangement) to ourArrangement .
-    public long insertRowOurArrangement(String arrangement, String authorName, long arrangementTime, Boolean newEntry) {
+    /* Add a new set of values (arrangement) to ourArrangement
+        arrangement -> text of arrangement
+        authorName -> name of author
+        arrangementTime -> date and time of actual arrangement (not sketch arrangement)
+        newEntry -> true, arrangement is new in database; false, it is old!
+        sketchCurrent -> true, arrangement is a sketch; false, arrangement is an actual arrangement
+        sketchTime -> date and time of sketch arrangement (not actual arrangement)
+     */
+
+    public long insertRowOurArrangement(String arrangement, String authorName, long arrangementTime, Boolean newEntry, Boolean sketchCurrent, long sketchTime) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -325,7 +337,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         initialValues.put(OUR_ARRANGEMENT_KEY_ARRANGEMENT, arrangement);
         initialValues.put(OUR_ARRANGEMENT_KEY_AUTHOR_NAME, authorName);
-        initialValues.put(OUR_ARRANGEMENT_KEY_WRITE_TIME, arrangementTime);
+
 
         // is it a new entry?
         if (newEntry) {
@@ -333,6 +345,19 @@ public class DBAdapter extends SQLiteOpenHelper {
         } else {
             initialValues.put(OUR_ARRANGEMENT_KEY_NEW_ENTRY, 0);
         }
+
+
+        // is it a sketch? sketchCurrent-> true!
+        if (sketchCurrent) {
+            initialValues.put(OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT, 1);
+            initialValues.put(OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME, sketchTime);
+            initialValues.put(OUR_ARRANGEMENT_KEY_WRITE_TIME, 0);
+        } else {
+            initialValues.put(OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT, 0);
+            initialValues.put(OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME, 0);
+            initialValues.put(OUR_ARRANGEMENT_KEY_WRITE_TIME, arrangementTime);
+        }
+
 
         // Insert it into the database.
         return db.insert(DATABASE_TABLE_OUR_ARRANGEMENT, null, initialValues);

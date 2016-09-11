@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +33,13 @@ public class OurArrangementFragmentSketch  extends Fragment {
     // shared prefs for the settings
     SharedPreferences prefs;
 
-    // the current date of arrangement -> the other are old (look at tab old)
-    long currentDateOfArrangement;
+    // the date of sketch arrangement
+    long currentDateOfSketchArrangement;
 
     // reference cursorAdapter for the listview
     OurArrangementSketchCursorAdapter dataAdapterListViewOurArrangementSketch = null;
+
+
 
 
 
@@ -78,8 +81,8 @@ public class OurArrangementFragmentSketch  extends Fragment {
         // init the prefs
         prefs = fragmentSketchContext.getSharedPreferences("smartEfbSettings", fragmentSketchContext.MODE_PRIVATE);
 
-        //get current date of arrangement
-        currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
+        //get date of sketch arrangement
+        currentDateOfSketchArrangement = prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis());
 
     }
 
@@ -96,7 +99,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
         if (prefs.getBoolean("showSketchArrangements", false) && listView != null) { // Function showSketchArrangement is available!!!!
 
             // get the data from db -> all sketch arrangements
-            Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfArrangement, "equal");
+            Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfSketchArrangement, "equal");
 
             if (cursor.getCount() > 0 && listView != null) {
 
@@ -106,6 +109,11 @@ public class OurArrangementFragmentSketch  extends Fragment {
                 setVisibilityListViewSketchArrangements("show");
                 setVisibilityTextViewSketchNotAvailable("hide");
                 setVisibilityTextViewSketchNothingThere ("hide");
+
+                // Set correct subtitle in Activity -> "Entwuerfe vom ..."
+                String tmpSubtitle = getResources().getString(getResources().getIdentifier("sketchArrangementsubtitle", "string", fragmentSketchContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfSketchArrangement, "dd.MM.yyyy");
+                ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"sketch");
+
 
                 // new dataadapter
                 dataAdapterListViewOurArrangementSketch = new OurArrangementSketchCursorAdapter(
@@ -123,6 +131,10 @@ public class OurArrangementFragmentSketch  extends Fragment {
                 setVisibilityTextViewSketchNotAvailable("hide");
                 setVisibilityTextViewSketchNothingThere ("show");
 
+                // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
+                String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNothingThere", "string", fragmentSketchContext.getPackageName()));
+                ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"sketch");
+
 
             }
 
@@ -133,6 +145,10 @@ public class OurArrangementFragmentSketch  extends Fragment {
             setVisibilityListViewSketchArrangements("hide");
             setVisibilityTextViewSketchNotAvailable("show");
             setVisibilityTextViewSketchNothingThere ("hide");
+
+            // Set correct subtitle in Activity -> "Funktion nicht moeglich"
+            String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNotAvailable", "string", fragmentSketchContext.getPackageName()));
+            ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"sketch");
 
         }
 
@@ -206,6 +222,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
         }
 
     }
+
 
 
 }

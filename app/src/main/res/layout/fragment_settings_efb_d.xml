@@ -214,11 +214,47 @@
                 android:text="@string/buttonSendMessage" />
         </LinearLayout>
 
+
+
+        <LinearLayout
+            android:id="@+id/makeAnSketchArrangement"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_below="@+id/makeAnArrangement">
+
+            <EditText
+                android:id="@+id/arrangementSketchText"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:background="@color/bg_msg_input"
+                android:textColor="@color/text_msg_input"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:hint="Entwurf Absprache eingeben!" />
+
+            <Button
+                android:id="@+id/arrangementSketchTextSend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/bg_btn_join"
+                android:textColor="@color/white"
+                android:text="@string/buttonSendMessage" />
+        </LinearLayout>
+
+
+
+
+
         <View
             android:id="@+id/separateLine4"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/makeAnArrangement"
+            android:layout_below="@+id/makeAnSketchArrangement"
             android:layout_margin="20dp"
             android:background="@android:color/darker_gray"/>
 

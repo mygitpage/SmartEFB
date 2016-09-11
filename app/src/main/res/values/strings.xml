@@ -103,7 +103,10 @@
     <string name="commentArrangementsubtitle">Absprache kommentieren</string>
     <string name="showCommentArrangementsubtitle">Gewählte Kommentare zeigen</string>
     <string name="evaluateArrangementsubtitle">Absprache bewerten</string>
-    <string name="sketchArrangementsubtitle">Entwürfe Absprachen</string>
+    <string name="sketchArrangementsubtitle">Entwürfe vom</string>
+
+    <string name="subtitleNothingThere">Keine Absprachen vorhanden</string>
+    <string name="subtitleNotAvailable">Funktion nicht möglich</string>
 
     <!-- End subtitle -->
 

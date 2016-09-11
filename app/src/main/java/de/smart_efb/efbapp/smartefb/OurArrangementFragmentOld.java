@@ -92,20 +92,27 @@ public class OurArrangementFragmentOld extends Fragment {
 
     public void displayOldArrangementSet () {
 
+        String tmpSubtitle;
+
         // find the listview
         ListView listView = (ListView) viewFragmentOld.findViewById(R.id.listOurArrangementOld);
 
         if (prefs.getBoolean("showOldArrangements", false) && listView != null) { // Function showOldArrangement is available!!!!
 
-            // show the list view for the old arrangements, hide textview "Function not available" and "nothing there"
-            setVisibilityListViewOldArrangements ("show");
-            setVisibilityTextViewNothingThere ("hide");
-            setVisibilityTextViewFunctionNotAvailable ("hide");
 
             // get all old arrangement from DB
             Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfArrangement,"smaller");
 
             if (cursor.getCount() > 0) {
+
+                // show the list view for the old arrangements, hide textview "Function not available" and "nothing there"
+                setVisibilityListViewOldArrangements ("show");
+                setVisibilityTextViewNothingThere ("hide");
+                setVisibilityTextViewFunctionNotAvailable ("hide");
+
+                // Set correct subtitle in Activity -> "Absprachen aelter als..."
+                tmpSubtitle = getResources().getString(getResources().getIdentifier("olderArrangementDateFrom", "string", fragmentOldContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
+                ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"old");
 
                 // new dataadapter
                 dataAdapter = new OurArrangementOldCursorAdapter(
@@ -124,6 +131,10 @@ public class OurArrangementFragmentOld extends Fragment {
                 setVisibilityTextViewFunctionNotAvailable ("hide");
                 setVisibilityTextViewNothingThere ("show");
 
+                // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
+                tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNothingThere", "string", fragmentOldContext.getPackageName()));
+                ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"old");
+
             }
 
         }
@@ -133,6 +144,10 @@ public class OurArrangementFragmentOld extends Fragment {
             setVisibilityListViewOldArrangements ("hide");
             setVisibilityTextViewNothingThere ("hide");
             setVisibilityTextViewFunctionNotAvailable ("show");
+
+            // Set correct subtitle in Activity -> "Funktion nicht moeglich"
+            tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNotAvailable", "string", fragmentOldContext.getPackageName()));
+            ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"old");
 
         }
 
