@@ -31,6 +31,12 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
     // actual arrangement date, which is "at work"
     long actualArrangementDate = 0;
 
+    // number for count comments for arrangement (12 numbers!)
+    private String[] numberCountForComments = new String [12];
+
+    //limitation in count comments true-> yes, there is a border; no, there is no border, wirte infitisly comments
+    Boolean commentLimitationBorder;
+
 
 
 
@@ -44,6 +50,13 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
         // init the DB
         myDb = new DBAdapter(context);
 
+        // init array for count comments
+        numberCountForComments = context.getResources().getStringArray(R.array.ourArrangementCountComments);
+
+
+        // TODO Limitation for SKETCH ARRANGEMENT
+        commentLimitationBorder = ((ActivityOurArrangement)context).isCommentLimitationBorderSet();
+
     }
 
 
@@ -53,9 +66,8 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
         // link to show comments
         Spanned showCommentsLinkTmp = null;
         // link to comment an arrangement
-        Spanned showCommentArrangementLinkTmp = null;
-        // link to evaluate arrangement
-        Spanned showEvaluateCommentLinkTmp = null;
+        Spanned showCommentSketchArrangementLinkTmp = null;
+
 
         // text for new comment entry
         String tmpTextNewEntryComment = "";
@@ -97,46 +109,28 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
 
 
 
-        /*
-        // generate link for evaluate an arrangement
-        if (prefs.getBoolean("showArrangementEvaluate", false)) {
 
-            // make link to evaluate arrangement, when evaluation is possible for this arrangement
-            if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE)) == 1) {
-                Uri.Builder evaluateLinkBuilder = new Uri.Builder();
-                evaluateLinkBuilder.scheme("smart.efb.ilink_comment")
-                        .authority("www.smart-efb.de")
-                        .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
-                        .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition() + 1))
-                        .appendQueryParameter("com", "evaluate_an_arrangement");
 
-                showEvaluateCommentLinkTmp = Html.fromHtml("<a href=\"" + evaluateLinkBuilder.build().toString() + "\">" + context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateString", "string", context.getPackageName())) + "</a> &middot; ");
-            } else { // link is not possible, so do it with text
+        // Show link for comment the sketch arrangements
+        if (prefs.getBoolean("showCommentLinkSketchArrangements", false)) {
 
-                showEvaluateCommentLinkTmp = Html.fromHtml("(" + context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateString", "string", context.getPackageName())) + ") &middot; ");
-            }
-        }
-
-        // Show link for comment in our arrangement
-        if (prefs.getBoolean("showArrangementComment", false)) {
-
-            // get from DB  all comments for choosen arrangement (getCount)
-            Cursor cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
+            // get from DB  all comments for choosen sketch arrangement (getCount)
+            Cursor cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
             // generate the number of comments to show
             String tmpCountComments;
-            int tmpIntCountComments = cursorArrangementAllComments.getCount();
-            if (cursorArrangementAllComments.getCount() > 10) {
+            int tmpIntCountComments = cursorSketchArrangementAllComments.getCount();
+            if (tmpIntCountComments > 10) {
                 tmpCountComments = numberCountForComments[11];
 
             }
             else {
-                tmpCountComments = numberCountForComments[cursorArrangementAllComments.getCount()];
+                tmpCountComments = numberCountForComments[cursorSketchArrangementAllComments.getCount()];
             }
 
             // check comments for new entry, the cursor is sorted DESC, so first element is newest!!! new entry is markt by == 1
-            if (cursorArrangementAllComments.getCount() > 0) {
-                cursorArrangementAllComments.moveToFirst();
-                if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
+            if (cursorSketchArrangementAllComments.getCount() > 0) {
+                cursorSketchArrangementAllComments.moveToFirst();
+                if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY)) == 1) {
                     tmpTextNewEntryComment = "<font color='"+ ContextCompat.getColor(context, R.color.text_accent_color) + "'>"+ context.getResources().getString(R.string.newEntryText) + "</font>";
                 }
             }
@@ -148,7 +142,7 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
                     .authority("www.smart-efb.de")
                     .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
-                    .appendQueryParameter("com", "comment_an_arrangement");
+                    .appendQueryParameter("com", "comment_an_sketch_arrangement");
 
             // make link to show comment for arrangement
             Uri.Builder showCommentLinkBuilder = new Uri.Builder();
@@ -156,16 +150,16 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
                     .authority("www.smart-efb.de")
                     .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
-                    .appendQueryParameter("com", "show_comment_for_arrangement");;
+                    .appendQueryParameter("com", "show_comment_for_sketch_arrangement");;
 
 
-            if (prefs.getInt("commentOurArrangementCountComment",0) < prefs.getInt("commentOurArrangementMaxComment",0) || !commentLimitationBorder) {
+            if (prefs.getInt("commentSketchOurArrangementCountComment",0) < prefs.getInt("commentSketchOurArrangementMaxComment",0) || !commentLimitationBorder) {
 
-                showCommentArrangementLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
+                showCommentSketchArrangementLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
 
             }
             else {
-                showCommentArrangementLinkTmp = Html.fromHtml(" ("+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+")");
+                showCommentSketchArrangementLinkTmp = Html.fromHtml(" ("+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+")");
 
             }
 
@@ -178,23 +172,30 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
 
             }
 
+
+            // get textview from view
+            TextView linkCommentAnSketchArrangement = (TextView) view.findViewById(R.id.linkCommentAnSketchArrangement);
+
+            linkCommentAnSketchArrangement.setText(TextUtils.concat(showCommentsLinkTmp, showCommentSketchArrangementLinkTmp));
+            linkCommentAnSketchArrangement.setMovementMethod(LinkMovementMethod.getInstance());
+
         }
 
-
+        /*
         // show genaerate links for evaluate or/and comment
-        if (prefs.getBoolean("showArrangementComment", false) || prefs.getBoolean("showArrangementEvaluate", false) ) {
+        if (prefs.getBoolean("showCommentLinkSketchArrangements", false) ) {
 
             // create the comment link
-            TextView linkCommentAnArrangement = (TextView) view.findViewById(R.id.linkCommentAnArrangement);
+            TextView linkCommentAnSketchArrangement = (TextView) view.findViewById(R.id.linkCommentAnSketchArrangement);
 
-            if (showEvaluateCommentLinkTmp != null && showCommentsLinkTmp != null && showCommentArrangementLinkTmp != null) {
-                linkCommentAnArrangement.setText(TextUtils.concat(showEvaluateCommentLinkTmp, showCommentsLinkTmp, showCommentArrangementLinkTmp));
+            if (showCommentsLinkTmp != null && showCommentSketchArrangementLinkTmp != null) {
+                linkCommentAnSketchArrangement.setText(TextUtils.concat(showCommentsLinkTmp, showCommentSketchArrangementLinkTmp));
             }
             else if (showEvaluateCommentLinkTmp == null && showCommentsLinkTmp != null && showCommentArrangementLinkTmp != null) {
-                linkCommentAnArrangement.setText(TextUtils.concat(showCommentsLinkTmp, showCommentArrangementLinkTmp));
+                linkCommentAnSketchArrangement.setText(TextUtils.concat(showCommentsLinkTmp, showCommentArrangementLinkTmp));
             }
             else {
-                linkCommentAnArrangement.setText(showEvaluateCommentLinkTmp);
+                linkCommentAnSketchArrangement.setText(showEvaluateCommentLinkTmp);
             }
 
             linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());

@@ -108,6 +108,10 @@
     <string name="subtitleNothingThere">Keine Absprachen vorhanden</string>
     <string name="subtitleNotAvailable">Funktion nicht möglich</string>
 
+    <string name="subtitleFragmentNowCommentText">Kommentieren Absprache</string>
+    <string name="subtitleFragmentShowCommentText">Kommentare Absprache</string>
+    <string name="subtitleFragmentEvaluateArrangementText">Bewerten Absprache</string>
+
     <!-- End subtitle -->
 
 

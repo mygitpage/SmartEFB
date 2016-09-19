@@ -58,7 +58,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
     Cursor cursorArrangementAllComments;
 
 
-
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
@@ -107,6 +106,10 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
         // get all comments for choosen arrangement
         cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementDbIdToComment);
+
+        // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
+        String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentNowCommentText", "string", fragmentNowCommentContext.getPackageName())) + " " + arrangementNumberInListView;
+        ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "nowComment");
 
         // build the view
         //textview for the comment intro

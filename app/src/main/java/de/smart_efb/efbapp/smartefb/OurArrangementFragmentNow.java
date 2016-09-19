@@ -91,6 +91,8 @@ public class OurArrangementFragmentNow extends Fragment {
     }
 
 
+
+
     // Broadcast receiver for action ARRANGEMENT_EVALUATE_STATUS_UPDATE -> comes from alarmmanager ourArrangement
     private BroadcastReceiver ourArrangementFragmentNowBrodcastReceiver = new BroadcastReceiver() {
 
@@ -145,11 +147,9 @@ public class OurArrangementFragmentNow extends Fragment {
             setVisibilityListViewNowArrangements("show");
             setVisibilityTextViewNowNotAvailable("hide");
 
-
             // Set correct subtitle in Activity -> "Absprachen vom ..."
             String tmpSubtitle = getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", fragmentNowContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
-            ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"now");
-
+            ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "now");
 
             // new dataadapter
             dataAdapterListViewOurArrangement = new OurArrangementNowCursorAdapter(
@@ -169,12 +169,11 @@ public class OurArrangementFragmentNow extends Fragment {
 
             // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
             String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNothingThere", "string", fragmentNowContext.getPackageName()));
-            ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"now");
+            ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "now");
 
         }
 
     }
-
 
 
     // set visibility of listViewOurArrangement
@@ -194,7 +193,6 @@ public class OurArrangementFragmentNow extends Fragment {
                     break;
 
             }
-
         }
 
     }

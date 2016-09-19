@@ -58,8 +58,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
     // evaluate next arrangement
     Boolean evaluateNextArrangement = false;
 
-
-
     // number of questions
     final int countQuestionNumber = 4;
 
@@ -68,19 +66,11 @@ public class OurArrangementFragmentEvaluate extends Fragment {
     // part strin in ressource radiobutton question
     String[] partRessourceNameQuestion =  { "One_", "Two_", "Three_", "Four_" };
 
-
     // Evaluate question result
     int evaluateResultQuestion1 = 0;
     int evaluateResultQuestion2 = 0;
     int evaluateResultQuestion3 = 0;
     int evaluateResultQuestion4 = 0;
-
-
-
-
-    // String manipulieren mit Platzhaltern
-    // https://developer.android.com/guide/topics/resources/string-resource.html
-
 
 
     @Override
@@ -130,6 +120,10 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         // get all actual arrangements
         cursorNextArrangementToEvaluate = myDb.getAllRowsCurrentOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), "equal");
+
+        // Set correct subtitle in Activity -> "Bewerten Absprache ..."
+        String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentEvaluateArrangementText", "string", fragmentEvaluateContext.getPackageName())) + " " + arrangementNumberInListView;
+        ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "evaluate");
 
         // build the view
         //textview for the comment intro

@@ -113,7 +113,7 @@ public class SettingsEfbFragmentD extends Fragment {
 
         // put name and date of sketch arrangements in Prefs
         prefsEditor.putString("authorOfSketchArrangement", "Herr Testmann");
-        prefsEditor.putLong("currentDateOfSketchArrangement", System.currentTimeMillis());
+        //prefsEditor.putLong("currentDateOfSketchArrangement", System.currentTimeMillis());
 
 
         prefsEditor.commit();
@@ -368,6 +368,44 @@ public class SettingsEfbFragmentD extends Fragment {
         });
 
 
+        //
+        // pre select show sketch comment link in sketch arrangements
+        //
+        tmpCheckBox = (CheckBox) viewFragmentD.findViewById(R.id.showCommentLinkSketchArrangements);
+
+        if (prefs.getBoolean("showCommentLinkSketchArrangements", false)) {
+            tmpCheckBox.setChecked(true);
+        }
+        else {
+            tmpCheckBox.setChecked(false);
+        }
+        tmpCheckBox.setOnClickListener(new View.OnClickListener() { // OnclickListener for arrangement comment
+
+            @Override
+            public void onClick(View v) {
+
+                boolean checkBoxBooleanValue=false;
+                String aktiv_passivText ="";
+
+                // Is the view now checked?
+                boolean checked = ((CheckBox) v).isChecked();
+
+                if (checked) {
+                    checkBoxBooleanValue=true;
+                    aktiv_passivText = "aktiviert";
+                }
+                else {
+                    checkBoxBooleanValue=false;
+                    aktiv_passivText = "deaktiviert";
+                }
+
+                prefsEditor.putBoolean("showCommentLinkSketchArrangements", checkBoxBooleanValue);
+                prefsEditor.commit();
+
+                Toast.makeText(fragmentContextD, "Vereinbarungen Entwürfe Kommentare Link sind " + aktiv_passivText, Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
         // textfield and button -> insert new test arrangement
@@ -402,7 +440,7 @@ public class SettingsEfbFragmentD extends Fragment {
 
                 long newID = myDb.insertRowOurArrangement(txtInputSketchArrangement.getText().toString(), "testuser", 0, true, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()));
 
-                txtInputArrangement.setText("");
+                txtInputSketchArrangement.setText("");
 
 
                 Toast.makeText(fragmentContextD, "Neuen Entwurf für Testabsprache eingetragen", Toast.LENGTH_SHORT).show();

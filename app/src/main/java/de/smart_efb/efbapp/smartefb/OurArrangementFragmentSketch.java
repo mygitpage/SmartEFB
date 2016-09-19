@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by ich on 09.09.16.
@@ -38,10 +40,6 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
     // reference cursorAdapter for the listview
     OurArrangementSketchCursorAdapter dataAdapterListViewOurArrangementSketch = null;
-
-
-
-
 
 
     @Override
@@ -99,11 +97,9 @@ public class OurArrangementFragmentSketch  extends Fragment {
         if (prefs.getBoolean("showSketchArrangements", false) && listView != null) { // Function showSketchArrangement is available!!!!
 
             // get the data from db -> all sketch arrangements
-            Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfSketchArrangement, "equal");
+            Cursor cursor = myDb.getAllRowsSketchOurArrangement(currentDateOfSketchArrangement);
 
             if (cursor.getCount() > 0 && listView != null) {
-
-
 
                 // set listView visible, textView nothing there and not available gone
                 setVisibilityListViewSketchArrangements("show");
@@ -112,8 +108,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
                 // Set correct subtitle in Activity -> "Entwuerfe vom ..."
                 String tmpSubtitle = getResources().getString(getResources().getIdentifier("sketchArrangementsubtitle", "string", fragmentSketchContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfSketchArrangement, "dd.MM.yyyy");
-                ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"sketch");
-
+                ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "sketch");
 
                 // new dataadapter
                 dataAdapterListViewOurArrangementSketch = new OurArrangementSketchCursorAdapter(
@@ -133,9 +128,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
                 // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
                 String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNothingThere", "string", fragmentSketchContext.getPackageName()));
-                ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"sketch");
-
-
+                ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "sketch");
             }
 
         }
@@ -148,12 +141,10 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
             // Set correct subtitle in Activity -> "Funktion nicht moeglich"
             String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNotAvailable", "string", fragmentSketchContext.getPackageName()));
-            ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"sketch");
+            ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "sketch");
 
         }
-
     }
-
 
 
     // set visibility of listViewOurArrangement

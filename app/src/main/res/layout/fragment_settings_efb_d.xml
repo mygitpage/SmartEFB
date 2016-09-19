@@ -182,6 +182,13 @@
             android:onClick="onCheckboxShowArrangementElements"
             android:layout_below="@+id/showOldArrangements"/>
 
+        <CheckBox android:id="@+id/showCommentLinkSketchArrangements"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show comment link for sketch Arrangements"
+            android:onClick="onCheckboxShowArrangementElements"
+            android:layout_below="@+id/showSketchArrangements"/>
+
 
 
         <LinearLayout
@@ -191,7 +198,7 @@
             android:background="@color/white"
             android:orientation="horizontal"
             android:weightSum="3"
-            android:layout_below="@+id/showSketchArrangements">
+            android:layout_below="@+id/showCommentLinkSketchArrangements">
 
             <EditText
                 android:id="@+id/arrangementText"
@@ -223,7 +230,8 @@
             android:background="@color/white"
             android:orientation="horizontal"
             android:weightSum="3"
-            android:layout_below="@+id/makeAnArrangement">
+            android:layout_below="@+id/makeAnArrangement"
+            android:paddingTop="10dp">
 
             <EditText
                 android:id="@+id/arrangementSketchText"

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +41,8 @@ public class OurArrangementFragmentOld extends Fragment {
     // reference cursorAdapter for the listview
     OurArrangementOldCursorAdapter dataAdapter;
 
-
-
+    // refresh activitys subtitle, true-> refresh
+    Boolean subtitleRefreshNow = false;
 
 
     @Override
@@ -52,8 +53,6 @@ public class OurArrangementFragmentOld extends Fragment {
         return viewFragmentOld;
 
     }
-
-
 
 
     @Override
@@ -69,8 +68,6 @@ public class OurArrangementFragmentOld extends Fragment {
         // show actual arrangement set
         displayOldArrangementSet();
 
-        // close database-connection
-        myDb.close();
 
     }
 
@@ -112,7 +109,7 @@ public class OurArrangementFragmentOld extends Fragment {
 
                 // Set correct subtitle in Activity -> "Absprachen aelter als..."
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("olderArrangementDateFrom", "string", fragmentOldContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
-                ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"old");
+                ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "old");
 
                 // new dataadapter
                 dataAdapter = new OurArrangementOldCursorAdapter(
@@ -133,7 +130,9 @@ public class OurArrangementFragmentOld extends Fragment {
 
                 // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNothingThere", "string", fragmentOldContext.getPackageName()));
-                ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"old");
+                ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "old");
+
+                Log.d("Fragment Old","TXT: "+tmpSubtitle);
 
             }
 
@@ -147,7 +146,7 @@ public class OurArrangementFragmentOld extends Fragment {
 
             // Set correct subtitle in Activity -> "Funktion nicht moeglich"
             tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNotAvailable", "string", fragmentOldContext.getPackageName()));
-            ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle,"old");
+            ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "old");
 
         }
 

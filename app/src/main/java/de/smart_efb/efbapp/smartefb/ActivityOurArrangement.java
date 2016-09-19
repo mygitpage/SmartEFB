@@ -39,6 +39,11 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // Max number of comments <-> Over this number you can write infinitely comments
     final int commentLimitationBorder = 1000;
 
+    // Number of different subtitles
+    final int numberOfDifferentSubtitle = 6;
+
+    // Set subtitle first time
+    Boolean setSubtitleFirstTime = false;
 
     // evaluate pause time and active time (get from prefs)
     int evaluatePauseTime = 0;
@@ -58,7 +63,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // the date of sketch arrangement
     long currentDateOfSketchArrangement;
 
-
     // viewpager and tablayout for the view
     ViewPager viewPagerOurArrangement;
     TabLayout tabLayoutOurArrangement;
@@ -66,14 +70,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // viewpager adapter
     OurArrangementViewPagerAdapter ourArrangementViewPagerAdapter;
 
-
     // Strings for subtitle ("Aktuelle vom...", "Älter als...", "Absprache kommentieren", "Kommentare zeigen", "Absprache bewerten", "Entwuerfe Absprachen" )
-    String currentArrangementSubtitleText = "";
-    String olderArrangementSubtitleText = "";
-    String commentArrangementSubtitleText = "";
-    String showCommentArrangementSubtitleText = "";
-    String evaluateArrangementSubtitleText = "";
-    String sketchArrangementSubtitleText = "";
+    String [] arraySubTitleText = new String[numberOfDifferentSubtitle];
 
     // what to show in tab zero (like show_comment_for_arrangement, comment_an_arrangement, show_arrangement_now)
     String showCommandFragmentTabZero = "";
@@ -84,7 +82,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
     int arrangementNumberInListView = 0;
     // evaluate next arrangement true -> yes, there is a next arrangement to evaluate; false -> there is nothing more
     boolean evaluateNextArrangement = false;
-
 
     // reference to the DB
     DBAdapter myDb;
@@ -101,7 +98,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         // init our arragement
         initOurArrangement();
-
 
         // init alarm manager
         setAlarmManagerOurArrangement ();
@@ -120,59 +116,47 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // and set tablayout with viewpager
         tabLayoutOurArrangement.setupWithViewPager(viewPagerOurArrangement);
 
-
         // init listener for tab selected
         tabLayoutOurArrangement.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
+
+                String tmpSubtitleText = "";
+
                 // Change the subtitle of the activity
                 switch (tab.getPosition()) {
-
                     case 0:
                         switch (showCommandFragmentTabZero) {
-
                             case "show_arrangement_now":
-                                toolbar.setSubtitle(currentArrangementSubtitleText);
+                                tmpSubtitleText = arraySubTitleText[0];
                                 break;
                             case "comment_an_arrangement":
-                                toolbar.setSubtitle(commentArrangementSubtitleText);
+                                tmpSubtitleText = arraySubTitleText[3];
                                 break;
                             case "show_comment_for_arrangement":
-                                toolbar.setSubtitle(showCommentArrangementSubtitleText);
+                                tmpSubtitleText = arraySubTitleText[4];
                                 break;
                             case "evaluate_an_arrangement":
-                                toolbar.setSubtitle(evaluateArrangementSubtitleText);
+                                tmpSubtitleText = arraySubTitleText[5];
                                 break;
                         }
-
-
-                        Log.d("Activity On Tab","Now Sup: "+showCommandFragmentTabZero);
-
                         break;
-
                     case 1:
-
-                        toolbar.setSubtitle(sketchArrangementSubtitleText);
-
-                        Log.d("Activity On Tab","Sketch Sup");
-
+                        tmpSubtitleText = arraySubTitleText[1];
                         break;
-
                     case 2:
-
-                        toolbar.setSubtitle(olderArrangementSubtitleText);
-
-                        Log.d("Activity On Tab","Old Sup");
-
+                        tmpSubtitleText = arraySubTitleText[2];
                         break;
-
                     default:
-                        toolbar.setSubtitle(currentArrangementSubtitleText);
+                        tmpSubtitleText = arraySubTitleText[0];
                         break;
-
-
                 }
+
+                // set toolbar text
+                toolbar.setSubtitle(tmpSubtitleText);
+                Log.d("TabListener","Subtitle: "+tmpSubtitleText);
+
 
                 // call viewpager
                 viewPagerOurArrangement.setCurrentItem(tab.getPosition());
@@ -246,9 +230,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("show_comment_for_arrangement");
 
-            // set correct subtitle in toolbar in tab zero
-            toolbar.setSubtitle(showCommentArrangementSubtitleText);
-
             // set correct tab zero titel
             try {
                 tmpTabTitle = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1b", "string", getPackageName()));
@@ -263,14 +244,15 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // call notify data change
             ourArrangementViewPagerAdapter.notifyDataSetChanged();
 
+            // set correct subtitle in toolbar in tab zero
+            toolbar.setSubtitle(arraySubTitleText[4]);
+            Log.d("ExecuteIntent","Subtitle Kommentieren");
+
 
         } else if (command.equals("comment_an_arrangement")) { // Show fragment comment arrangement
 
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("comment_an_arrangement");
-
-            // set correct subtitle in toolbar in tab zero
-            toolbar.setSubtitle(commentArrangementSubtitleText);
 
             // set correct tab zero titel
             tabLayoutOurArrangement.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1a", "string", getPackageName())));
@@ -281,14 +263,15 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // call notify data change
             ourArrangementViewPagerAdapter.notifyDataSetChanged();
 
+            // set correct subtitle in toolbar in tab zero
+            toolbar.setSubtitle(arraySubTitleText[3]);
+            Log.d("ExecuteIntent","Subtitle show comment");
+
 
         } else if (command.equals("evaluate_an_arrangement")) { // Show evaluate a arrangement
 
             //set fragment in tab zero to evaluate
             OurArrangementViewPagerAdapter.setFragmentTabZero("evaluate_an_arrangement");
-
-            // set correct subtitle in toolbar in tab zero
-            toolbar.setSubtitle(evaluateArrangementSubtitleText);
 
             // set correct tab zero titel
             tabLayoutOurArrangement.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1c", "string", getPackageName())));
@@ -299,13 +282,14 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // call notify data change
             ourArrangementViewPagerAdapter.notifyDataSetChanged();
 
+            // set correct subtitle in toolbar in tab zero
+            toolbar.setSubtitle(arraySubTitleText[5]);
+            Log.d("ExecuteIntent","Subtitle Evaluation");
+
         } else { // Show fragment arrangement now
 
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("show_arrangement_now");
-
-            // set correct subtitle in toolbar in tab zero
-            toolbar.setSubtitle(currentArrangementSubtitleText);
 
             // set correct tab zero titel
             tabLayoutOurArrangement.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1", "string", getPackageName())));
@@ -315,6 +299,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // call notify data change
             ourArrangementViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbar.setSubtitle(arraySubTitleText[0]);
+            Log.d("ExecuteIntent","Subtitle Absprachen");
 
         }
 
@@ -346,28 +334,27 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // init show on tab zero arrangemet now
         showCommandFragmentTabZero = "show_arrangement_now";
 
-        // set variables for subtitle text string
-        currentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
-        olderArrangementSubtitleText = getResources().getString(getResources().getIdentifier("olderArrangementDateFrom", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
-        commentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("commentArrangementsubtitle", "string", getPackageName()));
-        showCommentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("showCommentArrangementsubtitle", "string", getPackageName()));
-        evaluateArrangementSubtitleText = getResources().getString(getResources().getIdentifier("evaluateArrangementsubtitle", "string", getPackageName()));
-        sketchArrangementSubtitleText = getResources().getString(getResources().getIdentifier("sketchArrangementsubtitle", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfSketchArrangement, "dd.MM.yyyy");
-        // init subtitle first time
-        toolbar.setSubtitle(currentArrangementSubtitleText);
 
+        for (int t=0; t<numberOfDifferentSubtitle; t++) {
+            arraySubTitleText[t] = "";
+        }
+
+        // enable setting subtitle for the first time
+        setSubtitleFirstTime = true;
+
+        // create help dialog in OurArrangement
         createHelpDialog();
 
     }
 
 
-
+    // help dialog
     void createHelpDialog () {
 
         Button tmpHelpButtonOurArrangement = (Button) findViewById(R.id.helpOurArrangementNow);
 
 
-        // add button listener
+        // add button listener to question mark in activity OurArrangement (toolbar)
         tmpHelpButtonOurArrangement.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -377,16 +364,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 LayoutInflater dialogInflater;
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(ActivityOurArrangement.this);
+
                 // Get the layout inflater
-
-
                 dialogInflater = (LayoutInflater) ActivityOurArrangement.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-
-                //LayoutInflater inflater = ActivityOurArrangement.this.getLayoutInflater();
+                // inflate and get the view
                 View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_our_arrangement, null);
-
-
 
                 // show intro for settings
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsIntro);
@@ -406,8 +389,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                     tmpdialogTextView.setText(tmpTxtEvaluate);
                 }
 
-
-
                 // show the settings for comment (like on/off-status, count comment...)
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsComment);
                 String tmpTxtComment, tmpTxtComment1, tmpTxtComment2, tmpTxtCommentSum;
@@ -420,7 +401,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                         if (prefs.getInt("commentOurArrangementMaxComment",0) == 1) {
                             tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountSingular);
-
                         }
                         else {
                             tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountPlural);
@@ -461,8 +441,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                     tmpdialogTextView.setText(tmpTxtComment);
                 }
 
-
-
                 // show the settings for old arrangement
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsOldArrangement);
                 if (prefs.getBoolean("showOldArrangements", false)) {
@@ -474,7 +452,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                     String tmpTxtOldArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsOldArrangementDisable);
                     tmpdialogTextView.setText(tmpTxtOldArrangement);
                 }
-
 
                 // show the settings for sketch arrangement
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsSketchArrangement);
@@ -488,17 +465,11 @@ public class ActivityOurArrangement extends AppCompatActivity {
                     tmpdialogTextView.setText(tmpTxtOldArrangement);
                 }
 
-
-
-
-
-
-
-                // Inflate and set the layout for the dialog
-                // Pass null as the parent view because its going in the dialog layout
+                // get string ressources
                 String tmpTextCloseDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementCloseDialog);
                 String tmpTextTitleDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementTitleDialog);
 
+                // build the dialog
                 builder.setView(dialogSettings)
 
                         // Add close button
@@ -507,12 +478,14 @@ public class ActivityOurArrangement extends AppCompatActivity {
                                 alertDialogSettings.cancel();
                             }
                         })
+
                         // add title
                         .setTitle(tmpTextTitleDialog);
 
-
+                // and create
                 alertDialogSettings = builder.create();
 
+                // and show the dialog
                 builder.show();
 
             }
@@ -521,8 +494,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
-
-    // set alarmmaneger for evaluation time
+    // set alarmmanager for evaluation time
     void setAlarmManagerOurArrangement () {
 
         PendingIntent pendingIntentOurArrangementEvaluate;
@@ -578,10 +550,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // set alarm
             manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurArrangementEvaluate);
-
-
-
-            Log.d("End A - Alarm:"," Alarm SET!!!!!!! ");
         }
         else { // delete alarm - it is out of time
 
@@ -591,10 +559,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
             pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(ActivityOurArrangement.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             // delete alarm
             manager.cancel(pendingIntentOurArrangementEvaluate);
-
-
-            Log.d("End A - Alarm:"," CANCELED!!!!!!! ");
-
         }
 
     }
@@ -652,41 +616,38 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
     }
 
+
     // setter for subtitle in OurArrangement toolbar
     public void setOurArrangementToolbarSubtitle (String subtitleText, String subtitleChoose) {
 
-       switch (subtitleChoose) {
+        switch (subtitleChoose) {
 
            case "sketch":
-               sketchArrangementSubtitleText = subtitleText;
+               arraySubTitleText[1] = subtitleText;
                break;
            case "old":
-               olderArrangementSubtitleText = subtitleText;
+               arraySubTitleText[2] = subtitleText;
                break;
            case "now":
-               currentArrangementSubtitleText = subtitleText;
+               arraySubTitleText[0] = subtitleText;
                break;
+            case "nowComment":
+                arraySubTitleText[3] = subtitleText;
+                break;
+            case "showComment":
+                arraySubTitleText[4] = subtitleText;
+                break;
+            case "evaluate":
+                arraySubTitleText[5] = subtitleText;
+                break;
 
-       }
+        }
 
-
-        Log.d("Activity","CH:"+subtitleChoose+" TXT:"+subtitleText);
-
-        //toolbar.setSubtitle(subtitleText);
-
-        /*
-        currentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
-        olderArrangementSubtitleText = getResources().getString(getResources().getIdentifier("olderArrangementDateFrom", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
-        commentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("commentArrangementsubtitle", "string", getPackageName()));
-        showCommentArrangementSubtitleText = getResources().getString(getResources().getIdentifier("showCommentArrangementsubtitle", "string", getPackageName()));
-        evaluateArrangementSubtitleText = getResources().getString(getResources().getIdentifier("evaluateArrangementsubtitle", "string", getPackageName()));
-        sketchArrangementSubtitleText = getResources().getString(getResources().getIdentifier("sketchArrangementsubtitle", "string", getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfSketchArrangement, "dd.MM.yyyy");
-        // init subtitle first time
-        toolbar.setSubtitle(currentArrangementSubtitleText);
-
-         */
-
-
+        // first time -> set initial subtitle
+        if (setSubtitleFirstTime) {
+            toolbar.setSubtitle(subtitleText);
+            setSubtitleFirstTime = false;
+        }
 
     }
 

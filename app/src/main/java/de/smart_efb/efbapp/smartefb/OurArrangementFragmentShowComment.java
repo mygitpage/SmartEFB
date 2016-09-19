@@ -46,7 +46,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
     int arrangementNumberInListView = 0;
 
 
-
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
@@ -73,7 +72,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
     }
 
 
-
     // inits the fragment for use
     private void initFragmentShowComment() {
 
@@ -92,8 +90,11 @@ public class OurArrangementFragmentShowComment extends Fragment {
         arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
         if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
 
-    }
+        // Set correct subtitle in Activity -> "Kommentare Absprache ..."
+        String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentShowCommentText", "string", fragmentShowCommentContext.getPackageName())) + " " + arrangementNumberInListView;
+        ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "showComment");
 
+    }
 
 
     public void displayActualCommentSet () {
@@ -120,8 +121,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
         // Assign adapter to ListView
         listView.setAdapter(showCommentCursorAdapter);
-
-
 
     }
 
