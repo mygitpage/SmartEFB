@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
                 case 1: // menue item "Absprachen"
                     if (showMainMenueElement[countElements]) { // is element aktiv?
 
-                        if (myDb.getCountAllNewEntryOurArrangementComment(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis())) > 0) {
+                        if (myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurArrangementComment(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), "current") > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), "sketch") > 0) {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                         } else {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];

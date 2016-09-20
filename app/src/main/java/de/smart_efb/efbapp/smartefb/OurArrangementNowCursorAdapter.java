@@ -52,7 +52,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         // init array for count comments
         numberCountForComments = context.getResources().getStringArray(R.array.ourArrangementCountComments);
 
-        commentLimitationBorder = ((ActivityOurArrangement)context).isCommentLimitationBorderSet();
+        commentLimitationBorder = ((ActivityOurArrangement)context).isCommentLimitationBorderSet("current");
 
     }
 
@@ -84,20 +84,14 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         String txtArrangementNumber = context.getResources().getString(R.string.showArrangementIntroText)+ " " + Integer.toString(cursor.getPosition()+1);
         numberOfArrangement.setText(txtArrangementNumber);
 
-        Log.d ("CurAdpter","bindView");
-
-
         // check if arrangement entry new?
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_NEW_ENTRY)) == 1) {
-
-            Log.d ("CurAdpter","if new entry!!");
 
             TextView newEntryOfArrangement = (TextView) view.findViewById(R.id.listArrangementNewArrangementText);
             String txtnewEntryOfArrangement = context.getResources().getString(R.string.newEntryText);
             newEntryOfArrangement.setText(txtnewEntryOfArrangement);
             myDb.deleteStatusNewEntryOurArrangement(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
 
-            Log.d ("CurAdpter","new entry reset!!!");
         }
 
         // put arrangement text

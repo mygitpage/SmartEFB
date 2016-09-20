@@ -126,7 +126,7 @@ public class OurArrangementFragmentNow extends Fragment {
         currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
 
         // ask methode isCommentLimitationBorderSet() in ActivityOurArrangement to limitation in comments? true-> yes, linitation; false-> no
-        commentLimitationBorder = ((ActivityOurArrangement) getActivity()).isCommentLimitationBorderSet();
+        commentLimitationBorder = ((ActivityOurArrangement) getActivity()).isCommentLimitationBorderSet("current");
 
 
     }

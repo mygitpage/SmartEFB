@@ -53,9 +53,7 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
         // init array for count comments
         numberCountForComments = context.getResources().getStringArray(R.array.ourArrangementCountComments);
 
-
-        // TODO Limitation for SKETCH ARRANGEMENT
-        commentLimitationBorder = ((ActivityOurArrangement)context).isCommentLimitationBorderSet();
+        commentLimitationBorder = ((ActivityOurArrangement)context).isCommentLimitationBorderSet("sketch");
 
     }
 
@@ -82,34 +80,23 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
             tmpTextViewSketchIntroText.setText(tmpTextIntroText);
         }
 
-
         // put arrangement number
         TextView tmpTextViewNumberOfArrangement = (TextView) view.findViewById(R.id.listArrangementSketchNumberText);
         String tmpTextSketchArrangementNumber = context.getResources().getString(R.string.showSketchArrangementNumberText)+ " " + Integer.toString(cursor.getPosition()+1);
         tmpTextViewNumberOfArrangement.setText(tmpTextSketchArrangementNumber);
-
-
-
 
         // check if arrangement entry new?
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_NEW_ENTRY)) == 1) {
             TextView newEntryOfSketchArrangement = (TextView) view.findViewById(R.id.listArrangementNewSketchText);
             String txtNewEntryOfSketchArrangement = context.getResources().getString(R.string.newEntryText);
             newEntryOfSketchArrangement.setText(txtNewEntryOfSketchArrangement);
-
-            //myDb.deleteStatusNewEntryOurArrangement(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
-
+            myDb.deleteStatusNewEntryOurArrangement(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
         }
 
         // put arrangement text
         TextView textViewArrangement = (TextView) view.findViewById(R.id.listTextSketchArrangement);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(title);
-
-
-
-
-
 
         // Show link for comment the sketch arrangements
         if (prefs.getBoolean("showCommentLinkSketchArrangements", false)) {
@@ -181,28 +168,6 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
 
         }
 
-        /*
-        // show genaerate links for evaluate or/and comment
-        if (prefs.getBoolean("showCommentLinkSketchArrangements", false) ) {
-
-            // create the comment link
-            TextView linkCommentAnSketchArrangement = (TextView) view.findViewById(R.id.linkCommentAnSketchArrangement);
-
-            if (showCommentsLinkTmp != null && showCommentSketchArrangementLinkTmp != null) {
-                linkCommentAnSketchArrangement.setText(TextUtils.concat(showCommentsLinkTmp, showCommentSketchArrangementLinkTmp));
-            }
-            else if (showEvaluateCommentLinkTmp == null && showCommentsLinkTmp != null && showCommentArrangementLinkTmp != null) {
-                linkCommentAnSketchArrangement.setText(TextUtils.concat(showCommentsLinkTmp, showCommentArrangementLinkTmp));
-            }
-            else {
-                linkCommentAnSketchArrangement.setText(showEvaluateCommentLinkTmp);
-            }
-
-            linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
-
-        }
-
-        */
 
     }
 

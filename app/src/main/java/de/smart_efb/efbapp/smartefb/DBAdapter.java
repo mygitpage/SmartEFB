@@ -208,19 +208,19 @@ public class DBAdapter extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase _db) {
 
         // Create table OurArrangementComment
-        //_db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_COMMENT);
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_COMMENT);
 
         // Create table OurArrangementSketchComment
         _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_SKETCH_COMMENT);
 
         // Create table OurArrangement
-        //_db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT);
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT);
 
         // Create table OurArrangementEvaluate
-        //_db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_EVALUATE);
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_EVALUATE);
 
         // Create table ChatMessage
-        //_db.execSQL(DATABASE_CREATE_SQL_CHAT_MESSAGE);
+        _db.execSQL(DATABASE_CREATE_SQL_CHAT_MESSAGE);
     }
 
 
@@ -229,19 +229,19 @@ public class DBAdapter extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase _db, int oldVersion, int newVersion) {
 
         // Destroy table OurArrangementComment
-        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT);
 
         // Destroy table OurArrangementSketchComment
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT);
 
         // Destroy table OurArrangement
-        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT);
 
         // Destroy table OurArrangementEvaluate
-        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE);
 
         // Destroy table ChatMessage
-        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_CHAT_MESSAGE);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_CHAT_MESSAGE);
 
         // Recreate new database:
         onCreate(_db);
@@ -494,22 +494,31 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    // Get the number of new rows in arrangement (new entrys) where date is current arrangement date -> no older one!
-    public int getCountNewEntryOurArrangement(long currentDateOfArrangement) {
+    // Get the number of new rows in arrangement (new entrys, current and sketch) where date is current arrangement date or sketch write time -> no older one!
+    public int getCountNewEntryOurArrangement(long currentDateOfArrangement, String currentSketch) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // new_entry = 1 (true) AND arrangement time is actual?
-        String where = OUR_ARRANGEMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_ARRANGEMENT_KEY_WRITE_TIME + "=" + currentDateOfArrangement;
+        String where;
+
+        switch (currentSketch) {
+            case "current": // new entry and arrangement time
+                where = OUR_ARRANGEMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_ARRANGEMENT_KEY_WRITE_TIME + "=" + currentDateOfArrangement;
+                break;
+            case "sketch": // new entry and sketch arrangement time
+                where = OUR_ARRANGEMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME + "=" + currentDateOfArrangement;
+                break;
+            default:
+                where = OUR_ARRANGEMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_ARRANGEMENT_KEY_WRITE_TIME + "=" + currentDateOfArrangement;
+                break;
+
+        }
 
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
         if (c != null) {
             c.moveToFirst();
-
-
-
         }
 
         // return how many
@@ -528,8 +537,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         ContentValues newValues = new ContentValues();
 
         newValues.put(OUR_ARRANGEMENT_KEY_NEW_ENTRY, 0);
-
-        Log.d ("DBAdapter","delNewEntry ID:"+rowId);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null) != 0;
@@ -755,7 +762,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    // Return all commens from the database for sketch arrangement with arrangement_id = id (table ourArrangementSketchComment)
+    // Return all comments from the database for sketch arrangement with arrangement_id = id (table ourArrangementSketchComment)
     // the result is sorted by DESC
     public Cursor getAllRowsOurArrangementSketchComment(int arrangementId) {
 
@@ -784,6 +791,8 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
+
+
         // new_entry = 1 (true)?
         String where = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME + "=" + currentDateOfArrangement;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS,
@@ -792,6 +801,9 @@ public class DBAdapter extends SQLiteOpenHelper {
         if (c != null) {
             c.moveToFirst();
         }
+
+        Log.d ("AllNewEntrySketch", "DRIN!!!!!! -> "+c.getCount());
+
 
         // return how many
         return c.getCount();
@@ -837,7 +849,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Comment ***************************************/
+    /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Sketch Comment ***************************************/
     /****************************************************************************************************************************/
 
 

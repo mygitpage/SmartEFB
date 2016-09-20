@@ -36,7 +36,7 @@ import java.util.Calendar;
  */
 public class ActivityOurArrangement extends AppCompatActivity {
 
-    // Max number of comments <-> Over this number you can write infinitely comments
+    // Max number of comments (current and sketch) <-> Over this number you can write infinitely comments
     final int commentLimitationBorder = 1000;
 
     // Number of different subtitles
@@ -606,10 +606,19 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
     // geter for border for comments
-    public boolean isCommentLimitationBorderSet () {
+    public boolean isCommentLimitationBorderSet (String currentSketch) {
 
-        if (prefs.getInt("commentOurArrangementMaxComment",0) < commentLimitationBorder) { // is there a border for comments
-            return true; // comments are limited!
+        switch (currentSketch) {
+            case "current":
+                if (prefs.getInt("commentOurArrangementMaxComment",0) < commentLimitationBorder) { // is there a border for comments
+                    return true; // comments are limited!
+                }
+                break;
+            case "sketch":
+                if (prefs.getInt("commentSketchOurArrangementMaxComment",0) < commentLimitationBorder) { // is there a border for sketch comments
+                    return true; // sketch comments are limited!
+                }
+                break;
         }
 
         return  false; // write infinitely comments!
