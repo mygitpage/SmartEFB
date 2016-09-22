@@ -40,7 +40,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     final int commentLimitationBorder = 1000;
 
     // Number of different subtitles
-    final int numberOfDifferentSubtitle = 6;
+    final int numberOfDifferentSubtitle = 8;
 
     // Set subtitle first time
     Boolean setSubtitleFirstTime = false;
@@ -73,8 +73,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // Strings for subtitle ("Aktuelle vom...", "Älter als...", "Absprache kommentieren", "Kommentare zeigen", "Absprache bewerten", "Entwuerfe Absprachen" )
     String [] arraySubTitleText = new String[numberOfDifferentSubtitle];
 
-    // what to show in tab zero (like show_comment_for_arrangement, comment_an_arrangement, show_arrangement_now)
+    // what to show in tab zero (like show_comment_for_arrangement, comment_an_arrangement, show_arrangement_now, evaluate_an_arrangement)
     String showCommandFragmentTabZero = "";
+    // what to show in tab one (like show_sketch_arrangement, comment_an_sketch_arrangement, show_comment_for_sketch_arrangement)
+    String showCommandFragmentTabOne = "";
 
     // arrangement db-id - for comment or show comment
     int arrangementDbIdFromLink = 0;
@@ -126,7 +128,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                 // Change the subtitle of the activity
                 switch (tab.getPosition()) {
-                    case 0:
+                    case 0: // title for tab zero
                         switch (showCommandFragmentTabZero) {
                             case "show_arrangement_now":
                                 tmpSubtitleText = arraySubTitleText[0];
@@ -142,10 +144,32 @@ public class ActivityOurArrangement extends AppCompatActivity {
                                 break;
                         }
                         break;
-                    case 1:
-                        tmpSubtitleText = arraySubTitleText[1];
+
+
+
+                    case 1: // title for tab one
+
+                        switch (showCommandFragmentTabOne) {
+                            case "show_sketch_arrangement":
+                                tmpSubtitleText = arraySubTitleText[1];
+                                break;
+                            case "comment_an_sketch_arrangement":
+                                tmpSubtitleText = arraySubTitleText[6];
+                                break;
+                            case "show_comment_for_sketch_arrangement":
+                                tmpSubtitleText = arraySubTitleText[7];
+                                break;
+                        }
                         break;
-                    case 2:
+
+
+
+
+
+
+
+
+                    case 2: // title for tab two
                         tmpSubtitleText = arraySubTitleText[2];
                         break;
                     default:
@@ -246,7 +270,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // set correct subtitle in toolbar in tab zero
             toolbar.setSubtitle(arraySubTitleText[4]);
-            Log.d("ExecuteIntent","Subtitle Kommentieren");
+
 
 
         } else if (command.equals("comment_an_arrangement")) { // Show fragment comment arrangement
@@ -265,7 +289,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // set correct subtitle in toolbar in tab zero
             toolbar.setSubtitle(arraySubTitleText[3]);
-            Log.d("ExecuteIntent","Subtitle show comment");
+
 
 
         } else if (command.equals("evaluate_an_arrangement")) { // Show evaluate a arrangement
@@ -284,9 +308,59 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // set correct subtitle in toolbar in tab zero
             toolbar.setSubtitle(arraySubTitleText[5]);
-            Log.d("ExecuteIntent","Subtitle Evaluation");
 
-        } else { // Show fragment arrangement now
+
+        } else if (command.equals("comment_an_sketch_arrangement")) { // Comment sketch arrangement -> TAB ONE
+
+            //set fragment in tab zero to evaluate
+            OurArrangementViewPagerAdapter.setFragmentTabOne("comment_an_sketch_arrangement");
+
+
+
+
+            // set correct tab one titel
+            tabLayoutOurArrangement.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_2a", "string", getPackageName())));
+
+            // set command show variable
+            showCommandFragmentTabOne = "comment_an_sketch_arrangement";
+
+            // call notify data change
+            ourArrangementViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbar.setSubtitle(arraySubTitleText[6]);
+            Log.d("ExecuteIntent","Subtitle Comment Sketch Arrangement");
+
+        } else if (command.equals("show_sketch_arrangement")) { // Show sketch Arrangments -> TAB ONE
+
+            //set fragment in tab zero to evaluate
+            OurArrangementViewPagerAdapter.setFragmentTabOne("show_sketch_arrangement");
+
+
+
+
+            // set correct tab one titel
+            tabLayoutOurArrangement.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_2", "string", getPackageName())));
+
+            // set command show variable
+            showCommandFragmentTabOne = "show_sketch_arrangement";
+
+            // call notify data change
+            ourArrangementViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbar.setSubtitle(arraySubTitleText[1]);
+            Log.d("ExecuteIntent","Subtitle SHOW Sketch Arrangement");
+
+        }
+
+
+
+
+
+
+
+        else { // Show fragment arrangement now
 
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("show_arrangement_now");
@@ -302,7 +376,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // set correct subtitle in toolbar in tab zero
             toolbar.setSubtitle(arraySubTitleText[0]);
-            Log.d("ExecuteIntent","Subtitle Absprachen");
+
 
         }
 
@@ -333,6 +407,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         // init show on tab zero arrangemet now
         showCommandFragmentTabZero = "show_arrangement_now";
+        // init show on tab one sketch arrangemet
+        showCommandFragmentTabOne = "show_sketch_arrangement";
 
 
         for (int t=0; t<numberOfDifferentSubtitle; t++) {
@@ -648,6 +724,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 break;
             case "evaluate":
                 arraySubTitleText[5] = subtitleText;
+                break;
+            case "sketchComment":
+                arraySubTitleText[6] = subtitleText;
+                break;
+            case "showSketchComment":
+                arraySubTitleText[7] = subtitleText;
                 break;
 
         }

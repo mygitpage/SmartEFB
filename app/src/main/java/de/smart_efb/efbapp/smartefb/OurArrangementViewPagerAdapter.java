@@ -24,11 +24,15 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
     // calling context
     Context pagerAdapterContext = null;
 
-    // command to choose a fragment in getItem
-    static int fragmentChooser;
+    // command to choose a fragment for zab zero in getItem
+    static int fragmentChooserTabZero;
+
+    // command to choose a fragment for zab one in getItem
+    static int fragmentChooserTabOne;
+
 
     // the fragments
-    Fragment fragArraNow, fragArraNowComment, fragArraOld, fragArraShowComment, fragArraEvaluate, fragArraSketch;
+    Fragment fragArraNow, fragArraNowComment, fragArraOld, fragArraShowComment, fragArraEvaluate, fragArraSketch, fragArraSketchComment, fragArraShowSketchComment;
 
     // Reference to fragment manager
     FragmentManager ourArrangementFragmentManager;
@@ -45,7 +49,8 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
         ourArrangementTabTitleNames = pagerAdapterContext.getResources().getStringArray(R.array.ourArrangementTabTitle);
 
-        fragmentChooser = 0;
+        fragmentChooserTabZero = 0;
+        fragmentChooserTabOne = 0;
 
         fragArraNow = new OurArrangementFragmentNow();
         fragArraNowComment = new OurArrangementFragmentNowComment();
@@ -53,6 +58,9 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
         fragArraShowComment = new OurArrangementFragmentShowComment();
         fragArraEvaluate = new OurArrangementFragmentEvaluate();
         fragArraSketch = new OurArrangementFragmentSketch();
+
+        fragArraSketchComment = new OurArrangementFragmentSketchComment();
+        fragArraShowSketchComment = new OurArrangementFragmentSketch(); // TODO Fragment anpassen
 
     }
 
@@ -65,7 +73,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
             case 0:
 
-                switch (fragmentChooser) {
+                switch (fragmentChooserTabZero) {
                     case 0:
                         return fragArraNow;
 
@@ -80,7 +88,18 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
                 }
 
             case 1:
-                return fragArraSketch;
+
+                switch (fragmentChooserTabOne) {
+                    case 0:
+                        return fragArraSketch;
+
+                    case 1:
+                        return fragArraSketchComment;
+
+                    case 2:
+                        return fragArraShowSketchComment;
+
+                }
 
             case 2:
                 return fragArraOld;
@@ -125,27 +144,53 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
         switch (subFragmentCommand) {
 
             case "show_arrangement_now": // set fragment on tab zero to OurArrangementFragmentNow
-                fragmentChooser = 0;
+                fragmentChooserTabZero = 0;
                 break;
 
             case "comment_an_arrangement": // set fragment on tab zero to OurArrangementFragmentNowComment
-                fragmentChooser = 1;
+                fragmentChooserTabZero = 1;
                 break;
 
             case "show_comment_for_arrangement": // set fragment on tab zero to OurArrangementFragmentShowComment
-                fragmentChooser = 2;
+                fragmentChooserTabZero = 2;
                 break;
 
             case "evaluate_an_arrangement": // set fragment on tab zero to OurArrangementFragmentEvaluate
-                fragmentChooser = 3;
+                fragmentChooserTabZero = 3;
                 break;
 
 
         }
 
+    }
 
 
+
+    // set variable for switching between fragments for tab 1
+    public static void setFragmentTabOne(String subFragmentCommand) {
+
+        switch (subFragmentCommand) {
+
+            case "show_sketch_arrangement": // set fragment on tab one to OurArrangementFragmentSketch
+                fragmentChooserTabOne = 0;
+                break;
+
+            case "comment_an_sketch_arrangement": // set fragment on tab one to OurArrangementFragmentSketchComment
+                fragmentChooserTabOne = 1;
+                break;
+
+            case "show_comment_for_sketch_arrangement": // set fragment on tab one to OurArrangementFragmentShowSketchComment
+                fragmentChooserTabOne = 2;
+                break;
+
+
+
+
+        }
 
     }
+
+
+
 
 }

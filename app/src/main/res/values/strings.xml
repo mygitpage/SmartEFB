@@ -69,13 +69,6 @@
 
 
 
-    <!-- fragment actual arrangements -->
-
-    <string name="ourArrangementIntroText">Die aktuellen Absprachen vom</string>
-
-    <!-- End fragment actual arrangements -->
-
-
 
 
     <!-- fragment show old arrangements -->
@@ -90,8 +83,10 @@
 
 
 
-    <!-- fragment show now arrangements -->
+    <!-- fragment show current arrangements -->
     <string name="ourArrangementNowArrangementNothingThere">Es sind keine aktuellen Absprachen vorhanden!</string>
+
+    <string name="ourArrangementIntroText">Die aktuellen Absprachen vom</string>
 
     <!-- End show now arrangements -->
 
@@ -111,6 +106,18 @@
     <string name="subtitleFragmentNowCommentText">Kommentieren Absprache</string>
     <string name="subtitleFragmentShowCommentText">Kommentare Absprache</string>
     <string name="subtitleFragmentEvaluateArrangementText">Bewerten Absprache</string>
+
+
+
+
+
+    <string name="subtitleFragmentSketchCommentText">Entwurf kommentieren</string>
+
+
+
+
+
+
 
     <!-- End subtitle -->
 
@@ -189,6 +196,22 @@
 
 
 
+    <!-- fragment comment sketch arrangement -->
+    <string name="showSketchArrangementIntroText">Entwurf</string>
+
+    <string name="sketchArrangementCommentIntro">Bitte kommentieren Sie Entwurf</string>
+
+    <string name="commentSketchArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
+
+
+    <string name="ourArrangementBackLinkToSketchArrangement">Zurück zu allen Entwürfen</string>
+
+
+
+    <!-- End show now arrangements -->
+
+
+
 
     <!-- Strings for tab title in activity our arrangement -->
     <string name="ourArrangementTabTitle_1">Aktuell</string>
@@ -196,6 +219,8 @@
     <string name="ourArrangementTabTitle_1b">Kommentare</string>
     <string name="ourArrangementTabTitle_1c">Bewerten</string>
     <string name="ourArrangementTabTitle_2">Entwürfe</string>
+    <string name="ourArrangementTabTitle_2a">Kommentieren</string>
+    <string name="ourArrangementTabTitle_2b">Kommentare</string>
     <string name="ourArrangementTabTitle_3">Ältere Absprachen</string>
     <!-- End tab title -->
 

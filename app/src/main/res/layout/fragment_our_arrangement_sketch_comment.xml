@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+
+    <!--
+    android:scrollbars = "vertical"
+    android:scrollbarStyle="insideInset">
+    -->
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="left"
+        android:background="@color/body_background"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+
+
+            <TextView
+                android:id="@+id/sketchArrangementCommentNumberIntro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/arrangementShowCommentBackLinkNow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:textColor="@color/text_color"
+                android:textColorLink="@color/colorPrimary"
+                android:gravity="right"/>
+
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/choosenSketchArrangement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"/>
+
+
+
+        <TextView
+            android:id="@+id/sketchArrangementCommentIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/inputSketchArrangementComment"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:textColor="@color/text_color_white"
+            android:hint="@string/commentSketchArrangementTextFieldHintText"
+            android:gravity="left|top"
+            android:background="@color/inputfield_background"
+            android:layout_margin="10dp"
+            android:textColorHint="@color/text_color_white"
+            android:inputType="textNoSuggestions|text|textMultiLine"
+            android:padding="5dp"/>
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/buttonSendSketchArrangementComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_btn_join"
+                android:textColor="@color/white"
+                android:text="@string/btnSendArrangementComment"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+
+            <Button
+                android:id="@+id/buttonAbortSketchComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_btn_join"
+                android:textColor="@color/white"
+                android:text="@string/btnAbortComment"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="5dp"
+                android:padding="5dp"/>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="left"
+            android:layout_gravity="left"
+            android:id="@+id/commentSketchHistoryContainer"
+            android:visibility="visible">
+
+
+
+            <TextView
+                android:id="@+id/commentSketchHistoryIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"
+                android:textStyle="bold" />
+
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_vertical|left"
+                android:id="@+id/commentSketchHolder"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
