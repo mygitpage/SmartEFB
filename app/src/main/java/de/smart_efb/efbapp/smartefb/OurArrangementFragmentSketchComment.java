@@ -46,10 +46,10 @@ public class OurArrangementFragmentSketchComment extends Fragment {
     int arrangementDbIdToComment = 0;
 
     // arrangement number in list view
-    int arrangementNumberInListView = 0;
+    int sketchArrangementNumberInListView = 0;
 
-    // cursor for the choosen arrangement
-    Cursor cursorChoosenArrangement;
+    // cursor for the choosen sketch arrangement
+    Cursor cursorChoosenSketchArrangement;
 
     // cursor for all comments to the choosen arrangement
     Cursor cursorArrangementAllComments;
@@ -91,30 +91,38 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         prefs = fragmentSketchCommentContext.getSharedPreferences("smartEfbSettings", fragmentSketchCommentContext.MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
-        /*
+
         // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
         arrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
         if (arrangementDbIdToComment < 0) arrangementDbIdToComment = 0; // check borders
         // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
-        arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
-        if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
-        */
+        sketchArrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
+        if (sketchArrangementNumberInListView < 1) sketchArrangementNumberInListView = 1; // check borders
+
 
 
         // get choosen arrangement
-        //cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToComment);
+        cursorChoosenSketchArrangement = myDb.getRowSketchOurArrangement(arrangementDbIdToComment);
 
         // get all comments for choosen arrangement
         //cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementDbIdToComment);
 
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
-        String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentSketchCommentText", "string", fragmentSketchCommentContext.getPackageName())) + " " + arrangementNumberInListView;
+
+
+        String tmpSubtitle = String.format(getResources().getString(getResources().getIdentifier("subtitleFragmentSketchCommentText", "string", fragmentSketchCommentContext.getPackageName())), sketchArrangementNumberInListView);
+
+
+
+
+        //String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentSketchCommentText", "string", fragmentSketchCommentContext.getPackageName())) + " " + sketchArrangementNumberInListView;
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "sketchComment");
 
         // build the view
         //textview for the comment intro
         TextView textCommentNumberIntro = (TextView) viewFragmentSketchComment.findViewById(R.id.sketchArrangementCommentNumberIntro);
-        textCommentNumberIntro.setText(this.getResources().getString(R.string.showSketchArrangementIntroText));
+        String tmpCommentNumberIntro = this.getResources().getString(R.string.showSketchArrangementIntroText) + " " + sketchArrangementNumberInListView;
+        textCommentNumberIntro.setText(tmpCommentNumberIntro);
 
 
         // generate back link "zurueck zu allen Absprachen"
@@ -125,18 +133,18 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 .appendQueryParameter("arr_num", "0")
                 .appendQueryParameter("com", "show_sketch_arrangement");
         TextView linkShowCommentBackLink = (TextView) viewFragmentSketchComment.findViewById(R.id.arrangementShowCommentBackLinkNow);
-        linkShowCommentBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+fragmentSketchCommentContext.getResources().getString(fragmentSketchCommentContext.getResources().getIdentifier("ourArrangementBackLinkToArrangement", "string", fragmentSketchCommentContext.getPackageName()))+"</a>"));
+        linkShowCommentBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+fragmentSketchCommentContext.getResources().getString(fragmentSketchCommentContext.getResources().getIdentifier("ourArrangementBackLinkToSketchArrangement", "string", fragmentSketchCommentContext.getPackageName()))+"</a>"));
         linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
 
 
-        // textview for the arrangement
+        // textview for the sketch arrangement
         TextView textViewArrangement = (TextView) viewFragmentSketchComment.findViewById(R.id.choosenSketchArrangement);
-        //String arrangement = cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
-        //textViewArrangement.setText(arrangement);
+        String arrangement = cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
+        textViewArrangement.setText(arrangement);
 
         //textview for the comment intro
         TextView textCommentIntro = (TextView) viewFragmentSketchComment.findViewById(R.id.sketchArrangementCommentIntro);
-        textCommentIntro.setText(this.getResources().getString(R.string.sketchArrangementCommentIntro));    //+ " " + arrangementNumberInListView);
+        textCommentIntro.setText(this.getResources().getString(R.string.sketchArrangementCommentIntro) + " " + sketchArrangementNumberInListView);
 
 
         // textview intro for the history of comments

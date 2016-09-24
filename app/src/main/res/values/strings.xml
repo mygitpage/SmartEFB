@@ -111,7 +111,7 @@
 
 
 
-    <string name="subtitleFragmentSketchCommentText">Entwurf kommentieren</string>
+    <string name="subtitleFragmentSketchCommentText">Entwurf %1$d kommentieren</string>
 
 
 

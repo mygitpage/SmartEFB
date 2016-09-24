@@ -493,6 +493,23 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+    // Get a specific row from the sketch arrangement (by rowId)
+    public Cursor getRowSketchOurArrangement(int rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=1 AND " + KEY_ROWID + "=" + rowId;
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+    }
+
+
 
     // Get the number of new rows in arrangement (new entrys, current and sketch) where date is current arrangement date or sketch write time -> no older one!
     public int getCountNewEntryOurArrangement(long currentDateOfArrangement, String currentSketch) {
