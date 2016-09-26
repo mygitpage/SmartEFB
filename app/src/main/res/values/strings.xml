@@ -103,8 +103,8 @@
     <string name="subtitleNothingThere">Keine Absprachen vorhanden</string>
     <string name="subtitleNotAvailable">Funktion nicht möglich</string>
 
-    <string name="subtitleFragmentNowCommentText">Kommentieren Absprache</string>
-    <string name="subtitleFragmentShowCommentText">Kommentare Absprache</string>
+    <string name="subtitleFragmentNowCommentText">Einschätzen Absprache</string>
+    <string name="subtitleFragmentShowCommentText">Einschätzungen Absprache</string>
     <string name="subtitleFragmentEvaluateArrangementText">Bewerten Absprache</string>
 
 
@@ -199,9 +199,27 @@
     <!-- fragment comment sketch arrangement -->
     <string name="showSketchArrangementIntroText">Entwurf</string>
 
-    <string name="sketchArrangementCommentIntro">Bitte kommentieren Sie Entwurf</string>
+
 
     <string name="commentSketchArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
+
+
+
+    <string name="introStructQuestionForCommentSketchArrangement">Wie schätzen Sie Ihre Zustimmung zu dem Entwurf ein?</string>
+
+    <string name="errorStructQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihre Eingabe!</string>
+
+
+    <string name="introFreeQuestionForCommentSketchArrangement">Bitte erläutern Sie Ihre obige Bewertung</string>
+
+    <string name="errorFreeQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihren Text zur obigen Bewertung!</string>
+
+    <string name="commentFreeQuestionSketchArrangementTextFieldHintText">Bitte erläutern Sie hier Ihre Bewertung.</string>
+
+    <string name="buttonSendSketchArrangementComment">Einschätzung senden</string>
+
+    <string name="evaluateSuggestionRejection">Keine</string>
+    <string name="evaluateSuggestionApproval">Völlig</string>
 
 
     <string name="ourArrangementBackLinkToSketchArrangement">Zurück zu allen Entwürfen</string>

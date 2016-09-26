@@ -64,21 +64,126 @@
 
 
 
+
         <TextView
-            android:id="@+id/sketchArrangementCommentIntro"
-            android:layout_width="match_parent"
+            android:id="@+id/introStructQuestionForCommentSketchArrangement"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/text_color"
             android:gravity="left"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:text="@string/introStructQuestionForCommentSketchArrangement"
+            android:paddingBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/errorStructQuestionForCommentSketchArrangement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="@string/errorStructQuestionForCommentSketchArrangement"
+            android:paddingBottom="5dp"/>
+
+
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/radioGroupStructQuestionForCommentSketchArrangement"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@color/inputfield_background">
+
+            <RadioButton android:id="@+id/structQuestionOne_Answer1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/evaluateSuggestionApproval"
+                android:textColor="@color/text_color_white"
+                android:textStyle="bold"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/structQuestionOne_Answer2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/structQuestionOne_Answer3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/structQuestionOne_Answer4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/structQuestionOne_Answer5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateSuggestionRejection"
+                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/radioButtonStyleEvaluateArrangement"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_weight="0.2" />
+
+
+        </RadioGroup>
+
+
+
+
+
+
+        <TextView
+            android:id="@+id/introFreeQuestionForCommentSketchArrangement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:textStyle="bold"
+            android:text="@string/introFreeQuestionForCommentSketchArrangement"
+            android:paddingTop="20dp"
+            android:paddingBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/errorFreeQuestionForCommentSketchArrangement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="@string/errorFreeQuestionForCommentSketchArrangement"
+            android:paddingBottom="5dp"/>
+
+
+
 
         <EditText
             android:id="@+id/inputSketchArrangementComment"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:textColor="@color/text_color_white"
-            android:hint="@string/commentSketchArrangementTextFieldHintText"
+            android:hint="@string/commentFreeQuestionSketchArrangementTextFieldHintText"
             android:gravity="left|top"
             android:background="@color/inputfield_background"
             android:layout_margin="10dp"
@@ -101,7 +206,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/bg_btn_join"
                 android:textColor="@color/white"
-                android:text="@string/btnSendArrangementComment"
+                android:text="@string/buttonSendSketchArrangementComment"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="5dp"
                 android:padding="5dp"/>

@@ -142,9 +142,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         String arrangement = cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(arrangement);
 
-        //textview for the comment intro
-        TextView textCommentIntro = (TextView) viewFragmentSketchComment.findViewById(R.id.sketchArrangementCommentIntro);
-        textCommentIntro.setText(this.getResources().getString(R.string.sketchArrangementCommentIntro) + " " + sketchArrangementNumberInListView);
+
 
 
         // textview intro for the history of comments
