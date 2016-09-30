@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +55,12 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
     // cursor for all comments to the choosen arrangement
     Cursor cursorArrangementAllComments;
+
+    //number of radio buttons in struct question
+    static final int numberOfRadioButtonsStructQuestion = 5;
+
+    // result of struct question (1-5)
+    int structQuestionResultSketchComment = 0;
 
 
     @Override
@@ -145,6 +153,35 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
 
 
+        // set onClickListener for radio button in radio group question 1-4
+        String tmpRessourceName ="";
+        RadioButton tmpRadioButtonQuestion;
+
+
+        for (int numberOfButtons=0; numberOfButtons < numberOfRadioButtonsStructQuestion; numberOfButtons++) {
+            tmpRessourceName ="structQuestionOne_Answer" + (numberOfButtons+1);
+            try {
+                int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", fragmentSketchCommentContext.getPackageName());
+
+                tmpRadioButtonQuestion = (RadioButton) viewFragmentSketchComment.findViewById(resourceId);
+                tmpRadioButtonQuestion.setOnClickListener(new sketchCommentRadioButtonListener(numberOfButtons));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+        // textview for max comments and count comments
+        TextView textViewMaxAndCount = (TextView) viewFragmentSketchComment.findViewById(R.id.infoSketchCommentMaxAndCount);
+        String tmpInfoTextSketchCommentMaxAndCount = String.format(this.getResources().getString(R.string.infoTextSketchCommentMaxAndCount), prefs.getInt("commentSketchOurArrangementMaxComment", 0),prefs.getInt("commentSketchOurArrangementCountComment", 0));
+        textViewMaxAndCount.setText(tmpInfoTextSketchCommentMaxAndCount);
+
+
+
+
+
         // textview intro for the history of comments
         /*
         TextView textCommentHistoryIntro = (TextView) viewFragmentSketchComment.findViewById(R.id.commentHistoryIntro);
@@ -159,8 +196,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             comentHistoryLinearLayoutContainer.setVisibility(View.INVISIBLE);
         }
         */
-        // comment textfield -> insert new comment
-        final EditText txtInputSketchArrangementComment = (EditText) viewFragmentSketchComment.findViewById(R.id.inputSketchArrangementComment);
+
         // button send comment
         Button buttonSendSketchArrangementComment = (Button) viewFragmentSketchComment.findViewById(R.id.buttonSendSketchArrangementComment);
 
@@ -170,20 +206,49 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             public void onClick(View v) {
 
 
-                if (txtInputSketchArrangementComment.getText().toString().length() > 1) {
+                Boolean sketchCommentNoError = true;
+                TextView tmpErrorTextView;
+
+                // check result struct question
+                tmpErrorTextView = (TextView) viewFragmentSketchComment.findViewById(R.id.errorStructQuestionForCommentSketchArrangement);
+                if ( structQuestionResultSketchComment == 0 && tmpErrorTextView != null) {
+                    sketchCommentNoError = false;
+                    tmpErrorTextView.setVisibility(View.VISIBLE);
+
+
+                    Log.d("Error Struct Question","Result: "+structQuestionResultSketchComment);
+
+                } else if (tmpErrorTextView != null) {
+                    tmpErrorTextView.setVisibility(View.GONE);
+
+                    Log.d("NOError Struct Question","Result: "+structQuestionResultSketchComment);
+                }
+
+                // comment textfield -> insert new comment
+                tmpErrorTextView = (TextView) viewFragmentSketchComment.findViewById(R.id.errorFreeQuestionForCommentSketchArrangement);
+                EditText txtInputSketchArrangementComment = (EditText) viewFragmentSketchComment.findViewById(R.id.inputSketchArrangementComment);
+                if (txtInputSketchArrangementComment.getText().toString().length() < 3 && tmpErrorTextView != null) {
+                    sketchCommentNoError = false;
+                    tmpErrorTextView.setVisibility(View.VISIBLE);
+                } else if (tmpErrorTextView != null) {
+                    tmpErrorTextView.setVisibility(View.GONE);
+                }
+
+
+
+                if (sketchCommentNoError) {
 
                     // insert comment in DB
                     //long newID = myDb.insertRowOurArrangementComment(txtInputArrangementComment.getText().toString(), prefs.getString("userName", "John Doe"), System.currentTimeMillis() , arrangementDbIdToComment, true, prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()));
 
                     // Toast "Comment sucsessfull send"
-                    Toast.makeText(fragmentSketchCommentContext, fragmentSketchCommentContext.getResources().getString(R.string.commentSuccsesfulySend), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(fragmentSketchCommentContext, fragmentSketchCommentContext.getResources().getString(R.string.sketchCommentSuccsesfulySend), Toast.LENGTH_SHORT).show();
 
-                    // increment comment count
-                    /*
-                    int countCommentSum = prefs.getInt("commentOurArrangementCountComment",0) + 1;
-                    prefsEditor.putInt("commentOurArrangementCountComment", countCommentSum);
+                    // increment sketch comment count
+                    int countSketchCommentSum = prefs.getInt("commentSketchOurArrangementCountComment",0) + 1;
+                    prefsEditor.putInt("commentSketchOurArrangementCountComment", countSketchCommentSum);
                     prefsEditor.commit();
-                    */
+
                     // build intent to get back to OurArrangementFragmentNow
                     Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -328,5 +393,62 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         commentHolderLayout.addView(btnBack_inner_layout);
 
     }
+
+
+
+
+
+    //
+    // onClickListener for radioButtons in fragment layout evaluate
+    //
+    public class sketchCommentRadioButtonListener implements View.OnClickListener {
+
+        int radioButtonNumber;
+
+        public sketchCommentRadioButtonListener (int number) {
+
+            this.radioButtonNumber = number;
+
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            int tmpResultQuestion;
+
+            // check button number and get result
+            switch (radioButtonNumber) {
+
+                case 0: // ever
+                    tmpResultQuestion = 1;
+                    break;
+                case 1:
+                    tmpResultQuestion = 2;
+                    break;
+                case 2:
+                    tmpResultQuestion = 3;
+                    break;
+                case 3:
+                    tmpResultQuestion = 4;
+                    break;
+                case 4: // radioButton never
+                    tmpResultQuestion = 5;
+                    break;
+                default:
+                    tmpResultQuestion = 0;
+                    break;
+            }
+
+            structQuestionResultSketchComment = tmpResultQuestion;
+
+        }
+
+    }
+
+
+
+
+
+
 
 }

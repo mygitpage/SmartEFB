@@ -301,13 +301,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                         intent.putExtra("arr_num", (int) nextArrangementListPositionToEvaluate);
                         intent.putExtra("eval_next", true );
 
-                        Log.d("Next Evaluation","DB-ID:"+nextArrangementDbIdToEvaluate);
-                        Log.d("Next Evaluation","List-Num:"+nextArrangementListPositionToEvaluate);
-
-
                         getActivity().startActivity(intent);
-
-
 
                     } else {
                         // no arrangement to evaluate anymore! -> go back to OurArrangementNowFragment

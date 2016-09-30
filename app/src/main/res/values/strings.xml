@@ -207,12 +207,12 @@
 
     <string name="introStructQuestionForCommentSketchArrangement">Wie schätzen Sie Ihre Zustimmung zu dem Entwurf ein?</string>
 
-    <string name="errorStructQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihre Eingabe!</string>
+    <string name="errorStructQuestionForCommentSketchArrangement">Bitte wählen Sie eine Einschätzung!</string>
 
 
     <string name="introFreeQuestionForCommentSketchArrangement">Bitte erläutern Sie Ihre obige Bewertung</string>
 
-    <string name="errorFreeQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihren Text zur obigen Bewertung!</string>
+    <string name="errorFreeQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihren Text zur obigen Bewertung! Er ist zu kurz!</string>
 
     <string name="commentFreeQuestionSketchArrangementTextFieldHintText">Bitte erläutern Sie hier Ihre Bewertung.</string>
 
@@ -223,6 +223,12 @@
 
 
     <string name="ourArrangementBackLinkToSketchArrangement">Zurück zu allen Entwürfen</string>
+
+    <string name="sketchCommentSuccsesfulySend">Einschätzung erfolgreich gesendet</string>
+
+
+    <string name="infoTextSketchCommentMaxAndCount">Maximale Anzahl Einschätzungen: %1$d\nGesendete Einschätzungen: %2$d</string>
+
 
 
 
@@ -253,6 +259,8 @@
     <string name="ourArrangementSketchIntroText">%1$s hat am %2$s folgende Entwürfe für Absprachen eingestellt.</string>
 
     <string name="showSketchArrangementNumberText">Entwurf Absprache</string>
+
+
 
 
 
