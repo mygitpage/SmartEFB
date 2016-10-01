@@ -135,4 +135,21 @@
         <item>10++ Kommentare</item>
     </string-array>
 
+
+    <!-- Our Arrangement count comments -->
+    <string-array name="ourArrangementCountAssessments">
+        <item>Keine Einschätzungen</item>
+        <item>1 Einschätzung</item>
+        <item>2 Einschätzungen</item>
+        <item>3 Einschätzungen</item>
+        <item>4 Einschätzungen</item>
+        <item>5 Einschätzungen</item>
+        <item>6 Einschätzungen</item>
+        <item>7 Einschätzungen</item>
+        <item>8 Einschätzungen</item>
+        <item>9 Einschätzungen</item>
+        <item>10 Einschätzungen</item>
+        <item>10++ Einschätzungen</item>
+    </string-array>
+
 </resources>

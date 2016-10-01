@@ -32,7 +32,7 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
     long actualArrangementDate = 0;
 
     // number for count comments for arrangement (12 numbers!)
-    private String[] numberCountForComments = new String [12];
+    private String[] numberCountForAssessments = new String [12];
 
     //limitation in count comments true-> yes, there is a border; no, there is no border, wirte infitisly comments
     Boolean commentLimitationBorder;
@@ -51,7 +51,7 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
         myDb = new DBAdapter(context);
 
         // init array for count comments
-        numberCountForComments = context.getResources().getStringArray(R.array.ourArrangementCountComments);
+        numberCountForAssessments = context.getResources().getStringArray(R.array.ourArrangementCountAssessments);
 
         commentLimitationBorder = ((ActivityOurArrangement)context).isCommentLimitationBorderSet("sketch");
 
@@ -104,14 +104,14 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
             // get from DB  all comments for choosen sketch arrangement (getCount)
             Cursor cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
             // generate the number of comments to show
-            String tmpCountComments;
+            String tmpCountAssessments;
             int tmpIntCountComments = cursorSketchArrangementAllComments.getCount();
             if (tmpIntCountComments > 10) {
-                tmpCountComments = numberCountForComments[11];
+                tmpCountAssessments = numberCountForAssessments[11];
 
             }
             else {
-                tmpCountComments = numberCountForComments[cursorSketchArrangementAllComments.getCount()];
+                tmpCountAssessments = numberCountForAssessments[cursorSketchArrangementAllComments.getCount()];
             }
 
             // check comments for new entry, the cursor is sorted DESC, so first element is newest!!! new entry is markt by == 1
@@ -142,20 +142,20 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
 
             if (prefs.getInt("commentSketchOurArrangementCountComment",0) < prefs.getInt("commentSketchOurArrangementMaxComment",0) || !commentLimitationBorder) {
 
-                showCommentSketchArrangementLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
+                showCommentSketchArrangementLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementAssessmentsString", "string", context.getPackageName()))+"</a>");
 
             }
             else {
-                showCommentSketchArrangementLinkTmp = Html.fromHtml(" ("+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+")");
+                showCommentSketchArrangementLinkTmp = Html.fromHtml(" ("+context.getResources().getString(context.getResources().getIdentifier("ourArrangementAssessmentsString", "string", context.getPackageName()))+")");
 
             }
 
 
             if (tmpIntCountComments == 0) {
-                showCommentsLinkTmp = Html.fromHtml(tmpCountComments + " &middot;");
+                showCommentsLinkTmp = Html.fromHtml(tmpCountAssessments + " &middot;");
             }
             else {
-                showCommentsLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountComments + "</a> " + tmpTextNewEntryComment + " &middot;");
+                showCommentsLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountAssessments + "</a> " + tmpTextNewEntryComment + " &middot;");
 
             }
 

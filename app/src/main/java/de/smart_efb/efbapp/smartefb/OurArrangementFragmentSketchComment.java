@@ -116,14 +116,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         //cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementDbIdToComment);
 
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
-
-
         String tmpSubtitle = String.format(getResources().getString(getResources().getIdentifier("subtitleFragmentSketchCommentText", "string", fragmentSketchCommentContext.getPackageName())), sketchArrangementNumberInListView);
-
-
-
-
-        //String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentSketchCommentText", "string", fragmentSketchCommentContext.getPackageName())) + " " + sketchArrangementNumberInListView;
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "sketchComment");
 
         // build the view
@@ -175,8 +168,29 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
         // textview for max comments and count comments
         TextView textViewMaxAndCount = (TextView) viewFragmentSketchComment.findViewById(R.id.infoSketchCommentMaxAndCount);
-        String tmpInfoTextSketchCommentMaxAndCount = String.format(this.getResources().getString(R.string.infoTextSketchCommentMaxAndCount), prefs.getInt("commentSketchOurArrangementMaxComment", 0),prefs.getInt("commentSketchOurArrangementCountComment", 0));
-        textViewMaxAndCount.setText(tmpInfoTextSketchCommentMaxAndCount);
+        String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral;
+        // build text element max sketch comment
+        if (prefs.getInt("commentSketchOurArrangementMaxComment", 0) == 1) {
+            tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentMaxSingular);
+        }
+        else {
+            tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentMaxPlural);
+        }
+        tmpInfoTextMaxSingluarPluaral = String.format(tmpInfoTextMaxSingluarPluaral, prefs.getInt("commentSketchOurArrangementMaxComment", 0));
+
+
+        // build text element count sketch comment
+        if (prefs.getInt("commentSketchOurArrangementCountComment", 0) == 0) {
+            tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentCountZero);
+        }
+        else if (prefs.getInt("commentSketchOurArrangementCountComment", 0) == 1) {
+            tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentCountSingular);
+        }
+        else {
+            tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentCountPlural);
+        }
+        tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt("commentSketchOurArrangementCountComment", 0));
+        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral);
 
 
 

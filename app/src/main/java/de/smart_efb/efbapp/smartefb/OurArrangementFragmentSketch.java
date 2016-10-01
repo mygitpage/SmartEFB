@@ -127,7 +127,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
                 setVisibilityTextViewSketchNothingThere ("show");
 
                 // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
-                String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNothingThere", "string", fragmentSketchContext.getPackageName()));
+                String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleSketchNothingThere", "string", fragmentSketchContext.getPackageName()));
                 ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "sketch");
             }
 

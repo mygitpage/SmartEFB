@@ -101,17 +101,20 @@
     <string name="sketchArrangementsubtitle">Entwürfe vom</string>
 
     <string name="subtitleNothingThere">Keine Absprachen vorhanden</string>
+
+    <string name="subtitleSketchNothingThere">Keine Entwürfe vorhanden</string>
+
     <string name="subtitleNotAvailable">Funktion nicht möglich</string>
 
-    <string name="subtitleFragmentNowCommentText">Einschätzen Absprache</string>
-    <string name="subtitleFragmentShowCommentText">Einschätzungen Absprache</string>
+    <string name="subtitleFragmentNowCommentText">Kommentieren Absprache</string>
+    <string name="subtitleFragmentShowCommentText">Kommentare Absprache</string>
     <string name="subtitleFragmentEvaluateArrangementText">Bewerten Absprache</string>
 
 
 
 
 
-    <string name="subtitleFragmentSketchCommentText">Entwurf %1$d kommentieren</string>
+    <string name="subtitleFragmentSketchCommentText">Entwurf %1$d einschätzen</string>
 
 
 
@@ -139,6 +142,19 @@
     <string name ="commentArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
     <string name="commentSuccsesfulySend">Kommentar erfolgreich gesendet</string>
     <string name="commentToShort">Ihr Kommentar ist zu kurz!</string>
+
+
+
+    <string name="infoTextNowCommentMaxSingular">Sie könnnen maximal %1$d Kommentar schreiben.</string>
+    <string name="infoTextNowCommentMaxPlural">Sie könnnen maximal %1$d Kommentare schreiben.</string>
+
+    <string name="infoTextNowCommentCountZero">Sie haben noch kein Kommentar geschrieben.</string>
+    <string name="infoTextNowCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
+    <string name="infoTextNowCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
+
+
+
+
 
 
     <!-- End String Fragment comment -->
@@ -210,11 +226,11 @@
     <string name="errorStructQuestionForCommentSketchArrangement">Bitte wählen Sie eine Einschätzung!</string>
 
 
-    <string name="introFreeQuestionForCommentSketchArrangement">Bitte erläutern Sie Ihre obige Bewertung</string>
+    <string name="introFreeQuestionForCommentSketchArrangement">Bitte erläutern Sie Ihre obige Einschätzung</string>
 
-    <string name="errorFreeQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihren Text zur obigen Bewertung! Er ist zu kurz!</string>
+    <string name="errorFreeQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihren Text zur obigen Einschätzung! Er ist zu kurz!</string>
 
-    <string name="commentFreeQuestionSketchArrangementTextFieldHintText">Bitte erläutern Sie hier Ihre Bewertung.</string>
+    <string name="commentFreeQuestionSketchArrangementTextFieldHintText">Bitte erläutern Sie hier Ihre Einschätzung.</string>
 
     <string name="buttonSendSketchArrangementComment">Einschätzung senden</string>
 
@@ -227,12 +243,21 @@
     <string name="sketchCommentSuccsesfulySend">Einschätzung erfolgreich gesendet</string>
 
 
-    <string name="infoTextSketchCommentMaxAndCount">Maximale Anzahl Einschätzungen: %1$d\nGesendete Einschätzungen: %2$d</string>
+
+    <string name="infoTextSketchCommentMaxSingular">Sie könnnen maximal %1$d Einschätzung schreiben.</string>
+    <string name="infoTextSketchCommentMaxPlural">Sie könnnen maximal %1$d Einschätzungen schreiben.</string>
+
+    <string name="infoTextSketchCommentCountZero">Sie haben noch keine Einschätzung geschrieben.</string>
+    <string name="infoTextSketchCommentCountSingular">Davon haben Sie bereits %1$d Einschätzung geschrieben.</string>
+    <string name="infoTextSketchCommentCountPlural">Davon haben Sie bereits %1$d Einschätzungen geschrieben.</string>
+
+    <string name="ourArrangementAssessmentsString">Einschätzen</string>
 
 
 
 
-    <!-- End show now arrangements -->
+
+    <!-- End fragment comment sketch arrangement -->
 
 
 
@@ -243,8 +268,8 @@
     <string name="ourArrangementTabTitle_1b">Kommentare</string>
     <string name="ourArrangementTabTitle_1c">Bewerten</string>
     <string name="ourArrangementTabTitle_2">Entwürfe</string>
-    <string name="ourArrangementTabTitle_2a">Kommentieren</string>
-    <string name="ourArrangementTabTitle_2b">Kommentare</string>
+    <string name="ourArrangementTabTitle_2a">Einschätzen</string>
+    <string name="ourArrangementTabTitle_2b">Einschätzungen</string>
     <string name="ourArrangementTabTitle_3">Ältere Absprachen</string>
     <!-- End tab title -->
 

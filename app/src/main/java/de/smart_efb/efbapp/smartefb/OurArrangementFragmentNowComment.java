@@ -152,6 +152,44 @@ public class OurArrangementFragmentNowComment extends Fragment {
             comentHistoryLinearLayoutContainer.setVisibility(View.INVISIBLE);
         }
 
+
+
+
+
+        // textview for max comments and count comments
+        TextView textViewMaxAndCount = (TextView) viewFragmentNowComment.findViewById(R.id.infoNowCommentMaxAndCount);
+        String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral;
+        // build text element max sketch comment
+        if (prefs.getInt("commentOurArrangementMaxComment", 0) == 1) {
+            tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentMaxSingular);
+        }
+        else {
+            tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentMaxPlural);
+        }
+        tmpInfoTextMaxSingluarPluaral = String.format(tmpInfoTextMaxSingluarPluaral, prefs.getInt("commentOurArrangementMaxComment", 0));
+
+
+        // build text element count sketch comment
+        if (prefs.getInt("commentOurArrangementCountComment", 0) == 0) {
+            tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentCountZero);
+        }
+        else if (prefs.getInt("commentOurArrangementCountComment", 0) == 1) {
+            tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentCountSingular);
+        }
+        else {
+            tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentCountPlural);
+        }
+        tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt("commentOurArrangementCountComment", 0));
+        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral);
+
+
+
+
+
+
+
+
+
         // comment textfield -> insert new comment
         final EditText txtInputArrangementComment = (EditText) viewFragmentNowComment.findViewById(R.id.inputArrangementComment);
         // button send comment
