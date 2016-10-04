@@ -531,15 +531,94 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                 // show the settings for sketch arrangement
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsSketchArrangement);
+                String tmpTxtSketchArrangementSum, tmpTxtSketchArrangement, tmpTxtSketchArrangement1, tmpTxtSketchArrangement2, tmpTxtSketchArrangement3;
                 if (prefs.getBoolean("showSketchArrangements", false)) {
 
-                    String tmpTxtOldArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchArrangementEnable);
-                    tmpdialogTextView.setText(tmpTxtOldArrangement);
+                    tmpTxtSketchArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchArrangementEnable);
+
+
+                    // comment sketch arrangements?
+                    if (prefs.getBoolean("showCommentLinkSketchArrangements", false)) {
+
+                        tmpTxtSketchArrangement1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentArrangementEnable);
+
+
+
+
+                        if (prefs.getInt("commentSketchOurArrangementMaxComment",0) < commentLimitationBorder) { // write infinitely sketch comments?
+
+                            if (prefs.getInt("commentSketchOurArrangementMaxComment",0) == 1) {
+                                tmpTxtSketchArrangement2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountSingular);
+                            }
+                            else {
+                                tmpTxtSketchArrangement2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountPlural);
+                                tmpTxtSketchArrangement2 = String.format(tmpTxtSketchArrangement2, prefs.getInt("commentSketchOurArrangementMaxComment",0));
+                            }
+                        }
+                        else {
+                            tmpTxtSketchArrangement2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountInfinitely);
+                        }
+
+
+
+
+                        // count sketch comment - status
+                        if (prefs.getInt("commentSketchOurArrangementCountComment",0) < prefs.getInt("commentSketchOurArrangementMaxComment",0)) {
+                            switch (prefs.getInt("commentSketchOurArrangementCountComment", 0)) {
+                                case 0:
+                                    tmpTxtSketchArrangement3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCountCommentZero);
+                                    tmpTxtSketchArrangement3 = String.format(tmpTxtSketchArrangement3, EfbHelperClass.timestampToDateFormat(prefs.getLong("sketchCommentOurArrangementTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"));
+                                    break;
+                                case 1:
+                                    tmpTxtSketchArrangement3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountNumberSingular);
+                                    tmpTxtSketchArrangement3 = String.format(tmpTxtSketchArrangement3, EfbHelperClass.timestampToDateFormat(prefs.getLong("sketchCommentOurArrangementTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"));
+                                    break;
+                                default:
+                                    tmpTxtSketchArrangement3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountNumberPlural);
+                                    tmpTxtSketchArrangement3 = String.format(tmpTxtSketchArrangement3, EfbHelperClass.timestampToDateFormat(prefs.getLong("sketchCommentOurArrangementTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt("commentSketchOurArrangementCountComment",0));
+                                    break;
+                            }
+                        }
+                        else {
+                            tmpTxtSketchArrangement3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountNumberOff);
+                        }
+
+
+
+
+
+
+
+
+
+                    }
+                    else {
+                        tmpTxtSketchArrangement1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentArrangementDisable);
+                        tmpTxtSketchArrangement2 = "";
+                        tmpTxtSketchArrangement3 = "";
+                    }
+
+
+
+
+
+
+
+
+
+                    tmpTxtSketchArrangementSum = tmpTxtSketchArrangement + " " + tmpTxtSketchArrangement1 + " " + tmpTxtSketchArrangement2 + " " + tmpTxtSketchArrangement3;
+
+
                 }
                 else {
-                    String tmpTxtOldArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchArrangementDisable);
-                    tmpdialogTextView.setText(tmpTxtOldArrangement);
+                    tmpTxtSketchArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchArrangementDisable);
+                    tmpTxtSketchArrangementSum = tmpTxtSketchArrangement;
+
                 }
+
+
+                tmpdialogTextView.setText(tmpTxtSketchArrangementSum);
+
 
                 // get string ressources
                 String tmpTextCloseDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementCloseDialog);

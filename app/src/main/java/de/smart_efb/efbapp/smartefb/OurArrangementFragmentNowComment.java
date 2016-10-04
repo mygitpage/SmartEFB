@@ -57,6 +57,9 @@ public class OurArrangementFragmentNowComment extends Fragment {
     // cursor for all comments to the choosen arrangement
     Cursor cursorArrangementAllComments;
 
+    // comment limitation true-> yes, there is a border; no -> unlimited comments
+    Boolean commentLimitationBorder;
+
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
@@ -100,6 +103,9 @@ public class OurArrangementFragmentNowComment extends Fragment {
         // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
         arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
         if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
+
+        // check for comment limitations
+        commentLimitationBorder = ((ActivityOurArrangement)getActivity()).isCommentLimitationBorderSet("current");
 
         // get choosen arrangement
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToComment);
@@ -160,13 +166,20 @@ public class OurArrangementFragmentNowComment extends Fragment {
         TextView textViewMaxAndCount = (TextView) viewFragmentNowComment.findViewById(R.id.infoNowCommentMaxAndCount);
         String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral;
         // build text element max sketch comment
-        if (prefs.getInt("commentOurArrangementMaxComment", 0) == 1) {
-            tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentMaxSingular);
+        if (prefs.getInt("commentOurArrangementMaxComment", 0) == 1 && commentLimitationBorder) {
+            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextNowCommentMaxSingular), prefs.getInt("commentOurArrangementMaxComment", 0));
         }
+        else if (prefs.getInt("commentOurArrangementMaxComment", 0) > 1 && commentLimitationBorder) {
+            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextNowCommentMaxPlural), prefs.getInt("commentOurArrangementMaxComment", 0));
+         }
         else {
-            tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentMaxPlural);
+            tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentUnlimitedText);
         }
-        tmpInfoTextMaxSingluarPluaral = String.format(tmpInfoTextMaxSingluarPluaral, prefs.getInt("commentOurArrangementMaxComment", 0));
+
+
+
+
+
 
 
         // build text element count sketch comment

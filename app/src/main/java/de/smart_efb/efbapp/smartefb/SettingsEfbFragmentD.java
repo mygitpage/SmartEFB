@@ -105,7 +105,7 @@ public class SettingsEfbFragmentD extends Fragment {
         // for current comment
         // put max count of comments and current count of comments in prefs
         // in future comes from coach over internet
-        prefsEditor.putInt("commentOurArrangementMaxComment", 5); // > 1000 -> no limitation with comments
+        prefsEditor.putInt("commentOurArrangementMaxComment", 1001); // > 1000 -> no limitation with comments
         prefsEditor.putInt("commentOurArrangementCountComment", 0);
         // since this time count comments
         prefsEditor.putLong("commentOurArrangementTimeSinceInMills", System.currentTimeMillis()); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -114,7 +114,7 @@ public class SettingsEfbFragmentD extends Fragment {
         // for sketch comment!!!!
         // put max count of sketch comments and current count of sketch comments in prefs
         // in future comes from coach over internet
-        prefsEditor.putInt("commentSketchOurArrangementMaxComment", 5); // > 1000 -> no limitation with comments
+        prefsEditor.putInt("commentSketchOurArrangementMaxComment", 10); // > 1000 -> no limitation with comments
         prefsEditor.putInt("commentSketchOurArrangementCountComment", 0);
         // since this time count sketch comments
         prefsEditor.putLong("sketchCommentOurArrangementTimeSinceInMills", System.currentTimeMillis()); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

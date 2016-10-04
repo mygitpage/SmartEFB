@@ -147,8 +147,10 @@
 
     <string name="infoTextNowCommentMaxSingular">Sie könnnen maximal %1$d Kommentar schreiben.</string>
     <string name="infoTextNowCommentMaxPlural">Sie könnnen maximal %1$d Kommentare schreiben.</string>
+    <string name="infoTextNowCommentUnlimitedText">Sie können beliebig viele Kommentare schreiben.</string>
 
-    <string name="infoTextNowCommentCountZero">Sie haben noch kein Kommentar geschrieben.</string>
+
+    <string name="infoTextNowCommentCountZero">Sie haben noch keinen Kommentar geschrieben.</string>
     <string name="infoTextNowCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
     <string name="infoTextNowCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
 
@@ -246,6 +248,8 @@
 
     <string name="infoTextSketchCommentMaxSingular">Sie könnnen maximal %1$d Einschätzung schreiben.</string>
     <string name="infoTextSketchCommentMaxPlural">Sie könnnen maximal %1$d Einschätzungen schreiben.</string>
+    <string name="infoTextSketchCommentUnlimitedText">Sie könnnen beliebig viele Einschätzungen schreiben.</string>
+
 
     <string name="infoTextSketchCommentCountZero">Sie haben noch keine Einschätzung geschrieben.</string>
     <string name="infoTextSketchCommentCountSingular">Davon haben Sie bereits %1$d Einschätzung geschrieben.</string>
@@ -322,6 +326,19 @@
 
     <string name="textDialogOurArrangementSettingsSketchArrangementEnable">Ihnen stehen die Entwürfe der Absprachen zur Verfügung.</string>
     <string name="textDialogOurArrangementSettingsSketchArrangementDisable">Ihnen stehen die Entwürfe der Absprachen nicht zur Verfügung.</string>
+
+    <string name="textDialogOurArrangementSettingsSketchCommentArrangementEnable">Sie können die Entwürfe einschätzen.</string>
+    <string name="textDialogOurArrangementSettingsSketchCommentArrangementDisable">Sie können die Entwürfe nicht einschätzen.</string>
+
+    <string name="textDialogOurArrangementSettingsSketchCommentCountSingular">Dabei können Sie maximal eine Einschätzung schreiben.</string>
+    <string name="textDialogOurArrangementSettingsSketchCommentCountPlural">Dabei können Sie maximal %1$d Einschätzungen schreiben.</string>
+    <string name="textDialogOurArrangementSettingsSketchCommentCountInfinitely">Dabei können Sie beliebig viele Einschätzungen schreiben.</string>
+
+    <string name="textDialogOurArrangementSettingsSketchCommentCountNumberPlural">Seit dem %1$s haben Sie %2$d Einschätzungen geschrieben.</string>
+    <string name="textDialogOurArrangementSettingsSketchCommentCountNumberSingular">Seit dem %1$s haben Sie eine Einschätzung geschrieben.</string>
+    <string name="textDialogOurArrangementSettingsSketchCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Einschätzungen geschrieben.</string>
+    <string name="textDialogOurArrangementSettingsSketchCountCommentZero">Seit dem %1$s haben Sie noch keine Einschätzung geschrieben.</string>
+
 
     <!-- End our arrangement dialog settings -->
 
