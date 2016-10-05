@@ -53,8 +53,8 @@ public class OurArrangementFragmentSketchComment extends Fragment {
     // cursor for the choosen sketch arrangement
     Cursor cursorChoosenSketchArrangement;
 
-    // cursor for all comments to the choosen arrangement
-    Cursor cursorArrangementAllComments;
+    // cursor for all comments to the choosen sketch arrangement
+    Cursor cursorSketchArrangementAllComments;
 
     //number of radio buttons in struct question
     static final int numberOfRadioButtonsStructQuestion = 5;
@@ -118,8 +118,8 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         // get choosen arrangement
         cursorChoosenSketchArrangement = myDb.getRowSketchOurArrangement(arrangementDbIdToComment);
 
-        // get all comments for choosen arrangement
-        //cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementDbIdToComment);
+        // get all comments for choosen sketch arrangement
+        cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(arrangementDbIdToComment);
 
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
         String tmpSubtitle = String.format(getResources().getString(getResources().getIdentifier("subtitleFragmentSketchCommentText", "string", fragmentSketchCommentContext.getPackageName())), sketchArrangementNumberInListView);
@@ -149,8 +149,18 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         String arrangement = cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(arrangement);
 
+        // textview intro for the history of comments
+        TextView textCommentSketchHistoryIntro = (TextView) viewFragmentSketchComment.findViewById(R.id.commentSketchHistoryIntro);
+        if (cursorSketchArrangementAllComments.getCount() > 0) { // show comments for arrangement when count comments > 0
+            // show intro for comments
+            textCommentSketchHistoryIntro.setText(this.getResources().getString(R.string.commentSketchHistoryIntroText)+ " " + sketchArrangementNumberInListView);
+            // show comments
+            addActualCommentSetToView ();
 
-
+        } else { // else show nothing
+            LinearLayout comentHistoryLinearLayoutContainer = (LinearLayout) viewFragmentSketchComment.findViewById(R.id.commentSketchHistoryContainer);
+            comentHistoryLinearLayoutContainer.setVisibility(View.INVISIBLE);
+        }
 
         // set onClickListener for radio button in radio group question 1-4
         String tmpRessourceName ="";
@@ -239,13 +249,9 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     sketchCommentNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);
 
-
-                    Log.d("Error Struct Question","Result: "+structQuestionResultSketchComment);
-
                 } else if (tmpErrorTextView != null) {
                     tmpErrorTextView.setVisibility(View.GONE);
 
-                    Log.d("NOError Struct Question","Result: "+structQuestionResultSketchComment);
                 }
 
                 // comment textfield -> insert new comment
@@ -263,7 +269,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 if (sketchCommentNoError) {
 
                     // insert comment in DB
-                    //long newID = myDb.insertRowOurArrangementComment(txtInputArrangementComment.getText().toString(), prefs.getString("userName", "John Doe"), System.currentTimeMillis() , arrangementDbIdToComment, true, prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()));
+                    long newId = myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString("userName", "John Doe"), System.currentTimeMillis(), arrangementDbIdToComment, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()));
 
                     // Toast "Comment sucsessfull send"
                     Toast.makeText(fragmentSketchCommentContext, fragmentSketchCommentContext.getResources().getString(R.string.sketchCommentSuccsesfulySend), Toast.LENGTH_SHORT).show();
@@ -279,10 +285,13 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     intent.putExtra("com","show_sketch_arrangement");
                     getActivity().startActivity(intent);
 
-                } else {
+                }
+                /*
+                else {
                     // Toast "Comment to short"
                     Toast.makeText(fragmentSketchCommentContext, fragmentSketchCommentContext.getResources().getString(R.string.commentToShort), Toast.LENGTH_SHORT).show();
                 }
+                */
 
             }
         });
@@ -311,11 +320,11 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
         LinearLayout commentHolderLayout = (LinearLayout) viewFragmentSketchComment.findViewById(R.id.commentSketchHolder);
 
-        cursorArrangementAllComments.moveToFirst();
+        cursorSketchArrangementAllComments.moveToFirst();
 
         do {
 
-            int actualCursorNumber = cursorArrangementAllComments.getPosition()+1;
+            int actualCursorNumber = cursorSketchArrangementAllComments.getPosition()+1;
 
             // Linear Layout holds comment text and linear layout with author,date and new entry text
             LinearLayout l_inner_layout = new LinearLayout(fragmentSketchCommentContext);
@@ -324,7 +333,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
             //add textView for comment text
             TextView txtViewCommentText = new TextView (fragmentSketchCommentContext);
-            txtViewCommentText.setText(cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)));
+            txtViewCommentText.setText(cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)));
             txtViewCommentText.setId(actualCursorNumber);
             txtViewCommentText.setTextColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.text_color));
             txtViewCommentText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -338,7 +347,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             aadn_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
 
             // check if comment new entry
-            if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
+            if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
                 //add textView for text new entry
                 TextView txtViewCommentNewEntry = new TextView (fragmentSketchCommentContext);
                 txtViewCommentNewEntry.setText(this.getResources().getString(R.string.newEntryText));
@@ -353,13 +362,13 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 aadn_inner_layout.addView (txtViewCommentNewEntry);
 
                 // delet status new entry in db
-                myDb.deleteStatusNewEntryOurArrangementComment(cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
+                myDb.deleteStatusNewEntryOurArrangementComment(cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
             }
 
             //add textView for comment author and date
             TextView txtViewCommentAuthorAndDate = new TextView (fragmentSketchCommentContext);
-            long writeTime = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
-            String authorAndDate = cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME)) + ", " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy - HH:mm");
+            long writeTime = cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
+            String authorAndDate = cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME)) + ", " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy - HH:mm");
             txtViewCommentAuthorAndDate.setText(authorAndDate);
             txtViewCommentAuthorAndDate.setId(actualCursorNumber);
             txtViewCommentAuthorAndDate.setTextColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.text_color));
@@ -377,7 +386,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             // add inner layout to comment holder (linear layout in xml-file)
             commentHolderLayout.addView(l_inner_layout);
 
-        } while (cursorArrangementAllComments.moveToNext());
+        } while (cursorSketchArrangementAllComments.moveToNext());
 
 
 

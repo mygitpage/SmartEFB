@@ -158,10 +158,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
             comentHistoryLinearLayoutContainer.setVisibility(View.INVISIBLE);
         }
 
-
-
-
-
         // textview for max comments and count comments
         TextView textViewMaxAndCount = (TextView) viewFragmentNowComment.findViewById(R.id.infoNowCommentMaxAndCount);
         String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral;
@@ -176,12 +172,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
             tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentUnlimitedText);
         }
 
-
-
-
-
-
-
         // build text element count sketch comment
         if (prefs.getInt("commentOurArrangementCountComment", 0) == 0) {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentCountZero);
@@ -194,13 +184,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
         }
         tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt("commentOurArrangementCountComment", 0));
         textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral);
-
-
-
-
-
-
-
 
 
         // comment textfield -> insert new comment
