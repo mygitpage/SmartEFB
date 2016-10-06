@@ -286,12 +286,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     getActivity().startActivity(intent);
 
                 }
-                /*
-                else {
-                    // Toast "Comment to short"
-                    Toast.makeText(fragmentSketchCommentContext, fragmentSketchCommentContext.getResources().getString(R.string.commentToShort), Toast.LENGTH_SHORT).show();
-                }
-                */
+
 
             }
         });
@@ -333,7 +328,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
             //add textView for comment text
             TextView txtViewCommentText = new TextView (fragmentSketchCommentContext);
-            txtViewCommentText.setText(cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)));
+            txtViewCommentText.setText(cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT)));
             txtViewCommentText.setId(actualCursorNumber);
             txtViewCommentText.setTextColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.text_color));
             txtViewCommentText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -347,7 +342,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             aadn_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
 
             // check if comment new entry
-            if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
+            if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY)) == 1) {
                 //add textView for text new entry
                 TextView txtViewCommentNewEntry = new TextView (fragmentSketchCommentContext);
                 txtViewCommentNewEntry.setText(this.getResources().getString(R.string.newEntryText));
@@ -362,13 +357,13 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 aadn_inner_layout.addView (txtViewCommentNewEntry);
 
                 // delet status new entry in db
-                myDb.deleteStatusNewEntryOurArrangementComment(cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
+                myDb.deleteStatusNewEntryOurArrangementSketchComment(cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
             }
 
             //add textView for comment author and date
             TextView txtViewCommentAuthorAndDate = new TextView (fragmentSketchCommentContext);
-            long writeTime = cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
-            String authorAndDate = cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME)) + ", " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy - HH:mm");
+            long writeTime = cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME));
+            String authorAndDate = cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME)) + ", " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy - HH:mm");
             txtViewCommentAuthorAndDate.setText(authorAndDate);
             txtViewCommentAuthorAndDate.setId(actualCursorNumber);
             txtViewCommentAuthorAndDate.setTextColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.text_color));

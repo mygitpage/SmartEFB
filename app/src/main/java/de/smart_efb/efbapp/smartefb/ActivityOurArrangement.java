@@ -336,9 +336,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
             //set fragment in tab zero to evaluate
             OurArrangementViewPagerAdapter.setFragmentTabOne("show_sketch_arrangement");
 
-
-
-
             // set correct tab one titel
             tabLayoutOurArrangement.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_2", "string", getPackageName())));
 
@@ -352,14 +349,25 @@ public class ActivityOurArrangement extends AppCompatActivity {
             toolbar.setSubtitle(arraySubTitleText[1]);
             Log.d("ExecuteIntent","Subtitle SHOW Sketch Arrangement");
 
+        } else if (command.equals("show_comment_for_sketch_arrangement")) { // Show comments for sketch Arrangments -> TAB ONE
+
+            //set fragment in tab zero to evaluate
+            OurArrangementViewPagerAdapter.setFragmentTabOne("show_comment_for_sketch_arrangement");
+
+            // set correct tab one titel
+            tabLayoutOurArrangement.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_2", "string", getPackageName())));
+
+            // set command show variable
+            showCommandFragmentTabOne = "show_comment_for_sketch_arrangement";
+
+            // call notify data change
+            ourArrangementViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbar.setSubtitle(arraySubTitleText[1]);
+
+
         }
-
-
-
-
-
-
-
         else { // Show fragment arrangement now
 
             //set fragment in tab zero to comment
@@ -582,32 +590,13 @@ public class ActivityOurArrangement extends AppCompatActivity {
                         else {
                             tmpTxtSketchArrangement3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountNumberOff);
                         }
-
-
-
-
-
-
-
-
-
                     }
                     else {
                         tmpTxtSketchArrangement1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentArrangementDisable);
                         tmpTxtSketchArrangement2 = "";
                         tmpTxtSketchArrangement3 = "";
                     }
-
-
-
-
-
-
-
-
-
                     tmpTxtSketchArrangementSum = tmpTxtSketchArrangement + " " + tmpTxtSketchArrangement1 + " " + tmpTxtSketchArrangement2 + " " + tmpTxtSketchArrangement3;
-
 
                 }
                 else {
