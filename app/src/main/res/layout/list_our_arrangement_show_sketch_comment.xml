@@ -10,7 +10,7 @@
     android:paddingRight="10dp">
 
     <TextView
-        android:id="@+id/listActualTextComment"
+        android:id="@+id/listActualTextSketchComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16dp"
@@ -25,7 +25,7 @@
         android:paddingBottom="5dp">
 
         <TextView
-            android:id="@+id/listActualTextNewComment"
+            android:id="@+id/listActualTextNewSketchComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12dp"
@@ -34,7 +34,7 @@
             android:paddingLeft="10dp"/>
 
         <TextView
-            android:id="@+id/listActualCommentAuthorAndDate"
+            android:id="@+id/listActualSketchCommentAuthorAndDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="12dp"
@@ -43,16 +43,4 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/buttonAbortShowComment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/bg_btn_join"
-        android:textColor="@color/white"
-        android:text="@string/btnAbortShowComment"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:padding="10dp"/>
-
 </LinearLayout>
-

@@ -262,6 +262,8 @@
 
     <string name="commentSketchHistoryIntroText">Alle bisherigen Einschätzungen zum Entwurf</string>
 
+    <string name="showSketchCommentIntroText">Die Einschätzungen zum Entwurf</string>
+
 
     <!-- End fragment comment sketch arrangement -->
 

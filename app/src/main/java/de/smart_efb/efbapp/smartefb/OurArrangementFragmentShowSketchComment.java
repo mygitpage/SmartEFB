@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +86,7 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
         arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
         if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
 
-        // Set correct subtitle in Activity -> "Kommentare Absprache ..."
+        // Set correct subtitle in Activity -> "Einschaetzungen Entwuerfe ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentShowSketchCommentText", "string", fragmentShowSketchCommentContext.getPackageName())) + " " + arrangementNumberInListView;
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "showSketchComment");
 
@@ -94,12 +95,12 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
 
     public void displayActualCommentSet () {
 
-        // get the data (all comments from an arrangement) from DB
-        Cursor cursor = myDb.getAllRowsOurArrangementComment(arrangementDbIdToShow);
+        // get the data (all comments from an sketch arrangement) from DB
+        Cursor cursor = myDb.getAllRowsOurArrangementSketchComment(arrangementDbIdToShow);
 
         // get the data (the choosen arrangement) from the DB
         String arrangement = "";
-        Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToShow);
+        Cursor choosenArrangement = myDb.getRowSketchOurArrangement(arrangementDbIdToShow);
         arrangement = choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
 
         // find the listview

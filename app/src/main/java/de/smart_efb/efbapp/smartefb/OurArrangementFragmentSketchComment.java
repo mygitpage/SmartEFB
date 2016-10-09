@@ -132,7 +132,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         textCommentNumberIntro.setText(tmpCommentNumberIntro);
 
 
-        // generate back link "zurueck zu allen Absprachen"
+        // generate back link "zurueck zu allen Entwuerfen"
         Uri.Builder commentLinkBuilder = new Uri.Builder();
         commentLinkBuilder.scheme("smart.efb.ilink_comment")
                 .authority("www.smart-efb.de")
@@ -394,7 +394,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
         // create back button (to arrangement)
         Button btnBackToArrangement = new Button (fragmentSketchCommentContext);
-        btnBackToArrangement.setText(this.getResources().getString(R.string.btnAbortShowComment));
+        btnBackToArrangement.setText(this.getResources().getString(R.string.ourArrangementBackLinkToSketchArrangement));
         btnBackToArrangement.setTextColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.text_color_white));
         btnBackToArrangement.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         btnBackToArrangement.setTextSize(14);

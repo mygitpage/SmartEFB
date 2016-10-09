@@ -312,11 +312,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         } else if (command.equals("comment_an_sketch_arrangement")) { // Comment sketch arrangement -> TAB ONE
 
-            //set fragment in tab zero to evaluate
+            //set fragment in tab one to comment an sketch arrangement
             OurArrangementViewPagerAdapter.setFragmentTabOne("comment_an_sketch_arrangement");
-
-
-
 
             // set correct tab one titel
             tabLayoutOurArrangement.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_2a", "string", getPackageName())));
@@ -327,13 +324,13 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // call notify data change
             ourArrangementViewPagerAdapter.notifyDataSetChanged();
 
-            // set correct subtitle in toolbar in tab zero
+            // set correct subtitle in toolbar in tab one
             toolbar.setSubtitle(arraySubTitleText[6]);
-            Log.d("ExecuteIntent","Subtitle Comment Sketch Arrangement");
+
 
         } else if (command.equals("show_sketch_arrangement")) { // Show sketch Arrangments -> TAB ONE
 
-            //set fragment in tab zero to evaluate
+            //set fragment in tab one to show sketch arrangement
             OurArrangementViewPagerAdapter.setFragmentTabOne("show_sketch_arrangement");
 
             // set correct tab one titel
@@ -345,17 +342,16 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // call notify data change
             ourArrangementViewPagerAdapter.notifyDataSetChanged();
 
-            // set correct subtitle in toolbar in tab zero
+            // set correct subtitle in toolbar in tab one
             toolbar.setSubtitle(arraySubTitleText[1]);
-            Log.d("ExecuteIntent","Subtitle SHOW Sketch Arrangement");
 
         } else if (command.equals("show_comment_for_sketch_arrangement")) { // Show comments for sketch Arrangments -> TAB ONE
 
-            //set fragment in tab zero to evaluate
+            //set fragment in tab one to show comment sketch arrangement
             OurArrangementViewPagerAdapter.setFragmentTabOne("show_comment_for_sketch_arrangement");
 
             // set correct tab one titel
-            tabLayoutOurArrangement.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_2", "string", getPackageName())));
+            tabLayoutOurArrangement.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_2b", "string", getPackageName())));
 
             // set command show variable
             showCommandFragmentTabOne = "show_comment_for_sketch_arrangement";
@@ -363,8 +359,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // call notify data change
             ourArrangementViewPagerAdapter.notifyDataSetChanged();
 
-            // set correct subtitle in toolbar in tab zero
-            toolbar.setSubtitle(arraySubTitleText[1]);
+            // set correct subtitle in toolbar in tab one
+            toolbar.setSubtitle(arraySubTitleText[7]);
 
 
         }

@@ -85,10 +85,10 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
         String authorAndDate = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME)) + ", " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy - HH:mm");
         textViewShowActualAuthorAndDate.setText(authorAndDate);
 
-        // generate link "zurueck zu den Absprachen" and set text intro "Die kommentare zur Absprache ...", when cursor position is first
+        // generate link "zurueck zu den Entwuerfen" and set text intro "Die Einschaetzungen zum Entwurf ...", when cursor position is first
         if (cursor.isFirst()) {
 
-            // set text intro "Absprache ..."
+            // set text intro "Entwurf ..."
             TextView textViewShowArrangementIntro = (TextView) view.findViewById(R.id.arrangementShowSketchArrangementIntro);
             String txtArrangementIntro = contextForActivity.getResources().getString(R.string.showSketchArrangementIntroText)+ " " + arrangementNumberInListView;
             textViewShowArrangementIntro.setText(txtArrangementIntro);
@@ -101,17 +101,17 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
                     .appendQueryParameter("arr_num", "0")
                     .appendQueryParameter("com", "show_sketch_arrangement");
             TextView linkShowCommentBackLink = (TextView) view.findViewById(R.id.arrangementShowSketchCommentBackLink);
-            Spanned tmpBackLink = Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementBackLinkToArrangement", "string", context.getPackageName()))+"</a>");
+            Spanned tmpBackLink = Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementBackLinkToSketchArrangement", "string", context.getPackageName()))+"</a>");
             linkShowCommentBackLink.setText(tmpBackLink);
             linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
 
             // show choosen arrangement
-            TextView textViewShowChoosenArrangement = (TextView) view.findViewById(R.id.actualCommentTextInShowComment);
+            TextView textViewShowChoosenArrangement = (TextView) view.findViewById(R.id.actualSketchCommentTextInShowComment);
             textViewShowChoosenArrangement.setText(choosenArrangement);
 
-            // set text intro "Die Kommentare zur Absprache ..."
+            // set text intro "Die Einschätzungen zum Entwurf ..."
             TextView textViewShowCommentIntro = (TextView) view.findViewById(R.id.arrangementShowCommentIntro);
-            String txtCommentIntro = contextForActivity.getResources().getString(R.string.showCommentIntroText)+ " " + arrangementNumberInListView;
+            String txtCommentIntro = contextForActivity.getResources().getString(R.string.showSketchCommentIntroText)+ " " + arrangementNumberInListView;
             textViewShowCommentIntro.setText(txtCommentIntro);
 
         }
@@ -119,8 +119,8 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
         // generate onclicklistener for Button "zurueck zu den Absprachen"
         if (cursor.isLast()) {
 
-            // button abbort "zurueck zu den Absprachen"
-            Button buttonBackToArrangement = (Button) view.findViewById(R.id.buttonAbortShowComment);
+            // button abbort "zurueck zu den Entwuerfen"
+            Button buttonBackToArrangement = (Button) view.findViewById(R.id.buttonAbortShowSketchComment);
 
             // onClick listener abbort button
             buttonBackToArrangement.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +129,7 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
 
                     Intent intent = new Intent(contextForActivity, ActivityOurArrangement.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent.putExtra("com","show_arrangement_now");
+                    intent.putExtra("com","show_sketch_arrangement");
                     contextForActivity.startActivity(intent);
 
                 }
@@ -146,16 +146,16 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
         View inflatedView;
 
         if (cursor.isFirst() && cursor.getCount() > 1) { // listview for first element, when cursor has more then one element
-            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment_first, parent, false);
+            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_sketch_comment_first, parent, false);
         }
         else if (cursor.isFirst() && cursor.getCount() == 1) { // listview for first element, when cursor has only one element
-            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment_firstandlast, parent, false);
+            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_sketch_comment_firstandlast, parent, false);
         }
         else if (cursor.isLast()) { // listview for last element
-            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment_last, parent, false);
+            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_sketch_comment_last, parent, false);
         }
         else { // listview for "normal" element
-            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment, parent, false);
+            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_sketch_comment, parent, false);
         }
 
         return inflatedView;

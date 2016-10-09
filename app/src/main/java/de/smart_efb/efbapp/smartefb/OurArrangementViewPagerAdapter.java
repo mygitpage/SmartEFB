@@ -60,7 +60,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
         fragArraSketch = new OurArrangementFragmentSketch();
 
         fragArraSketchComment = new OurArrangementFragmentSketchComment();
-        fragArraShowSketchComment = new OurArrangementFragmentSketch(); // TODO Fragment anpassen
+        fragArraShowSketchComment = new OurArrangementFragmentShowSketchComment();
 
     }
 
