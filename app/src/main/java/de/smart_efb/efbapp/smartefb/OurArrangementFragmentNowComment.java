@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -90,6 +91,9 @@ public class OurArrangementFragmentNowComment extends Fragment {
     // inits the fragment for use
     private void initFragmentNowComment() {
 
+        Log.d("Kommentieren Apsrachen","DRIN!!!!!!!!!!");
+
+
         // init the DB
         myDb = new DBAdapter(fragmentNowCommentContext);
 
@@ -109,6 +113,12 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
         // get choosen arrangement
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToComment);
+
+
+        Log.d("Kommentieren Apsrachen","ChoosenArr Anzahl:"+cursorChoosenArrangement.getCount());
+        Log.d("Kommentieren Apsrachen","ChoosenArr DB ID:"+arrangementDbIdToComment);
+
+
 
         // get all comments for choosen arrangement
         cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementDbIdToComment);

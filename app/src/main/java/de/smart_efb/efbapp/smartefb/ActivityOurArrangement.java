@@ -78,10 +78,13 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // what to show in tab one (like show_sketch_arrangement, comment_an_sketch_arrangement, show_comment_for_sketch_arrangement)
     String showCommandFragmentTabOne = "";
 
-    // arrangement db-id - for comment or show comment
+    // arrangement db-id - for comment, sketch comment, show comment or show sketch comment
     int arrangementDbIdFromLink = 0;
-    //arrangement number in listview
+    int arrangementSketchDbIdFromLink = 0;
+    //arrangement number and sketch number in listview
     int arrangementNumberInListView = 0;
+    int arrangementSketchNumberInListView = 0;
+
     // evaluate next arrangement true -> yes, there is a next arrangement to evaluate; false -> there is nothing more
     boolean evaluateNextArrangement = false;
 
@@ -222,34 +225,42 @@ public class ActivityOurArrangement extends AppCompatActivity {
         intentLinkData = intent.getData();
         intentExtras = intent.getExtras();
 
+        int tmpDbId = 0;
+        int tmpNumberinListView = 0;
+        Boolean tmpEvalNext = false;
+
         // is there URI Data?
         if (intentLinkData != null) {
             // get data that comes with intent-link
-            arrangementDbIdFromLink = Integer.parseInt(intentLinkData.getQueryParameter("db_id")); // arrangement DB-ID
-            arrangementNumberInListView = Integer.parseInt(intentLinkData.getQueryParameter("arr_num"));
-            evaluateNextArrangement = Boolean.parseBoolean(intentLinkData.getQueryParameter("eval_next"));
+            tmpDbId = Integer.parseInt(intentLinkData.getQueryParameter("db_id")); // arrangement DB-ID
+            tmpNumberinListView = Integer.parseInt(intentLinkData.getQueryParameter("arr_num"));
+            tmpEvalNext = Boolean.parseBoolean(intentLinkData.getQueryParameter("eval_next"));
             // get command and execute it
-            executeIntentCommand (intentLinkData.getQueryParameter("com"));
+            executeIntentCommand (intentLinkData.getQueryParameter("com"), tmpDbId, tmpNumberinListView, tmpEvalNext);
 
         } else if (intentExtras != null) {
            // get data that comes with extras
-            arrangementDbIdFromLink = intentExtras.getInt("db_id",0);
-            arrangementNumberInListView = intentExtras.getInt("arr_num",0);
-            evaluateNextArrangement = intentExtras.getBoolean("eval_next");
+            tmpDbId = intentExtras.getInt("db_id",0);
+            tmpNumberinListView = intentExtras.getInt("arr_num",0);
+            tmpEvalNext = intentExtras.getBoolean("eval_next");
             // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"));
+            executeIntentCommand (intentExtras.getString("com"), tmpDbId, tmpNumberinListView, tmpEvalNext);
         }
 
     }
 
 
 
-    public void executeIntentCommand (String command) {
+    public void executeIntentCommand (String command, int tmpDbId, int tmpNumberinListView, Boolean tmpEvalNext) {
 
         String tmpTabTitle = "";
 
         if (command.equals("show_comment_for_arrangement")) { // Show fragment all comments for arrangement
 
+            // set global varibales
+            arrangementDbIdFromLink = tmpDbId;
+            arrangementNumberInListView = tmpNumberinListView;
+            evaluateNextArrangement = tmpEvalNext;
 
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("show_comment_for_arrangement");
@@ -275,6 +286,13 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         } else if (command.equals("comment_an_arrangement")) { // Show fragment comment arrangement
 
+            Log.d("Absprache kommentieren","DRIN!!!!!!!!!!");
+
+            // set global varibales
+            arrangementDbIdFromLink = tmpDbId;
+            arrangementNumberInListView = tmpNumberinListView;
+            evaluateNextArrangement = tmpEvalNext;
+
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("comment_an_arrangement");
 
@@ -294,6 +312,11 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         } else if (command.equals("evaluate_an_arrangement")) { // Show evaluate a arrangement
 
+            // set global varibales
+            arrangementDbIdFromLink = tmpDbId;
+            arrangementNumberInListView = tmpNumberinListView;
+            evaluateNextArrangement = tmpEvalNext;
+
             //set fragment in tab zero to evaluate
             OurArrangementViewPagerAdapter.setFragmentTabZero("evaluate_an_arrangement");
 
@@ -311,6 +334,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
         } else if (command.equals("comment_an_sketch_arrangement")) { // Comment sketch arrangement -> TAB ONE
+
+            Log.d("Entuwrf einschaetzen","DRIN!!!!!!!!!!");
+
+            // set global varibales
+            arrangementSketchDbIdFromLink = tmpDbId;
+            arrangementSketchNumberInListView = tmpNumberinListView;
 
             //set fragment in tab one to comment an sketch arrangement
             OurArrangementViewPagerAdapter.setFragmentTabOne("comment_an_sketch_arrangement");
@@ -330,6 +359,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         } else if (command.equals("show_sketch_arrangement")) { // Show sketch Arrangments -> TAB ONE
 
+            Log.d("Entwurf anzeigen","DRIN!!!!!!!!!!");
+
+            // set global varibales
+            arrangementSketchDbIdFromLink = tmpDbId;
+            arrangementSketchNumberInListView = tmpNumberinListView;
+
             //set fragment in tab one to show sketch arrangement
             OurArrangementViewPagerAdapter.setFragmentTabOne("show_sketch_arrangement");
 
@@ -346,6 +381,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
             toolbar.setSubtitle(arraySubTitleText[1]);
 
         } else if (command.equals("show_comment_for_sketch_arrangement")) { // Show comments for sketch Arrangments -> TAB ONE
+
+            Log.d("Zeige alle Einschaetzun","DRIN!!!!!!!!!!");
+
+            // set global varibales
+            arrangementSketchDbIdFromLink = tmpDbId;
+            arrangementSketchNumberInListView = tmpNumberinListView;
 
             //set fragment in tab one to show comment sketch arrangement
             OurArrangementViewPagerAdapter.setFragmentTabOne("show_comment_for_sketch_arrangement");
@@ -364,7 +405,14 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
         }
-        else { // Show fragment arrangement now
+        else { // Show fragment arrangement now -> Tab 0
+
+            Log.d("Absprachen anzeigen","DRIN!!!!!!!!!!");
+
+            // set global varibales
+            arrangementDbIdFromLink = tmpDbId;
+            arrangementNumberInListView = tmpNumberinListView;
+            evaluateNextArrangement = tmpEvalNext;
 
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("show_arrangement_now");
@@ -727,11 +775,25 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
     }
 
+    // geter for DB-Id of sketch arrangement
+    public int getSketchArrangementDbIdFromLink () {
+
+        return arrangementSketchDbIdFromLink;
+
+    }
+
 
     // geter for arrangement number in listview
     public int getArrangementNumberInListview () {
 
         return arrangementNumberInListView;
+
+    }
+
+    // geter for sketch arrangement number in listview
+    public int getSketchArrangementNumberInListview () {
+
+        return arrangementSketchNumberInListView;
 
     }
 

@@ -104,10 +104,10 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
 
         // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
-        arrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
+        arrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getSketchArrangementDbIdFromLink();
         if (arrangementDbIdToComment < 0) arrangementDbIdToComment = 0; // check borders
         // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
-        sketchArrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
+        sketchArrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getSketchArrangementNumberInListview();
         if (sketchArrangementNumberInListView < 1) sketchArrangementNumberInListView = 1; // check borders
 
         // check for comment limitations
