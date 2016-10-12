@@ -768,14 +768,14 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
 
-    // geter for DB-Id of arrangement
+    // getter for DB-Id of arrangement
     public int getArrangementDbIdFromLink () {
 
         return arrangementDbIdFromLink;
 
     }
 
-    // geter for DB-Id of sketch arrangement
+    // getter for DB-Id of sketch arrangement
     public int getSketchArrangementDbIdFromLink () {
 
         return arrangementSketchDbIdFromLink;
@@ -783,14 +783,14 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
-    // geter for arrangement number in listview
+    // getter for arrangement number in listview
     public int getArrangementNumberInListview () {
 
         return arrangementNumberInListView;
 
     }
 
-    // geter for sketch arrangement number in listview
+    // getter for sketch arrangement number in listview
     public int getSketchArrangementNumberInListview () {
 
         return arrangementSketchNumberInListView;

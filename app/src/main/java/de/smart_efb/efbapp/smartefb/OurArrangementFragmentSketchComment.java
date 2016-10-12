@@ -45,7 +45,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
     SharedPreferences.Editor prefsEditor;
 
     // DB-Id of arrangement to comment
-    int arrangementDbIdToComment = 0;
+    int sketchArrangementDbIdToComment = 0;
 
     // arrangement number in list view
     int sketchArrangementNumberInListView = 0;
@@ -86,8 +86,15 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
         fragmentSketchCommentContext = getActivity().getApplicationContext();
 
-        // init the fragment now
-        initFragmentSketchComment();
+        // call getter function in ActivityOurArrangment
+        callGetterFunctionInSuper();
+
+        // init the fragment now only when an arrangement is choosen
+        if (sketchArrangementDbIdToComment != 0) {
+
+            // init the fragment now
+            initFragmentSketchComment();
+        }
 
     }
 
@@ -102,24 +109,11 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         prefs = fragmentSketchCommentContext.getSharedPreferences("smartEfbSettings", fragmentSketchCommentContext.MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
-
-        // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
-        arrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getSketchArrangementDbIdFromLink();
-        if (arrangementDbIdToComment < 0) arrangementDbIdToComment = 0; // check borders
-        // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
-        sketchArrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getSketchArrangementNumberInListview();
-        if (sketchArrangementNumberInListView < 1) sketchArrangementNumberInListView = 1; // check borders
-
-        // check for comment limitations
-        commentLimitationBorder = ((ActivityOurArrangement)getActivity()).isCommentLimitationBorderSet("sketch");
-
-
-
         // get choosen arrangement
-        cursorChoosenSketchArrangement = myDb.getRowSketchOurArrangement(arrangementDbIdToComment);
+        cursorChoosenSketchArrangement = myDb.getRowSketchOurArrangement(sketchArrangementDbIdToComment);
 
         // get all comments for choosen sketch arrangement
-        cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(arrangementDbIdToComment);
+        cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(sketchArrangementDbIdToComment);
 
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
         String tmpSubtitle = String.format(getResources().getString(getResources().getIdentifier("subtitleFragmentSketchCommentText", "string", fragmentSketchCommentContext.getPackageName())), sketchArrangementNumberInListView);
@@ -196,9 +190,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentUnlimitedText);
         }
 
-
-
-
         // build text element count sketch comment
         if (prefs.getInt("commentSketchOurArrangementCountComment", 0) == 0) {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentCountZero);
@@ -269,7 +260,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 if (sketchCommentNoError) {
 
                     // insert comment in DB
-                    long newId = myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString("userName", "John Doe"), System.currentTimeMillis(), arrangementDbIdToComment, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()));
+                    long newId = myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString("userName", "John Doe"), System.currentTimeMillis(), sketchArrangementDbIdToComment, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()));
 
                     // Toast "Comment sucsessfull send"
                     Toast.makeText(fragmentSketchCommentContext, fragmentSketchCommentContext.getResources().getString(R.string.sketchCommentSuccsesfulySend), Toast.LENGTH_SHORT).show();
@@ -307,6 +298,28 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         });
 
         // End build the view
+
+    }
+
+
+    // call getter Functions in ActivityOurArrangement for some data
+    private void callGetterFunctionInSuper () {
+
+        int tmpArrangementDbIdToComment = 0;
+
+        // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
+        tmpArrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getSketchArrangementDbIdFromLink();
+
+        if (tmpArrangementDbIdToComment > 0) {
+            sketchArrangementDbIdToComment = tmpArrangementDbIdToComment;
+
+            // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
+            sketchArrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getSketchArrangementNumberInListview();
+            if (sketchArrangementNumberInListView < 1) sketchArrangementNumberInListView = 1; // check borders
+
+            // check for comment limitations
+            commentLimitationBorder = ((ActivityOurArrangement)getActivity()).isCommentLimitationBorderSet("current");
+        }
 
     }
 
@@ -356,7 +369,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 // add new entry text to linear layout
                 aadn_inner_layout.addView (txtViewCommentNewEntry);
 
-                // delet status new entry in db
+                // delete status new entry in db
                 myDb.deleteStatusNewEntryOurArrangementSketchComment(cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
             }
 

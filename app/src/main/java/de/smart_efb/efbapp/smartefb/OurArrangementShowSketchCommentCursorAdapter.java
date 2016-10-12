@@ -70,8 +70,8 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
             String txtnewEntryOfArrangement = context.getResources().getString(R.string.newEntryText);
             newEntryOfArrangement.setText(txtnewEntryOfArrangement);
 
-            // delet status new entry in db
-            myDb.deleteStatusNewEntryOurArrangementComment(cursor.getInt(cursor.getColumnIndex(myDb.KEY_ROWID)));
+            // delete status new entry in db
+            myDb.deleteStatusNewEntryOurArrangementSketchComment(cursor.getInt(cursor.getColumnIndex(myDb.KEY_ROWID)));
         }
 
         // show actual comment

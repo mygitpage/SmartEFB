@@ -156,6 +156,7 @@
     <string name="infoTextNowCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
     <string name="infoTextNowCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
 
+    <string name="errorInputArrangementComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz!</string>
 
 
 

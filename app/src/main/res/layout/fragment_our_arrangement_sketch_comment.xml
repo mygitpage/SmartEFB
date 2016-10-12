@@ -4,11 +4,6 @@
     android:layout_height="fill_parent"
     android:fillViewport="true">
 
-    <!--
-    android:scrollbars = "vertical"
-    android:scrollbarStyle="insideInset">
-    -->
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,15 +15,11 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
-
-
-
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingBottom="5dp">
-
 
             <TextView
                 android:id="@+id/sketchArrangementCommentNumberIntro"
@@ -48,8 +39,6 @@
                 android:textColorLink="@color/colorPrimary"
                 android:gravity="right"/>
 
-
-
         </LinearLayout>
 
         <TextView
@@ -61,9 +50,6 @@
             android:gravity="left"
             android:paddingLeft="10dp"
             android:paddingBottom="5dp"/>
-
-
-
 
         <TextView
             android:id="@+id/introStructQuestionForCommentSketchArrangement"
@@ -144,13 +130,7 @@
                 android:gravity="center"
                 android:layout_weight="0.2" />
 
-
         </RadioGroup>
-
-
-
-
-
 
         <TextView
             android:id="@+id/introFreeQuestionForCommentSketchArrangement"
@@ -175,9 +155,6 @@
             android:text="@string/errorFreeQuestionForCommentSketchArrangement"
             android:paddingBottom="5dp"/>
 
-
-
-
         <EditText
             android:id="@+id/inputSketchArrangementComment"
             android:layout_width="match_parent"
@@ -190,7 +167,6 @@
             android:textColorHint="@color/text_color_white"
             android:inputType="textNoSuggestions|text|textMultiLine"
             android:padding="5dp"/>
-
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
@@ -224,8 +200,6 @@
 
         </LinearLayout>
 
-
-
         <TextView
             android:id="@+id/infoSketchCommentMaxAndCount"
             android:layout_width="wrap_content"
@@ -234,8 +208,6 @@
             android:textColor="@color/text_color"
             android:gravity="center"
             android:paddingBottom="35dp"/>
-
-
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -246,8 +218,6 @@
             android:id="@+id/commentSketchHistoryContainer"
             android:visibility="visible">
 
-
-
             <TextView
                 android:id="@+id/commentSketchHistoryIntro"
                 android:layout_width="match_parent"
@@ -256,8 +226,6 @@
                 android:textColor="@color/text_color"
                 android:gravity="left"
                 android:textStyle="bold" />
-
-
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"

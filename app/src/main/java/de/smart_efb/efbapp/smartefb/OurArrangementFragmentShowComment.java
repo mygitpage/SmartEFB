@@ -63,11 +63,19 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
         fragmentShowCommentContext = getActivity().getApplicationContext();
 
-        // init the fragment now
-        initFragmentShowComment();
+        // call getter function in ActivityOurArrangment
+        callGetterFunctionInSuper();
 
-        // show actual comment set for arrangement
-        displayActualCommentSet();
+        // init and display data from fragment show comment only when an arrangement is choosen
+        if (arrangementDbIdToShow != 0) {
+
+            // init the fragment now
+            initFragmentShowComment();
+
+            // show actual comment set for arrangement
+            displayActualCommentSet();
+
+        }
 
     }
 
@@ -83,18 +91,43 @@ public class OurArrangementFragmentShowComment extends Fragment {
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
 
+        /*
         // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
         arrangementDbIdToShow = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
         if (arrangementDbIdToShow < 0) arrangementDbIdToShow = 0; // check borders
         // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
         arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
         if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
+        */
 
         // Set correct subtitle in Activity -> "Kommentare Absprache ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentShowCommentText", "string", fragmentShowCommentContext.getPackageName())) + " " + arrangementNumberInListView;
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "showComment");
 
     }
+
+
+
+    // call getter Functions in ActivityOurArrangement for some data
+    private void callGetterFunctionInSuper () {
+
+        int tmpArrangementDbIdToComment = 0;
+
+        // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
+        tmpArrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
+
+        if (tmpArrangementDbIdToComment > 0) {
+            arrangementDbIdToShow = tmpArrangementDbIdToComment;
+
+            // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
+            arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
+            if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
+
+        }
+
+    }
+
+
 
 
     public void displayActualCommentSet () {

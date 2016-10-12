@@ -82,17 +82,26 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
         fragmentNowCommentContext = getActivity().getApplicationContext();
 
-        // init the fragment now
-        initFragmentNowComment();
+        // call getter function in ActivityOurArrangment
+        callGetterFunctionInSuper();
+
+        // init the fragment now only when an arrangement is choosen
+        if (arrangementDbIdToComment != 0) {
+
+            Log.d("Kommentieren Apsrachen","Init Fragment");
+
+            initFragmentNowComment();
+        }
+
+        Log.d("Kommentieren Apsrachen","Ende OnViewCreate->"+arrangementDbIdToComment);
+
+
 
     }
 
 
     // inits the fragment for use
     private void initFragmentNowComment() {
-
-        Log.d("Kommentieren Apsrachen","DRIN!!!!!!!!!!");
-
 
         // init the DB
         myDb = new DBAdapter(fragmentNowCommentContext);
@@ -101,24 +110,8 @@ public class OurArrangementFragmentNowComment extends Fragment {
         prefs = fragmentNowCommentContext.getSharedPreferences("smartEfbSettings", fragmentNowCommentContext.MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
-        // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
-        arrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
-        if (arrangementDbIdToComment < 0) arrangementDbIdToComment = 0; // check borders
-        // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
-        arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
-        if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
-
-        // check for comment limitations
-        commentLimitationBorder = ((ActivityOurArrangement)getActivity()).isCommentLimitationBorderSet("current");
-
         // get choosen arrangement
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToComment);
-
-
-        Log.d("Kommentieren Apsrachen","ChoosenArr Anzahl:"+cursorChoosenArrangement.getCount());
-        Log.d("Kommentieren Apsrachen","ChoosenArr DB ID:"+arrangementDbIdToComment);
-
-
 
         // get all comments for choosen arrangement
         cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementDbIdToComment);
@@ -207,7 +200,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
             public void onClick(View v) {
 
 
-                if (txtInputArrangementComment.getText().toString().length() > 1) {
+                if (txtInputArrangementComment.getText().toString().length() > 3) {
 
                     // insert comment in DB
                     long newID = myDb.insertRowOurArrangementComment(txtInputArrangementComment.getText().toString(), prefs.getString("userName", "John Doe"), System.currentTimeMillis() , arrangementDbIdToComment, true, prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()));
@@ -227,8 +220,10 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     getActivity().startActivity(intent);
 
                 } else {
-                    // Toast "Comment to short"
-                    Toast.makeText(fragmentNowCommentContext, fragmentNowCommentContext.getResources().getString(R.string.commentToShort), Toast.LENGTH_SHORT).show();
+
+                    TextView tmpErrorTextView = (TextView) viewFragmentNowComment.findViewById(R.id.errorInputArrangementComment);
+                    tmpErrorTextView.setVisibility(View.VISIBLE);
+
                 }
 
             }
@@ -250,6 +245,28 @@ public class OurArrangementFragmentNowComment extends Fragment {
         });
 
         // End build the view
+
+    }
+
+
+    // call getter Functions in ActivityOurArrangement for some data
+    private void callGetterFunctionInSuper () {
+
+        int tmpArrangementDbIdToComment = 0;
+
+        // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
+        tmpArrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
+
+        if (tmpArrangementDbIdToComment > 0) {
+            arrangementDbIdToComment = tmpArrangementDbIdToComment;
+
+            // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
+            arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
+            if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
+
+            // check for comment limitations
+            commentLimitationBorder = ((ActivityOurArrangement)getActivity()).isCommentLimitationBorderSet("current");
+        }
 
     }
 

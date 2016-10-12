@@ -91,8 +91,15 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         fragmentEvaluateContext = getActivity().getApplicationContext();
 
-        // init the fragment now
-        initFragmentEvaluate();
+        // call getter function in ActivityOurArrangment
+        callGetterFunctionInSuper();
+
+        // init the fragment evaluate only when an arrangement is choosen
+        if (arrangementDbIdToEvaluate != 0) {
+
+            // init the fragment now
+            initFragmentEvaluate();
+        }
 
     }
 
@@ -105,15 +112,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         // init the prefs
         prefs = fragmentEvaluateContext.getSharedPreferences("smartEfbSettings", fragmentEvaluateContext.MODE_PRIVATE);
-
-        // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
-        arrangementDbIdToEvaluate = ((ActivityOurArrangement) getActivity()).getArrangementDbIdFromLink();
-        if (arrangementDbIdToEvaluate < 0) arrangementDbIdToEvaluate = 0; // check borders
-        // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
-        arrangementNumberInListView = ((ActivityOurArrangement) getActivity()).getArrangementNumberInListview();
-        if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
-        // call getter-methode getEvaluateNextArrangement() in ActivityOurArrangement for evaluation next arrangement?
-        evaluateNextArrangement = ((ActivityOurArrangement) getActivity()).getEvaluateNextArrangement();
 
         // get choosen arrangement
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToEvaluate);
@@ -442,6 +440,29 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     break;
             }
 
+        }
+
+    }
+
+
+
+    // call getter Functions in ActivityOurArrangement for some data
+    private void callGetterFunctionInSuper () {
+
+        int tmpArrangementDbIdToComment = 0;
+
+        // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
+        tmpArrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
+
+        if (tmpArrangementDbIdToComment > 0) {
+            arrangementDbIdToEvaluate = tmpArrangementDbIdToComment;
+
+            // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
+            arrangementNumberInListView = ((ActivityOurArrangement) getActivity()).getArrangementNumberInListview();
+            if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
+
+            // call getter-methode getEvaluateNextArrangement() in ActivityOurArrangement for evaluation next arrangement?
+            evaluateNextArrangement = ((ActivityOurArrangement) getActivity()).getEvaluateNextArrangement();
         }
 
     }
