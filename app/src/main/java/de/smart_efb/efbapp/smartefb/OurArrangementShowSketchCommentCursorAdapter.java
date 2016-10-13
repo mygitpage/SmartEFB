@@ -24,6 +24,12 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
 
     final Context contextForActivity;
 
+    // count Array-elements for text description of scales levels
+    final static int countScalesLevel = 5;
+
+    // Array for text description of scales levels
+    private String[] evaluateSketchCommentScalesLevel = new String [countScalesLevel];
+
     // DB-Id of arrangement
     int arrangementDbIdToShow = 0;
 
@@ -57,6 +63,10 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
         // init the DB
         myDb = new DBAdapter(context);
 
+        // init array for text description of scales levels
+        evaluateSketchCommentScalesLevel = context.getResources().getStringArray(R.array.evaluateSketchCommentScalesLevel);
+
+
     }
 
 
@@ -78,6 +88,12 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
         TextView textViewShowActualComment = (TextView) view.findViewById(R.id.listActualTextSketchComment);
         String actualComment = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT));
         textViewShowActualComment.setText(actualComment);
+
+        // show actual result struct question
+        TextView textViewShowResultStructQuestion = (TextView) view.findViewById(R.id.listActualResultStructQuestion);
+        String actualResultStructQuestion = context.getResources().getString(R.string.textSketchCommentActualResultStructQuestion);
+        actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateSketchCommentScalesLevel[cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1))-1]);
+        textViewShowResultStructQuestion.setText(actualResultStructQuestion);
 
         // show author and date
         TextView textViewShowActualAuthorAndDate = (TextView) view.findViewById(R.id.listActualSketchCommentAuthorAndDate);

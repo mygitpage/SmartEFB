@@ -28,6 +28,12 @@ import android.widget.Toast;
  */
 public class OurArrangementFragmentSketchComment extends Fragment {
 
+    // count Array-elements for text description of scales levels
+    final static int countScalesLevel = 5;
+
+    // Array for text description of scales levels
+    private String[] evaluateSketchCommentScalesLevel = new String [countScalesLevel];
+
     // fragment view
     View viewFragmentSketchComment;
 
@@ -109,6 +115,9 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         prefs = fragmentSketchCommentContext.getSharedPreferences("smartEfbSettings", fragmentSketchCommentContext.MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
+        // init array for text description of scales levels
+        evaluateSketchCommentScalesLevel = getResources().getStringArray(R.array.evaluateSketchCommentScalesLevel);
+
         // get choosen arrangement
         cursorChoosenSketchArrangement = myDb.getRowSketchOurArrangement(sketchArrangementDbIdToComment);
 
@@ -173,8 +182,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 e.printStackTrace();
             }
         }
-
-
 
         // textview for max comments and count comments
         TextView textViewMaxAndCount = (TextView) viewFragmentSketchComment.findViewById(R.id.infoSketchCommentMaxAndCount);
@@ -339,6 +346,18 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             l_inner_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             l_inner_layout.setOrientation(LinearLayout.VERTICAL);
 
+            //add textView for actual result struct question
+            TextView txtViewSketchCommentResultStructQuestion = new TextView (fragmentSketchCommentContext);
+            String actualResultStructQuestion = getResources().getString(R.string.textSketchCommentActualResultStructQuestion);
+            actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateSketchCommentScalesLevel[cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1))-1]);
+            txtViewSketchCommentResultStructQuestion.setText(actualResultStructQuestion);
+            txtViewSketchCommentResultStructQuestion.setId(actualCursorNumber);
+            txtViewSketchCommentResultStructQuestion.setTextColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.text_color));
+            txtViewSketchCommentResultStructQuestion.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            txtViewSketchCommentResultStructQuestion.setTextSize(12);
+            txtViewSketchCommentResultStructQuestion.setGravity(Gravity.LEFT);
+            txtViewSketchCommentResultStructQuestion.setPadding(15,0,0,0);
+
             //add textView for comment text
             TextView txtViewCommentText = new TextView (fragmentSketchCommentContext);
             txtViewCommentText.setText(cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT)));
@@ -388,6 +407,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             aadn_inner_layout.addView (txtViewCommentAuthorAndDate);
 
             // add elements to inner linear layout
+            l_inner_layout.addView (txtViewSketchCommentResultStructQuestion);
             l_inner_layout.addView (txtViewCommentText);
             l_inner_layout.addView (aadn_inner_layout);
 

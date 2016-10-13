@@ -190,10 +190,12 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         }
 
-        // view the intro text SaveAndBackButton, calculate the percent and set it in the text
+        // view the intro text SaveAndBackButton
+        /*
         TextView textSaveAndBackButtonIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateSaveAndBackButtonIntro);
-        String tmpSaveAndBackButtonIntroText = String.format(this.getResources().getString(R.string.evaluateSaveAndBackButtonIntroText), arrangementNumberInListView, 100);
-        textSaveAndBackButtonIntro.setText(Html.fromHtml(tmpSaveAndBackButtonIntroText));
+        String tmpSaveAndBackButtonIntroText = this.getResources().getString(R.string.evaluateSaveAndBackButtonIntroText);
+        textSaveAndBackButtonIntro.setText(tmpSaveAndBackButtonIntroText);
+        */
 
         // set onClickListener for radio button in radio group question 1-4
         String tmpRessourceName ="";

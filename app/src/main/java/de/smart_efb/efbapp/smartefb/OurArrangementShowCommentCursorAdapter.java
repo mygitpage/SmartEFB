@@ -65,6 +65,7 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
         // init the DB
         myDb = new DBAdapter(context);
 
+
     }
 
 

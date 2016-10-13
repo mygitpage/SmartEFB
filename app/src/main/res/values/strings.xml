@@ -191,23 +191,24 @@
     <string name="commentTextEvaluateResult">Ihre Anmerkungen zu Ihrer Bewertung</string>
 
 
-    <string name="evaluateSuggestionAlways">Immer</string>
-    <string name="evaluateSuggestionNever">Nie</string>
-    <string name="evaluateSuggestionNotAffected">Nicht\nbetroffen</string>
+
+    <string name="evaluateArrangementSuggestion_1">Immer\n</string>
+    <string name="evaluateArrangementSuggestion_2">Fast\nimmer</string>
+    <string name="evaluateArrangementSuggestion_3">50/50\n</string>
+    <string name="evaluateArrangementSuggestion_4">Kaum\n</string>
+    <string name="evaluateArrangementSuggestion_5">Nie\n</string>
+    <string name="evaluateArrangementSuggestion_6">Nicht\nbetroffen</string>
 
     <string name="commentEvaluateResultTextFieldHintText">Bitte geben Sie Ihre Anmerkungen hier ein.</string>
-
-    <string name="evaluateSaveAndBackButtonIntroText">Bitte klicken Sie auf Speichern. Sie gelangen dann zur nächsten zu bewertenden Absprache. Die Absprache %1$d haben Sie bisher mit %2$d Prozent <u>immer</u> eingehalten.</string>
-
 
     <string name="evaluateResultSuccsesfulySend">Vielen Dank für die Bewertung der letzten Absprache!</string>
 
     <string name="evaluateResultNotCompletely">Ihre Bewertung ist nicht vollständig! Bitte kontrollieren Sie die markierten Fragen!</string>
     <string name="evaluateErrorTextByQuestion">Bitte kontrollieren Sie diese Frage!</string>
 
-    <string name="showNextArrangementToEvaluateIntroText">Bitte bewerten Sie als nächstes Absprache %1$d.</string>
+    <string name="showNextArrangementToEvaluateIntroText">Bitte klicken Sie auf Speichern und bewerten Sie als nächstes Absprache %1$d.</string>
 
-    <string name="showNothingNextArrangementToEvaluateText">Es sind keine weiteren Absprachen zu bewerten.</string>
+    <string name="showNothingNextArrangementToEvaluateText">Bitte klicken Sie auf Speichern. Es sind keine weiteren Absprachen zu bewerten.</string>
 
     <string name="evaluateThankAndNextEvaluationText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die folgende Absprache.</string>
     <string name="evaluateThankAndNextEvaluationLastText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die letzte Absprache.</string>
@@ -239,8 +240,7 @@
 
     <string name="buttonSendSketchArrangementComment">Einschätzung senden</string>
 
-    <string name="evaluateSuggestionRejection">Keine</string>
-    <string name="evaluateSuggestionApproval">Völlig</string>
+
 
 
     <string name="ourArrangementBackLinkToSketchArrangement">Zurück zu allen Entwürfen</string>
@@ -265,6 +265,13 @@
 
     <string name="showSketchCommentIntroText">Die Einschätzungen zum Entwurf</string>
 
+    <string name="evaluateSketchSuggestion_1">Sehr stark</string>
+    <string name="evaluateSketchSuggestion_2">Stark</string>
+    <string name="evaluateSketchSuggestion_3">Mittelmäßig</string>
+    <string name="evaluateSketchSuggestion_4">Wenig</string>
+    <string name="evaluateSketchSuggestion_5">Keine</string>
+
+    <string name="textSketchCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Entwurf abgegeben: %1$s</string>
 
     <!-- End fragment comment sketch arrangement -->
 

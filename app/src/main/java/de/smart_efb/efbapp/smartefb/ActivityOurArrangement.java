@@ -147,11 +147,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
                                 break;
                         }
                         break;
-
-
-
-                    case 1: // title for tab one
-
+                   case 1: // title for tab one
                         switch (showCommandFragmentTabOne) {
                             case "show_sketch_arrangement":
                                 tmpSubtitleText = arraySubTitleText[1];
@@ -164,14 +160,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                                 break;
                         }
                         break;
-
-
-
-
-
-
-
-
                     case 2: // title for tab two
                         tmpSubtitleText = arraySubTitleText[2];
                         break;
@@ -182,8 +170,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                 // set toolbar text
                 toolbar.setSubtitle(tmpSubtitleText);
-                Log.d("TabListener","Subtitle: "+tmpSubtitleText);
-
 
                 // call viewpager
                 viewPagerOurArrangement.setCurrentItem(tab.getPosition());
@@ -286,8 +272,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         } else if (command.equals("comment_an_arrangement")) { // Show fragment comment arrangement
 
-            Log.d("Absprache kommentieren","DRIN!!!!!!!!!!");
-
             // set global varibales
             arrangementDbIdFromLink = tmpDbId;
             arrangementNumberInListView = tmpNumberinListView;
@@ -307,8 +291,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // set correct subtitle in toolbar in tab zero
             toolbar.setSubtitle(arraySubTitleText[3]);
-
-
 
         } else if (command.equals("evaluate_an_arrangement")) { // Show evaluate a arrangement
 
@@ -335,8 +317,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         } else if (command.equals("comment_an_sketch_arrangement")) { // Comment sketch arrangement -> TAB ONE
 
-            Log.d("Entuwrf einschaetzen","DRIN!!!!!!!!!!");
-
             // set global varibales
             arrangementSketchDbIdFromLink = tmpDbId;
             arrangementSketchNumberInListView = tmpNumberinListView;
@@ -356,10 +336,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // set correct subtitle in toolbar in tab one
             toolbar.setSubtitle(arraySubTitleText[6]);
 
-
         } else if (command.equals("show_sketch_arrangement")) { // Show sketch Arrangments -> TAB ONE
-
-            Log.d("Entwurf anzeigen","DRIN!!!!!!!!!!");
 
             // set global varibales
             arrangementSketchDbIdFromLink = tmpDbId;
@@ -382,8 +359,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         } else if (command.equals("show_comment_for_sketch_arrangement")) { // Show comments for sketch Arrangments -> TAB ONE
 
-            Log.d("Zeige alle Einschaetzun","DRIN!!!!!!!!!!");
-
             // set global varibales
             arrangementSketchDbIdFromLink = tmpDbId;
             arrangementSketchNumberInListView = tmpNumberinListView;
@@ -403,11 +378,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // set correct subtitle in toolbar in tab one
             toolbar.setSubtitle(arraySubTitleText[7]);
 
-
         }
         else { // Show fragment arrangement now -> Tab 0
-
-            Log.d("Absprachen anzeigen","DRIN!!!!!!!!!!");
 
             // set global varibales
             arrangementDbIdFromLink = tmpDbId;
@@ -428,7 +400,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // set correct subtitle in toolbar in tab zero
             toolbar.setSubtitle(arraySubTitleText[0]);
-
 
         }
 

@@ -152,4 +152,14 @@
         <item>10++ Einschätzungen</item>
     </string-array>
 
+
+    <!--  -->
+    <string-array name="evaluateSketchCommentScalesLevel">
+        <item>@string/evaluateSketchSuggestion_1</item>
+        <item>@string/evaluateSketchSuggestion_2</item>
+        <item>@string/evaluateSketchSuggestion_3</item>
+        <item>@string/evaluateSketchSuggestion_4</item>
+        <item>@string/evaluateSketchSuggestion_5</item>
+    </string-array>
+
 </resources>
