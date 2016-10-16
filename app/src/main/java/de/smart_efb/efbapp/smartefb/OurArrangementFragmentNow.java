@@ -59,7 +59,6 @@ public class OurArrangementFragmentNow extends Fragment {
 
         return viewFragmentNow;
 
-
     }
 
 
@@ -76,7 +75,6 @@ public class OurArrangementFragmentNow extends Fragment {
         // show actual arrangement set
         displayActualArrangementSet();
 
-
     }
 
 
@@ -87,10 +85,7 @@ public class OurArrangementFragmentNow extends Fragment {
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentNowBrodcastReceiver);
 
-
     }
-
-
 
 
     // Broadcast receiver for action ARRANGEMENT_EVALUATE_STATUS_UPDATE -> comes from alarmmanager ourArrangement
@@ -128,7 +123,6 @@ public class OurArrangementFragmentNow extends Fragment {
         // ask methode isCommentLimitationBorderSet() in ActivityOurArrangement to limitation in comments? true-> yes, linitation; false-> no
         commentLimitationBorder = ((ActivityOurArrangement) getActivity()).isCommentLimitationBorderSet("current");
 
-
     }
 
 
@@ -139,7 +133,6 @@ public class OurArrangementFragmentNow extends Fragment {
 
         // find the listview
         ListView listView = (ListView) viewFragmentNow.findViewById(R.id.listOurArrangementNow);
-
 
         if (cursor.getCount() > 0 && listView != null) {
 

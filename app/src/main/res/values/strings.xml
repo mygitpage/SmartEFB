@@ -16,6 +16,12 @@
 
 
 
+
+
+
+
+
+
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Main Activity Start -->
     <!-- Main Menue Element Strings Start-->
@@ -61,307 +67,210 @@
 
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Activity Our Arrangements -->
-    <!-- String Activity Our Arrangement -->
 
-    <string name="ourArrangementBackLinkToArrangement">Zurück zu allen Absprachen</string>
 
-    <string name="newEntryText">(Neu)</string>
-
-
-
-
-
-    <!-- fragment show old arrangements -->
-
-    <string name="ourArrangementOldArrangementFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
-
-    <string name="ourArrangementOldArrangementNothingThere">Es sind keine älteren Absprachen vorhanden!</string>
-
-    <string name="ourArrangementOldArrangementDateIntro">Absprachen vom</string>
-
-    <!-- End fragment show old arrangements -->
-
-
-
-    <!-- fragment show current arrangements -->
-    <string name="ourArrangementNowArrangementNothingThere">Es sind keine aktuellen Absprachen vorhanden!</string>
-
-    <string name="ourArrangementIntroText">Die aktuellen Absprachen vom</string>
-
-    <!-- End show now arrangements -->
-
-
-
-    <!-- Subtitle under Title Our Arrangement -->
-    <string name="currentArrangementDateFrom">Aktuell vom</string>
-    <string name="olderArrangementDateFrom">Älter als</string>
-    <string name="commentArrangementsubtitle">Absprache kommentieren</string>
-    <string name="showCommentArrangementsubtitle">Gewählte Kommentare zeigen</string>
-    <string name="evaluateArrangementsubtitle">Absprache bewerten</string>
-    <string name="sketchArrangementsubtitle">Entwürfe vom</string>
-
-    <string name="subtitleNothingThere">Keine Absprachen vorhanden</string>
-
-    <string name="subtitleSketchNothingThere">Keine Entwürfe vorhanden</string>
-
-    <string name="subtitleNotAvailable">Funktion nicht möglich</string>
-
-    <string name="subtitleFragmentNowCommentText">Kommentieren Absprache</string>
-    <string name="subtitleFragmentShowCommentText">Kommentare Absprache</string>
-    <string name="subtitleFragmentEvaluateArrangementText">Bewerten Absprache</string>
-
-
-
-
-
-    <string name="subtitleFragmentSketchCommentText">Entwurf %1$d einschätzen</string>
-
-    <string name="subtitleFragmentShowSketchCommentText">Einschätzungen zu Entwurf</string>
-
-
-
-
-
-
-
-    <!-- End subtitle -->
-
-
-    <!-- Link text for comment, show comments and evaluate-->
-    <string name="ourArrangementCommentString">Kommentieren</string>
-    <string name="ourArrangementShowCommentString">Keine Kommentare</string>
-    <string name="ourArrangementEvaluateString">Bewerten</string>
-
-    <!-- End link text -->
-
-    <!-- String Fragment comment arrangement -->
-    <string name="arrangementComment">Absprachen kommentieren</string>
-    <string name="btnSendArrangementComment">Kommentar senden</string>
-    <string name="btnAbortComment">Zurück</string>
-    <string name="arrangementCommentIntro">Bitte kommentieren Sie Absprache</string>
-    <string name="commentHistoryIntroText">Alle bisherigen Kommentare zu Absprache</string>
-
-    <string name ="commentArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
-    <string name="commentSuccsesfulySend">Kommentar erfolgreich gesendet</string>
-    <string name="commentToShort">Ihr Kommentar ist zu kurz!</string>
-
-
-
-    <string name="infoTextNowCommentMaxSingular">Sie könnnen maximal %1$d Kommentar schreiben.</string>
-    <string name="infoTextNowCommentMaxPlural">Sie könnnen maximal %1$d Kommentare schreiben.</string>
-    <string name="infoTextNowCommentUnlimitedText">Sie können beliebig viele Kommentare schreiben.</string>
-
-
-    <string name="infoTextNowCommentCountZero">Sie haben noch keinen Kommentar geschrieben.</string>
-    <string name="infoTextNowCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
-    <string name="infoTextNowCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
-
-    <string name="errorInputArrangementComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz!</string>
-
-
-
-
-
-    <!-- End String Fragment comment -->
-
-
-    <!-- String Fragment show comment -->
-    <string name="btnAbortShowComment">Zurück zu allen Absprachen</string>
-    <string name="showCommentIntroText">Die Kommentare zur Absprache</string>
-
-    <string name="showArrangementIntroText">Absprache</string>
-
-    <!-- End String Fragment show comment -->
-
-
-    <!-- String Fragment evaluate arrangement -->
-    <string name="showEvaluateArrangementIntroText">Bewerten Sie Absprache</string>
-
-    <string name="btnSendEvaluateResult">Speichern</string>
-    <string name="btnAbortEvaluate">Zurück</string>
-
-    <string name="questionOneEvaluateMySelf">Wie haben Sie selbst die Absprache eingehalten?</string>
-
-    <string name="questionTwoEvaluateMyEx">Wie hat Ihr Ex-Partner die Absprache aus Ihrer Sicht eingehalten?</string>
-
-    <string name="questionThreeEvaluateChildreen">Wie haben Ihre Kinder die Absprache aus Ihrer Sicht eingehalten?</string>
-
-    <string name="questionFourEvaluateThirdPeople">Wie haben die weiteren beteiligten Personen diese Absprache eingehalten?</string>
-
-    <string name="commentTextEvaluateResult">Ihre Anmerkungen zu Ihrer Bewertung</string>
-
-
-
-    <string name="evaluateArrangementSuggestion_1">Immer\n</string>
-    <string name="evaluateArrangementSuggestion_2">Fast\nimmer</string>
-    <string name="evaluateArrangementSuggestion_3">50/50\n</string>
-    <string name="evaluateArrangementSuggestion_4">Kaum\n</string>
-    <string name="evaluateArrangementSuggestion_5">Nie\n</string>
-    <string name="evaluateArrangementSuggestion_6">Nicht\nbetroffen</string>
-
-    <string name="commentEvaluateResultTextFieldHintText">Bitte geben Sie Ihre Anmerkungen hier ein.</string>
-
-    <string name="evaluateResultSuccsesfulySend">Vielen Dank für die Bewertung der letzten Absprache!</string>
-
-    <string name="evaluateResultNotCompletely">Ihre Bewertung ist nicht vollständig! Bitte kontrollieren Sie die markierten Fragen!</string>
-    <string name="evaluateErrorTextByQuestion">Bitte kontrollieren Sie diese Frage!</string>
-
-    <string name="showNextArrangementToEvaluateIntroText">Bitte klicken Sie auf Speichern und bewerten Sie als nächstes Absprache %1$d.</string>
-
-    <string name="showNothingNextArrangementToEvaluateText">Bitte klicken Sie auf Speichern. Es sind keine weiteren Absprachen zu bewerten.</string>
-
-    <string name="evaluateThankAndNextEvaluationText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die folgende Absprache.</string>
-    <string name="evaluateThankAndNextEvaluationLastText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die letzte Absprache.</string>
-
-
-    <!-- End Fragment evaluate arrangement -->
-
-
-
-    <!-- fragment comment sketch arrangement -->
-    <string name="showSketchArrangementIntroText">Entwurf</string>
-
-
-
-    <string name="commentSketchArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
-
-
-
-    <string name="introStructQuestionForCommentSketchArrangement">Wie schätzen Sie Ihre Zustimmung zu dem Entwurf ein?</string>
-
-    <string name="errorStructQuestionForCommentSketchArrangement">Bitte wählen Sie eine Einschätzung!</string>
-
-
-    <string name="introFreeQuestionForCommentSketchArrangement">Bitte erläutern Sie Ihre obige Einschätzung</string>
-
-    <string name="errorFreeQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihren Text zur obigen Einschätzung! Er ist zu kurz!</string>
-
-    <string name="commentFreeQuestionSketchArrangementTextFieldHintText">Bitte erläutern Sie hier Ihre Einschätzung.</string>
-
-    <string name="buttonSendSketchArrangementComment">Einschätzung senden</string>
-
-
-
-
-    <string name="ourArrangementBackLinkToSketchArrangement">Zurück zu allen Entwürfen</string>
-
-    <string name="sketchCommentSuccsesfulySend">Einschätzung erfolgreich gesendet</string>
-
-
-
-    <string name="infoTextSketchCommentMaxSingular">Sie könnnen maximal %1$d Einschätzung schreiben.</string>
-    <string name="infoTextSketchCommentMaxPlural">Sie könnnen maximal %1$d Einschätzungen schreiben.</string>
-    <string name="infoTextSketchCommentUnlimitedText">Sie könnnen beliebig viele Einschätzungen schreiben.</string>
-
-
-    <string name="infoTextSketchCommentCountZero">Sie haben noch keine Einschätzung geschrieben.</string>
-    <string name="infoTextSketchCommentCountSingular">Davon haben Sie bereits %1$d Einschätzung geschrieben.</string>
-    <string name="infoTextSketchCommentCountPlural">Davon haben Sie bereits %1$d Einschätzungen geschrieben.</string>
-
-    <string name="ourArrangementAssessmentsString">Einschätzen</string>
-
-
-    <string name="commentSketchHistoryIntroText">Alle bisherigen Einschätzungen zum Entwurf</string>
-
-    <string name="showSketchCommentIntroText">Die Einschätzungen zum Entwurf</string>
-
-    <string name="evaluateSketchSuggestion_1">Sehr stark</string>
-    <string name="evaluateSketchSuggestion_2">Stark</string>
-    <string name="evaluateSketchSuggestion_3">Mittelmäßig</string>
-    <string name="evaluateSketchSuggestion_4">Wenig</string>
-    <string name="evaluateSketchSuggestion_5">Keine</string>
-
-    <string name="textSketchCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Entwurf abgegeben: %1$s</string>
-
-    <!-- End fragment comment sketch arrangement -->
-
-
-
-
-    <!-- Strings for tab title in activity our arrangement -->
-    <string name="ourArrangementTabTitle_1">Aktuell</string>
-    <string name="ourArrangementTabTitle_1a">Kommentieren</string>
-    <string name="ourArrangementTabTitle_1b">Kommentare</string>
-    <string name="ourArrangementTabTitle_1c">Bewerten</string>
-    <string name="ourArrangementTabTitle_2">Entwürfe</string>
-    <string name="ourArrangementTabTitle_2a">Einschätzen</string>
-    <string name="ourArrangementTabTitle_2b">Einschätzungen</string>
-    <string name="ourArrangementTabTitle_3">Ältere Absprachen</string>
-    <!-- End tab title -->
-
-
-
-    <!-- String Fragment sketch arrangement -->
-    <string name="ourArrangementSketchArrangementNothingThere">Es sind keine Entwürfe für Absprachen vorhanden!</string>
-
-    <string name="ourArrangementSketchArrangementFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
-
-
-    <string name="ourArrangementSketchIntroText">%1$s hat am %2$s folgende Entwürfe für Absprachen eingestellt.</string>
-
-    <string name="showSketchArrangementNumberText">Entwurf Absprache</string>
-
-
-
-
-
-    <!-- End Fragment sketch arrangement -->
-
-
-
-
-    <!-- our arrangement dialog settings -->
-
-    <string name="textDialogOurArrangementCloseDialog">Schließen</string>
-    <string name="textDialogOurArrangementTitleDialog">Einstellungen Absprachen</string>
-    <string name="textDialogOurArrangementSettingsIntro">Für die Funktion Absprachen gelten folgende Einstellungen.</string>
-
-
-    <string name="textDialogOurArrangementSettingsEvaluateEnable">Sie können Absprachen bewerten.</string>
-    <string name="textDialogOurArrangementSettingsEvaluateDisable">Sie können keine Absprachen bewerten.</string>
-    <string name="textDialogOurArrangementSettingsEvaluatePeriod">Der Bewertungszeitraum beginnt am %1$s um %2$s Uhr und endet am %3$s um %4$s Uhr.</string>
-
-    <string name="textDialogOurArrangementSettingsCommentEnable">Sie können Absprachen kommentieren.</string>
-    <string name="textDialogOurArrangementSettingsCommentDisable">Sie können Absprachen nicht kommentieren.</string>
-    <string name="textDialogOurArrangementSettingsCommentCountInfinitely">Dabei können Sie beliebig viele Kommentare schreiben.</string>
-    <string name="textDialogOurArrangementSettingsCommentCountPlural">Dabei können Sie maximal %1$d Kommentare schreiben.</string>
-    <string name="textDialogOurArrangementSettingsCommentCountSingular">Dabei können Sie maximal einen Kommentar schreiben.</string>
-
-
-    <string name="textDialogOurArrangementSettingsCommentCountNumberPlural">Seit dem %1$s haben Sie %2$d Kommentare geschrieben.</string>
-    <string name="textDialogOurArrangementSettingsCommentCountNumberSingular">Seit dem %1$s haben Sie einen Kommentar geschrieben.</string>
-    <string name="textDialogOurArrangementSettingsCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Kommentare geschrieben.</string>
-    <string name="textDialogOurArrangementSettingsCountCommentZero">Seit dem %1$s haben Sie noch keinen Kommentar geschrieben.</string>
-
-    <string name="textDialogOurArrangementSettingsOldArrangementEnable">Ihnen stehen die älteren Absprachen zur Verfügung.</string>
-    <string name="textDialogOurArrangementSettingsOldArrangementDisable">Ihnen stehen die älteren Absprachen nicht zur Verfügung.</string>
-
-    <string name="textDialogOurArrangementSettingsSketchArrangementEnable">Ihnen stehen die Entwürfe der Absprachen zur Verfügung.</string>
-    <string name="textDialogOurArrangementSettingsSketchArrangementDisable">Ihnen stehen die Entwürfe der Absprachen nicht zur Verfügung.</string>
-
-    <string name="textDialogOurArrangementSettingsSketchCommentArrangementEnable">Sie können die Entwürfe einschätzen.</string>
-    <string name="textDialogOurArrangementSettingsSketchCommentArrangementDisable">Sie können die Entwürfe nicht einschätzen.</string>
-
-    <string name="textDialogOurArrangementSettingsSketchCommentCountSingular">Dabei können Sie maximal eine Einschätzung schreiben.</string>
-    <string name="textDialogOurArrangementSettingsSketchCommentCountPlural">Dabei können Sie maximal %1$d Einschätzungen schreiben.</string>
-    <string name="textDialogOurArrangementSettingsSketchCommentCountInfinitely">Dabei können Sie beliebig viele Einschätzungen schreiben.</string>
-
-    <string name="textDialogOurArrangementSettingsSketchCommentCountNumberPlural">Seit dem %1$s haben Sie %2$d Einschätzungen geschrieben.</string>
-    <string name="textDialogOurArrangementSettingsSketchCommentCountNumberSingular">Seit dem %1$s haben Sie eine Einschätzung geschrieben.</string>
-    <string name="textDialogOurArrangementSettingsSketchCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Einschätzungen geschrieben.</string>
-    <string name="textDialogOurArrangementSettingsSketchCountCommentZero">Seit dem %1$s haben Sie noch keine Einschätzung geschrieben.</string>
-
-
-    <!-- End our arrangement dialog settings -->
-
-
-
-
+        <!-- Strings for tab title in activity our arrangement -->
+            <string name="ourArrangementTabTitle_1">Aktuell</string>
+            <string name="ourArrangementTabTitle_1a">Kommentieren</string>
+            <string name="ourArrangementTabTitle_1b">Kommentare</string>
+            <string name="ourArrangementTabTitle_1c">Bewerten</string>
+            <string name="ourArrangementTabTitle_2">Entwürfe</string>
+            <string name="ourArrangementTabTitle_2a">Einschätzen</string>
+            <string name="ourArrangementTabTitle_2b">Einschätzungen</string>
+            <string name="ourArrangementTabTitle_3">Ältere Absprachen</string>
+        <!-- End tab title -->
+
+        <!-- Subtitle under Title Our Arrangement -->
+            <string name="currentArrangementDateFrom">Aktuell vom</string>
+            <string name="olderArrangementDateFrom">Älter als</string>
+            <string name="commentArrangementsubtitle">Absprache kommentieren</string>
+            <string name="showCommentArrangementsubtitle">Gewählte Kommentare zeigen</string>
+            <string name="evaluateArrangementsubtitle">Absprache bewerten</string>
+            <string name="sketchArrangementsubtitle">Entwürfe vom</string>
+            <string name="subtitleNothingThere">Keine Absprachen vorhanden</string>
+            <string name="subtitleSketchNothingThere">Keine Entwürfe vorhanden</string>
+            <string name="subtitleNotAvailable">Funktion nicht möglich</string>
+            <string name="subtitleFragmentNowCommentText">Kommentieren Absprache</string>
+            <string name="subtitleFragmentShowCommentText">Kommentare Absprache</string>
+            <string name="subtitleFragmentEvaluateArrangementText">Bewerten Absprache</string>
+            <string name="subtitleFragmentSketchCommentText">Entwurf %1$d einschätzen</string>
+            <string name="subtitleFragmentShowSketchCommentText">Einschätzungen zu Entwurf</string>
+        <!-- End subtitle -->
+
+        <!-- String Activity Our Arrangement -->
+            <string name="ourArrangementBackLinkToArrangement">Zurück zu allen Absprachen</string>
+            <string name="newEntryText">(Neu)</string>
+        <!-- End String Activity Our Arrangement -->
+
+        <!-- fragment show old arrangements -->
+            <string name="ourArrangementOldArrangementFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
+            <string name="ourArrangementOldArrangementNothingThere">Es sind keine älteren Absprachen vorhanden!</string>
+            <string name="ourArrangementOldArrangementDateIntro">Absprachen vom</string>
+        <!-- End fragment show old arrangements -->
+
+        <!-- fragment show current arrangements -->
+            <string name="ourArrangementNowArrangementNothingThere">Es sind keine aktuellen Absprachen vorhanden!</string>
+            <string name="ourArrangementIntroText">Die aktuellen Absprachen vom</string>
+        <!-- End show now arrangements -->
+
+        <!-- Link text for comment, show comments and evaluate-->
+            <string name="ourArrangementCommentString">Kommentieren</string>
+            <string name="ourArrangementShowCommentString">Keine Kommentare</string>
+            <string name="ourArrangementEvaluateString">Bewerten</string>
+        <!-- End link text -->
+
+        <!-- String Fragment comment arrangement -->
+            <string name="arrangementComment">Absprachen kommentieren</string>
+            <string name="btnSendArrangementComment">Kommentar senden</string>
+            <string name="btnAbortComment">Zurück</string>
+            <string name="arrangementCommentIntro">Bitte kommentieren Sie Absprache</string>
+            <string name="commentHistoryIntroText">Alle bisherigen Kommentare zu Absprache</string>
+            <string name ="commentArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
+            <string name="commentSuccsesfulySend">Kommentar erfolgreich gesendet</string>
+            <string name="commentToShort">Ihr Kommentar ist zu kurz!</string>
+            <string name="infoTextNowCommentMaxSingular">Sie könnnen maximal %1$d Kommentar schreiben.</string>
+            <string name="infoTextNowCommentMaxPlural">Sie könnnen maximal %1$d Kommentare schreiben.</string>
+            <string name="infoTextNowCommentUnlimitedText">Sie können beliebig viele Kommentare schreiben.</string>
+            <string name="infoTextNowCommentCountZero">Sie haben noch keinen Kommentar geschrieben.</string>
+            <string name="infoTextNowCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
+            <string name="infoTextNowCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
+            <string name="errorInputArrangementComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz!</string>
+        <!-- End String Fragment comment -->
+
+        <!-- String Fragment show comment -->
+            <string name="btnAbortShowComment">Zurück zu allen Absprachen</string>
+            <string name="showCommentIntroText">Die Kommentare zur Absprache</string>
+            <string name="showArrangementIntroText">Absprache</string>
+        <!-- End String Fragment show comment -->
+
+        <!-- String Fragment evaluate arrangement -->
+            <string name="showEvaluateArrangementIntroText">Bewerten Sie Absprache</string>
+            <string name="btnSendEvaluateResult">Speichern</string>
+            <string name="btnAbortEvaluate">Zurück</string>
+            <string name="questionOneEvaluateMySelf">Wie haben Sie selbst die Absprache eingehalten?</string>
+            <string name="questionTwoEvaluateMyEx">Wie hat Ihr Ex-Partner die Absprache aus Ihrer Sicht eingehalten?</string>
+            <string name="questionThreeEvaluateChildreen">Wie haben Ihre Kinder die Absprache aus Ihrer Sicht eingehalten?</string>
+            <string name="questionFourEvaluateThirdPeople">Wie haben die weiteren beteiligten Personen diese Absprache eingehalten?</string>
+            <string name="commentTextEvaluateResult">Ihre Anmerkungen zu Ihrer Bewertung</string>
+            <string name="evaluateArrangementSuggestion_1">Immer\n</string>
+            <string name="evaluateArrangementSuggestion_2">Fast\nimmer</string>
+            <string name="evaluateArrangementSuggestion_3">50/50\n</string>
+            <string name="evaluateArrangementSuggestion_4">Kaum\n</string>
+            <string name="evaluateArrangementSuggestion_5">Nie\n</string>
+            <string name="evaluateArrangementSuggestion_6">Nicht\nbetroffen</string>
+            <string name="commentEvaluateResultTextFieldHintText">Bitte geben Sie Ihre Anmerkungen hier ein.</string>
+            <string name="evaluateResultSuccsesfulySend">Vielen Dank für die Bewertung der letzten Absprache!</string>
+            <string name="evaluateResultNotCompletely">Ihre Bewertung ist nicht vollständig! Bitte kontrollieren Sie die markierten Fragen!</string>
+            <string name="evaluateErrorTextByQuestion">Bitte kontrollieren Sie diese Frage!</string>
+            <string name="showNextArrangementToEvaluateIntroText">Bitte klicken Sie auf Speichern und bewerten Sie als nächstes Absprache %1$d.</string>
+            <string name="showNothingNextArrangementToEvaluateText">Bitte klicken Sie auf Speichern. Es sind keine weiteren Absprachen zu bewerten.</string>
+            <string name="evaluateThankAndNextEvaluationText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die folgende Absprache.</string>
+            <string name="evaluateThankAndNextEvaluationLastText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die letzte Absprache.</string>
+        <!-- End Fragment evaluate arrangement -->
+
+        <!-- fragment comment sketch arrangement -->
+            <string name="showSketchArrangementIntroText">Entwurf</string>
+            <string name="commentSketchArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
+            <string name="introStructQuestionForCommentSketchArrangement">Wie schätzen Sie Ihre Zustimmung zu dem Entwurf ein?</string>
+            <string name="errorStructQuestionForCommentSketchArrangement">Bitte wählen Sie eine Einschätzung!</string>
+            <string name="introFreeQuestionForCommentSketchArrangement">Bitte erläutern Sie Ihre obige Einschätzung</string>
+            <string name="errorFreeQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihren Text zur obigen Einschätzung! Er ist zu kurz!</string>
+            <string name="commentFreeQuestionSketchArrangementTextFieldHintText">Bitte erläutern Sie hier Ihre Einschätzung.</string>
+            <string name="buttonSendSketchArrangementComment">Einschätzung senden</string>
+            <string name="ourArrangementBackLinkToSketchArrangement">Zurück zu allen Entwürfen</string>
+            <string name="sketchCommentSuccsesfulySend">Einschätzung erfolgreich gesendet</string>
+            <string name="infoTextSketchCommentMaxSingular">Sie könnnen maximal %1$d Einschätzung schreiben.</string>
+            <string name="infoTextSketchCommentMaxPlural">Sie könnnen maximal %1$d Einschätzungen schreiben.</string>
+            <string name="infoTextSketchCommentUnlimitedText">Sie könnnen beliebig viele Einschätzungen schreiben.</string>
+            <string name="infoTextSketchCommentCountZero">Sie haben noch keine Einschätzung geschrieben.</string>
+            <string name="infoTextSketchCommentCountSingular">Davon haben Sie bereits %1$d Einschätzung geschrieben.</string>
+            <string name="infoTextSketchCommentCountPlural">Davon haben Sie bereits %1$d Einschätzungen geschrieben.</string>
+            <string name="ourArrangementAssessmentsString">Einschätzen</string>
+            <string name="commentSketchHistoryIntroText">Alle bisherigen Einschätzungen zum Entwurf</string>
+            <string name="showSketchCommentIntroText">Die Einschätzungen zum Entwurf</string>
+            <string name="evaluateSketchSuggestion_1">Sehr stark</string>
+            <string name="evaluateSketchSuggestion_2">Stark</string>
+            <string name="evaluateSketchSuggestion_3">Mittelmäßig</string>
+            <string name="evaluateSketchSuggestion_4">Wenig</string>
+            <string name="evaluateSketchSuggestion_5">Keine</string>
+            <string name="textSketchCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Entwurf abgegeben: %1$s</string>
+        <!-- End fragment comment sketch arrangement -->
+
+        <!-- String Fragment sketch arrangement -->
+            <string name="ourArrangementSketchArrangementNothingThere">Es sind keine Entwürfe für Absprachen vorhanden!</string>
+            <string name="ourArrangementSketchArrangementFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
+            <string name="ourArrangementSketchIntroText">%1$s hat am %2$s folgende Entwürfe für Absprachen eingestellt.</string>
+            <string name="showSketchArrangementNumberText">Entwurf Absprache</string>
+        <!-- End Fragment sketch arrangement -->
+
+        <!-- our arrangement dialog settings -->
+            <string name="textDialogOurArrangementCloseDialog">Schließen</string>
+            <string name="textDialogOurArrangementTitleDialog">Einstellungen Absprachen</string>
+            <string name="textDialogOurArrangementSettingsIntro">Für die Funktion Absprachen gelten folgende Einstellungen.</string>
+            <string name="textDialogOurArrangementSettingsEvaluateEnable">Sie können Absprachen bewerten.</string>
+            <string name="textDialogOurArrangementSettingsEvaluateDisable">Sie können keine Absprachen bewerten.</string>
+            <string name="textDialogOurArrangementSettingsEvaluatePeriod">Der Bewertungszeitraum beginnt am %1$s um %2$s Uhr und endet am %3$s um %4$s Uhr.</string>
+            <string name="textDialogOurArrangementSettingsCommentEnable">Sie können Absprachen kommentieren.</string>
+            <string name="textDialogOurArrangementSettingsCommentDisable">Sie können Absprachen nicht kommentieren.</string>
+            <string name="textDialogOurArrangementSettingsCommentCountInfinitely">Dabei können Sie beliebig viele Kommentare schreiben.</string>
+            <string name="textDialogOurArrangementSettingsCommentCountPlural">Dabei können Sie maximal %1$d Kommentare schreiben.</string>
+            <string name="textDialogOurArrangementSettingsCommentCountSingular">Dabei können Sie maximal einen Kommentar schreiben.</string>
+            <string name="textDialogOurArrangementSettingsCommentCountNumberPlural">Seit dem %1$s haben Sie %2$d Kommentare geschrieben.</string>
+            <string name="textDialogOurArrangementSettingsCommentCountNumberSingular">Seit dem %1$s haben Sie einen Kommentar geschrieben.</string>
+            <string name="textDialogOurArrangementSettingsCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Kommentare geschrieben.</string>
+            <string name="textDialogOurArrangementSettingsCountCommentZero">Seit dem %1$s haben Sie noch keinen Kommentar geschrieben.</string>
+            <string name="textDialogOurArrangementSettingsOldArrangementEnable">Ihnen stehen die älteren Absprachen zur Verfügung.</string>
+            <string name="textDialogOurArrangementSettingsOldArrangementDisable">Ihnen stehen die älteren Absprachen nicht zur Verfügung.</string>
+            <string name="textDialogOurArrangementSettingsSketchArrangementEnable">Ihnen stehen die Entwürfe der Absprachen zur Verfügung.</string>
+            <string name="textDialogOurArrangementSettingsSketchArrangementDisable">Ihnen stehen die Entwürfe der Absprachen nicht zur Verfügung.</string>
+            <string name="textDialogOurArrangementSettingsSketchCommentArrangementEnable">Sie können die Entwürfe einschätzen.</string>
+            <string name="textDialogOurArrangementSettingsSketchCommentArrangementDisable">Sie können die Entwürfe nicht einschätzen.</string>
+            <string name="textDialogOurArrangementSettingsSketchCommentCountSingular">Dabei können Sie maximal eine Einschätzung schreiben.</string>
+            <string name="textDialogOurArrangementSettingsSketchCommentCountPlural">Dabei können Sie maximal %1$d Einschätzungen schreiben.</string>
+            <string name="textDialogOurArrangementSettingsSketchCommentCountInfinitely">Dabei können Sie beliebig viele Einschätzungen schreiben.</string>
+            <string name="textDialogOurArrangementSettingsSketchCommentCountNumberPlural">Seit dem %1$s haben Sie %2$d Einschätzungen geschrieben.</string>
+            <string name="textDialogOurArrangementSettingsSketchCommentCountNumberSingular">Seit dem %1$s haben Sie eine Einschätzung geschrieben.</string>
+            <string name="textDialogOurArrangementSettingsSketchCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Einschätzungen geschrieben.</string>
+            <string name="textDialogOurArrangementSettingsSketchCountCommentZero">Seit dem %1$s haben Sie noch keine Einschätzung geschrieben.</string>
+        <!-- End our arrangement dialog settings -->
 
     <!-- Activity our arrangement End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Activity Our Goals -->
+
+        <!-- Strings for tab title in activity our goals -->
+                <string name="ourGoalsTabTitle_1">Gemeinsame Ziele</string>
+                <string name="ourGoalsTabTitle_1a">Kommentieren</string>
+                <string name="ourGoalsTabTitle_1b">Kommentare</string>
+                <string name="ourGoalsTabTitle_1c">Bewerten</string>
+                <string name="ourGoalsTabTitle_2">Strittige Ziele</string>
+                <string name="ourGoalsTabTitle_2a">Einschätzen</string>
+                <string name="ourGoalsTabTitle_2b">Einschätzungen</string>
+                <string name="ourGoalsTabTitle_3">Ältere Ziele</string>
+        <!-- End tab title -->
+
+        <!-- our goals dialog settings -->
+            <string name="textDialogOurGoalsCloseDialog">Schließen</string>
+            <string name="textDialogOurGoalsTitleDialog">Einstellungen Absprachen</string>
+            <string name="textDialogOurGoalsSettingsIntro">Für die Funktion Absprachen gelten folgende Einstellungen.</string>
+
+        <!-- end our goals dialog settings -->
+
+
+        <!-- fragment show current jointly goals now -->
+                <string name="textViewJointlyGoalsNowNothingThere">Zurzeit sind keine gemeinsamen Ziele vorhanden!</string>
+                <string name="ourGoalsJointlyNowIntroText">Die gemeinsamen Ziele vom</string>
+        <!-- End show now arrangements -->
+
+
+
+
+    <!-- Activity our goals End -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->

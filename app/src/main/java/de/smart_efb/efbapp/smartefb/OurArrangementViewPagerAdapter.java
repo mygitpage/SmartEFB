@@ -31,7 +31,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
     static int fragmentChooserTabOne;
 
 
-    // the fragments
+    // the fragments for all tabs
     Fragment fragArraNow, fragArraNowComment, fragArraOld, fragArraShowComment, fragArraEvaluate, fragArraSketch, fragArraSketchComment, fragArraShowSketchComment;
 
     // Reference to fragment manager
@@ -58,7 +58,6 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
         fragArraShowComment = new OurArrangementFragmentShowComment();
         fragArraEvaluate = new OurArrangementFragmentEvaluate();
         fragArraSketch = new OurArrangementFragmentSketch();
-
         fragArraSketchComment = new OurArrangementFragmentSketchComment();
         fragArraShowSketchComment = new OurArrangementFragmentShowSketchComment();
 
@@ -67,7 +66,6 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-
 
         switch (position) {
 

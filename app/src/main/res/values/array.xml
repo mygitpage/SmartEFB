@@ -153,7 +153,7 @@
     </string-array>
 
 
-    <!--  -->
+    <!-- Scales level for struct questions in our arrangements fragment evaluate -->
     <string-array name="evaluateSketchCommentScalesLevel">
         <item>@string/evaluateSketchSuggestion_1</item>
         <item>@string/evaluateSketchSuggestion_2</item>
@@ -161,5 +161,17 @@
         <item>@string/evaluateSketchSuggestion_4</item>
         <item>@string/evaluateSketchSuggestion_5</item>
     </string-array>
+
+
+
+    <!-- tab titles for Activity Our Goals (these are links, original in strings.xml) -->
+    <string-array name="ourGoalsTabTitle">
+        <item>@string/ourGoalsTabTitle_1</item>
+        <item>@string/ourGoalsTabTitle_2</item>
+        <item>@string/ourGoalsTabTitle_3</item>
+    </string-array>
+
+
+
 
 </resources>

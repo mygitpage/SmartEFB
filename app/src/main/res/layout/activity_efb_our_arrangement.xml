@@ -26,7 +26,6 @@
                     android:layout_marginRight="15dp"
                     android:background="@drawable/activity_help_toolbar_icon" />
 
-
         </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
@@ -37,7 +36,6 @@
             android:background="?attr/colorPrimary"
             app:tabMode="scrollable"/>
 
-
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
@@ -45,6 +43,5 @@
         android:layout_height="match_parent"
         android:id="@+id/viewPagerOurArrangement"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
 
 </android.support.design.widget.CoordinatorLayout>
