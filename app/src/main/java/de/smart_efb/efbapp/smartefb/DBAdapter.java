@@ -29,8 +29,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE = "ourArrangementEvaluateTable";
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
+    public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW = "ourGoalsDebetableJointlyGoalsNow";
+
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 23;
+    public static final int DATABASE_VERSION = 24;
 
 
     // Common column names
@@ -38,6 +40,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     /************************ Begin of table definitions **********************************************************************/
+
 
     // Our Arrangement - column names and numbers
     public static final String OUR_ARRANGEMENT_KEY_ARRANGEMENT = "arrangement";
@@ -193,6 +196,46 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + CHAT_MESSAGE_KEY_NEW_ENTRY + " INTEGER DEFAULT 0"
                     + ");";
 
+
+
+
+    /************************ Our Goals Definitions **************************************************************************/
+
+
+    // Debetable/Jointly Goals Now - column names and numbers
+    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL = "goal";
+    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME = "author_name";
+    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME = "goal_time";
+    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY = "new_entry";
+    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE = "eval_possible";
+    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE = "jointlyDebetable";
+
+
+
+    // All keys from table app settings in a String
+    public static final String[] OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE };
+
+    // SQL String to create our goals jointly goals now table
+    private static final String DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_NOW =
+            "create table " + DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW + " (" + KEY_ROWID + " integer primary key autoincrement, "
+                    + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL + " TEXT not null, "
+                    + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME + " STRING not null, "
+                    + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + " INTEGER DEFAULT 0, "
+                    + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY + " INTEGER DEFAULT 0, "
+                    + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE + " INTEGER DEFAULT 0, "
+                    + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + " INTEGER DEFAULT 0 "
+                    + ");";
+
+
+
+    /************************ End Definitions Our Goals *********************************************************************/
+
+
+
+
+
+
+
     /************************ End of table definitions **********************************************************************/
 
     //construtor of DBAdapter
@@ -221,6 +264,9 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Create table ChatMessage
         _db.execSQL(DATABASE_CREATE_SQL_CHAT_MESSAGE);
+
+        // Create table Our Goals Jointly Goals Now
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_NOW);
     }
 
 
@@ -242,6 +288,9 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Destroy table ChatMessage
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_CHAT_MESSAGE);
+
+        // Destroy table Our Goals Jointly Goals Now
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW);
 
         // Recreate new database:
         onCreate(_db);
@@ -870,14 +919,6 @@ public class DBAdapter extends SQLiteOpenHelper {
     /****************************************************************************************************************************/
 
 
-
-
-
-
-
-
-
-
     /********************************* TABLES FOR FUNCTION: Our Arrangement Evaluate ******************************************/
 
     // Add a new set of values to ourArrangementEvaluate .
@@ -903,41 +944,266 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+    /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Evaluate ***************************************/
+    /****************************************************************************************************************************/
 
 
 
-    // get next arrangement id to evaluate
-    // when there is no arrangement anymore the result ID is Zero
-    /*
-    public int getNextArrangementIdToEvaluate(Long currentDateOfArrangement) {
+
+
+
+    /********************************* TABLES FOR FUNCTION: Our Goals Jointly/Debetable ******************************************/
+
+    /* Add a new set of values (goal) to ourgoals
+        goals -> text of arrangement
+        authorName -> name of author
+        goalTime -> date and time of actual goal
+        newEntry -> true, goal is new in database; false, it is old!
+        eval_possible -> true, evaluation is possible; false -> not
+        jointlyDebetable -> true, goal is a debetable; false, goal is an jointly goal
+     */
+
+    public long insertRowOurGoals(String goal, String authorName, long goalTime, Boolean newEntry, Boolean jointlyDebetable) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
+        ContentValues initialValues = new ContentValues();
 
-        // data filter
-        String where = OUR_ARRANGEMENT_KEY_WRITE_TIME + "=" + currentDateOfArrangement + " AND " + OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE + "=1";
+        initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL, goal);
+        initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME, authorName);
+        initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, goalTime);
+
+        // is it a new entry?
+        if (newEntry) {
+            initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY, 1);
+        } else {
+            initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY, 0);
+        }
+
+        // is it a debetable goal? jointlyDebetable -> true!
+        if (jointlyDebetable) {
+            initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE, 1);
+        } else {
+            initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE, 0);
+        }
+
+        // Insert it into the database.
+        return db.insert(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, null, initialValues);
+    }
+
+
+
+    // Return all data from the database (table ourGoals) (equal: write_time = currentDateOfGoals, smaller: write_time < currentDateOfGoals)
+    // the result is sorted by DESC
+    public Cursor getAllJointlyRowsOurGoals(long currentDateOfGoals, String equalGreater) {
+
+        String where = "";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // get only arrangments and no sketches
+        where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=0 AND ";
+
+        switch (equalGreater) {
+
+            case "equal":
+                where += OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + "=" + currentDateOfGoals;
+                break;
+            case "smaller":
+                where += OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + "<" + currentDateOfGoals;
+                break;
+            default:
+                where += OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + "=" + currentDateOfGoals;
+                break;
+        }
+
+        // sort string
+        String sort = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + " DESC, " + KEY_ROWID + " DESC";
+
+        Log.d("DB All Rows","Where:"+where);
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS,
+                where, null, null, null, sort, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+    }
+
+
+    // Return debetable goals from the database (table ourGoals)
+    // the result is sorted by DESC
+    public Cursor getAllDebetableRowsOurGoals(long currentDateOfGoals) {
+
+        String where = "";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // get only debetable goals
+        where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=1 AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + "=" + currentDateOfGoals;;
 
         // sort string
         String sort = KEY_ROWID + " DESC";
 
-        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS,
                 where, null, null, null, sort, null);
 
-        if (c != null) { // is there an arrangement?
+        if (c != null) {
             c.moveToFirst();
-            return c.getInt(c.getColumnIndex(DBAdapter.KEY_ROWID)); // return arrangement id
         }
 
-        return 0; // no -> return Zero
-
-
+        return c;
     }
-    */
+
+
+    // Get a specific jointly row from the goals (by rowId)
+    public Cursor getJointlyRowOurGoals(int rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=0 AND " + KEY_ROWID + "=" + rowId;
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+    }
+
+
+    // Get a specific debetable row from the goals (by rowId)
+    public Cursor getDebetableRowOurGoals(int rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=1 AND " + KEY_ROWID + "=" + rowId;
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+    }
 
 
 
-    /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Comment ***************************************/
-    /****************************************************************************************************************************/
+    // Get the number of new rows in goals (new entrys, jointly and debetable) where date is write time -> no older one!
+    public int getCountNewEntryOurGoals(long currentDateOfGoals) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where;
+
+        where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY + "=1 AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + "=" + currentDateOfGoals;
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        // return how many
+        return c.getCount();
+    }
+
+
+    // delete status new entry in table ourGoals for goal rowId.
+    public boolean deleteStatusNewEntryOurGoals (int rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row new_entry = 0 (not new!)
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY, 0);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null) != 0;
+    }
+
+
+
+
+    // change (delete/set) status evaluation poosible in table ourGoals for one goal (rowId)
+    public boolean changeStatusEvaluationPossibleOurGoals (int rowId, String state) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row
+        ContentValues newValues = new ContentValues();
+
+        switch (state) {
+
+            case "set":
+                newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE, 1);
+                break;
+            case "delete":
+                newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE, 0);
+                break;
+            default:
+                newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE, 0);
+                break;
+
+        }
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null) != 0;
+    }
+
+
+    // change (delete/set) status evaluation poosible in table ourGoals for all goals with current goal time
+    public boolean changeStatusEvaluationPossibleAllOurGoals (long goalTime, String state) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + "=" + goalTime;
+
+        // Create row
+        ContentValues newValues = new ContentValues();
+
+        switch (state) {
+
+            case "set":
+                newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE, 1);
+                break;
+            case "delete":
+                newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE, 0);
+                break;
+            default:
+                newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE, 0);
+                break;
+
+        }
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null) != 0;
+    }
+
+
+
+
+
+
+
+    /********************************* End!! TABLES FOR FUNCTION: Our Arrangement ******************************************/
+    /***********************************************************************************************************************/
+
+
+
+
+
+
 
 
 

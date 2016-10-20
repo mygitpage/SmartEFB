@@ -3,7 +3,6 @@ package de.smart_efb.efbapp.smartefb;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
@@ -33,7 +32,7 @@ public class OurGoalsViewPagerAdapter extends FragmentStatePagerAdapter {
     FragmentManager ourGoalsFragmentManager;
 
 
-    public OurGoalsViewPagerAdapter (FragmentManager ourGoalsFragmentMana, Context context) {
+    public OurGoalsViewPagerAdapter(FragmentManager ourGoalsFragmentMana, Context context) {
 
         super (ourGoalsFragmentMana);
 
@@ -46,14 +45,14 @@ public class OurGoalsViewPagerAdapter extends FragmentStatePagerAdapter {
         fragmentChooserTabZero = 0;
         fragmentChooserTabOne = 0;
 
-        fragJointlyGoalsNow = new OurGoalFragmentJointlyGoalsNow();
-        fragJointlyGoalsComment = new OurGoalFragmentJointlyGoalsNow();
-        fragJointlyGoalsOld = new OurGoalFragmentJointlyGoalsNow();
-        fragJointlyGoalsShowComment = new OurGoalFragmentJointlyGoalsNow();
-        fragJointlyGoalsEvaluate = new OurGoalFragmentJointlyGoalsNow();
-        fragDebetableGoalsNow = new OurGoalFragmentJointlyGoalsNow();
-        fragDebetableGoalsComment = new OurGoalFragmentJointlyGoalsNow();
-        fragDebetableGoalsShowComment = new OurGoalFragmentJointlyGoalsNow();
+        fragJointlyGoalsNow = new OurGoalsFragmentJointlyGoalsNow();
+        fragJointlyGoalsComment = new OurGoalsFragmentJointlyGoalsNow();
+        fragJointlyGoalsOld = new OurGoalsFragmentJointlyGoalsNow();
+        fragJointlyGoalsShowComment = new OurGoalsFragmentJointlyGoalsNow();
+        fragJointlyGoalsEvaluate = new OurGoalsFragmentJointlyGoalsNow();
+        fragDebetableGoalsNow = new OurGoalsFragmentJointlyGoalsNow();
+        fragDebetableGoalsComment = new OurGoalsFragmentJointlyGoalsNow();
+        fragDebetableGoalsShowComment = new OurGoalsFragmentJointlyGoalsNow();
 
     }
 

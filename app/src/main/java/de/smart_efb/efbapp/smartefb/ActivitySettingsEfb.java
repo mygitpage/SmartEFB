@@ -154,11 +154,68 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             prefsEditor.putLong("currentDateOfArrangement", date.getTime());
             prefsEditor.commit();
 
-            Toast.makeText(ActivitySettingsEfb.this, "Stamp:" + date.getTime(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivitySettingsEfb.this, "Absprachen Stamp:" + date.getTime(), Toast.LENGTH_SHORT).show();
 
         }
 
     }
+
+
+
+
+
+    /* Datepicker for Jointly Goals */
+    public void onClick_showDateChooserForJointlyGoals (View v) {
+
+        Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dialog = new DatePickerDialog(this, new saveDateForJointlyGoals(), mYear, mMonth, mDay);
+        dialog.show();
+
+    }
+
+
+
+    private class saveDateForJointlyGoals implements DatePickerDialog.OnDateSetListener {
+
+
+        SharedPreferences prefs;
+        SharedPreferences.Editor prefsEditor;
+
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+            int mYear = year;
+            int mMonth = monthOfYear+1;
+            int mDay = dayOfMonth;
+            Date date = null;
+
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+            try {
+                date = formatter.parse(mDay+"-"+mMonth+"-"+year);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            prefs = getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+            prefsEditor = prefs.edit();
+
+            prefsEditor.putLong("currentDateOfJointlyGoals", date.getTime());
+            prefsEditor.commit();
+
+            Toast.makeText(ActivitySettingsEfb.this, "Gemeinsame Ziele Stamp:" + date.getTime(), Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+
+
 
 
 }

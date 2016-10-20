@@ -255,8 +255,8 @@
 
         <!-- our goals dialog settings -->
             <string name="textDialogOurGoalsCloseDialog">Schließen</string>
-            <string name="textDialogOurGoalsTitleDialog">Einstellungen Absprachen</string>
-            <string name="textDialogOurGoalsSettingsIntro">Für die Funktion Absprachen gelten folgende Einstellungen.</string>
+            <string name="textDialogOurGoalsTitleDialog">Einstellungen Ziele</string>
+            <string name="textDialogOurGoalsSettingsIntro">Für die Funktion Ziele gelten folgende Einstellungen.</string>
 
         <!-- end our goals dialog settings -->
 
@@ -264,7 +264,24 @@
         <!-- fragment show current jointly goals now -->
                 <string name="textViewJointlyGoalsNowNothingThere">Zurzeit sind keine gemeinsamen Ziele vorhanden!</string>
                 <string name="ourGoalsJointlyNowIntroText">Die gemeinsamen Ziele vom</string>
+                <string name="showJointlyGoalTextNumber">Ziel</string>
+                <string name="newEntryTextOurGoal">(Neu)</string>
+
+                <string name="ourGoalsEvaluateJointlyGoalString">Bewerten</string>
         <!-- End show now arrangements -->
+
+
+        <!-- Subtitle under Title Our Goals -->
+
+            <string name="ourGoalsSubtitleNothingThere">Keine Ziele vorhanden</string>
+            <string name="ourGoalsSubtitleJointlyGoalsNow">Gemeinsame Ziele vom</string>
+
+
+        <!-- End subtitle -->
+
+
+
+
 
 
 

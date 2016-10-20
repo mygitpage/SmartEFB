@@ -256,8 +256,7 @@
 
 
 
-
-
+        <!-- Beginn Einstellungen Ziele-->
         <View
             android:id="@+id/separateLine4"
             android:layout_width="match_parent"
@@ -266,68 +265,119 @@
             android:layout_margin="20dp"
             android:background="@android:color/darker_gray"/>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DatePicker Dialog für Datum Gemeinsame Ziele"
+            android:id="@+id/showDatePickerDialogJointlyGoals"
+            android:padding="6dp"
+            android:layout_below="@+id/separateLine4"
+            android:onClick="onClick_showDateChooserForJointlyGoals"/>
 
-        <!--
+        <CheckBox android:id="@+id/showCommentLinkJointlyGoals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Comment-Link in Jointly Goals"
+            android:onClick="onCheckboxShowArrangementElements"
+            android:layout_below="@+id/showDatePickerDialogJointlyGoals"/>
+
+        <CheckBox android:id="@+id/showEvaluateLinkJointlyGoals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Evaluate-Link in Jointly Goals"
+            android:onClick="onCheckboxShowArrangementElements"
+            android:layout_below="@+id/showCommentLinkJointlyGoals"/>
+
+
+        <CheckBox android:id="@+id/showOldGoals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show old Goals"
+            android:onClick="onCheckboxShowArrangementElements"
+            android:layout_below="@+id/showEvaluateLinkJointlyGoals"/>
+
+        <CheckBox android:id="@+id/showDebetableGoals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show debetable goals"
+            android:onClick="onCheckboxShowArrangementElements"
+            android:layout_below="@+id/showOldGoals"/>
+
+        <CheckBox android:id="@+id/showCommentLinkDebetableGoals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show comment link for debetable Goals"
+            android:onClick="onCheckboxShowArrangementElements"
+            android:layout_below="@+id/showDebetableGoals"/>
+
+
+
         <LinearLayout
-            android:id="@+id/linearLayoutTimeBordersForEvaluate"
+            android:id="@+id/makeAnJointlyGoal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_below="@+id/separateLine4"
-            android:gravity="center_horizontal">
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_below="@+id/showCommentLinkDebetableGoals">
 
             <EditText
-                android:id="@+id/introTextTimeBordersForEvaluate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:id="@+id/jointlyGoalText"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
                 android:layout_weight="2"
+                android:background="@color/bg_msg_input"
+                android:textColor="@color/text_msg_input"
                 android:paddingLeft="6dp"
                 android:paddingRight="6dp"
-                android:hint="Eingabe Zeitgrenzen (Start- und Stopzeit) für Evaluation" />
-
-
-            <DatePicker
-                android:id="@+id/date_picker"
-                android:layout_width="match_parent"
-                android:calendarViewShown="true"
-                android:spinnersShown="true"
-                android:background="#FFD7BCBC"
-                android:layout_height="wrap_content"
-                android:headerBackground="@color/colorPrimary"/>
-
-            <TimePicker
-                android:id="@+id/time_picker"
-                android:background="#FFD7BCBC"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:headerBackground="@color/colorPrimary" />
-
-
+                android:hint="Gemeinsames Ziel eingeben!" />
 
             <Button
-                android:id="@+id/sendStartTimeBordersForEvaluate"
-                android:layout_width="wrap_content"
+                android:id="@+id/jointlyGoalTextSend"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@color/bg_btn_join"
                 android:textColor="@color/white"
-                android:text="Startzeit (Begin) Evaluation in Absprachen"
-                android:padding="10dp"
-                android:layout_marginBottom="10dp"/>
-
-            <Button
-                android:id="@+id/sendStopTimeBordersForEvaluate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/bg_btn_join"
-                android:textColor="@color/white"
-                android:text="Endzeit (Ende) Evaluation in Absprachen"
-                android:padding="10dp"/>
-
-
+                android:text="@string/buttonSendMessage" />
         </LinearLayout>
-        -->
+
+
+
+        <LinearLayout
+            android:id="@+id/makeAndebetableGoal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_below="@+id/makeAnJointlyGoal"
+            android:paddingTop="10dp">
+
+            <EditText
+                android:id="@+id/debetableGoalText"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:background="@color/bg_msg_input"
+                android:textColor="@color/text_msg_input"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:hint="Strittiges Ziel eingeben!" />
+
+            <Button
+                android:id="@+id/debetableGoalTextSend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/bg_btn_join"
+                android:textColor="@color/white"
+                android:text="@string/buttonSendMessage" />
+        </LinearLayout>
+
+        <!-- Ende Einstellungen Ziele -->
+
+
 
 
 

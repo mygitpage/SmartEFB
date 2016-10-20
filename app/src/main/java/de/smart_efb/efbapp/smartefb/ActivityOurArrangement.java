@@ -236,7 +236,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
-
+    // execute the commands that comes from link or intend
     public void executeIntentCommand (String command, int tmpDbId, int tmpNumberinListView, Boolean tmpEvalNext) {
 
         String tmpTabTitle = "";

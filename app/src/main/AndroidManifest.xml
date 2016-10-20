@@ -14,7 +14,6 @@
             android:theme="@style/AppTheme.ActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -38,12 +37,6 @@
                 <action android:name="android.intent.action.VIEW" />
                 <data android:scheme="smart.efb.ilink_comment" />
             </intent-filter>
-
-
-
-
-
-
         </activity>
 
         <receiver android:name=".AlarmReceiverOurArrangement">
@@ -59,6 +52,12 @@
             android:name=".ActivityOurGoals"
             android:label="@string/mainMenueElementId_3"
             android:theme="@style/AppTheme.NoActionBar">
+
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="smart.efb.ilink_goal_comment" />
+            </intent-filter>
         </activity>
 
         <!-- Activity FAQ -->

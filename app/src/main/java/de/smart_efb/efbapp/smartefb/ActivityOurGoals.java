@@ -2,8 +2,10 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -65,17 +67,22 @@ public class ActivityOurGoals extends AppCompatActivity {
     // what to show in tab one (like )
     String showCommandFragmentTabOne = "";
 
-    // goal db-id - for
-    int goalDbIdFromLink = 0;
+    // jointly and debetable goal db-id - for
+    int jointlyGoalDbIdFromLink = 0;
+    int debetableGoalDbIdFromLink = 0;
 
-    // goal number in listview
-    int goaltNumberInListView = 0;
+    // jointly and debetable goal number in listview
+    int jointlyGoalNumberInListView = 0;
+    int debetableGoalNumberInListView = 0;
 
     // reference to the DB
     DBAdapter myDb;
 
     // reference to dialog settings
     AlertDialog alertDialogSettings;
+
+    // evaluate next goal true -> yes, there is a next goal to evaluate; false -> there is nothing more
+    Boolean evaluateNextGoal = false;
 
 
 
@@ -179,10 +186,231 @@ public class ActivityOurGoals extends AppCompatActivity {
     }
 
 
+    // Look for new intents (with data from URI or putExtra)
+    @Override
+    protected void onNewIntent(Intent intent) {
+
+        // Uri from intent that holds data
+        Uri intentLinkData = null;
+
+        // Extras from intent that holds data
+        Bundle intentExtras = null;
+
+        jointlyGoalDbIdFromLink = 0;
+        jointlyGoalNumberInListView = 0;
+        evaluateNextGoal = false;
+
+        // call super
+        super.onNewIntent(intent);
+
+        // get the link data from URI and from the extra
+        intentLinkData = intent.getData();
+        intentExtras = intent.getExtras();
+
+        int tmpDbId = 0;
+        int tmpNumberinListView = 0;
+        Boolean tmpEvalNext = false;
+
+        // is there URI Data?
+        if (intentLinkData != null) {
+            // get data that comes with intent-link
+            tmpDbId = Integer.parseInt(intentLinkData.getQueryParameter("db_id")); // arrangement DB-ID
+            tmpNumberinListView = Integer.parseInt(intentLinkData.getQueryParameter("arr_num"));
+            tmpEvalNext = Boolean.parseBoolean(intentLinkData.getQueryParameter("eval_next"));
+            // get command and execute it
+            executeIntentCommand (intentLinkData.getQueryParameter("com"), tmpDbId, tmpNumberinListView, tmpEvalNext);
+
+        } else if (intentExtras != null) {
+            // get data that comes with extras
+            tmpDbId = intentExtras.getInt("db_id",0);
+            tmpNumberinListView = intentExtras.getInt("arr_num",0);
+            tmpEvalNext = intentExtras.getBoolean("eval_next");
+            // get command and execute it
+            executeIntentCommand (intentExtras.getString("com"), tmpDbId, tmpNumberinListView, tmpEvalNext);
+        }
+
+    }
 
 
 
-    // init the activity
+
+    // execute the commands that comes from link or intend
+    public void executeIntentCommand (String command, int tmpDbId, int tmpNumberinListView, Boolean tmpEvalNext) {
+
+        String tmpTabTitle = "";
+
+        if (command.equals("show_comment_for_jointly_goal")) { // Show fragment all comments for jointly goal
+
+            // set global varibales
+            jointlyGoalDbIdFromLink = tmpDbId;
+            jointlyGoalNumberInListView = tmpNumberinListView;
+            evaluateNextGoal = tmpEvalNext;
+
+            //set fragment in tab zero to comment
+            OurGoalsViewPagerAdapter.setFragmentTabZero("show_comment_for_jointly_goal");
+
+            // set correct tab zero titel
+            try {
+                tmpTabTitle = getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_1b", "string", getPackageName()));
+                tabLayoutOurGoals.getTabAt(0).setText(tmpTabTitle);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // set command show variable
+            showCommandFragmentTabZero = "show_comment_for_jointly_goal";
+
+            // call notify data change
+            ourGoalsViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbarOurGoals.setSubtitle(arraySubTitleText[4]);
+
+
+
+        } else if (command.equals("comment_an_jointly_goal")) { // Show fragment comment goal
+
+            // set global varibales
+            jointlyGoalDbIdFromLink = tmpDbId;
+            jointlyGoalNumberInListView = tmpNumberinListView;
+            evaluateNextGoal = tmpEvalNext;
+
+            //set fragment in tab zero to comment
+            OurGoalsViewPagerAdapter.setFragmentTabZero("comment_an_jointly_goal");
+
+            // set correct tab zero titel
+            tabLayoutOurGoals.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_1a", "string", getPackageName())));
+
+            // set command show variable
+            showCommandFragmentTabZero = "comment_an_jointly_goal";
+
+            // call notify data change
+            ourGoalsViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbarOurGoals.setSubtitle(arraySubTitleText[3]);
+
+        } else if (command.equals("evaluate_an_jointly_goal")) { // Show evaluate a goal
+
+            // set global varibales
+            jointlyGoalDbIdFromLink = tmpDbId;
+            jointlyGoalNumberInListView = tmpNumberinListView;
+            evaluateNextGoal = tmpEvalNext;
+
+            //set fragment in tab zero to evaluate
+            OurGoalsViewPagerAdapter.setFragmentTabZero("evaluate_an_jointly_goal");
+
+            // set correct tab zero titel
+            tabLayoutOurGoals.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_1c", "string", getPackageName())));
+
+            // set command show variable
+            showCommandFragmentTabZero = "evaluate_an_jointly_goal";
+
+            // call notify data change
+            ourGoalsViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbarOurGoals.setSubtitle(arraySubTitleText[5]);
+
+
+        } else if (command.equals("comment_an_debetable_goal")) { // Comment debetable goal -> TAB ONE
+
+            // set global varibales
+            debetableGoalDbIdFromLink = tmpDbId;
+            debetableGoalNumberInListView = tmpNumberinListView;
+
+            //set fragment in tab one to comment an debetable goal
+            OurGoalsViewPagerAdapter.setFragmentTabOne("comment_an_debetable_goal");
+
+            // set correct tab one titel
+            tabLayoutOurGoals.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_2a", "string", getPackageName())));
+
+            // set command show variable
+            showCommandFragmentTabOne = "comment_an_debetable_goal";
+
+            // call notify data change
+            ourGoalsViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab one
+            toolbarOurGoals.setSubtitle(arraySubTitleText[6]);
+
+        } else if (command.equals("show_debetable_goals_now")) { // Show debetable goals -> TAB ONE
+
+            // set global varibales
+            debetableGoalDbIdFromLink = tmpDbId;
+            debetableGoalNumberInListView = tmpNumberinListView;
+
+            //set fragment in tab one to show sketch arrangement
+            OurGoalsViewPagerAdapter.setFragmentTabOne("show_debetable_goals_now");
+
+            // set correct tab one titel
+            tabLayoutOurGoals.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_2", "string", getPackageName())));
+
+            // set command show variable
+            showCommandFragmentTabOne = "show_debetable_goals_now";
+
+            // call notify data change
+            ourGoalsViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab one
+            toolbarOurGoals.setSubtitle(arraySubTitleText[1]);
+
+        } else if (command.equals("show_comment_for_debetable_goal")) { // Show comments for debetable goals -> TAB ONE
+
+            // set global varibales
+            debetableGoalDbIdFromLink = tmpDbId;
+            debetableGoalNumberInListView = tmpNumberinListView;
+
+            //set fragment in tab one to show comment sketch arrangement
+            OurGoalsViewPagerAdapter.setFragmentTabOne("show_comment_for_debetable_goal");
+
+            // set correct tab one titel
+            tabLayoutOurGoals.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_2b", "string", getPackageName())));
+
+            // set command show variable
+            showCommandFragmentTabOne = "show_comment_for_debetable_goal";
+
+            // call notify data change
+            ourGoalsViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab one
+            toolbarOurGoals.setSubtitle(arraySubTitleText[7]);
+
+        }
+        else { // Show fragment jointly goals now -> Tab ZERO
+
+            // set global varibales
+            jointlyGoalDbIdFromLink = tmpDbId;
+            jointlyGoalNumberInListView = tmpNumberinListView;
+            evaluateNextGoal = tmpEvalNext;
+
+            //set fragment in tab zero to comment
+            OurGoalsViewPagerAdapter.setFragmentTabZero("show_jointly_goals_now");
+
+            // set correct tab zero titel
+            tabLayoutOurGoals.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_1", "string", getPackageName())));
+
+            // set command show variable
+            showCommandFragmentTabZero = "show_jointly_goals_now";
+
+            // call notify data change
+            ourGoalsViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbarOurGoals.setSubtitle(arraySubTitleText[0]);
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+    // init the activity Our Goals
     private void initOurGoals() {
 
         // init the toolbar
@@ -285,6 +513,46 @@ public class ActivityOurGoals extends AppCompatActivity {
 
 
 
+
+    // setter for subtitle in OurGoals toolbar
+    public void setOurGoalsToolbarSubtitle (String subtitleText, String subtitleChoose) {
+
+        switch (subtitleChoose) {
+
+            case "debetableNow":
+                arraySubTitleText[1] = subtitleText;
+                break;
+            case "jointlyOld":
+                arraySubTitleText[2] = subtitleText;
+                break;
+            case "jointlyNow":
+                arraySubTitleText[0] = subtitleText;
+                break;
+            case "jointlyNowComment":
+                arraySubTitleText[3] = subtitleText;
+                break;
+            case "jointlyShowComment":
+                arraySubTitleText[4] = subtitleText;
+                break;
+            case "jointlyEvaluate":
+                arraySubTitleText[5] = subtitleText;
+                break;
+            case "debetableComment":
+                arraySubTitleText[6] = subtitleText;
+                break;
+            case "debetableShowComment":
+                arraySubTitleText[7] = subtitleText;
+                break;
+
+        }
+
+        // first time -> set initial subtitle
+        if (setSubtitleFirstTime) {
+            toolbarOurGoals.setSubtitle(subtitleText);
+            setSubtitleFirstTime = false;
+        }
+
+    }
 
 
 

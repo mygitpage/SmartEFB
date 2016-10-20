@@ -464,6 +464,255 @@ public class SettingsEfbFragmentD extends Fragment {
 
 
 
+        /* Beginn PRE SELECT, Click-Listener and TextView-Listener OUR GOALS */
+
+        //
+        // pre select show comment link in jointly goals
+        //
+        tmpCheckBox = (CheckBox) viewFragmentD.findViewById(R.id.showCommentLinkJointlyGoals);
+
+        if (prefs.getBoolean("showCommentLinkJointlyGoals", false)) {
+            tmpCheckBox.setChecked(true);
+        }
+        else {
+            tmpCheckBox.setChecked(false);
+        }
+        tmpCheckBox.setOnClickListener(new View.OnClickListener() { // OnclickListener for arrangement comment
+
+            @Override
+            public void onClick(View v) {
+
+                boolean checkBoxBooleanValue=false;
+                String aktiv_passivText ="";
+
+                // Is the view now checked?
+                boolean checked = ((CheckBox) v).isChecked();
+
+                if (checked) {
+                    checkBoxBooleanValue=true;
+                    aktiv_passivText = "aktiviert";
+                }
+                else {
+                    checkBoxBooleanValue=false;
+                    aktiv_passivText = "deaktiviert";
+                }
+
+                prefsEditor.putBoolean("showCommentLinkJointlyGoals", checkBoxBooleanValue);
+                prefsEditor.commit();
+
+                Toast.makeText(fragmentContextD, "Gemeinsame Ziele Kommentare Link sind " + aktiv_passivText, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        //
+        // pre select show evaluate link in jointly goals
+        //
+        tmpCheckBox = (CheckBox) viewFragmentD.findViewById(R.id.showEvaluateLinkJointlyGoals);
+
+        if (prefs.getBoolean("showEvaluateLinkJointlyGoals", false)) {
+            tmpCheckBox.setChecked(true);
+        }
+        else {
+            tmpCheckBox.setChecked(false);
+        }
+        tmpCheckBox.setOnClickListener(new View.OnClickListener() { // OnclickListener for arrangement comment
+
+            @Override
+            public void onClick(View v) {
+
+                boolean checkBoxBooleanValue=false;
+                String aktiv_passivText ="";
+
+                // Is the view now checked?
+                boolean checked = ((CheckBox) v).isChecked();
+
+                if (checked) {
+                    checkBoxBooleanValue=true;
+                    aktiv_passivText = "aktiviert";
+                }
+                else {
+                    checkBoxBooleanValue=false;
+                    aktiv_passivText = "deaktiviert";
+                }
+
+                prefsEditor.putBoolean("showEvaluateLinkJointlyGoals", checkBoxBooleanValue);
+                prefsEditor.commit();
+
+                Toast.makeText(fragmentContextD, "Evaluierungslink Gemeinsame Ziele sind " + aktiv_passivText, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+        //
+        // pre select show old goals
+        //
+        tmpCheckBox = (CheckBox) viewFragmentD.findViewById(R.id.showOldGoals);
+
+        if (prefs.getBoolean("showOldGoals", false)) {
+            tmpCheckBox.setChecked(true);
+        }
+        else {
+            tmpCheckBox.setChecked(false);
+        }
+        tmpCheckBox.setOnClickListener(new View.OnClickListener() { // OnclickListener for arrangement comment
+
+            @Override
+            public void onClick(View v) {
+
+                boolean checkBoxBooleanValue=false;
+                String aktiv_passivText ="";
+
+                // Is the view now checked?
+                boolean checked = ((CheckBox) v).isChecked();
+
+                if (checked) {
+                    checkBoxBooleanValue=true;
+                    aktiv_passivText = "aktiviert";
+                }
+                else {
+                    checkBoxBooleanValue=false;
+                    aktiv_passivText = "deaktiviert";
+                }
+
+                prefsEditor.putBoolean("showOldGoals", checkBoxBooleanValue);
+                prefsEditor.commit();
+
+                Toast.makeText(fragmentContextD, "Zeige alte Ziele sind " + aktiv_passivText, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+        //
+        // pre select show debetable goals
+        //
+        tmpCheckBox = (CheckBox) viewFragmentD.findViewById(R.id.showDebetableGoals);
+
+        if (prefs.getBoolean("showDebetableGoals", false)) {
+            tmpCheckBox.setChecked(true);
+        }
+        else {
+            tmpCheckBox.setChecked(false);
+        }
+        tmpCheckBox.setOnClickListener(new View.OnClickListener() { // OnclickListener for arrangement comment
+
+            @Override
+            public void onClick(View v) {
+
+                boolean checkBoxBooleanValue=false;
+                String aktiv_passivText ="";
+
+                // Is the view now checked?
+                boolean checked = ((CheckBox) v).isChecked();
+
+                if (checked) {
+                    checkBoxBooleanValue=true;
+                    aktiv_passivText = "aktiviert";
+                }
+                else {
+                    checkBoxBooleanValue=false;
+                    aktiv_passivText = "deaktiviert";
+                }
+
+                prefsEditor.putBoolean("showDebetableGoals", checkBoxBooleanValue);
+                prefsEditor.commit();
+
+                Toast.makeText(fragmentContextD, "Zeige strittige Ziele sind " + aktiv_passivText, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+
+        //
+        // pre select show debetable goals
+        //
+        tmpCheckBox = (CheckBox) viewFragmentD.findViewById(R.id.showCommentLinkDebetableGoals);
+
+        if (prefs.getBoolean("showCommentLinkDebetableGoals", false)) {
+            tmpCheckBox.setChecked(true);
+        }
+        else {
+            tmpCheckBox.setChecked(false);
+        }
+        tmpCheckBox.setOnClickListener(new View.OnClickListener() { // OnclickListener for arrangement comment
+
+            @Override
+            public void onClick(View v) {
+
+                boolean checkBoxBooleanValue=false;
+                String aktiv_passivText ="";
+
+                // Is the view now checked?
+                boolean checked = ((CheckBox) v).isChecked();
+
+                if (checked) {
+                    checkBoxBooleanValue=true;
+                    aktiv_passivText = "aktiviert";
+                }
+                else {
+                    checkBoxBooleanValue=false;
+                    aktiv_passivText = "deaktiviert";
+                }
+
+                prefsEditor.putBoolean("showCommentLinkDebetableGoals", checkBoxBooleanValue);
+                prefsEditor.commit();
+
+                Toast.makeText(fragmentContextD, "Zeige Kommentarlink strittige Ziele sind " + aktiv_passivText, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+
+        // textfield and button -> insert new test jointly goal
+        final EditText txtInputJointlyGoal = (EditText) viewFragmentD.findViewById(R.id.jointlyGoalText);
+        Button buttonSendJointlyGoal = (Button) viewFragmentD.findViewById(R.id.jointlyGoalTextSend);
+        // onClick send button
+        buttonSendJointlyGoal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                long newID = myDb.insertRowOurGoals(txtInputJointlyGoal.getText().toString(), "testuser", prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()), true, false);
+
+                txtInputJointlyGoal.setText("");
+
+
+                Toast.makeText(fragmentContextD, "Neues gemeinsames Ziel eingetragen", Toast.LENGTH_SHORT).show();
+
+
+
+
+            }
+        });
+        // end insert new test jointly goal
+
+        // textfield and button -> insert new test debetable goal
+        final EditText txtInputDebetableGoal = (EditText) viewFragmentD.findViewById(R.id.debetableGoalText);
+        Button buttonSendDebetableGoal = (Button) viewFragmentD.findViewById(R.id.debetableGoalTextSend);
+        // onClick send button
+        buttonSendDebetableGoal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                long newID = myDb.insertRowOurGoals(txtInputJointlyGoal.getText().toString(), "testuser", prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis()), true, true);
+
+                txtInputDebetableGoal.setText("");
+
+
+                Toast.makeText(fragmentContextD, "Neues strittiges Ziel eingetragen", Toast.LENGTH_SHORT).show();
+
+
+
+
+            }
+        });
+        // end insert new test debetable goal
+
+
+
 
     }
 
