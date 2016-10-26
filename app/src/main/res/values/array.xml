@@ -173,5 +173,26 @@
 
 
 
+    <!-- Our Goals count comments -->
+    <string-array name="ourGoalsCountComments">
+        <item>Keine Kommentare</item>
+        <item>1 Kommentar</item>
+        <item>2 Kommentare</item>
+        <item>3 Kommentare</item>
+        <item>4 Kommentare</item>
+        <item>5 Kommentare</item>
+        <item>6 Kommentare</item>
+        <item>7 Kommentare</item>
+        <item>8 Kommentare</item>
+        <item>9 Kommentare</item>
+        <item>10 Kommentare</item>
+        <item>10++ Kommentare</item>
+    </string-array>
+
+
+
+
+
+
 
 </resources>

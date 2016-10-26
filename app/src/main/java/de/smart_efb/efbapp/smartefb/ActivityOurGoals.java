@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -190,6 +191,9 @@ public class ActivityOurGoals extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
 
+        Log.d("OnNewIntent","NEW INTENT +++++++++++++++");
+
+
         // Uri from intent that holds data
         Uri intentLinkData = null;
 
@@ -204,7 +208,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         super.onNewIntent(intent);
 
         // get the link data from URI and from the extra
-        intentLinkData = intent.getData();
+        /*intentLinkData = intent.getData();*/
         intentExtras = intent.getExtras();
 
         int tmpDbId = 0;
@@ -212,6 +216,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         Boolean tmpEvalNext = false;
 
         // is there URI Data?
+        /*
         if (intentLinkData != null) {
             // get data that comes with intent-link
             tmpDbId = Integer.parseInt(intentLinkData.getQueryParameter("db_id")); // arrangement DB-ID
@@ -220,7 +225,8 @@ public class ActivityOurGoals extends AppCompatActivity {
             // get command and execute it
             executeIntentCommand (intentLinkData.getQueryParameter("com"), tmpDbId, tmpNumberinListView, tmpEvalNext);
 
-        } else if (intentExtras != null) {
+        } else*/
+        if (intentExtras != null) {
             // get data that comes with extras
             tmpDbId = intentExtras.getInt("db_id",0);
             tmpNumberinListView = intentExtras.getInt("arr_num",0);
@@ -268,7 +274,9 @@ public class ActivityOurGoals extends AppCompatActivity {
 
 
 
-        } else if (command.equals("comment_an_jointly_goal")) { // Show fragment comment goal
+        } else if (command.equals("comment_an_jointly_goal")) { // Show fragment comment jointly goal
+
+            Log.d("Comment_J_G","DRIN!!!!!!!!!!!");
 
             // set global varibales
             jointlyGoalDbIdFromLink = tmpDbId;
@@ -378,6 +386,8 @@ public class ActivityOurGoals extends AppCompatActivity {
 
         }
         else { // Show fragment jointly goals now -> Tab ZERO
+
+            Log.d("J_G_NOW","DRIN+++++++++++++");
 
             // set global varibales
             jointlyGoalDbIdFromLink = tmpDbId;
@@ -510,6 +520,73 @@ public class ActivityOurGoals extends AppCompatActivity {
         });
 
     }
+
+
+
+    // getter for DB-Id of jointly goal
+    public int getJointlyGoalDbIdFromLink () {
+
+        return jointlyGoalDbIdFromLink;
+
+    }
+
+
+
+    // getter for DB-Id of debetable goal
+    public int getdebetableGoalDbIdFromLink () {
+
+        return debetableGoalDbIdFromLink;
+
+    }
+
+
+    // getter for jointly goal number in listview
+    public int getJointlyGoalNumberInListview () {
+
+        return jointlyGoalNumberInListView;
+
+    }
+
+    // getter for sketch arrangement number in listview
+    public int getDebetableGoalNumberInListview () {
+
+        return debetableGoalNumberInListView;
+
+    }
+
+
+    /*
+    // geter for evaluate next jointly goal
+    public boolean getEvaluateNextJointlyGoal () {
+
+        return evaluateNextArrangement;
+
+    }
+    */
+
+
+    // geter for border for comments
+    public boolean isCommentLimitationBorderSet (String jointlyDebetable) {
+
+        switch (jointlyDebetable) {
+            case "jointlyGoals":
+                if (prefs.getInt("commentJointlyGoalMaxCountComment",0) < commentLimitationBorder) { // is there a border for comments jointly goals
+                    return true; // comments are limited!
+                }
+                break;
+            case "debetableGoals":
+
+                // TODO Konstante an Max Count DEBETABLE GOALS anpassen
+                if (prefs.getInt("commentDebetableGoalMaxCountComment",0) < commentLimitationBorder) { // is there a border for comments debetable goals
+                    return true; // sketch comments are limited!
+                }
+                break;
+        }
+
+        return  false; // write infinitely comments!
+
+    }
+
 
 
 

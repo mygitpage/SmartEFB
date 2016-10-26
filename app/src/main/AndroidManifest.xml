@@ -32,11 +32,13 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
 
+            <!--
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="android.intent.action.VIEW" />
                 <data android:scheme="smart.efb.ilink_comment" />
             </intent-filter>
+            -->
         </activity>
 
         <receiver android:name=".AlarmReceiverOurArrangement">
@@ -51,12 +53,13 @@
         <activity
             android:name=".ActivityOurGoals"
             android:label="@string/mainMenueElementId_3"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
 
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-                <action android:name="android.intent.action.VIEW" />
-                <data android:scheme="smart.efb.ilink_goal_comment" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="smart.efb.ilink_goal_comment"/>
             </intent-filter>
         </activity>
 
@@ -83,7 +86,26 @@
         </activity>
 
 
+        <activity
+            android:name=".ActivityParseDeepLink">
 
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="smart.efb.deeplink" android:host="linkin"/>
+
+                <!--
+                <action android:name="android.intent.action.VIEW"/>
+
+                Handles any vnd.urbanairship.sample://deeplink URI's
+                <data android:scheme="vnd.urbanairship.sample" android:host="deeplink" />
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                -->
+
+            </intent-filter>
+        </activity>
 
 
 

@@ -125,16 +125,18 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
 
             // make link to comment arrangement
             Uri.Builder commentLinkBuilder = new Uri.Builder();
-            commentLinkBuilder.scheme("smart.efb.ilink_comment")
-                    .authority("www.smart-efb.de")
+            commentLinkBuilder.scheme("smart.efb.deeplink")
+                    .authority("linkin")
+                    .path("ourarrangement")
                     .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "comment_an_sketch_arrangement");
 
             // make link to show comment for arrangement
             Uri.Builder showCommentLinkBuilder = new Uri.Builder();
-            showCommentLinkBuilder.scheme("smart.efb.ilink_comment")
-                    .authority("www.smart-efb.de")
+            showCommentLinkBuilder.scheme("smart.efb.deeplink")
+                    .authority("linkin")
+                    .path("ourarrangement")
                     .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "show_comment_for_sketch_arrangement");;

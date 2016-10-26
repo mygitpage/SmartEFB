@@ -137,8 +137,9 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
         // generate back link "zurueck zu allen Entwuerfen"
         Uri.Builder commentLinkBuilder = new Uri.Builder();
-        commentLinkBuilder.scheme("smart.efb.ilink_comment")
-                .authority("www.smart-efb.de")
+        commentLinkBuilder.scheme("smart.efb.deeplink")
+                .authority("linkin")
+                .path("ourarrangement")
                 .appendQueryParameter("db_id", "0")
                 .appendQueryParameter("arr_num", "0")
                 .appendQueryParameter("com", "show_sketch_arrangement");

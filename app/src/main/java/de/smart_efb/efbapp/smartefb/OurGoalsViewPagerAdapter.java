@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 
 /**
  * Created by ich on 08.06.16.
@@ -46,7 +47,7 @@ public class OurGoalsViewPagerAdapter extends FragmentStatePagerAdapter {
         fragmentChooserTabOne = 0;
 
         fragJointlyGoalsNow = new OurGoalsFragmentJointlyGoalsNow();
-        fragJointlyGoalsComment = new OurGoalsFragmentJointlyGoalsNow();
+        fragJointlyGoalsComment = new OurGoalsFragmentCommentJointlyGoals();
         fragJointlyGoalsOld = new OurGoalsFragmentJointlyGoalsNow();
         fragJointlyGoalsShowComment = new OurGoalsFragmentJointlyGoalsNow();
         fragJointlyGoalsEvaluate = new OurGoalsFragmentJointlyGoalsNow();
@@ -60,12 +61,18 @@ public class OurGoalsViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
+        Log.d("ViewPager","getItem:"+position);
+
         switch (position) {
             case 0:
                 switch (fragmentChooserTabZero) {
                     case 0:
+                        Log.d("ViewPager","Fragment 0000000000000");
+
                         return fragJointlyGoalsNow;
                     case 1:
+                        Log.d("ViewPager","Fragment 1111111111111");
+
                         return fragJointlyGoalsComment;
                     case 2:
                         return fragJointlyGoalsShowComment;
@@ -115,6 +122,8 @@ public class OurGoalsViewPagerAdapter extends FragmentStatePagerAdapter {
 
     // set variable for switching between fragments for tab 0
     public static void setFragmentTabZero(String subFragmentCommand) {
+
+        Log.d("setFragmentViewPager","FragName: "+subFragmentCommand);
 
         switch (subFragmentCommand) {
 

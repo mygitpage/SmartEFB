@@ -30,9 +30,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW = "ourGoalsDebetableJointlyGoalsNow";
+    public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT = "ourGoalsJointlyGoalsComment";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 24;
+    public static final int DATABASE_VERSION = 25;
 
 
     // Common column names
@@ -80,7 +81,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // All keys from table app settings in a String
-    public static final String[] OUR_ARRANGEMENT_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT, OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY };
+    public static final String[] OUR_ARRANGEMENT_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT, OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME };
 
     // SQL String to create our arrangement comment table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_COMMENT =
@@ -113,7 +114,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // All keys from table app settings in a String
-    public static final String[] OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ID_ARRANGEMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY };
+    public static final String[] OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ID_ARRANGEMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME };
 
     // SQL String to create our arrangement comment table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_SKETCH_COMMENT =
@@ -216,7 +217,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String[] OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE };
 
     // SQL String to create our goals jointly goals now table
-    private static final String DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_NOW =
+    private static final String DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_JOINTLY_GOALS_NOW =
             "create table " + DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW + " (" + KEY_ROWID + " integer primary key autoincrement, "
                     + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL + " TEXT not null, "
                     + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME + " STRING not null, "
@@ -229,6 +230,37 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     /************************ End Definitions Our Goals *********************************************************************/
+
+
+
+    /**********************************************************************************************/
+    // Our Goals Jointly Goals Comment- column names and numbers
+    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT = "comment";
+    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME = "author_name";
+    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME = "comment_time";
+    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_ARRANGEMENT = "id_arrangement";
+    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY = "new_entry";
+    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ARRANGEMENT_TIME = "arrangement_time";
+
+
+    // All keys from table app settings in a String
+    public static final String[] OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_ARRANGEMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ARRANGEMENT_TIME };
+
+    // SQL String to create our arrangement comment table
+    private static final String DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_COMMENT =
+            "create table " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT + " (" + KEY_ROWID + " integer primary key autoincrement, "
+                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT + " TEXT not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME + " STRING not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_ARRANGEMENT + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
+                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ARRANGEMENT_TIME + " INTEGER not null"
+                    + ");";
+
+
+
+    /**********************************************************************************************/
+
 
 
 
@@ -265,8 +297,13 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Create table ChatMessage
         _db.execSQL(DATABASE_CREATE_SQL_CHAT_MESSAGE);
 
-        // Create table Our Goals Jointly Goals Now
-        _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_NOW);
+        // Create table Our Goals Debetable/Jointly Goals Now
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_JOINTLY_GOALS_NOW);
+
+        // Create table Our Goals Jointly Goals Comment
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_COMMENT);
+
+
     }
 
 
@@ -289,8 +326,13 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Destroy table ChatMessage
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_CHAT_MESSAGE);
 
-        // Destroy table Our Goals Jointly Goals Now
+        // Destroy table Our Goals Debetable/Jointly Goals Now
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW);
+
+        // Destroy table Our Goals Jointly Goals Comment
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT);
+
+
 
         // Recreate new database:
         onCreate(_db);
@@ -1191,16 +1233,120 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-
-
-
-
-
-    /********************************* End!! TABLES FOR FUNCTION: Our Arrangement ******************************************/
+    /********************************* End!! TABLES FOR FUNCTION: Our Debetable/JOintly Goals ******************************************/
     /***********************************************************************************************************************/
 
 
+    /********************************* TABLES FOR FUNCTION: Our Goals Jointly Goals Comment ******************************************/
 
+    // Add a new set of values to ourGoalsJointlyGoalsComment .
+    public long insertRowOurGoalJointlyGoalComment(String comment, String authorName, long commentTime, int idArrangement, Boolean newEntry, long currentDateOfArrangement) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues initialValues = new ContentValues();
+
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, comment);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, authorName);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, commentTime);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_ARRANGEMENT, idArrangement);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ARRANGEMENT_TIME, currentDateOfArrangement);
+
+        // is it a new entry?
+        if (newEntry) {
+            initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, 1);
+        } else {
+            initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, 0);
+        }
+
+        // Insert it into the database.
+        return db.insert(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, null, initialValues);
+    }
+
+
+
+
+    // Return all commens from the database for jointly goals with arrangement_id = id (table ourGoalsJointlyGoalsComment)
+    // the result is sorted by DESC
+    public Cursor getAllRowsOurGoalsJointlyGoalsComment(int goalId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // data filter
+        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_ARRANGEMENT + "=" + goalId;
+
+        // sort string
+        String sort = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
+                where, null, null, null, sort, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+    }
+
+
+    // Get the number of new rows in all comment for all jointly goals (new entrys) where date is current goal date -> no older one!
+    public int getCountAllNewEntryOurGoalsJointlyGoalsComment(long currentDateOfJointlyGoal) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // new_entry = 1 (true)?
+        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ARRANGEMENT_TIME + "=" + currentDateOfJointlyGoal;
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        // return how many
+        return c.getCount();
+    }
+
+
+
+    // Get the number of new rows in comment for choosen jointly goal, look jointlyGoalRowId (new entrys)
+    public int getCountNewEntryOurGoalsJointlyGoalComment(int jointlyGoalRowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // new_entry = 1 (true) and choosen arrangement like arrangementRowId?
+        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_ARRANGEMENT + "=" + jointlyGoalRowId;
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        // return how many
+        return c.getCount();
+    }
+
+
+    // delete status new entry in table ourArrangementComment.
+    public boolean deleteStatusNewEntryOurGoalsJointlyGoalComment (int rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row new_entry = 0 (not new!)
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, 0);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null) != 0;
+    }
+
+
+    /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Comment ***************************************/
+    /****************************************************************************************************************************/
 
 
 

@@ -28,7 +28,7 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
     private DBAdapter myDb;
 
     //limitation in count comments true-> yes, there is a border; no, there is no border, wirte infitisly comments
-    Boolean commentLimitationBorder;
+    Boolean commentLimitationBorder = true;
 
 
     // number for count comments for arrangement (12 numbers!)
@@ -46,9 +46,9 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
         myDb = new DBAdapter(context);
 
         // init array for count comments
-        //numberCountForComments = context.getResources().getStringArray(R.array.ourArrangementCountComments);
+        numberCountForComments = context.getResources().getStringArray(R.array.ourGoalsCountComments);
 
-        //commentLimitationBorder = ((ActivityOurArrangement)context).isCommentLimitationBorderSet("current");
+        commentLimitationBorder = ((ActivityOurGoals)context).isCommentLimitationBorderSet("jointlyGoals");
 
     }
 
@@ -105,8 +105,9 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
             // make link to evaluate jointly goal, when evaluation is possible for this goal
             if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE)) == 1) {
                 Uri.Builder evaluateLinkBuilder = new Uri.Builder();
-                evaluateLinkBuilder.scheme("smart.efb.ilink_goal_comment")
-                        .authority("www.smart-efb.de")
+                evaluateLinkBuilder.scheme("smart.efb.deeplink")
+                        .authority("linkin")
+                        .path("ourgoals")
                         .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
                         .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition() + 1))
                         .appendQueryParameter("com", "evaluate_an_jointly_goal");
@@ -121,90 +122,96 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
         // Show link for comment in our goal
         if (prefs.getBoolean("showCommentLinkJointlyGoals", false)) {
 
-            /********************************** TODO DB-Funktion erstellen ---------------------------------
+
             // get from DB  all comments for choosen goal (getCount)
-            Cursor cursorGoalAllComments = myDb.getAllRowsOurArrangementComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
+            Cursor cursorGoalAllComments = myDb.getAllRowsOurGoalsJointlyGoalsComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
             // generate the number of comments to show
             String tmpCountComments;
+
             int tmpIntCountComments = cursorGoalAllComments.getCount();
-            if (cursorGoalAllComments.getCount() > 10) {
+            if (tmpIntCountComments > 10) {
                 tmpCountComments = numberCountForComments[11];
 
             }
             else {
-                tmpCountComments = numberCountForComments[cursorGoalAllComments.getCount()];
+                tmpCountComments = numberCountForComments[tmpIntCountComments];
             }
-
 
 
             // check comments for new entry, the cursor is sorted DESC, so first element is newest!!! new entry is markt by == 1
             if (cursorGoalAllComments.getCount() > 0) {
                 cursorGoalAllComments.moveToFirst();
-                if (cursorGoalAllComments.getInt(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY)) == 1) {
+                if (cursorGoalAllComments.getInt(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY)) == 1) {
                     tmpTextNewEntryComment = "<font color='"+ ContextCompat.getColor(context, R.color.text_accent_color) + "'>"+ context.getResources().getString(R.string.newEntryText) + "</font>";
                 }
             }
 
-            */
+
 
             // make link to comment jointly goal
             Uri.Builder commentLinkBuilder = new Uri.Builder();
-            commentLinkBuilder.scheme("smart.efb.ilink_goal_comment")
-                    .authority("www.smart-efb.de")
+            commentLinkBuilder.scheme("smart.efb.deeplink")
+                    .authority("linkin")
+                    .path("ourgoals")
                     .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "comment_an_jointly_goal");
 
-            // make link to show comment for jointly goal
+            // make link to show comments for jointly goal
             Uri.Builder showCommentLinkBuilder = new Uri.Builder();
-            showCommentLinkBuilder.scheme("smart.efb.ilink_goal_comment")
-                    .authority("www.smart-efb.de")
+            showCommentLinkBuilder.scheme("smart.efb.deeplink")
+                    .authority("linkin")
+                    .path("ourgoals")
                     .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "show_comment_for_jointly_goal");;
 
 
+
             if (prefs.getInt("commentJointlyGoalCountComment",0) < prefs.getInt("commentJointlyGoalMaxCountComment",0) || !commentLimitationBorder) {
 
-                showJointlyGoalsCommentsLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
+                showJointlyGoalsCommentAnGoalLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourGoalsCommentString", "string", context.getPackageName()))+"</a>");
 
             }
             else {
-                showJointlyGoalsCommentsLinkTmp = Html.fromHtml(" ("+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+")");
+                showJointlyGoalsCommentAnGoalLinkTmp = Html.fromHtml(" ("+context.getResources().getString(context.getResources().getIdentifier("ourGoalsCommentString", "string", context.getPackageName()))+")");
 
             }
+
 
 
             if (tmpIntCountComments == 0) {
-                showCommentsLinkTmp = Html.fromHtml(tmpCountComments + " &middot;");
+                showJointlyGoalsCommentsLinkTmp = Html.fromHtml(tmpCountComments + " &middot;");
             }
             else {
-                showCommentsLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountComments + "</a> " + tmpTextNewEntryComment + " &middot;");
+                showJointlyGoalsCommentsLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountComments + "</a> " + tmpTextNewEntryComment + " &middot;");
 
             }
+
 
         }
 
 
         // show genaerate links for evaluate or/and comment
-        if (prefs.getBoolean("showArrangementComment", false) || prefs.getBoolean("showArrangementEvaluate", false) ) {
+        if (prefs.getBoolean("showCommentLinkJointlyGoals", false) || prefs.getBoolean("showEvaluateLinkJointlyGoals", false) ) {
 
             // create the comment link
-            TextView linkCommentAnArrangement = (TextView) view.findViewById(R.id.linkCommentAnArrangement);
+            TextView linkCommentEvaluateAnGoal = (TextView) view.findViewById(R.id.linkCommentEvaluateAnGoal);
 
-            if (showEvaluateCommentLinkTmp != null && showCommentsLinkTmp != null && showCommentArrangementLinkTmp != null) {
-                linkCommentAnArrangement.setText(TextUtils.concat(showEvaluateCommentLinkTmp, showCommentsLinkTmp, showCommentArrangementLinkTmp));
+            if (showJointlyGoalsEvaluateLinkTmp != null && showJointlyGoalsCommentsLinkTmp != null && showJointlyGoalsCommentsLinkTmp != null) {
+                linkCommentEvaluateAnGoal.setText(TextUtils.concat(showJointlyGoalsEvaluateLinkTmp, showJointlyGoalsCommentsLinkTmp, showJointlyGoalsCommentAnGoalLinkTmp));
             }
-            else if (showEvaluateCommentLinkTmp == null && showCommentsLinkTmp != null && showCommentArrangementLinkTmp != null) {
-                linkCommentAnArrangement.setText(TextUtils.concat(showCommentsLinkTmp, showCommentArrangementLinkTmp));
+            else if (showJointlyGoalsEvaluateLinkTmp == null && showJointlyGoalsCommentsLinkTmp != null && showJointlyGoalsCommentsLinkTmp != null) {
+                linkCommentEvaluateAnGoal.setText(TextUtils.concat(showJointlyGoalsCommentsLinkTmp, showJointlyGoalsCommentAnGoalLinkTmp));
             }
             else {
-                linkCommentAnArrangement.setText(showEvaluateCommentLinkTmp);
+                linkCommentEvaluateAnGoal.setText(showJointlyGoalsEvaluateLinkTmp);
             }
 
-            linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
+            linkCommentEvaluateAnGoal.setMovementMethod(LinkMovementMethod.getInstance());
 
         }
+
 
 
 

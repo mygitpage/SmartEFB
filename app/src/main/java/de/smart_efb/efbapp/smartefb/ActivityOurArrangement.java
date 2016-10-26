@@ -208,7 +208,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         super.onNewIntent(intent);
 
         // get the link data from URI and from the extra
-        intentLinkData = intent.getData();
+        /*intentLinkData = intent.getData();*/
         intentExtras = intent.getExtras();
 
         int tmpDbId = 0;
@@ -216,6 +216,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         Boolean tmpEvalNext = false;
 
         // is there URI Data?
+        /*
         if (intentLinkData != null) {
             // get data that comes with intent-link
             tmpDbId = Integer.parseInt(intentLinkData.getQueryParameter("db_id")); // arrangement DB-ID
@@ -224,7 +225,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // get command and execute it
             executeIntentCommand (intentLinkData.getQueryParameter("com"), tmpDbId, tmpNumberinListView, tmpEvalNext);
 
-        } else if (intentExtras != null) {
+        } else*/
+        if (intentExtras != null) {
            // get data that comes with extras
             tmpDbId = intentExtras.getInt("db_id",0);
             tmpNumberinListView = intentExtras.getInt("arr_num",0);

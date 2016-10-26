@@ -105,8 +105,9 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
             // make link to evaluate arrangement, when evaluation is possible for this arrangement
             if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE)) == 1) {
                 Uri.Builder evaluateLinkBuilder = new Uri.Builder();
-                evaluateLinkBuilder.scheme("smart.efb.ilink_comment")
-                        .authority("www.smart-efb.de")
+                evaluateLinkBuilder.scheme("smart.efb.deeplink")
+                        .authority("linkin")
+                        .path("ourarrangement")
                         .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
                         .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition() + 1))
                         .appendQueryParameter("com", "evaluate_an_arrangement");
@@ -145,16 +146,18 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
             // make link to comment arrangement
             Uri.Builder commentLinkBuilder = new Uri.Builder();
-            commentLinkBuilder.scheme("smart.efb.ilink_comment")
-                    .authority("www.smart-efb.de")
+            commentLinkBuilder.scheme("smart.efb.deeplink")
+                    .authority("linkin")
+                    .path("ourarrangement")
                     .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "comment_an_arrangement");
 
             // make link to show comment for arrangement
             Uri.Builder showCommentLinkBuilder = new Uri.Builder();
-            showCommentLinkBuilder.scheme("smart.efb.ilink_comment")
-                    .authority("www.smart-efb.de")
+            showCommentLinkBuilder.scheme("smart.efb.deeplink")
+                    .authority("linkin")
+                    .path("ourarrangement")
                     .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "show_comment_for_arrangement");;

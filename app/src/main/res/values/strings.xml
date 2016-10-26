@@ -268,13 +268,49 @@
                 <string name="newEntryTextOurGoal">(Neu)</string>
 
                 <string name="ourGoalsEvaluateJointlyGoalString">Bewerten</string>
-        <!-- End show now arrangements -->
+
+                <string name="ourGoalsCommentString">Kommentieren</string>
+        <!-- End show current jointly goals now -->
+
+
+        <!-- fragment show comment jointly goals -->
+            <string name="showJointlyGoalCommentIntroText">Gemeinsames Ziel</string>
+            <string name="ourGoalsBackLinkToJointlyGoals">Zurück zu gemeinsamen Zielen</string>
+            <string name="jointlyGoalCommentIntro">Bitte kommentieren Sie das Ziel</string>
+
+            <string name="commentHistoryJointlyGoalsIntroText">Alle bisherigen Kommentare zum gemeinsamen Ziel</string>
+
+            <string name="infoTextJointlyGoalsCommentMaxSingular">Sie könnnen maximal %1$d Kommentar schreiben.</string>
+            <string name="infoTextJointlyGoalsCommentMaxPlural">Sie könnnen maximal %1$d Kommentare schreiben.</string>
+            <string name="infoTextJointlyGoalsCommentUnlimitedText">Sie können beliebig viele Kommentare schreiben.</string>
+            <string name="infoTextJointlyGoalsCommentCountZero">Sie haben noch keinen Kommentar geschrieben.</string>
+            <string name="infoTextJointlyGoalsCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
+            <string name="infoTextJointlyGoalsCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
+
+            <string name="commentJointlyGoalSuccsesfulySend">Kommentar erfolgreich gesendet</string>
+
+
+
+            <string name="btnSendJointlyGoalComment">Kommentar senden</string>
+            <string name="btnAbortJointlyGoalComment">Zurück</string>
+
+            <string name ="commentJointlyGoalTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
+
+
+            <string name="errorInputJointlyGoalComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz!</string>
+
+
+
+
+
+        <!-- End show comment jointly goals -->
 
 
         <!-- Subtitle under Title Our Goals -->
 
             <string name="ourGoalsSubtitleNothingThere">Keine Ziele vorhanden</string>
             <string name="ourGoalsSubtitleJointlyGoalsNow">Gemeinsame Ziele vom</string>
+            <string name="ourGoalsSubtitleJointlyGoalsComment">Ziel %1$d kommentieren</string>
 
 
         <!-- End subtitle -->

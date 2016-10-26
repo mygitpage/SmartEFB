@@ -126,6 +126,23 @@ public class SettingsEfbFragmentD extends Fragment {
         //prefsEditor.putLong("currentDateOfSketchArrangement", System.currentTimeMillis());
 
 
+
+        //Our Goals
+
+        // for jointly goals comment!!!!
+        // put max count of jointly comments and current count of jointly comments in prefs
+        // in future comes from coach over internet
+        prefsEditor.putInt("commentJointlyGoalMaxCountComment", 10); // > 1000 -> no limitation with comments
+        prefsEditor.putInt("commentJointlyGoalCountComment", 0);
+        // since this time count sketch comments
+        prefsEditor.putLong("jointlyGoalsCommentOurGoalsTimeSinceInMills", System.currentTimeMillis()); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+
+
+
         prefsEditor.commit();
 
 
