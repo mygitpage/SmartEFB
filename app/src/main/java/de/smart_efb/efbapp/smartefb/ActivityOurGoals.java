@@ -86,12 +86,6 @@ public class ActivityOurGoals extends AppCompatActivity {
     Boolean evaluateNextGoal = false;
 
 
-
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -122,7 +116,6 @@ public class ActivityOurGoals extends AppCompatActivity {
         tabLayoutOurGoals.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
 
                 String tmpSubtitleText = "";
 
@@ -183,16 +176,12 @@ public class ActivityOurGoals extends AppCompatActivity {
 
             }
         });
-
     }
 
 
     // Look for new intents (with data from URI or putExtra)
     @Override
     protected void onNewIntent(Intent intent) {
-
-        Log.d("OnNewIntent","NEW INTENT +++++++++++++++");
-
 
         // Uri from intent that holds data
         Uri intentLinkData = null;
@@ -275,8 +264,6 @@ public class ActivityOurGoals extends AppCompatActivity {
 
 
         } else if (command.equals("comment_an_jointly_goal")) { // Show fragment comment jointly goal
-
-            Log.d("Comment_J_G","DRIN!!!!!!!!!!!");
 
             // set global varibales
             jointlyGoalDbIdFromLink = tmpDbId;
@@ -386,8 +373,6 @@ public class ActivityOurGoals extends AppCompatActivity {
 
         }
         else { // Show fragment jointly goals now -> Tab ZERO
-
-            Log.d("J_G_NOW","DRIN+++++++++++++");
 
             // set global varibales
             jointlyGoalDbIdFromLink = tmpDbId;

@@ -297,7 +297,21 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case 2: // menue item "Ziele"
-                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+
+                    if (showMainMenueElement[countElements]) { // is element aktiv?
+
+                        if (myDb.getCountNewEntryOurGoals(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis())) > 0 ) {
+                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
+                        } else {
+                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                        }
+                        tmpNew = true;
+                    }
+                    else { // element is inaktiv
+                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesInactiv[countElements];
+                        tmpNew = true;
+                    }
+
                     break;
                 case 3: // menue item "Praevention"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];

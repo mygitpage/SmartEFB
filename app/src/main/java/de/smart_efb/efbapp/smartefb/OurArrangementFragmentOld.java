@@ -131,9 +131,6 @@ public class OurArrangementFragmentOld extends Fragment {
                 // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNothingThere", "string", fragmentOldContext.getPackageName()));
                 ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "old");
-
-                Log.d("Fragment Old","TXT: "+tmpSubtitle);
-
             }
 
         }

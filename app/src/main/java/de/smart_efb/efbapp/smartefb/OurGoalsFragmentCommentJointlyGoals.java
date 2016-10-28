@@ -74,7 +74,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
     @Override
     public void onViewCreated (View view, @Nullable Bundle saveInstanceState) {
 
-
         super.onViewCreated(view, saveInstanceState);
 
         fragmentCommentContextJointlyGoals = getActivity().getApplicationContext();
@@ -84,16 +83,8 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
         // init the fragment jointly goals comment only when an goal is choosen
         if (goalDbIdToComment != 0) {
-
-            Log.d("Ziele kommentieren ","Init Fragment");
-
             initFragmentCommentJointlyGoals();
         }
-
-        Log.d("Kommentieren Ziele","Ende OnViewCreate->"+goalDbIdToComment);
-
-
-
     }
 
 
@@ -202,7 +193,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                 if (txtInputJointlyGoalComment.getText().toString().length() > 3) {
 
                     // insert comment in DB
-                    long newID = myDb.insertRowOurGoalJointlyGoalComment(txtInputJointlyGoalComment.getText().toString(), prefs.getString("userName", "John Doe"), System.currentTimeMillis() , goalDbIdToComment, true, prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()));
+                    long newID = myDb.insertRowOurGoalJointlyGoalComment(txtInputJointlyGoalComment.getText().toString(), prefs.getString("userName", "John Doe"), System.currentTimeMillis() , goalDbIdToComment, true, prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()));
 
                     // Toast "Comment sucsessfull send"
                     Toast.makeText(fragmentCommentContextJointlyGoals, viewFragmentCommentJointlyGoals.getResources().getString(R.string.commentJointlyGoalSuccsesfulySend), Toast.LENGTH_SHORT).show();
@@ -316,7 +307,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                 aadn_inner_layout.addView (txtViewCommentNewEntry);
 
                 // delet status new entry in db
-                //myDb.deleteStatusNewEntryOurGoalsComment(cursorGoalAllComments.getInt(cursorGoalAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
+                myDb.deleteStatusNewEntryOurGoalsJointlyGoalComment(cursorGoalAllComments.getInt(cursorGoalAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
             }
 
             //add textView for comment author and date

@@ -33,7 +33,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT = "ourGoalsJointlyGoalsComment";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 25;
+    public static final int DATABASE_VERSION = 27;
 
 
     // Common column names
@@ -238,13 +238,13 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT = "comment";
     public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME = "author_name";
     public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME = "comment_time";
-    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_ARRANGEMENT = "id_arrangement";
+    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL = "id_goal";
     public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY = "new_entry";
-    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ARRANGEMENT_TIME = "arrangement_time";
+    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME = "goal_time";
 
 
     // All keys from table app settings in a String
-    public static final String[] OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_ARRANGEMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ARRANGEMENT_TIME };
+    public static final String[] OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME };
 
     // SQL String to create our arrangement comment table
     private static final String DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_COMMENT =
@@ -252,9 +252,9 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT + " TEXT not null, "
                     + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME + " STRING not null, "
                     + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " INTEGER not null, "
-                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_ARRANGEMENT + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL + " INTEGER not null, "
                     + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
-                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ARRANGEMENT_TIME + " INTEGER not null"
+                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME + " INTEGER not null"
                     + ");";
 
 
@@ -910,9 +910,6 @@ public class DBAdapter extends SQLiteOpenHelper {
             c.moveToFirst();
         }
 
-        Log.d ("AllNewEntrySketch", "DRIN!!!!!! -> "+c.getCount());
-
-
         // return how many
         return c.getCount();
     }
@@ -1061,8 +1058,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // sort string
         String sort = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + " DESC, " + KEY_ROWID + " DESC";
-
-        Log.d("DB All Rows","Where:"+where);
 
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS,
                 where, null, null, null, sort, null);
@@ -1240,7 +1235,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Goals Jointly Goals Comment ******************************************/
 
     // Add a new set of values to ourGoalsJointlyGoalsComment .
-    public long insertRowOurGoalJointlyGoalComment(String comment, String authorName, long commentTime, int idArrangement, Boolean newEntry, long currentDateOfArrangement) {
+    public long insertRowOurGoalJointlyGoalComment(String comment, String authorName, long commentTime, int idGoal, Boolean newEntry, long currentDateOfGoal) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1249,8 +1244,8 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, comment);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, authorName);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, commentTime);
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_ARRANGEMENT, idArrangement);
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ARRANGEMENT_TIME, currentDateOfArrangement);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL, idGoal);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME, currentDateOfGoal);
 
         // is it a new entry?
         if (newEntry) {
@@ -1266,14 +1261,14 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    // Return all commens from the database for jointly goals with arrangement_id = id (table ourGoalsJointlyGoalsComment)
+    // Return all comments from the database for jointly goals with goal_id = id (table ourGoalsJointlyGoalsComment)
     // the result is sorted by DESC
     public Cursor getAllRowsOurGoalsJointlyGoalsComment(int goalId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         // data filter
-        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_ARRANGEMENT + "=" + goalId;
+        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL + "=" + goalId;
 
         // sort string
         String sort = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
@@ -1295,13 +1290,15 @@ public class DBAdapter extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // new_entry = 1 (true)?
-        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ARRANGEMENT_TIME + "=" + currentDateOfJointlyGoal;
+        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME + "=" + currentDateOfJointlyGoal;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
         if (c != null) {
             c.moveToFirst();
         }
+
+        Log.d("NewEntry Comment","Count:"+c.getCount());
 
         // return how many
         return c.getCount();
@@ -1315,7 +1312,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // new_entry = 1 (true) and choosen arrangement like arrangementRowId?
-        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_ARRANGEMENT + "=" + jointlyGoalRowId;
+        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL + "=" + jointlyGoalRowId;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 

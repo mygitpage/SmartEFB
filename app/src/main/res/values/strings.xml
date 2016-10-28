@@ -242,6 +242,13 @@
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Activity Our Goals -->
 
+        <!-- Strings for activity our goals -->
+            <string name="ourGoalsBackLinkToJointlyGoals">Zurück zu gemeinsamen Zielen</string>
+            <string name="btnAbortJointlyGoalComment">Zurück zu den Zielen</string>
+        <!-- End Strings for activity our goals -->
+
+
+
         <!-- Strings for tab title in activity our goals -->
                 <string name="ourGoalsTabTitle_1">Gemeinsame Ziele</string>
                 <string name="ourGoalsTabTitle_1a">Kommentieren</string>
@@ -273,9 +280,9 @@
         <!-- End show current jointly goals now -->
 
 
-        <!-- fragment show comment jointly goals -->
+        <!-- fragment comment jointly goals -->
             <string name="showJointlyGoalCommentIntroText">Gemeinsames Ziel</string>
-            <string name="ourGoalsBackLinkToJointlyGoals">Zurück zu gemeinsamen Zielen</string>
+
             <string name="jointlyGoalCommentIntro">Bitte kommentieren Sie das Ziel</string>
 
             <string name="commentHistoryJointlyGoalsIntroText">Alle bisherigen Kommentare zum gemeinsamen Ziel</string>
@@ -292,7 +299,7 @@
 
 
             <string name="btnSendJointlyGoalComment">Kommentar senden</string>
-            <string name="btnAbortJointlyGoalComment">Zurück</string>
+
 
             <string name ="commentJointlyGoalTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
 
@@ -303,7 +310,16 @@
 
 
 
+        <!-- End comment jointly goals -->
+
+
+
+        <!-- Fragment show comment jointly goals -->
+
+            <string name="showCommentIntroTextForJointlyGoal">Die Kommentare zum gemeinsamen Ziel</string>
+
         <!-- End show comment jointly goals -->
+
 
 
         <!-- Subtitle under Title Our Goals -->
@@ -311,6 +327,7 @@
             <string name="ourGoalsSubtitleNothingThere">Keine Ziele vorhanden</string>
             <string name="ourGoalsSubtitleJointlyGoalsNow">Gemeinsame Ziele vom</string>
             <string name="ourGoalsSubtitleJointlyGoalsComment">Ziel %1$d kommentieren</string>
+            <string name="ourGoalsSubtitleJointlyGoalsShowComment">Kommentare gemeinsames Ziel</string>
 
 
         <!-- End subtitle -->

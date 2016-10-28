@@ -8,6 +8,8 @@ import android.util.Log;
 
 /**
  * Created by ich on 26.10.2016.
+
+ Dispatcher for deep link in the app
  */
 public class ActivityParseDeepLink extends Activity {
 
@@ -47,40 +49,28 @@ public class ActivityParseDeepLink extends Activity {
         tmpNumberinListView = Integer.parseInt(deepLink.getQueryParameter("arr_num"));
         tmpEvalNext = Boolean.parseBoolean(deepLink.getQueryParameter("eval_next"));
 
-
-
-
         if (OUR_ARRANGEMENT.equals(path)) {
             // Launch our arrangement
-            Log.d("DeepLink","Our Arrangement");
-
             Intent intent = new Intent(this, ActivityOurArrangement.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra("com",tmpCommand);
             intent.putExtra("db_id",tmpDbId);
             intent.putExtra("arr_num",tmpNumberinListView);
             intent.putExtra("eval_next",tmpEvalNext);
-
-
-
             startActivity(intent);
+
         } else if (OUR_GOALS.equals(path)) {
             // Launch our goals
-            Log.d("DeepLink","Our Goals");
-
-
             Intent intent = new Intent(this, ActivityOurGoals.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra("com",tmpCommand);
             intent.putExtra("db_id",tmpDbId);
             intent.putExtra("arr_num",tmpNumberinListView);
             intent.putExtra("eval_next",tmpEvalNext);
-
-
             startActivity(intent);
+
         } else {
             // Fall back to the main activity
-            Log.d("DeepLink","Main Activity");
             startActivity(new Intent(this, MainActivity.class));
         }
     }

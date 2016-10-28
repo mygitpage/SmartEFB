@@ -87,16 +87,8 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
         // init the fragment now only when an arrangement is choosen
         if (arrangementDbIdToComment != 0) {
-
-            Log.d("Kommentieren Apsrachen","Init Fragment");
-
             initFragmentNowComment();
         }
-
-        Log.d("Kommentieren Apsrachen","Ende OnViewCreate->"+arrangementDbIdToComment);
-
-
-
     }
 
 
@@ -176,7 +168,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
             tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentUnlimitedText);
         }
 
-        // build text element count sketch comment
+        // build text element count comment
         if (prefs.getInt("commentOurArrangementCountComment", 0) == 0) {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentCountZero);
         }

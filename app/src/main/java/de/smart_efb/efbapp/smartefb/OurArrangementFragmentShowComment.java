@@ -91,21 +91,11 @@ public class OurArrangementFragmentShowComment extends Fragment {
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
 
-        /*
-        // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
-        arrangementDbIdToShow = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
-        if (arrangementDbIdToShow < 0) arrangementDbIdToShow = 0; // check borders
-        // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
-        arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
-        if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
-        */
-
         // Set correct subtitle in Activity -> "Kommentare Absprache ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentShowCommentText", "string", fragmentShowCommentContext.getPackageName())) + " " + arrangementNumberInListView;
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "showComment");
 
     }
-
 
 
     // call getter Functions in ActivityOurArrangement for some data

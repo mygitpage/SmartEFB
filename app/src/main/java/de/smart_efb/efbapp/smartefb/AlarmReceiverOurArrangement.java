@@ -87,11 +87,6 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
                     // update table ourArrangement in db -> evaluation enable
                     myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),"set");
 
-
-
-                    Log.d("AlarmReceiver","Aus Pause --------->");
-
-
                     break;
                 case "evaluate": // alarm comes out of evaluate
                     // next cycle is pause -> set pause time
@@ -101,13 +96,6 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
                     evaluateAlarmIntent.putExtra("evaluateState","pause");
                     // update table ourArrangement in db -> evaluation disable
                     myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),"delete");
-
-
-
-                    Log.d("AlarmReceiver","Aus Evaluation <---------");
-
-
-
 
                     break;
                 default:
@@ -134,11 +122,6 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
             pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             // delete alarm
             manager.cancel(pendingIntentOurArrangementEvaluate);
-
-
-
-            Log.d("End A - Alarm:"," CANCELED!!!!!!! ");
-
         }
 
         // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)

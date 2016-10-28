@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="left"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp">
+
+        <TextView
+            android:id="@+id/goalsShowJointlyGoalIntro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/jointlyGoalShowCommentBackLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="right"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/actualCommentTextInShowComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:textColorLink="@color/colorPrimary"
+        android:gravity="left"
+        android:paddingBottom="15dp"
+        android:paddingLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/jointlyGoalShowCommentIntro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:gravity="left"
+        android:textStyle="bold"
+        android:paddingBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/listActualTextComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:gravity="top|left"
+        android:paddingLeft="10dp"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp">
+
+        <TextView
+            android:id="@+id/listActualTextNewComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:paddingLeft="10dp"/>
+
+        <TextView
+            android:id="@+id/listActualCommentAuthorAndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="@color/text_color"
+            android:gravity="right"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonAbortShowComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_btn_join"
+        android:textColor="@color/white"
+        android:text="@string/btnAbortJointlyGoalComment"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25dp"
+        android:padding="10dp"/>
+
+
+</LinearLayout>

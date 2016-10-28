@@ -74,7 +74,6 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
             introTextfJointlyGoals.setText(txtArrangementNumber);
         }
 
-
         // put text goal number
         TextView numberOfJointlyGoals = (TextView) view.findViewById(R.id.listGoalsNumberText);
         String txtJointlyGoalNumber = context.getResources().getString(R.string.showJointlyGoalTextNumber)+ " " + Integer.toString(cursor.getPosition()+1);
@@ -94,10 +93,6 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
         TextView textViewGoalText = (TextView) view.findViewById(R.id.listTextGoal);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL));
         textViewGoalText.setText(title);
-
-
-
-
 
         // generate link for evaluate an jointly goal
         if (prefs.getBoolean("showEvaluateLinkJointlyGoals", false)) {
@@ -121,8 +116,6 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
 
         // Show link for comment in our goal
         if (prefs.getBoolean("showCommentLinkJointlyGoals", false)) {
-
-
             // get from DB  all comments for choosen goal (getCount)
             Cursor cursorGoalAllComments = myDb.getAllRowsOurGoalsJointlyGoalsComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
             // generate the number of comments to show
@@ -137,7 +130,6 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
                 tmpCountComments = numberCountForComments[tmpIntCountComments];
             }
 
-
             // check comments for new entry, the cursor is sorted DESC, so first element is newest!!! new entry is markt by == 1
             if (cursorGoalAllComments.getCount() > 0) {
                 cursorGoalAllComments.moveToFirst();
@@ -145,8 +137,6 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
                     tmpTextNewEntryComment = "<font color='"+ ContextCompat.getColor(context, R.color.text_accent_color) + "'>"+ context.getResources().getString(R.string.newEntryText) + "</font>";
                 }
             }
-
-
 
             // make link to comment jointly goal
             Uri.Builder commentLinkBuilder = new Uri.Builder();
@@ -166,20 +156,15 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "show_comment_for_jointly_goal");;
 
-
-
+            // max comment < current comment -> no, the user can not comment anymore
             if (prefs.getInt("commentJointlyGoalCountComment",0) < prefs.getInt("commentJointlyGoalMaxCountComment",0) || !commentLimitationBorder) {
-
                 showJointlyGoalsCommentAnGoalLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourGoalsCommentString", "string", context.getPackageName()))+"</a>");
-
             }
             else {
                 showJointlyGoalsCommentAnGoalLinkTmp = Html.fromHtml(" ("+context.getResources().getString(context.getResources().getIdentifier("ourGoalsCommentString", "string", context.getPackageName()))+")");
-
             }
 
-
-
+            // is there a comment in DB -> no, show text "keine kommentare"
             if (tmpIntCountComments == 0) {
                 showJointlyGoalsCommentsLinkTmp = Html.fromHtml(tmpCountComments + " &middot;");
             }
@@ -187,10 +172,7 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
                 showJointlyGoalsCommentsLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountComments + "</a> " + tmpTextNewEntryComment + " &middot;");
 
             }
-
-
         }
-
 
         // show genaerate links for evaluate or/and comment
         if (prefs.getBoolean("showCommentLinkJointlyGoals", false) || prefs.getBoolean("showEvaluateLinkJointlyGoals", false) ) {
@@ -215,13 +197,7 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
 
 
 
-
-
-
-
-
     }
-
 
 
     @Override
@@ -236,9 +212,7 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
             inflatedView = cursorInflater.inflate(R.layout.list_our_goals_jointly_goals_now, parent, false);
         }
 
-
         return inflatedView;
-
     }
 
 
