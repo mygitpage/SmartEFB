@@ -1,5 +1,7 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +21,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.Calendar;
 
 /**
  * Created by ich on 07.06.16.
@@ -83,7 +87,7 @@ public class ActivityOurGoals extends AppCompatActivity {
     AlertDialog alertDialogSettings;
 
     // evaluate next goal true -> yes, there is a next goal to evaluate; false -> there is nothing more
-    Boolean evaluateNextGoal = false;
+    Boolean evaluateNextJointlyGoal = false;
 
 
     @Override
@@ -96,7 +100,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         initOurGoals();
 
         // init alarm manager
-        //setAlarmManagerOurGoal ();
+        setAlarmManagerOurGoals ();
 
         // find viewpager in view
         viewPagerOurGoals = (ViewPager) findViewById(R.id.viewPagerOurGoals);
@@ -191,7 +195,7 @@ public class ActivityOurGoals extends AppCompatActivity {
 
         jointlyGoalDbIdFromLink = 0;
         jointlyGoalNumberInListView = 0;
-        evaluateNextGoal = false;
+        evaluateNextJointlyGoal = false;
 
         // call super
         super.onNewIntent(intent);
@@ -204,17 +208,6 @@ public class ActivityOurGoals extends AppCompatActivity {
         int tmpNumberinListView = 0;
         Boolean tmpEvalNext = false;
 
-        // is there URI Data?
-        /*
-        if (intentLinkData != null) {
-            // get data that comes with intent-link
-            tmpDbId = Integer.parseInt(intentLinkData.getQueryParameter("db_id")); // arrangement DB-ID
-            tmpNumberinListView = Integer.parseInt(intentLinkData.getQueryParameter("arr_num"));
-            tmpEvalNext = Boolean.parseBoolean(intentLinkData.getQueryParameter("eval_next"));
-            // get command and execute it
-            executeIntentCommand (intentLinkData.getQueryParameter("com"), tmpDbId, tmpNumberinListView, tmpEvalNext);
-
-        } else*/
         if (intentExtras != null) {
             // get data that comes with extras
             tmpDbId = intentExtras.getInt("db_id",0);
@@ -239,7 +232,7 @@ public class ActivityOurGoals extends AppCompatActivity {
             // set global varibales
             jointlyGoalDbIdFromLink = tmpDbId;
             jointlyGoalNumberInListView = tmpNumberinListView;
-            evaluateNextGoal = tmpEvalNext;
+            evaluateNextJointlyGoal = tmpEvalNext;
 
             //set fragment in tab zero to comment
             OurGoalsViewPagerAdapter.setFragmentTabZero("show_comment_for_jointly_goal");
@@ -268,7 +261,7 @@ public class ActivityOurGoals extends AppCompatActivity {
             // set global varibales
             jointlyGoalDbIdFromLink = tmpDbId;
             jointlyGoalNumberInListView = tmpNumberinListView;
-            evaluateNextGoal = tmpEvalNext;
+            evaluateNextJointlyGoal = tmpEvalNext;
 
             //set fragment in tab zero to comment
             OurGoalsViewPagerAdapter.setFragmentTabZero("comment_an_jointly_goal");
@@ -290,7 +283,7 @@ public class ActivityOurGoals extends AppCompatActivity {
             // set global varibales
             jointlyGoalDbIdFromLink = tmpDbId;
             jointlyGoalNumberInListView = tmpNumberinListView;
-            evaluateNextGoal = tmpEvalNext;
+            evaluateNextJointlyGoal = tmpEvalNext;
 
             //set fragment in tab zero to evaluate
             OurGoalsViewPagerAdapter.setFragmentTabZero("evaluate_an_jointly_goal");
@@ -335,7 +328,7 @@ public class ActivityOurGoals extends AppCompatActivity {
             debetableGoalDbIdFromLink = tmpDbId;
             debetableGoalNumberInListView = tmpNumberinListView;
 
-            //set fragment in tab one to show sketch arrangement
+            //set fragment in tab one to show debetable goals
             OurGoalsViewPagerAdapter.setFragmentTabOne("show_debetable_goals_now");
 
             // set correct tab one titel
@@ -356,7 +349,7 @@ public class ActivityOurGoals extends AppCompatActivity {
             debetableGoalDbIdFromLink = tmpDbId;
             debetableGoalNumberInListView = tmpNumberinListView;
 
-            //set fragment in tab one to show comment sketch arrangement
+            //set fragment in tab one to show comment debetable goals
             OurGoalsViewPagerAdapter.setFragmentTabOne("show_comment_for_debetable_goal");
 
             // set correct tab one titel
@@ -377,7 +370,7 @@ public class ActivityOurGoals extends AppCompatActivity {
             // set global varibales
             jointlyGoalDbIdFromLink = tmpDbId;
             jointlyGoalNumberInListView = tmpNumberinListView;
-            evaluateNextGoal = tmpEvalNext;
+            evaluateNextJointlyGoal = tmpEvalNext;
 
             //set fragment in tab zero to comment
             OurGoalsViewPagerAdapter.setFragmentTabZero("show_jointly_goals_now");
@@ -398,13 +391,6 @@ public class ActivityOurGoals extends AppCompatActivity {
 
     }
 
-
-
-
-
-
-
-
     // init the activity Our Goals
     private void initOurGoals() {
 
@@ -422,14 +408,14 @@ public class ActivityOurGoals extends AppCompatActivity {
         prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
-        //get current date of arrangement
+        //get current date of jointly goals
         currentDateOfJointlyGoals = prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis());
-        //get date of sketch arrangement
+        //get date of debetable goals
         getCurrentDateOfDebetableGoals = prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis());
 
-        // init show on tab zero arrangemet now
+        // init show on tab zero jointly goals now
         showCommandFragmentTabZero = "show_jointly_goals_now";
-        // init show on tab one sketch arrangemet
+        // init show on tab one debetable goals now
         showCommandFragmentTabOne = "show_debetable_goals_now";
 
 
@@ -451,11 +437,11 @@ public class ActivityOurGoals extends AppCompatActivity {
     // help dialog
     void createHelpDialog () {
 
-        Button tmpHelpButtonOurArrangement = (Button) findViewById(R.id.helpOurGoalsNow);
+        Button tmpHelpButtonOurGoals = (Button) findViewById(R.id.helpOurGoalsNow);
 
 
-        // add button listener to question mark in activity OurArrangement (toolbar)
-        tmpHelpButtonOurArrangement.setOnClickListener(new View.OnClickListener() {
+        // add button listener to question mark in activity OurGoals (toolbar)
+        tmpHelpButtonOurGoals.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -532,7 +518,7 @@ public class ActivityOurGoals extends AppCompatActivity {
 
     }
 
-    // getter for sketch arrangement number in listview
+    // getter for debetable goal number in listview
     public int getDebetableGoalNumberInListview () {
 
         return debetableGoalNumberInListView;
@@ -540,14 +526,14 @@ public class ActivityOurGoals extends AppCompatActivity {
     }
 
 
-    /*
+
     // geter for evaluate next jointly goal
     public boolean getEvaluateNextJointlyGoal () {
 
-        return evaluateNextArrangement;
+        return evaluateNextJointlyGoal;
 
     }
-    */
+
 
 
     // geter for border for comments
@@ -617,7 +603,75 @@ public class ActivityOurGoals extends AppCompatActivity {
     }
 
 
+    // set alarmmanager for evaluation time
+    void setAlarmManagerOurGoals () {
 
+        PendingIntent pendingIntentOurGoalsEvaluate;
+
+        // get reference to alarm manager
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        // create intent for backcall to broadcast receiver
+        Intent evaluateAlarmIntent = new Intent(ActivityOurGoals.this, AlarmReceiverOurGoals.class);
+
+        // get start time and end time for evaluation
+        Long startEvaluationDate = prefs.getLong("startDataJointlyGoalsEvaluationInMills", System.currentTimeMillis());
+        Long endEvaluationDate = prefs.getLong("endDataJointlyGoalsEvaluationInMills", System.currentTimeMillis());
+
+        // get evaluate pause time and active time in seconds
+        evaluatePauseTime = prefs.getInt("evaluateJointlyGoalsPauseTimeInSeconds", 43200); // default value 43200 is 12 hours
+        evaluateActivTime = prefs.getInt("evaluateJointlyGoalsActivTimeInSeconds", 43200); // default value 43200 is 12 hours
+
+        Long tmpSystemTimeInMills = System.currentTimeMillis();
+        int tmpEvalutePaAcTime = evaluateActivTime * 1000;
+        String tmpIntentExtra = "evaluate";
+        String tmpChangeDbEvaluationStatus = "set";
+
+        // get calendar and init
+        Calendar calendar = Calendar.getInstance();
+
+        // set alarm manager when current time is between start date and end date and evaluation is enable
+        if (prefs.getBoolean("showEvaluateLinkJointlyGoals", false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
+
+            calendar.setTimeInMillis(startEvaluationDate);
+
+            do {
+                calendar.add(Calendar.SECOND, evaluateActivTime);
+                tmpIntentExtra = "evaluate";
+                tmpChangeDbEvaluationStatus = "set";
+                tmpEvalutePaAcTime = evaluateActivTime * 1000; // make mills-seconds
+                if (calendar.getTimeInMillis() < tmpSystemTimeInMills) {
+                    calendar.add(Calendar.SECOND, evaluatePauseTime);
+                    tmpIntentExtra = "pause";
+                    tmpChangeDbEvaluationStatus = "delete";
+                    tmpEvalutePaAcTime = evaluatePauseTime * 1000; // make mills-seconds
+                }
+            } while (calendar.getTimeInMillis() < tmpSystemTimeInMills);
+
+            // update table ourGoals in db -> set or delete
+            myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()),tmpChangeDbEvaluationStatus);
+
+            // put extras to intent -> "evaluate" or "delete"
+            evaluateAlarmIntent.putExtra("evaluateState",tmpIntentExtra);
+
+            // create call (pending intent) for alarm manager
+            pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(ActivityOurGoals.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // set alarm
+            manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurGoalsEvaluate);
+
+        }
+        else { // delete alarm - it is out of time
+
+            // update table ourGoals in db -> evaluation disable
+            myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()),"delete");
+            // crealte pending intent
+            pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(ActivityOurGoals.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            // delete alarm
+            manager.cancel(pendingIntentOurGoalsEvaluate);
+        }
+
+    }
 
 
 

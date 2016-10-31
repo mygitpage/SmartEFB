@@ -245,6 +245,8 @@
         <!-- Strings for activity our goals -->
             <string name="ourGoalsBackLinkToJointlyGoals">Zurück zu gemeinsamen Zielen</string>
             <string name="btnAbortJointlyGoalComment">Zurück zu den Zielen</string>
+            <string name="showJointlyGoalTextNumber">Ziel</string>
+            <string name="newEntryTextOurGoal">(Neu)</string>
         <!-- End Strings for activity our goals -->
 
 
@@ -271,8 +273,8 @@
         <!-- fragment show current jointly goals now -->
                 <string name="textViewJointlyGoalsNowNothingThere">Zurzeit sind keine gemeinsamen Ziele vorhanden!</string>
                 <string name="ourGoalsJointlyNowIntroText">Die gemeinsamen Ziele vom</string>
-                <string name="showJointlyGoalTextNumber">Ziel</string>
-                <string name="newEntryTextOurGoal">(Neu)</string>
+
+
 
                 <string name="ourGoalsEvaluateJointlyGoalString">Bewerten</string>
 
@@ -321,6 +323,44 @@
         <!-- End show comment jointly goals -->
 
 
+        <!-- Fragment evaluate jointly goals -->
+
+                <string name="showEvaluateJointlyGoalIntroText">Bewerten Sie Ziel</string>
+
+                <string name="showNextJointlyGoalToEvaluateIntroText">Bitte klicken Sie auf Speichern und bewerten Sie als nächtes Ziel %1$d.</string>
+                <string name="showNothingNextJointlyGoalToEvaluateText">Bitte klicken Sie auf Speichern. Es sind keine weiteren Absprachen zu bewerten.</string>
+                <string name="evaluateThankAndNextEvaluationJointlyGoalLastText">Vielen Dank für die Bewertung des vorherrigen Ziels. Bitte bewerten Sie nun die letzte Absprache.</string>
+                <string name="evaluateResultJointlyGoalSuccsesfulySend">Vielen Dank für die Bewertung des letzten Ziels!</string>
+
+
+
+
+        <!--
+
+        <string name="showEvaluateArrangementIntroText">Bewerten Sie Absprache</string>
+        <string name="btnSendEvaluateResult">Speichern</string>
+        <string name="btnAbortEvaluate">Zurück</string>
+        <string name="questionOneEvaluateMySelf">Wie haben Sie selbst die Absprache eingehalten?</string>
+        <string name="questionTwoEvaluateMyEx">Wie hat Ihr Ex-Partner die Absprache aus Ihrer Sicht eingehalten?</string>
+        <string name="questionThreeEvaluateChildreen">Wie haben Ihre Kinder die Absprache aus Ihrer Sicht eingehalten?</string>
+        <string name="questionFourEvaluateThirdPeople">Wie haben die weiteren beteiligten Personen diese Absprache eingehalten?</string>
+        <string name="commentTextEvaluateResult">Ihre Anmerkungen zu Ihrer Bewertung</string>
+        <string name="evaluateArrangementSuggestion_1">Immer\n</string>
+        <string name="evaluateArrangementSuggestion_2">Fast\nimmer</string>
+        <string name="evaluateArrangementSuggestion_3">50/50\n</string>
+        <string name="evaluateArrangementSuggestion_4">Kaum\n</string>
+        <string name="evaluateArrangementSuggestion_5">Nie\n</string>
+        <string name="evaluateArrangementSuggestion_6">Nicht\nbetroffen</string>
+        <string name="commentEvaluateResultTextFieldHintText">Bitte geben Sie Ihre Anmerkungen hier ein.</string>
+                <string name="evaluateResultNotCompletely">Ihre Bewertung ist nicht vollständig! Bitte kontrollieren Sie die markierten Fragen!</string>
+        <string name="evaluateErrorTextByQuestion">Bitte kontrollieren Sie diese Frage!</string>
+                <string name="evaluateThankAndNextEvaluationText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die folgende Absprache.</string>
+                showNextArrangementToEvaluateIntroText
+        -->
+
+
+        <!-- End evaluate jointly goals -->
+
 
         <!-- Subtitle under Title Our Goals -->
 
@@ -328,6 +368,7 @@
             <string name="ourGoalsSubtitleJointlyGoalsNow">Gemeinsame Ziele vom</string>
             <string name="ourGoalsSubtitleJointlyGoalsComment">Ziel %1$d kommentieren</string>
             <string name="ourGoalsSubtitleJointlyGoalsShowComment">Kommentare gemeinsames Ziel</string>
+                <string name="ourGoalsSubtitleEvaluateJointlyGoal">Ziel %1$d bewerten</string>
 
 
         <!-- End subtitle -->

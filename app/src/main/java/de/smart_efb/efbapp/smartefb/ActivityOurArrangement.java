@@ -208,24 +208,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
         super.onNewIntent(intent);
 
         // get the link data from URI and from the extra
-        /*intentLinkData = intent.getData();*/
         intentExtras = intent.getExtras();
 
         int tmpDbId = 0;
         int tmpNumberinListView = 0;
         Boolean tmpEvalNext = false;
 
-        // is there URI Data?
-        /*
-        if (intentLinkData != null) {
-            // get data that comes with intent-link
-            tmpDbId = Integer.parseInt(intentLinkData.getQueryParameter("db_id")); // arrangement DB-ID
-            tmpNumberinListView = Integer.parseInt(intentLinkData.getQueryParameter("arr_num"));
-            tmpEvalNext = Boolean.parseBoolean(intentLinkData.getQueryParameter("eval_next"));
-            // get command and execute it
-            executeIntentCommand (intentLinkData.getQueryParameter("com"), tmpDbId, tmpNumberinListView, tmpEvalNext);
-
-        } else*/
         if (intentExtras != null) {
            // get data that comes with extras
             tmpDbId = intentExtras.getInt("db_id",0);
@@ -584,9 +572,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                             tmpTxtSketchArrangement2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountInfinitely);
                         }
 
-
-
-
                         // count sketch comment - status
                         if (prefs.getInt("commentSketchOurArrangementCountComment",0) < prefs.getInt("commentSketchOurArrangementMaxComment",0)) {
                             switch (prefs.getInt("commentSketchOurArrangementCountComment", 0)) {
@@ -621,10 +606,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
                     tmpTxtSketchArrangementSum = tmpTxtSketchArrangement;
 
                 }
-
-
                 tmpdialogTextView.setText(tmpTxtSketchArrangementSum);
-
 
                 // get string ressources
                 String tmpTextCloseDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementCloseDialog);

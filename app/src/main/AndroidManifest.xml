@@ -31,23 +31,7 @@
             android:label="@string/mainMenueElementId_2"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
-
-            <!--
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-                <action android:name="android.intent.action.VIEW" />
-                <data android:scheme="smart.efb.ilink_comment" />
-            </intent-filter>
-            -->
         </activity>
-
-        <receiver android:name=".AlarmReceiverOurArrangement">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
-
-
 
         <!-- Activity Our Goals -->
         <activity
@@ -55,12 +39,6 @@
             android:label="@string/mainMenueElementId_3"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
-
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:scheme="smart.efb.ilink_goal_comment"/>
-            </intent-filter>
         </activity>
 
         <!-- Activity FAQ -->
@@ -77,7 +55,6 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-
         <!-- Activity Meeting -->
         <activity
             android:name=".ActivityMeeting"
@@ -85,29 +62,33 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-
+        <!-- Dispatcher activity for deep links -->
         <activity
             android:name=".ActivityParseDeepLink">
-
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.intent.action.VIEW"/>
                 <data android:scheme="smart.efb.deeplink" android:host="linkin"/>
-
-                <!--
-                <action android:name="android.intent.action.VIEW"/>
-
-                Handles any vnd.urbanairship.sample://deeplink URI's
-                <data android:scheme="vnd.urbanairship.sample" android:host="deeplink" />
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                -->
-
             </intent-filter>
         </activity>
 
 
+        <!-- Alarm receiver for our goals -->
+        <receiver android:name=".AlarmReceiverOurGoals"/>
+
+
+
+
+        <!-- Alarm receiver for our arrangement -->
+        <receiver android:name=".AlarmReceiverOurArrangement"/>
+
+        <!--
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+
+        </receiver>
+        -->
 
 
     </application>

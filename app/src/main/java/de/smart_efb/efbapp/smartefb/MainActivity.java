@@ -81,16 +81,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_efb_main);
 
-
-        // init the app
-        //initMainApp();
-
         // init the elements arrays (title, color, colorLight, backgroundImage)
         initMainMenueElementsArrays();
 
         // create background ressources to show in grid
         createMainMenueElementBackgroundRessources();
-
 
         GridView gridview = (GridView) findViewById(R.id.mainMenueGridView);
 
@@ -192,30 +187,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // init all things for the app
-    private void initMainApp() {
-
-
-        Intent alarmIntent = new Intent(MainActivity.this, AlarmReceiver.class);
-        pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, 0);
-
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        int interval = 8000;
-
-
-        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntentOurArrangementEvaluate);
-        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
-
-
-        // siehe !!!!!!
-        // http://stacktips.com/tutorials/android/repeat-alarm-example-in-android
-
-
-
-
-    }
-
-
     // init the elements arrays (title, color, colorLight, backgroundImage)
     private void initMainMenueElementsArrays() {
 
@@ -226,7 +197,6 @@ public class MainActivity extends AppCompatActivity {
 
         // get the shared preferences
         prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
-
 
         // init the DB
         myDb = new DBAdapter(this);

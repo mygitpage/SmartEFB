@@ -137,6 +137,14 @@ public class SettingsEfbFragmentD extends Fragment {
         // since this time count sketch comments
         prefsEditor.putLong("jointlyGoalsCommentOurGoalsTimeSinceInMills", System.currentTimeMillis()); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+        // put pause time and active time for evaluation in our jointly goals in prefs
+        // put start data and end data of evaluation in prefs
+        // in future comes from coach over internet
+        prefsEditor.putInt("evaluateJointlyGoalsPauseTimeInSeconds", 10);
+        prefsEditor.putInt("evaluateJointlyGoalsActivTimeInSeconds", 10);
+
+        prefsEditor.putLong("startDataJointlyGoalsEvaluationInMills", System.currentTimeMillis());
+        prefsEditor.putLong("endDataJointlyGoalsEvaluationInMills", System.currentTimeMillis()+150000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 

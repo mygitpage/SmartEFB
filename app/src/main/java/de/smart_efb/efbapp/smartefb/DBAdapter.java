@@ -1298,8 +1298,6 @@ public class DBAdapter extends SQLiteOpenHelper {
             c.moveToFirst();
         }
 
-        Log.d("NewEntry Comment","Count:"+c.getCount());
-
         // return how many
         return c.getCount();
     }

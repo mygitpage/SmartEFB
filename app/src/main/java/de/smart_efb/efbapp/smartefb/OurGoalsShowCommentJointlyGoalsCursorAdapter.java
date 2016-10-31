@@ -89,7 +89,7 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
 
             // set text intro "Ziel ..."
             TextView textViewShowArrangementIntro = (TextView) view.findViewById(R.id.goalsShowJointlyGoalIntro);
-            String txtArrangementIntro = contextForActivity.getResources().getString(R.string.showArrangementIntroText)+ " " + jointlyGoalNumberInListView;
+            String txtArrangementIntro = contextForActivity.getResources().getString(R.string.showJointlyGoalTextNumber)+ " " + jointlyGoalNumberInListView;
             textViewShowArrangementIntro.setText(txtArrangementIntro);
 
             // make link back to show jointly goals
