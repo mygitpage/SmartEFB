@@ -112,10 +112,10 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         prefs = fragmentEvaluateJointlyGoalsContext.getSharedPreferences("smartEfbSettings", fragmentEvaluateJointlyGoalsContext.MODE_PRIVATE);
 
         // get choosen jointly goal
-        cursorChoosenJointlyGoal = myDb.getRowOurArrangement(jointlyGoalDbIdToEvaluate);
+        cursorChoosenJointlyGoal = myDb.getJointlyRowOurGoals(jointlyGoalDbIdToEvaluate);
 
         // get all actual jointly goals
-        cursorNextJointlyGoalToEvaluate = myDb.getAllRowsCurrentOurArrangement(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()), "equal");
+        cursorNextJointlyGoalToEvaluate = myDb.getAllJointlyRowsOurGoals(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()), "equal");
 
         // Set correct subtitle in Activity -> "Ziel ... bewerten"
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleEvaluateJointlyGoal", "string", fragmentEvaluateJointlyGoalsContext.getPackageName()));
@@ -275,10 +275,10 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 if (evaluateNoError) {
 
                     // insert comment in DB
-                    myDb.insertRowOurArrangementEvaluate(jointlyGoalDbIdToEvaluate, prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString("userName", "John Doe"));
+                    //myDb.insertRowOurArrangementEvaluate(jointlyGoalDbIdToEvaluate, prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString("userName", "John Doe"));
 
                     // delete status evaluation possible for jointly goal
-                    myDb.changeStatusEvaluationPossibleOurArrangement(jointlyGoalDbIdToEvaluate, "delete");
+                    myDb.changeStatusEvaluationPossibleOurGoals(jointlyGoalDbIdToEvaluate, "delete");
 
 
                     // When last evaluation show toast, because textView is not visible -> new fragment

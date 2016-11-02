@@ -332,31 +332,41 @@
                 <string name="evaluateThankAndNextEvaluationJointlyGoalLastText">Vielen Dank für die Bewertung des vorherrigen Ziels. Bitte bewerten Sie nun die letzte Absprache.</string>
                 <string name="evaluateResultJointlyGoalSuccsesfulySend">Vielen Dank für die Bewertung des letzten Ziels!</string>
 
+                <string name="evaluateJointlyGoalSuggestion_1">Immer\n</string>
+                <string name="evaluateJointlyGoalSuggestion_2">Fast\nimmer</string>
+                <string name="evaluateJointlyGoalSuggestion_3">50/50\n</string>
+                <string name="evaluateJointlyGoalSuggestion_4">Kaum\n</string>
+                <string name="evaluateJointlyGoalSuggestion_5">Nie\n</string>
+                <string name="evaluateJointlyGoalSuggestion_6">Nicht\nbetroffen</string>
+
+                <string name="questionOneJointlyGoalEvaluateMySelf">Wie haben Sie selbst das gemeinsame Ziel eingehalten?</string>
+                <string name="questionTwoJointlyGoalEvaluateMyEx">Wie hat Ihr Ex-Partner das gemeinsame Ziel aus Ihrer Sicht eingehalten?</string>
+                <string name="questionThreeJointlyGoalEvaluateChildreen">Wie haben Ihre Kinder das gemeinsame Ziel aus Ihrer Sicht eingehalten?</string>
+                <string name="questionFourJointlyGoalEvaluateThirdPeople">Wie haben die weiteren beteiligten Personen das gemeinsame Ziel eingehalten?</string>
+                <string name="commentTextJointlyGoalEvaluateResult">Ihre Anmerkungen zu Ihrer Bewertung</string>
+
+
+                <string name="btnSendEvaluateJointlyGoalResult">Speichern</string>
+                <string name="btnAbortEvaluateJointlyGoal">Zurück zu den Zielen</string>
+
+                <string name="evaluateErrorJointlyGoalTextByQuestion">Bitte kontrollieren Sie diese Frage!</string>
+
+
+                <string name="commentEvaluateJointlyGoalResultTextFieldHintText">Bitte geben Sie Ihre Anmerkungen hier ein.</string>
+
+                <string name="evaluateThankAndNextJointlyGoalEvaluationText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die folgende Absprache.</string>
+
+
+    <!--
+
+    <string name="showEvaluateArrangementIntroText">Bewerten Sie Absprache</string>
 
 
 
-        <!--
 
-        <string name="showEvaluateArrangementIntroText">Bewerten Sie Absprache</string>
-        <string name="btnSendEvaluateResult">Speichern</string>
-        <string name="btnAbortEvaluate">Zurück</string>
-        <string name="questionOneEvaluateMySelf">Wie haben Sie selbst die Absprache eingehalten?</string>
-        <string name="questionTwoEvaluateMyEx">Wie hat Ihr Ex-Partner die Absprache aus Ihrer Sicht eingehalten?</string>
-        <string name="questionThreeEvaluateChildreen">Wie haben Ihre Kinder die Absprache aus Ihrer Sicht eingehalten?</string>
-        <string name="questionFourEvaluateThirdPeople">Wie haben die weiteren beteiligten Personen diese Absprache eingehalten?</string>
-        <string name="commentTextEvaluateResult">Ihre Anmerkungen zu Ihrer Bewertung</string>
-        <string name="evaluateArrangementSuggestion_1">Immer\n</string>
-        <string name="evaluateArrangementSuggestion_2">Fast\nimmer</string>
-        <string name="evaluateArrangementSuggestion_3">50/50\n</string>
-        <string name="evaluateArrangementSuggestion_4">Kaum\n</string>
-        <string name="evaluateArrangementSuggestion_5">Nie\n</string>
-        <string name="evaluateArrangementSuggestion_6">Nicht\nbetroffen</string>
-        <string name="commentEvaluateResultTextFieldHintText">Bitte geben Sie Ihre Anmerkungen hier ein.</string>
-                <string name="evaluateResultNotCompletely">Ihre Bewertung ist nicht vollständig! Bitte kontrollieren Sie die markierten Fragen!</string>
-        <string name="evaluateErrorTextByQuestion">Bitte kontrollieren Sie diese Frage!</string>
-                <string name="evaluateThankAndNextEvaluationText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die folgende Absprache.</string>
-                showNextArrangementToEvaluateIntroText
-        -->
+            <string name="evaluateResultNotCompletely">Ihre Bewertung ist nicht vollständig! Bitte kontrollieren Sie die markierten Fragen!</string>
+
+    -->
 
 
         <!-- End evaluate jointly goals -->

@@ -50,7 +50,7 @@ public class OurGoalsViewPagerAdapter extends FragmentStatePagerAdapter {
         fragJointlyGoalsComment = new OurGoalsFragmentCommentJointlyGoals();
         fragJointlyGoalsOld = new OurGoalsFragmentJointlyGoalsNow();
         fragJointlyGoalsShowComment = new OurGoalsFragmentShowCommentJointlyGoals();
-        fragJointlyGoalsEvaluate = new OurGoalsFragmentJointlyGoalsNow();
+        fragJointlyGoalsEvaluate = new OurGoalsFragmentJointlyGoalsEvaluate();
         fragDebetableGoalsNow = new OurGoalsFragmentJointlyGoalsNow();
         fragDebetableGoalsComment = new OurGoalsFragmentJointlyGoalsNow();
         fragDebetableGoalsShowComment = new OurGoalsFragmentJointlyGoalsNow();
