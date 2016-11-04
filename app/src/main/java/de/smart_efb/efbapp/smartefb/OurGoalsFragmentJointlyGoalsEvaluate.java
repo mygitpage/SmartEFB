@@ -62,7 +62,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
     // number of items in every question
     int[] numberRadioButtonQuestion = {6,6,6,6};
     // part strin in ressource radiobutton question
-    String[] partRessourceNameQuestion =  { "One_", "Two_", "Three_", "Four_" };
+    String[] partRessourceNameQuestion =  { "OneJointlyGoal_", "TwoJointlyGoal_", "ThreeJointlyGoal_", "FourJointlyGoal_" };
 
     // Evaluate question result
     int evaluateResultQuestion1 = 0;
@@ -218,7 +218,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
         // Button save evaluate result OR abort
         // button send evaluate result
-        Button buttonSendEvaluateResult = (Button) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.buttonSendEvaluateResult);
+        Button buttonSendEvaluateResult = (Button) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.buttonSendEvaluateJointlyGoalResult);
         // onClick listener send evaluate result
         buttonSendEvaluateResult.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,7 +230,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 TextView tmpErrorTextView;
 
                 // check result question 1
-                tmpErrorTextView = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionOneEvaluateError);
+                tmpErrorTextView = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionOneJointlyGoalEvaluateError);
                 if ( evaluateResultQuestion1 == 0 && tmpErrorTextView != null) {
                     evaluateNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -239,7 +239,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 }
 
                 // check result question 2
-                tmpErrorTextView = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionTwoEvaluateError);
+                tmpErrorTextView = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionTwoJointlyGoalEvaluateError);
                 if ( evaluateResultQuestion2 == 0 && tmpErrorTextView != null) {
                     evaluateNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -248,7 +248,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 }
 
                 // check result question 3
-                tmpErrorTextView = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionThreeEvaluateError);
+                tmpErrorTextView = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionThreeJointlyGoalEvaluateError);
                 if ( evaluateResultQuestion3 == 0 && tmpErrorTextView != null) {
                     evaluateNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -257,7 +257,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 }
 
                 // check result question 4
-                tmpErrorTextView = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionFourEvaluateError);
+                tmpErrorTextView = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionFourJointlyGoalEvaluateError);
                 if ( evaluateResultQuestion4 == 0 && tmpErrorTextView != null) {
                     evaluateNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -266,7 +266,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 }
 
                 // get evaluate result comment
-                EditText tmpInputEvaluateResultComment = (EditText) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.inputEvaluateResultComment);
+                EditText tmpInputEvaluateResultComment = (EditText) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.inputJointlyGoalEvaluateResultComment);
                 String txtInputEvaluateResultComment = "";
                 if (tmpInputEvaluateResultComment != null) {
                     txtInputEvaluateResultComment = tmpInputEvaluateResultComment.getText().toString();
@@ -355,17 +355,17 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
         // Clear radio groups for next evaluation
         RadioGroup tmpRadioGroupClear;
-        tmpRadioGroupClear = (RadioGroup) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionOne);
+        tmpRadioGroupClear = (RadioGroup) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionOneJointlyGoal);
         tmpRadioGroupClear.clearCheck();
-        tmpRadioGroupClear = (RadioGroup) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionTwo);
+        tmpRadioGroupClear = (RadioGroup) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionTwoJointlyGoal);
         tmpRadioGroupClear.clearCheck();
-        tmpRadioGroupClear = (RadioGroup) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionThree);
+        tmpRadioGroupClear = (RadioGroup) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionThreeJointlyGoal);
         tmpRadioGroupClear.clearCheck();
-        tmpRadioGroupClear = (RadioGroup) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionFour);
+        tmpRadioGroupClear = (RadioGroup) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionFourJointlyGoal);
         tmpRadioGroupClear.clearCheck();
 
         // Clear comment text field for next evaluation
-        EditText tmpInputEvaluateResultComment = (EditText) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.inputEvaluateResultComment);
+        EditText tmpInputEvaluateResultComment = (EditText) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.inputJointlyGoalEvaluateResultComment);
         tmpInputEvaluateResultComment.setText("");
 
 

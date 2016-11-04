@@ -96,7 +96,7 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
             Uri.Builder commentLinkBuilder = new Uri.Builder();
             commentLinkBuilder.scheme("smart.efb.deeplink")
                     .authority("linkin")
-                    .path("ourarrangement")
+                    .path("ourgoals")
                     .appendQueryParameter("db_id", "0")
                     .appendQueryParameter("arr_num", "0")
                     .appendQueryParameter("com", "show_jointly_goals_now");

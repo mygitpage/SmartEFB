@@ -329,7 +329,7 @@
 
                 <string name="showNextJointlyGoalToEvaluateIntroText">Bitte klicken Sie auf Speichern und bewerten Sie als nächtes Ziel %1$d.</string>
                 <string name="showNothingNextJointlyGoalToEvaluateText">Bitte klicken Sie auf Speichern. Es sind keine weiteren Absprachen zu bewerten.</string>
-                <string name="evaluateThankAndNextEvaluationJointlyGoalLastText">Vielen Dank für die Bewertung des vorherrigen Ziels. Bitte bewerten Sie nun die letzte Absprache.</string>
+                <string name="evaluateThankAndNextEvaluationJointlyGoalLastText">Vielen Dank für die Bewertung des vorherrigen Ziels. Bitte bewerten Sie nun das letzte Ziel.</string>
                 <string name="evaluateResultJointlyGoalSuccsesfulySend">Vielen Dank für die Bewertung des letzten Ziels!</string>
 
                 <string name="evaluateJointlyGoalSuggestion_1">Immer\n</string>
@@ -354,7 +354,7 @@
 
                 <string name="commentEvaluateJointlyGoalResultTextFieldHintText">Bitte geben Sie Ihre Anmerkungen hier ein.</string>
 
-                <string name="evaluateThankAndNextJointlyGoalEvaluationText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die folgende Absprache.</string>
+                <string name="evaluateThankAndNextJointlyGoalEvaluationText">Vielen Dank für die Bewertung des vorherrigen Ziels. Bitte bewerten Sie nun das folgende Ziel.</string>
 
 
     <!--

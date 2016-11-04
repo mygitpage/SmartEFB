@@ -77,7 +77,7 @@
             android:paddingBottom="5dp"/>
 
         <TextView
-            android:id="@+id/questionOneJointlyGoalJointlyGoalEvaluateError"
+            android:id="@+id/questionOneJointlyGoalEvaluateError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
@@ -91,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/radioGroupquestionOneJointlyGoal"
+            android:id="@+id/radioGroupQuestionOneJointlyGoal"
             android:layout_gravity="center"
             android:padding="5dp"
             android:gravity="center"
@@ -180,7 +180,7 @@
             android:paddingBottom="5dp"/>
 
         <TextView
-            android:id="@+id/questionTwoJointlyGoalJointlyGoalEvaluateError"
+            android:id="@+id/questionTwoJointlyGoalEvaluateError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
@@ -194,7 +194,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/radioGroupquestionTwoJointlyGoal"
+            android:id="@+id/radioGroupQuestionTwoJointlyGoal"
             android:layout_gravity="center"
             android:padding="5dp"
             android:gravity="center"
@@ -284,7 +284,7 @@
             android:paddingBottom="5dp"/>
 
         <TextView
-            android:id="@+id/questionThreeJointlyGoalJointlyGoalEvaluateError"
+            android:id="@+id/questionThreeJointlyGoalEvaluateError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
@@ -298,7 +298,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/radioGroupquestionThreeJointlyGoal"
+            android:id="@+id/radioGroupQuestionThreeJointlyGoal"
             android:layout_gravity="center"
             android:padding="5dp"
             android:gravity="center"
@@ -388,7 +388,7 @@
             android:paddingBottom="5dp"/>
 
         <TextView
-            android:id="@+id/questionFourJointlyGoalJointlyGoalEvaluateError"
+            android:id="@+id/questionFourJointlyGoalEvaluateError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
@@ -402,7 +402,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/radioGroupquestionFourJointlyGoal"
+            android:id="@+id/radioGroupQuestionFourJointlyGoal"
             android:layout_gravity="center"
             android:padding="5dp"
             android:gravity="center"
@@ -492,7 +492,7 @@
             android:paddingBottom="5dp"/>
 
         <EditText
-            android:id="@+id/inputEvaluateJointlyGoalResultComment"
+            android:id="@+id/inputJointlyGoalEvaluateResultComment"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:textColor="@color/text_color_white"
