@@ -356,15 +356,14 @@
 
                 <string name="evaluateThankAndNextJointlyGoalEvaluationText">Vielen Dank für die Bewertung des vorherrigen Ziels. Bitte bewerten Sie nun das folgende Ziel.</string>
 
+                <string name="evaluateJointlyGoalResultNotCompletely">Ihre Bewertung ist nicht vollständig! Bitte kontrollieren Sie die markierten Fragen!</string>
+
 
     <!--
 
     <string name="showEvaluateArrangementIntroText">Bewerten Sie Absprache</string>
 
 
-
-
-            <string name="evaluateResultNotCompletely">Ihre Bewertung ist nicht vollständig! Bitte kontrollieren Sie die markierten Fragen!</string>
 
     -->
 

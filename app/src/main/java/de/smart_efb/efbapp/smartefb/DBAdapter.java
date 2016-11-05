@@ -27,10 +27,12 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT = "ourArrangementSketchCommentTable";
     public static final String DATABASE_TABLE_OUR_ARRANGEMENT = "ourArrangementTable";
     public static final String DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE = "ourArrangementEvaluateTable";
+
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW = "ourGoalsDebetableJointlyGoalsNow";
     public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT = "ourGoalsJointlyGoalsComment";
+    public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE = "ourGoalsJointlyGoalsEvaluate";
 
     // Track DB version if a new version of your app changes the format.
     public static final int DATABASE_VERSION = 27;
@@ -147,15 +149,14 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2 = "result_q_b";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3 = "result_q_c";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4 = "result_q_d";
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION5 = "result_q_e"; // this colum could be delete by next database update
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS = "result_remarks";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME = "result_time";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME = "username";
 
     // All keys from table app settings in a String
-    public static final String[] OUR_ARRANGEMENT_EVALUATE_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_ID, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION5, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME};
+    public static final String[] OUR_ARRANGEMENT_EVALUATE_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_ID, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME};
 
-    // SQL String to create our arrangement comment table
+    // SQL String to create our arrangement evaluate table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_EVALUATE =
             "create table " + DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE + " (" + KEY_ROWID + " integer primary key autoincrement, "
                     + OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME + " INTEGER not null, "
@@ -164,7 +165,6 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2 + " INTEGER not null, "
                     + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3 + " INTEGER not null, "
                     + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4 + " INTEGER not null, "
-                    + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION5 + " INTEGER not null, "
                     + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS + " TEXT not null, "
                     + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME + " INTEGER not null, "
                     + OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME + " STRING not null"
@@ -264,6 +264,40 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
+    /**********************************************************************************************/
+    // Our Goals Jointly Goals Evaluate- column names and numbers
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_ARRANGEMENT_TIME = "jointly_goal_time";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_ARRANGEMENT_ID = "jointly_goal_id";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1 = "result_q_a";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2 = "result_q_b";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3 = "result_q_c";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4 = "result_q_d";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS = "result_remarks";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME = "result_time";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME = "username";
+
+    // All keys from table app settings in a String
+    public static final String[] OUR_GOALS_JOINTLY_GOALS_EVALUATE_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_ARRANGEMENT_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_ARRANGEMENT_ID, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME};
+
+    // SQL String to create our jointly goals evaluate table
+    private static final String DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_EVALUATE =
+            "create table " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE + " (" + KEY_ROWID + " integer primary key autoincrement, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_ARRANGEMENT_TIME + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_ARRANGEMENT_ID + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1 + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2 + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3 + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4 + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS + " TEXT not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME + " STRING not null"
+                    + ");";
+
+
+
+
+
+
 
 
 
@@ -303,6 +337,11 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Create table Our Goals Jointly Goals Comment
         _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_COMMENT);
 
+        // Create table Our Goals Jointly Goals Evaluate
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_EVALUATE);
+
+
+
 
     }
 
@@ -332,7 +371,8 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Destroy table Our Goals Jointly Goals Comment
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT);
 
-
+        // Destroy table Our Goals Jointly Goals Evaluate
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE);
 
         // Recreate new database:
         onCreate(_db);
@@ -973,7 +1013,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2, resultQuestion2);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3, resultQuestion3);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4, resultQuestion4);
-        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION5, 0); // this colum could be delete by next database update
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS, resultRemarks);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, resultTime);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME, userName);

@@ -89,7 +89,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
         fragmentEvaluateJointlyGoalsContext = getActivity().getApplicationContext();
 
-        // call getter function in ActivityOurArrangment
+        // call getter function in ActivityOurGoals
         callGetterFunctionInSuper();
 
         // init the fragment evaluate only when an jointly goal is choosen
@@ -318,7 +318,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                         textViewThankAndEvaluateNext.setVisibility(View.GONE);
                     }
                     // Toast "Evaluate not completly"
-                    Toast.makeText(fragmentEvaluateJointlyGoalsContext, fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.evaluateResultNotCompletely), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(fragmentEvaluateJointlyGoalsContext, fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.evaluateJointlyGoalResultNotCompletely), Toast.LENGTH_SHORT).show();
                 }
 
             }
