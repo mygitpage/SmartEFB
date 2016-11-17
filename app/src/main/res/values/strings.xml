@@ -295,80 +295,88 @@
             <string name="infoTextJointlyGoalsCommentCountZero">Sie haben noch keinen Kommentar geschrieben.</string>
             <string name="infoTextJointlyGoalsCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
             <string name="infoTextJointlyGoalsCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
-
             <string name="commentJointlyGoalSuccsesfulySend">Kommentar erfolgreich gesendet</string>
-
-
-
             <string name="btnSendJointlyGoalComment">Kommentar senden</string>
-
-
             <string name ="commentJointlyGoalTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
-
-
             <string name="errorInputJointlyGoalComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz!</string>
-
-
-
-
-
         <!-- End comment jointly goals -->
 
-
-
         <!-- Fragment show comment jointly goals -->
-
             <string name="showCommentIntroTextForJointlyGoal">Die Kommentare zum gemeinsamen Ziel</string>
-
         <!-- End show comment jointly goals -->
 
 
         <!-- Fragment evaluate jointly goals -->
-
                 <string name="showEvaluateJointlyGoalIntroText">Bewerten Sie Ziel</string>
-
                 <string name="showNextJointlyGoalToEvaluateIntroText">Bitte klicken Sie auf Speichern und bewerten Sie als nächtes Ziel %1$d.</string>
                 <string name="showNothingNextJointlyGoalToEvaluateText">Bitte klicken Sie auf Speichern. Es sind keine weiteren Absprachen zu bewerten.</string>
                 <string name="evaluateThankAndNextEvaluationJointlyGoalLastText">Vielen Dank für die Bewertung des vorherrigen Ziels. Bitte bewerten Sie nun das letzte Ziel.</string>
                 <string name="evaluateResultJointlyGoalSuccsesfulySend">Vielen Dank für die Bewertung des letzten Ziels!</string>
-
                 <string name="evaluateJointlyGoalSuggestion_1">Immer\n</string>
                 <string name="evaluateJointlyGoalSuggestion_2">Fast\nimmer</string>
                 <string name="evaluateJointlyGoalSuggestion_3">50/50\n</string>
                 <string name="evaluateJointlyGoalSuggestion_4">Kaum\n</string>
                 <string name="evaluateJointlyGoalSuggestion_5">Nie\n</string>
                 <string name="evaluateJointlyGoalSuggestion_6">Nicht\nbetroffen</string>
-
                 <string name="questionOneJointlyGoalEvaluateMySelf">Wie haben Sie selbst das gemeinsame Ziel eingehalten?</string>
                 <string name="questionTwoJointlyGoalEvaluateMyEx">Wie hat Ihr Ex-Partner das gemeinsame Ziel aus Ihrer Sicht eingehalten?</string>
                 <string name="questionThreeJointlyGoalEvaluateChildreen">Wie haben Ihre Kinder das gemeinsame Ziel aus Ihrer Sicht eingehalten?</string>
                 <string name="questionFourJointlyGoalEvaluateThirdPeople">Wie haben die weiteren beteiligten Personen das gemeinsame Ziel eingehalten?</string>
                 <string name="commentTextJointlyGoalEvaluateResult">Ihre Anmerkungen zu Ihrer Bewertung</string>
-
-
                 <string name="btnSendEvaluateJointlyGoalResult">Speichern</string>
                 <string name="btnAbortEvaluateJointlyGoal">Zurück zu den Zielen</string>
-
                 <string name="evaluateErrorJointlyGoalTextByQuestion">Bitte kontrollieren Sie diese Frage!</string>
-
-
                 <string name="commentEvaluateJointlyGoalResultTextFieldHintText">Bitte geben Sie Ihre Anmerkungen hier ein.</string>
-
                 <string name="evaluateThankAndNextJointlyGoalEvaluationText">Vielen Dank für die Bewertung des vorherrigen Ziels. Bitte bewerten Sie nun das folgende Ziel.</string>
-
                 <string name="evaluateJointlyGoalResultNotCompletely">Ihre Bewertung ist nicht vollständig! Bitte kontrollieren Sie die markierten Fragen!</string>
-
-
-    <!--
-
-    <string name="showEvaluateArrangementIntroText">Bewerten Sie Absprache</string>
-
-
-
-    -->
-
-
         <!-- End evaluate jointly goals -->
+
+
+        <!-- String Fragment debetable goals now -->
+                <string name="ourGoalsDebetableGoalsNowNothingThere">Es sind keine strittigen Ziele vorhanden!</string>
+                <string name="ourGoalsDebetableGoalsFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
+                <string name="ourGoalsDebetableGoalsIntroText">%1$s hat am %2$s folgende strittigen Ziele eingestellt.</string>
+                <string name="showDebetableGoalNumberText">Strittiges Ziel</string>
+                <string name="ourGoalsDebetableGoalsAssessmentsString">Kommentieren</string>
+        <!-- End Fragment debetable goals now -->
+
+        <!-- fragment debetable goals comment-->
+            <string name="showDebetableGoalsIntroText">Strittiges Ziel</string>
+            <string name="ourGoalsBackLinkToDebetableGoals">Zurück zu strittigen Zielen</string>
+            <string name="commentDebetableGoalHistoryIntroText">Alle bisherigen Kommentare zum strittigen Ziel</string>
+
+            <string name="introStructQuestionForCommentDdebetableGoal">Wie schätzen Sie Ihre Zustimmung zu dem strittigen Ziel ein?</string>
+            <string name="errorStructQuestionForCommentDebetableGoal">Bitte geben Sie den Grad Ihrer Zustimmung an!</string>
+            <string name="introFreeQuestionForCommentDebetableGoal">Bitte erläutern Sie Ihre obige Zustimmungseinschätzung</string>
+
+            <string name="errorFreeQuestionForCommentDebetableGoal">Bitte kontrollieren Sie Ihren Text zur obigen Zustimmungseinschätzung! Er ist zu kurz!</string>
+            <string name="commentFreeQuestionDebetableGoalTextFieldHintText">Bitte erläutern Sie hier Ihre Zustimmung.</string>
+
+            <string name="buttonSendDebetableGoalComment">Zustimmungseinschätzung senden</string>
+            <string name="debetableGoalCommentSuccsesfulySend">Zustimmungseinschätzung erfolgreich gesendet</string>
+
+
+
+            <string name="infoTextDebetableGoalCommentMaxSingular">Sie könnnen maximal %1$d Kommentar schreiben.</string>
+            <string name="infoTextDebetableGoalCommentMaxPlural">Sie könnnen maximal %1$d Kommentare schreiben.</string>
+            <string name="infoTextDebetableGoalCommentUnlimitedText">Sie könnnen beliebig viele Kommentare schreiben.</string>
+            <string name="infoTextDebetableGoalCommentCountZero">Sie haben noch keinen Kommentar geschrieben.</string>
+            <string name="infoTextDebetableGoalCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
+            <string name="infoTextDebetableGoalCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
+
+
+
+            <string name="evaluateDebetableGoalSuggestion_1">Sehr stark</string>
+            <string name="evaluateDebetableGoalSuggestion_2">Stark</string>
+            <string name="evaluateDebetableGoalSuggestion_3">Mittelmäßig</string>
+            <string name="evaluateDebetableGoalSuggestion_4">Wenig</string>
+            <string name="evaluateDebetableGoalSuggestion_5">Keine</string>
+
+            <string name="textDebetableGoalCommentActualResultStructQuestion">Mit dem Kommentar wurde folgende Zustimmungseinschätzung zum strittigen Ziel abgegeben: %1$s</string>
+
+        <!-- End fragment debetable goals comment -->
+
+
 
 
         <!-- Subtitle under Title Our Goals -->
@@ -377,10 +385,15 @@
             <string name="ourGoalsSubtitleJointlyGoalsNow">Gemeinsame Ziele vom</string>
             <string name="ourGoalsSubtitleJointlyGoalsComment">Ziel %1$d kommentieren</string>
             <string name="ourGoalsSubtitleJointlyGoalsShowComment">Kommentare gemeinsames Ziel</string>
-                <string name="ourGoalsSubtitleEvaluateJointlyGoal">Ziel %1$d bewerten</string>
+            <string name="ourGoalsSubtitleEvaluateJointlyGoal">Ziel %1$d bewerten</string>
+            <string name="ourGoalsSubtitleDebetableGoalsNow">Strittige Ziele vom</string>
+            <string name="ourGoalsSubtitleFunctionNotAvailable">Funktion nicht möglich</string>
+            <string name="ourGoalsSubtitleGoalsNothingThere">Keine Ziele vorhanden</string>
+
+            <string name="ourGoalsSubtitleDebetableGOalsComment">Strittiges Ziel %1$d kommentieren</string>
 
 
-        <!-- End subtitle -->
+    <!-- End subtitle -->
 
 
 

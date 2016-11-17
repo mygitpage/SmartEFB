@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.sql.Struct;
 import java.sql.Timestamp;
 
 
@@ -33,9 +34,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW = "ourGoalsDebetableJointlyGoalsNow";
     public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT = "ourGoalsJointlyGoalsComment";
     public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE = "ourGoalsJointlyGoalsEvaluate";
+    public static final String DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT = "ourGoalsDebetableGoalsComment";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 27;
+    public static final int DATABASE_VERSION = 29;
 
 
     // Common column names
@@ -266,8 +268,8 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     /**********************************************************************************************/
     // Our Goals Jointly Goals Evaluate- column names and numbers
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_ARRANGEMENT_TIME = "jointly_goal_time";
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_ARRANGEMENT_ID = "jointly_goal_id";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME = "jointly_goal_time";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_ID = "jointly_goal_id";
     public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1 = "result_q_a";
     public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2 = "result_q_b";
     public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3 = "result_q_c";
@@ -277,13 +279,13 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME = "username";
 
     // All keys from table app settings in a String
-    public static final String[] OUR_GOALS_JOINTLY_GOALS_EVALUATE_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_ARRANGEMENT_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_ARRANGEMENT_ID, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME};
+    public static final String[] OUR_GOALS_JOINTLY_GOALS_EVALUATE_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_ID, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME};
 
     // SQL String to create our jointly goals evaluate table
     private static final String DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_EVALUATE =
             "create table " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE + " (" + KEY_ROWID + " integer primary key autoincrement, "
-                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_ARRANGEMENT_TIME + " INTEGER not null, "
-                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_ARRANGEMENT_ID + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_ID + " INTEGER not null, "
                     + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1 + " INTEGER not null, "
                     + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2 + " INTEGER not null, "
                     + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3 + " INTEGER not null, "
@@ -292,6 +294,49 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME + " INTEGER not null, "
                     + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME + " STRING not null"
                     + ");";
+
+    /**********************************************************************************************/
+
+
+
+
+
+    /**********************************************************************************************/
+    // Our Goals Debetable Goals Comment- column names and numbers
+    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT = "comment";
+    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1 = "result_q_a";
+    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2 = "result_q_b";
+    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3 = "result_q_c";
+    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME = "author_name";
+    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME = "comment_time";
+    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL = "id_goal";
+    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY = "new_entry";
+    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME = "goal_time";
+
+
+    // All keys from table app settings in a String
+    public static final String[] OUR_GOALS_DEBETABLE_GOALS_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME };
+
+    // SQL String to create our arrangement comment table
+    private static final String DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_GOALS_COMMENT =
+            "create table " + DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT + " (" + KEY_ROWID + " integer primary key autoincrement, "
+                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1 + " INTEGER not null, "
+                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2 + " INTEGER not null, "
+                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3 + " INTEGER not null, "
+                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT + " TEXT not null, "
+                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME + " STRING not null, "
+                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " INTEGER not null, "
+                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL + " INTEGER not null, "
+                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
+                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME + " INTEGER not null"
+                    + ");";
+
+
+
+    /**********************************************************************************************/
+
+
+
 
 
 
@@ -340,8 +385,8 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Create table Our Goals Jointly Goals Evaluate
         _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_EVALUATE);
 
-
-
+        // Create table Our Goals Debetable Goals Comment
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
 
     }
 
@@ -373,6 +418,9 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Destroy table Our Goals Jointly Goals Evaluate
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE);
+
+        // Destroy table Our Goals Jointly Goals Evaluate
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
 
         // Recreate new database:
         onCreate(_db);
@@ -1267,7 +1315,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    /********************************* End!! TABLES FOR FUNCTION: Our Debetable/JOintly Goals ******************************************/
+    /********************************* End!! TABLES FOR FUNCTION: Our Debetable/Jointly Goals ******************************************/
     /***********************************************************************************************************************/
 
 
@@ -1379,8 +1427,160 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Comment ***************************************/
+    /********************************* End!! TABLES FOR FUNCTION: Our Goals Jointly Goals Comment ***************************************/
     /****************************************************************************************************************************/
+
+
+    /********************************* TABLES FOR FUNCTION: Our Goals Jointly Goals Evaluate ******************************************/
+
+    // Add a new set of values to ourGoalsJointlyGoalsEvaluate .
+    public long insertRowOurGoalsJointlyGoalEvaluate(int goalId, long currentDateOfGoal, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues initialValues = new ContentValues();
+
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_ID, goalId);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME, currentDateOfGoal);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1, resultQuestion1);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2, resultQuestion2);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3, resultQuestion3);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4, resultQuestion4);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS, resultRemarks);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME, resultTime);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME, userName);
+
+        // Insert it into the database.
+        return db.insert(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE, null, initialValues);
+    }
+
+
+
+    /********************************* End!! TABLES FOR FUNCTION: Our Goals Jointly Goals Evaluate ***************************************/
+
+
+
+
+
+    /********************************* TABLES FOR FUNCTION: Our Goals Debetable Goals Comment ******************************************/
+
+    // Add a new set of values to ourGoalsDebetableGoalsComment .
+    public long insertRowOurGoalsDebetableGoalsComment(String comment, int question_a, int question_b, int question_c, String authorName, long commentTime, int idGoal, Boolean newEntry, long currentDateOfDebetableGoal) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues initialValues = new ContentValues();
+
+        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT, comment);
+        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1, question_a);
+        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2, question_b);
+        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3, question_c);
+        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME, authorName);
+        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, commentTime);
+        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL, idGoal);
+        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME, currentDateOfDebetableGoal);
+
+        // is it a new entry?
+        if (newEntry) {
+            initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, 1);
+        } else {
+            initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, 0);
+        }
+
+        // Insert it into the database.
+        return db.insert(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, null, initialValues);
+
+    }
+
+
+    // Return all comments from the database for debetable goal with goal_id = id (table ourGoalsDebetableGoalsComment)
+    // the result is sorted by DESC
+    public Cursor getAllRowsOurGoalsDebetableGoalsComment(int goalId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        // data filter
+        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL + "=" + goalId;
+
+        // sort string
+        String sort = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, OUR_GOALS_DEBETABLE_GOALS_COMMENT_ALL_KEYS,
+                where, null, null, null, sort, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+
+    }
+
+
+    // Get the number of new rows in all comment for all debetable goals (new entrys) where date is current debetable goal date -> no older one!
+    public int getCountAllNewEntryOurGoalsDebetableGoalsComment(long currentDateOfGoal) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+
+        // new_entry = 1 (true)?
+        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME + "=" + currentDateOfGoal;
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, OUR_GOALS_DEBETABLE_GOALS_COMMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        // return how many
+        return c.getCount();
+
+    }
+
+
+
+    // Get the number of new rows in comment for choosen debetable goal, look goalRowId (new entrys)
+    public int getCountNewEntryOurGoalsDebetableGoalsComment(int goalRowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // new_entry = 1 (true) and choosen arrangement like arrangementRowId?
+        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL + "=" + goalRowId;
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, OUR_GOALS_DEBETABLE_GOALS_COMMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        // return how many
+        return c.getCount();
+
+    }
+
+
+    // delete status new entry in table ourGoalsDebetableGoalsComment.
+    public boolean deleteStatusNewEntryOurGoalsDebetableGoalsComment (int rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row new_entry = 0 (not new!)
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, 0);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null) != 0;
+    }
+
+
+    /********************************* End!! TABLES FOR FUNCTION: Our Goals Debetable Goals Comment ***************************************/
+    /****************************************************************************************************************************/
+
 
 
 

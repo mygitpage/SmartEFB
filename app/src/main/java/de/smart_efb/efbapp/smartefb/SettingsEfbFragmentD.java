@@ -142,11 +142,25 @@ public class SettingsEfbFragmentD extends Fragment {
         // in future comes from coach over internet
         prefsEditor.putInt("evaluateJointlyGoalsPauseTimeInSeconds", 10);
         prefsEditor.putInt("evaluateJointlyGoalsActivTimeInSeconds", 10);
-
         prefsEditor.putLong("startDataJointlyGoalsEvaluationInMills", System.currentTimeMillis());
         prefsEditor.putLong("endDataJointlyGoalsEvaluationInMills", System.currentTimeMillis()+150000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
+
+
+        // for debetable goals comment!!!!
+        // put max count of debetable goals comments and current count of debetable goals comments in prefs
+        // in future comes from coach over internet
+        prefsEditor.putInt("commentDebetableGoalsOurGoalsMaxComment", 10); // > 1000 -> no limitation with comments
+        prefsEditor.putInt("commentDebetableGoalsOurGoalsCountComment", 0);
+        // since this time count debetable goalscomments
+        prefsEditor.putLong("debetableGoalsCommentOurGoalsTimeSinceInMills", System.currentTimeMillis()); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+        // put name and date of debetable goals in Prefs
+        prefsEditor.putString("authorOfDebetableGoals", "Herr Testmann");
+        prefsEditor.putLong("currentDateOfDebetableGoals", System.currentTimeMillis());
 
 
 
@@ -722,14 +736,12 @@ public class SettingsEfbFragmentD extends Fragment {
             @Override
             public void onClick(View v) {
 
-                long newID = myDb.insertRowOurGoals(txtInputJointlyGoal.getText().toString(), "testuser", prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis()), true, true);
+                long newID = myDb.insertRowOurGoals(txtInputDebetableGoal.getText().toString(), "testuser", prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis()), true, true);
 
                 txtInputDebetableGoal.setText("");
 
 
                 Toast.makeText(fragmentContextD, "Neues strittiges Ziel eingetragen", Toast.LENGTH_SHORT).show();
-
-
 
 
             }

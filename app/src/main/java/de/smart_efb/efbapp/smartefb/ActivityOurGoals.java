@@ -504,7 +504,7 @@ public class ActivityOurGoals extends AppCompatActivity {
 
 
     // getter for DB-Id of debetable goal
-    public int getdebetableGoalDbIdFromLink () {
+    public int getDebetableGoalDbIdFromLink () {
 
         return debetableGoalDbIdFromLink;
 
@@ -542,14 +542,12 @@ public class ActivityOurGoals extends AppCompatActivity {
         switch (jointlyDebetable) {
             case "jointlyGoals":
                 if (prefs.getInt("commentJointlyGoalMaxCountComment",0) < commentLimitationBorder) { // is there a border for comments jointly goals
-                    return true; // comments are limited!
+                    return true; // jointly goals comments are limited!
                 }
                 break;
             case "debetableGoals":
-
-                // TODO Konstante an Max Count DEBETABLE GOALS anpassen
-                if (prefs.getInt("commentDebetableGoalMaxCountComment",0) < commentLimitationBorder) { // is there a border for comments debetable goals
-                    return true; // sketch comments are limited!
+                if (prefs.getInt("commentDebetableGoalsOurGoalsMaxComment",0) < commentLimitationBorder) { // is there a border for comments debetable goals
+                    return true; // debetable goals comments are limited!
                 }
                 break;
         }

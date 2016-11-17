@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="left"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp">
+
+        <TextView
+            android:id="@+id/listDebetableGoalNumberText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/listDebetableGoalNewText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:paddingLeft="10dp"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/listTextDebetableGoalNow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:gravity="top|left"
+        android:paddingLeft="10dp"/>
+
+
+
+    <TextView
+        android:id="@+id/linkCommentAnDdebetableGoal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="@color/text_color"
+        android:gravity="right"
+        android:textColorLink="@color/colorPrimary"/>
+
+</LinearLayout>
