@@ -352,7 +352,7 @@
             <string name="errorFreeQuestionForCommentDebetableGoal">Bitte kontrollieren Sie Ihren Text zur obigen Zustimmungseinschätzung! Er ist zu kurz!</string>
             <string name="commentFreeQuestionDebetableGoalTextFieldHintText">Bitte erläutern Sie hier Ihre Zustimmung.</string>
 
-            <string name="buttonSendDebetableGoalComment">Zustimmungseinschätzung senden</string>
+            <string name="buttonSendDebetableGoalComment">Einschätzung senden</string>
             <string name="debetableGoalCommentSuccsesfulySend">Zustimmungseinschätzung erfolgreich gesendet</string>
 
 
@@ -379,7 +379,23 @@
 
 
 
-        <!-- Subtitle under Title Our Goals -->
+
+
+        <!-- Fragment show comment debetable goals -->
+
+
+
+
+
+
+
+        <!-- End fragment show comment debetable goals -->
+
+
+
+
+
+    <!-- Subtitle under Title Our Goals -->
 
             <string name="ourGoalsSubtitleNothingThere">Keine Ziele vorhanden</string>
             <string name="ourGoalsSubtitleJointlyGoalsNow">Gemeinsame Ziele vom</string>

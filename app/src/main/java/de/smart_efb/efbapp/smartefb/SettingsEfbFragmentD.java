@@ -160,7 +160,7 @@ public class SettingsEfbFragmentD extends Fragment {
 
         // put name and date of debetable goals in Prefs
         prefsEditor.putString("authorOfDebetableGoals", "Herr Testmann");
-        prefsEditor.putLong("currentDateOfDebetableGoals", System.currentTimeMillis());
+        //prefsEditor.putLong("currentDateOfDebetableGoals", System.currentTimeMillis());
 
 
 

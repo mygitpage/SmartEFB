@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="left"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp">
+
+        <TextView
+            android:id="@+id/goalsShowDebetableGoalIntro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/goalsShowDebetableGoalCommentBackLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="right"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/actualSketchCommentTextInShowComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:textColorLink="@color/colorPrimary"
+        android:gravity="left"
+        android:paddingBottom="15dp"
+        android:paddingLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/arrangementShowCommentIntro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:gravity="left"
+        android:textStyle="bold"
+        android:paddingBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/listActualResultStructQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="@color/text_color"
+        android:gravity="top|left"
+        android:paddingLeft="10dp"
+        android:paddingBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/listActualTextSketchComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:gravity="top|left"
+        android:paddingLeft="10dp"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp">
+
+        <TextView
+            android:id="@+id/listActualTextNewSketchComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:paddingLeft="10dp"/>
+
+        <TextView
+            android:id="@+id/listActualSketchCommentAuthorAndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="@color/text_color"
+            android:gravity="right"/>
+
+    </LinearLayout>
+
+</LinearLayout>
