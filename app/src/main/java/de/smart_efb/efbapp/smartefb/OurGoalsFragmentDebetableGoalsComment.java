@@ -124,7 +124,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         cursorDebetableGoalAllComments = myDb.getAllRowsOurGoalsDebetableGoalsComment(debetableGoalsDbIdToComment);
 
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
-        String tmpSubtitle = String.format(getResources().getString(getResources().getIdentifier("ourGoalsSubtitleDebetableGOalsComment", "string", fragmentDebetableGoalsContext.getPackageName())), debetableGoalNumberInListView);
+        String tmpSubtitle = String.format(getResources().getString(getResources().getIdentifier("ourGoalsSubtitleDebetableGoalsComment", "string", fragmentDebetableGoalsContext.getPackageName())), debetableGoalNumberInListView);
         ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "debetableComment");
 
         // build the view

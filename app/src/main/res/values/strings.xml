@@ -365,7 +365,7 @@
             <string name="infoTextDebetableGoalCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
 
 
-
+            <string name="showDebetableGoalCommentIntroText">Die Einschätzungen zum strittigen Ziel</string>
             <string name="evaluateDebetableGoalSuggestion_1">Sehr stark</string>
             <string name="evaluateDebetableGoalSuggestion_2">Stark</string>
             <string name="evaluateDebetableGoalSuggestion_3">Mittelmäßig</string>
@@ -406,7 +406,9 @@
             <string name="ourGoalsSubtitleFunctionNotAvailable">Funktion nicht möglich</string>
             <string name="ourGoalsSubtitleGoalsNothingThere">Keine Ziele vorhanden</string>
 
-            <string name="ourGoalsSubtitleDebetableGOalsComment">Strittiges Ziel %1$d kommentieren</string>
+            <string name="ourGoalsSubtitleDebetableGoalsComment">Strittiges Ziel %1$d kommentieren</string>
+
+            <string name="ourGoalsSubtitleDebetableGoalsShowCommentText">Einschätzungen strittiges Ziel</string>
 
 
     <!-- End subtitle -->

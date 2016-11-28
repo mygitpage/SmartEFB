@@ -28,16 +28,16 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
     // shared prefs for the settings
     SharedPreferences prefs;
 
-    // the current date of arrangement -> the other are old (look at tab old)
+    // the current date of debetable goal -> the other are old (look at tab old)
     long currentDateOfDebetableGoal;
 
     // reference cursorAdapter for the listview
     OurGoalShowDebetableGoalCommentCursorAdapter showDebetableGoalCommentCursorAdapter;
 
-    // DB-Id of arrangement to comment
+    // DB-Id of debetable goal to comment
     int debetableGoalDbIdToShow = 0;
 
-    // arrangement number in list view
+    // debetable goal number in list view
     int debetableGoalNumberInListView = 0;
 
 
@@ -58,7 +58,7 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
 
         fragmentShowDebetableGoalCommentContext = getActivity().getApplicationContext();
 
-        // call getter function in ActivityOurArrangment
+        // call getter function in ActivityOurGoals
         callGetterFunctionInSuper();
 
         // init and display data from fragment show debetable goal comment only when an debetable goal is choosen
@@ -86,7 +86,7 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
         currentDateOfDebetableGoal = prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis());
 
         // Set correct subtitle in Activity -> "Einschaetzungen Entwuerfe ..."
-        String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentShowSketchCommentText", "string", fragmentShowDebetableGoalCommentContext.getPackageName())) + " " + debetableGoalNumberInListView;
+        String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleDebetableGoalsShowCommentText", "string", fragmentShowDebetableGoalCommentContext.getPackageName())) + " " + debetableGoalNumberInListView;
         ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "debetableShowComment");
 
     }
@@ -123,7 +123,7 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
         debetableGoal = choosenDebetableGoal.getString(choosenDebetableGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL));
 
         // find the listview
-        ListView listView = (ListView) viewFragmentShowDebetableGoalComment.findViewById(R.id.listOurArrangementShowSketchComment);
+        ListView listView = (ListView) viewFragmentShowDebetableGoalComment.findViewById(R.id.listOurGoalsShowDebetableGoalComment);
 
         // new dataadapter with custom constructor
         showDebetableGoalCommentCursorAdapter = new OurGoalShowDebetableGoalCommentCursorAdapter(

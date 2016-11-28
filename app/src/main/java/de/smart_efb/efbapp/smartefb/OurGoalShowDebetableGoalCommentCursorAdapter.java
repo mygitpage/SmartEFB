@@ -76,7 +76,7 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
 
         // check if debetable goal comment entry new?
         if (cursor.getInt(cursor.getColumnIndex(myDb.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY)) == 1) {
-            TextView newEntryOfDebetableGoal = (TextView) view.findViewById(R.id.listActualTextNewSketchComment);
+            TextView newEntryOfDebetableGoal = (TextView) view.findViewById(R.id.listActualTextNewDebetableGoalComment);
             String txtnewEntryOfDebetableGoal = context.getResources().getString(R.string.newEntryText);
             newEntryOfDebetableGoal.setText(txtnewEntryOfDebetableGoal);
 
@@ -85,7 +85,7 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
         }
 
         // show actual comment
-        TextView textViewShowActualComment = (TextView) view.findViewById(R.id.listActualTextSketchComment);
+        TextView textViewShowActualComment = (TextView) view.findViewById(R.id.listActualTextDebetableGoalComment);
         String actualComment = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT));
         textViewShowActualComment.setText(actualComment);
 
@@ -96,7 +96,7 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
         textViewShowResultStructQuestion.setText(actualResultStructQuestion);
 
         // show author and date
-        TextView textViewShowActualAuthorAndDate = (TextView) view.findViewById(R.id.listActualSketchCommentAuthorAndDate);
+        TextView textViewShowActualAuthorAndDate = (TextView) view.findViewById(R.id.listActualDebetableGoalCommentAuthorAndDate);
         long writeTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME));
         String authorAndDate = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME)) + ", " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy - HH:mm");
         textViewShowActualAuthorAndDate.setText(authorAndDate);
@@ -123,21 +123,21 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
             linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
 
             // show choosen debetable goal
-            TextView textViewShowchoosenDebetableGoal = (TextView) view.findViewById(R.id.actualSketchCommentTextInShowComment);
+            TextView textViewShowchoosenDebetableGoal = (TextView) view.findViewById(R.id.actualDebetableGoalCommentTextInShowComment);
             textViewShowchoosenDebetableGoal.setText(choosenDebetableGoal);
 
-            // set text intro "Die Einschätzungen zum Entwurf ..."
-            TextView textViewShowCommentIntro = (TextView) view.findViewById(R.id.arrangementShowCommentIntro);
-            String txtCommentIntro = contextForActivity.getResources().getString(R.string.showSketchCommentIntroText)+ " " + debetableGoalNumberInListView;
+            // set text intro "Die Einschätzungen zum strittigen Ziel ..."
+            TextView textViewShowCommentIntro = (TextView) view.findViewById(R.id.debetableGoalShowCommentIntro);
+            String txtCommentIntro = contextForActivity.getResources().getString(R.string.showDebetableGoalCommentIntroText)+ " " + debetableGoalNumberInListView;
             textViewShowCommentIntro.setText(txtCommentIntro);
 
         }
 
-        // generate onclicklistener for Button "zurueck zu den Absprachen"
+        // generate onclicklistener for Button "zurueck zu strittigen Zielen"
         if (cursor.isLast()) {
 
             // button abbort "zurueck zu den Entwuerfen"
-            Button buttonBackToDebetableGoalsNow = (Button) view.findViewById(R.id.buttonAbortShowSketchComment);
+            Button buttonBackToDebetableGoalsNow = (Button) view.findViewById(R.id.buttonAbortShowDebetableGoalComment);
 
             // onClick listener abbort button
             buttonBackToDebetableGoalsNow.setOnClickListener(new View.OnClickListener() {
