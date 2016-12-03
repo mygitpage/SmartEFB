@@ -30,7 +30,7 @@ import java.util.Calendar;
 public class ActivityOurGoals extends AppCompatActivity {
 
 
-    // Max number of comments (current and sketch) <-> Over this number you can write infinitely comments
+    // Max number of comments (jointly and debetable goals) <-> Over this number you can write infinitely comments
     final int commentLimitationBorder = 1000;
 
     // Number of different subtitles
@@ -462,6 +462,174 @@ public class ActivityOurGoals extends AppCompatActivity {
                 tmpdialogTextView.setText(ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsSettingsIntro));
 
 
+
+                // show the settings for evaluation (like evaluation period, on/off-status, ...)
+                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsJointlyGoalsSettingsEvaluate);
+                if (prefs.getBoolean("showEvaluateLinkJointlyGoals", false)) {
+
+                    String tmpTxtEvaluate = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsEvaluateEnable);
+                    String tmpTxtEvaluate1 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsEvaluatePeriod);
+                    String tmpCompleteTxtEvaluate1String = String.format(tmpTxtEvaluate1, EfbHelperClass.timestampToDateFormat(prefs.getLong("startDataJointlyGoalsEvaluationInMills", System.currentTimeMillis()), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(prefs.getLong("startDataJointlyGoalsEvaluationInMills", System.currentTimeMillis()), "kk.mm"), EfbHelperClass.timestampToDateFormat(prefs.getLong("endDataJointlyGoalsEvaluationInMills", System.currentTimeMillis()), "dd.MM.yyyy"),EfbHelperClass.timestampToDateFormat(prefs.getLong("endDataJointlyGoalsEvaluationInMills", System.currentTimeMillis()), "kk.mm"));
+                    tmpdialogTextView.setText(tmpTxtEvaluate + " " + tmpCompleteTxtEvaluate1String);
+                }
+                else {
+                    String tmpTxtEvaluate = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsEvaluateDisable);
+                    tmpdialogTextView.setText(tmpTxtEvaluate);
+                }
+
+
+
+
+
+                // show the settings for comment (like on/off-status, count comment...)
+                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsJointlyGoalsSettingsComment);
+                String tmpTxtComment, tmpTxtComment1, tmpTxtComment2, tmpTxtCommentSum;
+
+                if (prefs.getBoolean("showCommentLinkJointlyGoals", false)) {
+
+                    tmpTxtComment = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentEnable);
+
+                    if (prefs.getInt("commentJointlyGoalMaxCountComment",0) < commentLimitationBorder) { // write infinitely comments?
+
+                        if (prefs.getInt("commentJointlyGoalMaxCountComment",0) == 1) {
+                            tmpTxtComment1 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentCountSingular);
+                        }
+                        else {
+                            tmpTxtComment1 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentCountPlural);
+                            tmpTxtComment1 = String.format(tmpTxtComment1, prefs.getInt("commentJointlyGoalMaxCountComment",0));
+                        }
+                    }
+                    else {
+                        tmpTxtComment1 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentCountInfinitely);
+                    }
+
+                    // count comment - status
+                    if (prefs.getInt("commentJointlyGoalCountComment",0) < prefs.getInt("commentJointlyGoalMaxCountComment",0)) {
+                        switch (prefs.getInt("commentJointlyGoalCountComment", 0)) {
+                            case 0:
+                                tmpTxtComment2 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCountCommentZero);
+                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong("jointlyGoalsCommentOurGoalsTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"));
+                                break;
+                            case 1:
+                                tmpTxtComment2 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberSingular);
+                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong("jointlyGoalsCommentOurGoalsTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"));
+                                break;
+                            default:
+                                tmpTxtComment2 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberPlural);
+                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong("jointlyGoalsCommentOurGoalsTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt("commentJointlyGoalCountComment",0));
+                                break;
+                        }
+                    }
+                    else {
+                        tmpTxtComment2 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberOff);
+                    }
+
+                    tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2;
+
+                    tmpdialogTextView.setText(tmpTxtCommentSum);
+                }
+                else {
+                    tmpTxtComment = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentDisable);
+                    tmpdialogTextView.setText(tmpTxtComment);
+                }
+
+
+
+
+
+                // show the settings for old jointly goals
+                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsJointlyGoalsSettingsOld);
+                if (prefs.getBoolean("showOldGoals", false)) {
+
+                    String tmpTxtOldJointlyGoals = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsOldEnable);
+                    tmpdialogTextView.setText(tmpTxtOldJointlyGoals);
+                }
+                else {
+                    String tmpTxtOldJointlyGoals = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsOldDisable);
+                    tmpdialogTextView.setText(tmpTxtOldJointlyGoals);
+                }
+
+
+
+
+
+
+
+
+
+                // show the settings for debetable goals
+                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsDebetableGoalsSettings);
+                String tmpTxtDebetablGoalSum, tmpTxtDebetableGoal, tmpTxtDebetableGoal1, tmpTxtDebetableGoal2, tmpTxtDebetableGoal3;
+                if (prefs.getBoolean("showDebetableGoals", false)) {
+
+                    tmpTxtDebetableGoal = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsEnable);
+
+
+                    // comment debetable goals?
+                    if (prefs.getBoolean("showCommentLinkDebetableGoals", false)) {
+
+                        tmpTxtDebetableGoal1 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentEnable);
+
+
+
+
+                        if (prefs.getInt("commentDebetableGoalsOurGoalsMaxComment",0) < commentLimitationBorder) { // write infinitely debetable goal comments?
+
+                            if (prefs.getInt("commentDebetableGoalsOurGoalsMaxComment",0) == 1) {
+                                tmpTxtDebetableGoal2 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentCountSingular);
+                            }
+                            else {
+                                tmpTxtDebetableGoal2 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentCountPlural);
+                                tmpTxtDebetableGoal2 = String.format(tmpTxtDebetableGoal2, prefs.getInt("commentDebetableGoalsOurGoalsMaxComment",0));
+                            }
+                        }
+                        else {
+                            tmpTxtDebetableGoal2 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentCountInfinitely);
+                        }
+
+                        // count debetable goal comment - status
+                        if (prefs.getInt("commentDebetableGoalsOurGoalsCountComment",0) < prefs.getInt("commentDebetableGoalsOurGoalsMaxComment",0)) {
+                            switch (prefs.getInt("commentDebetableGoalsOurGoalsCountComment", 0)) {
+                                case 0:
+                                    tmpTxtDebetableGoal3 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentNumberZero);
+                                    tmpTxtDebetableGoal3 = String.format(tmpTxtDebetableGoal3, EfbHelperClass.timestampToDateFormat(prefs.getLong("debetableGoalsCommentOurGoalsTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"));
+                                    break;
+                                case 1:
+                                    tmpTxtDebetableGoal3 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentNumberSingular);
+                                    tmpTxtDebetableGoal3 = String.format(tmpTxtDebetableGoal3, EfbHelperClass.timestampToDateFormat(prefs.getLong("debetableGoalsCommentOurGoalsTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"));
+                                    break;
+                                default:
+                                    tmpTxtDebetableGoal3 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentNumberNumberPlural);
+                                    tmpTxtDebetableGoal3 = String.format(tmpTxtDebetableGoal3, EfbHelperClass.timestampToDateFormat(prefs.getLong("debetableGoalsCommentOurGoalsTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt("commentDebetableGoalsOurGoalsCountComment",0));
+                                    break;
+                            }
+                        }
+                        else {
+                            tmpTxtDebetableGoal3 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentNumberOff);
+                        }
+                    }
+                    else {
+                        tmpTxtDebetableGoal1 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentDisable);
+                        tmpTxtDebetableGoal2 = "";
+                        tmpTxtDebetableGoal3 = "";
+                    }
+                    tmpTxtDebetablGoalSum = tmpTxtDebetableGoal + " " + tmpTxtDebetableGoal1 + " " + tmpTxtDebetableGoal2 + " " + tmpTxtDebetableGoal3;
+
+                }
+                else {
+                    tmpTxtDebetableGoal = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsDisable);
+                    tmpTxtDebetablGoalSum = tmpTxtDebetableGoal;
+
+                }
+                tmpdialogTextView.setText(tmpTxtDebetablGoalSum);
+                
+                
+                
+                
+                
+                
+                
+                
 
 
                 // get string ressources

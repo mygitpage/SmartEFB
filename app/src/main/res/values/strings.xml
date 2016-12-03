@@ -249,8 +249,6 @@
             <string name="newEntryTextOurGoal">(Neu)</string>
         <!-- End Strings for activity our goals -->
 
-
-
         <!-- Strings for tab title in activity our goals -->
                 <string name="ourGoalsTabTitle_1">Gemeinsame Ziele</string>
                 <string name="ourGoalsTabTitle_1a">Kommentieren</string>
@@ -266,29 +264,46 @@
             <string name="textDialogOurGoalsCloseDialog">Schließen</string>
             <string name="textDialogOurGoalsTitleDialog">Einstellungen Ziele</string>
             <string name="textDialogOurGoalsSettingsIntro">Für die Funktion Ziele gelten folgende Einstellungen.</string>
-
+            <string name="textDialogOurGoalsJointlyGoalsSettingsEvaluateEnable">Sie können gemeinsame Ziele bewerten.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsEvaluateDisable">Sie können keine gemeinsamen Ziele bewerten.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsEvaluatePeriod">Der Bewertungszeitraum beginnt am %1$s um %2$s Uhr und endet am %3$s um %4$s Uhr.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentEnable">Sie können gemeinsame Ziele kommentieren.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountSingular">Dabei können Sie maximal einen Kommentar schreiben.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountPlural">Dabei können Sie maximal %1$d Kommentare schreiben.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountInfinitely">Dabei können Sie beliebig viele Kommentare schreiben.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCountCommentZero">Seit dem %1$s haben Sie noch keinen Kommentar geschrieben.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberSingular">Seit dem %1$s haben Sie einen Kommentar geschrieben.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberPlural">Seit dem %1$s haben Sie %2$d Kommentare geschrieben.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Kommentare geschrieben.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDisable">Sie können keine gemeinsamen Ziele kommentieren.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsOldEnable">Ihnen stehen die älteren gemeinsamen Ziele zur Verfügung.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsOldDisable">Ihnen stehen die älteren gemeinsamen Ziele nicht zur Verfügung.</string>
+            <string name="textDialogOurGoalsDebetableGoalsEnable">Ihnen steht die Ansicht der strittigen Ziele zur Verfügung.</string>
+            <string name="textDialogOurGoalsDebetableGoalsDisable">Ihnen steht die Ansicht der strittigen Ziele nicht zur Verfügung.</string>
+            <string name="textDialogOurGoalsDebetableGoalsSettingsCommentEnable">Sie können die strittigen Ziele einschätzen.</string>
+            <string name="textDialogOurGoalsDebetableGoalsSettingsCommentDisable">Sie können die strittigen Ziele nicht einschätzen.</string>
+            <string name="textDialogOurGoalsDebetableGoalsSettingsCommentCountSingular">Dabei können Sie maximal eine Einschätzung schreiben.</string>
+            <string name="textDialogOurGoalsDebetableGoalsSettingsCommentCountPlural">Dabei können Sie maximal %1$d Einschätzungen schreiben.</string>
+            <string name="textDialogOurGoalsDebetableGoalsSettingsCommentCountInfinitely">Dabei können Sie beliebig viele Einschätzungen schreiben.</string>
+            <string name="textDialogOurGoalsDebetableGoalsSettingsCommentNumberZero">Seit dem %1$s haben Sie noch keine Einschätzung geschrieben.</string>
+            <string name="textDialogOurGoalsDebetableGoalsSettingsCommentNumberSingular">Seit dem %1$s haben Sie eine Einschätzung geschrieben.</string>
+            <string name="textDialogOurGoalsDebetableGoalsSettingsCommentNumberNumberPlural">Seit dem %1$s haben Sie %2$d Einschätzungen geschrieben.</string>
+            <string name="textDialogOurGoalsDebetableGoalsSettingsCommentNumberOff">Seit dem %1$s haben Sie alle möglichen Einschätzungen geschrieben.</string>
         <!-- end our goals dialog settings -->
 
 
         <!-- fragment show current jointly goals now -->
                 <string name="textViewJointlyGoalsNowNothingThere">Zurzeit sind keine gemeinsamen Ziele vorhanden!</string>
                 <string name="ourGoalsJointlyNowIntroText">Die gemeinsamen Ziele vom</string>
-
-
-
                 <string name="ourGoalsEvaluateJointlyGoalString">Bewerten</string>
-
                 <string name="ourGoalsCommentString">Kommentieren</string>
         <!-- End show current jointly goals now -->
 
 
         <!-- fragment comment jointly goals -->
             <string name="showJointlyGoalCommentIntroText">Gemeinsames Ziel</string>
-
             <string name="jointlyGoalCommentIntro">Bitte kommentieren Sie das Ziel</string>
-
             <string name="commentHistoryJointlyGoalsIntroText">Alle bisherigen Kommentare zum gemeinsamen Ziel</string>
-
             <string name="infoTextJointlyGoalsCommentMaxSingular">Sie könnnen maximal %1$d Kommentar schreiben.</string>
             <string name="infoTextJointlyGoalsCommentMaxPlural">Sie könnnen maximal %1$d Kommentare schreiben.</string>
             <string name="infoTextJointlyGoalsCommentUnlimitedText">Sie können beliebig viele Kommentare schreiben.</string>
@@ -344,59 +359,43 @@
             <string name="showDebetableGoalsIntroText">Strittiges Ziel</string>
             <string name="ourGoalsBackLinkToDebetableGoals">Zurück zu strittigen Zielen</string>
             <string name="commentDebetableGoalHistoryIntroText">Alle bisherigen Kommentare zum strittigen Ziel</string>
-
             <string name="introStructQuestionForCommentDdebetableGoal">Wie schätzen Sie Ihre Zustimmung zu dem strittigen Ziel ein?</string>
             <string name="errorStructQuestionForCommentDebetableGoal">Bitte geben Sie den Grad Ihrer Zustimmung an!</string>
             <string name="introFreeQuestionForCommentDebetableGoal">Bitte erläutern Sie Ihre obige Zustimmungseinschätzung</string>
-
             <string name="errorFreeQuestionForCommentDebetableGoal">Bitte kontrollieren Sie Ihren Text zur obigen Zustimmungseinschätzung! Er ist zu kurz!</string>
             <string name="commentFreeQuestionDebetableGoalTextFieldHintText">Bitte erläutern Sie hier Ihre Zustimmung.</string>
-
             <string name="buttonSendDebetableGoalComment">Einschätzung senden</string>
             <string name="debetableGoalCommentSuccsesfulySend">Zustimmungseinschätzung erfolgreich gesendet</string>
-
-
-
             <string name="infoTextDebetableGoalCommentMaxSingular">Sie könnnen maximal %1$d Kommentar schreiben.</string>
             <string name="infoTextDebetableGoalCommentMaxPlural">Sie könnnen maximal %1$d Kommentare schreiben.</string>
             <string name="infoTextDebetableGoalCommentUnlimitedText">Sie könnnen beliebig viele Kommentare schreiben.</string>
             <string name="infoTextDebetableGoalCommentCountZero">Sie haben noch keinen Kommentar geschrieben.</string>
             <string name="infoTextDebetableGoalCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
             <string name="infoTextDebetableGoalCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
-
-
             <string name="showDebetableGoalCommentIntroText">Die Einschätzungen zum strittigen Ziel</string>
             <string name="evaluateDebetableGoalSuggestion_1">Sehr stark</string>
             <string name="evaluateDebetableGoalSuggestion_2">Stark</string>
             <string name="evaluateDebetableGoalSuggestion_3">Mittelmäßig</string>
             <string name="evaluateDebetableGoalSuggestion_4">Wenig</string>
             <string name="evaluateDebetableGoalSuggestion_5">Keine</string>
-
             <string name="textDebetableGoalCommentActualResultStructQuestion">Mit dem Kommentar wurde folgende Zustimmungseinschätzung zum strittigen Ziel abgegeben: %1$s</string>
-
         <!-- End fragment debetable goals comment -->
-
-
-
-
 
 
         <!-- Fragment show comment debetable goals -->
 
 
-
-
-
-
-
         <!-- End fragment show comment debetable goals -->
 
 
+        <!-- fragment show old jointly goals -->
+            <string name="ourGoalsOldJointlyGoalsFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
+            <string name="ourGoalsOldJointlyGoalsNothingThere">Es sind keine älteren gemeinsamen Ziele vorhanden!</string>
+            <string name="ourGoalsOldJointlyGoalDateIntro">Gemeinsame Ziele vom</string>
+        <!-- End fragment show old jointly goals -->
 
 
-
-    <!-- Subtitle under Title Our Goals -->
-
+        <!-- Subtitle under Title Our Goals -->
             <string name="ourGoalsSubtitleNothingThere">Keine Ziele vorhanden</string>
             <string name="ourGoalsSubtitleJointlyGoalsNow">Gemeinsame Ziele vom</string>
             <string name="ourGoalsSubtitleJointlyGoalsComment">Ziel %1$d kommentieren</string>
@@ -405,13 +404,10 @@
             <string name="ourGoalsSubtitleDebetableGoalsNow">Strittige Ziele vom</string>
             <string name="ourGoalsSubtitleFunctionNotAvailable">Funktion nicht möglich</string>
             <string name="ourGoalsSubtitleGoalsNothingThere">Keine Ziele vorhanden</string>
-
             <string name="ourGoalsSubtitleDebetableGoalsComment">Strittiges Ziel %1$d kommentieren</string>
-
             <string name="ourGoalsSubtitleDebetableGoalsShowCommentText">Einschätzungen strittiges Ziel</string>
-
-
-    <!-- End subtitle -->
+            <string name="ourGoalsSubtitleOldJointlyGoals">Älter als</string>
+        <!-- End subtitle -->
 
 
 

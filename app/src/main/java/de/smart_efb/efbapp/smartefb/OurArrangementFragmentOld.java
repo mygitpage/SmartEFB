@@ -41,9 +41,6 @@ public class OurArrangementFragmentOld extends Fragment {
     // reference cursorAdapter for the listview
     OurArrangementOldCursorAdapter dataAdapter;
 
-    // refresh activitys subtitle, true-> refresh
-    Boolean subtitleRefreshNow = false;
-
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {

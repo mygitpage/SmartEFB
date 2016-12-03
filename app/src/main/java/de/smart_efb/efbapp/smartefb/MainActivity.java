@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (showMainMenueElement[countElements]) { // is element aktiv?
 
-                        if (myDb.getCountNewEntryOurGoals(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis())) > 0 ) {
+                        if (myDb.getCountNewEntryOurGoals(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurGoals(prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurGoalsDebetableGoalsComment(prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis())) > 0) {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                         } else {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
