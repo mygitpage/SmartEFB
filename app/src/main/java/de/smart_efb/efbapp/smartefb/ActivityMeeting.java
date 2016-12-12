@@ -1,7 +1,14 @@
 package de.smart_efb.efbapp.smartefb;
 
+
 import android.graphics.Color;
 import android.os.Bundle;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +38,24 @@ public class ActivityMeeting extends AppCompatActivity {
 
         // init meeting
         initMeeting();
+
+
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+
+        MeetingFragmentMeetingNow f1 = new MeetingFragmentMeetingNow();
+        fragmentTransaction.add(R.id.fragment_container, f1);
+
+        fragmentTransaction.commit();
+
+
+
+        // for example look
+        // http://android.tutorialhorizon.com/fragments-add-fragments-dynamically-at-runtime/
+
+
+
 
     }
 
