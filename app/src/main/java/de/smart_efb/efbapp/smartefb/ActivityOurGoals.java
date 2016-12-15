@@ -461,8 +461,6 @@ public class ActivityOurGoals extends AppCompatActivity {
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsSettingsIntro);
                 tmpdialogTextView.setText(ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsSettingsIntro));
 
-
-
                 // show the settings for evaluation (like evaluation period, on/off-status, ...)
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsJointlyGoalsSettingsEvaluate);
                 if (prefs.getBoolean("showEvaluateLinkJointlyGoals", false)) {
@@ -476,10 +474,6 @@ public class ActivityOurGoals extends AppCompatActivity {
                     String tmpTxtEvaluate = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsEvaluateDisable);
                     tmpdialogTextView.setText(tmpTxtEvaluate);
                 }
-
-
-
-
 
                 // show the settings for comment (like on/off-status, count comment...)
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsJointlyGoalsSettingsComment);
@@ -533,10 +527,6 @@ public class ActivityOurGoals extends AppCompatActivity {
                     tmpdialogTextView.setText(tmpTxtComment);
                 }
 
-
-
-
-
                 // show the settings for old jointly goals
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsJointlyGoalsSettingsOld);
                 if (prefs.getBoolean("showOldGoals", false)) {
@@ -548,14 +538,6 @@ public class ActivityOurGoals extends AppCompatActivity {
                     String tmpTxtOldJointlyGoals = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsOldDisable);
                     tmpdialogTextView.setText(tmpTxtOldJointlyGoals);
                 }
-
-
-
-
-
-
-
-
 
                 // show the settings for debetable goals
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsDebetableGoalsSettings);
@@ -622,15 +604,6 @@ public class ActivityOurGoals extends AppCompatActivity {
 
                 }
                 tmpdialogTextView.setText(tmpTxtDebetablGoalSum);
-                
-                
-                
-                
-                
-                
-                
-                
-
 
                 // get string ressources
                 String tmpTextCloseDialog = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsCloseDialog);

@@ -165,6 +165,39 @@ public class SettingsEfbFragmentD extends Fragment {
 
 
 
+
+        // MEETING --------
+        // for Activity Meeting !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // meeting time and date as timestamp
+        // in future comes from coach over internet
+        prefsEditor.putLong("meetingDateAndTime", System.currentTimeMillis()); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+        // meeting place
+        /*
+            0 -> kein Ort
+            1 -> Werder (Havel)
+            2 -> Bad Belzig
+
+         */
+        prefsEditor.putInt("meetingPlace", 0);
+
+
+        // status of the meeting
+        /*
+            0 -> Noch keinen Termin vereinbart
+            1 -> Termin angefragt
+            2 -> Termin bestaetigt
+
+         */
+        prefsEditor.putInt("meetingStatus", 0); //
+
+
+
+
+
+
+
         prefsEditor.commit();
 
 

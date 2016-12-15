@@ -1,15 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/body_background">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hier stehen dann verschiedene Auswahlen. Beispielsweise Termin vereinbaren, Termin finden, Termin verschieben"
-        android:id="@+id/textView1"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="198dp" />
-</RelativeLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="left"
+        android:background="@color/body_background"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+
+        <TextView
+            android:id="@+id/nextMeetingIntroText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/nextMeetingDateAndTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:visibility="gone"
+            android:textStyle="bold"/>
+
+
+        <Button
+            android:id="@+id/buttonSendMakeFirstMeeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_btn_join"
+            android:textColor="@color/white"
+            android:text="@string/btnMakeFirstMeetingText"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="5dp"
+            android:padding="5dp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/buttonSendFindMeetingDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_btn_join"
+            android:textColor="@color/white"
+            android:text="@string/btnFindMeetingDateText"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="5dp"
+            android:padding="5dp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/buttonSendChangeMeetingDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_btn_join"
+            android:textColor="@color/white"
+            android:text="@string/btnChangeMeetingDateText"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="5dp"
+            android:padding="5dp"
+            android:visibility="gone"/>
+
+
+
+
+        <TextView
+            android:id="@+id/contactInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_color"
+            android:gravity="center"
+            android:paddingBottom="35dp"/>
+
+
+    </LinearLayout>
+
+</ScrollView>

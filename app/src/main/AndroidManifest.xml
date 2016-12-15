@@ -59,7 +59,9 @@
         <activity
             android:name=".ActivityMeeting"
             android:label="@string/mainMenueElementId_6"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
+
         </activity>
 
         <!-- Dispatcher activity for deep links -->

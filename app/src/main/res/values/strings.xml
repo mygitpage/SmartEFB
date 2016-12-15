@@ -431,11 +431,24 @@
     <string name="faqTabTitleSection_5">Erziehungsfragen</string>
     <!-- End tab title -->
 
+    <!-- Activity FAQ End -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Activity Meeting -->
+
+        <string name="btnMakeFirstMeetingText">Ersttermin vereinbaren</string>
+        <string name="btnFindMeetingDateText">Gemeinsamen Termin finden</string>
+        <string name="btnChangeMeetingDateText">Termin verschieben</string>
+        <string name="nextMeetingIntroTextNoMeeting">Sie haben noch keinen Termin vereinbart.</string>
+        <string name="nextMeetingIntroTextFirstMeetingTownWerder">Sie haben Ihren ersten Termin in unserer Beratungsstelle Werder (Havel) am</string>
+        <string name="nextMeetingIntroTextFirstMeetingTownBadBelzig">Sie haben Ihren ersten Termin in unserer Beratungsstelle Bad Belzig am</string>
 
 
 
-
-
+    <!-- Activity Meeting End -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
 </resources>
