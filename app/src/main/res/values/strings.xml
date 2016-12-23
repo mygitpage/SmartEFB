@@ -438,6 +438,9 @@
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Activity Meeting -->
 
+
+
+
         <string name="btnMakeFirstMeetingText">Ersttermin vereinbaren</string>
         <string name="btnFindMeetingDateText">Gemeinsamen Termin finden</string>
         <string name="btnChangeMeetingDateText">Termin verschieben</string>
@@ -445,6 +448,41 @@
         <string name="nextMeetingIntroTextFirstMeetingTownWerder">Sie haben Ihren ersten Termin in unserer Beratungsstelle Werder (Havel) am</string>
         <string name="nextMeetingIntroTextFirstMeetingTownBadBelzig">Sie haben Ihren ersten Termin in unserer Beratungsstelle Bad Belzig am</string>
 
+        <!-- fragment make meeting -->
+            <string name="btnSendSuggestionFirstMeeting">Anfrage senden</string>
+            <string name="btnAbbortSuggestionFirstMeeting">Zurück zur Terminübersicht</string>
+
+            <string name="makeFirstMeetingIntroText">Ersttermin vereinbaren</string>
+            <string name="makeFirstMeetingExplainText">Bitte wählen Sie einen Zeitbereich und Beratungsort, an dem Ihr Ersttermin stattfinden soll. Bitte wählen Sie mindestens drei Zeitbereiche. Danke.</string>
+            <string name="infoMakeMeetingProcedureText">Wir werden versuchen Ihnen schnellstmöglich einen Termin in Ihrem gewünschten Zeitbereich auf Ihr Smartphone zu schicken. Dies kann allerdings bis zu zwei Tagen dauern. Sie haben auch die Möglichkeit uns telefonnisch zu erreichen.</string>
+
+
+
+            <string name="makeMeetingTimelineDays">Tage</string>
+            <string name="makeMeetingTimelineDayMo">Mo</string>
+            <string name="makeMeetingTimelineDayDi">Di</string>
+            <string name="makeMeetingTimelineDayMi">Mi</string>
+            <string name="makeMeetingTimelineDayDo">Do</string>
+            <string name="makeMeetingTimelineDayFr">Fr</string>
+
+            <string name="makeMeetingTimezone1">9 bis 12 Uhr</string>
+            <string name="makeMeetingTimezone2">12 bis 15 Uhr</string>
+            <string name="makeMeetingTimezone3">15 bis 18 Uhr</string>
+
+
+        <!-- end fragment make meeting -->
+
+
+
+
+
+        <!-- Subtitle under Title Meeting -->
+            <string name="meetingSubtitleNoFirstMeeting">Keinen Termin vereinbart</string>
+            <string name="meetingSubtitleMakeFirstMeeting">Ersttermin vereinbaren</string>
+
+
+
+        <!-- End Subtitle under Title Meeting -->
 
 
     <!-- Activity Meeting End -->

@@ -26,6 +26,9 @@ import android.widget.EditText;
 public class ActivityMeeting extends AppCompatActivity {
 
 
+    // Number of different subtitles
+    final int numberOfDifferentSubtitle = 8;
+
     // reference for the toolbar
     Toolbar toolbarMeeting;
     ActionBar actionBar;
@@ -35,6 +38,11 @@ public class ActivityMeeting extends AppCompatActivity {
 
     // reference to meeting fragments
     MeetingFragmentMeetingNow referenceFragmentMeetingNow;
+    MeetingFragmentMeetingMake referenceFragmentMeetingMake;
+
+
+    // Strings for subtitle ()
+    String [] arraySubTitleText = new String[numberOfDifferentSubtitle];
 
 
 
@@ -59,9 +67,14 @@ public class ActivityMeeting extends AppCompatActivity {
         toolbarMeeting = (Toolbar) findViewById(R.id.toolbarMeeting);
         setSupportActionBar(toolbarMeeting);
         toolbarMeeting.setTitleTextColor(Color.WHITE);
-        toolbarMeeting.setSubtitle("Bisher kein Termin vereinbart");
+        //toolbarMeeting.setSubtitle("Bisher kein Termin vereinbart");
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        // init array for subtitles
+        for (int t=0; t<numberOfDifferentSubtitle; t++) {
+            arraySubTitleText[t] = "";
+        }
 
         // init reference fragment manager
         fragmentManagerActivityMeeting = getSupportFragmentManager();
@@ -69,12 +82,16 @@ public class ActivityMeeting extends AppCompatActivity {
 
         // init reference fragements
         referenceFragmentMeetingNow = new MeetingFragmentMeetingNow();
+        referenceFragmentMeetingMake = new MeetingFragmentMeetingMake();
 
 
         // init start fragment MeetingFragmentMeetingNow
         FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, referenceFragmentMeetingNow);
         fragmentTransaction.commit();
+
+
+
 
 
 
@@ -151,10 +168,32 @@ public class ActivityMeeting extends AppCompatActivity {
             //toolbarOurGoals.setSubtitle(arraySubTitleText[3]);
 
 
-        } else { // Show fragment for make first meeting date and time (make_meeting)
+        } else if (command.equals("make_meeting")) { // Show fragment for make first meeting date and time (make_meeting)
 
 
             Log.d("Activity Meeting","make_meeting");
+
+            // replace fragment MeetingFragmentMeetingMake
+            FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, referenceFragmentMeetingMake);
+            fragmentTransaction.commit();
+
+            // set correct subtitle in toolbar in tab zero
+            //toolbarOurGoals.setSubtitle(arraySubTitleText[3]);
+
+
+        }
+        else {
+
+
+            Log.d("Activity Meeting","now_meeting");
+
+
+            // replace fragment MeetingFragmentMeetingMake
+            FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, referenceFragmentMeetingNow);
+            fragmentTransaction.commit();
+
 
 
             // set correct subtitle in toolbar in tab zero
@@ -163,11 +202,37 @@ public class ActivityMeeting extends AppCompatActivity {
 
         }
 
-    }    
-        
-        
-        
-        
+    }
+
+
+
+    // setter for subtitle in ActivityMeeting toolbar
+    public void setMeetingToolbarSubtitle (String subtitleText, String subtitleChoose) {
+
+        switch (subtitleChoose) {
+
+            case "noFirstMeeting":
+                arraySubTitleText[0] = subtitleText;
+                break;
+            case "makeFirstMeeting":
+                arraySubTitleText[1] = subtitleText;
+                break;
+
+
+            case "firstMeetingRequested":
+                arraySubTitleText[2] = subtitleText;
+                break;
+            case "firstMeetingConfirmed":
+                arraySubTitleText[3] = subtitleText;
+                break;
+
+
+        }
+
+
+        toolbarMeeting.setSubtitle(subtitleText);
+
+    }
         
     
     

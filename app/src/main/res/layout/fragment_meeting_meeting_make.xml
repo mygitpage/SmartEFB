@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="left"
+        android:background="@color/body_background"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+
+        <TextView
+            android:id="@+id/makeMeetingIntroText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/makeFirstMeetingIntroText"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:paddingBottom="5dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/makeFirstMeetingExplainText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/makeFirstMeetingExplainText"
+            android:textSize="14dp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"/>
+
+
+
+
+        <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/makeMeetingTimezoneAndDayGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="6"
+            android:rowCount="4"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <!-- Spalte 0 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/makeMeetingTimezone1"
+                android:textSize="14dp"
+                android:textColor="@color/text_color"
+                android:gravity="right"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:layout_weight="0.2"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/makeMeetingTimezone2"
+                android:textSize="14dp"
+                android:textColor="@color/text_color"
+                android:gravity="right"
+                android:layout_column="0"
+                android:layout_row="2"
+                android:layout_weight="0.2"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/makeMeetingTimezone3"
+                android:textSize="14dp"
+                android:textColor="@color/text_color"
+                android:gravity="right"
+                android:layout_column="0"
+                android:layout_row="3"
+                android:layout_weight="0.2"/>
+            <!-- Ende Spalte 0 -->
+
+
+            <!-- Spalte 1 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/makeMeetingTimelineDayMo"
+                android:textSize="14dp"
+                android:textColor="@color/text_color"
+                android:gravity="center"
+                android:layout_column="1"
+                android:layout_row="0"
+                android:layout_weight="0.2"/>
+
+            <CheckBox android:id="@+id/makeMeetingDay0Timezone1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_row="1"
+                android:layout_weight="0.2"/>
+            <CheckBox android:id="@+id/makeMeetingDay0Timezone2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_row="2"
+                android:layout_weight="0.2"/>
+            <CheckBox android:id="@+id/makeMeetingDay0Timezone3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_row="3"
+                android:layout_weight="0.2"/>
+            <!-- Ende Spalte 1 -->
+
+
+            <!-- Spalte 2 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/makeMeetingTimelineDayDi"
+                android:textSize="14dp"
+                android:textColor="@color/text_color"
+                android:gravity="center"
+                android:layout_column="2"
+                android:layout_row="0"/>
+
+            <CheckBox android:id="@+id/makeMeetingDay1Timezone1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_row="1"/>
+            <CheckBox android:id="@+id/makeMeetingDay1Timezone2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_row="2"/>
+            <CheckBox android:id="@+id/makeMeetingDay1Timezone3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_row="3"/>
+            <!-- Ende Spalte 2 -->
+
+            <!-- Spalte 3 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/makeMeetingTimelineDayMi"
+                android:textSize="14dp"
+                android:textColor="@color/text_color"
+                android:gravity="center"
+                android:layout_column="3"
+                android:layout_row="0"/>
+
+            <CheckBox android:id="@+id/makeMeetingDay2Timezone1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_row="1"/>
+            <CheckBox android:id="@+id/makeMeetingDay2Timezone2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_row="2"/>
+            <CheckBox android:id="@+id/makeMeetingDay2Timezone3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_row="3"/>
+            <!-- Ende Spalte 3 -->
+
+            <!-- Spalte 4 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/makeMeetingTimelineDayDo"
+                android:textSize="14dp"
+                android:textColor="@color/text_color"
+                android:gravity="center"
+                android:layout_column="4"
+                android:layout_row="0"/>
+
+            <CheckBox android:id="@+id/makeMeetingDay3Timezone1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="4"
+                android:layout_row="1"/>
+            <CheckBox android:id="@+id/makeMeetingDay3Timezone2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="4"
+                android:layout_row="2"/>
+            <CheckBox android:id="@+id/makeMeetingDay3Timezone3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="4"
+                android:layout_row="3"/>
+            <!-- Ende Spalte 4 -->
+
+            <!-- Spalte 5 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/makeMeetingTimelineDayFr"
+                android:textSize="14dp"
+                android:textColor="@color/text_color"
+                android:gravity="center"
+                android:layout_column="5"
+                android:layout_row="0"/>
+
+            <CheckBox android:id="@+id/makeMeetingDay4Timezone1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="5"
+                android:layout_row="1"/>
+            <CheckBox android:id="@+id/makeMeetingDay4Timezone2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="5"
+                android:layout_row="2"/>
+            <CheckBox android:id="@+id/makeMeetingDay4Timezone3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="5"
+                android:layout_row="3"/>
+            <!-- Ende Spalte 5 -->
+
+
+
+
+
+
+
+        </GridLayout>
+
+
+
+
+
+
+
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/buttonSendSuggestionFirstMeeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_btn_join"
+                android:textColor="@color/white"
+                android:text="@string/btnSendSuggestionFirstMeeting"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+
+            <Button
+                android:id="@+id/buttonAbbortSuggestionFirstMeeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_btn_join"
+                android:textColor="@color/white"
+                android:text="@string/btnAbbortSuggestionFirstMeeting"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+        <TextView
+            android:id="@+id/infoMakeMeetingProcedure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/infoMakeMeetingProcedureText"
+            android:textSize="14dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:paddingLeft="10dp"/>
+
+
+    </LinearLayout>
+
+</ScrollView>

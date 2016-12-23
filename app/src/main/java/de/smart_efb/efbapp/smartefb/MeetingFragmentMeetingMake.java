@@ -2,7 +2,6 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,16 +14,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 /**
- * Created by ich on 12.12.2016.
+ * Created by ich on 20.12.2016.
  */
-public class MeetingFragmentMeetingNow extends Fragment {
+public class MeetingFragmentMeetingMake extends Fragment {
 
 
     // fragment view
-    View viewFragmentMeetingNow;
+    View viewFragmentMeetingMake;
 
     // fragment context
-    Context fragmentMeetingNowContext = null;
+    Context fragmentMeetingMakeContext = null;
 
     // reference to the DB
     DBAdapter myDb;
@@ -43,11 +42,11 @@ public class MeetingFragmentMeetingNow extends Fragment {
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
-        viewFragmentMeetingNow = layoutInflater.inflate(R.layout.fragment_meeting_meeting_now, null);
+        viewFragmentMeetingMake = layoutInflater.inflate(R.layout.fragment_meeting_meeting_make, null);
 
         Log.d("Meeting","onCreateView");
 
-        return viewFragmentMeetingNow;
+        return viewFragmentMeetingMake;
 
     }
 
@@ -57,7 +56,7 @@ public class MeetingFragmentMeetingNow extends Fragment {
 
         super.onViewCreated(view, saveInstanceState);
 
-        fragmentMeetingNowContext = getActivity().getApplicationContext();
+        fragmentMeetingMakeContext = getActivity().getApplicationContext();
 
         // init the fragment meeting now
         initFragmentMeetingNow();
@@ -72,7 +71,7 @@ public class MeetingFragmentMeetingNow extends Fragment {
     private void initFragmentMeetingNow () {
 
         // init the prefs
-        prefs = fragmentMeetingNowContext.getSharedPreferences("smartEfbSettings", fragmentMeetingNowContext.MODE_PRIVATE);
+        prefs = fragmentMeetingMakeContext.getSharedPreferences("smartEfbSettings", fragmentMeetingMakeContext.MODE_PRIVATE);
 
         // get the current meeting date and time
         currentMeetingDateAndTime = prefs.getLong("meetingDateAndTime", System.currentTimeMillis());
@@ -107,19 +106,19 @@ public class MeetingFragmentMeetingNow extends Fragment {
 
 
             case 0: // no time and date for meeting -> first meeting
-                    txtNextMeetingIntro  = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextNoMeeting);
-                    btnVisibilitySendMakeFirstMeeting = true;
+                txtNextMeetingIntro  = fragmentMeetingMakeContext.getResources().getString(R.string.nextMeetingIntroTextNoMeeting);
+                btnVisibilitySendMakeFirstMeeting = true;
 
-                    tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleNoFirstMeeting", "string", fragmentMeetingNowContext.getPackageName()));
-                    tmpSubtitleOrder = "noFirstMeeting";
-                    //tmpSubtitle = String.format(tmpSubtitle, jointlyGoalNumberInListView);
+                tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMakeFirstMeeting", "string", fragmentMeetingMakeContext.getPackageName()));
+                tmpSubtitleOrder = "makeFirstMeeting";
+                //tmpSubtitle = String.format(tmpSubtitle, jointlyGoalNumberInListView);
 
-                    // zu testzwecken
-                    btnVisibilitySendFindMeetingDate = true;
-                    btnVisibilitySendChangeMeetingDate = true;
+                // zu testzwecken
+                btnVisibilitySendFindMeetingDate = true;
+                btnVisibilitySendChangeMeetingDate = true;
 
 
-                    break;
+                break;
 
         }
 
@@ -129,12 +128,12 @@ public class MeetingFragmentMeetingNow extends Fragment {
 
 
         // show actual comment
-        TextView textViewNextMeetingIntroText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingIntroText);
-        textViewNextMeetingIntroText.setText(txtNextMeetingIntro);
+        //TextView textViewNextMeetingIntroText = (TextView) viewFragmentMeetingMake.findViewById(R.id.nextMeetingIntroText);
+        //textViewNextMeetingIntroText.setText(txtNextMeetingIntro);
 
         // set visibility of SendMakeFirstMeeting button to visible
         if (btnVisibilitySendMakeFirstMeeting) {
-            tmpButton = (Button) viewFragmentMeetingNow.findViewById(R.id.buttonSendMakeFirstMeeting);
+            tmpButton = (Button) viewFragmentMeetingMake.findViewById(R.id.buttonSendSuggestionFirstMeeting);
             tmpButton.setVisibility(View.VISIBLE);
 
 
@@ -143,10 +142,10 @@ public class MeetingFragmentMeetingNow extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(fragmentMeetingNowContext, ActivityMeeting.class);
+                    Intent intent = new Intent(fragmentMeetingMakeContext, ActivityMeeting.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("com","make_meeting");
-                    fragmentMeetingNowContext.startActivity(intent);
+                    intent.putExtra("com","now_meeting");
+                    fragmentMeetingMakeContext.startActivity(intent);
 
                 }
             });
@@ -159,7 +158,7 @@ public class MeetingFragmentMeetingNow extends Fragment {
 
         // set visibility of SendFindMeetingDate button to visible
         if (btnVisibilitySendFindMeetingDate) {
-            tmpButton = (Button) viewFragmentMeetingNow.findViewById(R.id.buttonSendFindMeetingDate);
+            tmpButton = (Button) viewFragmentMeetingMake.findViewById(R.id.buttonAbbortSuggestionFirstMeeting);
             tmpButton.setVisibility(View.VISIBLE);
 
             // onClick listener make meeting
@@ -167,33 +166,15 @@ public class MeetingFragmentMeetingNow extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(fragmentMeetingNowContext, ActivityMeeting.class);
+                    Intent intent = new Intent(fragmentMeetingMakeContext, ActivityMeeting.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("com","find_meeting");
-                    fragmentMeetingNowContext.startActivity(intent);
+                    intent.putExtra("com","now_meeting");
+                    fragmentMeetingMakeContext.startActivity(intent);
 
                 }
             });
         }
 
-        // set visibility of SendFindMeetingDate button to visible
-        if (btnVisibilitySendChangeMeetingDate) {
-            tmpButton = (Button) viewFragmentMeetingNow.findViewById(R.id.buttonSendChangeMeetingDate);
-            tmpButton.setVisibility(View.VISIBLE);
-
-            // onClick listener make meeting
-            tmpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Intent intent = new Intent(fragmentMeetingNowContext, ActivityMeeting.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("com","change_meeting");
-                    fragmentMeetingNowContext.startActivity(intent);
-
-                }
-            });
-        }
 
 
 
