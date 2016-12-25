@@ -24,7 +24,7 @@
             android:textSize="16dp"
             android:textColor="@color/text_color"
             android:gravity="left"
-            android:paddingBottom="5dp"
+            android:paddingBottom="15dp"
             android:textStyle="bold"/>
 
         <TextView
@@ -34,21 +34,39 @@
             android:text="@string/makeFirstMeetingExplainText"
             android:textSize="14dp"
             android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
             android:textColor="@color/text_color"
             android:gravity="left"/>
 
 
-
-
-        <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/makeMeetingTimezoneAndDayGrid"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/makeFirstMeetingChooseTimezoneError"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:columnCount="6"
-            android:rowCount="4"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp">
+            android:textSize="16dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="@string/makeFirstMeetingChooseTimezoneErrorText"
+            android:paddingBottom="5dp"/>
+
+        <android.support.v7.widget.GridLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:grid="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/choice_grid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:padding="5dp"
+            android:background="@color/inputfield_background"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="5dp"
+            grid:alignmentMode="alignBounds"
+            grid:columnCount="6"
+            grid:rowCount="4"
+            grid:rowOrderPreserved="false"
+            grid:useDefaultMargins="true">
+
 
             <!-- Spalte 0 -->
             <TextView
@@ -56,33 +74,33 @@
                 android:layout_height="wrap_content"
                 android:text="@string/makeMeetingTimezone1"
                 android:textSize="14dp"
-                android:textColor="@color/text_color"
+                android:textColor="@color/text_color_white"
                 android:gravity="right"
-                android:layout_column="0"
-                android:layout_row="1"
-                android:layout_weight="0.2"/>
+                grid:layout_column="0"
+                grid:layout_row="1"
+                grid:layout_columnWeight="0.2"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/makeMeetingTimezone2"
                 android:textSize="14dp"
-                android:textColor="@color/text_color"
+                android:textColor="@color/text_color_white"
                 android:gravity="right"
-                android:layout_column="0"
-                android:layout_row="2"
-                android:layout_weight="0.2"/>
+                grid:layout_column="0"
+                grid:layout_row="2"
+                grid:layout_columnWeight="0.2"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/makeMeetingTimezone3"
                 android:textSize="14dp"
-                android:textColor="@color/text_color"
+                android:textColor="@color/text_color_white"
                 android:gravity="right"
-                android:layout_column="0"
-                android:layout_row="3"
-                android:layout_weight="0.2"/>
+                grid:layout_column="0"
+                grid:layout_row="3"
+                grid:layout_columnWeight="0.2"/>
             <!-- Ende Spalte 0 -->
 
 
@@ -92,30 +110,33 @@
                 android:layout_height="wrap_content"
                 android:text="@string/makeMeetingTimelineDayMo"
                 android:textSize="14dp"
-                android:textColor="@color/text_color"
+                android:textColor="@color/text_color_white"
                 android:gravity="center"
-                android:layout_column="1"
-                android:layout_row="0"
-                android:layout_weight="0.2"/>
+                grid:layout_column="1"
+                grid:layout_row="0"
+                grid:layout_columnWeight="0.2"/>
 
-            <CheckBox android:id="@+id/makeMeetingDay0Timezone1"
+            <CheckBox android:id="@+id/makeMeetingTimezone_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_row="1"
-                android:layout_weight="0.2"/>
-            <CheckBox android:id="@+id/makeMeetingDay0Timezone2"
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="1"
+                grid:layout_row="1"
+                grid:layout_columnWeight="0.2"/>
+            <CheckBox android:id="@+id/makeMeetingTimezone_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_row="2"
-                android:layout_weight="0.2"/>
-            <CheckBox android:id="@+id/makeMeetingDay0Timezone3"
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="1"
+                grid:layout_row="2"
+                grid:layout_columnWeight="0.2"/>
+            <CheckBox android:id="@+id/makeMeetingTimezone_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_row="3"
-                android:layout_weight="0.2"/>
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="1"
+                grid:layout_row="3"
+                grid:layout_columnWeight="0.2"/>
             <!-- Ende Spalte 1 -->
 
 
@@ -125,26 +146,33 @@
                 android:layout_height="wrap_content"
                 android:text="@string/makeMeetingTimelineDayDi"
                 android:textSize="14dp"
-                android:textColor="@color/text_color"
+                android:textColor="@color/text_color_white"
                 android:gravity="center"
-                android:layout_column="2"
-                android:layout_row="0"/>
+                grid:layout_column="2"
+                grid:layout_row="0"
+                grid:layout_columnWeight="0.2"/>
 
-            <CheckBox android:id="@+id/makeMeetingDay1Timezone1"
+            <CheckBox android:id="@+id/makeMeetingTimezone_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_row="1"/>
-            <CheckBox android:id="@+id/makeMeetingDay1Timezone2"
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="2"
+                grid:layout_row="1"
+                grid:layout_columnWeight="0.2"/>
+            <CheckBox android:id="@+id/makeMeetingTimezone_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_row="2"/>
-            <CheckBox android:id="@+id/makeMeetingDay1Timezone3"
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="2"
+                grid:layout_row="2"
+                grid:layout_columnWeight="0.2"/>
+            <CheckBox android:id="@+id/makeMeetingTimezone_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_row="3"/>
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="2"
+                grid:layout_row="3"
+                grid:layout_columnWeight="0.2"/>
             <!-- Ende Spalte 2 -->
 
             <!-- Spalte 3 -->
@@ -153,26 +181,33 @@
                 android:layout_height="wrap_content"
                 android:text="@string/makeMeetingTimelineDayMi"
                 android:textSize="14dp"
-                android:textColor="@color/text_color"
+                android:textColor="@color/text_color_white"
                 android:gravity="center"
-                android:layout_column="3"
-                android:layout_row="0"/>
+                grid:layout_column="3"
+                grid:layout_row="0"
+                grid:layout_columnWeight="0.2"/>
 
-            <CheckBox android:id="@+id/makeMeetingDay2Timezone1"
+            <CheckBox android:id="@+id/makeMeetingTimezone_7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="3"
-                android:layout_row="1"/>
-            <CheckBox android:id="@+id/makeMeetingDay2Timezone2"
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="3"
+                grid:layout_row="1"
+                grid:layout_columnWeight="0.2"/>
+            <CheckBox android:id="@+id/makeMeetingTimezone_8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="3"
-                android:layout_row="2"/>
-            <CheckBox android:id="@+id/makeMeetingDay2Timezone3"
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="3"
+                grid:layout_row="2"
+                grid:layout_columnWeight="0.2"/>
+            <CheckBox android:id="@+id/makeMeetingTimezone_9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="3"
-                android:layout_row="3"/>
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="3"
+                grid:layout_row="3"
+                grid:layout_columnWeight="0.2"/>
             <!-- Ende Spalte 3 -->
 
             <!-- Spalte 4 -->
@@ -181,26 +216,33 @@
                 android:layout_height="wrap_content"
                 android:text="@string/makeMeetingTimelineDayDo"
                 android:textSize="14dp"
-                android:textColor="@color/text_color"
+                android:textColor="@color/text_color_white"
                 android:gravity="center"
-                android:layout_column="4"
-                android:layout_row="0"/>
+                grid:layout_column="4"
+                grid:layout_row="0"
+                grid:layout_columnWeight="0.2"/>
 
-            <CheckBox android:id="@+id/makeMeetingDay3Timezone1"
+            <CheckBox android:id="@+id/makeMeetingTimezone_10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="4"
-                android:layout_row="1"/>
-            <CheckBox android:id="@+id/makeMeetingDay3Timezone2"
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="4"
+                grid:layout_row="1"
+                grid:layout_columnWeight="0.2"/>
+            <CheckBox android:id="@+id/makeMeetingTimezone_11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="4"
-                android:layout_row="2"/>
-            <CheckBox android:id="@+id/makeMeetingDay3Timezone3"
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="4"
+                grid:layout_row="2"
+                grid:layout_columnWeight="0.2"/>
+            <CheckBox android:id="@+id/makeMeetingTimezone_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="4"
-                android:layout_row="3"/>
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="4"
+                grid:layout_row="3"
+                grid:layout_columnWeight="0.2"/>
             <!-- Ende Spalte 4 -->
 
             <!-- Spalte 5 -->
@@ -209,49 +251,147 @@
                 android:layout_height="wrap_content"
                 android:text="@string/makeMeetingTimelineDayFr"
                 android:textSize="14dp"
-                android:textColor="@color/text_color"
+                android:textColor="@color/text_color_white"
                 android:gravity="center"
-                android:layout_column="5"
-                android:layout_row="0"/>
+                grid:layout_column="5"
+                grid:layout_row="0"
+                grid:layout_columnWeight="0.2"/>
 
-            <CheckBox android:id="@+id/makeMeetingDay4Timezone1"
+            <CheckBox android:id="@+id/makeMeetingTimezone_13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="5"
-                android:layout_row="1"/>
-            <CheckBox android:id="@+id/makeMeetingDay4Timezone2"
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="5"
+                grid:layout_row="1"
+                grid:layout_columnWeight="0.2"/>
+            <CheckBox android:id="@+id/makeMeetingTimezone_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="5"
-                android:layout_row="2"/>
-            <CheckBox android:id="@+id/makeMeetingDay4Timezone3"
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="5"
+                grid:layout_row="2"
+                grid:layout_columnWeight="0.2"/>
+            <CheckBox android:id="@+id/makeMeetingTimezone_15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="5"
-                android:layout_row="3"/>
+                android:theme="@style/styleMakeFirstMeeting"
+                grid:layout_column="5"
+                grid:layout_row="3"
+                grid:layout_columnWeight="0.2"/>
             <!-- Ende Spalte 5 -->
 
 
 
+        </android.support.v7.widget.GridLayout>
+
+        <TextView
+            android:id="@+id/makeFirstMeetingChoosePlaceIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/makeFirstMeetingChoosePlaceIntroText"
+            android:textSize="14dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"/>
 
 
+        <TextView
+            android:id="@+id/makeFirstMeetingChoosePlaceError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="@string/makeFirstMeetingChoosePlaceErrorText"
+            android:paddingBottom="5dp"/>
 
 
-        </GridLayout>
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/chooseFirstMeetingPlace"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/inputfield_background">
+
+            <RadioButton android:id="@+id/makeMeetingPlace_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/firstMeetingPlaceWerderText"
+                android:textColor="@color/text_color_white"
+                android:textSize="14dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/styleMakeFirstMeeting"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/makeMeetingPlace_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/firstMeetingPlaceBadBelzigText"
+                android:textColor="@color/text_color_white"
+                android:textSize="14dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/styleMakeFirstMeeting"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            
+        </RadioGroup>
 
 
+        <TextView
+            android:id="@+id/makeFirstMeetingProblemIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/makeFirstMeetingProblemIntroText"
+            android:textSize="14dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"/>
 
 
+        <TextView
+            android:id="@+id/makeFirstMeetingProblemError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="@string/makeFirstMeetingProblemErrorText"
+            android:paddingBottom="5dp"/>
 
+        <EditText
+            android:id="@+id/inputFirstMeetingProblemText"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:textColor="@color/text_color_white"
+            android:hint="@string/inputFirstMeetingProblemHintText"
+            android:gravity="left|top"
+            android:background="@color/inputfield_background"
+            android:layout_margin="10dp"
+            android:textColorHint="@color/text_color_white"
+            android:inputType="textNoSuggestions|text|textMultiLine"
+            android:padding="5dp"/>
 
-
-
+        
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_margin="15dp"
+            android:paddingTop="25dp"
+            android:paddingLeft="15dp"
             android:gravity="center"
             android:layout_gravity="center_horizontal">
 
@@ -260,7 +400,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/bg_btn_join"
-                android:textColor="@color/white"
+                android:textColor="@color/text_color_white"
                 android:text="@string/btnSendSuggestionFirstMeeting"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="5dp"
@@ -271,7 +411,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/bg_btn_join"
-                android:textColor="@color/white"
+                android:textColor="@color/text_color_white"
                 android:text="@string/btnAbbortSuggestionFirstMeeting"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="5dp"
@@ -295,7 +435,8 @@
             android:textSize="14dp"
             android:textColor="@color/text_color"
             android:gravity="left"
-            android:paddingLeft="10dp"/>
+            android:paddingLeft="10dp"
+            android:paddingTop="15dp"/>
 
 
     </LinearLayout>

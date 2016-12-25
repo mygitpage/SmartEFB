@@ -455,6 +455,15 @@
             <string name="makeFirstMeetingIntroText">Ersttermin vereinbaren</string>
             <string name="makeFirstMeetingExplainText">Bitte wählen Sie einen Zeitbereich und Beratungsort, an dem Ihr Ersttermin stattfinden soll. Bitte wählen Sie mindestens drei Zeitbereiche. Danke.</string>
             <string name="infoMakeMeetingProcedureText">Wir werden versuchen Ihnen schnellstmöglich einen Termin in Ihrem gewünschten Zeitbereich auf Ihr Smartphone zu schicken. Dies kann allerdings bis zu zwei Tagen dauern. Sie haben auch die Möglichkeit uns telefonnisch zu erreichen.</string>
+            <string name="makeFirstMeetingChoosePlaceIntroText">Bitte wählen Sie den Ort Ihrer ersten Beratung</string>
+            <string name="makeFirstMeetingProblemIntroText">Bitte geben Sie uns einen Hinweis auf Ihr Anliegen (beispielsweise Trennung, Erziehungsschwierigkeiten, Lese-Rechtschreib-Diagnostik, etc.)</string>
+
+            <string name="makeFirstMeetingChoosePlaceErrorText">Sie haben keinen Beratungsort gewählt!</string>
+            <string name="makeFirstMeetingChooseTimezoneErrorText">Sie haben zu wenige Zeitbereiche gewählt!</string>
+            <string name="makeFirstMeetingProblemErrorText">Sie haben keinen Hinweis auf Ihr Anliegen eingegeben! Dieser muss mindestens 3 Zeichen und höchstens 500 Zeichen lang sein.</string>
+            <string name="makeFirstMeetingCompletErrorToastText">Ihre Eingaben sind nicht vollständig. Bitte kontrollieren Sie die rot markierten Eingaben.</string>
+            <string name="inputFirstMeetingProblemHintText">Bitte beschreiben Sie kurz Ihr Anliegen oder Problem.</string>
+
 
 
 
@@ -469,6 +478,8 @@
             <string name="makeMeetingTimezone2">12 bis 15 Uhr</string>
             <string name="makeMeetingTimezone3">15 bis 18 Uhr</string>
 
+            <string name="firstMeetingPlaceWerderText">Werder (Havel)</string>
+            <string name="firstMeetingPlaceBadBelzigText">Bad Belzig</string>
 
         <!-- end fragment make meeting -->
 

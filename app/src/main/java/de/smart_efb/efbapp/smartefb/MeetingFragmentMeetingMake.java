@@ -11,7 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by ich on 20.12.2016.
@@ -36,6 +40,22 @@ public class MeetingFragmentMeetingMake extends Fragment {
 
     // meeting status
     int meetingStatus;
+
+    // number of checkboxes for choosing timezones
+    static final int countNumberTimezones = 15;
+
+    // boolean status array checkbox
+    Boolean [] makeMeetingCheckBoxListenerArray = new Boolean[countNumberTimezones];
+
+    // count selected checkBoxes for border check
+    int countSelectedCheckBoxesTimezone = 0;
+
+    // number of radio buttons for choosing places
+    static final int countNumberPlaces = 2;
+
+    // result number of place (1 = Werder (Havel), 2 = Bad Belzig, 0 = no place selected)
+    int resultNumberOfPlace = 0;
+
 
 
 
@@ -84,6 +104,54 @@ public class MeetingFragmentMeetingMake extends Fragment {
 
 
 
+
+
+        // set onClickListener for checkboxes to choose timezone
+        String tmpRessourceName ="";
+        CheckBox tmpCheckBoxTimezone;
+        for (int countTimezone = 0; countTimezone < countNumberTimezones; countTimezone++) {
+
+            // init array checkbox status
+            makeMeetingCheckBoxListenerArray[countTimezone] = false;
+
+            tmpRessourceName ="makeMeetingTimezone_" + (countTimezone+1);
+            try {
+                int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", fragmentMeetingMakeContext.getPackageName());
+
+                tmpCheckBoxTimezone = (CheckBox) viewFragmentMeetingMake.findViewById(resourceId);
+                tmpCheckBoxTimezone.setOnClickListener(new makeMeetingCheckBoxListenerTimezones(countTimezone));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+        // set onClickListener for radio button in radio group question 1-4
+        tmpRessourceName ="";
+        RadioButton tmpRadioButtonPlaces;
+        for (int countPlaces = 0; countPlaces < countNumberPlaces; countPlaces++) {
+
+
+            tmpRessourceName ="makeMeetingPlace_" + (countPlaces+1);
+            try {
+                int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", fragmentMeetingMakeContext.getPackageName());
+
+                tmpRadioButtonPlaces = (RadioButton) viewFragmentMeetingMake.findViewById(resourceId);
+                tmpRadioButtonPlaces.setOnClickListener(new makeMeetingRadioButtonListenerPlaces(countPlaces));
+                //tmpRadioButtonQuestion.setChecked(false);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+
+
+
     }
 
 
@@ -91,61 +159,101 @@ public class MeetingFragmentMeetingMake extends Fragment {
 
     private void displayActualMeetingInformation () {
 
-        String txtNextMeetingIntro = "";
         String tmpSubtitle = "";
         String tmpSubtitleOrder = "";
 
         Button tmpButton;
 
         Boolean btnVisibilitySendMakeFirstMeeting = false;
-        Boolean btnVisibilitySendFindMeetingDate = false;
-        Boolean btnVisibilitySendChangeMeetingDate = false;
+
 
 
         switch (meetingStatus) {
 
 
-            case 0: // no time and date for meeting -> first meeting
-                txtNextMeetingIntro  = fragmentMeetingMakeContext.getResources().getString(R.string.nextMeetingIntroTextNoMeeting);
+            case 0:
+            default: // no time and date for meeting -> first meeting
                 btnVisibilitySendMakeFirstMeeting = true;
-
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMakeFirstMeeting", "string", fragmentMeetingMakeContext.getPackageName()));
                 tmpSubtitleOrder = "makeFirstMeeting";
                 //tmpSubtitle = String.format(tmpSubtitle, jointlyGoalNumberInListView);
-
-                // zu testzwecken
-                btnVisibilitySendFindMeetingDate = true;
-                btnVisibilitySendChangeMeetingDate = true;
-
-
                 break;
 
         }
 
-        // Set correct subtitle in Activity Meeting
+        // Set correct subtitle in Activity Meeting Fragment make first meeting
         ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, tmpSubtitleOrder);
 
-
-
-        // show actual comment
-        //TextView textViewNextMeetingIntroText = (TextView) viewFragmentMeetingMake.findViewById(R.id.nextMeetingIntroText);
-        //textViewNextMeetingIntroText.setText(txtNextMeetingIntro);
-
-        // set visibility of SendMakeFirstMeeting button to visible
+        // status make first meeting
         if (btnVisibilitySendMakeFirstMeeting) {
+            // find send button "Anfrage senden"
             tmpButton = (Button) viewFragmentMeetingMake.findViewById(R.id.buttonSendSuggestionFirstMeeting);
-            tmpButton.setVisibility(View.VISIBLE);
-
 
             // onClick listener make meeting
             tmpButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(fragmentMeetingMakeContext, ActivityMeeting.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("com","now_meeting");
-                    fragmentMeetingMakeContext.startActivity(intent);
+                    Boolean makeMeetingNoError = true;
+
+                    TextView tmpErrorTextView;
+
+                    // check check boxes result (border <2)
+                    tmpErrorTextView = (TextView) viewFragmentMeetingMake.findViewById(R.id.makeFirstMeetingChooseTimezoneError);
+                    if ( countSelectedCheckBoxesTimezone < 3 && tmpErrorTextView != null) {
+                        makeMeetingNoError = false;
+                        tmpErrorTextView.setVisibility(View.VISIBLE);
+                    } else if (tmpErrorTextView != null) {
+                        tmpErrorTextView.setVisibility(View.GONE);
+                    }
+
+
+                    // check radio buttons result
+                    tmpErrorTextView = (TextView) viewFragmentMeetingMake.findViewById(R.id.makeFirstMeetingChoosePlaceError);
+                    if ( resultNumberOfPlace <= 0 && tmpErrorTextView != null) {
+                        makeMeetingNoError = false;
+                        tmpErrorTextView.setVisibility(View.VISIBLE);
+                    } else if (tmpErrorTextView != null) {
+                        tmpErrorTextView.setVisibility(View.GONE);
+                    }
+
+
+                    // check edit text border (<3 and >500)
+                    EditText tmpInputFirstMeetingProblem = (EditText) viewFragmentMeetingMake.findViewById(R.id.inputFirstMeetingProblemText);
+                    String tmpTextInputFirstMeetingProblem = "";
+                    if (tmpInputFirstMeetingProblem != null) {
+                        tmpTextInputFirstMeetingProblem = tmpInputFirstMeetingProblem.getText().toString();
+
+                        tmpErrorTextView = (TextView) viewFragmentMeetingMake.findViewById(R.id.makeFirstMeetingProblemError);
+                        if ((tmpTextInputFirstMeetingProblem.length() < 3 || tmpTextInputFirstMeetingProblem.length() > 500) && tmpErrorTextView != null ) {
+                            makeMeetingNoError = false;
+                            tmpErrorTextView.setVisibility(View.VISIBLE);
+                        }
+                        else if (tmpErrorTextView != null){
+                            tmpErrorTextView.setVisibility(View.VISIBLE);
+                        }
+
+
+
+                    }
+
+
+
+                    if (makeMeetingNoError) {
+
+                        Intent intent = new Intent(fragmentMeetingMakeContext, ActivityMeeting.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("com", "now_meeting");
+                        fragmentMeetingMakeContext.startActivity(intent);
+
+                    }
+                    else {
+
+                        // Toast "Make first Meeting not completly"
+                        Toast.makeText(fragmentMeetingMakeContext, fragmentMeetingMakeContext.getResources().getString(R.string.makeFirstMeetingCompletErrorToastText), Toast.LENGTH_SHORT).show();
+
+
+                    }
 
                 }
             });
@@ -153,13 +261,8 @@ public class MeetingFragmentMeetingMake extends Fragment {
 
 
 
-
-        }
-
-        // set visibility of SendFindMeetingDate button to visible
-        if (btnVisibilitySendFindMeetingDate) {
+            // find abbort button "Zurueck zur Terminuebersicht"
             tmpButton = (Button) viewFragmentMeetingMake.findViewById(R.id.buttonAbbortSuggestionFirstMeeting);
-            tmpButton.setVisibility(View.VISIBLE);
 
             // onClick listener make meeting
             tmpButton.setOnClickListener(new View.OnClickListener() {
@@ -174,11 +277,93 @@ public class MeetingFragmentMeetingMake extends Fragment {
                 }
             });
         }
+
+
+
+
+
 
 
 
 
     }
+
+
+
+
+    //
+    // onClickListener for checkboxes to choose timezone
+    //
+    public class makeMeetingCheckBoxListenerTimezones implements View.OnClickListener {
+
+        int checkBoxNumber;
+
+        public makeMeetingCheckBoxListenerTimezones (int checkBoxNr) {
+
+            this.checkBoxNumber = checkBoxNr;
+
+        }
+
+        @Override
+        public void onClick(View v) {
+
+
+            if (makeMeetingCheckBoxListenerArray[checkBoxNumber]) {
+                makeMeetingCheckBoxListenerArray[checkBoxNumber] = false;
+                countSelectedCheckBoxesTimezone --;
+            }
+            else {
+                makeMeetingCheckBoxListenerArray[checkBoxNumber] = true;
+                countSelectedCheckBoxesTimezone ++;
+            }
+
+
+        }
+
+    }
+
+
+
+
+
+    //
+    // onClickListener for checkboxes to choose timezone
+    //
+    public class makeMeetingRadioButtonListenerPlaces implements View.OnClickListener {
+
+        int radioButtonNumber;
+
+        public makeMeetingRadioButtonListenerPlaces (int radioButtonNr) {
+
+            this.radioButtonNumber = radioButtonNr;
+
+        }
+
+        @Override
+        public void onClick(View v) {
+
+
+            // check button number and get result
+            switch (radioButtonNumber) {
+
+                case 0: // ever
+                    resultNumberOfPlace = 1;
+                    break;
+                case 1:
+                    resultNumberOfPlace = 2;
+                    break;
+                default:
+                    resultNumberOfPlace = 0;
+                    break;
+            }
+
+
+        }
+
+    }
+
+
+
 
 
 
