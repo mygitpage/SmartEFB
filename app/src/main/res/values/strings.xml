@@ -463,6 +463,7 @@
             <string name="makeFirstMeetingProblemErrorText">Sie haben keinen Hinweis auf Ihr Anliegen eingegeben! Dieser muss mindestens 3 Zeichen und höchstens 500 Zeichen lang sein.</string>
             <string name="makeFirstMeetingCompletErrorToastText">Ihre Eingaben sind nicht vollständig. Bitte kontrollieren Sie die rot markierten Eingaben.</string>
             <string name="inputFirstMeetingProblemHintText">Bitte beschreiben Sie kurz Ihr Anliegen oder Problem.</string>
+            <string name="makeFirstMeetingSendSuccesfullToastText">Ihre Terminanfrage wurde erfolgreich gesendet!</string>
 
 
 

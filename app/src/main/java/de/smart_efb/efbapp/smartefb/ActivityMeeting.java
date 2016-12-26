@@ -2,6 +2,7 @@ package de.smart_efb.efbapp.smartefb;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,6 +34,9 @@ public class ActivityMeeting extends AppCompatActivity {
     Toolbar toolbarMeeting;
     ActionBar actionBar;
 
+    // shared prefs for the settings
+    SharedPreferences prefs;
+
     // reference to fragement manager
     FragmentManager fragmentManagerActivityMeeting;
 
@@ -44,7 +48,32 @@ public class ActivityMeeting extends AppCompatActivity {
     // Strings for subtitle ()
     String [] arraySubTitleText = new String[numberOfDifferentSubtitle];
 
+    // number of checkboxes for choosing timezones
+    static final int countNumberTimezones = 15;
 
+    // boolean status array checkbox
+    Boolean [] makeMeetingCheckBoxListenerArray = new Boolean[countNumberTimezones];
+
+    // prefs name for timezone array
+    static final String namePrefsMeetingStatus = "meetingStatus";
+
+    // prefs name for meeting place
+    static final String namePrefsMeetingPlace = "meetingPlace";
+
+    // prefs name for timezone array
+    static final String namePrefsArrayMeetingTimezoneArray = "meetingTimezone_";
+
+    // prefs name for meeting problem
+    static final String namePrefsMeetingProblem = "meetingProblem";
+
+    // meeting status
+    int meetingStatus = 0;
+
+    // meeting place
+    int meetingPlace = 0;
+
+    // meeting problem
+    String meetingProblem = "";
 
 
 
@@ -67,9 +96,28 @@ public class ActivityMeeting extends AppCompatActivity {
         toolbarMeeting = (Toolbar) findViewById(R.id.toolbarMeeting);
         setSupportActionBar(toolbarMeeting);
         toolbarMeeting.setTitleTextColor(Color.WHITE);
-        //toolbarMeeting.setSubtitle("Bisher kein Termin vereinbart");
+
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        // init the prefs
+        prefs = getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+
+        // get meeting status
+        meetingStatus = prefs.getInt(namePrefsMeetingStatus, 0);
+
+        // get meeting place
+        meetingPlace = prefs.getInt(namePrefsMeetingPlace, 0);
+
+        // get meeting problem
+        meetingProblem = prefs.getString(namePrefsMeetingProblem, "");
+
+        //load timezone array for meeting
+        for (int i=0; i<countNumberTimezones; i++) {
+            makeMeetingCheckBoxListenerArray[i] = prefs.getBoolean(namePrefsArrayMeetingTimezoneArray+i, false);
+        }
+
+
 
         // init array for subtitles
         for (int t=0; t<numberOfDifferentSubtitle; t++) {
@@ -88,6 +136,7 @@ public class ActivityMeeting extends AppCompatActivity {
         // init start fragment MeetingFragmentMeetingNow
         FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, referenceFragmentMeetingNow);
+        //fragmentTransaction.addToBackStack("now_meeting");
         fragmentTransaction.commit();
 
 
@@ -122,18 +171,17 @@ public class ActivityMeeting extends AppCompatActivity {
         /*intentLinkData = intent.getData();*/
         intentExtras = intent.getExtras();
 
-        //int tmpDbId = 0;
+        int tmpMeetingStatus = 0;
         //int tmpNumberinListView = 0;
         //Boolean tmpEvalNext = false;
 
         if (intentExtras != null) {
+
             // get data that comes with extras
-            //tmpDbId = intentExtras.getInt("db_id",0);
-            //tmpNumberinListView = intentExtras.getInt("arr_num",0);
-            //tmpEvalNext = intentExtras.getBoolean("eval_next");
+            tmpMeetingStatus = intentExtras.getInt("meet_status",0);
 
             // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"));
+            executeIntentCommand (intentExtras.getString("com"), tmpMeetingStatus);
         }
 
     }
@@ -142,7 +190,7 @@ public class ActivityMeeting extends AppCompatActivity {
 
 
     // execute the commands that comes from link or intend
-    public void executeIntentCommand (String command) {
+    public void executeIntentCommand (String command, int tmpMeetingStatus) {
 
         if (command.equals("change_meeting")) { // Show fragment for changing meeting date and time
 
@@ -176,6 +224,7 @@ public class ActivityMeeting extends AppCompatActivity {
             // replace fragment MeetingFragmentMeetingMake
             FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, referenceFragmentMeetingMake);
+            fragmentTransaction.addToBackStack("make_meeting");
             fragmentTransaction.commit();
 
             // set correct subtitle in toolbar in tab zero
@@ -188,12 +237,16 @@ public class ActivityMeeting extends AppCompatActivity {
 
             Log.d("Activity Meeting","now_meeting");
 
+            // set new meeting status
+            meetingStatus = tmpMeetingStatus;
 
             // replace fragment MeetingFragmentMeetingMake
             FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, referenceFragmentMeetingNow);
+            fragmentTransaction.addToBackStack("now_meeting");
             fragmentTransaction.commit();
 
+            //fragmentManagerActivityMeeting.popBackStack();
 
 
             // set correct subtitle in toolbar in tab zero

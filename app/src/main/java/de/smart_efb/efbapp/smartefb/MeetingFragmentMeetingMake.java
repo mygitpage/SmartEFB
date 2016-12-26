@@ -35,6 +35,9 @@ public class MeetingFragmentMeetingMake extends Fragment {
     // shared prefs for the settings
     SharedPreferences prefs;
 
+    // shared prefs for storing
+    SharedPreferences.Editor prefsEditor;
+
     // the current meeting date and time
     long currentMeetingDateAndTime;
 
@@ -55,6 +58,15 @@ public class MeetingFragmentMeetingMake extends Fragment {
 
     // result number of place (1 = Werder (Havel), 2 = Bad Belzig, 0 = no place selected)
     int resultNumberOfPlace = 0;
+
+    // prefs name for meeting place
+    static final String namePrefsMeetingPlace = "meetingPlace";
+
+    // prefs name for timezone array
+    static final String namePrefsArrayMeetingTimezoneArray = "meetingTimezone_";
+
+    // prefs name for meeting problem
+    static final String namePrefsMeetingProblem = "meetingProblem";
 
 
 
@@ -93,18 +105,14 @@ public class MeetingFragmentMeetingMake extends Fragment {
         // init the prefs
         prefs = fragmentMeetingMakeContext.getSharedPreferences("smartEfbSettings", fragmentMeetingMakeContext.MODE_PRIVATE);
 
+        // init prefs editor
+        prefsEditor = prefs.edit();
+
         // get the current meeting date and time
         currentMeetingDateAndTime = prefs.getLong("meetingDateAndTime", System.currentTimeMillis());
 
         // get meeting status
         meetingStatus = prefs.getInt("meetingStatus", 0);
-
-        // get meeting place
-        meetingStatus = prefs.getInt("meetingPlace", 0);
-
-
-
-
 
         // set onClickListener for checkboxes to choose timezone
         String tmpRessourceName ="";
@@ -126,10 +134,7 @@ public class MeetingFragmentMeetingMake extends Fragment {
             }
         }
 
-
-
-        // set onClickListener for radio button in radio group question 1-4
-        tmpRessourceName ="";
+        // set onClickListener for radio button select place
         RadioButton tmpRadioButtonPlaces;
         for (int countPlaces = 0; countPlaces < countNumberPlaces; countPlaces++) {
 
@@ -149,14 +154,9 @@ public class MeetingFragmentMeetingMake extends Fragment {
 
         }
 
-
-
-
     }
 
-
-
-
+    // show fragment ressources
     private void displayActualMeetingInformation () {
 
         String tmpSubtitle = "";
@@ -233,17 +233,46 @@ public class MeetingFragmentMeetingMake extends Fragment {
                             tmpErrorTextView.setVisibility(View.VISIBLE);
                         }
 
-
-
                     }
 
-
-
+                    // input error?
                     if (makeMeetingNoError) {
 
+                        // store checkboxes result in prefs
+                        for (int i=0; i<countNumberTimezones; i++) {
+                            prefsEditor.putBoolean(namePrefsArrayMeetingTimezoneArray+i,makeMeetingCheckBoxListenerArray[i]);
+                        }
+
+                        // store place in prefs
+                        prefsEditor.putInt(namePrefsMeetingPlace,resultNumberOfPlace);
+
+                        //store meeting problem
+                        prefsEditor.putString(namePrefsMeetingProblem, tmpTextInputFirstMeetingProblem);
+
+                        prefsEditor.commit();
+
+
+
+                        // TODO ->
+                        // Termin-ID erzeugen
+                        // Netzwerk status pruefen
+                        // Terminanfrage senden
+                        // Ergebnis anzeigen
+
+
+                        // meeting status -> send succesfull, waiting for response
+                        // store meeting status in prefs
+                        prefsEditor.putInt("meetingStatus",1);
+                        prefsEditor.commit();
+
+                        // Toast "Make first meeting send succesfull"
+                        Toast.makeText(fragmentMeetingMakeContext, fragmentMeetingMakeContext.getResources().getString(R.string.makeFirstMeetingSendSuccesfullToastText), Toast.LENGTH_SHORT).show();
+
+                        // send intent back to activity meeting
                         Intent intent = new Intent(fragmentMeetingMakeContext, ActivityMeeting.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("com", "now_meeting");
+                        intent.putExtra("meet_status", 1);
                         fragmentMeetingMakeContext.startActivity(intent);
 
                     }
@@ -257,8 +286,6 @@ public class MeetingFragmentMeetingMake extends Fragment {
 
                 }
             });
-
-
 
 
             // find abbort button "Zurueck zur Terminuebersicht"
@@ -278,18 +305,7 @@ public class MeetingFragmentMeetingMake extends Fragment {
             });
         }
 
-
-
-
-
-
-
-
-
     }
-
-
-
 
     //
     // onClickListener for checkboxes to choose timezone
@@ -321,9 +337,6 @@ public class MeetingFragmentMeetingMake extends Fragment {
         }
 
     }
-
-
-
 
 
     //
@@ -361,11 +374,5 @@ public class MeetingFragmentMeetingMake extends Fragment {
         }
 
     }
-
-
-
-
-
-
 
 }
