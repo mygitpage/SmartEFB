@@ -86,7 +86,7 @@ public class OurGoalsViewPagerAdapter extends FragmentStatePagerAdapter {
             case 2:
                 return fragJointlyGoalsOld;
             default:
-                return new OurArrangementFragmentNow();
+                return fragJointlyGoalsNow;
 
         }
 

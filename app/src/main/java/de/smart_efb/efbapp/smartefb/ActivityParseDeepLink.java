@@ -16,6 +16,7 @@ public class ActivityParseDeepLink extends Activity {
 
     public static final String OUR_ARRANGEMENT = "/ourarrangement";
     public static final String OUR_GOALS = "/ourgoals";
+    public static final String SETTINGS = "/settings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +46,14 @@ public class ActivityParseDeepLink extends Activity {
 
         // get data that comes with intent-link from URI
         tmpCommand = (deepLink.getQueryParameter("com"));
-        tmpDbId = Integer.parseInt(deepLink.getQueryParameter("db_id"));
-        tmpNumberinListView = Integer.parseInt(deepLink.getQueryParameter("arr_num"));
-        tmpEvalNext = Boolean.parseBoolean(deepLink.getQueryParameter("eval_next"));
+
 
         if (OUR_ARRANGEMENT.equals(path)) {
+
+            tmpDbId = Integer.parseInt(deepLink.getQueryParameter("db_id"));
+            tmpNumberinListView = Integer.parseInt(deepLink.getQueryParameter("arr_num"));
+            tmpEvalNext = Boolean.parseBoolean(deepLink.getQueryParameter("eval_next"));
+
             // Launch our arrangement
             Intent intent = new Intent(this, ActivityOurArrangement.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -60,6 +64,11 @@ public class ActivityParseDeepLink extends Activity {
             startActivity(intent);
 
         } else if (OUR_GOALS.equals(path)) {
+
+            tmpDbId = Integer.parseInt(deepLink.getQueryParameter("db_id"));
+            tmpNumberinListView = Integer.parseInt(deepLink.getQueryParameter("arr_num"));
+            tmpEvalNext = Boolean.parseBoolean(deepLink.getQueryParameter("eval_next"));
+
             // Launch our goals
             Intent intent = new Intent(this, ActivityOurGoals.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -69,7 +78,17 @@ public class ActivityParseDeepLink extends Activity {
             intent.putExtra("eval_next",tmpEvalNext);
             startActivity(intent);
 
-        } else {
+        } else if (SETTINGS.equals(path)) {
+            // Launch settings
+            Intent intent = new Intent(this, ActivitySettingsEfb.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra("com",tmpCommand);
+            intent.putExtra("db_id",tmpDbId);
+            intent.putExtra("arr_num",tmpNumberinListView);
+            intent.putExtra("eval_next",tmpEvalNext);
+            startActivity(intent);
+
+        }else {
             // Fall back to the main activity
             startActivity(new Intent(this, MainActivity.class));
         }

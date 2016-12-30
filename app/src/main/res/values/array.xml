@@ -217,7 +217,12 @@
     </string-array>
 
 
-
+    <!-- Meeting places name array -->
+    <string-array name="placesNameForMeetingArray">
+        <item>Kein Ort gewählt</item>
+        <item>Werder (Havel)</item>
+        <item>Bad Belzig</item>
+    </string-array>
 
 
 

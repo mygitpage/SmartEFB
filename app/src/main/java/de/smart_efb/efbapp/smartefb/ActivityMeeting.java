@@ -37,6 +37,9 @@ public class ActivityMeeting extends AppCompatActivity {
     // shared prefs for the settings
     SharedPreferences prefs;
 
+    // shared prefs for storing
+    SharedPreferences.Editor prefsEditor;
+
     // reference to fragement manager
     FragmentManager fragmentManagerActivityMeeting;
 
@@ -66,14 +69,26 @@ public class ActivityMeeting extends AppCompatActivity {
     // prefs name for meeting problem
     static final String namePrefsMeetingProblem = "meetingProblem";
 
+    // prefs name for meeting time and date
+    static final String namePrefsMeetingTimeAndDate = "meetingDateAndTime";
+
     // meeting status
     int meetingStatus = 0;
 
     // meeting place
     int meetingPlace = 0;
 
+    // name for places array (2 places)
+    private String[] placesNameForMeetingArray = new String [4];
+
+
     // meeting problem
     String meetingProblem = "";
+
+    // the current meeting date and time
+    long currentMeetingDateAndTime;
+
+
 
 
 
@@ -103,6 +118,9 @@ public class ActivityMeeting extends AppCompatActivity {
         // init the prefs
         prefs = getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
 
+        // init prefs editor
+        prefsEditor = prefs.edit();
+
         // get meeting status
         meetingStatus = prefs.getInt(namePrefsMeetingStatus, 0);
 
@@ -112,11 +130,16 @@ public class ActivityMeeting extends AppCompatActivity {
         // get meeting problem
         meetingProblem = prefs.getString(namePrefsMeetingProblem, "");
 
+        // get the current meeting date and time
+        currentMeetingDateAndTime = prefs.getLong(namePrefsMeetingTimeAndDate, System.currentTimeMillis());
+
         //load timezone array for meeting
         for (int i=0; i<countNumberTimezones; i++) {
             makeMeetingCheckBoxListenerArray[i] = prefs.getBoolean(namePrefsArrayMeetingTimezoneArray+i, false);
         }
 
+        // init array for places name
+        placesNameForMeetingArray = getResources().getStringArray(R.array.placesNameForMeetingArray);
 
 
         // init array for subtitles
@@ -133,13 +156,17 @@ public class ActivityMeeting extends AppCompatActivity {
         referenceFragmentMeetingMake = new MeetingFragmentMeetingMake();
 
 
+        Log.d("MEETING","C0:"+fragmentManagerActivityMeeting.getBackStackEntryCount());
+
+
         // init start fragment MeetingFragmentMeetingNow
         FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, referenceFragmentMeetingNow);
+        fragmentTransaction.add(R.id.fragment_container, referenceFragmentMeetingNow, "now_meeting");
         //fragmentTransaction.addToBackStack("now_meeting");
         fragmentTransaction.commit();
 
 
+        Log.d("MEETING","C1:"+fragmentManagerActivityMeeting.getBackStackEntryCount());
 
 
 
@@ -171,17 +198,17 @@ public class ActivityMeeting extends AppCompatActivity {
         /*intentLinkData = intent.getData();*/
         intentExtras = intent.getExtras();
 
-        int tmpMeetingStatus = 0;
+        Boolean tmpPopBackStack = false;
         //int tmpNumberinListView = 0;
         //Boolean tmpEvalNext = false;
 
         if (intentExtras != null) {
 
             // get data that comes with extras
-            tmpMeetingStatus = intentExtras.getInt("meet_status",0);
+            tmpPopBackStack = intentExtras.getBoolean("pop_stack",false);
 
             // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"), tmpMeetingStatus);
+            executeIntentCommand (intentExtras.getString("com"), tmpPopBackStack);
         }
 
     }
@@ -190,21 +217,11 @@ public class ActivityMeeting extends AppCompatActivity {
 
 
     // execute the commands that comes from link or intend
-    public void executeIntentCommand (String command, int tmpMeetingStatus) {
+    public void executeIntentCommand (String command, Boolean tmpPopBackStack) {
 
         if (command.equals("change_meeting")) { // Show fragment for changing meeting date and time
 
-
-
             Log.d("Activity Meeting","change_meeting");
-
-            // set command show variable
-            //showCommandFragmentTabZero = "show_comment_for_jointly_goal";
-
-
-
-            // set correct subtitle in toolbar in tab zero
-            //toolbarOurGoals.setSubtitle(arraySubTitleText[4]);
 
 
         } else if (command.equals("find_meeting")) { // Show fragment for finding meeting date and time
@@ -212,14 +229,8 @@ public class ActivityMeeting extends AppCompatActivity {
 
             Log.d("Activity Meeting","find_meeting");
 
-            // set correct subtitle in toolbar in tab zero
-            //toolbarOurGoals.setSubtitle(arraySubTitleText[3]);
-
 
         } else if (command.equals("make_meeting")) { // Show fragment for make first meeting date and time (make_meeting)
-
-
-            Log.d("Activity Meeting","make_meeting");
 
             // replace fragment MeetingFragmentMeetingMake
             FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
@@ -227,18 +238,13 @@ public class ActivityMeeting extends AppCompatActivity {
             fragmentTransaction.addToBackStack("make_meeting");
             fragmentTransaction.commit();
 
-            // set correct subtitle in toolbar in tab zero
-            //toolbarOurGoals.setSubtitle(arraySubTitleText[3]);
-
-
         }
         else {
 
+            if (tmpPopBackStack) {
+                fragmentManagerActivityMeeting.popBackStack("make_meeting", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }
 
-            Log.d("Activity Meeting","now_meeting");
-
-            // set new meeting status
-            meetingStatus = tmpMeetingStatus;
 
             // replace fragment MeetingFragmentMeetingMake
             FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
@@ -246,11 +252,9 @@ public class ActivityMeeting extends AppCompatActivity {
             fragmentTransaction.addToBackStack("now_meeting");
             fragmentTransaction.commit();
 
-            //fragmentManagerActivityMeeting.popBackStack();
-
-
-            // set correct subtitle in toolbar in tab zero
-            //toolbarOurGoals.setSubtitle(arraySubTitleText[5]);
+            if (tmpPopBackStack) {
+                fragmentManagerActivityMeeting.popBackStack("now_meeting", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }
 
 
         }
@@ -286,17 +290,119 @@ public class ActivityMeeting extends AppCompatActivity {
         toolbarMeeting.setSubtitle(subtitleText);
 
     }
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+    // getter for timezone suggestions array
+    public  Long getMeetingTimeAndDate () {
+
+        return currentMeetingDateAndTime;
+    }
+
+
+    // getter for timezone suggestions array
+    public Boolean[] getMeetingTimezoneSuggestions () {
+
+        Log.d("ActivityMeeting","getMeetingTimezoneArray");
+
+        if (makeMeetingCheckBoxListenerArray[0] == true) {
+            Log.d("ArrayElement 0 ","TRUE");
+        }
+        else {
+            Log.d("ArrayElement 0 ","FALSE");
+        }
+
+
+        return makeMeetingCheckBoxListenerArray;
+    }
+
+
+    // setter for timezone suggestions array
+    public void setMeetingTimezoneSuggestions (Boolean [] tmpTimezoneSuggestion) {
+
+        // store timezone suggestions result in prefs
+        for (int i=0; i<countNumberTimezones; i++) {
+            prefsEditor.putBoolean(namePrefsArrayMeetingTimezoneArray+i,tmpTimezoneSuggestion[i]);
+            makeMeetingCheckBoxListenerArray[i] = tmpTimezoneSuggestion[i];
+        }
+
+        prefsEditor.commit();
+
+    }
+
+
+
+    // getter for meeting status
+    public int getMeetingStatus () {
+
+        return meetingStatus;
+
+    }
+
+    // setter for meeting status
+    public void setMeetingStatus (int tmpMeetingStatus) {
+
+        meetingStatus = tmpMeetingStatus;
+
+        prefsEditor.putInt(namePrefsMeetingStatus,tmpMeetingStatus);
+
+        prefsEditor.commit();
+
+    }
+
+
+
+    // getter for meeting place
+    public int getMeetingPlace () {
+
+        return meetingPlace;
+
+    }
+
+
+    // getter for meeting place name
+    public String getMeetingPlaceName (int tmpMeetingPlace) {
+
+        return placesNameForMeetingArray[tmpMeetingPlace];
+
+    }
+
+
+
+
+    // setter for meeting place
+    public void setMeetingPlace (int tmpMeetingPlace) {
+
+        meetingStatus = tmpMeetingPlace;
+
+        prefsEditor.putInt(namePrefsMeetingPlace,tmpMeetingPlace);
+
+        prefsEditor.commit();
+
+    }
+
+
+
+
+
+    // getter for meeting problem
+    public String getMeetingProblem () {
+
+        return meetingProblem;
+
+    }
+
+    // setter for meeting problem
+    public void setMeetingProblem (String tmpMeetingProblem) {
+
+        meetingProblem = tmpMeetingProblem;
+
+        prefsEditor.putString(namePrefsMeetingProblem,tmpMeetingProblem);
+
+        prefsEditor.commit();
+
+    }
     
     
 
@@ -307,8 +413,21 @@ public class ActivityMeeting extends AppCompatActivity {
 
 
             case android.R.id.home:
-                onBackPressed();
-                return true;
+
+                int count = fragmentManagerActivityMeeting.getBackStackEntryCount();
+
+                if (count == 0) {
+                    super.onBackPressed();
+                    return true;
+                    //additional code
+                } else {
+                    fragmentManagerActivityMeeting.popBackStack();
+                }
+
+
+
+                //onBackPressed();
+
             default:
                 return super.onOptionsItemSelected(item);
         }

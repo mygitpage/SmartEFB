@@ -377,6 +377,106 @@
 
         <!-- Ende Einstellungen Ziele -->
 
+        <View
+            android:id="@+id/separateLine5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/makeAndebetableGoal"
+            android:layout_margin="20dp"
+            android:background="@android:color/darker_gray"/>
+
+
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/settingsChooseMeetingStatus"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:gravity="center"
+            android:layout_below="@+id/separateLine5"
+            android:background="@color/bg_btn_join">
+
+            <RadioButton android:id="@+id/settingMeetingStatus_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meeting Status 0 (kein Termin)"
+                android:textColor="@color/text_color_white"
+                android:textSize="14dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/styleMakeFirstMeeting"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/settingMeetingStatus_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meeting Status 1 (Terminanfrage)"
+                android:textColor="@color/text_color_white"
+                android:textSize="14dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/styleMakeFirstMeeting"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/settingMeetingStatus_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meeting Status 2 (Termin bestätigt)"
+                android:textColor="@color/text_color_white"
+                android:textSize="14dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/styleMakeFirstMeeting"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/settingMeetingStatus_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meeting Status 3 (Termin nicht bestätigbar!)"
+                android:textColor="@color/text_color_white"
+                android:textSize="14dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/styleMakeFirstMeeting"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/settingMeetingStatus_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meeting Status 4 (Noch nicht vergeben)"
+                android:textColor="@color/text_color_white"
+                android:textSize="14dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/styleMakeFirstMeeting"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/settingMeetingStatus_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meeting Status 5 (Noch nicht vergeben)"
+                android:textColor="@color/text_color_white"
+                android:textSize="14dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/styleMakeFirstMeeting"
+                android:button="@null"
+                android:layout_weight="0.2" />
+            <RadioButton android:id="@+id/settingMeetingStatus_7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meeting Status 6 (Noch nicht vergeben)"
+                android:textColor="@color/text_color_white"
+                android:textSize="14dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="?android:attr/listChoiceIndicatorSingle"
+                android:theme="@style/styleMakeFirstMeeting"
+                android:button="@null"
+                android:layout_weight="0.2" />
+
+
+        </RadioGroup>
 
 
 

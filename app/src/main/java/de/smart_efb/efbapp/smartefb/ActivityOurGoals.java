@@ -128,6 +128,9 @@ public class ActivityOurGoals extends AppCompatActivity {
                     case 0: // title for tab zero
                         switch (showCommandFragmentTabZero) {
                             case "show_jointly_goals_now":
+
+                                Log.d("OurGoals","Sub-Selected:"+arraySubTitleText[0]);
+
                                 tmpSubtitleText = arraySubTitleText[0];
                                 break;
                             case "comment_an_jointly_goal":
@@ -385,6 +388,9 @@ public class ActivityOurGoals extends AppCompatActivity {
             ourGoalsViewPagerAdapter.notifyDataSetChanged();
 
             // set correct subtitle in toolbar in tab zero
+
+            Log.d("OurGoals","Sub-Else:"+arraySubTitleText[0]);
+
             toolbarOurGoals.setSubtitle(arraySubTitleText[0]);
 
         }
@@ -714,6 +720,9 @@ public class ActivityOurGoals extends AppCompatActivity {
                 break;
             case "jointlyNow":
                 arraySubTitleText[0] = subtitleText;
+
+                Log.d("OurGoals","Sub:"+arraySubTitleText[0]);
+
                 break;
             case "jointlyNowComment":
                 arraySubTitleText[3] = subtitleText;
@@ -736,6 +745,10 @@ public class ActivityOurGoals extends AppCompatActivity {
         // first time -> set initial subtitle
         if (setSubtitleFirstTime) {
             toolbarOurGoals.setSubtitle(subtitleText);
+
+            Log.d("OurGoals","SubOnce:"+subtitleText);
+
+
             setSubtitleFirstTime = false;
         }
 

@@ -3,9 +3,13 @@ package de.smart_efb.efbapp.smartefb;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +48,7 @@ public class MeetingFragmentMeetingMake extends Fragment {
     // meeting status
     int meetingStatus;
 
-    // number of checkboxes for choosing timezones
+    // number of checkboxes for choosing timezones (look fragment meetingNow)
     static final int countNumberTimezones = 15;
 
     // boolean status array checkbox
@@ -58,16 +62,6 @@ public class MeetingFragmentMeetingMake extends Fragment {
 
     // result number of place (1 = Werder (Havel), 2 = Bad Belzig, 0 = no place selected)
     int resultNumberOfPlace = 0;
-
-    // prefs name for meeting place
-    static final String namePrefsMeetingPlace = "meetingPlace";
-
-    // prefs name for timezone array
-    static final String namePrefsArrayMeetingTimezoneArray = "meetingTimezone_";
-
-    // prefs name for meeting problem
-    static final String namePrefsMeetingProblem = "meetingProblem";
-
 
 
 
@@ -108,11 +102,12 @@ public class MeetingFragmentMeetingMake extends Fragment {
         // init prefs editor
         prefsEditor = prefs.edit();
 
-        // get the current meeting date and time
-        currentMeetingDateAndTime = prefs.getLong("meetingDateAndTime", System.currentTimeMillis());
+        // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get current time and date
+        currentMeetingDateAndTime = ((ActivityMeeting)getActivity()).getMeetingTimeAndDate();
 
-        // get meeting status
-        meetingStatus = prefs.getInt("meetingStatus", 0);
+        // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get meeting status
+        meetingStatus = ((ActivityMeeting)getActivity()).getMeetingStatus();
+
 
         // set onClickListener for checkboxes to choose timezone
         String tmpRessourceName ="";
@@ -150,8 +145,6 @@ public class MeetingFragmentMeetingMake extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
 
     }
@@ -186,6 +179,15 @@ public class MeetingFragmentMeetingMake extends Fragment {
 
         // status make first meeting
         if (btnVisibilitySendMakeFirstMeeting) {
+
+            // set movement methode for telephone link in intro text
+            TextView tmpShowMeetingExplainText = (TextView) viewFragmentMeetingMake.findViewById(R.id.makeFirstMeetingExplainText);
+            tmpShowMeetingExplainText.setMovementMethod(LinkMovementMethod.getInstance());
+
+            // set movement methode for telephone link in info text
+            TextView tmpShowMeetingProcedureText = (TextView) viewFragmentMeetingMake.findViewById(R.id.infoMakeMeetingProcedure);
+            tmpShowMeetingProcedureText.setMovementMethod(LinkMovementMethod.getInstance());
+
             // find send button "Anfrage senden"
             tmpButton = (Button) viewFragmentMeetingMake.findViewById(R.id.buttonSendSuggestionFirstMeeting);
 
@@ -238,18 +240,21 @@ public class MeetingFragmentMeetingMake extends Fragment {
                     // input error?
                     if (makeMeetingNoError) {
 
-                        // store checkboxes result in prefs
-                        for (int i=0; i<countNumberTimezones; i++) {
-                            prefsEditor.putBoolean(namePrefsArrayMeetingTimezoneArray+i,makeMeetingCheckBoxListenerArray[i]);
-                        }
 
-                        // store place in prefs
-                        prefsEditor.putInt(namePrefsMeetingPlace,resultNumberOfPlace);
+                        // call setter-methode setMeetingTimezoneSuggestions in ActivityMeeting to set timezone suggestion results
+                        ((ActivityMeeting)getActivity()).setMeetingTimezoneSuggestions(makeMeetingCheckBoxListenerArray);
 
-                        //store meeting problem
-                        prefsEditor.putString(namePrefsMeetingProblem, tmpTextInputFirstMeetingProblem);
 
-                        prefsEditor.commit();
+                        // call setter-methode setMeetingPlace in ActivityMeeting to set place
+                        ((ActivityMeeting)getActivity()).setMeetingPlace(resultNumberOfPlace);
+
+                        // call setter-methode setMeetingProblem in ActivityMeeting to problem
+                        ((ActivityMeeting)getActivity()).setMeetingProblem(tmpTextInputFirstMeetingProblem);
+
+                        // call setter-methode setMeetingStatus in ActivityMeeting to Meeting suggested
+                        ((ActivityMeeting)getActivity()).setMeetingStatus(1);
+
+
 
 
 
@@ -260,10 +265,7 @@ public class MeetingFragmentMeetingMake extends Fragment {
                         // Ergebnis anzeigen
 
 
-                        // meeting status -> send succesfull, waiting for response
-                        // store meeting status in prefs
-                        prefsEditor.putInt("meetingStatus",1);
-                        prefsEditor.commit();
+
 
                         // Toast "Make first meeting send succesfull"
                         Toast.makeText(fragmentMeetingMakeContext, fragmentMeetingMakeContext.getResources().getString(R.string.makeFirstMeetingSendSuccesfullToastText), Toast.LENGTH_SHORT).show();
@@ -272,7 +274,7 @@ public class MeetingFragmentMeetingMake extends Fragment {
                         Intent intent = new Intent(fragmentMeetingMakeContext, ActivityMeeting.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("com", "now_meeting");
-                        intent.putExtra("meet_status", 1);
+                        intent.putExtra("pop_stack", true);
                         fragmentMeetingMakeContext.startActivity(intent);
 
                     }
@@ -299,6 +301,7 @@ public class MeetingFragmentMeetingMake extends Fragment {
                     Intent intent = new Intent(fragmentMeetingMakeContext, ActivityMeeting.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("com","now_meeting");
+                    intent.putExtra("pop_stack", true);
                     fragmentMeetingMakeContext.startActivity(intent);
 
                 }

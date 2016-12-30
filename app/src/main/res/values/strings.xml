@@ -440,21 +440,33 @@
 
 
 
+        <!-- fragment now meeting -->
+            <string name="btnMakeFirstMeetingText">Ersttermin vereinbaren</string>
+            <string name="btnFindMeetingDateText">Gemeinsamen Termin finden</string>
+            <string name="btnChangeMeetingDateText">Termin verschieben</string>
+            <string name="nextMeetingIntroTextNoMeeting">Sie haben noch keinen Termin vereinbart.</string>
+            <string name="nextMeetingIntroTextFirstMeetingTownWerder">Sie haben Ihren ersten Termin in unserer Beratungsstelle Werder (Havel) am</string>
+            <string name="nextMeetingIntroTextFirstMeetingTownBadBelzig">Sie haben Ihren ersten Termin in unserer Beratungsstelle Bad Belzig am</string>
+            <string name="nextMeetingIntroTextFirstMeetingRequested">Sie haben eine Termianfrage an unsere Beratungsstellen gestellt. Sie erhalten in kürze eine Antwort mit einem Terminvorschlag.</string>
 
-        <string name="btnMakeFirstMeetingText">Ersttermin vereinbaren</string>
-        <string name="btnFindMeetingDateText">Gemeinsamen Termin finden</string>
-        <string name="btnChangeMeetingDateText">Termin verschieben</string>
-        <string name="nextMeetingIntroTextNoMeeting">Sie haben noch keinen Termin vereinbart.</string>
-        <string name="nextMeetingIntroTextFirstMeetingTownWerder">Sie haben Ihren ersten Termin in unserer Beratungsstelle Werder (Havel) am</string>
-        <string name="nextMeetingIntroTextFirstMeetingTownBadBelzig">Sie haben Ihren ersten Termin in unserer Beratungsstelle Bad Belzig am</string>
+            <string name="showExplainTextForMeetingMakeText">Sie können mit uns einen Ersttermin über diese App vereinbaren. Dazu klicken Sie bitte auf den unten stehenden Button "Ersttermin vereinbaren". Sie haben auch die Möglichkeit uns <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">telefonisch</a> anzurufen und so einen Termin zu vereinbaren.</string>
+
+
+
+
+            <string name="showTimezoneSuggestionExplainText">Folgende Zeitbereiche wurden von Ihnen vorgeschlagen</string>
+            <string name="showPlaceSuggestionExplainText">Als Beratungsort wurde von Ihnen %s vorgeschlagen.</string>
+
+        <!-- fragment now meeting -->
+
 
         <!-- fragment make meeting -->
             <string name="btnSendSuggestionFirstMeeting">Anfrage senden</string>
             <string name="btnAbbortSuggestionFirstMeeting">Zurück zur Terminübersicht</string>
 
             <string name="makeFirstMeetingIntroText">Ersttermin vereinbaren</string>
-            <string name="makeFirstMeetingExplainText">Bitte wählen Sie einen Zeitbereich und Beratungsort, an dem Ihr Ersttermin stattfinden soll. Bitte wählen Sie mindestens drei Zeitbereiche. Danke.</string>
-            <string name="infoMakeMeetingProcedureText">Wir werden versuchen Ihnen schnellstmöglich einen Termin in Ihrem gewünschten Zeitbereich auf Ihr Smartphone zu schicken. Dies kann allerdings bis zu zwei Tagen dauern. Sie haben auch die Möglichkeit uns telefonnisch zu erreichen.</string>
+            <string name="makeFirstMeetingExplainText">Bitte wählen Sie einen Zeitbereich und Beratungsort, an dem Ihr Ersttermin stattfinden soll. Bitte wählen Sie mindestens drei Zeitbereiche. Die Zeitbereich beziehen sich auf die nächste Woche. Sie haben auch die Möglichkeit uns <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">telefonisch</a> zu erreichen.</string>
+            <string name="infoMakeMeetingProcedureText">Wir werden versuchen Ihnen schnellstmöglich einen Termin in Ihrem gewünschten Zeitbereich auf Ihr Smartphone zu schicken. Dies kann allerdings bis zu zwei Tagen dauern. Sie haben auch die Möglichkeit uns <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">telefonisch</a> zu erreichen.</string>
             <string name="makeFirstMeetingChoosePlaceIntroText">Bitte wählen Sie den Ort Ihrer ersten Beratung</string>
             <string name="makeFirstMeetingProblemIntroText">Bitte geben Sie uns einen Hinweis auf Ihr Anliegen (beispielsweise Trennung, Erziehungsschwierigkeiten, Lese-Rechtschreib-Diagnostik, etc.)</string>
 
@@ -491,6 +503,7 @@
         <!-- Subtitle under Title Meeting -->
             <string name="meetingSubtitleNoFirstMeeting">Keinen Termin vereinbart</string>
             <string name="meetingSubtitleMakeFirstMeeting">Ersttermin vereinbaren</string>
+            <string name="meetingSubtitleFirstMeetingRequested">Erstterminanfrage läuft</string>
 
 
 

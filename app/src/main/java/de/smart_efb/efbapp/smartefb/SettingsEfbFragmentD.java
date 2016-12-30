@@ -188,10 +188,12 @@ public class SettingsEfbFragmentD extends Fragment {
             0 -> Noch keinen Termin vereinbart
             1 -> Termin angefragt
             2 -> Termin bestaetigt
+            3 -> Termin nicht bestaetigbar, bitte anrufen!
 
          */
-        prefsEditor.putInt("meetingStatus", 0); //
-
+        //prefsEditor.putInt("meetingStatus", 0); //
+        // get meeting status
+        int meetingStatus = prefs.getInt("meetingStatus", 0);
 
 
 
@@ -784,6 +786,37 @@ public class SettingsEfbFragmentD extends Fragment {
 
 
 
+        //
+        //
+        // Meeting Status
+        //
+        //
+        // set onClickListener for radio button meeting status
+        RadioButton tmpRadioButtonStatus;
+        for (int countMeetingStatus = 0; countMeetingStatus < 7; countMeetingStatus++) {
+
+
+            tmpRessourceName ="settingMeetingStatus_" + (countMeetingStatus+1);
+            try {
+                int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", fragmentContextD.getPackageName());
+
+                tmpRadioButtonStatus = (RadioButton) viewFragmentD.findViewById(resourceId);
+
+                if (meetingStatus == countMeetingStatus) {
+                    tmpRadioButtonStatus.setChecked(true);
+                }
+
+                tmpRadioButtonStatus.setOnClickListener(new meetingStatusRadioButtonListener(countMeetingStatus));
+
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
     }
 
 
@@ -951,5 +984,67 @@ public class SettingsEfbFragmentD extends Fragment {
 
         }
     }
+
+
+
+    //
+    // onClickListener for radio buttons meeting status
+    //
+    public class meetingStatusRadioButtonListener implements View.OnClickListener {
+
+        int radioButtonNumber;
+
+        public meetingStatusRadioButtonListener (int radioButtonNr) {
+
+            this.radioButtonNumber = radioButtonNr;
+
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            int status = 0;
+
+            // check button number and get result
+            switch (radioButtonNumber) {
+
+                case 0: // kein Termin
+                    status = 0;
+                    break;
+                case 1: // terminanfrage
+                    status = 1;
+                    break;
+                case 2: // termin bestaetigt
+                    status = 2;
+                    break;
+                case 3: // termin nicht betaetigbar bitte anrufen
+                    status = 3;
+                    break;
+                case 4:
+                    status = 4;
+                    break;
+                case 5:
+                    status = 5;
+                    break;
+                case 6:
+                    status = 6;
+                    break;
+                default:
+                    status = 0;
+                    break;
+            }
+
+            // set meeting status in prefs
+            prefsEditor.putInt("meetingStatus", status); //
+            prefsEditor.commit();
+
+
+        }
+
+    }
+
+
+
+
 
 }

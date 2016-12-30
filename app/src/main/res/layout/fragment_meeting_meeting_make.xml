@@ -36,6 +36,7 @@
             android:paddingLeft="10dp"
             android:paddingBottom="15dp"
             android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"/>
 
 
@@ -53,7 +54,7 @@
         <android.support.v7.widget.GridLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:grid="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/choice_grid"
+            android:id="@+id/makeMeetingTimezoneSuggestionGrid"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -419,14 +420,6 @@
 
         </LinearLayout>
 
-
-
-
-
-
-
-
-
         <TextView
             android:id="@+id/infoMakeMeetingProcedure"
             android:layout_width="wrap_content"
@@ -434,6 +427,7 @@
             android:text="@string/infoMakeMeetingProcedureText"
             android:textSize="14dp"
             android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:paddingLeft="10dp"
             android:paddingTop="15dp"/>
