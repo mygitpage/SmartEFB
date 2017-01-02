@@ -180,8 +180,7 @@ public class SettingsEfbFragmentD extends Fragment {
             2 -> Bad Belzig
 
          */
-        prefsEditor.putInt("meetingPlace", 0);
-
+        //prefsEditor.putInt("meetingPlace", 0);
 
         // status of the meeting
         /*

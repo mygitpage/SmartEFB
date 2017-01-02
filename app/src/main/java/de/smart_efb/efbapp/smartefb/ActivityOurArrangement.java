@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -96,6 +97,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +120,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
         //find tablayout and set gravity
         tabLayoutOurArrangement = (TabLayout) findViewById(R.id.tabLayoutOurArrangement);
         tabLayoutOurArrangement.setTabGravity(TabLayout.GRAVITY_FILL);
+
+
+
+
 
         // and set tablayout with viewpager
         tabLayoutOurArrangement.setupWithViewPager(viewPagerOurArrangement);
@@ -816,7 +823,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         }
 
         // first time -> set initial subtitle
-        if (setSubtitleFirstTime) {
+        if (setSubtitleFirstTime && subtitleChoose.equals("now")) {
             toolbar.setSubtitle(subtitleText);
             setSubtitleFirstTime = false;
         }

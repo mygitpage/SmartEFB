@@ -720,9 +720,6 @@ public class ActivityOurGoals extends AppCompatActivity {
                 break;
             case "jointlyNow":
                 arraySubTitleText[0] = subtitleText;
-
-                Log.d("OurGoals","Sub:"+arraySubTitleText[0]);
-
                 break;
             case "jointlyNowComment":
                 arraySubTitleText[3] = subtitleText;
@@ -743,12 +740,8 @@ public class ActivityOurGoals extends AppCompatActivity {
         }
 
         // first time -> set initial subtitle
-        if (setSubtitleFirstTime) {
+        if (setSubtitleFirstTime && subtitleChoose.equals("jointlyNow") ) {
             toolbarOurGoals.setSubtitle(subtitleText);
-
-            Log.d("OurGoals","SubOnce:"+subtitleText);
-
-
             setSubtitleFirstTime = false;
         }
 

@@ -30,6 +30,19 @@
 
 
         <TextView
+            android:id="@+id/nextMeetingDateAndTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="22dp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:visibility="gone"/>
+
+
+        <TextView
             android:id="@+id/showExplainTextForMeetingMake"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -332,18 +345,6 @@
             android:textColor="@color/text_color"
             android:gravity="left"
             android:visibility="gone"/>
-
-
-
-        <TextView
-            android:id="@+id/nextMeetingDateAndTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/text_color"
-            android:gravity="left"
-            android:visibility="gone"
-            android:textStyle="bold"/>
 
 
         <Button

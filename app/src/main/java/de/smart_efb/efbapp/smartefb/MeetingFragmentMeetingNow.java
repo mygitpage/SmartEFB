@@ -50,7 +50,6 @@ public class MeetingFragmentMeetingNow extends Fragment {
     // meeting status
     int meetingStatus;
 
-
     // meeting status
     int meetingPlace;
 
@@ -121,6 +120,7 @@ public class MeetingFragmentMeetingNow extends Fragment {
         Boolean btnVisibilitySendFindMeetingDate = false;
         Boolean btnVisibilitySendChangeMeetingDate = false;
         Boolean showTimezoneAndPlaceSuggestion = false;
+        Boolean showTimeAndDateConfirmed = false;
 
 
         switch (meetingStatus) {
@@ -136,33 +136,38 @@ public class MeetingFragmentMeetingNow extends Fragment {
 
             case 1: // first meeting requested
                     txtNextMeetingIntro  = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingRequested);
-                    btnVisibilitySendMakeFirstMeeting = false;
 
                     showTimezoneAndPlaceSuggestion = true;
+                    btnVisibilitySendChangeMeetingDate = true;
 
                     tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFirstMeetingRequested", "string", fragmentMeetingNowContext.getPackageName()));
                     tmpSubtitleOrder = "firstMeetingRequested";
-                    //tmpSubtitle = String.format(tmpSubtitle, jointlyGoalNumberInListView);
-
                     break;
+
+            case 2: // first meeting confirmed
+
+                if (meetingPlace == 1) { // meeting is in Werder (Havel)
+                    txtNextMeetingIntro = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingConfirmedTownWerder);
+                }
+                else if (meetingPlace == 2) { // meeting is in Bad Belzig
+                    txtNextMeetingIntro = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingConfirmedTownBadBelzig);
+                }
+                else {
+                    txtNextMeetingIntro = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingConfirmedTownNotSelected);
+                }
+
+
+                showTimeAndDateConfirmed = true;
+                btnVisibilitySendChangeMeetingDate = true;
+
+                tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFirstMeetingConfirmed", "string", fragmentMeetingNowContext.getPackageName()));
+                tmpSubtitleOrder = "firstMeetingConfirmed";
+                break;
 
         }
 
-        //
-        //
-        //
-        // zu testzwecken
-        btnVisibilitySendFindMeetingDate = true;
-        btnVisibilitySendChangeMeetingDate = true;
-        // btnVisibilitySendMakeFirstMeeting = true;
-        //
-        //
-        //
-
         // Set correct subtitle in Activity Meeting
         ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, tmpSubtitleOrder);
-
-
 
         // show meeting intro text
         TextView textViewNextMeetingIntroText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingIntroText);
@@ -219,6 +224,42 @@ public class MeetingFragmentMeetingNow extends Fragment {
             tmpShowPlaceSuggestionExplainText.setVisibility(View.VISIBLE);
 
         }
+
+
+
+
+
+        // meeting status 2 -> termin vorschlag eingegangen
+        if (showTimeAndDateConfirmed) {
+
+            // show timezone suggestion intro text and set visiblity GONE
+            TextView tmpShowTimezoneSuggestionExplainText = (TextView) viewFragmentMeetingNow.findViewById(R.id.showTimezoneSuggestionExplainText);
+            tmpShowTimezoneSuggestionExplainText.setVisibility(View.GONE);
+
+            // find gridView for timezone suggestion and set GONE
+            GridLayout tmpGridLayoutTimezoneSuggestion = (GridLayout) viewFragmentMeetingNow.findViewById(R.id.showMeetingTimezoneSuggestionGrid);
+            tmpGridLayoutTimezoneSuggestion.setVisibility(View.GONE);
+
+            // find place suggestion intro text and set GONE
+            TextView tmpShowPlaceSuggestionExplainText = (TextView) viewFragmentMeetingNow.findViewById(R.id.showPlaceSuggestionExplainText);
+            tmpShowPlaceSuggestionExplainText.setVisibility(View.GONE);
+
+
+            // show date and time text and set visible
+            TextView tmpShowDateAndTimeText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingDateAndTime);
+            tmpShowDateAndTimeText.setVisibility(View.VISIBLE);
+            String tmpDate = EfbHelperClass.timestampToDateFormat(currentMeetingDateAndTime, "dd.MM.yyyy");
+            tmpShowDateAndTimeText.setText(tmpDate);
+
+        }
+
+
+
+
+
+
+
+
 
 
         // set visibility of SendMakeFirstMeeting button to visible

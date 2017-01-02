@@ -443,10 +443,11 @@
         <!-- fragment now meeting -->
             <string name="btnMakeFirstMeetingText">Ersttermin vereinbaren</string>
             <string name="btnFindMeetingDateText">Gemeinsamen Termin finden</string>
-            <string name="btnChangeMeetingDateText">Termin verschieben</string>
+            <string name="btnChangeMeetingDateText">Termin verschieben/absagen</string>
             <string name="nextMeetingIntroTextNoMeeting">Sie haben noch keinen Termin vereinbart.</string>
-            <string name="nextMeetingIntroTextFirstMeetingTownWerder">Sie haben Ihren ersten Termin in unserer Beratungsstelle Werder (Havel) am</string>
-            <string name="nextMeetingIntroTextFirstMeetingTownBadBelzig">Sie haben Ihren ersten Termin in unserer Beratungsstelle Bad Belzig am</string>
+            <string name="nextMeetingIntroTextFirstMeetingConfirmedTownWerder">Wir können Ihnen in unserer Beratungsstelle in Werder (Havel) folgenden Termin anbieten</string>
+            <string name="nextMeetingIntroTextFirstMeetingConfirmedTownBadBelzig">Wir können Ihnen in unserer Beratungsstelle in Bad Belzig folgenden Termin anbieten</string>
+            <string name="nextMeetingIntroTextFirstMeetingConfirmedTownNotSelected">Wir können Ihnen folgenden Termin anbieten. Leider wurde keine Beratungsstelle gewählt</string>
             <string name="nextMeetingIntroTextFirstMeetingRequested">Sie haben eine Termianfrage an unsere Beratungsstellen gestellt. Sie erhalten in kürze eine Antwort mit einem Terminvorschlag.</string>
 
             <string name="showExplainTextForMeetingMakeText">Sie können mit uns einen Ersttermin über diese App vereinbaren. Dazu klicken Sie bitte auf den unten stehenden Button "Ersttermin vereinbaren". Sie haben auch die Möglichkeit uns <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">telefonisch</a> anzurufen und so einen Termin zu vereinbaren.</string>
@@ -504,6 +505,7 @@
             <string name="meetingSubtitleNoFirstMeeting">Keinen Termin vereinbart</string>
             <string name="meetingSubtitleMakeFirstMeeting">Ersttermin vereinbaren</string>
             <string name="meetingSubtitleFirstMeetingRequested">Erstterminanfrage läuft</string>
+            <string name="meetingSubtitleFirstMeetingConfirmed">Erstterminanfrage Terminvorschlag</string>
 
 
 
