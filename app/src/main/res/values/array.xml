@@ -219,9 +219,9 @@
 
     <!-- Meeting places name array -->
     <string-array name="placesNameForMeetingArray">
-        <item>Kein Ort gewählt</item>
-        <item>Werder (Havel)</item>
-        <item>Bad Belzig</item>
+        <item>@string/firstMeetingPlaceNoPlaceText</item>
+        <item>@string/firstMeetingPlaceWerderText</item>
+        <item>@string/firstMeetingPlaceBadBelzigText</item>
     </string-array>
 
 

@@ -29,12 +29,15 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_OUR_ARRANGEMENT = "ourArrangementTable";
     public static final String DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE = "ourArrangementEvaluateTable";
 
-    public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
-
     public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW = "ourGoalsDebetableJointlyGoalsNow";
     public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT = "ourGoalsJointlyGoalsComment";
     public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE = "ourGoalsJointlyGoalsEvaluate";
     public static final String DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT = "ourGoalsDebetableGoalsComment";
+
+    public static final String DATABASE_TABLE_MEETING_FIND_MEETING = "meetingFindMeeting";
+
+    public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
+
 
     // Track DB version if a new version of your app changes the format.
     public static final int DATABASE_VERSION = 29;
@@ -297,10 +300,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     /**********************************************************************************************/
 
-
-
-
-
     /**********************************************************************************************/
     // Our Goals Debetable Goals Comment- column names and numbers
     public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT = "comment";
@@ -334,6 +333,32 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     /**********************************************************************************************/
+
+
+    /**********************************************************************************************/
+    // Meeting - column names and numbers
+    public static final String MEETING_FIND_MEETING_KEY_MEETING_PLACE = "place";
+    public static final String MEETING_FIND_MEETING_KEY_NEW_ENTRY = "new_entry";
+    public static final String MEETING_FIND_MEETING_KEY_DATE_TIME = "date_time";
+    public static final String MEETING_FIND_MEETING_KEY_APPROVAL = "approval";
+
+
+    // All keys from table in a String
+    public static final String[] MEETING_FIND_MEETING_ALL_KEYS = new String[] {KEY_ROWID, MEETING_FIND_MEETING_KEY_MEETING_PLACE, MEETING_FIND_MEETING_KEY_NEW_ENTRY, MEETING_FIND_MEETING_KEY_APPROVAL, MEETING_FIND_MEETING_KEY_DATE_TIME  };
+
+    // SQL String to create find meeting table
+    private static final String DATABASE_CREATE_SQL_MEETING_FIND_MEETING =
+            "create table " + DATABASE_TABLE_MEETING_FIND_MEETING + " (" + KEY_ROWID + " integer primary key autoincrement, "
+                    + MEETING_FIND_MEETING_KEY_MEETING_PLACE + " STRING not null, "
+                    + MEETING_FIND_MEETING_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
+                    + MEETING_FIND_MEETING_KEY_APPROVAL + " INTEGER DEFAULT 0, "
+                    + MEETING_FIND_MEETING_KEY_DATE_TIME + " INTEGER not null"
+                    + ");";
+
+
+
+    /**********************************************************************************************/
+
 
 
 
@@ -388,6 +413,11 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Create table Our Goals Debetable Goals Comment
         _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
 
+        // Create table Meeting Find Meeting
+        _db.execSQL(DATABASE_CREATE_SQL_MEETING_FIND_MEETING);
+
+
+
     }
 
 
@@ -421,6 +451,11 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Destroy table Our Goals Jointly Goals Evaluate
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
+
+        // Destroy table Meeting Find Meeting
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_CREATE_SQL_MEETING_FIND_MEETING);
+
+
 
         // Recreate new database:
         onCreate(_db);
@@ -1580,6 +1615,159 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     /********************************* End!! TABLES FOR FUNCTION: Our Goals Debetable Goals Comment ***************************************/
     /****************************************************************************************************************************/
+
+
+
+
+
+
+
+
+    /********************************* TABLES FOR FUNCTION: Our Goals Jointly Goals Evaluate ******************************************/
+
+    // Add a new set of values to ourGoalsJointlyGoalsEvaluate .
+    /*
+    public long insertRowOurGoalsJointlyGoalEvaluate(int goalId, long currentDateOfGoal, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues initialValues = new ContentValues();
+
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_ID, goalId);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME, currentDateOfGoal);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1, resultQuestion1);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2, resultQuestion2);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3, resultQuestion3);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4, resultQuestion4);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS, resultRemarks);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME, resultTime);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME, userName);
+
+        // Insert it into the database.
+        return db.insert(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE, null, initialValues);
+    }
+    */
+
+
+    /********************************* End!! TABLES FOR FUNCTION: Our Goals Jointly Goals Evaluate ***************************************/
+
+
+
+
+
+    /********************************* TABLES FOR FUNCTION: Meeting ******************************************/
+
+    // Add a new meeting date and time suggestion
+    public long insertNewMeetingDateAndTime (long meetingDateAndTime, String meetingPlace, Boolean newEntry) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues initialValues = new ContentValues();
+
+        initialValues.put(MEETING_FIND_MEETING_KEY_MEETING_PLACE, meetingPlace);
+        initialValues.put(MEETING_FIND_MEETING_KEY_DATE_TIME, meetingDateAndTime);
+        initialValues.put(MEETING_FIND_MEETING_KEY_APPROVAL,0); // --> no approval so far
+
+        // is it a new entry?
+        if (newEntry) {
+            initialValues.put(MEETING_FIND_MEETING_KEY_NEW_ENTRY, 1);
+        } else {
+            initialValues.put(MEETING_FIND_MEETING_KEY_NEW_ENTRY, 0);
+        }
+
+        // Insert it into the database.
+        return db.insert(DATABASE_TABLE_MEETING_FIND_MEETING, null, initialValues);
+
+    }
+
+
+    // Return all meetings from the database
+    // the result is sorted by DESC
+    public Cursor getAllRowsSuggesteMeetings() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // sort string
+        String sort = MEETING_FIND_MEETING_KEY_DATE_TIME + " DESC";
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_MEETING_FIND_MEETING, MEETING_FIND_MEETING_ALL_KEYS,
+                null, null, null, null, sort, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+
+    }
+
+
+
+
+
+    // Get the number of new rows in meeting
+    public int getCountNewEntryMeetingFindMeeting () {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // new_entry = 1 (true)?
+        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY + "=1";
+        Cursor c = 	db.query(true, DATABASE_TABLE_MEETING_FIND_MEETING, MEETING_FIND_MEETING_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        // return how many
+        return c.getCount();
+
+    }
+
+
+    // delete status new entry for meeting with rowId
+    public boolean deleteStatusNewEntryMeetingFindMeeting (int rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row new_entry = 0 (not new!)
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(MEETING_FIND_MEETING_KEY_NEW_ENTRY, 0);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_MEETING_FIND_MEETING, newValues, where, null) != 0;
+    }
+
+
+    // set/unset approval for meeting with rowId
+    public boolean setUnsetStatusApprovalMeetingFindMeeting (int rowId, Boolean setUnset) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row new_entry = 0 (not new!)
+        ContentValues newValues = new ContentValues();
+
+        // set / unset approval for meeting
+        if (setUnset) {
+            newValues.put(MEETING_FIND_MEETING_KEY_APPROVAL, 1);
+        } else {
+            newValues.put(MEETING_FIND_MEETING_KEY_APPROVAL, 0);
+        }
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_MEETING_FIND_MEETING, newValues, where, null) != 0;
+    }
+
+    /********************************* End!! TABLES FOR FUNCTION: Meeting ***************************************/
+    /****************************************************************************************************************************/
+
+
+
 
 
 

@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewGroupCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -23,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -122,19 +124,44 @@ public class ActivityOurArrangement extends AppCompatActivity {
         tabLayoutOurArrangement.setTabGravity(TabLayout.GRAVITY_FILL);
 
 
-
-
-
         // and set tablayout with viewpager
         tabLayoutOurArrangement.setupWithViewPager(viewPagerOurArrangement);
+
+
+
+
+        //
+        // Test zum aendern der schriftfarbe in tabs
+        ViewGroup vg = (ViewGroup) tabLayoutOurArrangement.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j< tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i=0; i<tabChildsCount; i++) {
+                View tabViewCild = vgTab.getChildAt(i);
+                if (tabViewCild instanceof TextView) {
+                    ((TextView) tabViewCild).setTextColor(Color.parseColor("#F330F0"));
+                }
+            }
+
+        }
+        //
+        //
+        //
 
         // init listener for tab selected
         tabLayoutOurArrangement.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
-
                 String tmpSubtitleText = "";
+
+
+
+
+
+
+
 
                 // Change the subtitle of the activity
                 switch (tab.getPosition()) {
@@ -185,6 +212,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+
+
 
             }
 

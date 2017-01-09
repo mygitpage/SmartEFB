@@ -25,13 +25,15 @@
             android:id="@+id/tabLayoutFaq"
             android:theme="@style/AppTheme.AppBarOverlay"
             android:background="?attr/colorPrimary"
-            app:tabMode="scrollable"/>
+            app:tabMode="scrollable"
+            app:tabBackground="@drawable/all_tabs_color_selector"/>
 
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/viewPagerFaq"/>
+        android:id="@+id/viewPagerFaq"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

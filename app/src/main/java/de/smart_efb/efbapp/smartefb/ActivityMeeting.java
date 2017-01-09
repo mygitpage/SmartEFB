@@ -46,6 +46,7 @@ public class ActivityMeeting extends AppCompatActivity {
     // reference to meeting fragments
     MeetingFragmentMeetingNow referenceFragmentMeetingNow;
     MeetingFragmentMeetingMake referenceFragmentMeetingMake;
+    MeetingFragmentMeetingFind referenceFragmentMeetingFind;
 
 
     // Strings for subtitle ()
@@ -150,43 +151,31 @@ public class ActivityMeeting extends AppCompatActivity {
         // init reference fragment manager
         fragmentManagerActivityMeeting = getSupportFragmentManager();
 
-
         // init reference fragements
         referenceFragmentMeetingNow = new MeetingFragmentMeetingNow();
         referenceFragmentMeetingMake = new MeetingFragmentMeetingMake();
+        referenceFragmentMeetingFind = new MeetingFragmentMeetingFind();
 
+        if (meetingStatus >= 0 && meetingStatus <= 3) { // init start fragment MeetingFragmentMeetingNow
 
-        Log.d("MEETING","C0:"+fragmentManagerActivityMeeting.getBackStackEntryCount());
+            FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
+            fragmentTransaction.add(R.id.fragment_container, referenceFragmentMeetingNow, "now_meeting");
+            fragmentTransaction.commit();
+        }
+        else {// init start fragment MeetingFragmentFindMeeting
 
+            FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
+            fragmentTransaction.add(R.id.fragment_container, referenceFragmentMeetingFind, "find_meeting");
+            fragmentTransaction.commit();
 
-        // init start fragment MeetingFragmentMeetingNow
-        FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, referenceFragmentMeetingNow, "now_meeting");
-        //fragmentTransaction.addToBackStack("now_meeting");
-        fragmentTransaction.commit();
-
-
-        Log.d("MEETING","C1:"+fragmentManagerActivityMeeting.getBackStackEntryCount());
-
-
-
-
-
+        }
 
     }
 
 
-
-
-
-
-
-    // Look for new intents (with data from URI or putExtra)
+    // Look for new intents (with data from putExtra)
     @Override
     protected void onNewIntent(Intent intent) {
-
-        // Uri from intent that holds data
-        Uri intentLinkData = null;
 
         // Extras from intent that holds data
         Bundle intentExtras = null;
@@ -195,12 +184,9 @@ public class ActivityMeeting extends AppCompatActivity {
         super.onNewIntent(intent);
 
         // get the link data from URI and from the extra
-        /*intentLinkData = intent.getData();*/
         intentExtras = intent.getExtras();
 
         Boolean tmpPopBackStack = false;
-        //int tmpNumberinListView = 0;
-        //Boolean tmpEvalNext = false;
 
         if (intentExtras != null) {
 
@@ -212,8 +198,6 @@ public class ActivityMeeting extends AppCompatActivity {
         }
 
     }
-
-
 
 
     // execute the commands that comes from link or intend
@@ -244,7 +228,6 @@ public class ActivityMeeting extends AppCompatActivity {
             if (tmpPopBackStack) {
                 fragmentManagerActivityMeeting.popBackStack("make_meeting", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
-
 
             // replace fragment MeetingFragmentMeetingMake
             FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();

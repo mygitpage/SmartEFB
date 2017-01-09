@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="left"
+        android:background="@color/body_background"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+
+        <TextView
+            android:id="@+id/makeMeetingIntroText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/makeFirstMeetingIntroText"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:paddingBottom="15dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/makeFirstMeetingExplainText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/makeFirstMeetingExplainText"
+            android:textSize="14dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="left"/>
+
+
+        <TextView
+            android:id="@+id/makeFirstMeetingChooseTimezoneError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="@string/makeFirstMeetingChooseTimezoneErrorText"
+            android:paddingBottom="5dp"/>
+
+
+        <TextView
+            android:id="@+id/makeFirstMeetingChoosePlaceIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/makeFirstMeetingChoosePlaceIntroText"
+            android:textSize="14dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"/>
+
+
+        <TextView
+            android:id="@+id/makeFirstMeetingChoosePlaceError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="@string/makeFirstMeetingChoosePlaceErrorText"
+            android:paddingBottom="5dp"/>
+
+
+
+        <TextView
+            android:id="@+id/makeFirstMeetingProblemIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/makeFirstMeetingProblemIntroText"
+            android:textSize="14dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"/>
+
+
+        <TextView
+            android:id="@+id/makeFirstMeetingProblemError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="left"
+            android:visibility="gone"
+            android:text="@string/makeFirstMeetingProblemErrorText"
+            android:paddingBottom="5dp"/>
+
+        <EditText
+            android:id="@+id/inputFirstMeetingProblemText"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:textColor="@color/text_color_white"
+            android:hint="@string/inputFirstMeetingProblemHintText"
+            android:gravity="left|top"
+            android:background="@color/inputfield_background"
+            android:layout_margin="10dp"
+            android:textColorHint="@color/text_color_white"
+            android:inputType="textNoSuggestions|text|textMultiLine"
+            android:padding="5dp"/>
+
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="25dp"
+            android:paddingLeft="15dp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/buttonSendSuggestionFirstMeeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_btn_join"
+                android:textColor="@color/text_color_white"
+                android:text="@string/btnSendSuggestionFirstMeeting"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+
+            <Button
+                android:id="@+id/buttonAbbortSuggestionFirstMeeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_btn_join"
+                android:textColor="@color/text_color_white"
+                android:text="@string/btnAbbortSuggestionFirstMeeting"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/infoMakeMeetingProcedure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/infoMakeMeetingProcedureText"
+            android:textSize="14dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="left"
+            android:paddingLeft="10dp"
+            android:paddingTop="15dp"/>
+
+
+    </LinearLayout>
+
+</ScrollView>

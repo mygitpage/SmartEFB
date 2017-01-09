@@ -17,6 +17,7 @@
         android:paddingRight="10dp">
 
 
+        <!-- meeting status = 0,1,2 -->
         <TextView
             android:id="@+id/nextMeetingIntroText"
             android:layout_width="match_parent"
@@ -29,11 +30,62 @@
             android:paddingBottom="5dp"/>
 
 
+        <!-- meeting status = 3 -->
         <TextView
-            android:id="@+id/nextMeetingDateAndTime"
+            android:id="@+id/showExplainTextFirstMeetingNotPossible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22dp"
+            android:text="@string/nextMeetingIntroTextFirstMeetingNotPossible"
+            android:textSize="16dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="left"
+            android:visibility="gone"/>
+
+        <!-- meeting status = 2 -->
+        <TextView
+            android:id="@+id/nextMeetingDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"
+            android:visibility="gone"/>
+
+        <!-- meeting status = 2 -->
+        <TextView
+            android:id="@+id/nextMeetingTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"
+            android:visibility="gone"/>
+
+        <!-- meeting status = 2 -->
+        <TextView
+            android:id="@+id/nextMeetingPlace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"
+            android:visibility="gone"/>
+
+        <!-- meeting status = 3 -->
+        <TextView
+            android:id="@+id/nextMeetingNotPossible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
             android:textColor="@color/text_color"
             android:textStyle="bold"
             android:gravity="center_horizontal"
@@ -56,6 +108,7 @@
             android:visibility="gone"/>
 
 
+        <!-- meeting status = 1 -->
         <TextView
             android:id="@+id/showTimezoneSuggestionExplainText"
             android:layout_width="match_parent"
@@ -68,7 +121,7 @@
             android:gravity="left"
             android:visibility="gone"/>
 
-
+        <!-- meeting status = 2 -->
         <android.support.v7.widget.GridLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:grid="http://schemas.android.com/apk/res-auto"
@@ -333,12 +386,11 @@
         </android.support.v7.widget.GridLayout>
 
 
-
+        <!-- meeting status = 2 -->
         <TextView
             android:id="@+id/showPlaceSuggestionExplainText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/showPlaceSuggestionExplainText"
             android:textSize="16dp"
             android:paddingLeft="10dp"
             android:paddingBottom="15dp"
