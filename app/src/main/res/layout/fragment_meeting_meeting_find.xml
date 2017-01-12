@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="true">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -14,32 +10,6 @@
         android:paddingTop="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
-
-
-        <!-- meeting status = 0,1,2 -->
-        <TextView
-            android:id="@+id/nextMeetingIntroText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/text_color"
-            android:textStyle="bold"
-            android:gravity="left"
-            android:paddingLeft="10dp"
-            android:paddingBottom="5dp"/>
-
-        <TextView
-            android:id="@+id/showExplainTextForFindFirstMeeting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/findMeetingExplainTextNoMeetingSoFar"
-            android:textSize="14dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
-            android:textColor="@color/text_color"
-            android:textColorLink="@color/colorPrimary"
-            android:visibility="gone"
-            android:gravity="left"/>
 
         <TextView
             android:id="@+id/meetingFindMeetingNoDateAndTimeSuggestions"
@@ -69,4 +39,3 @@
 
     </LinearLayout>
 
-</ScrollView>

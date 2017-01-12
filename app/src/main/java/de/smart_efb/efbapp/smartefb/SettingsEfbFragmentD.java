@@ -173,6 +173,10 @@ public class SettingsEfbFragmentD extends Fragment {
         prefsEditor.putLong("meetingDateAndTime", System.currentTimeMillis()); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
+        // put name of author for meeting suggestions
+        prefsEditor.putString("authorMeetingSuggestions", "Herr Terminmann");
+
+
         // meeting place
         /*
             0 -> kein Ort

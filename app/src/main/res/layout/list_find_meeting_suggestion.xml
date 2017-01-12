@@ -3,44 +3,70 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:gravity="left"
-    android:paddingBottom="5dp"
-    android:paddingTop="5dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp">
+    android:gravity="center_horizontal"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp">
 
-    <TextView
-        android:id="@+id/listActualTextComment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textColor="@color/text_color"
-        android:gravity="top|left"
-        android:paddingLeft="10dp"/>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="5dp">
-
-        <TextView
-            android:id="@+id/listActualTextNewComment"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12dp"
-            android:textColor="@color/text_accent_color"
-            android:gravity="left"
-            android:paddingLeft="10dp"/>
+            android:orientation="horizontal"
+            android:gravity="right"
+            android:paddingBottom="10dp">
 
-        <TextView
-            android:id="@+id/listActualCommentAuthorAndDate"
+                <CheckBox android:id="@+id/meetingCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"/>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="right">
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="right">
+
+                                <TextView
+                                    android:id="@+id/listActualDateMeetingSuggestion"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="22dp"
+                                    android:textColor="@color/text_color"
+                                    android:gravity="right"/>
+
+                                <TextView
+                                    android:id="@+id/listActualTimeMeetingSuggestion"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="22dp"
+                                    android:textColor="@color/text_color"
+                                    android:gravity="right"/>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/listActualPlaceMeetingSuggestion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="18dp"
+                            android:textColor="@color/text_color"
+                            android:gravity="right"/>
+
+                </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/separateLine"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="12dp"
-            android:textColor="@color/text_color"
-            android:gravity="right"/>
-
-    </LinearLayout>
+            android:layout_height="1dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:background="@android:color/darker_gray"/>
 
 </LinearLayout>

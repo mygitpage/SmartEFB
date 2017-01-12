@@ -44,12 +44,18 @@ public class ActivitySettingsEfb extends AppCompatActivity {
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
 
+    // reference to the DB
+    DBAdapter myDb;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_efb);
+
+        // init the DB
+        myDb = new DBAdapter(this);
 
         toolbarSettingsEfb = (Toolbar) findViewById(R.id.toolbarSettingsEfb);
         setSupportActionBar(toolbarSettingsEfb);
@@ -213,6 +219,55 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         }
 
     }
+
+
+
+
+
+
+    public void onClick_showDateChooserForMeetingSuggestions (View v) {
+
+        Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dialog = new DatePickerDialog(this, new saveDateForMeetingSuggestions(), mYear, mMonth, mDay);
+        dialog.show();
+
+    }
+
+
+
+    private class saveDateForMeetingSuggestions implements DatePickerDialog.OnDateSetListener {
+
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+            int mYear = year;
+            int mMonth = monthOfYear+1;
+            int mDay = dayOfMonth;
+            Date date = null;
+
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+            try {
+                date = formatter.parse(mDay+"-"+mMonth+"-"+year);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            myDb.insertNewMeetingDateAndTime(date.getTime(),"Werder (Havel)", true);
+
+            Toast.makeText(ActivitySettingsEfb.this, "Terminvorschlag Timestamp " + date.getTime(), Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+
+
 
 
 

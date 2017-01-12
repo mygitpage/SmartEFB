@@ -40,7 +40,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 29;
+    public static final int DATABASE_VERSION = 30;
 
 
     // Common column names
@@ -417,7 +417,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         _db.execSQL(DATABASE_CREATE_SQL_MEETING_FIND_MEETING);
 
 
-
     }
 
 
@@ -453,7 +452,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
 
         // Destroy table Meeting Find Meeting
-        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_CREATE_SQL_MEETING_FIND_MEETING);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_MEETING_FIND_MEETING);
 
 
 
@@ -1700,6 +1699,32 @@ public class DBAdapter extends SQLiteOpenHelper {
         return c;
 
     }
+
+
+    // Return all choosen meetings from the database
+    // the result is sorted by DESC
+    public Cursor getRowsChoosenSuggesteMeetings() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // search string
+        String where = MEETING_FIND_MEETING_KEY_APPROVAL + "=1"; // approval = 1 is set
+
+        // sort string
+        String sort = MEETING_FIND_MEETING_KEY_DATE_TIME + " DESC";
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_MEETING_FIND_MEETING, MEETING_FIND_MEETING_ALL_KEYS,
+                where, null, null, null, sort, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+
+    }
+
+
 
 
 

@@ -73,6 +73,11 @@ public class ActivityMeeting extends AppCompatActivity {
     // prefs name for meeting time and date
     static final String namePrefsMeetingTimeAndDate = "meetingDateAndTime";
 
+    // prefs name for author meeting suggestion
+    static final String namePrefsAuthorMeetingSuggestion = "authorMeetingSuggestions";
+
+
+
     // meeting status
     int meetingStatus = 0;
 
@@ -85,6 +90,9 @@ public class ActivityMeeting extends AppCompatActivity {
 
     // meeting problem
     String meetingProblem = "";
+
+    // author meeting suggestions
+    String meetingSuggestionsAuthor;
 
     // the current meeting date and time
     long currentMeetingDateAndTime;
@@ -133,6 +141,9 @@ public class ActivityMeeting extends AppCompatActivity {
 
         // get the current meeting date and time
         currentMeetingDateAndTime = prefs.getLong(namePrefsMeetingTimeAndDate, System.currentTimeMillis());
+
+        // get author meeting suggestions
+        meetingSuggestionsAuthor = prefs.getString(namePrefsAuthorMeetingSuggestion, "Herr Terminmann");
 
         //load timezone array for meeting
         for (int i=0; i<countNumberTimezones; i++) {
@@ -187,21 +198,25 @@ public class ActivityMeeting extends AppCompatActivity {
         intentExtras = intent.getExtras();
 
         Boolean tmpPopBackStack = false;
+        int tmpMeetingStatus = 0;
 
         if (intentExtras != null) {
 
-            // get data that comes with extras
+            // get data that comes with extras -> pop_stack
             tmpPopBackStack = intentExtras.getBoolean("pop_stack",false);
 
+            // get data that comes with extras -> pop_stack
+            tmpMeetingStatus = intentExtras.getInt("met_status",0);
+
             // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"), tmpPopBackStack);
+            executeIntentCommand (intentExtras.getString("com"), tmpPopBackStack, tmpMeetingStatus);
         }
 
     }
 
 
     // execute the commands that comes from link or intend
-    public void executeIntentCommand (String command, Boolean tmpPopBackStack) {
+    public void executeIntentCommand (String command, Boolean tmpPopBackStack, int tmpMeetingStatus) {
 
         if (command.equals("change_meeting")) { // Show fragment for changing meeting date and time
 
@@ -210,6 +225,15 @@ public class ActivityMeeting extends AppCompatActivity {
 
         } else if (command.equals("find_meeting")) { // Show fragment for finding meeting date and time
 
+
+            // set new meeting status
+            setMeetingStatus (tmpMeetingStatus);
+
+            // refresh fragment find meeting
+            FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
+            fragmentTransaction.detach(referenceFragmentMeetingFind);
+            fragmentTransaction.attach(referenceFragmentMeetingFind);
+            fragmentTransaction.commit();
 
             Log.d("Activity Meeting","find_meeting");
 
@@ -267,6 +291,14 @@ public class ActivityMeeting extends AppCompatActivity {
                 break;
 
 
+            case "findFirstMeeting":
+                arraySubTitleText[4] = subtitleText;
+                break;
+            case "waitingRequestMeeting":
+                arraySubTitleText[5] = subtitleText;
+                break;
+
+
         }
 
 
@@ -286,16 +318,6 @@ public class ActivityMeeting extends AppCompatActivity {
 
     // getter for timezone suggestions array
     public Boolean[] getMeetingTimezoneSuggestions () {
-
-        Log.d("ActivityMeeting","getMeetingTimezoneArray");
-
-        if (makeMeetingCheckBoxListenerArray[0] == true) {
-            Log.d("ArrayElement 0 ","TRUE");
-        }
-        else {
-            Log.d("ArrayElement 0 ","FALSE");
-        }
-
 
         return makeMeetingCheckBoxListenerArray;
     }
@@ -386,8 +408,17 @@ public class ActivityMeeting extends AppCompatActivity {
         prefsEditor.commit();
 
     }
-    
-    
+
+
+    // getter for author meeting suggestion
+    public String getAuthorMeetingSuggestion () {
+
+        return meetingSuggestionsAuthor;
+
+    }
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
