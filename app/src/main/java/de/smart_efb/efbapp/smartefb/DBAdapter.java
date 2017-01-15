@@ -1780,12 +1780,30 @@ public class DBAdapter extends SQLiteOpenHelper {
         // set / unset approval for meeting
         if (setUnset) {
             newValues.put(MEETING_FIND_MEETING_KEY_APPROVAL, 1);
+
+            Log.d("DB-A","SET to 1 + ID"+rowId);
         } else {
             newValues.put(MEETING_FIND_MEETING_KEY_APPROVAL, 0);
+            Log.d("DB-A","UNSSET to 0+ ID"+rowId);
         }
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_MEETING_FIND_MEETING, newValues, where, null) != 0;
+    }
+
+    // unset all approval meeting in table
+    public boolean unsetAllStatusApprovalMeetingFindMeeting () {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Create row new_entry = 0 (not new!)
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(MEETING_FIND_MEETING_KEY_APPROVAL, 0);
+
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_MEETING_FIND_MEETING, newValues, null, null) != 0;
     }
 
     /********************************* End!! TABLES FOR FUNCTION: Meeting ***************************************/

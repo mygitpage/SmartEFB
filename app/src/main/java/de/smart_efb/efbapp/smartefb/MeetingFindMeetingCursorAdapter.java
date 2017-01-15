@@ -42,6 +42,9 @@ public class MeetingFindMeetingCursorAdapter extends CursorAdapter {
     // int array for checkbox values (DbId)
     int [] checkBoxMeetingSuggestionsValues = new int [maxSimultaneousMeetingCheckBoxes];
 
+    // int array for UNCHECKED checkbox values (DbId)
+    int [] checkBoxMeetingNotSuggestionsValues = new int [maxSimultaneousMeetingCheckBoxes];
+
     // min number of checkboxes to check
     static final int minNumberCheckBoxesToCheck = 1;
 
@@ -131,7 +134,7 @@ public class MeetingFindMeetingCursorAdapter extends CursorAdapter {
 
 
         CheckBox tmpMeetingCheckBox = (CheckBox) view.findViewById(R.id.meetingCheck);
-        tmpMeetingCheckBox.setOnClickListener(new onClickListenerMeetingSuggestion(cursor.getPosition(), cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))));
+        tmpMeetingCheckBox.setOnClickListener(new onClickListenerMeetingSuggestion(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)), cursor.getPosition()));
 
 
 
@@ -152,13 +155,13 @@ public class MeetingFindMeetingCursorAdapter extends CursorAdapter {
 
                             for (int i=0; i<=countListViewElements; i++) {
 
-                                if (checkBoxMeetingSuggestionsValues[i] > -1) {
+                                if (checkBoxMeetingSuggestionsValues[i] >= 0) {
                                     myDb.setUnsetStatusApprovalMeetingFindMeeting(checkBoxMeetingSuggestionsValues[i],true);
-                                    Log.d("Adapter","Sug SET id:"+checkBoxMeetingSuggestionsValues[i]+", I:"+i);
+
                                 }
                                 else {
                                     myDb.setUnsetStatusApprovalMeetingFindMeeting(checkBoxMeetingSuggestionsValues[i],false);
-                                    Log.d("Adapter","Sug UNSET id:"+checkBoxMeetingSuggestionsValues[i]+", I:"+i);
+
                                 }
 
                             }
@@ -264,14 +267,10 @@ public class MeetingFindMeetingCursorAdapter extends CursorAdapter {
                 checkBoxMeetingSuggestionsValues[listPosition] = suggestionDbId;
                 countCheckBoxChecked++; //inc count checkboxes
 
-                Log.d("ONCLICK","SET id:"+suggestionDbId+", I:"+listPosition);
-
             }
             else {
                 checkBoxMeetingSuggestionsValues[listPosition] = -1;
                 countCheckBoxChecked--; //dec count checkboxes
-
-                Log.d("ONCLICK","UNSET id:"+suggestionDbId+", I:"+listPosition);
 
             }
 

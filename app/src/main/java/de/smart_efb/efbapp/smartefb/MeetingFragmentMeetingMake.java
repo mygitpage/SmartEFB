@@ -153,7 +153,6 @@ public class MeetingFragmentMeetingMake extends Fragment {
     private void displayActualMeetingInformation () {
 
         String tmpSubtitle = "";
-        String tmpSubtitleOrder = "";
 
         Button tmpButton;
 
@@ -168,14 +167,12 @@ public class MeetingFragmentMeetingMake extends Fragment {
             default: // no time and date for meeting -> first meeting
                 btnVisibilitySendMakeFirstMeeting = true;
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMakeFirstMeeting", "string", fragmentMeetingMakeContext.getPackageName()));
-                tmpSubtitleOrder = "makeFirstMeeting";
-                //tmpSubtitle = String.format(tmpSubtitle, jointlyGoalNumberInListView);
                 break;
 
         }
 
         // Set correct subtitle in Activity Meeting Fragment make first meeting
-        ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, tmpSubtitleOrder);
+        ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle);
 
         // status make first meeting
         if (btnVisibilitySendMakeFirstMeeting) {

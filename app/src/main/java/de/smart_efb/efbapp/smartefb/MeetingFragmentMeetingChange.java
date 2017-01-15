@@ -138,7 +138,7 @@ public class MeetingFragmentMeetingChange extends Fragment {
         }
 
         // Set correct subtitle in Activity Meeting Fragment make first meeting
-        ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, tmpSubtitleOrder);
+        ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle);
 
         // status make first meeting
         if (btnVisibilitySendMakeFirstMeeting) {

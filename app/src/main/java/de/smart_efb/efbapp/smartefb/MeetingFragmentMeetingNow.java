@@ -112,7 +112,6 @@ public class MeetingFragmentMeetingNow extends Fragment {
 
         String txtNextMeetingIntro = "";
         String tmpSubtitle = "";
-        String tmpSubtitleOrder = "";
 
         Button tmpButton;
 
@@ -134,7 +133,6 @@ public class MeetingFragmentMeetingNow extends Fragment {
                     showMakeFirstMeeting = true;
 
                     tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleNoFirstMeeting", "string", fragmentMeetingNowContext.getPackageName()));
-                    tmpSubtitleOrder = "noFirstMeeting";
                     break;
 
             case 1: // first meeting requested
@@ -144,7 +142,6 @@ public class MeetingFragmentMeetingNow extends Fragment {
                     btnVisibilitySendChangeMeetingDate = true;
 
                     tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFirstMeetingRequested", "string", fragmentMeetingNowContext.getPackageName()));
-                    tmpSubtitleOrder = "firstMeetingRequested";
                     break;
 
             case 2: // first meeting confirmed
@@ -164,7 +161,6 @@ public class MeetingFragmentMeetingNow extends Fragment {
                 btnVisibilitySendChangeMeetingDate = true;
 
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFirstMeetingConfirmed", "string", fragmentMeetingNowContext.getPackageName()));
-                tmpSubtitleOrder = "firstMeetingConfirmed";
                 break;
 
             case 3: // first meeting suggestion not possible -> please call us
@@ -174,13 +170,12 @@ public class MeetingFragmentMeetingNow extends Fragment {
                 showNextMeetingNotPossible = true;
 
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFirstMeetingNotPossible", "string", fragmentMeetingNowContext.getPackageName()));
-                tmpSubtitleOrder = "firstMeetingNotPossible";
                 break;
 
         }
 
         // Set correct subtitle in Activity Meeting
-        ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, tmpSubtitleOrder);
+        ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle);
 
 
         // meeting status 0 -> ersttermin vereinbaren
@@ -275,7 +270,7 @@ public class MeetingFragmentMeetingNow extends Fragment {
             // show time text and set visible
             TextView tmpShowTimeText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingTime);
             tmpShowTimeText.setVisibility(View.VISIBLE);
-            String tmpTime = EfbHelperClass.timestampToTimeFormat(currentMeetingDateAndTime, "kk:MM") + " " + fragmentMeetingNowContext.getResources().getString(R.string.showClockWordAdditionalText);
+            String tmpTime = EfbHelperClass.timestampToTimeFormat(currentMeetingDateAndTime, "HH:mm") + " " + fragmentMeetingNowContext.getResources().getString(R.string.showClockWordAdditionalText);
             tmpShowTimeText.setText(tmpTime);
 
             if (meetingPlace == 1 || meetingPlace == 2) { // show meeting place name

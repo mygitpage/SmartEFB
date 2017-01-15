@@ -24,12 +24,80 @@
             android:paddingTop="15dp"
             android:paddingLeft="15dp"/>
 
+        <!-- meeting date, time and place -->
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="left"
+            android:background="@color/body_background"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:visibility="gone">
+
+
+            <TextView
+                android:id="@+id/nextMeetingIntroText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/text_color"
+                android:textStyle="bold"
+                android:text="@string/textShowDateAndTimeForMeetingConfirmation"
+                android:gravity="left"
+                android:paddingLeft="10dp"
+                android:paddingBottom="5dp"
+                android:visibility="gone"/>
+
+
+
+            <TextView
+                android:id="@+id/nextMeetingDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:textColor="@color/text_color"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                android:paddingBottom="15dp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/nextMeetingTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:textColor="@color/text_color"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                android:paddingBottom="15dp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/nextMeetingPlace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:textColor="@color/text_color"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                android:paddingBottom="15dp"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    <!-- End meeting date, time and place -->
+
 
         <ListView
             android:id="@+id/listDateAndTimeSuggestions"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:transcriptMode="alwaysScroll"
+            android:transcriptMode="normal"
             android:layout_weight="1"
             android:stackFromBottom="false"
             android:background="@null"

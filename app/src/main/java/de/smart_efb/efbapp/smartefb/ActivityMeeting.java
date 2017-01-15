@@ -27,8 +27,6 @@ import android.widget.EditText;
 public class ActivityMeeting extends AppCompatActivity {
 
 
-    // Number of different subtitles
-    final int numberOfDifferentSubtitle = 8;
 
     // reference for the toolbar
     Toolbar toolbarMeeting;
@@ -49,8 +47,7 @@ public class ActivityMeeting extends AppCompatActivity {
     MeetingFragmentMeetingFind referenceFragmentMeetingFind;
 
 
-    // Strings for subtitle ()
-    String [] arraySubTitleText = new String[numberOfDifferentSubtitle];
+
 
     // number of checkboxes for choosing timezones
     static final int countNumberTimezones = 15;
@@ -152,12 +149,6 @@ public class ActivityMeeting extends AppCompatActivity {
 
         // init array for places name
         placesNameForMeetingArray = getResources().getStringArray(R.array.placesNameForMeetingArray);
-
-
-        // init array for subtitles
-        for (int t=0; t<numberOfDifferentSubtitle; t++) {
-            arraySubTitleText[t] = "";
-        }
 
         // init reference fragment manager
         fragmentManagerActivityMeeting = getSupportFragmentManager();
@@ -271,38 +262,9 @@ public class ActivityMeeting extends AppCompatActivity {
 
 
     // setter for subtitle in ActivityMeeting toolbar
-    public void setMeetingToolbarSubtitle (String subtitleText, String subtitleChoose) {
+    public void setMeetingToolbarSubtitle (String subtitleText) {
 
-        switch (subtitleChoose) {
-
-            case "noFirstMeeting":
-                arraySubTitleText[0] = subtitleText;
-                break;
-            case "makeFirstMeeting":
-                arraySubTitleText[1] = subtitleText;
-                break;
-
-
-            case "firstMeetingRequested":
-                arraySubTitleText[2] = subtitleText;
-                break;
-            case "firstMeetingConfirmed":
-                arraySubTitleText[3] = subtitleText;
-                break;
-
-
-            case "findFirstMeeting":
-                arraySubTitleText[4] = subtitleText;
-                break;
-            case "waitingRequestMeeting":
-                arraySubTitleText[5] = subtitleText;
-                break;
-
-
-        }
-
-
-        toolbarMeeting.setSubtitle(subtitleText);
+       toolbarMeeting.setSubtitle(subtitleText);
 
     }
 
@@ -311,6 +273,8 @@ public class ActivityMeeting extends AppCompatActivity {
 
     // getter for timezone suggestions array
     public  Long getMeetingTimeAndDate () {
+
+        Log.d("CallDateAndTime","Stamp:"+currentMeetingDateAndTime);
 
         return currentMeetingDateAndTime;
     }

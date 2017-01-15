@@ -124,36 +124,25 @@ public class MeetingFragmentMeetingFind extends Fragment {
 
     private void displayActualMeetingInformation () {
 
-        String txtFindFirstMeetingIntro = "";
         String tmpSubtitle = "";
-        String tmpSubtitleOrder = "";
-
-        Button tmpButton;
-
 
         Boolean showMakeFindFirstMeeting = false;
         Boolean waitingForAnswerOfFindFirstMeeting = false;
+        Boolean confirmationForMeetingFindMeeting = false;
        
 
 
         switch (meetingStatus) {
 
-
             case 5: // first find meeting -> no meeting so far, suggestion comes from coach over internet
-                txtFindFirstMeetingIntro  = fragmentMeetingFindContext.getResources().getString(R.string.findMeetingIntroTextNoMeetingSoFar);
                 showMakeFindFirstMeeting = true;
-
-
                 break;
             case 6: // find meeting -> wait for response
-                txtFindFirstMeetingIntro  = fragmentMeetingFindContext.getResources().getString(R.string.findMeetingIntroTextNoMeetingSoFar);
-
                 waitingForAnswerOfFindFirstMeeting = true;
-
-
                 break;
-
-
+            case 7: // find meeting -> wait for response
+                confirmationForMeetingFindMeeting = true;
+                break;
 
         }
 
@@ -161,9 +150,11 @@ public class MeetingFragmentMeetingFind extends Fragment {
         // meeting status 5 -> find meeting
         if (showMakeFindFirstMeeting) {
 
+            // unset all approval meeting in table
+            myDb.unsetAllStatusApprovalMeetingFindMeeting();
+
             // get all suggeste meetings from database
             Cursor cursor = myDb.getAllRowsSuggesteMeetings();
-
 
             // find the listview for diesplaying suggestinons
             ListView listView = (ListView) viewFragmentMeetingFind.findViewById(R.id.listDateAndTimeSuggestions);
@@ -172,8 +163,7 @@ public class MeetingFragmentMeetingFind extends Fragment {
 
                 // set correct subtitle
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFindFirstMeeting", "string", fragmentMeetingFindContext.getPackageName()));
-                tmpSubtitleOrder = "findFirstMeeting";
-                ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, tmpSubtitleOrder);
+                ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle);
 
                 // set no suggestions text visibility gone
                 TextView tmpNoSuggestionsText = (TextView) viewFragmentMeetingFind.findViewById(R.id.meetingFindMeetingNoDateAndTimeSuggestions);
@@ -192,13 +182,13 @@ public class MeetingFragmentMeetingFind extends Fragment {
                 // Assign adapter to ListView
                 listView.setAdapter(dataAdapterListViewFindMeeting);
 
+
             }
             else {
 
-                /// set correct subtitle
+                // set correct subtitle
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFindFirstMeetingNoSuggestions", "string", fragmentMeetingFindContext.getPackageName()));
-                tmpSubtitleOrder = "findFirstMeeting";
-                ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, tmpSubtitleOrder);
+                ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle);
 
                 // set no suggestions text visibility gone
                 TextView tmpNoSuggestionsText = (TextView) viewFragmentMeetingFind.findViewById(R.id.meetingFindMeetingNoDateAndTimeSuggestions);
@@ -212,11 +202,8 @@ public class MeetingFragmentMeetingFind extends Fragment {
         // meeting status 6 -> auf Antwort warten
         if(waitingForAnswerOfFindFirstMeeting) {
 
-
             // get all choosen suggeste meetings from database
             Cursor cursor = myDb.getRowsChoosenSuggesteMeetings();
-
-
 
             // find the listview for diesplaying suggestinons
             ListView listView = (ListView) viewFragmentMeetingFind.findViewById(R.id.listDateAndTimeSuggestions);
@@ -225,8 +212,7 @@ public class MeetingFragmentMeetingFind extends Fragment {
 
                 // set correct subtitle
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFindFirstWaitingRequest", "string", fragmentMeetingFindContext.getPackageName()));
-                tmpSubtitleOrder = "waitingRequestMeeting";
-                ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, tmpSubtitleOrder);
+                ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle);
 
                 // set no suggestions text visibility gone
                 TextView tmpNoSuggestionsText = (TextView) viewFragmentMeetingFind.findViewById(R.id.meetingFindMeetingNoDateAndTimeSuggestions);
@@ -249,8 +235,7 @@ public class MeetingFragmentMeetingFind extends Fragment {
 
                 /// set correct subtitle
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFindFirstMeetingNoSuggestions", "string", fragmentMeetingFindContext.getPackageName()));
-                tmpSubtitleOrder = "waitingRequestMeeting";
-                ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, tmpSubtitleOrder);
+                ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle);
 
                 // set no suggestions text visibility visible
                 TextView tmpNoSuggestionsText = (TextView) viewFragmentMeetingFind.findViewById(R.id.meetingFindMeetingNoDateAndTimeSuggestions);
@@ -259,14 +244,55 @@ public class MeetingFragmentMeetingFind extends Fragment {
             }
 
 
-
-
-
-
-
-
         }
 
+
+
+
+        // meeting status 7 -> Antwort da, zeige Termin
+        if(confirmationForMeetingFindMeeting) {
+
+
+            /// set correct subtitle
+            tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFindFirstMeetingShowDateAndTime", "string", fragmentMeetingFindContext.getPackageName()));
+            ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle);
+
+
+            // show meeting intro text
+            TextView textViewNextMeetingIntroText = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingIntroText);
+            textViewNextMeetingIntroText.setVisibility(View.VISIBLE);
+
+            
+
+
+            // show date text and set visible
+            TextView tmpShowDateText = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingDate);
+            tmpShowDateText.setVisibility(View.VISIBLE);
+            String tmpDate = EfbHelperClass.timestampToDateFormat(currentMeetingDateAndTime, "dd.MM.yyyy");
+            tmpShowDateText.setText(tmpDate);
+
+            // show time text and set visible
+            TextView tmpShowTimeText = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingTime);
+            tmpShowTimeText.setVisibility(View.VISIBLE);
+            String tmpTime = EfbHelperClass.timestampToTimeFormat(currentMeetingDateAndTime, "kk:MM") + " " + fragmentMeetingFindContext.getResources().getString(R.string.showClockWordAdditionalText);
+            tmpShowTimeText.setText(tmpTime);
+
+            if (meetingPlace == 1 || meetingPlace == 2) { // show meeting place name
+
+                // show time place and set visible
+                TextView tmpShowPlaceText = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingPlace);
+                tmpShowPlaceText.setVisibility(View.VISIBLE);
+                tmpShowPlaceText.setText(meetingPlaceName);
+            }
+        }
+            
+            
+            
+            
+
+        
+        
+        
 
     }
 

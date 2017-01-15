@@ -25,7 +25,7 @@
         android:id="@+id/listOurArrangementNow"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:transcriptMode="alwaysScroll"
+        android:transcriptMode="normal"
         android:layout_weight="1"
         android:stackFromBottom="false"
         android:background="@null"

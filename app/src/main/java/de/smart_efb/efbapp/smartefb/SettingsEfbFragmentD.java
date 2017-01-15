@@ -796,7 +796,7 @@ public class SettingsEfbFragmentD extends Fragment {
         //
         // set onClickListener for radio button meeting status
         RadioButton tmpRadioButtonStatus;
-        for (int countMeetingStatus = 0; countMeetingStatus < 7; countMeetingStatus++) {
+        for (int countMeetingStatus = 0; countMeetingStatus < 9; countMeetingStatus++) {
 
 
             tmpRessourceName ="settingMeetingStatus_" + (countMeetingStatus+1);
@@ -1031,6 +1031,15 @@ public class SettingsEfbFragmentD extends Fragment {
                     break;
                 case 6:
                     status = 6;
+                    break;
+                case 7:
+                    status = 7;
+                    break;
+                case 8:
+                    status = 8;
+                    break;
+                case 9:
+                    status = 9;
                     break;
                 default:
                     status = 0;

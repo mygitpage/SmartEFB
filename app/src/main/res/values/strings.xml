@@ -526,6 +526,7 @@
 
         <string name="textExplainTextSendMeetingSuggestions">Folgende Terminvorschläge wurden von Ihnen gesendet:</string>
 
+    <string name="textShowDateAndTimeForMeetingConfirmation">Nächster Termin</string>
 
         <!-- end fragment find meeting -->
 
@@ -539,6 +540,7 @@
             <string name="meetingSubtitleFindFirstMeeting">Terminvorschläge wählen</string>
             <string name="meetingSubtitleFindFirstMeetingNoSuggestions">Keine Terminvorschläge vorhanden</string>
             <string name="meetingSubtitleFindFirstWaitingRequest">Terminbestätigung steht aus</string>
+            <string name="meetingSubtitleFindFirstMeetingShowDateAndTime">Ihr nächster Termin</string>
 
 
 

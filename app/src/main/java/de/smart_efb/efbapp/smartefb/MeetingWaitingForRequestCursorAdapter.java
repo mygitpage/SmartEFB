@@ -69,6 +69,8 @@ public class MeetingWaitingForRequestCursorAdapter extends CursorAdapter {
 
 
 
+
+
         }
 
 
@@ -89,10 +91,13 @@ public class MeetingWaitingForRequestCursorAdapter extends CursorAdapter {
         tmpPlaceMeetingSuggestion.setText(tmpTextMeetingPlace);
 
 
-        if (cursor.isFirst() ) { // last element -> set separate line gone
+        if (cursor.isLast() ) { // last element -> set separate line gone
 
+
+            // set visibility of separate line GONE
             View tmpSeparateLine = (View) view.findViewById(R.id.separateLine);
             tmpSeparateLine.setVisibility(View.GONE);
+
         }
 
 
