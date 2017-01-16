@@ -57,5 +57,13 @@
         <item name="colorControlActivated">@color/bg_btn_join</item>
     </style>
 
+    <style name="chooseMeetingSuggestionsCheckboxes" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/bg_btn_join</item>
+        <item name="colorControlActivated">@color/bg_btn_join</item>
+    </style>
+
+
+
+
 
 </resources>

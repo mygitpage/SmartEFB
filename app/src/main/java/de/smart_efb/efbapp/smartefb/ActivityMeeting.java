@@ -46,9 +46,6 @@ public class ActivityMeeting extends AppCompatActivity {
     MeetingFragmentMeetingMake referenceFragmentMeetingMake;
     MeetingFragmentMeetingFind referenceFragmentMeetingFind;
 
-
-
-
     // number of checkboxes for choosing timezones
     static final int countNumberTimezones = 15;
 
@@ -73,7 +70,8 @@ public class ActivityMeeting extends AppCompatActivity {
     // prefs name for author meeting suggestion
     static final String namePrefsAuthorMeetingSuggestion = "authorMeetingSuggestions";
 
-
+    // prefs name for info new meeting date and time
+    static final String namePrefsNewMeetingDateAndTime = "meetingNewDateAndTime";
 
     // meeting status
     int meetingStatus = 0;
@@ -89,12 +87,13 @@ public class ActivityMeeting extends AppCompatActivity {
     String meetingProblem = "";
 
     // author meeting suggestions
-    String meetingSuggestionsAuthor;
+    String meetingSuggestionsAuthor = "";
 
     // the current meeting date and time
     long currentMeetingDateAndTime;
 
-
+    // info new meeting date and time
+    Boolean meetingNewDateAndTime = false;
 
 
 
@@ -141,6 +140,9 @@ public class ActivityMeeting extends AppCompatActivity {
 
         // get author meeting suggestions
         meetingSuggestionsAuthor = prefs.getString(namePrefsAuthorMeetingSuggestion, "Herr Terminmann");
+
+        // get info new meeting date and time from prefs
+        meetingNewDateAndTime = prefs.getBoolean(namePrefsNewMeetingDateAndTime, false);
 
         //load timezone array for meeting
         for (int i=0; i<countNumberTimezones; i++) {
@@ -254,11 +256,9 @@ public class ActivityMeeting extends AppCompatActivity {
                 fragmentManagerActivityMeeting.popBackStack("now_meeting", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
 
-
         }
 
     }
-
 
 
     // setter for subtitle in ActivityMeeting toolbar
@@ -267,8 +267,6 @@ public class ActivityMeeting extends AppCompatActivity {
        toolbarMeeting.setSubtitle(subtitleText);
 
     }
-
-
 
 
     // getter for timezone suggestions array
@@ -301,13 +299,13 @@ public class ActivityMeeting extends AppCompatActivity {
     }
 
 
-
     // getter for meeting status
     public int getMeetingStatus () {
 
         return meetingStatus;
 
     }
+
 
     // setter for meeting status
     public void setMeetingStatus (int tmpMeetingStatus) {
@@ -319,7 +317,6 @@ public class ActivityMeeting extends AppCompatActivity {
         prefsEditor.commit();
 
     }
-
 
 
     // getter for meeting place
@@ -338,8 +335,6 @@ public class ActivityMeeting extends AppCompatActivity {
     }
 
 
-
-
     // setter for meeting place
     public void setMeetingPlace (int tmpMeetingPlace) {
 
@@ -352,15 +347,13 @@ public class ActivityMeeting extends AppCompatActivity {
     }
 
 
-
-
-
     // getter for meeting problem
     public String getMeetingProblem () {
 
         return meetingProblem;
 
     }
+
 
     // setter for meeting problem
     public void setMeetingProblem (String tmpMeetingProblem) {
@@ -380,6 +373,16 @@ public class ActivityMeeting extends AppCompatActivity {
         return meetingSuggestionsAuthor;
 
     }
+
+
+    // getter for info new meeting date and time
+    public Boolean getInfoNewMeetingDateAndTime () {
+
+        return meetingNewDateAndTime;
+
+    }
+
+
 
 
 

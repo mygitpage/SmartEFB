@@ -449,15 +449,10 @@
             <string name="nextMeetingIntroTextFirstMeetingConfirmedTownBadBelzig">Wir können Ihnen in unserer Beratungsstelle in Bad Belzig folgenden Termin anbieten</string>
             <string name="nextMeetingIntroTextFirstMeetingConfirmedTownNotSelected">Wir können Ihnen folgenden Termin anbieten. Leider wurde keine Beratungsstelle gewählt</string>
             <string name="nextMeetingIntroTextFirstMeetingRequested">Sie haben eine Termianfrage an unsere Beratungsstellen gestellt. Sie erhalten in kürze eine Antwort mit einem Terminvorschlag.</string>
-
             <string name="nextMeetingNotPossiblePleaseCall">Bitte rufen Sie uns an</string>
-            <string name="nextMeetingIntroTextFirstMeetingNotPossible">Leider sind alle Termine in Ihren gewählten Zeitbereichen bereits vergeben. Bitte <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">rufen</a> Sie uns an und vereinbaren telefonisch einen Termin.</string>
-
+            <string name="nextMeetingIntroTextFirstMeetingNotPossible">Leider sind alle Termine in Ihren gewählten Zeitbereichen bereits vergeben. Bitte <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">E-Mail</a>, um so einen Termin zu vereinbaren. \nEin weitere Terminanfrage über diese App ist leider nicht möglich.</string>
             <string name="showExplainTextForMeetingMakeText">Sie können mit uns einen Ersttermin über diese App vereinbaren. Dazu klicken Sie bitte auf den unten stehenden Button "Ersttermin vereinbaren". Sie haben auch die Möglichkeit uns <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">telefonisch</a> anzurufen und so einen Termin zu vereinbaren.</string>
-
             <string name="showClockWordAdditionalText">Uhr</string>
-
-
             <string name="showTimezoneSuggestionExplainText">Folgende Zeitbereiche wurden von Ihnen vorgeschlagen</string>
             <string name="showPlaceSuggestionExplainText">Als Beratungsort wurde von Ihnen %s vorgeschlagen.</string>
 
@@ -467,66 +462,44 @@
         <!-- fragment make meeting -->
             <string name="btnSendSuggestionFirstMeeting">Anfrage senden</string>
             <string name="btnAbbortSuggestionFirstMeeting">Zurück zur Terminübersicht</string>
-
             <string name="makeFirstMeetingIntroText">Ersttermin vereinbaren</string>
-            <string name="makeFirstMeetingExplainText">Bitte wählen Sie einen Zeitbereich und Beratungsort, an dem Ihr Ersttermin stattfinden soll. Bitte wählen Sie mindestens drei Zeitbereiche. Die Zeitbereich beziehen sich auf die nächste Woche. Sie haben auch die Möglichkeit uns <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">telefonisch</a> zu erreichen.</string>
-            <string name="infoMakeMeetingProcedureText">Wir werden versuchen Ihnen schnellstmöglich einen Termin in Ihrem gewünschten Zeitbereich auf Ihr Smartphone zu schicken. Dies kann allerdings bis zu zwei Tagen dauern. Sie haben auch die Möglichkeit uns <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">telefonisch</a> zu erreichen.</string>
+            <string name="makeFirstMeetingExplainText">Bitte wählen Sie einen Zeitbereich und Beratungsort, an dem Ihr Ersttermin stattfinden soll. Bitte wählen Sie mindestens drei Zeitbereiche. Die Zeitbereich beziehen sich auf die nächste Woche. Sie haben auch die Möglichkeit uns <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">telefonisch</a> zu erreichen oder uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">E-Mail</a> zu schreiben.</string>
+            <string name="infoMakeMeetingProcedureText">Wir werden versuchen Ihnen schnellstmöglich einen Termin in Ihrem gewünschten Zeitbereich auf Ihr Smartphone zu schicken. Dies kann allerdings bis zu zwei Tagen dauern. Sie haben auch die Möglichkeit uns <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">telefonisch</a> zu erreichen oder uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">E-Mail</a> zu schreiben.</string>
             <string name="makeFirstMeetingChoosePlaceIntroText">Bitte wählen Sie den Ort Ihrer ersten Beratung</string>
             <string name="makeFirstMeetingProblemIntroText">Bitte geben Sie uns einen Hinweis auf Ihr Anliegen (beispielsweise Trennung, Erziehungsschwierigkeiten, Lese-Rechtschreib-Diagnostik, etc.)</string>
-
             <string name="makeFirstMeetingChoosePlaceErrorText">Sie haben keinen Beratungsort gewählt!</string>
             <string name="makeFirstMeetingChooseTimezoneErrorText">Sie haben zu wenige Zeitbereiche gewählt!</string>
             <string name="makeFirstMeetingProblemErrorText">Sie haben keinen Hinweis auf Ihr Anliegen eingegeben! Dieser muss mindestens 3 Zeichen und höchstens 500 Zeichen lang sein.</string>
             <string name="makeFirstMeetingCompletErrorToastText">Ihre Eingaben sind nicht vollständig. Bitte kontrollieren Sie die rot markierten Eingaben.</string>
             <string name="inputFirstMeetingProblemHintText">Bitte beschreiben Sie kurz Ihr Anliegen oder Problem.</string>
             <string name="makeFirstMeetingSendSuccesfullToastText">Ihre Terminanfrage wurde erfolgreich gesendet!</string>
-
-
-
-
             <string name="makeMeetingTimelineDays">Tage</string>
             <string name="makeMeetingTimelineDayMo">Mo</string>
             <string name="makeMeetingTimelineDayDi">Di</string>
             <string name="makeMeetingTimelineDayMi">Mi</string>
             <string name="makeMeetingTimelineDayDo">Do</string>
             <string name="makeMeetingTimelineDayFr">Fr</string>
-
             <string name="makeMeetingTimezone1">9 bis 12 Uhr</string>
             <string name="makeMeetingTimezone2">12 bis 15 Uhr</string>
             <string name="makeMeetingTimezone3">15 bis 18 Uhr</string>
-
             <string name="firstMeetingPlaceWerderText">Werder (Havel)</string>
             <string name="firstMeetingPlaceBadBelzigText">Bad Belzig</string>
             <string name="firstMeetingPlaceNoPlaceText">Kein Ort gewählt</string>
-
         <!-- end fragment make meeting -->
 
 
         <!-- fragment find meeting -->
         <string name="findMeetingIntroTextNoMeetingSoFar">Termin wählen</string>
-        <string name="findMeetingExplainTextNoMeetingSoFar">Bitte wählen Sie mindestens einen Terminvorschlag aus, an dem Sie können. Klicken Sie dann am Ende der Liste auf Verbindlich Senden. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">rufen</a> Sie uns bitte an.</string>
-
-
+        <string name="findMeetingExplainTextNoMeetingSoFar">Bitte wählen Sie mindestens einen Terminvorschlag aus, an dem Sie können. Klicken Sie dann am Ende der Liste auf Verbindlich Senden. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">E-Mail</a>.</string>
         <string name="findMeetingAuthorSuggestionMeeting">Die Vorschläge wurden von %s eingestellt.</string>
-
-
         <string name="meetingFindMeetingNoDateAndTimeSuggestionsText">Zurzeit liegen keine Terminvorschläge vor.</string>
-
-
-
         <string name="btnTextSendSuggestionToCoach">Verbindlich Senden</string>
-
         <string name="errorCountTooLittleCheckBoexesCheckedText">Bitte wählen Sie mindestens einen Terminvorschlag aus.</string>
-
         <string name="textMeetingFindMeetingSuggestionSuccesfullSend">Vielen Dank. Ihre Daten wurden gesendet!</string>
-
-        <string name="textExplainTextForWaitingForRequest">Ihre bestätigten Terminvorschläge wurden erfolgreich gesendet. Sie erhalten in den nächsten Tagen eine Terminbetsätigung. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">rufen</a> Sie uns bitte an.</string>
-
+        <string name="textExplainTextForWaitingForRequest">Ihre bestätigten Terminvorschläge wurden erfolgreich gesendet. Sie erhalten in den nächsten Tagen eine Terminbestätigung. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">E-Mail</a>.</string>
         <string name="findMeetingIntroTextWaitingForRequest">Terminbestätigung abwarten</string>
-
         <string name="textExplainTextSendMeetingSuggestions">Folgende Terminvorschläge wurden von Ihnen gesendet:</string>
-
-    <string name="textShowDateAndTimeForMeetingConfirmation">Nächster Termin</string>
+        <string name="textShowDateAndTimeForMeetingConfirmation">Ihr nächster Termin</string>
 
         <!-- end fragment find meeting -->
 
@@ -541,6 +514,7 @@
             <string name="meetingSubtitleFindFirstMeetingNoSuggestions">Keine Terminvorschläge vorhanden</string>
             <string name="meetingSubtitleFindFirstWaitingRequest">Terminbestätigung steht aus</string>
             <string name="meetingSubtitleFindFirstMeetingShowDateAndTime">Ihr nächster Termin</string>
+            <string name="meetingSubtitleMakeMeetingAndShowMeeting">Termin + Neue Vorschläge</string>
 
 
 

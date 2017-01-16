@@ -28,6 +28,7 @@
 
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/containerShowNextMeetingDateAndTime"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -87,6 +88,19 @@
                 android:gravity="center_horizontal"
                 android:paddingBottom="15dp"
                 android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/buttonSendChangeMeetingDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_btn_join"
+                android:textColor="@color/white"
+                android:text="@string/btnChangeMeetingDateText"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"
+                android:visibility="gone"
+                android:layout_marginBottom="15dp"/>
 
         </LinearLayout>
 

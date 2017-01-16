@@ -172,6 +172,9 @@ public class SettingsEfbFragmentD extends Fragment {
         // in future comes from coach over internet
         prefsEditor.putLong("meetingDateAndTime", System.currentTimeMillis()); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+        // new date and time
+        prefsEditor.putBoolean("meetingNewDateAndTime", true); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 
         // put name of author for meeting suggestions
         prefsEditor.putString("authorMeetingSuggestions", "Herr Terminmann");
