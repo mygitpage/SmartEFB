@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayout;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,20 +40,23 @@ public class MeetingFragmentMeetingFind extends Fragment {
     // number of checkboxes for choosing timezones (look fragment meetingNow)
     static final int countNumberTimezones = 15;
 
+    // number of simultaneous meetings
+    static final int numberSimultaneousMeetings = 2;
+
     // boolean status array checkbox
     Boolean [] makeMeetingTimezoneSuggestionsArray = new Boolean[countNumberTimezones];
 
     // the current meeting date and time
-    long currentMeetingDateAndTime;
+    long [] currentMeetingDateAndTime = new long[numberSimultaneousMeetings];
+
+    // meeting status
+    int [] meetingPlace = new int[numberSimultaneousMeetings];
+
+    // meeting place name
+    String [] meetingPlaceName = new String [numberSimultaneousMeetings];
 
     // meeting status
     int meetingStatus;
-
-    // meeting status
-    int meetingPlace;
-
-    // meeting place name
-    String meetingPlaceName = "";
 
     // meeting suggestions author
     String meetingSuggestionsAuthor = "";
@@ -111,7 +115,10 @@ public class MeetingFragmentMeetingFind extends Fragment {
         meetingPlace = ((ActivityMeeting)getActivity()).getMeetingPlace();
 
         // call getter-methode getMeetingPlaceName in ActivityMeeting to get current place name
-        meetingPlaceName = ((ActivityMeeting)getActivity()).getMeetingPlaceName(meetingPlace);
+        for (int t=0; t<numberSimultaneousMeetings; t++) {
+            meetingPlaceName[t] = ((ActivityMeeting)getActivity()).getMeetingPlaceName(meetingPlace[t]);
+        }
+
 
         //call getter-methode getMeetingPlaceName in ActivityMeeting to get current place name
         meetingSuggestionsAuthor = ((ActivityMeeting)getActivity()).getAuthorMeetingSuggestion();
@@ -126,34 +133,13 @@ public class MeetingFragmentMeetingFind extends Fragment {
 
 
 
+    // look for meeting status and show current data
     private void displayActualMeetingInformation () {
 
         String tmpSubtitle = "";
 
-        Boolean showMakeFindFirstMeeting = false;
-        Boolean waitingForAnswerOfFindFirstMeeting = false;
-        Boolean confirmationForMeetingFindMeeting = false;
-        Boolean showMakeMeetingAndShowDateAndTime = false;
-
-        switch (meetingStatus) {
-
-            case 5: // first find meeting -> no meeting so far, suggestion comes from coach over internet
-                showMakeFindFirstMeeting = true;
-                break;
-            case 6: // find meeting -> wait for response
-                waitingForAnswerOfFindFirstMeeting = true;
-                break;
-            case 7: // find meeting -> show meeting date and time
-                confirmationForMeetingFindMeeting = true;
-                break;
-            case 8: // find meeting -> show meeting date and time and meeting suggestions
-                showMakeMeetingAndShowDateAndTime = true;
-                break;
-
-        }
-
         // meeting status 5 -> find meeting
-        if (showMakeFindFirstMeeting) {
+        if (meetingStatus == 5) {
 
             // unset all approval meeting in table
             myDb.unsetAllStatusApprovalMeetingFindMeeting();
@@ -204,7 +190,14 @@ public class MeetingFragmentMeetingFind extends Fragment {
 
 
         // meeting status 6 -> auf Antwort warten
-        if(waitingForAnswerOfFindFirstMeeting) {
+        if(meetingStatus == 6) {
+
+            int tmpIndexNumber = 0;
+
+            // which meeting data to parse to dataAdapter, default is 0
+            if ((currentMeetingDateAndTime[0] > currentMeetingDateAndTime[1] ) && currentMeetingDateAndTime[1] != 0) {
+                tmpIndexNumber = 1;
+            }
 
             // get all choosen suggeste meetings from database
             Cursor cursor = myDb.getRowsChoosenSuggesteMeetings();
@@ -229,7 +222,9 @@ public class MeetingFragmentMeetingFind extends Fragment {
                 dataAdapterListViewWaitingRequest = new MeetingWaitingForRequestCursorAdapter(
                         getActivity(),
                         cursor,
-                        0);
+                        0,
+                        currentMeetingDateAndTime[tmpIndexNumber],
+                        meetingPlaceName[tmpIndexNumber]);
 
                 // Assign adapter to ListView
                 listView.setAdapter(dataAdapterListViewWaitingRequest);
@@ -250,51 +245,171 @@ public class MeetingFragmentMeetingFind extends Fragment {
         }
 
 
-        // meeting status 7 -> Antwort da, zeige Termin
-        if(confirmationForMeetingFindMeeting) {
+        // meeting status 7 -> Antwort da, zeige Termine (maximal zwei Termine koennen angezeigt werden)
+        if(meetingStatus == 7) {
 
-            /// set correct subtitle
-            tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFindFirstMeetingShowDateAndTime", "string", fragmentMeetingFindContext.getPackageName()));
-            ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle);
+            if (currentMeetingDateAndTime[0] != 0 || currentMeetingDateAndTime[1] != 0) { //is min. one meeting set?
 
-            // show linear layout for date and time
-            LinearLayout linearLayoutViewNextMeeting = (LinearLayout) viewFragmentMeetingFind.findViewById(R.id.containerShowNextMeetingDateAndTime);
-            linearLayoutViewNextMeeting.setVisibility(View.VISIBLE);
+                if (currentMeetingDateAndTime[0] > 0 && currentMeetingDateAndTime[1] > 0) {
 
-            // show meeting intro text
-            TextView textViewNextMeetingIntroText = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingIntroText);
-            textViewNextMeetingIntroText.setVisibility(View.VISIBLE);
+                    int tmpIndexNumberFirst = 0;
+                    int tmpIndexNumberSecond = 0;
 
-            // show date text and set visible
-            TextView tmpShowDateText = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingDate);
-            tmpShowDateText.setVisibility(View.VISIBLE);
-            String tmpDate = EfbHelperClass.timestampToDateFormat(currentMeetingDateAndTime, "dd.MM.yyyy");
-            tmpShowDateText.setText(tmpDate);
+                    // set correct subtitle
+                    tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFindFirstMeetingShowDateAndTimePlural", "string", fragmentMeetingFindContext.getPackageName()));
+                    ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle(tmpSubtitle);
 
-            // show time text and set visible
-            TextView tmpShowTimeText = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingTime);
-            tmpShowTimeText.setVisibility(View.VISIBLE);
-            String tmpTime = EfbHelperClass.timestampToTimeFormat(currentMeetingDateAndTime, "HH:mm") + " " + fragmentMeetingFindContext.getResources().getString(R.string.showClockWordAdditionalText);
-            tmpShowTimeText.setText(tmpTime);
 
-            if (meetingPlace == 1 || meetingPlace == 2) { // show meeting place name
+                    // show linear layout for date and time for first meeting
+                    LinearLayout linearLayoutViewNextMeeting_A = (LinearLayout) viewFragmentMeetingFind.findViewById(R.id.containerShowNextMeetingDateAndTime_A);
+                    linearLayoutViewNextMeeting_A.setVisibility(View.VISIBLE);
 
-                // show time place and set visible
-                TextView tmpShowPlaceText = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingPlace);
-                tmpShowPlaceText.setVisibility(View.VISIBLE);
-                tmpShowPlaceText.setText(meetingPlaceName);
+
+                    // show linear layout for date and time for second meeting
+                    LinearLayout linearLayoutViewNextMeeting_B = (LinearLayout) viewFragmentMeetingFind.findViewById(R.id.containerShowNextMeetingDateAndTime_B);
+                    linearLayoutViewNextMeeting_B.setVisibility(View.VISIBLE);
+
+                    // show meeting intro text for first meeting
+                    TextView textViewNextMeetingIntroText_A = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingIntroText_A);
+                    String tmpTextViewNextMeetingIntroText = fragmentMeetingFindContext.getResources().getString(R.string.textShowDateAndTimeForMeetingConfirmationPlural);
+                    textViewNextMeetingIntroText_A.setText(tmpTextViewNextMeetingIntroText);
+                    textViewNextMeetingIntroText_A.setVisibility(View.VISIBLE);
+
+                    // select order to show meetings
+                    if (currentMeetingDateAndTime[0] >= currentMeetingDateAndTime[1]) {
+                        tmpIndexNumberFirst = 1;
+                        tmpIndexNumberSecond = 0;
+                    }
+                    else  {
+                        tmpIndexNumberFirst = 0;
+                        tmpIndexNumberSecond = 1;
+                    }
+
+                    // show meeting A ----------------------------
+                    // show date text and set visible
+                    TextView tmpShowDateText_A = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingDate_A);
+                    tmpShowDateText_A.setVisibility(View.VISIBLE);
+                    String tmpDate_A = EfbHelperClass.timestampToDateFormat(currentMeetingDateAndTime[tmpIndexNumberFirst], "dd.MM.yyyy");
+                    tmpShowDateText_A.setText(tmpDate_A);
+
+                    // show time text and set visible
+                    TextView tmpShowTimeText_A = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingTime_A);
+                    tmpShowTimeText_A.setVisibility(View.VISIBLE);
+                    String tmpTime_A = EfbHelperClass.timestampToTimeFormat(currentMeetingDateAndTime[tmpIndexNumberFirst], "HH:mm") + " " + fragmentMeetingFindContext.getResources().getString(R.string.showClockWordAdditionalText);
+                    tmpShowTimeText_A.setText(tmpTime_A);
+
+                    if (meetingPlace[tmpIndexNumberFirst] == 1 || meetingPlace[tmpIndexNumberFirst] == 2) { // show meeting place name
+
+                        // show time place and set visible
+                        TextView tmpShowPlaceText_A = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingPlace_A);
+                        tmpShowPlaceText_A.setVisibility(View.VISIBLE);
+                        tmpShowPlaceText_A.setText(meetingPlaceName[tmpIndexNumberFirst]);
+                    }
+
+                    // show button abbort meeting
+                    Button btnAbbortMeeting_A = (Button) viewFragmentMeetingFind.findViewById(R.id.buttonSendChangeMeetingDate_A);
+                    btnAbbortMeeting_A.setVisibility(View.VISIBLE);
+
+                    // show meeting B ------------------------
+                    // show date text and set visible
+                    TextView tmpShowDateText_B = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingDate_B);
+                    tmpShowDateText_B.setVisibility(View.VISIBLE);
+                    String tmpDate_B = EfbHelperClass.timestampToDateFormat(currentMeetingDateAndTime[tmpIndexNumberSecond], "dd.MM.yyyy");
+                    tmpShowDateText_B.setText(tmpDate_B);
+
+                    // show time text and set visible
+                    TextView tmpShowTimeText_B = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingTime_B);
+                    tmpShowTimeText_B.setVisibility(View.VISIBLE);
+                    String tmpTime_B = EfbHelperClass.timestampToTimeFormat(currentMeetingDateAndTime[tmpIndexNumberSecond], "HH:mm") + " " + fragmentMeetingFindContext.getResources().getString(R.string.showClockWordAdditionalText);
+                    tmpShowTimeText_B.setText(tmpTime_B);
+
+                    if (meetingPlace[tmpIndexNumberSecond] == 1 || meetingPlace[tmpIndexNumberSecond] == 2) { // show meeting place name
+
+                        // show time place and set visible
+                        TextView tmpShowPlaceText_B = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingPlace_B);
+                        tmpShowPlaceText_B.setVisibility(View.VISIBLE);
+                        tmpShowPlaceText_B.setText(meetingPlaceName[tmpIndexNumberSecond]);
+                    }
+
+                    // show button abbort meeting
+                    Button btnAbbortMeeting_B = (Button) viewFragmentMeetingFind.findViewById(R.id.buttonSendChangeMeetingDate_B);
+                    btnAbbortMeeting_B.setVisibility(View.VISIBLE);
+
+                } else { // only one meeting is set
+
+                    int tmpIndexNumber = 0;
+
+                    // set correct subtitle
+                    tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFindFirstMeetingShowDateAndTimeSingular", "string", fragmentMeetingFindContext.getPackageName()));
+                    ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle(tmpSubtitle);
+
+                    // show meeting intro text for first meeting
+                    TextView textViewNextMeetingIntroText = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingIntroText_A);
+                    textViewNextMeetingIntroText.setVisibility(View.VISIBLE);
+
+                    // show linear layout for date and time for first meeting
+                    LinearLayout linearLayoutViewNextMeeting = (LinearLayout) viewFragmentMeetingFind.findViewById(R.id.containerShowNextMeetingDateAndTime_A);
+                    linearLayoutViewNextMeeting.setVisibility(View.VISIBLE);
+
+                    if (currentMeetingDateAndTime[0] == 0 && currentMeetingDateAndTime[1] != 0) {
+                        tmpIndexNumber = 1;
+                    } else if (currentMeetingDateAndTime[0] != 0 && currentMeetingDateAndTime[1] == 0) {
+                        tmpIndexNumber = 0;
+                    }
+
+                    // show date text and set visible
+                    TextView tmpShowDateText = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingDate_A);
+                    tmpShowDateText.setVisibility(View.VISIBLE);
+                    String tmpDate = EfbHelperClass.timestampToDateFormat(currentMeetingDateAndTime[tmpIndexNumber], "dd.MM.yyyy");
+                    tmpShowDateText.setText(tmpDate);
+
+                    // show time text and set visible
+                    TextView tmpShowTimeText = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingTime_A);
+                    tmpShowTimeText.setVisibility(View.VISIBLE);
+                    String tmpTime = EfbHelperClass.timestampToTimeFormat(currentMeetingDateAndTime[tmpIndexNumber], "HH:mm") + " " + fragmentMeetingFindContext.getResources().getString(R.string.showClockWordAdditionalText);
+                    tmpShowTimeText.setText(tmpTime);
+
+                    if (meetingPlace[tmpIndexNumber] == 1 || meetingPlace[tmpIndexNumber] == 2) { // show meeting place name
+
+                        // show time place and set visible
+                        TextView tmpShowPlaceText = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingPlace_A);
+                        tmpShowPlaceText.setVisibility(View.VISIBLE);
+                        tmpShowPlaceText.setText(meetingPlaceName[tmpIndexNumber]);
+                    }
+
+                    // show button abbort meeting
+                    Button btnAbbortMeeting = (Button) viewFragmentMeetingFind.findViewById(R.id.buttonSendChangeMeetingDate_A);
+                    btnAbbortMeeting.setVisibility(View.VISIBLE);
+
+                }
+
+
             }
+            else { // no meeting set (old or something else)
 
-            // show button abbort meeting
-            Button btnAbbortMeeting = (Button) viewFragmentMeetingFind.findViewById(R.id.buttonSendChangeMeetingDate);
-            btnAbbortMeeting.setVisibility(View.VISIBLE);
+                /// set correct subtitle
+                tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFindMeetingNoMoreMeetingSet", "string", fragmentMeetingFindContext.getPackageName()));
+                ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle(tmpSubtitle);
 
+                // set movement methode for telephone link in info text
+                TextView tmpShowMeetingNoMoreMeetingAvailable = (TextView) viewFragmentMeetingFind.findViewById(R.id.meetingFindMeetingNoActualMeetingAvailable);
+                tmpShowMeetingNoMoreMeetingAvailable.setVisibility(View.VISIBLE);
+                tmpShowMeetingNoMoreMeetingAvailable.setMovementMethod(LinkMovementMethod.getInstance());
+
+            }
         }
 
 
-
         // meeting status 8 -> Termin steht fest und neue Terminvorschläge sind da
-        if(showMakeMeetingAndShowDateAndTime) {
+        if(meetingStatus == 8) {
+
+            int tmpIndexNumber = 0;
+
+            // which meeting data to parse to dataAdapter, default is 0
+            if ((currentMeetingDateAndTime[0] > currentMeetingDateAndTime[1] ) && currentMeetingDateAndTime[1] != 0) {
+                tmpIndexNumber = 1;
+            }
+
 
             // unset all approval meeting in table
             myDb.unsetAllStatusApprovalMeetingFindMeeting();
@@ -318,12 +433,15 @@ public class MeetingFragmentMeetingFind extends Fragment {
                 // set listview vivibility visible
                 listView.setVisibility(View.VISIBLE);
 
-                // new dataadapter
+                // new dataadapter with own constructor
                 dataAdapterListViewMakeAndShow = new MeetingMakeMeetingAndShowMeetingCursorAdapter(
                         getActivity(),
                         cursor,
                         0,
-                        meetingSuggestionsAuthor);
+                        meetingSuggestionsAuthor,
+                        currentMeetingDateAndTime[tmpIndexNumber],
+                        meetingPlaceName[tmpIndexNumber]);
+
 
                 // Assign adapter to ListView
                 listView.setAdapter(dataAdapterListViewMakeAndShow);
@@ -341,20 +459,7 @@ public class MeetingFragmentMeetingFind extends Fragment {
 
             }
 
-
-
-
-
-
-
-
-
         }
-
-
-        
-        
-        
 
     }
 

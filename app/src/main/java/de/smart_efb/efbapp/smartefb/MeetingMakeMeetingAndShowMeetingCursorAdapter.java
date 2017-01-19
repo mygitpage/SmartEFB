@@ -10,8 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.sql.Struct;
 
 /**
  * Created by ich on 16.01.2017.
@@ -28,14 +31,17 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
     // meeting suggestions author
     String meetingSuggestionsAuthor = "";
 
+    // meeting place name
+    String meetingPlaceName = "";
+
+    // actual meeting date and time
+    Long currentMeetingDateAndTime;
+
     // max number of simultaneous meeting checkboxes
     static final int maxSimultaneousMeetingCheckBoxes = 20;
 
     // int array for checkbox values (DbId)
     int [] checkBoxMeetingSuggestionsValues = new int [maxSimultaneousMeetingCheckBoxes];
-
-    // int array for UNCHECKED checkbox values (DbId)
-    int [] checkBoxMeetingNotSuggestionsValues = new int [maxSimultaneousMeetingCheckBoxes];
 
     // min number of checkboxes to check
     static final int minNumberCheckBoxesToCheck = 1;
@@ -54,13 +60,17 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
 
 
     // Own constructor
-    public MeetingMakeMeetingAndShowMeetingCursorAdapter (Context context, Cursor cursor, int flags, String tmpAuthorMeetingSuggestion) {
+    public MeetingMakeMeetingAndShowMeetingCursorAdapter (Context context, Cursor cursor, int flags, String tmpAuthorMeetingSuggestion, Long tmpActualMeetingDateAndTime, String tmpMeetingPlace) {
 
         super(context, cursor, flags);
 
         meetingMakeAndShowMeetingCursorAdapterContext = context;
 
         meetingSuggestionsAuthor = tmpAuthorMeetingSuggestion;
+
+        currentMeetingDateAndTime = tmpActualMeetingDateAndTime;
+
+        meetingPlaceName = tmpMeetingPlace;
 
         // init the DB
         myDb = new DBAdapter(context);
@@ -88,6 +98,53 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
 
         if (cursor.isFirst() ) { // listview for first element
 
+
+
+            if (currentMeetingDateAndTime > 0) { // show only, when current meeting is future
+
+                // show linear layout for date and time
+                LinearLayout linearLayoutViewNextMeeting = (LinearLayout) view.findViewById(R.id.containerShowNextMeetingDateAndTime);
+                linearLayoutViewNextMeeting.setVisibility(View.VISIBLE);
+
+                // show meeting intro text
+                TextView textViewShowNextMeetingDateAndTimeIntroText = (TextView) view.findViewById(R.id.nextMeetingShowDateAndTimeIntroText);
+                textViewShowNextMeetingDateAndTimeIntroText.setVisibility(View.VISIBLE);
+
+                // show date text and set visible
+                TextView tmpShowDateText = (TextView) view.findViewById(R.id.nextMeetingDate);
+                tmpShowDateText.setVisibility(View.VISIBLE);
+                String tmpDate = EfbHelperClass.timestampToDateFormat(currentMeetingDateAndTime, "dd.MM.yyyy");
+                tmpShowDateText.setText(tmpDate);
+
+                // show time text and set visible
+                TextView tmpShowTimeText = (TextView) view.findViewById(R.id.nextMeetingTime);
+                tmpShowTimeText.setVisibility(View.VISIBLE);
+                String tmpTime = EfbHelperClass.timestampToTimeFormat(currentMeetingDateAndTime, "HH:mm") + " " + meetingMakeAndShowMeetingCursorAdapterContext.getResources().getString(R.string.showClockWordAdditionalText);
+                tmpShowTimeText.setText(tmpTime);
+
+                // show place and set visible
+                TextView tmpShowPlaceText = (TextView) view.findViewById(R.id.nextMeetingPlace);
+                tmpShowPlaceText.setVisibility(View.VISIBLE);
+                tmpShowPlaceText.setText(meetingPlaceName);
+
+            }
+            else {
+                // show meeting intro text
+                TextView textShowExplainTextForFindMeetingWithOldMeeting = (TextView) view.findViewById(R.id.showExplainTextForFindMeetingWithOldMeeting);
+                textShowExplainTextForFindMeetingWithOldMeeting.setVisibility(View.VISIBLE);
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             // show meeting intro text
             String txtFindFirstMeetingIntro  = context.getResources().getString(R.string.findMeetingIntroTextNoMeetingSoFar);
             TextView textViewNextMeetingIntroText = (TextView) view.findViewById(R.id.nextMeetingIntroText);

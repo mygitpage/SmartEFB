@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,13 +29,27 @@
             android:paddingTop="15dp"
             android:paddingLeft="15dp"/>
 
-        <!-- meeting date, time and place -->
+        <TextView
+            android:id="@+id/meetingFindMeetingNoActualMeetingAvailable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:text="@string/meetingFindMeetingNoActualMeetingAvailableText"
+            android:paddingTop="15dp"
+            android:paddingLeft="15dp"/>
+
+        <!-- meeting date, time and place  for first meeting-->
+
 
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/containerShowNextMeetingDateAndTime"
+            android:id="@+id/containerShowNextMeetingDateAndTime_A"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="left"
             android:background="@color/body_background"
@@ -42,13 +61,13 @@
 
 
             <TextView
-                android:id="@+id/nextMeetingIntroText"
+                android:id="@+id/nextMeetingIntroText_A"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
                 android:textColor="@color/text_color"
                 android:textStyle="bold"
-                android:text="@string/textShowDateAndTimeForMeetingConfirmation"
+                android:text="@string/textShowDateAndTimeForMeetingConfirmationSingular"
                 android:gravity="left"
                 android:paddingLeft="10dp"
                 android:paddingBottom="5dp"
@@ -57,7 +76,7 @@
 
 
             <TextView
-                android:id="@+id/nextMeetingDate"
+                android:id="@+id/nextMeetingDate_A"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="30dp"
@@ -68,7 +87,7 @@
                 android:visibility="gone"/>
 
             <TextView
-                android:id="@+id/nextMeetingTime"
+                android:id="@+id/nextMeetingTime_A"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="30dp"
@@ -79,7 +98,7 @@
                 android:visibility="gone"/>
 
             <TextView
-                android:id="@+id/nextMeetingPlace"
+                android:id="@+id/nextMeetingPlace_A"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="30dp"
@@ -90,7 +109,7 @@
                 android:visibility="gone"/>
 
             <Button
-                android:id="@+id/buttonSendChangeMeetingDate"
+                android:id="@+id/buttonSendChangeMeetingDate_A"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/bg_btn_join"
@@ -104,7 +123,76 @@
 
         </LinearLayout>
 
-    <!-- End meeting date, time and place -->
+
+    <!-- End meeting date, time and place first meeting-->
+
+
+    <!-- meeting date, time and place  for second meeting-->
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/containerShowNextMeetingDateAndTime_B"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="left"
+        android:background="@color/body_background"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/nextMeetingDate_B"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/nextMeetingTime_B"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/nextMeetingPlace_B"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/buttonSendChangeMeetingDate_B"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_btn_join"
+            android:textColor="@color/white"
+            android:text="@string/btnChangeMeetingDateText"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="5dp"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:layout_marginBottom="15dp"/>
+
+    </LinearLayout>
+
+    <!-- End meeting date, time and place second meeting-->
+
 
 
         <ListView
@@ -120,4 +208,6 @@
 
 
     </LinearLayout>
+
+</ScrollView>
 

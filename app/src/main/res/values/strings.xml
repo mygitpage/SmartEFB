@@ -499,8 +499,13 @@
         <string name="textExplainTextForWaitingForRequest">Ihre bestätigten Terminvorschläge wurden erfolgreich gesendet. Sie erhalten in den nächsten Tagen eine Terminbestätigung. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">E-Mail</a>.</string>
         <string name="findMeetingIntroTextWaitingForRequest">Terminbestätigung abwarten</string>
         <string name="textExplainTextSendMeetingSuggestions">Folgende Terminvorschläge wurden von Ihnen gesendet:</string>
-        <string name="textShowDateAndTimeForMeetingConfirmation">Ihr nächster Termin</string>
-
+        <string name="textShowDateAndTimeForMeetingConfirmationSingular">Ihr nächster Termin:</string>
+        <string name="textShowDateAndTimeForMeetingConfirmationPlural">Ihre nächsten beiden Termine:</string>
+        <string name="meetingFindMeetingNoActualMeetingAvailableText">Alle bisher angezeigten Termine sind abgelaufen und werden daher nicht mehr angezeigt. Bitte <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">E-Mail</a>.</string>
+        <string name="textShowDateAndTimeForMeetingAndNewSuggestions">Ihr nächster Termin und Terminvorschläge für einen übernächsten Termin</string>
+        <string name="findMeetingExplainTextWithAnotherMeeting">Für die Planung eines übernächsten Termins stehen folgende Terminvorschläge zur Verfügung. Bitte markieren Sie die Vorschläge, an denen Sie Zeit haben und klicken anschließend auf Senden. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">E-Mail</a>.</string>
+        <string name="showExplainTextForFindMeetingWithOldMeetingText">Ihr nächster Termin ist abgelaufen und liegt damit in der Vergangenheit.</string>
+        <string name="textShowDateAndTimeForMeetingAndWaitForResponse">Ihr nächster Termin und warten auf eine Terminbestätigung für Ihre Vorschläge:</string>
         <!-- end fragment find meeting -->
 
 
@@ -513,8 +518,10 @@
             <string name="meetingSubtitleFindFirstMeeting">Terminvorschläge wählen</string>
             <string name="meetingSubtitleFindFirstMeetingNoSuggestions">Keine Terminvorschläge vorhanden</string>
             <string name="meetingSubtitleFindFirstWaitingRequest">Terminbestätigung steht aus</string>
-            <string name="meetingSubtitleFindFirstMeetingShowDateAndTime">Ihr nächster Termin</string>
+            <string name="meetingSubtitleFindFirstMeetingShowDateAndTimeSingular">Ihr nächster Termin</string>
+            <string name="meetingSubtitleFindFirstMeetingShowDateAndTimePlural">Ihre nächsten Termine</string>
             <string name="meetingSubtitleMakeMeetingAndShowMeeting">Termin + Neue Vorschläge</string>
+            <string name="meetingSubtitleFindMeetingNoMoreMeetingSet">Keine aktuellen Termine mehr</string>
 
 
 

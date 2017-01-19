@@ -100,7 +100,7 @@ public class MeetingFragmentMeetingChange extends Fragment {
         prefsEditor = prefs.edit();
 
         // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get current time and date
-        currentMeetingDateAndTime = ((ActivityMeeting)getActivity()).getMeetingTimeAndDate();
+        //currentMeetingDateAndTime = ((ActivityMeeting)getActivity()).getMeetingTimeAndDate();
 
         // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get meeting status
         meetingStatus = ((ActivityMeeting)getActivity()).getMeetingStatus();
@@ -205,17 +205,17 @@ public class MeetingFragmentMeetingChange extends Fragment {
 
 
                         // call setter-methode setMeetingTimezoneSuggestions in ActivityMeeting to set timezone suggestion results
-                        ((ActivityMeeting)getActivity()).setMeetingTimezoneSuggestions(makeMeetingCheckBoxListenerArray);
+                        //((ActivityMeeting)getActivity()).setMeetingTimezoneSuggestions(makeMeetingCheckBoxListenerArray);
 
 
                         // call setter-methode setMeetingPlace in ActivityMeeting to set place
-                        ((ActivityMeeting)getActivity()).setMeetingPlace(resultNumberOfPlace);
+                        //((ActivityMeeting)getActivity()).setMeetingPlace(resultNumberOfPlace);
 
                         // call setter-methode setMeetingProblem in ActivityMeeting to problem
-                        ((ActivityMeeting)getActivity()).setMeetingProblem(tmpTextInputFirstMeetingProblem);
+                        //((ActivityMeeting)getActivity()).setMeetingProblem(tmpTextInputFirstMeetingProblem);
 
                         // call setter-methode setMeetingStatus in ActivityMeeting to Meeting suggested
-                        ((ActivityMeeting)getActivity()).setMeetingStatus(1);
+                        //((ActivityMeeting)getActivity()).setMeetingStatus(1);
 
 
 

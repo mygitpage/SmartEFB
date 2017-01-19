@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,17 +26,24 @@ public class MeetingWaitingForRequestCursorAdapter extends CursorAdapter {
     // context for cursor adapter
     Context meetingWaitingRequestCursorAdapterContext;
 
-    // meeting suggestions author
-    String meetingSuggestionsAuthor = "";
+    // meeting place name
+    String meetingPlaceName = "";
+
+    // actual meeting date and time
+    Long currentMeetingDateAndTime;
 
     
 
     // constructor
-    public MeetingWaitingForRequestCursorAdapter(Context context, Cursor cursor, int flags) {
+    public MeetingWaitingForRequestCursorAdapter(Context context, Cursor cursor, int flags, Long tmpActualMeetingDateAndTime, String tmpMeetingPlace) {
 
         super(context, cursor, flags);
 
         meetingWaitingRequestCursorAdapterContext = context;
+
+        currentMeetingDateAndTime = tmpActualMeetingDateAndTime;
+
+        meetingPlaceName = tmpMeetingPlace;
 
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -65,6 +73,43 @@ public class MeetingWaitingForRequestCursorAdapter extends CursorAdapter {
             TextView tmpTextSendMeetingSuggestions = (TextView) view.findViewById(R.id.showExplainTextSendMeetingSuggestions);
             tmpTextSendMeetingSuggestions.setVisibility(View.VISIBLE);
 
+
+
+
+            // show meeting when available
+            if (currentMeetingDateAndTime > 0) { // show only, when current meeting is future
+
+                // show linear layout for date and time
+                LinearLayout linearLayoutViewNextMeeting = (LinearLayout) view.findViewById(R.id.containerShowNextMeetingDateAndTime);
+                linearLayoutViewNextMeeting.setVisibility(View.VISIBLE);
+
+                // show meeting intro text
+                TextView textViewShowNextMeetingDateAndTimeIntroText = (TextView) view.findViewById(R.id.nextMeetingShowDateAndTimeIntroText);
+                textViewShowNextMeetingDateAndTimeIntroText.setVisibility(View.VISIBLE);
+
+                // show date text and set visible
+                TextView tmpShowDateText = (TextView) view.findViewById(R.id.nextMeetingDate);
+                tmpShowDateText.setVisibility(View.VISIBLE);
+                String tmpDate = EfbHelperClass.timestampToDateFormat(currentMeetingDateAndTime, "dd.MM.yyyy");
+                tmpShowDateText.setText(tmpDate);
+
+                // show time text and set visible
+                TextView tmpShowTimeText = (TextView) view.findViewById(R.id.nextMeetingTime);
+                tmpShowTimeText.setVisibility(View.VISIBLE);
+                String tmpTime = EfbHelperClass.timestampToTimeFormat(currentMeetingDateAndTime, "HH:mm") + " " + meetingWaitingRequestCursorAdapterContext.getResources().getString(R.string.showClockWordAdditionalText);
+                tmpShowTimeText.setText(tmpTime);
+
+                // show place and set visible
+                TextView tmpShowPlaceText = (TextView) view.findViewById(R.id.nextMeetingPlace);
+                tmpShowPlaceText.setVisibility(View.VISIBLE);
+                tmpShowPlaceText.setText(meetingPlaceName);
+
+            }
+            else {
+                // show meeting intro text
+                TextView textShowExplainTextForFindMeetingWithOldMeeting = (TextView) view.findViewById(R.id.showExplainTextForFindMeetingWithOldMeeting);
+                textShowExplainTextForFindMeetingWithOldMeeting.setVisibility(View.VISIBLE);
+            }
 
 
 

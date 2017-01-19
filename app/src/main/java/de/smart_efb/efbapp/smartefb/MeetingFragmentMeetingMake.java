@@ -26,27 +26,11 @@ import android.widget.Toast;
  */
 public class MeetingFragmentMeetingMake extends Fragment {
 
-
     // fragment view
     View viewFragmentMeetingMake;
 
     // fragment context
     Context fragmentMeetingMakeContext = null;
-
-    // reference to the DB
-    DBAdapter myDb;
-
-    // shared prefs for the settings
-    SharedPreferences prefs;
-
-    // shared prefs for storing
-    SharedPreferences.Editor prefsEditor;
-
-    // the current meeting date and time
-    long currentMeetingDateAndTime;
-
-    // meeting status
-    int meetingStatus;
 
     // number of checkboxes for choosing timezones (look fragment meetingNow)
     static final int countNumberTimezones = 15;
@@ -64,13 +48,10 @@ public class MeetingFragmentMeetingMake extends Fragment {
     int resultNumberOfPlace = 0;
 
 
-
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
         viewFragmentMeetingMake = layoutInflater.inflate(R.layout.fragment_meeting_meeting_make, null);
-
-        Log.d("Meeting","onCreateView");
 
         return viewFragmentMeetingMake;
 
@@ -93,21 +74,8 @@ public class MeetingFragmentMeetingMake extends Fragment {
     }
 
 
-
+    // init fragment
     private void initFragmentMeetingNow () {
-
-        // init the prefs
-        prefs = fragmentMeetingMakeContext.getSharedPreferences("smartEfbSettings", fragmentMeetingMakeContext.MODE_PRIVATE);
-
-        // init prefs editor
-        prefsEditor = prefs.edit();
-
-        // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get current time and date
-        currentMeetingDateAndTime = ((ActivityMeeting)getActivity()).getMeetingTimeAndDate();
-
-        // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get meeting status
-        meetingStatus = ((ActivityMeeting)getActivity()).getMeetingStatus();
-
 
         // set onClickListener for checkboxes to choose timezone
         String tmpRessourceName ="";
@@ -133,7 +101,6 @@ public class MeetingFragmentMeetingMake extends Fragment {
         RadioButton tmpRadioButtonPlaces;
         for (int countPlaces = 0; countPlaces < countNumberPlaces; countPlaces++) {
 
-
             tmpRessourceName ="makeMeetingPlace_" + (countPlaces+1);
             try {
                 int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", fragmentMeetingMakeContext.getPackageName());
@@ -146,50 +113,30 @@ public class MeetingFragmentMeetingMake extends Fragment {
                 e.printStackTrace();
             }
         }
-
     }
+
 
     // show fragment ressources
     private void displayActualMeetingInformation () {
 
-        String tmpSubtitle = "";
-
-        Button tmpButton;
-
-        Boolean btnVisibilitySendMakeFirstMeeting = false;
-
-
-
-        switch (meetingStatus) {
-
-
-            case 0:
-            default: // no time and date for meeting -> first meeting
-                btnVisibilitySendMakeFirstMeeting = true;
-                tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMakeFirstMeeting", "string", fragmentMeetingMakeContext.getPackageName()));
-                break;
-
-        }
-
         // Set correct subtitle in Activity Meeting Fragment make first meeting
+        String tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMakeFirstMeeting", "string", fragmentMeetingMakeContext.getPackageName()));
         ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle);
 
-        // status make first meeting
-        if (btnVisibilitySendMakeFirstMeeting) {
+        // set movement methode for telephone and email link in intro text
+        TextView tmpShowMeetingExplainText = (TextView) viewFragmentMeetingMake.findViewById(R.id.makeFirstMeetingExplainText);
+        tmpShowMeetingExplainText.setMovementMethod(LinkMovementMethod.getInstance());
 
-            // set movement methode for telephone link in intro text
-            TextView tmpShowMeetingExplainText = (TextView) viewFragmentMeetingMake.findViewById(R.id.makeFirstMeetingExplainText);
-            tmpShowMeetingExplainText.setMovementMethod(LinkMovementMethod.getInstance());
+        // set movement methode for telephone link in info text
+        TextView tmpShowMeetingProcedureText = (TextView) viewFragmentMeetingMake.findViewById(R.id.infoMakeMeetingProcedure);
+        tmpShowMeetingProcedureText.setMovementMethod(LinkMovementMethod.getInstance());
 
-            // set movement methode for telephone link in info text
-            TextView tmpShowMeetingProcedureText = (TextView) viewFragmentMeetingMake.findViewById(R.id.infoMakeMeetingProcedure);
-            tmpShowMeetingProcedureText.setMovementMethod(LinkMovementMethod.getInstance());
+        // find send button "Anfrage senden"
+        Button tmpButton;
+        tmpButton = (Button) viewFragmentMeetingMake.findViewById(R.id.buttonSendSuggestionFirstMeeting);
 
-            // find send button "Anfrage senden"
-            tmpButton = (Button) viewFragmentMeetingMake.findViewById(R.id.buttonSendSuggestionFirstMeeting);
-
-            // onClick listener make meeting
-            tmpButton.setOnClickListener(new View.OnClickListener() {
+        // onClick listener make meeting
+        tmpButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -206,7 +153,6 @@ public class MeetingFragmentMeetingMake extends Fragment {
                         tmpErrorTextView.setVisibility(View.GONE);
                     }
 
-
                     // check radio buttons result
                     tmpErrorTextView = (TextView) viewFragmentMeetingMake.findViewById(R.id.makeFirstMeetingChoosePlaceError);
                     if ( resultNumberOfPlace <= 0 && tmpErrorTextView != null) {
@@ -215,7 +161,6 @@ public class MeetingFragmentMeetingMake extends Fragment {
                     } else if (tmpErrorTextView != null) {
                         tmpErrorTextView.setVisibility(View.GONE);
                     }
-
 
                     // check edit text border (<3 and >500)
                     EditText tmpInputFirstMeetingProblem = (EditText) viewFragmentMeetingMake.findViewById(R.id.inputFirstMeetingProblemText);
@@ -237,13 +182,11 @@ public class MeetingFragmentMeetingMake extends Fragment {
                     // input error?
                     if (makeMeetingNoError) {
 
-
                         // call setter-methode setMeetingTimezoneSuggestions in ActivityMeeting to set timezone suggestion results
                         ((ActivityMeeting)getActivity()).setMeetingTimezoneSuggestions(makeMeetingCheckBoxListenerArray);
 
-
-                        // call setter-methode setMeetingPlace in ActivityMeeting to set place
-                        ((ActivityMeeting)getActivity()).setMeetingPlace(resultNumberOfPlace);
+                        // call setter-methode setMeetingPlace in ActivityMeeting to set place in Position 0 (First Meeting is ever at Position 0)
+                        ((ActivityMeeting)getActivity()).setMeetingPlace(resultNumberOfPlace,0);
 
                         // call setter-methode setMeetingProblem in ActivityMeeting to problem
                         ((ActivityMeeting)getActivity()).setMeetingProblem(tmpTextInputFirstMeetingProblem);
@@ -282,16 +225,14 @@ public class MeetingFragmentMeetingMake extends Fragment {
 
 
                     }
-
                 }
             });
 
+        // find abbort button "Zurueck zur Terminuebersicht"
+        tmpButton = (Button) viewFragmentMeetingMake.findViewById(R.id.buttonAbbortSuggestionFirstMeeting);
 
-            // find abbort button "Zurueck zur Terminuebersicht"
-            tmpButton = (Button) viewFragmentMeetingMake.findViewById(R.id.buttonAbbortSuggestionFirstMeeting);
-
-            // onClick listener make meeting
-            tmpButton.setOnClickListener(new View.OnClickListener() {
+        // onClick listener make meeting
+        tmpButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -300,10 +241,8 @@ public class MeetingFragmentMeetingMake extends Fragment {
                     intent.putExtra("com","now_meeting");
                     intent.putExtra("pop_stack", true);
                     fragmentMeetingMakeContext.startActivity(intent);
-
                 }
             });
-        }
 
     }
 
@@ -323,7 +262,6 @@ public class MeetingFragmentMeetingMake extends Fragment {
         @Override
         public void onClick(View v) {
 
-
             if (makeMeetingCheckBoxListenerArray[checkBoxNumber]) {
                 makeMeetingCheckBoxListenerArray[checkBoxNumber] = false;
                 countSelectedCheckBoxesTimezone --;
@@ -332,7 +270,6 @@ public class MeetingFragmentMeetingMake extends Fragment {
                 makeMeetingCheckBoxListenerArray[checkBoxNumber] = true;
                 countSelectedCheckBoxesTimezone ++;
             }
-
 
         }
 
@@ -355,11 +292,10 @@ public class MeetingFragmentMeetingMake extends Fragment {
         @Override
         public void onClick(View v) {
 
-
             // check button number and get result
             switch (radioButtonNumber) {
 
-                case 0: // ever
+                case 0: //
                     resultNumberOfPlace = 1;
                     break;
                 case 1:
@@ -369,7 +305,6 @@ public class MeetingFragmentMeetingMake extends Fragment {
                     resultNumberOfPlace = 0;
                     break;
             }
-
 
         }
 

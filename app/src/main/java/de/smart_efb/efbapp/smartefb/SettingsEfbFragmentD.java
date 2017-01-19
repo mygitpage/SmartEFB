@@ -168,12 +168,19 @@ public class SettingsEfbFragmentD extends Fragment {
 
         // MEETING --------
         // for Activity Meeting !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // meeting time and date as timestamp
+        // meeting time and date A as timestamp
         // in future comes from coach over internet
-        prefsEditor.putLong("meetingDateAndTime", System.currentTimeMillis()); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        prefsEditor.putLong("meetingDateAndTime_A", System.currentTimeMillis()+550000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        // new date and time
-        prefsEditor.putBoolean("meetingNewDateAndTime", true); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // meeting time and date B as timestamp
+        // in future comes from coach over internet
+        prefsEditor.putLong("meetingDateAndTime_B", 0); //System.currentTimeMillis()+150000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        // new date and time for meeting A
+        prefsEditor.putBoolean("meetingNewDateAndTime_A", true); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        // new date and time for meeting B
+        prefsEditor.putBoolean("meetingNewDateAndTime_B", true); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
         // put name of author for meeting suggestions
@@ -187,7 +194,9 @@ public class SettingsEfbFragmentD extends Fragment {
             2 -> Bad Belzig
 
          */
-        //prefsEditor.putInt("meetingPlace", 0);
+        //prefsEditor.putInt("meetingPlace_A", 0);
+        //prefsEditor.putInt("meetingPlace_B", 2);
+
 
         // status of the meeting
         /*

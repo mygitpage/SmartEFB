@@ -32,31 +32,26 @@ public class MeetingFragmentMeetingNow extends Fragment {
     // fragment context
     Context fragmentMeetingNowContext = null;
 
-    // reference to the DB
-    DBAdapter myDb;
-
-    // number of radio buttons for places -> result number of place (1 = Werder (Havel), 2 = Bad Belzig, 0 = no place selected)
-    static final int countNumberPlaces = 2;
-
     // number of checkboxes for choosing timezones (look fragment meetingNow)
     static final int countNumberTimezones = 15;
+
+    // number of simultaneous meetings
+    static final int numberSimultaneousMeetings = 2;
 
     // boolean status array checkbox
     Boolean [] makeMeetingTimezoneSuggestionsArray = new Boolean[countNumberTimezones];
 
     // the current meeting date and time
-    long currentMeetingDateAndTime;
+    long [] currentMeetingDateAndTime = new long [numberSimultaneousMeetings];
 
     // meeting status
     int meetingStatus;
 
     // meeting status
-    int meetingPlace;
+    int [] meetingPlace = new int [numberSimultaneousMeetings];
 
     // meeting place name
-    String meetingPlaceName = "";
-
-
+    String [] meetingPlaceName = new String [numberSimultaneousMeetings];
 
 
     @Override
@@ -88,17 +83,19 @@ public class MeetingFragmentMeetingNow extends Fragment {
 
     private void initFragmentMeetingNow () {
 
-        // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get current time and date
+        // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get current time and date array (2 simultaneous meetings are possible)
         currentMeetingDateAndTime = ((ActivityMeeting)getActivity()).getMeetingTimeAndDate();
 
         // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get meeting status
         meetingStatus = ((ActivityMeeting)getActivity()).getMeetingStatus();
 
-        // call getter-methode getMeetingPlace in ActivityMeeting to get current place
+        // call getter-methode getMeetingPlace in ActivityMeeting to get current place array (2 simultaneous meetings are possible)
         meetingPlace = ((ActivityMeeting)getActivity()).getMeetingPlace();
 
-        // call getter-methode getMeetingPlaceName in ActivityMeeting to get current place name
-        meetingPlaceName = ((ActivityMeeting)getActivity()).getMeetingPlaceName(meetingPlace);
+        // call getter-methode getMeetingPlaceName in ActivityMeeting to get current place name array (2 simultaneous meetings are possible)
+        for (int t=0; t< numberSimultaneousMeetings; t++) {
+            meetingPlaceName[t] = ((ActivityMeeting)getActivity()).getMeetingPlaceName(meetingPlace[t]);
+        }
 
         // call getter-methode getMeetingPlace in ActivityMeeting to get current place
         makeMeetingTimezoneSuggestionsArray = ((ActivityMeeting)getActivity()).getMeetingTimezoneSuggestions();
@@ -106,8 +103,7 @@ public class MeetingFragmentMeetingNow extends Fragment {
     }
 
 
-
-
+    // show actual process data of make meeting
     private void displayActualMeetingInformation () {
 
         String txtNextMeetingIntro = "";
@@ -144,18 +140,17 @@ public class MeetingFragmentMeetingNow extends Fragment {
                     tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFirstMeetingRequested", "string", fragmentMeetingNowContext.getPackageName()));
                     break;
 
-            case 2: // first meeting confirmed
+            case 2: // first meeting confirmed (first meeting is ever stored in array position zero
 
-                if (meetingPlace == 1) { // meeting is in Werder (Havel)
+                if (meetingPlace[0] == 1) { // meeting is in Werder (Havel)
                     txtNextMeetingIntro = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingConfirmedTownWerder);
                 }
-                else if (meetingPlace == 2) { // meeting is in Bad Belzig
+                else if (meetingPlace[0] == 2) { // meeting is in Bad Belzig
                     txtNextMeetingIntro = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingConfirmedTownBadBelzig);
                 }
                 else {
                     txtNextMeetingIntro = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingConfirmedTownNotSelected);
                 }
-
 
                 showTimeAndDateConfirmed = true;
                 btnVisibilitySendChangeMeetingDate = true;
@@ -190,10 +185,7 @@ public class MeetingFragmentMeetingNow extends Fragment {
             tmpShowMeetingMakeExplainText.setVisibility(View.VISIBLE);
             tmpShowMeetingMakeExplainText.setMovementMethod(LinkMovementMethod.getInstance());
 
-
         }
-
-
 
         // meeting status 1 -> terminanfrage erstellen
         if (showTimezoneAndPlaceSuggestion) {
@@ -237,10 +229,6 @@ public class MeetingFragmentMeetingNow extends Fragment {
 
         }
 
-
-
-
-
         // meeting status 2 -> termin vorschlag eingegangen
         if (showTimeAndDateConfirmed) {
 
@@ -264,24 +252,23 @@ public class MeetingFragmentMeetingNow extends Fragment {
             // show date text and set visible
             TextView tmpShowDateText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingDate);
             tmpShowDateText.setVisibility(View.VISIBLE);
-            String tmpDate = EfbHelperClass.timestampToDateFormat(currentMeetingDateAndTime, "dd.MM.yyyy");
+            String tmpDate = EfbHelperClass.timestampToDateFormat(currentMeetingDateAndTime[0], "dd.MM.yyyy"); // first meeting timestamp is ever in array position zero
             tmpShowDateText.setText(tmpDate);
 
             // show time text and set visible
             TextView tmpShowTimeText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingTime);
             tmpShowTimeText.setVisibility(View.VISIBLE);
-            String tmpTime = EfbHelperClass.timestampToTimeFormat(currentMeetingDateAndTime, "HH:mm") + " " + fragmentMeetingNowContext.getResources().getString(R.string.showClockWordAdditionalText);
+            String tmpTime = EfbHelperClass.timestampToTimeFormat(currentMeetingDateAndTime[0], "HH:mm") + " " + fragmentMeetingNowContext.getResources().getString(R.string.showClockWordAdditionalText); // first meeting timestamp is ever in array position zero
             tmpShowTimeText.setText(tmpTime);
 
-            if (meetingPlace == 1 || meetingPlace == 2) { // show meeting place name
+            if (meetingPlace[0] == 1 || meetingPlace[0] == 2) { // show meeting place name
 
                 // show time place and set visible
                 TextView tmpShowPlaceText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingPlace);
                 tmpShowPlaceText.setVisibility(View.VISIBLE);
-                tmpShowPlaceText.setText(meetingPlaceName);
+                tmpShowPlaceText.setText(meetingPlaceName[0]);
             }
         }
-
 
         // meeting status 3 -> termin vorschlag nicht moeglich
         if (showNextMeetingNotPossible) {
@@ -298,17 +285,11 @@ public class MeetingFragmentMeetingNow extends Fragment {
         }
 
 
-
-
-
-
-
         // set visibility of SendMakeFirstMeeting button to visible
         if (btnVisibilitySendMakeFirstMeeting) {
 
             tmpButton = (Button) viewFragmentMeetingNow.findViewById(R.id.buttonSendMakeFirstMeeting);
             tmpButton.setVisibility(View.VISIBLE);
-
 
             // onClick listener make meeting
             tmpButton.setOnClickListener(new View.OnClickListener() {
@@ -365,8 +346,5 @@ public class MeetingFragmentMeetingNow extends Fragment {
 
 
     }
-
-
-
 
 }

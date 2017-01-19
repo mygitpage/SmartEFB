@@ -49,6 +49,9 @@ public class ActivityMeeting extends AppCompatActivity {
     // number of checkboxes for choosing timezones
     static final int countNumberTimezones = 15;
 
+    // number of simultaneous meetings
+    static final int numberSimultaneousMeetings = 2;
+
     // boolean status array checkbox
     Boolean [] makeMeetingCheckBoxListenerArray = new Boolean[countNumberTimezones];
 
@@ -73,11 +76,15 @@ public class ActivityMeeting extends AppCompatActivity {
     // prefs name for info new meeting date and time
     static final String namePrefsNewMeetingDateAndTime = "meetingNewDateAndTime";
 
+
+
+    // prefs praefix for meetings
+    String [] prefsPraefixMeetings = {"_A","_B"};
+
     // meeting status
     int meetingStatus = 0;
 
-    // meeting place
-    int meetingPlace = 0;
+
 
     // name for places array (2 places)
     private String[] placesNameForMeetingArray = new String [4];
@@ -89,11 +96,14 @@ public class ActivityMeeting extends AppCompatActivity {
     // author meeting suggestions
     String meetingSuggestionsAuthor = "";
 
+    // meeting place
+    int [] meetingPlace = new int[numberSimultaneousMeetings];
+
     // the current meeting date and time
-    long currentMeetingDateAndTime;
+    long [] currentMeetingDateAndTime = new long [numberSimultaneousMeetings];
 
     // info new meeting date and time
-    Boolean meetingNewDateAndTime = false;
+    Boolean [] meetingNewDateAndTime = new Boolean[numberSimultaneousMeetings];
 
 
 
@@ -129,20 +139,33 @@ public class ActivityMeeting extends AppCompatActivity {
         // get meeting status
         meetingStatus = prefs.getInt(namePrefsMeetingStatus, 0);
 
-        // get meeting place
-        meetingPlace = prefs.getInt(namePrefsMeetingPlace, 0);
-
         // get meeting problem
         meetingProblem = prefs.getString(namePrefsMeetingProblem, "");
-
-        // get the current meeting date and time
-        currentMeetingDateAndTime = prefs.getLong(namePrefsMeetingTimeAndDate, System.currentTimeMillis());
 
         // get author meeting suggestions
         meetingSuggestionsAuthor = prefs.getString(namePrefsAuthorMeetingSuggestion, "Herr Terminmann");
 
-        // get info new meeting date and time from prefs
-        meetingNewDateAndTime = prefs.getBoolean(namePrefsNewMeetingDateAndTime, false);
+        // get from prefs meeting date and time and place
+        for (int t=0; t < numberSimultaneousMeetings; t++) {
+
+            // get the current meeting date and time
+            currentMeetingDateAndTime[t] = prefs.getLong(namePrefsMeetingTimeAndDate + prefsPraefixMeetings[t], 0);
+
+            if (currentMeetingDateAndTime[t] > System.currentTimeMillis()) { // is meeting timestamp > current time?
+
+                // get meeting place
+                meetingPlace[t] = prefs.getInt(namePrefsMeetingPlace + prefsPraefixMeetings[t], 0);
+
+                // get info new meeting date and time from prefs
+                meetingNewDateAndTime[t] = prefs.getBoolean(namePrefsNewMeetingDateAndTime  + prefsPraefixMeetings[t], false);
+
+            }
+            else { // no -> init with zero
+                currentMeetingDateAndTime[t] = 0;
+                meetingPlace[t] = 0;
+                meetingNewDateAndTime[t] = false;
+            }
+        }
 
         //load timezone array for meeting
         for (int i=0; i<countNumberTimezones; i++) {
@@ -269,10 +292,8 @@ public class ActivityMeeting extends AppCompatActivity {
     }
 
 
-    // getter for timezone suggestions array
-    public  Long getMeetingTimeAndDate () {
-
-        Log.d("CallDateAndTime","Stamp:"+currentMeetingDateAndTime);
+    // getter for actual meeting timestamp (max 2 meetings)
+    public  long[] getMeetingTimeAndDate () {
 
         return currentMeetingDateAndTime;
     }
@@ -319,8 +340,8 @@ public class ActivityMeeting extends AppCompatActivity {
     }
 
 
-    // getter for meeting place
-    public int getMeetingPlace () {
+    // getter for meeting place (max 2 places for meetings)
+    public int[] getMeetingPlace () {
 
         return meetingPlace;
 
@@ -336,15 +357,17 @@ public class ActivityMeeting extends AppCompatActivity {
 
 
     // setter for meeting place
-    public void setMeetingPlace (int tmpMeetingPlace) {
+    public void setMeetingPlace (int tmpMeetingPlace, int placeIndex) {
 
-        meetingStatus = tmpMeetingPlace;
+        meetingPlace[placeIndex] = tmpMeetingPlace;
 
-        prefsEditor.putInt(namePrefsMeetingPlace,tmpMeetingPlace);
+        prefsEditor.putInt(namePrefsMeetingPlace + prefsPraefixMeetings[placeIndex],tmpMeetingPlace);
 
         prefsEditor.commit();
 
     }
+
+
 
 
     // getter for meeting problem
@@ -376,14 +399,21 @@ public class ActivityMeeting extends AppCompatActivity {
 
 
     // getter for info new meeting date and time
-    public Boolean getInfoNewMeetingDateAndTime () {
+    public Boolean[] getInfoNewMeetingDateAndTime () {
 
         return meetingNewDateAndTime;
 
     }
 
+    // unset new status meetings (both new status for meeting is unset)
+    public void unsetNewStatusMeeting () {
 
+        prefsEditor.putBoolean(namePrefsNewMeetingDateAndTime + prefsPraefixMeetings[0],false);
+        prefsEditor.putBoolean(namePrefsNewMeetingDateAndTime + prefsPraefixMeetings[1],false);
 
+        prefsEditor.commit();
+
+    }
 
 
 
