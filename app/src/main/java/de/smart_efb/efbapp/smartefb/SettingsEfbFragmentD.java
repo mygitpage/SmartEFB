@@ -46,7 +46,7 @@ public class SettingsEfbFragmentD extends Fragment {
 
 
     // total number of elements (in test-mode please edit variable in class MainActivity please too!!!!!!!!!!!!!)
-    private static int mainMenueNumberOfElements=9;
+    private static int mainMenueNumberOfElements=8;
     // title of main Menue Elements
     private String[] mainMenueElementTitle = new String [mainMenueNumberOfElements];
 
@@ -170,11 +170,11 @@ public class SettingsEfbFragmentD extends Fragment {
         // for Activity Meeting !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // meeting time and date A as timestamp
         // in future comes from coach over internet
-        prefsEditor.putLong("meetingDateAndTime_A", System.currentTimeMillis()+550000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        prefsEditor.putLong("meetingDateAndTime_A", System.currentTimeMillis()+350000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         // meeting time and date B as timestamp
         // in future comes from coach over internet
-        prefsEditor.putLong("meetingDateAndTime_B", 0); //System.currentTimeMillis()+150000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        prefsEditor.putLong("meetingDateAndTime_B", System.currentTimeMillis()+150000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         // new date and time for meeting A
         prefsEditor.putBoolean("meetingNewDateAndTime_A", true); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -185,6 +185,12 @@ public class SettingsEfbFragmentD extends Fragment {
 
         // put name of author for meeting suggestions
         prefsEditor.putString("authorMeetingSuggestions", "Herr Terminmann");
+
+
+
+        // deadline for answering for meeting suggestions
+        prefsEditor.putLong("meetingSuggestionsResponseDeadline", System.currentTimeMillis()+150000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 
 
         // meeting place

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // total number of elements (in test-mode please edit variable in class SettingsEfbFragmentD please too!!!!!!!!!!!!!)
-    private static int mainMenueNumberOfElements=9;
+    private static int mainMenueNumberOfElements=8;
 
     // number of grid columns
     final private int numberOfGridColumns = 2;
@@ -61,9 +61,10 @@ public class MainActivity extends AppCompatActivity {
     // show the menue element
     private boolean[] showMainMenueElement = new boolean[mainMenueNumberOfElements];
 
-
-    //pending intent
-    private PendingIntent pendingIntentOurArrangementEvaluate;
+    // prefs name for info new meeting date and time (in ActivityMeeting also!!!!!!!!!)
+    static final String namePrefsNewMeetingDateAndTime = "meetingNewDateAndTime";
+    // prefs praefix for  (in mainActivity also!!!!!!!!!)
+    String [] prefsPraefixMeetings = {"_A","_B"};
 
     Context mainContext;
 
@@ -140,18 +141,12 @@ public class MainActivity extends AppCompatActivity {
                             mainContext.startActivity(intent);
                             break;
                         case 6: // grid "hilfe"
-                            //intent = new Intent(getApplicationContext(), ActivityEmergencyHelp.class);
-                            //intent.putExtra("position", position);
-                            //intent.putExtra("title", mainMenueElementTitle[position]);
-                            //mainContext.startActivity(intent);
+                            intent = new Intent(getApplicationContext(), ActivityEmergencyHelp.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
                             break;
-                        case 7: // grid "evaluation"
-                            //intent = new Intent(getApplicationContext(), ActivityEmergencyHelp.class);
-                            //intent.putExtra("position", position);
-                            //intent.putExtra("title", mainMenueElementTitle[position]);
-                            //mainContext.startActivity(intent);
-                            break;
-                        case 8:
+                        case 7:
                             // grid "einstellungen"
                             intent = new Intent(getApplicationContext(), ActivitySettingsEfb.class);
                             intent.putExtra("position", position);
@@ -290,7 +285,22 @@ public class MainActivity extends AppCompatActivity {
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
                 case 5: // menue item "Termine"
-                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+
+
+                    if ( prefs.getBoolean(namePrefsNewMeetingDateAndTime  + prefsPraefixMeetings[0], false) || prefs.getBoolean(namePrefsNewMeetingDateAndTime  + prefsPraefixMeetings[1], false)) {
+                        // meeting A or meeting B new!
+                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
+                    } else {
+                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    }
+                    tmpNew = true;
+
+
+
+
+
+
+                    //mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
                 case 6: // menue item "Notfallhilfe"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];

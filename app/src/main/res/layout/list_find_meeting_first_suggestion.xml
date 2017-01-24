@@ -36,8 +36,20 @@
         android:layout_height="wrap_content"
         android:textSize="14dp"
         android:paddingLeft="10dp"
+        android:paddingBottom="5dp"
+        android:textColor="@color/text_color"
+        android:visibility="gone"
+        android:gravity="left"/>
+
+    <TextView
+        android:id="@+id/showResponseDeadlineForMeetingSuggestions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:paddingLeft="10dp"
         android:paddingBottom="15dp"
         android:textColor="@color/text_color"
+        android:textStyle="bold"
         android:visibility="gone"
         android:gravity="left"/>
 

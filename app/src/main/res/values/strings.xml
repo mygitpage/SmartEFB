@@ -32,8 +32,8 @@
     <string name="mainMenueElementId_5">FAQ</string>
     <string name="mainMenueElementId_6">Termine</string>
     <string name="mainMenueElementId_7">Notfallhilfe</string>
-    <string name="mainMenueElementId_8">Evaluation</string>
-    <string name="mainMenueElementId_9">Einstellungen</string>
+    <!--<string name="mainMenueElementId_8">Evaluation</string>-->
+    <string name="mainMenueElementId_8">Einstellungen</string>
 
 
     <string name="main_menue_text_inactiv">Inaktiv</string>
@@ -424,12 +424,49 @@
     <!-- Activity FAQ -->
 
     <!-- Strings for tab title in activity faq -->
-    <string name="faqTabTitleSection_1">Übersicht FAQ</string>
-    <string name="faqTabTitleSection_2">FAQ App</string>
-    <string name="faqTabTitleSection_3">Erziehungsberatung</string>
-    <string name="faqTabTitleSection_4">Beratungsstellen</string>
-    <string name="faqTabTitleSection_5">Erziehungsfragen</string>
+        <string name="faqTabTitleSection_1">Übersicht</string>
+        <string name="faqTabTitleSection_2">App Fragen</string>
+        <string name="faqTabTitleSection_3">Erziehungsberatung (EB)</string>
+        <string name="faqTabTitleSection_4">Beratungsstellen</string>
+        <string name="faqTabTitleSection_5">Erziehungsfragen</string>
     <!-- End tab title -->
+
+
+    <!-- Fragment Section One -->
+        <string name="faqOverviewIntroText">In dem Bereich Frequently Asked Question (FAQ) versuchen wir Ihnen einige Antworten auf häufig gestellte Fragen zu geben.</string>
+        <string name="faqOverviewSectionTwoTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section2">Fragen zur App</a></string>
+        <string name="faqOverviewSectionTwoInfoText">In diesem Bereich finden Sie häufig gestellte Fragen über und zur App.</string>
+        <string name="faqOverviewSectionThreeTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section3">Erziehungsberatung (EB)</a></string>
+        <string name="faqOverviewSectionThreeInfoText">Hier geht es um Fragen und Anworten um das Thema Erziehungsberatung. Welche Aufgaben diese erfüllt oder welche Themen besprochen werden können.</string>
+
+        <string name="faqOverviewSectionFourTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section4">Beratungsstellen</a></string>
+        <string name="faqOverviewSectionFourInfoText">Die Mitarbeiterinnen und Mitarbeiter unserer Beratungsstellen zeigen Ihnen die Beratungsstellen.</string>
+
+        <string name="faqOverviewSectionFiveTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section5">Erziehungsfragen</a></string>
+        <string name="faqOverviewSectionFiveInfoText">Wir versuchen Ihnen einige häufig gestellte Fragen zur Erziehung zu beantworten.</string>
+
+        <string name="faqOverviewSectionOneEndText">Sollte eine Frage fehlen, zögern Sie nicht und <a href="smart.efb.deeplink://linkin/faq?com=show_section2">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/faq?com=show_section2">Email</a>.</string>
+
+
+    <!-- End Fragment Section One-->
+
+
+    <!-- faq subtitle text -->
+
+
+        <string name="faqSubtitleSectionOne">Übersicht</string>
+        <string name="faqSubtitleSectionTwo">Fragen zur App</string>
+        <string name="faqSubtitleSectionThree">EB - Was ist das?</string>
+        <string name="faqSubtitleSectionFour">Wo kann ich mich beraten lassen?</string>
+        <string name="faqSubtitleSectionFive">Rund um die Erziehung</string>
+
+
+    <!-- End faq subtitle text -->
+
+
+
+
+
 
     <!-- Activity FAQ End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -457,6 +494,13 @@
             <string name="showPlaceSuggestionExplainText">Als Beratungsort wurde von Ihnen %s vorgeschlagen.</string>
 
         <!-- fragment now meeting -->
+
+        <!-- help dialog -->
+            <string name="textDialogMeetingCloseDialog">Schließen</string>
+            <string name="textDialogMeetingTitleDialog">Hinweise zu den Terminen</string>
+            <string name="textDialogMeetingSettingsIntro">Mit der Funktion Termine können Sie einen Ersttermin mit unseren Beratungsstellen in Werder(Havel) oder Bad Belzig vereinbaren. Dies geschieht, in dem Sie uns Zeitbereiche mitteilen in den Sie Zeit haben. Wir schauen dann in unseren Terminkalender und versuchen Ihnen in Ihren gewünschten Zeitbereichen einen Termin anzubieten. Dies funktioniert leider nicht immer. In diesem Fall bitten wir Sie uns anzurufen oder eine Email zu schreiben.\nIhre Terminanfrage geschieht anonym\nMit dieser App ist es nur möglich einen einzigen Terminanfrageversuch zu unternehmen.</string>
+
+        <!-- End help dialog -->
 
 
         <!-- fragment make meeting -->
@@ -506,6 +550,7 @@
         <string name="findMeetingExplainTextWithAnotherMeeting">Für die Planung eines übernächsten Termins stehen folgende Terminvorschläge zur Verfügung. Bitte markieren Sie die Vorschläge, an denen Sie Zeit haben und klicken anschließend auf Senden. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_telnumber">E-Mail</a>.</string>
         <string name="showExplainTextForFindMeetingWithOldMeetingText">Ihr nächster Termin ist abgelaufen und liegt damit in der Vergangenheit.</string>
         <string name="textShowDateAndTimeForMeetingAndWaitForResponse">Ihr nächster Termin und warten auf eine Terminbestätigung für Ihre Vorschläge:</string>
+        <string name="textResponseDeadlineForMeetingSuggestions">Bitte senden Sie uns Ihre Terminbestätigungen bis zum %s zu.</string>
         <!-- end fragment find meeting -->
 
 
@@ -530,6 +575,46 @@
 
     <!-- Activity Meeting End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Activity EmergencyHelp -->
+
+
+        <!-- emergency help -->
+
+            <string name="emergencyHelpEmergencyCallText">Notruf (Polizei)</string>
+            <string name="emergencyHelpEmergencyCallNumber">110</string>
+
+            <string name="emergencyHelpEmergencyChildCallText">Kinder- und Jugendnotdienst</string>
+            <string name="emergencyHelpEmergencyChildCallNumber">000000/12345678</string>
+
+            <string name="emergencyHelpEmergencyCareOfSoulsCallText">Telefonseelsorge</string>
+            <string name="emergencyHelpEmergencyCareOfSoulsCallNumberText">0800/12345678</string>
+            <string name="emergencyHelpEmergencyCareOfSoulsEmailText">seelsorge@seelsorge.de</string>
+
+            <string name="emergencyHelpEmergencyEFBCallText">Erziehungs- und Familienberatung Online</string>
+            <string name="emergencyHelpEmergencyEFBEmail">beratung@beratung.de</string>
+
+
+
+
+
+        <!-- help dialog -->
+            <string name="textDialogEmergencyHelpCloseDialog">Schließen</string>
+            <string name="textDialogEmergencyHelpTitleDialog">Hinweise zur Notfallhilfe</string>
+            <string name="textDialogEmergencyHelpSettingsIntro">Hier finden Sie Notrufnummer und weitere Kontaktdaten zu Institutionen, die Hilfe in verschiedensten Lenenslagen anbieten. Wir sind stets bemüht, die Kontaktdaten aktuell zu halten. Können dies aber nicht immer garantieren.</string>
+
+        <!-- End help dialog -->
+
+    textDialogEmergencyHelpSettingsIntro
+
+
+    <!-- Activity EmergencyHelp End -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
 
 
 </resources>

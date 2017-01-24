@@ -45,7 +45,7 @@
             android:textColor="@color/text_color"
             android:textStyle="bold"
             android:gravity="center_horizontal"
-            android:paddingBottom="15dp"
+            android:paddingBottom="10dp"
             android:visibility="gone"/>
 
         <TextView
@@ -56,7 +56,7 @@
             android:textColor="@color/text_color"
             android:textStyle="bold"
             android:gravity="center_horizontal"
-            android:paddingBottom="15dp"
+            android:paddingBottom="10dp"
             android:visibility="gone"/>
 
         <TextView
@@ -67,7 +67,7 @@
             android:textColor="@color/text_color"
             android:textStyle="bold"
             android:gravity="center_horizontal"
-            android:paddingBottom="15dp"
+            android:paddingBottom="10dp"
             android:visibility="gone"/>
 
 
@@ -108,7 +108,6 @@
         android:paddingLeft="10dp"
         android:textColor="@color/text_color"
         android:textColorLink="@color/colorPrimary"
-        android:visibility="gone"
         android:gravity="left"/>
 
     <TextView
@@ -117,9 +116,20 @@
         android:layout_height="wrap_content"
         android:textSize="14dp"
         android:paddingLeft="10dp"
+        android:paddingBottom="5dp"
+        android:textColor="@color/text_color"
+        android:gravity="left"/>
+
+
+    <TextView
+        android:id="@+id/showResponseDeadlineForMeetingSuggestionsText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:paddingLeft="10dp"
         android:paddingBottom="15dp"
         android:textColor="@color/text_color"
-        android:visibility="gone"
+        android:textStyle="bold"
         android:gravity="left"/>
 
     <TextView

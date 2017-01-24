@@ -1,6 +1,8 @@
 package de.smart_efb.efbapp.smartefb;
 
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -13,13 +15,16 @@ import android.support.v4.app.FragmentTransaction;
 
 
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * Created by ich on 15.08.16.
@@ -73,22 +78,20 @@ public class ActivityMeeting extends AppCompatActivity {
     // prefs name for author meeting suggestion
     static final String namePrefsAuthorMeetingSuggestion = "authorMeetingSuggestions";
 
-    // prefs name for info new meeting date and time
+    // prefs name for info new meeting date and time (in mainActivity also!!!!!!!!!)
     static final String namePrefsNewMeetingDateAndTime = "meetingNewDateAndTime";
 
+    // prefs name for deadline for response of meeting suggestions
+    static final String namePrefsMeetingSuggestionsResponseDeadline = "meetingSuggestionsResponseDeadline";
 
-
-    // prefs praefix for meetings
+    // prefs praefix for  (in mainActivity also!!!!!!!!!)
     String [] prefsPraefixMeetings = {"_A","_B"};
 
     // meeting status
     int meetingStatus = 0;
 
-
-
     // name for places array (2 places)
     private String[] placesNameForMeetingArray = new String [4];
-
 
     // meeting problem
     String meetingProblem = "";
@@ -104,6 +107,12 @@ public class ActivityMeeting extends AppCompatActivity {
 
     // info new meeting date and time
     Boolean [] meetingNewDateAndTime = new Boolean[numberSimultaneousMeetings];
+
+    // deadline for responding of meeting suggestions
+    long meetingSuggestionsResponeseDeadline = 0;
+
+    // reference to dialog settings
+    AlertDialog alertDialogSettings;
 
 
 
@@ -144,6 +153,9 @@ public class ActivityMeeting extends AppCompatActivity {
 
         // get author meeting suggestions
         meetingSuggestionsAuthor = prefs.getString(namePrefsAuthorMeetingSuggestion, "Herr Terminmann");
+
+        // get response deadline for meeting suggestions
+        meetingSuggestionsResponeseDeadline = prefs.getLong(namePrefsMeetingSuggestionsResponseDeadline, 0);
 
         // get from prefs meeting date and time and place
         for (int t=0; t < numberSimultaneousMeetings; t++) {
@@ -196,6 +208,9 @@ public class ActivityMeeting extends AppCompatActivity {
             fragmentTransaction.commit();
 
         }
+
+        // create help dialog in Meeting
+        createHelpDialog();
 
     }
 
@@ -284,6 +299,66 @@ public class ActivityMeeting extends AppCompatActivity {
     }
 
 
+
+
+
+    // help dialog
+    void createHelpDialog () {
+
+        Button tmpHelpButtonMeeting = (Button) findViewById(R.id.helpMeetingNow);
+
+
+        // add button listener to question mark in activity Meeting (toolbar)
+        tmpHelpButtonMeeting.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                TextView tmpdialogTextView;
+                LayoutInflater dialogInflater;
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityMeeting.this);
+
+                // Get the layout inflater
+                dialogInflater = (LayoutInflater) ActivityMeeting.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                // inflate and get the view
+                View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_meeting, null);
+
+
+
+                // get string ressources
+                String tmpTextCloseDialog = ActivityMeeting.this.getResources().getString(R.string.textDialogMeetingCloseDialog);
+                String tmpTextTitleDialog = ActivityMeeting.this.getResources().getString(R.string.textDialogMeetingTitleDialog);
+
+                // build the dialog
+                builder.setView(dialogSettings)
+
+                        // Add close button
+                        .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                alertDialogSettings.cancel();
+                            }
+                        })
+
+                        // add title
+                        .setTitle(tmpTextTitleDialog);
+
+                // and create
+                alertDialogSettings = builder.create();
+
+                // and show the dialog
+                builder.show();
+
+            }
+        });
+
+    }
+    
+    
+    
+    
+    
     // setter for subtitle in ActivityMeeting toolbar
     public void setMeetingToolbarSubtitle (String subtitleText) {
 
@@ -414,6 +489,15 @@ public class ActivityMeeting extends AppCompatActivity {
         prefsEditor.commit();
 
     }
+
+
+    // getter for deadline for suggestion response
+    public long getSuggestionsResponeseDeadline () {
+
+        return meetingSuggestionsResponeseDeadline;
+
+    }
+
 
 
 

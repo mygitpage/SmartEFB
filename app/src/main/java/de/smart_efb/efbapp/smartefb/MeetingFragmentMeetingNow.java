@@ -142,6 +142,9 @@ public class MeetingFragmentMeetingNow extends Fragment {
 
             case 2: // first meeting confirmed (first meeting is ever stored in array position zero
 
+                // call delete-methode unsetNewStatusMeeting in ActivityMeeting to unset new status meetings (both new status for meeting is unset)
+                ((ActivityMeeting)getActivity()).unsetNewStatusMeeting();
+
                 if (meetingPlace[0] == 1) { // meeting is in Werder (Havel)
                     txtNextMeetingIntro = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingConfirmedTownWerder);
                 }
@@ -159,6 +162,9 @@ public class MeetingFragmentMeetingNow extends Fragment {
                 break;
 
             case 3: // first meeting suggestion not possible -> please call us
+
+                // call delete-methode unsetNewStatusMeeting in ActivityMeeting to unset new status meetings (both new status for meeting is unset)
+                ((ActivityMeeting)getActivity()).unsetNewStatusMeeting();
 
                 txtNextMeetingIntro  = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingNotPossiblePleaseCall);
 

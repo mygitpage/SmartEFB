@@ -61,6 +61,9 @@ public class MeetingFragmentMeetingFind extends Fragment {
     // meeting suggestions author
     String meetingSuggestionsAuthor = "";
 
+    // deadline for responding of meeting suggestions
+    long meetingSuggestionsResponeseDeadline = 0;
+
     // reference to MeetingFindMeetingCursorAdapter
     MeetingFindMeetingCursorAdapter dataAdapterListViewFindMeeting;
 
@@ -114,23 +117,21 @@ public class MeetingFragmentMeetingFind extends Fragment {
         // call getter-methode getMeetingPlace in ActivityMeeting to get current place
         meetingPlace = ((ActivityMeeting)getActivity()).getMeetingPlace();
 
+        // call getter-methode getSuggestionsResponeseDeadline in ActivityMeeting to get deadline for responding of meeting suggestions
+        meetingSuggestionsResponeseDeadline = ((ActivityMeeting)getActivity()).getSuggestionsResponeseDeadline();
+
         // call getter-methode getMeetingPlaceName in ActivityMeeting to get current place name
         for (int t=0; t<numberSimultaneousMeetings; t++) {
             meetingPlaceName[t] = ((ActivityMeeting)getActivity()).getMeetingPlaceName(meetingPlace[t]);
         }
 
-
         //call getter-methode getMeetingPlaceName in ActivityMeeting to get current place name
         meetingSuggestionsAuthor = ((ActivityMeeting)getActivity()).getAuthorMeetingSuggestion();
-
-
 
         // call getter-methode getMeetingPlace in ActivityMeeting to get current place
         makeMeetingTimezoneSuggestionsArray = ((ActivityMeeting)getActivity()).getMeetingTimezoneSuggestions();
 
     }
-
-
 
 
     // look for meeting status and show current data
@@ -168,7 +169,8 @@ public class MeetingFragmentMeetingFind extends Fragment {
                         getActivity(),
                         cursor,
                         0,
-                        meetingSuggestionsAuthor);
+                        meetingSuggestionsAuthor,
+                        meetingSuggestionsResponeseDeadline);
 
                 // Assign adapter to ListView
                 listView.setAdapter(dataAdapterListViewFindMeeting);
@@ -247,6 +249,9 @@ public class MeetingFragmentMeetingFind extends Fragment {
 
         // meeting status 7 -> Antwort da, zeige Termine (maximal zwei Termine koennen angezeigt werden)
         if(meetingStatus == 7) {
+
+            // call delete-methode unsetNewStatusMeeting in ActivityMeeting to unset new status meetings (both new status for meeting is unset)
+            ((ActivityMeeting)getActivity()).unsetNewStatusMeeting();
 
             if (currentMeetingDateAndTime[0] != 0 || currentMeetingDateAndTime[1] != 0) { //is min. one meeting set?
 
@@ -403,6 +408,9 @@ public class MeetingFragmentMeetingFind extends Fragment {
         // meeting status 8 -> Termin steht fest und neue Terminvorschläge sind da
         if(meetingStatus == 8) {
 
+            // call delete-methode unsetNewStatusMeeting in ActivityMeeting to unset new status meetings (both new status for meeting is unset)
+            ((ActivityMeeting)getActivity()).unsetNewStatusMeeting();
+
             int tmpIndexNumber = 0;
 
             // which meeting data to parse to dataAdapter, default is 0
@@ -440,7 +448,8 @@ public class MeetingFragmentMeetingFind extends Fragment {
                         0,
                         meetingSuggestionsAuthor,
                         currentMeetingDateAndTime[tmpIndexNumber],
-                        meetingPlaceName[tmpIndexNumber]);
+                        meetingPlaceName[tmpIndexNumber],
+                        meetingSuggestionsResponeseDeadline);
 
 
                 // Assign adapter to ListView

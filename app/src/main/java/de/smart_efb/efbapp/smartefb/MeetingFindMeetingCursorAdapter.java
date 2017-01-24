@@ -36,14 +36,14 @@ public class MeetingFindMeetingCursorAdapter extends CursorAdapter {
     // meeting suggestions author
     String meetingSuggestionsAuthor = "";
 
+    // deadline for responding of meeting suggestions
+    long meetingSuggestionsResponeseDeadline = 0;
+
     // max number of simultaneous meeting checkboxes
     static final int maxSimultaneousMeetingCheckBoxes = 20;
 
     // int array for checkbox values (DbId)
     int [] checkBoxMeetingSuggestionsValues = new int [maxSimultaneousMeetingCheckBoxes];
-
-    // int array for UNCHECKED checkbox values (DbId)
-    int [] checkBoxMeetingNotSuggestionsValues = new int [maxSimultaneousMeetingCheckBoxes];
 
     // min number of checkboxes to check
     static final int minNumberCheckBoxesToCheck = 1;
@@ -62,13 +62,15 @@ public class MeetingFindMeetingCursorAdapter extends CursorAdapter {
 
 
     // Own constructor
-    public MeetingFindMeetingCursorAdapter(Context context, Cursor cursor, int flags, String tmpAuthorMeetingSuggestion) {
+    public MeetingFindMeetingCursorAdapter(Context context, Cursor cursor, int flags, String tmpAuthorMeetingSuggestion, long tmpResponeseDeadline) {
 
         super(context, cursor, flags);
 
         meetingFindMeetingCursorAdapterContext = context;
 
         meetingSuggestionsAuthor = tmpAuthorMeetingSuggestion;
+
+        meetingSuggestionsResponeseDeadline = tmpResponeseDeadline;
 
         // init the DB
         myDb = new DBAdapter(context);
@@ -112,13 +114,20 @@ public class MeetingFindMeetingCursorAdapter extends CursorAdapter {
             tmpExplainTextMeetingFind = String.format(tmpExplainTextMeetingFind, meetingSuggestionsAuthor);
             tmpTextFindMeetingAuthorSuggestionMeeting.setText(tmpExplainTextMeetingFind);
             tmpTextFindMeetingAuthorSuggestionMeeting.setVisibility(View.VISIBLE);
+
+            // show response deadline for meeting suggestions
+            TextView tmpResponseDeadline = (TextView) view.findViewById(R.id.showResponseDeadlineForMeetingSuggestions);
+            String tmpTextResponseDeadline = context.getResources().getString(R.string.textResponseDeadlineForMeetingSuggestions);
+            tmpTextResponseDeadline = String.format(tmpTextResponseDeadline, EfbHelperClass.timestampToDateFormat(meetingSuggestionsResponeseDeadline, "dd.MM.yyyy"));
+            tmpResponseDeadline.setText(tmpTextResponseDeadline);
+            tmpResponseDeadline.setVisibility(View.VISIBLE);
+
         }
 
 
         // put date text
         TextView tmpDateMeetingSuggestion = (TextView) view.findViewById(R.id.listActualDateMeetingSuggestion);
         String tmpTextMeetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_FIND_MEETING_KEY_DATE_TIME)), "dd.MM.yyyy");
-        //String tmpTextMeetingDate = context.getResources().getString(R.string.showClockWordAdditionalText);
         tmpDateMeetingSuggestion.setText(tmpTextMeetingDate);
 
         // put time text

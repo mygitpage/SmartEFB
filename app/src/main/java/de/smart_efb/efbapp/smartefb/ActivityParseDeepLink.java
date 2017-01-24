@@ -17,6 +17,7 @@ public class ActivityParseDeepLink extends Activity {
     public static final String OUR_ARRANGEMENT = "/ourarrangement";
     public static final String OUR_GOALS = "/ourgoals";
     public static final String SETTINGS = "/settings";
+    public static final String FAQ = "/faq";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,14 @@ public class ActivityParseDeepLink extends Activity {
             intent.putExtra("eval_next",tmpEvalNext);
             startActivity(intent);
 
-        }else {
+        }else if (FAQ.equals(path)) {
+            // Launch settings
+            Intent intent = new Intent(this, ActivityFaq.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra("com",tmpCommand);
+            startActivity(intent);
+
+        } else {
             // Fall back to the main activity
             startActivity(new Intent(this, MainActivity.class));
         }

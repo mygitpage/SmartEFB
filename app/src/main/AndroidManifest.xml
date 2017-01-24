@@ -51,7 +51,7 @@
         <!-- Activity Settings -->
         <activity
             android:name=".ActivitySettingsEfb"
-            android:label="@string/mainMenueElementId_9"
+            android:label="@string/mainMenueElementId_8"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
@@ -62,6 +62,14 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
 
+        </activity>
+
+        <!-- Activity Emergency Help -->
+        <activity
+            android:name=".ActivityEmergencyHelp"
+            android:label="@string/mainMenueElementId_7"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
         </activity>
 
         <!-- Dispatcher activity for deep links -->

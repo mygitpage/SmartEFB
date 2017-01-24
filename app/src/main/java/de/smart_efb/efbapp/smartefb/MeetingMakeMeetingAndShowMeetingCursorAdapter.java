@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,9 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
     // actual meeting date and time
     Long currentMeetingDateAndTime;
 
+    // deadline for responding of meeting suggestions
+    long meetingSuggestionsResponeseDeadline = 0;
+
     // max number of simultaneous meeting checkboxes
     static final int maxSimultaneousMeetingCheckBoxes = 20;
 
@@ -60,7 +64,7 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
 
 
     // Own constructor
-    public MeetingMakeMeetingAndShowMeetingCursorAdapter (Context context, Cursor cursor, int flags, String tmpAuthorMeetingSuggestion, Long tmpActualMeetingDateAndTime, String tmpMeetingPlace) {
+    public MeetingMakeMeetingAndShowMeetingCursorAdapter (Context context, Cursor cursor, int flags, String tmpAuthorMeetingSuggestion, Long tmpActualMeetingDateAndTime, String tmpMeetingPlace, long tmpResponeseDeadline) {
 
         super(context, cursor, flags);
 
@@ -71,6 +75,8 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
         currentMeetingDateAndTime = tmpActualMeetingDateAndTime;
 
         meetingPlaceName = tmpMeetingPlace;
+
+        meetingSuggestionsResponeseDeadline = tmpResponeseDeadline;
 
         // init the DB
         myDb = new DBAdapter(context);
@@ -96,9 +102,13 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
         countListViewElements = cursor.getCount();
 
 
+        Log.d("Adapter","Durchlauf");
+
         if (cursor.isFirst() ) { // listview for first element
 
 
+
+            Log.d("Adapter","ERSTER Durchlauf");
 
             if (currentMeetingDateAndTime > 0) { // show only, when current meeting is future
 
@@ -133,18 +143,7 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
                 TextView textShowExplainTextForFindMeetingWithOldMeeting = (TextView) view.findViewById(R.id.showExplainTextForFindMeetingWithOldMeeting);
                 textShowExplainTextForFindMeetingWithOldMeeting.setVisibility(View.VISIBLE);
             }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
             // show meeting intro text
             String txtFindFirstMeetingIntro  = context.getResources().getString(R.string.findMeetingIntroTextNoMeetingSoFar);
             TextView textViewNextMeetingIntroText = (TextView) view.findViewById(R.id.nextMeetingIntroText);
@@ -152,7 +151,7 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
 
             // set movement methode for explain text find first + meeting telephone link
             TextView tmpTextFindFirstMeetingExplainText = (TextView) view.findViewById(R.id.showExplainTextForFindFirstMeeting);
-            tmpTextFindFirstMeetingExplainText.setVisibility(View.VISIBLE);
+            //tmpTextFindFirstMeetingExplainText.setVisibility(View.VISIBLE);
             tmpTextFindFirstMeetingExplainText.setMovementMethod(LinkMovementMethod.getInstance());
 
             // set author of suggestion text
@@ -160,7 +159,16 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
             String tmpExplainTextMeetingFind = context.getResources().getString(R.string.findMeetingAuthorSuggestionMeeting);
             tmpExplainTextMeetingFind = String.format(tmpExplainTextMeetingFind, meetingSuggestionsAuthor);
             tmpTextFindMeetingAuthorSuggestionMeeting.setText(tmpExplainTextMeetingFind);
-            tmpTextFindMeetingAuthorSuggestionMeeting.setVisibility(View.VISIBLE);
+            //tmpTextFindMeetingAuthorSuggestionMeeting.setVisibility(View.VISIBLE);
+
+
+
+            // show response deadline for meeting suggestions
+            TextView tmpResponseDeadline = (TextView) view.findViewById(R.id.showResponseDeadlineForMeetingSuggestionsText);
+            String tmpTextResponseDeadline = context.getResources().getString(R.string.textResponseDeadlineForMeetingSuggestions);
+            tmpTextResponseDeadline = String.format(tmpTextResponseDeadline, EfbHelperClass.timestampToDateFormat(meetingSuggestionsResponeseDeadline, "dd.MM.yyyy"));
+            tmpResponseDeadline.setText(tmpTextResponseDeadline);
+
         }
 
 
@@ -189,6 +197,10 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
 
 
         if (cursor.isLast() ) { // listview for last element
+
+
+            Log.d("Adapter","LETZTER Durchlauf");
+
 
             // find send button "verbindich senden"
             Button tmpSendButton = (Button) view.findViewById(R.id.buttonSendSuggestionToCoach);
