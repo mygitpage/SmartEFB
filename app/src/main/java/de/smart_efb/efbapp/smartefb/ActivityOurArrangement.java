@@ -91,6 +91,15 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // evaluate next arrangement true -> yes, there is a next arrangement to evaluate; false -> there is nothing more
     boolean evaluateNextArrangement = false;
 
+    // info new entry on tab zero or one
+    Boolean infoNewEntryOnTabZero = false;
+    Boolean infoNewEntryOnTabOne = false;
+    String infoTextNewEntryPostFixTabZeroTitle = "";
+    String infoTextNewEntryPostFixTabOneTitle = "";
+    String tabTitleTextTabZero = "";
+    String tabTitleTextTabOne = "";
+
+
     // reference to the DB
     DBAdapter myDb;
 
@@ -123,31 +132,14 @@ public class ActivityOurArrangement extends AppCompatActivity {
         tabLayoutOurArrangement = (TabLayout) findViewById(R.id.tabLayoutOurArrangement);
         tabLayoutOurArrangement.setTabGravity(TabLayout.GRAVITY_FILL);
 
-
         // and set tablayout with viewpager
         tabLayoutOurArrangement.setupWithViewPager(viewPagerOurArrangement);
 
 
+        // set correct tab zero and one title with information new entry and color change -> FIRST TIME
+        setTabZeroTitleAndColor();
+        setTabOneTitleAndColor();
 
-
-        //
-        // Test zum aendern der schriftfarbe in tabs
-        ViewGroup vg = (ViewGroup) tabLayoutOurArrangement.getChildAt(0);
-        int tabsCount = vg.getChildCount();
-        for (int j = 0; j< tabsCount; j++) {
-            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
-            int tabChildsCount = vgTab.getChildCount();
-            for (int i=0; i<tabChildsCount; i++) {
-                View tabViewCild = vgTab.getChildAt(i);
-                if (tabViewCild instanceof TextView) {
-                    ((TextView) tabViewCild).setTextColor(Color.parseColor("#F330F0"));
-                }
-            }
-
-        }
-        //
-        //
-        //
 
         // init listener for tab selected
         tabLayoutOurArrangement.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -155,13 +147,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
 
                 String tmpSubtitleText = "";
-
-
-
-
-
-
-
 
                 // Change the subtitle of the activity
                 switch (tab.getPosition()) {
@@ -180,6 +165,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
                                 tmpSubtitleText = arraySubTitleText[5];
                                 break;
                         }
+
+                        // set correct tab zero title with information new entry and color change
+                        setTabZeroTitleAndColor();
+
                         break;
                    case 1: // title for tab one
                         switch (showCommandFragmentTabOne) {
@@ -193,7 +182,11 @@ public class ActivityOurArrangement extends AppCompatActivity {
                                 tmpSubtitleText = arraySubTitleText[7];
                                 break;
                         }
-                        break;
+
+                       // set correct tab one title with information new entry and color change
+                       setTabOneTitleAndColor();
+
+                       break;
                     case 2: // title for tab two
                         tmpSubtitleText = arraySubTitleText[2];
                         break;
@@ -212,15 +205,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
-
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
+
         });
 
     }
@@ -229,9 +219,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // Look for new intents (with data from URI or putExtra)
     @Override
     protected void onNewIntent(Intent intent) {
-
-        // Uri from intent that holds data
-        Uri intentLinkData = null;
 
         // Extras from intent that holds data
         Bundle intentExtras = null;
@@ -277,14 +264,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("show_comment_for_arrangement");
 
-            // set correct tab zero titel
-            try {
-                tmpTabTitle = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1b", "string", getPackageName()));
-                tabLayoutOurArrangement.getTabAt(0).setText(tmpTabTitle);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1b", "string", getPackageName()));
+            setTabZeroTitleAndColor();
+
             // set command show variable
             showCommandFragmentTabZero = "show_comment_for_arrangement";
 
@@ -306,8 +289,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("comment_an_arrangement");
 
-            // set correct tab zero titel
-            tabLayoutOurArrangement.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1a", "string", getPackageName())));
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1a", "string", getPackageName()));
+            setTabZeroTitleAndColor();
 
             // set command show variable
             showCommandFragmentTabZero = "comment_an_arrangement";
@@ -328,8 +312,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             //set fragment in tab zero to evaluate
             OurArrangementViewPagerAdapter.setFragmentTabZero("evaluate_an_arrangement");
 
-            // set correct tab zero titel
-            tabLayoutOurArrangement.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1c", "string", getPackageName())));
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1c", "string", getPackageName()));
+            setTabZeroTitleAndColor();
 
             // set command show variable
             showCommandFragmentTabZero = "evaluate_an_arrangement";
@@ -350,8 +335,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             //set fragment in tab one to comment an sketch arrangement
             OurArrangementViewPagerAdapter.setFragmentTabOne("comment_an_sketch_arrangement");
 
-            // set correct tab one titel
-            tabLayoutOurArrangement.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_2a", "string", getPackageName())));
+            // set correct tab one title with information new entry and color change
+            tabTitleTextTabOne = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_2a", "string", getPackageName()));
+            setTabOneTitleAndColor();
 
             // set command show variable
             showCommandFragmentTabOne = "comment_an_sketch_arrangement";
@@ -371,8 +357,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             //set fragment in tab one to show sketch arrangement
             OurArrangementViewPagerAdapter.setFragmentTabOne("show_sketch_arrangement");
 
-            // set correct tab one titel
-            tabLayoutOurArrangement.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_2", "string", getPackageName())));
+            // set correct tab one title with information new entry and color change
+            tabTitleTextTabOne = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_2", "string", getPackageName()));
+            setTabOneTitleAndColor();
 
             // set command show variable
             showCommandFragmentTabOne = "show_sketch_arrangement";
@@ -392,8 +379,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             //set fragment in tab one to show comment sketch arrangement
             OurArrangementViewPagerAdapter.setFragmentTabOne("show_comment_for_sketch_arrangement");
 
-            // set correct tab one titel
-            tabLayoutOurArrangement.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_2b", "string", getPackageName())));
+            // set correct tab one title with information new entry and color change
+            tabTitleTextTabOne = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_2b", "string", getPackageName()));
+            setTabOneTitleAndColor();
 
             // set command show variable
             showCommandFragmentTabOne = "show_comment_for_sketch_arrangement";
@@ -415,8 +403,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("show_arrangement_now");
 
-            // set correct tab zero titel
-            tabLayoutOurArrangement.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1", "string", getPackageName())));
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1", "string", getPackageName()));
+            setTabZeroTitleAndColor();
 
             // set command show variable
             showCommandFragmentTabZero = "show_arrangement_now";
@@ -467,10 +456,20 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // enable setting subtitle for the first time
         setSubtitleFirstTime = true;
 
+        //set tab title string
+        tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1", "string", getPackageName()));
+        tabTitleTextTabOne = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_2", "string", getPackageName()));
+
         // create help dialog in OurArrangement
         createHelpDialog();
 
+
+
     }
+
+
+
+
 
 
     // help dialog
@@ -585,14 +584,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                     tmpTxtSketchArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchArrangementEnable);
 
-
                     // comment sketch arrangements?
                     if (prefs.getBoolean("showCommentLinkSketchArrangements", false)) {
 
                         tmpTxtSketchArrangement1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentArrangementEnable);
-
-
-
 
                         if (prefs.getInt("commentSketchOurArrangementMaxComment",0) < commentLimitationBorder) { // write infinitely sketch comments?
 
@@ -743,6 +738,113 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
+    // set correct tab zero title with information new entry and color change
+    private void setTabZeroTitleAndColor () {
+
+        ActivityOurArrangement.this.lookNewEntryOnTabZero();
+
+        tabLayoutOurArrangement.getTabAt(0).setText(tabTitleTextTabZero + infoTextNewEntryPostFixTabZeroTitle);
+        ActivityOurArrangement.this.setUnsetTextColorSignalNewTabZero(infoNewEntryOnTabZero);
+
+    }
+
+
+    // set correct tab one title with information new entry and color change
+    private void setTabOneTitleAndColor () {
+
+        ActivityOurArrangement.this.lookNewEntryOnTabOne();
+
+        tabLayoutOurArrangement.getTabAt(1).setText(tabTitleTextTabOne + infoTextNewEntryPostFixTabOneTitle);
+        ActivityOurArrangement.this.setUnsetTextColorSignalNewTabOne(infoNewEntryOnTabOne);
+
+    }
+
+
+    // look for new entry on tab zero
+    private void lookNewEntryOnTabZero () {
+
+        // look for new entrys in db on tab zero
+        if (myDb.getCountAllNewEntryOurArrangementComment(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), "current") > 0 ) {
+            infoNewEntryOnTabZero = true;
+            infoTextNewEntryPostFixTabZeroTitle = " " + this.getResources().getString(R.string.newEntryText);
+        }
+        else {
+            infoNewEntryOnTabZero = false;
+            infoTextNewEntryPostFixTabZeroTitle = "";
+        }
+
+    }
+
+
+    // look for new entry on tab one
+    private void lookNewEntryOnTabOne () {
+
+        // look for new entrys in db on tab one
+        if (myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), "sketch") > 0) {
+            infoNewEntryOnTabOne = true;
+            infoTextNewEntryPostFixTabOneTitle = " "+ this.getResources().getString(R.string.newEntryText);
+        }
+        else {
+            infoNewEntryOnTabOne = false;
+            infoTextNewEntryPostFixTabOneTitle = "";
+        }
+
+    }
+
+    // set/ unset textcolor for tab title on tab zero
+    private void setUnsetTextColorSignalNewTabZero (Boolean colorSet) {
+
+        int tmpTextColor;
+
+        if (colorSet) {
+            tmpTextColor = ContextCompat.getColor(ActivityOurArrangement.this, R.color.text_accent_color);
+                    //parseColor("#F330F0");
+        }
+        else {
+            tmpTextColor = ContextCompat.getColor(ActivityOurArrangement.this, R.color.colorAccent);
+        }
+
+        // Change tab text color on tab zero
+        ViewGroup vg = (ViewGroup) tabLayoutOurArrangement.getChildAt(0);
+        ViewGroup vgTab = (ViewGroup) vg.getChildAt(0); //Tab Zero
+        int tabChildsCount = vgTab.getChildCount();
+        for (int i=0; i<tabChildsCount; i++) {
+            View tabViewCild = vgTab.getChildAt(i);
+            if (tabViewCild instanceof TextView) {
+                ((TextView) tabViewCild).setTextColor(tmpTextColor);
+            }
+        }
+
+    }
+
+    // set/ unset textcolor for tab title on tab one
+    private void setUnsetTextColorSignalNewTabOne (Boolean colorSet) {
+
+        int tmpTextColor;
+
+        if (colorSet) {
+            tmpTextColor = ContextCompat.getColor(ActivityOurArrangement.this, R.color.text_accent_color);
+            //parseColor("#F330F0");
+        }
+        else {
+            tmpTextColor = ContextCompat.getColor(ActivityOurArrangement.this, R.color.colorAccent);
+        }
+
+        // Change tab text color on tab zero
+        ViewGroup vg = (ViewGroup) tabLayoutOurArrangement.getChildAt(0);
+        ViewGroup vgTab = (ViewGroup) vg.getChildAt(1); //Tab One
+        int tabChildsCount = vgTab.getChildCount();
+        for (int i=0; i<tabChildsCount; i++) {
+            View tabViewCild = vgTab.getChildAt(i);
+            if (tabViewCild instanceof TextView) {
+                ((TextView) tabViewCild).setTextColor(tmpTextColor);
+            }
+        }
+
+    }
+
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -796,6 +898,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
         return evaluateNextArrangement;
 
     }
+
+
+
 
 
     // geter for border for comments

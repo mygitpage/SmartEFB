@@ -3,6 +3,7 @@ package de.smart_efb.efbapp.smartefb;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import java.util.TimeZone;
 
 /**
@@ -11,12 +12,10 @@ import java.util.TimeZone;
 public class EfbHelperClass {
 
 
+    // return the formated date string of timestamp
     public static String timestampToDateFormat( long timestamp, String format )
     {
 
-
-
-
         try{
 
             Calendar calendar = Calendar.getInstance();
@@ -38,10 +37,10 @@ public class EfbHelperClass {
 
     }
 
+    // return the formated time string of timestamp
     public static String timestampToTimeFormat( long timestamp, String format )
     {
 
-
         try{
 
             Calendar calendar = Calendar.getInstance();
@@ -63,6 +62,12 @@ public class EfbHelperClass {
     }
 
 
+    // return a random number between min and max
+    public static int randomNumber (int min, int max) {
 
+        Random r = new Random();
+        return r.nextInt(max - min + 1) + min;
+
+    }
 
 }

@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -80,6 +82,14 @@ public class ActivityOurGoals extends AppCompatActivity {
     int jointlyGoalNumberInListView = 0;
     int debetableGoalNumberInListView = 0;
 
+    // info new entry on tab zero or one
+    Boolean infoNewEntryOnTabZero = false;
+    Boolean infoNewEntryOnTabOne = false;
+    String infoTextNewEntryPostFixTabZeroTitle = "";
+    String infoTextNewEntryPostFixTabOneTitle = "";
+    String tabTitleTextTabZero = "";
+    String tabTitleTextTabOne = "";
+
     // reference to the DB
     DBAdapter myDb;
 
@@ -116,6 +126,10 @@ public class ActivityOurGoals extends AppCompatActivity {
         // and set tablayout with viewpager
         tabLayoutOurGoals.setupWithViewPager(viewPagerOurGoals);
 
+        // set correct tab zero and one title with information new entry and color change -> FIRST TIME
+        setTabZeroTitleAndColor();
+        setTabOneTitleAndColor();
+
         // init listener for tab selected
         tabLayoutOurGoals.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -128,9 +142,6 @@ public class ActivityOurGoals extends AppCompatActivity {
                     case 0: // title for tab zero
                         switch (showCommandFragmentTabZero) {
                             case "show_jointly_goals_now":
-
-                                Log.d("OurGoals","Sub-Selected:"+arraySubTitleText[0]);
-
                                 tmpSubtitleText = arraySubTitleText[0];
                                 break;
                             case "comment_an_jointly_goal":
@@ -143,6 +154,10 @@ public class ActivityOurGoals extends AppCompatActivity {
                                 tmpSubtitleText = arraySubTitleText[5];
                                 break;
                         }
+
+                        // set correct tab zero title with information new entry and color change
+                        setTabZeroTitleAndColor();
+
                         break;
                     case 1: // title for tab one
                         switch (showCommandFragmentTabOne) {
@@ -156,6 +171,10 @@ public class ActivityOurGoals extends AppCompatActivity {
                                 tmpSubtitleText = arraySubTitleText[7];
                                 break;
                         }
+
+                        // set correct tab zero title with information new entry and color change
+                        setTabOneTitleAndColor();
+
                         break;
                     case 2: // title for tab two
                         tmpSubtitleText = arraySubTitleText[2];
@@ -240,13 +259,9 @@ public class ActivityOurGoals extends AppCompatActivity {
             //set fragment in tab zero to comment
             OurGoalsViewPagerAdapter.setFragmentTabZero("show_comment_for_jointly_goal");
 
-            // set correct tab zero titel
-            try {
-                tmpTabTitle = getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_1b", "string", getPackageName()));
-                tabLayoutOurGoals.getTabAt(0).setText(tmpTabTitle);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_1b", "string", getPackageName()));
+            setTabZeroTitleAndColor();
 
             // set command show variable
             showCommandFragmentTabZero = "show_comment_for_jointly_goal";
@@ -269,8 +284,9 @@ public class ActivityOurGoals extends AppCompatActivity {
             //set fragment in tab zero to comment
             OurGoalsViewPagerAdapter.setFragmentTabZero("comment_an_jointly_goal");
 
-            // set correct tab zero titel
-            tabLayoutOurGoals.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_1a", "string", getPackageName())));
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_1a", "string", getPackageName()));
+            setTabZeroTitleAndColor();
 
             // set command show variable
             showCommandFragmentTabZero = "comment_an_jointly_goal";
@@ -291,8 +307,9 @@ public class ActivityOurGoals extends AppCompatActivity {
             //set fragment in tab zero to evaluate
             OurGoalsViewPagerAdapter.setFragmentTabZero("evaluate_an_jointly_goal");
 
-            // set correct tab zero titel
-            tabLayoutOurGoals.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_1c", "string", getPackageName())));
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_1c", "string", getPackageName()));
+            setTabZeroTitleAndColor();
 
             // set command show variable
             showCommandFragmentTabZero = "evaluate_an_jointly_goal";
@@ -313,8 +330,9 @@ public class ActivityOurGoals extends AppCompatActivity {
             //set fragment in tab one to comment an debetable goal
             OurGoalsViewPagerAdapter.setFragmentTabOne("comment_an_debetable_goal");
 
-            // set correct tab one titel
-            tabLayoutOurGoals.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_2a", "string", getPackageName())));
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabOne = getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_2a", "string", getPackageName()));
+            setTabOneTitleAndColor();
 
             // set command show variable
             showCommandFragmentTabOne = "comment_an_debetable_goal";
@@ -334,8 +352,9 @@ public class ActivityOurGoals extends AppCompatActivity {
             //set fragment in tab one to show debetable goals
             OurGoalsViewPagerAdapter.setFragmentTabOne("show_debetable_goals_now");
 
-            // set correct tab one titel
-            tabLayoutOurGoals.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_2", "string", getPackageName())));
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabOne = getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_2", "string", getPackageName()));
+            setTabOneTitleAndColor();
 
             // set command show variable
             showCommandFragmentTabOne = "show_debetable_goals_now";
@@ -355,8 +374,9 @@ public class ActivityOurGoals extends AppCompatActivity {
             //set fragment in tab one to show comment debetable goals
             OurGoalsViewPagerAdapter.setFragmentTabOne("show_comment_for_debetable_goal");
 
-            // set correct tab one titel
-            tabLayoutOurGoals.getTabAt(1).setText(getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_2b", "string", getPackageName())));
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabOne = getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_2b", "string", getPackageName()));
+            setTabOneTitleAndColor();
 
             // set command show variable
             showCommandFragmentTabOne = "show_comment_for_debetable_goal";
@@ -378,8 +398,9 @@ public class ActivityOurGoals extends AppCompatActivity {
             //set fragment in tab zero to comment
             OurGoalsViewPagerAdapter.setFragmentTabZero("show_jointly_goals_now");
 
-            // set correct tab zero titel
-            tabLayoutOurGoals.getTabAt(0).setText(getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_1", "string", getPackageName())));
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_1", "string", getPackageName()));
+            setTabZeroTitleAndColor();
 
             // set command show variable
             showCommandFragmentTabZero = "show_jointly_goals_now";
@@ -431,6 +452,10 @@ public class ActivityOurGoals extends AppCompatActivity {
 
         // enable setting subtitle for the first time
         setSubtitleFirstTime = true;
+
+        //set tab title string
+        tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_1", "string", getPackageName()));
+        tabTitleTextTabOne = getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_2", "string", getPackageName()));
 
         // create help dialog in OurGoals
         createHelpDialog();
@@ -820,6 +845,111 @@ public class ActivityOurGoals extends AppCompatActivity {
 
 
 
+    // set correct tab zero title with information new entry and color change
+    private void setTabZeroTitleAndColor () {
+
+        ActivityOurGoals.this.lookNewEntryOnTabZero();
+
+        tabLayoutOurGoals.getTabAt(0).setText(tabTitleTextTabZero + infoTextNewEntryPostFixTabZeroTitle);
+        ActivityOurGoals.this.setUnsetTextColorSignalNewTabZero(infoNewEntryOnTabZero);
+
+    }
+
+
+    // set correct tab one title with information new entry and color change
+    private void setTabOneTitleAndColor () {
+
+        ActivityOurGoals.this.lookNewEntryOnTabOne();
+
+        tabLayoutOurGoals.getTabAt(1).setText(tabTitleTextTabOne + infoTextNewEntryPostFixTabOneTitle);
+        ActivityOurGoals.this.setUnsetTextColorSignalNewTabOne(infoNewEntryOnTabOne);
+
+    }
+
+
+    // look for new entry on tab zero
+    private void lookNewEntryOnTabZero () {
+
+        // look for new entrys in db on tab zero
+        if (myDb.getCountNewEntryOurGoals(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis())) > 0 ) {
+            infoNewEntryOnTabZero = true;
+            infoTextNewEntryPostFixTabZeroTitle = " " + this.getResources().getString(R.string.newEntryText);
+        }
+        else {
+            infoNewEntryOnTabZero = false;
+            infoTextNewEntryPostFixTabZeroTitle = "";
+        }
+
+    }
+
+
+    // look for new entry on tab one
+    private void lookNewEntryOnTabOne () {
+
+        // look for new entrys in db on tab one
+        if ( myDb.getCountNewEntryOurGoals(prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis())) > 0 ||  myDb.getCountAllNewEntryOurGoalsDebetableGoalsComment(prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis())) > 0) {
+            infoNewEntryOnTabOne = true;
+            infoTextNewEntryPostFixTabOneTitle = " "+ this.getResources().getString(R.string.newEntryText);
+        }
+        else {
+            infoNewEntryOnTabOne = false;
+            infoTextNewEntryPostFixTabOneTitle = "";
+        }
+
+    }
+
+    // set/ unset textcolor for tab title on tab zero
+    private void setUnsetTextColorSignalNewTabZero (Boolean colorSet) {
+
+        int tmpTextColor;
+
+        if (colorSet) {
+            tmpTextColor = ContextCompat.getColor(ActivityOurGoals.this, R.color.text_accent_color);
+            //parseColor("#F330F0");
+        }
+        else {
+            tmpTextColor = ContextCompat.getColor(ActivityOurGoals.this, R.color.colorAccent);
+        }
+
+        // Change tab text color on tab zero
+        ViewGroup vg = (ViewGroup) tabLayoutOurGoals.getChildAt(0);
+        ViewGroup vgTab = (ViewGroup) vg.getChildAt(0); //Tab Zero
+        int tabChildsCount = vgTab.getChildCount();
+        for (int i=0; i<tabChildsCount; i++) {
+            View tabViewCild = vgTab.getChildAt(i);
+            if (tabViewCild instanceof TextView) {
+                ((TextView) tabViewCild).setTextColor(tmpTextColor);
+            }
+        }
+
+    }
+
+    // set/ unset textcolor for tab title on tab one
+    private void setUnsetTextColorSignalNewTabOne (Boolean colorSet) {
+
+        int tmpTextColor;
+
+        if (colorSet) {
+            tmpTextColor = ContextCompat.getColor(ActivityOurGoals.this, R.color.text_accent_color);
+            //parseColor("#F330F0");
+        }
+        else {
+            tmpTextColor = ContextCompat.getColor(ActivityOurGoals.this, R.color.colorAccent);
+        }
+
+        // Change tab text color on tab zero
+        ViewGroup vg = (ViewGroup) tabLayoutOurGoals.getChildAt(0);
+        ViewGroup vgTab = (ViewGroup) vg.getChildAt(1); //Tab One
+        int tabChildsCount = vgTab.getChildCount();
+        for (int i=0; i<tabChildsCount; i++) {
+            View tabViewCild = vgTab.getChildAt(i);
+            if (tabViewCild instanceof TextView) {
+                ((TextView) tabViewCild).setTextColor(tmpTextColor);
+            }
+        }
+
+
+    }
 
 
 

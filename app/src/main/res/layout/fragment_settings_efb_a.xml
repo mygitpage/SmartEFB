@@ -1,15 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/body_background">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Einstellungen Verbinden mit Server"
-        android:id="@+id/textView17"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="198dp" />
-</RelativeLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="left"
+        android:background="@color/body_background"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+
+        <TextView
+            android:id="@+id/settingsConnectToServerHeadingIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:text="@string/settingsConnectToServerIntroHeadingText"
+            android:gravity="left"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/settingsConnectToServerSuccessful"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settingsConnectToServerSuccessfulText"
+            android:textSize="16dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="left"
+            android:visibility="gone"/>
+
+
+        <TextView
+            android:id="@+id/settingsConnectToServerIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settingsConnectToServerIntroText"
+            android:textSize="16dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="left"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/settingsWaitingForResponseIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settingsWaitingForResponseIntroText"
+            android:textSize="16dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="left"
+            android:visibility="gone"/>
+
+
+        <TextView
+            android:id="@+id/settingConnectToServerKeyNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="40dp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/settingsConnectToServerRemarkClickButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settingsConnectToServerRemarkClickButtonText"
+            android:textSize="16dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="left"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/buttonSendConnectToServerKeyNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_btn_join"
+            android:textColor="@color/white"
+            android:text="@string/buttonSendConnectToServerKeyNumberText"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="5dp"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:layout_marginBottom="15dp"/>
+
+
+
+    </LinearLayout>
+
+</ScrollView>

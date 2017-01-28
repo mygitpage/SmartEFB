@@ -5,14 +5,18 @@ package de.smart_efb.efbapp.smartefb;
  */
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -33,11 +37,21 @@ import java.util.Date;
 public class ActivitySettingsEfb extends AppCompatActivity {
 
 
+    // prefs name for connecting status
+    static final String namePrefsConnectingStatus = "connectingStatus";
+
+    // prefs name for random number for connectin to server
+    static final String namePrefsRandomNumberForConnection = "randomNumberForConnection";
+
+
     Toolbar toolbarSettingsEfb;
     ActionBar actionBar;
 
     ViewPager viewPagerSettingsEfb;
     TabLayout tabLayoutSettingsEfb;
+
+    // reference to viewpageradapter
+    SettingsEfbViewPagerAdapter settingsEfbViewPagerAdapter;
 
 
     // shared prefs for the app
@@ -47,6 +61,12 @@ public class ActivitySettingsEfb extends AppCompatActivity {
     // reference to the DB
     DBAdapter myDb;
 
+    // the connecting status (0=not connected, 1=try to connect, 2=connected, 3=error)
+    int connectingStatus = 0;
+
+    // actual random number for connetion to server
+    int randomNumverForConnection = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,30 +74,43 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_efb);
 
-        // init the DB
-        myDb = new DBAdapter(this);
-
-        toolbarSettingsEfb = (Toolbar) findViewById(R.id.toolbarSettingsEfb);
-        setSupportActionBar(toolbarSettingsEfb);
-        toolbarSettingsEfb.setTitleTextColor(Color.WHITE);
-        actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
+        // init settings
+        initSettingsEfb();
 
         viewPagerSettingsEfb = (ViewPager) findViewById(R.id.viewPagerSettingsEfb);
-        SettingsEfbViewPagerAdapter settingsEfbViewPagerAdapter = new SettingsEfbViewPagerAdapter(getSupportFragmentManager(), this);
+        settingsEfbViewPagerAdapter = new SettingsEfbViewPagerAdapter(getSupportFragmentManager(), this);
         viewPagerSettingsEfb.setAdapter(settingsEfbViewPagerAdapter);
 
         tabLayoutSettingsEfb = (TabLayout) findViewById(R.id.tabLayoutSettingsEfb);
         tabLayoutSettingsEfb.setTabGravity(TabLayout.GRAVITY_FILL);
-
-
         tabLayoutSettingsEfb.setupWithViewPager(viewPagerSettingsEfb);
 
         tabLayoutSettingsEfb.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
+                String tmpSubtitleText = "";
+
+                // Change the subtitle of the activity
+                switch (tab.getPosition()) {
+                    case 0: // title for tab zero
+                        tmpSubtitleText = ActivitySettingsEfb.this.getSubtitleForTabZero();
+                        break;
+                    case 1: // title for tab one
+                        tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleContactdetails", "string", getPackageName()));
+                        break;
+                    case 2: // title for tab two
+                        tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleHelpForApp", "string", getPackageName()));
+                        break;
+
+                    default:
+                        tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleConnectToServer", "string", getPackageName()));
+                        break;
+
+                }
+
+                // set correct subtitle
+                setSettingsToolbarSubtitle(tmpSubtitleText);
 
                 viewPagerSettingsEfb.setCurrentItem(tab.getPosition());
 
@@ -95,7 +128,182 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         });
 
 
+        // check for intent on start time
+        // Extras from intent that holds data
+        Bundle intentExtras = null;
+        // intent
+        Intent intent = getIntent();
+
+        if (intent != null) { // intent set?
+            // get the link data from the extra
+            intentExtras = intent.getExtras();
+            if (intentExtras != null && intentExtras.getString("com") != null) { // extra data set?
+                if (intentExtras.getString("com").equals("show_contact")) { // execute only command show_contact (comes from activity: meeting, faq)
+                    // get command and execute it
+                    executeIntentCommand(intentExtras.getString("com"));
+                }
+            }
+        }
+
+
     }
+
+
+    private void initSettingsEfb() {
+
+        // init the toolbarSettings
+        toolbarSettingsEfb = (Toolbar) findViewById(R.id.toolbarSettingsEfb);
+        setSupportActionBar(toolbarSettingsEfb);
+        toolbarSettingsEfb.setTitleTextColor(Color.WHITE);
+
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        // init the prefs
+        prefs = getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+
+        // init prefs editor
+        prefsEditor = prefs.edit();
+
+        // get meeting status
+        connectingStatus = prefs.getInt(namePrefsConnectingStatus, 0);
+
+        //get random Number for connection
+        randomNumverForConnection = prefs.getInt(namePrefsRandomNumberForConnection, 0);
+
+        // set correct subtitle
+        String tmpSubtitleText = getSubtitleForTabZero();
+        setSettingsToolbarSubtitle(tmpSubtitleText);
+
+    }
+
+
+    private String getSubtitleForTabZero () {
+
+        String tmpSubtitleText = "";
+
+        switch(connectingStatus)
+
+        {
+            case 0:
+                tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleConnectToServer", "string", getPackageName()));
+                break;
+            case 1:
+                tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleWaitingForResponse", "string", getPackageName()));
+                break;
+            default:
+                tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleConnectToServer", "string", getPackageName()));
+                break;
+        }
+
+        return tmpSubtitleText;
+
+    }
+
+
+    // Look for new intents (with data from putExtra)
+    @Override
+    protected void onNewIntent(Intent intent) {
+
+        // Extras from intent that holds data
+        Bundle intentExtras = null;
+
+        // call super
+        super.onNewIntent(intent);
+
+        // get the link data from URI and from the extra
+        intentExtras = intent.getExtras();
+
+        if (intentExtras != null) {
+            // get command and execute it
+            executeIntentCommand (intentExtras.getString("com"));
+        }
+
+    }
+
+
+    // execute the commands that comes from link or intend
+    public void executeIntentCommand (String command) {
+
+        if (command.equals("show_contact")) { // Show tab 2 'ueber' -> used to show contact information from other activitys
+            // set tab 2
+            TabLayout.Tab tab = tabLayoutSettingsEfb.getTabAt(1);
+            tab.select();
+
+        } if (command.equals("show_waiting_response")) { // Show tab 0 -> waiting for response from server to link app with server
+
+
+            // set correct subtitle
+            String tmpSubtitleText = ActivitySettingsEfb.this.getSubtitleForTabZero();
+            setSettingsToolbarSubtitle(tmpSubtitleText);
+
+            // notify view pager adapter that data change
+            settingsEfbViewPagerAdapter.notifyDataSetChanged();
+
+        }
+        else {
+
+
+
+        }
+
+    }
+
+
+
+    // setter for subtitle in ActivitySettingsEfb toolbar
+    public void setSettingsToolbarSubtitle (String subtitleText) {
+
+        toolbarSettingsEfb.setSubtitle(subtitleText);
+
+    }
+
+
+
+
+    // getter for connecting status
+    public int getConnectingStatus () {
+
+        return connectingStatus;
+
+    }
+
+    // setter for connecting status
+    public void setConnectionStatus (int tmpConnectionStatus) {
+
+        connectingStatus = tmpConnectionStatus;
+
+        prefsEditor.putInt(namePrefsConnectingStatus,tmpConnectionStatus);
+
+        prefsEditor.commit();
+
+    }
+
+    // getter for random number for connection to server
+    public int getRandomNumberForConnection() {
+
+
+        return randomNumverForConnection;
+
+
+    }
+
+    // setter for random number for connection to server
+    public void setRandomNumberForConnection(int tmpRandomNumber) {
+
+        randomNumverForConnection = tmpRandomNumber;
+
+        prefsEditor.putInt(namePrefsRandomNumberForConnection,tmpRandomNumber);
+
+        prefsEditor.commit();
+
+    }
+
+
+
+
+
+
 
 
     @Override
@@ -115,7 +323,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
 
 
-
+    // all following finctions are for fragment d (app settings) -> will be deleted!!!!
 
     public void onClick_showDateChooserForCurrentArrangement (View v) {
 

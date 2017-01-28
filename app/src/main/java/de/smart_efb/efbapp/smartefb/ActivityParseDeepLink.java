@@ -80,13 +80,14 @@ public class ActivityParseDeepLink extends Activity {
             startActivity(intent);
 
         } else if (SETTINGS.equals(path)) {
+
+            Log.d("DeepLink","COM:"+tmpCommand);
+
+
             // Launch settings
             Intent intent = new Intent(this, ActivitySettingsEfb.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra("com",tmpCommand);
-            intent.putExtra("db_id",tmpDbId);
-            intent.putExtra("arr_num",tmpNumberinListView);
-            intent.putExtra("eval_next",tmpEvalNext);
             startActivity(intent);
 
         }else if (FAQ.equals(path)) {

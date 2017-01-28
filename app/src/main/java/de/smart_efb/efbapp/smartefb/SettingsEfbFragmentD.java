@@ -219,6 +219,12 @@ public class SettingsEfbFragmentD extends Fragment {
 
 
 
+        // Settings PREFS
+
+        prefsEditor.putInt("connectingStatus",0);
+
+
+
 
 
         prefsEditor.commit();

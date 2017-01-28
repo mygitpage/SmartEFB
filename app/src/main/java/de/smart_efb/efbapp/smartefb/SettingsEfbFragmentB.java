@@ -1,5 +1,6 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,14 +16,23 @@ import android.view.ViewGroup;
 public class SettingsEfbFragmentB extends Fragment {
 
 
-    View contentFragmentB;
+
+
+    // fragment view
+    View viewFragmentContactdetails;
+
+    // fragment context
+    Context fragmentContactdetailsContext = null;
+
+
+
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
-        contentFragmentB = layoutInflater.inflate(R.layout.fragment_settings_efb_b, null);
+        viewFragmentContactdetails = layoutInflater.inflate(R.layout.fragment_settings_efb_b, null);
 
-        return contentFragmentB;
+        return viewFragmentContactdetails;
 
     }
 
@@ -36,8 +46,22 @@ public class SettingsEfbFragmentB extends Fragment {
         super.onViewCreated(view, saveInstanceState);
 
 
+        fragmentContactdetailsContext = getActivity().getApplicationContext();
+
+        // init the fragment contactdetails
+        initFragmentContactdetails();
 
     }
+
+    private void initFragmentContactdetails () {
+
+
+
+    }
+
+
+
+
 
 
 

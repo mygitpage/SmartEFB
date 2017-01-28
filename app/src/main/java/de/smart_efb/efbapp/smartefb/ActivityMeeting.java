@@ -60,7 +60,7 @@ public class ActivityMeeting extends AppCompatActivity {
     // boolean status array checkbox
     Boolean [] makeMeetingCheckBoxListenerArray = new Boolean[countNumberTimezones];
 
-    // prefs name for timezone array
+    // prefs name for meeting status
     static final String namePrefsMeetingStatus = "meetingStatus";
 
     // prefs name for meeting place
