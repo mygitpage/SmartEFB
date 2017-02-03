@@ -344,6 +344,8 @@ public class MeetingFragmentMeetingNow extends Fragment {
                     Intent intent = new Intent(fragmentMeetingNowContext, ActivityMeeting.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("com","change_meeting");
+                    intent.putExtra("met_index",0); // First meeting is ever index number zero
+                    intent.putExtra("met_backto","now_meeting");
                     fragmentMeetingNowContext.startActivity(intent);
 
                 }

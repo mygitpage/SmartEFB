@@ -25,51 +25,41 @@ public class MeetingFragmentMeetingChange extends Fragment {
 
 
     // fragment view
-    View viewFragmentMeetingMake;
+    View viewFragmentMeetingChange;
 
     // fragment context
-    Context fragmentMeetingMakeContext = null;
+    Context fragmentMeetingChangeContext = null;
 
-    // reference to the DB
-    DBAdapter myDb;
+    // number of simultaneous meetings
+    static final int numberSimultaneousMeetings = 2;
 
-    // shared prefs for the settings
-    SharedPreferences prefs;
 
-    // shared prefs for storing
-    SharedPreferences.Editor prefsEditor;
+    
 
-    // the current meeting date and time
-    long currentMeetingDateAndTime;
+    /// the current meeting date and time
+    long [] currentMeetingDateAndTime = new long [numberSimultaneousMeetings];
+
+    // meeting place
+    int [] meetingPlace = new int[numberSimultaneousMeetings];
+
+    // meeting place name
+    String [] meetingPlaceName = new String [numberSimultaneousMeetings];
 
     // meeting status
-    int meetingStatus;
+    int meetingStatus = 0;
 
-    // number of checkboxes for choosing timezones (look fragment meetingNow)
-    static final int countNumberTimezones = 15;
 
-    // boolean status array checkbox
-    Boolean [] makeMeetingCheckBoxListenerArray = new Boolean[countNumberTimezones];
-
-    // count selected checkBoxes for border check
-    int countSelectedCheckBoxesTimezone = 0;
-
-    // number of radio buttons for choosing places
-    static final int countNumberPlaces = 2;
-
-    // result number of place (1 = Werder (Havel), 2 = Bad Belzig, 0 = no place selected)
-    int resultNumberOfPlace = 0;
-
+    // index of meeting to change/delete (0,1 is possible)
+    int indexNumberMeetingToShow = 0;
+      
 
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
-        viewFragmentMeetingMake = layoutInflater.inflate(R.layout.fragment_meeting_meeting_change, null);
+        viewFragmentMeetingChange = layoutInflater.inflate(R.layout.fragment_meeting_meeting_change, null);
 
-        Log.d("Meeting","onCreateView");
-
-        return viewFragmentMeetingMake;
+        return viewFragmentMeetingChange;
 
     }
 
@@ -77,9 +67,11 @@ public class MeetingFragmentMeetingChange extends Fragment {
     @Override
     public void onViewCreated (View view, @Nullable Bundle saveInstanceState) {
 
+        Log.d ("Change","onViewCreated");
+
         super.onViewCreated(view, saveInstanceState);
 
-        fragmentMeetingMakeContext = getActivity().getApplicationContext();
+        fragmentMeetingChangeContext = getActivity().getApplicationContext();
 
         // init the fragment meeting now
         initFragmentMeetingNow();
@@ -93,18 +85,23 @@ public class MeetingFragmentMeetingChange extends Fragment {
 
     private void initFragmentMeetingNow () {
 
-        // init the prefs
-        prefs = fragmentMeetingMakeContext.getSharedPreferences("smartEfbSettings", fragmentMeetingMakeContext.MODE_PRIVATE);
+        
+        // call getter-methode getMeetingIndexToChange in ActivityMeeting to get index of meeting to change/delete
+        indexNumberMeetingToShow = ((ActivityMeeting)getActivity()).getMeetingIndexToChange();
 
-        // init prefs editor
-        prefsEditor = prefs.edit();
+        // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get current time and date array (2 simultaneous meetings are possible)
+        currentMeetingDateAndTime = ((ActivityMeeting)getActivity()).getMeetingTimeAndDate();
 
-        // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get current time and date
-        //currentMeetingDateAndTime = ((ActivityMeeting)getActivity()).getMeetingTimeAndDate();
+        // call getter-methode getMeetingPlace in ActivityMeeting to get current place
+        meetingPlace = ((ActivityMeeting)getActivity()).getMeetingPlace();
 
-        // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get meeting status
+        // call getter-methode getMeetingPlaceName in ActivityMeeting to get current place name
+        for (int t=0; t<numberSimultaneousMeetings; t++) {
+            meetingPlaceName[t] = ((ActivityMeeting)getActivity()).getMeetingPlaceName(meetingPlace[t]);
+        }
+
+        // get meeting status
         meetingStatus = ((ActivityMeeting)getActivity()).getMeetingStatus();
-
 
 
 
@@ -115,161 +112,176 @@ public class MeetingFragmentMeetingChange extends Fragment {
     // show fragment ressources
     private void displayActualMeetingInformation () {
 
-        String tmpSubtitle = "";
-        String tmpSubtitleOrder = "";
-
-        Button tmpButton;
-
-        Boolean btnVisibilitySendMakeFirstMeeting = false;
-
-
-
-        switch (meetingStatus) {
-
-
-            case 0:
-            default: // no time and date for meeting -> first meeting
-                btnVisibilitySendMakeFirstMeeting = true;
-                tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMakeFirstMeeting", "string", fragmentMeetingMakeContext.getPackageName()));
-                tmpSubtitleOrder = "makeFirstMeeting";
-                //tmpSubtitle = String.format(tmpSubtitle, jointlyGoalNumberInListView);
-                break;
-
-        }
+        
 
         // Set correct subtitle in Activity Meeting Fragment make first meeting
+        String tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleChangeMeeting", "string", fragmentMeetingChangeContext.getPackageName()));
         ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle);
 
-        // status make first meeting
-        if (btnVisibilitySendMakeFirstMeeting) {
 
-            // set movement methode for telephone link in intro text
-            TextView tmpShowMeetingExplainText = (TextView) viewFragmentMeetingMake.findViewById(R.id.makeFirstMeetingExplainText);
-            tmpShowMeetingExplainText.setMovementMethod(LinkMovementMethod.getInstance());
+        // set detail intro text movement
+        TextView tmpChangeMeetingIntroDetailDescripton = (TextView) viewFragmentMeetingChange.findViewById(R.id.changeMeetingIntroDetailDescripton);
+        tmpChangeMeetingIntroDetailDescripton.setMovementMethod(LinkMovementMethod.getInstance());
 
-            // set movement methode for telephone link in info text
-            TextView tmpShowMeetingProcedureText = (TextView) viewFragmentMeetingMake.findViewById(R.id.infoMakeMeetingProcedure);
-            tmpShowMeetingProcedureText.setMovementMethod(LinkMovementMethod.getInstance());
+        // show date text of meeting to change/delete
+        TextView tmpShowDateText = (TextView) viewFragmentMeetingChange.findViewById(R.id.changeMeetingDate);
+        String tmpDate = EfbHelperClass.timestampToDateFormat(currentMeetingDateAndTime[indexNumberMeetingToShow], "dd.MM.yyyy");
+        tmpShowDateText.setText(tmpDate);
 
-            // find send button "Anfrage senden"
-            tmpButton = (Button) viewFragmentMeetingMake.findViewById(R.id.buttonSendSuggestionFirstMeeting);
+        // show time text of meeting to change/delete
+        TextView tmpShowTimeText = (TextView) viewFragmentMeetingChange.findViewById(R.id.changeMeetingTime);
+        String tmpTime = EfbHelperClass.timestampToTimeFormat(currentMeetingDateAndTime[indexNumberMeetingToShow], "HH:mm") + " " + fragmentMeetingChangeContext.getResources().getString(R.string.showClockWordAdditionalText);
+        tmpShowTimeText.setText(tmpTime);
 
-            // onClick listener make meeting
-            tmpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        // show time place and set visible
+        TextView tmpShowPlaceText = (TextView) viewFragmentMeetingChange.findViewById(R.id.changeMeetingPlace);
+        if (meetingPlace[indexNumberMeetingToShow] == 1 || meetingPlace[indexNumberMeetingToShow] == 2) { // show meeting place name
+            tmpShowPlaceText.setText(meetingPlaceName[indexNumberMeetingToShow]);
+        } else {
+            tmpShowPlaceText.setText(meetingPlaceName[0]); // show place "Kein Ort gewaehlt"
+        }
 
-                    Boolean makeMeetingNoError = true;
+        // find send button "Absage senden"
+        Button tmpButton;
+        tmpButton = (Button) viewFragmentMeetingChange.findViewById(R.id.buttonConfirmChangeMeeting);
 
-                    TextView tmpErrorTextView;
+        // onClick listener make meeting
+        tmpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                    // check check boxes result (border <2)
-                    tmpErrorTextView = (TextView) viewFragmentMeetingMake.findViewById(R.id.makeFirstMeetingChooseTimezoneError);
-                    if ( countSelectedCheckBoxesTimezone < 3 && tmpErrorTextView != null) {
-                        makeMeetingNoError = false;
+                Boolean changeMeetingNoError = true;
+
+                TextView tmpErrorTextView;
+
+                // check edit text border (<3 and >500)
+                EditText tmpInputChangeMeetingReason = (EditText) viewFragmentMeetingChange.findViewById(R.id.inputChangeMeetingReason);
+                String tmpTextInputChangeMeetingReason = "";
+                if (tmpInputChangeMeetingReason != null) {
+                    tmpTextInputChangeMeetingReason = tmpInputChangeMeetingReason.getText().toString();
+
+                    // get text view for error
+                    tmpErrorTextView = (TextView) viewFragmentMeetingChange.findViewById(R.id.errorInputChangeMeetingReason);
+                    // check for errors
+                    if ((tmpTextInputChangeMeetingReason.length() < 3 || tmpTextInputChangeMeetingReason.length() > 500) && tmpErrorTextView != null ) {
+                        changeMeetingNoError = false;
                         tmpErrorTextView.setVisibility(View.VISIBLE);
-                    } else if (tmpErrorTextView != null) {
+                    }
+                    else if (tmpErrorTextView != null){
                         tmpErrorTextView.setVisibility(View.GONE);
                     }
 
+                }
 
-                    // check radio buttons result
-                    tmpErrorTextView = (TextView) viewFragmentMeetingMake.findViewById(R.id.makeFirstMeetingChoosePlaceError);
-                    if ( resultNumberOfPlace <= 0 && tmpErrorTextView != null) {
-                        makeMeetingNoError = false;
-                        tmpErrorTextView.setVisibility(View.VISIBLE);
-                    } else if (tmpErrorTextView != null) {
-                        tmpErrorTextView.setVisibility(View.GONE);
+                // input error?
+                if (changeMeetingNoError) {
+
+
+                    // TODO ->
+                    // Termin-ID erzeugen
+                    // Netzwerk status pruefen
+                    // Terminabsage senden
+
+                    // delete text from input field
+                    if (tmpInputChangeMeetingReason != null) {
+                       tmpInputChangeMeetingReason.setText("");
                     }
 
-
-                    // check edit text border (<3 and >500)
-                    EditText tmpInputFirstMeetingProblem = (EditText) viewFragmentMeetingMake.findViewById(R.id.inputFirstMeetingProblemText);
-                    String tmpTextInputFirstMeetingProblem = "";
-                    if (tmpInputFirstMeetingProblem != null) {
-                        tmpTextInputFirstMeetingProblem = tmpInputFirstMeetingProblem.getText().toString();
-
-                        tmpErrorTextView = (TextView) viewFragmentMeetingMake.findViewById(R.id.makeFirstMeetingProblemError);
-                        if ((tmpTextInputFirstMeetingProblem.length() < 3 || tmpTextInputFirstMeetingProblem.length() > 500) && tmpErrorTextView != null ) {
-                            makeMeetingNoError = false;
-                            tmpErrorTextView.setVisibility(View.VISIBLE);
-                        }
-                        else if (tmpErrorTextView != null){
-                            tmpErrorTextView.setVisibility(View.VISIBLE);
-                        }
-
-                    }
-
-                    // input error?
-                    if (makeMeetingNoError) {
+                        // Delete meeting information in smartphone
+                    ((ActivityMeeting)getActivity()).deleteMeetingTimestampAndPlace(indexNumberMeetingToShow);
 
 
-                        // call setter-methode setMeetingTimezoneSuggestions in ActivityMeeting to set timezone suggestion results
-                        //((ActivityMeeting)getActivity()).setMeetingTimezoneSuggestions(makeMeetingCheckBoxListenerArray);
+                    // Toast "change (delete) meeting sucessfully send"
+                    Toast.makeText(fragmentMeetingChangeContext, fragmentMeetingChangeContext.getResources().getString(R.string.changeDeleteMeetingSendSuccesfullToastText), Toast.LENGTH_SHORT).show();
 
+                    // call getter for info back to fragment
+                    String tmpBackTo = ((ActivityMeeting)getActivity()).getMeetingBackToFragment ();
 
-                        // call setter-methode setMeetingPlace in ActivityMeeting to set place
-                        //((ActivityMeeting)getActivity()).setMeetingPlace(resultNumberOfPlace);
+                    if (tmpBackTo.equals("find_meeting")) {
 
-                        // call setter-methode setMeetingProblem in ActivityMeeting to problem
-                        //((ActivityMeeting)getActivity()).setMeetingProblem(tmpTextInputFirstMeetingProblem);
+                        // send intent back to fragment find meeting
+                        Intent intent = new Intent(fragmentMeetingChangeContext, ActivityMeeting.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("com", "find_meeting");
+                        intent.putExtra("update", false);
+                        intent.putExtra("met_status", meetingStatus);
+                        intent.putExtra("pop_stack", true);
+                        fragmentMeetingChangeContext.startActivity(intent);
 
-                        // call setter-methode setMeetingStatus in ActivityMeeting to Meeting suggested
-                        //((ActivityMeeting)getActivity()).setMeetingStatus(1);
-
-
-
-
-
-                        // TODO ->
-                        // Termin-ID erzeugen
-                        // Netzwerk status pruefen
-                        // Terminanfrage senden
-                        // Ergebnis anzeigen
-
-
-
-
-                        // Toast "Make first meeting send succesfull"
-                        Toast.makeText(fragmentMeetingMakeContext, fragmentMeetingMakeContext.getResources().getString(R.string.makeFirstMeetingSendSuccesfullToastText), Toast.LENGTH_SHORT).show();
-
-                        // send intent back to activity meeting
-                        Intent intent = new Intent(fragmentMeetingMakeContext, ActivityMeeting.class);
+                    } else {
+                        // send intent back to fragment now meeting
+                        Intent intent = new Intent(fragmentMeetingChangeContext, ActivityMeeting.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("com", "now_meeting");
+                        intent.putExtra("met_status", meetingStatus);
                         intent.putExtra("pop_stack", true);
-                        fragmentMeetingMakeContext.startActivity(intent);
-
-                    }
-                    else {
-
-                        // Toast "Make first Meeting not completly"
-                        Toast.makeText(fragmentMeetingMakeContext, fragmentMeetingMakeContext.getResources().getString(R.string.makeFirstMeetingCompletErrorToastText), Toast.LENGTH_SHORT).show();
-
-
+                        fragmentMeetingChangeContext.startActivity(intent);
                     }
 
                 }
-            });
+                else {
 
+                    // Toast "change (delete) meeting not sucessfully send"
+                    Toast.makeText(fragmentMeetingChangeContext, fragmentMeetingChangeContext.getResources().getString(R.string.changeDeleteMeetingNotSendSuccesfullToastText), Toast.LENGTH_SHORT).show();
 
-            // find abbort button "Zurueck zur Terminuebersicht"
-            tmpButton = (Button) viewFragmentMeetingMake.findViewById(R.id.buttonAbbortSuggestionFirstMeeting);
-
-            // onClick listener make meeting
-            tmpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Intent intent = new Intent(fragmentMeetingMakeContext, ActivityMeeting.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("com","now_meeting");
-                    intent.putExtra("pop_stack", true);
-                    fragmentMeetingMakeContext.startActivity(intent);
 
                 }
-            });
-        }
+            }
+        });
+        
+
+
+
+        // Button Abbort change meeting
+        // find button Abbort
+        Button tmpButtonAbbort;
+        tmpButtonAbbort = (Button) viewFragmentMeetingChange.findViewById(R.id.buttonAbbortChangeMeeting);
+
+        // onClick listener make meeting
+        tmpButtonAbbort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // delete text from input field
+                EditText tmpInputChangeMeetingReason = (EditText) viewFragmentMeetingChange.findViewById(R.id.inputChangeMeetingReason);
+                if (tmpInputChangeMeetingReason != null) {
+                    tmpInputChangeMeetingReason.setText("");
+                }
+
+                // call getter for info back to fragment
+                String tmpBackTo = ((ActivityMeeting)getActivity()).getMeetingBackToFragment ();
+
+                if (tmpBackTo.equals("find_meeting")) {
+
+                        // send intent back to fragment find meeting
+                        Intent intent = new Intent(fragmentMeetingChangeContext, ActivityMeeting.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("com", "find_meeting");
+                        intent.putExtra("update", false);
+                        intent.putExtra("met_status", meetingStatus);
+                        intent.putExtra("pop_stack", true);
+                        fragmentMeetingChangeContext.startActivity(intent);
+
+                } else {
+                        // send intent back to fragment now meeting
+                        Intent intent = new Intent(fragmentMeetingChangeContext, ActivityMeeting.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("com", "now_meeting");
+                        intent.putExtra("met_status", meetingStatus);
+                        intent.putExtra("pop_stack", true);
+                        fragmentMeetingChangeContext.startActivity(intent);
+                }
+
+            }
+
+
+        });
+
+
+
+        
+        
+        
 
     }
 

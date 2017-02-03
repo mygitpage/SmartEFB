@@ -174,7 +174,7 @@ public class MeetingFragmentMeetingMake extends Fragment {
                             tmpErrorTextView.setVisibility(View.VISIBLE);
                         }
                         else if (tmpErrorTextView != null){
-                            tmpErrorTextView.setVisibility(View.VISIBLE);
+                            tmpErrorTextView.setVisibility(View.GONE);
                         }
 
                     }

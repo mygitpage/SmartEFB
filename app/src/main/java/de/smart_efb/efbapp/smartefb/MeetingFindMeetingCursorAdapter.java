@@ -187,7 +187,8 @@ public class MeetingFindMeetingCursorAdapter extends CursorAdapter {
                             Intent intent = new Intent(meetingFindMeetingCursorAdapterContext, ActivityMeeting.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.putExtra("com", "find_meeting");
-                            intent.putExtra("pop_stack", true);
+                            intent.putExtra("update", true);
+                            intent.putExtra("pop_stack", false);
                             intent.putExtra("met_status", 6); // TODO Meeting Status anpassen 6 = erstemal einen Terminvorschlag gewählt; 7= wiederholtemal einen Terminvorschlag gewählt
                             meetingFindMeetingCursorAdapterContext.startActivity(intent);
 

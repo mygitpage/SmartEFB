@@ -32,10 +32,12 @@ public class MeetingWaitingForRequestCursorAdapter extends CursorAdapter {
     // actual meeting date and time
     Long currentMeetingDateAndTime;
 
+    // index meeting number for change/delete
+    int indexNumberMeetingToShow = 0;
     
 
     // constructor
-    public MeetingWaitingForRequestCursorAdapter(Context context, Cursor cursor, int flags, Long tmpActualMeetingDateAndTime, String tmpMeetingPlace) {
+    public MeetingWaitingForRequestCursorAdapter(Context context, Cursor cursor, int flags, Long tmpActualMeetingDateAndTime, String tmpMeetingPlace, int tmpIndexNumberMeetingToShow) {
 
         super(context, cursor, flags);
 
@@ -44,6 +46,8 @@ public class MeetingWaitingForRequestCursorAdapter extends CursorAdapter {
         currentMeetingDateAndTime = tmpActualMeetingDateAndTime;
 
         meetingPlaceName = tmpMeetingPlace;
+
+        indexNumberMeetingToShow = tmpIndexNumberMeetingToShow;
 
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -103,6 +107,24 @@ public class MeetingWaitingForRequestCursorAdapter extends CursorAdapter {
                 TextView tmpShowPlaceText = (TextView) view.findViewById(R.id.nextMeetingPlace);
                 tmpShowPlaceText.setVisibility(View.VISIBLE);
                 tmpShowPlaceText.setText(meetingPlaceName);
+
+                // show button abbort meeting
+                Button btnAbbortMeeting = (Button) view.findViewById(R.id.buttonSendChangeMeetingDate);
+                btnAbbortMeeting.setVisibility(View.VISIBLE);
+
+                btnAbbortMeeting.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent intent = new Intent(meetingWaitingRequestCursorAdapterContext, ActivityMeeting.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("com","change_meeting");
+                        intent.putExtra("met_index",indexNumberMeetingToShow);
+                        intent.putExtra("met_backto","find_meeting");
+                        meetingWaitingRequestCursorAdapterContext.startActivity(intent);
+
+                    }
+                });
 
             }
             else {

@@ -558,26 +558,38 @@
 
 
         <!-- fragment find meeting -->
-        <string name="findMeetingIntroTextNoMeetingSoFar">Termin wählen</string>
-        <string name="findMeetingExplainTextNoMeetingSoFar">Bitte wählen Sie mindestens einen Terminvorschlag aus, an dem Sie können. Klicken Sie dann am Ende der Liste auf Verbindlich Senden. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
-        <string name="findMeetingAuthorSuggestionMeeting">Die Vorschläge wurden von %s eingestellt.</string>
-        <string name="meetingFindMeetingNoDateAndTimeSuggestionsText">Zurzeit liegen keine Terminvorschläge vor.</string>
-        <string name="btnTextSendSuggestionToCoach">Verbindlich Senden</string>
-        <string name="errorCountTooLittleCheckBoexesCheckedText">Bitte wählen Sie mindestens einen Terminvorschlag aus.</string>
-        <string name="textMeetingFindMeetingSuggestionSuccesfullSend">Vielen Dank. Ihre Daten wurden gesendet!</string>
-        <string name="textExplainTextForWaitingForRequest">Ihre bestätigten Terminvorschläge wurden erfolgreich gesendet. Sie erhalten in den nächsten Tagen eine Terminbestätigung. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
-        <string name="findMeetingIntroTextWaitingForRequest">Terminbestätigung abwarten</string>
-        <string name="textExplainTextSendMeetingSuggestions">Folgende Terminvorschläge wurden von Ihnen gesendet:</string>
-        <string name="textShowDateAndTimeForMeetingConfirmationSingular">Ihr nächster Termin:</string>
-        <string name="textShowDateAndTimeForMeetingConfirmationPlural">Ihre nächsten beiden Termine:</string>
-        <string name="meetingFindMeetingNoActualMeetingAvailableText">Alle bisher angezeigten Termine sind abgelaufen und werden daher nicht mehr angezeigt. Bitte <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
-        <string name="textShowDateAndTimeForMeetingAndNewSuggestions">Ihr nächster Termin und Terminvorschläge für einen übernächsten Termin</string>
-        <string name="findMeetingExplainTextWithAnotherMeeting">Für die Planung eines übernächsten Termins stehen folgende Terminvorschläge zur Verfügung. Bitte markieren Sie die Vorschläge, an denen Sie Zeit haben und klicken anschließend auf Senden. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
-        <string name="showExplainTextForFindMeetingWithOldMeetingText">Ihr nächster Termin ist abgelaufen und liegt damit in der Vergangenheit.</string>
-        <string name="textShowDateAndTimeForMeetingAndWaitForResponse">Ihr nächster Termin und warten auf eine Terminbestätigung für Ihre Vorschläge:</string>
-        <string name="textResponseDeadlineForMeetingSuggestions">Bitte senden Sie uns Ihre Terminbestätigungen bis zum %s zu.</string>
+            <string name="findMeetingIntroTextNoMeetingSoFar">Termin wählen</string>
+            <string name="findMeetingExplainTextNoMeetingSoFar">Bitte wählen Sie mindestens einen Terminvorschlag aus, an dem Sie können. Klicken Sie dann am Ende der Liste auf Verbindlich Senden. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
+            <string name="findMeetingAuthorSuggestionMeeting">Die Vorschläge wurden von %s eingestellt.</string>
+            <string name="meetingFindMeetingNoDateAndTimeSuggestionsText">Zurzeit liegen keine Terminvorschläge vor.</string>
+            <string name="btnTextSendSuggestionToCoach">Verbindlich Senden</string>
+            <string name="errorCountTooLittleCheckBoexesCheckedText">Bitte wählen Sie mindestens einen Terminvorschlag aus.</string>
+            <string name="textMeetingFindMeetingSuggestionSuccesfullSend">Vielen Dank. Ihre Daten wurden gesendet!</string>
+            <string name="textExplainTextForWaitingForRequest">Ihre bestätigten Terminvorschläge wurden erfolgreich gesendet. Sie erhalten in den nächsten Tagen eine Terminbestätigung. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
+            <string name="findMeetingIntroTextWaitingForRequest">Terminbestätigung abwarten</string>
+            <string name="textExplainTextSendMeetingSuggestions">Folgende Terminvorschläge wurden von Ihnen gesendet:</string>
+            <string name="textShowDateAndTimeForMeetingConfirmationSingular">Ihr nächster Termin:</string>
+            <string name="textShowDateAndTimeForMeetingConfirmationPlural">Ihre nächsten beiden Termine:</string>
+            <string name="meetingFindMeetingNoActualMeetingAvailableText">Alle bisher angezeigten Termine sind abgelaufen und werden daher nicht mehr angezeigt. Bitte <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
+            <string name="textShowDateAndTimeForMeetingAndNewSuggestions">Ihr nächster Termin und Terminvorschläge für einen übernächsten Termin</string>
+            <string name="findMeetingExplainTextWithAnotherMeeting">Für die Planung eines übernächsten Termins stehen folgende Terminvorschläge zur Verfügung. Bitte markieren Sie die Vorschläge, an denen Sie Zeit haben und klicken anschließend auf Senden. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
+            <string name="showExplainTextForFindMeetingWithOldMeetingText">Ihr nächster Termin ist abgelaufen und liegt damit in der Vergangenheit.</string>
+            <string name="textShowDateAndTimeForMeetingAndWaitForResponse">Ihr nächster Termin und warten auf eine Terminbestätigung für Ihre Vorschläge:</string>
+            <string name="textResponseDeadlineForMeetingSuggestions">Bitte senden Sie uns Ihre Terminbestätigungen bis zum %s zu.</string>
         <!-- end fragment find meeting -->
 
+        <!-- fragment change meeting -->
+
+            <string name="changeMeetingIntroText">Möchten Sie folgenden Termin absagen oder verschieben?</string>
+            <string name="changeMeetingIntroDetailDescriptonText">Wenn Sie den folgenden Termin absagen möchten, klicken Sie auf den unten stehenden Button \"Termin absagen\". Bitte teilen Sie uns auch mit, warum Sie den Termin absagen möchten. So können wir unsere Terminvergabe optimieren. Wenn Sie den Termin verschieben möchten, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
+            <string name="inputChangeMeetingReasonHintText">Bitte begründen Sie Ihre Absage. Danke.</string>
+            <string name="errorInputChangeMeetingReasonText">Bitte kontrollieren Sie Ihre Eingabe. Sie ist zu kurz oder zu lang.</string>
+            <string name="btnConfirmChangeMeetingText">Termin absagen</string>
+            <string name="btnAbbortChangeMeetingText">Zurück</string>
+            <string name="changeDeleteMeetingSendSuccesfullToastText">Ihre Absage wurde erfolgreich gesendet</string>
+            <string name="changeDeleteMeetingNotSendSuccesfullToastText">Ihre Absage ist nicht vollständig. Bitte überprüfen Sie die markierten Stellen.</string>
+
+        <!-- end fragment change meeting -->
 
         <!-- Subtitle under Title Meeting -->
             <string name="meetingSubtitleNoFirstMeeting">Keinen Termin vereinbart</string>
@@ -592,6 +604,7 @@
             <string name="meetingSubtitleFindFirstMeetingShowDateAndTimePlural">Ihre nächsten Termine</string>
             <string name="meetingSubtitleMakeMeetingAndShowMeeting">Termin + Neue Vorschläge</string>
             <string name="meetingSubtitleFindMeetingNoMoreMeetingSet">Keine aktuellen Termine mehr</string>
+            <string name="meetingSubtitleChangeMeeting">Termin absagen/verschieben</string>
 
 
 
