@@ -507,6 +507,7 @@
             <string name="btnFindMeetingDateText">Gemeinsamen Termin finden</string>
             <string name="btnChangeMeetingDateText">Termin verschieben/absagen</string>
             <string name="nextMeetingIntroTextNoMeeting">Sie haben noch keinen Termin vereinbart.</string>
+            <string name="nextMeetingIntroTextMeetingDeleted">Terminvorschlag abgesagt</string>
             <string name="nextMeetingIntroTextFirstMeetingConfirmedTownWerder">Wir können Ihnen in unserer Beratungsstelle in Werder (Havel) folgenden Termin anbieten</string>
             <string name="nextMeetingIntroTextFirstMeetingConfirmedTownBadBelzig">Wir können Ihnen in unserer Beratungsstelle in Bad Belzig folgenden Termin anbieten</string>
             <string name="nextMeetingIntroTextFirstMeetingConfirmedTownNotSelected">Wir können Ihnen folgenden Termin anbieten. Leider wurde keine Beratungsstelle gewählt</string>
@@ -514,6 +515,7 @@
             <string name="nextMeetingNotPossiblePleaseCall">Bitte rufen Sie uns an</string>
             <string name="nextMeetingIntroTextFirstMeetingNotPossible">Leider sind alle Termine in Ihren gewählten Zeitbereichen bereits vergeben. Bitte <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>, um so einen Termin zu vereinbaren. \nEin weitere Terminanfrage über diese App ist leider nicht möglich.</string>
             <string name="showExplainTextForMeetingMakeText">Sie können mit uns einen Ersttermin über diese App vereinbaren. Dazu klicken Sie bitte auf den unten stehenden Button "Ersttermin vereinbaren". Sie haben auch die Möglichkeit uns <a href="smart.efb.deeplink://linkin/settings?com=show_contact">telefonisch</a> anzurufen und so einen Termin zu vereinbaren.</string>
+            <string name="showMeetingDateIsDeletedByFragmentChangeText">Der von uns vorgeschlagene Termin wurde von Ihnen abgesagt. Wenn Sie einen neuen Termin vereinbaren möchten, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>. </string>
             <string name="showClockWordAdditionalText">Uhr</string>
             <string name="showTimezoneSuggestionExplainText">Folgende Zeitbereiche wurden von Ihnen vorgeschlagen</string>
             <string name="showPlaceSuggestionExplainText">Als Beratungsort wurde von Ihnen %s vorgeschlagen.</string>
@@ -596,6 +598,7 @@
             <string name="meetingSubtitleMakeFirstMeeting">Ersttermin vereinbaren</string>
             <string name="meetingSubtitleFirstMeetingRequested">Erstterminanfrage läuft</string>
             <string name="meetingSubtitleFirstMeetingConfirmed">Terminvorschlag</string>
+            <string name="meetingSubtitleFirstMeetingDeleted">Terminvorschlag abgesagt</string>
             <string name="meetingSubtitleFirstMeetingNotPossible">Zeitbereiche sind nicht möglich</string>
             <string name="meetingSubtitleFindFirstMeeting">Terminvorschläge wählen</string>
             <string name="meetingSubtitleFindFirstMeetingNoSuggestions">Keine Terminvorschläge vorhanden</string>

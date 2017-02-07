@@ -135,7 +135,7 @@ public class MeetingFragmentMeetingNow extends Fragment {
                     txtNextMeetingIntro  = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingRequested);
 
                     showTimezoneAndPlaceSuggestion = true;
-                    btnVisibilitySendChangeMeetingDate = true;
+                    //btnVisibilitySendChangeMeetingDate = true;
 
                     tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFirstMeetingRequested", "string", fragmentMeetingNowContext.getPackageName()));
                     break;
@@ -145,20 +145,28 @@ public class MeetingFragmentMeetingNow extends Fragment {
                 // call delete-methode unsetNewStatusMeeting in ActivityMeeting to unset new status meetings (both new status for meeting is unset)
                 ((ActivityMeeting)getActivity()).unsetNewStatusMeeting();
 
-                if (meetingPlace[0] == 1) { // meeting is in Werder (Havel)
-                    txtNextMeetingIntro = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingConfirmedTownWerder);
-                }
-                else if (meetingPlace[0] == 2) { // meeting is in Bad Belzig
-                    txtNextMeetingIntro = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingConfirmedTownBadBelzig);
+                if (currentMeetingDateAndTime[0] > 0) { // meeting date is correct!
+
+                    if (meetingPlace[0] == 1) { // meeting is in Werder (Havel)
+                        txtNextMeetingIntro = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingConfirmedTownWerder);
+                    } else if (meetingPlace[0] == 2) { // meeting is in Bad Belzig
+                        txtNextMeetingIntro = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingConfirmedTownBadBelzig);
+                    } else {
+                        txtNextMeetingIntro = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingConfirmedTownNotSelected);
+                    }
+
+                    showTimeAndDateConfirmed = true;
+                    btnVisibilitySendChangeMeetingDate = true;
+
+                    tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFirstMeetingConfirmed", "string", fragmentMeetingNowContext.getPackageName()));
                 }
                 else {
-                    txtNextMeetingIntro = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextFirstMeetingConfirmedTownNotSelected);
+                    showTimeAndDateConfirmed = true;
+
+                    txtNextMeetingIntro = fragmentMeetingNowContext.getResources().getString(R.string.nextMeetingIntroTextMeetingDeleted);
+
+                    tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFirstMeetingDeleted", "string", fragmentMeetingNowContext.getPackageName()));
                 }
-
-                showTimeAndDateConfirmed = true;
-                btnVisibilitySendChangeMeetingDate = true;
-
-                tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleFirstMeetingConfirmed", "string", fragmentMeetingNowContext.getPackageName()));
                 break;
 
             case 3: // first meeting suggestion not possible -> please call us
@@ -238,41 +246,57 @@ public class MeetingFragmentMeetingNow extends Fragment {
         // meeting status 2 -> termin vorschlag eingegangen
         if (showTimeAndDateConfirmed) {
 
-            // show meeting intro text
-            TextView textViewNextMeetingIntroText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingIntroText);
-            textViewNextMeetingIntroText.setText(txtNextMeetingIntro);
+            if (currentMeetingDateAndTime[0] > 0) { // meeting date is correct!
 
-            // show timezone suggestion intro text and set visiblity GONE
-            TextView tmpShowTimezoneSuggestionExplainText = (TextView) viewFragmentMeetingNow.findViewById(R.id.showTimezoneSuggestionExplainText);
-            tmpShowTimezoneSuggestionExplainText.setVisibility(View.GONE);
+                // show meeting intro text
+                TextView textViewNextMeetingIntroText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingIntroText);
+                textViewNextMeetingIntroText.setText(txtNextMeetingIntro);
 
-            // find gridView for timezone suggestion and set GONE
-            GridLayout tmpGridLayoutTimezoneSuggestion = (GridLayout) viewFragmentMeetingNow.findViewById(R.id.showMeetingTimezoneSuggestionGrid);
-            tmpGridLayoutTimezoneSuggestion.setVisibility(View.GONE);
+                // show timezone suggestion intro text and set visiblity GONE
+                TextView tmpShowTimezoneSuggestionExplainText = (TextView) viewFragmentMeetingNow.findViewById(R.id.showTimezoneSuggestionExplainText);
+                tmpShowTimezoneSuggestionExplainText.setVisibility(View.GONE);
 
-            // find place suggestion intro text and set GONE
-            TextView tmpShowPlaceSuggestionExplainText = (TextView) viewFragmentMeetingNow.findViewById(R.id.showPlaceSuggestionExplainText);
-            tmpShowPlaceSuggestionExplainText.setVisibility(View.GONE);
+                // find gridView for timezone suggestion and set GONE
+                GridLayout tmpGridLayoutTimezoneSuggestion = (GridLayout) viewFragmentMeetingNow.findViewById(R.id.showMeetingTimezoneSuggestionGrid);
+                tmpGridLayoutTimezoneSuggestion.setVisibility(View.GONE);
+
+                // find place suggestion intro text and set GONE
+                TextView tmpShowPlaceSuggestionExplainText = (TextView) viewFragmentMeetingNow.findViewById(R.id.showPlaceSuggestionExplainText);
+                tmpShowPlaceSuggestionExplainText.setVisibility(View.GONE);
 
 
-            // show date text and set visible
-            TextView tmpShowDateText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingDate);
-            tmpShowDateText.setVisibility(View.VISIBLE);
-            String tmpDate = EfbHelperClass.timestampToDateFormat(currentMeetingDateAndTime[0], "dd.MM.yyyy"); // first meeting timestamp is ever in array position zero
-            tmpShowDateText.setText(tmpDate);
+                // show date text and set visible
+                TextView tmpShowDateText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingDate);
+                tmpShowDateText.setVisibility(View.VISIBLE);
+                String tmpDate = EfbHelperClass.timestampToDateFormat(currentMeetingDateAndTime[0], "dd.MM.yyyy"); // first meeting timestamp is ever in array position zero
+                tmpShowDateText.setText(tmpDate);
 
-            // show time text and set visible
-            TextView tmpShowTimeText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingTime);
-            tmpShowTimeText.setVisibility(View.VISIBLE);
-            String tmpTime = EfbHelperClass.timestampToTimeFormat(currentMeetingDateAndTime[0], "HH:mm") + " " + fragmentMeetingNowContext.getResources().getString(R.string.showClockWordAdditionalText); // first meeting timestamp is ever in array position zero
-            tmpShowTimeText.setText(tmpTime);
+                // show time text and set visible
+                TextView tmpShowTimeText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingTime);
+                tmpShowTimeText.setVisibility(View.VISIBLE);
+                String tmpTime = EfbHelperClass.timestampToTimeFormat(currentMeetingDateAndTime[0], "HH:mm") + " " + fragmentMeetingNowContext.getResources().getString(R.string.showClockWordAdditionalText); // first meeting timestamp is ever in array position zero
+                tmpShowTimeText.setText(tmpTime);
 
-            if (meetingPlace[0] == 1 || meetingPlace[0] == 2) { // show meeting place name
+                if (meetingPlace[0] == 1 || meetingPlace[0] == 2) { // show meeting place name
 
-                // show time place and set visible
-                TextView tmpShowPlaceText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingPlace);
-                tmpShowPlaceText.setVisibility(View.VISIBLE);
-                tmpShowPlaceText.setText(meetingPlaceName[0]);
+                    // show time place and set visible
+                    TextView tmpShowPlaceText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingPlace);
+                    tmpShowPlaceText.setVisibility(View.VISIBLE);
+                    tmpShowPlaceText.setText(meetingPlaceName[0]);
+                }
+            }
+            else { // meeting date is deleted or change
+
+                // show meeting intro text
+                TextView textViewNextMeetingIntroText = (TextView) viewFragmentMeetingNow.findViewById(R.id.nextMeetingIntroText);
+                textViewNextMeetingIntroText.setText(txtNextMeetingIntro);
+
+                // show text meeting deleted
+                TextView textViewMeetingDeleted = (TextView) viewFragmentMeetingNow.findViewById(R.id.showMeetingDateIsDeletedByFragmentChange);
+                textViewMeetingDeleted.setVisibility(View.VISIBLE);
+                textViewMeetingDeleted.setMovementMethod(LinkMovementMethod.getInstance());
+
+
             }
         }
 

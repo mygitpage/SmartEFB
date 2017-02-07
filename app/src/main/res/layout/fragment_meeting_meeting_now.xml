@@ -30,6 +30,19 @@
             android:paddingBottom="5dp"/>
 
 
+        <TextView
+            android:id="@+id/showMeetingDateIsDeletedByFragmentChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/showMeetingDateIsDeletedByFragmentChangeText"
+            android:textSize="16dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="left"
+            android:visibility="gone"/>
+
         <!-- meeting status = 3 -->
         <TextView
             android:id="@+id/showExplainTextFirstMeetingNotPossible"

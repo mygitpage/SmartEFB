@@ -1780,11 +1780,8 @@ public class DBAdapter extends SQLiteOpenHelper {
         // set / unset approval for meeting
         if (setUnset) {
             newValues.put(MEETING_FIND_MEETING_KEY_APPROVAL, 1);
-
-            Log.d("DB-A","SET to 1 + ID"+rowId);
         } else {
             newValues.put(MEETING_FIND_MEETING_KEY_APPROVAL, 0);
-            Log.d("DB-A","UNSSET to 0+ ID"+rowId);
         }
 
         // Insert it into the database.

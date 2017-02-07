@@ -67,8 +67,6 @@ public class MeetingFragmentMeetingChange extends Fragment {
     @Override
     public void onViewCreated (View view, @Nullable Bundle saveInstanceState) {
 
-        Log.d ("Change","onViewCreated");
-
         super.onViewCreated(view, saveInstanceState);
 
         fragmentMeetingChangeContext = getActivity().getApplicationContext();
@@ -209,6 +207,7 @@ public class MeetingFragmentMeetingChange extends Fragment {
                         fragmentMeetingChangeContext.startActivity(intent);
 
                     } else {
+
                         // send intent back to fragment now meeting
                         Intent intent = new Intent(fragmentMeetingChangeContext, ActivityMeeting.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

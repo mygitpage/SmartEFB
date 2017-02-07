@@ -101,14 +101,7 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
         // count list view elements for send button listener
         countListViewElements = cursor.getCount();
 
-
-        Log.d("Adapter","Durchlauf");
-
         if (cursor.isFirst() ) { // listview for first element
-
-
-
-            Log.d("Adapter","ERSTER Durchlauf");
 
             if (currentMeetingDateAndTime > 0) { // show only, when current meeting is future
 
@@ -159,9 +152,6 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
             String tmpExplainTextMeetingFind = context.getResources().getString(R.string.findMeetingAuthorSuggestionMeeting);
             tmpExplainTextMeetingFind = String.format(tmpExplainTextMeetingFind, meetingSuggestionsAuthor);
             tmpTextFindMeetingAuthorSuggestionMeeting.setText(tmpExplainTextMeetingFind);
-            //tmpTextFindMeetingAuthorSuggestionMeeting.setVisibility(View.VISIBLE);
-
-
 
             // show response deadline for meeting suggestions
             TextView tmpResponseDeadline = (TextView) view.findViewById(R.id.showResponseDeadlineForMeetingSuggestionsText);
@@ -189,18 +179,10 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
         String tmpTextMeetingPlace = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_FIND_MEETING_KEY_MEETING_PLACE));
         tmpPlaceMeetingSuggestion.setText(tmpTextMeetingPlace);
 
-
         CheckBox tmpMeetingCheckBox = (CheckBox) view.findViewById(R.id.meetingCheck);
         tmpMeetingCheckBox.setOnClickListener(new onClickListenerMeetingSuggestion(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)), cursor.getPosition()));
 
-
-
-
         if (cursor.isLast() ) { // listview for last element
-
-
-            Log.d("Adapter","LETZTER Durchlauf");
-
 
             // find send button "verbindich senden"
             Button tmpSendButton = (Button) view.findViewById(R.id.buttonSendSuggestionToCoach);
@@ -210,9 +192,7 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
                 @Override
                 public void onClick(View v) {
 
-
                     if (countCheckBoxChecked >= minNumberCheckBoxesToCheck) { // too little suggestions?
-
 
                         for (int i=0; i<=countListViewElements; i++) {
 

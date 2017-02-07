@@ -81,9 +81,6 @@ public class ActivityParseDeepLink extends Activity {
 
         } else if (SETTINGS.equals(path)) {
 
-            Log.d("DeepLink","COM:"+tmpCommand);
-
-
             // Launch settings
             Intent intent = new Intent(this, ActivitySettingsEfb.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);

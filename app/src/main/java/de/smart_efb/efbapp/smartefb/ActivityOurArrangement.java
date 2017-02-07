@@ -107,9 +107,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
     AlertDialog alertDialogSettings;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -435,13 +432,13 @@ public class ActivityOurArrangement extends AppCompatActivity {
         myDb = new DBAdapter(getApplicationContext());
 
         // init the prefs
-        prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+        prefs = this.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         //get current date of arrangement
-        currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
+        currentDateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
         //get date of sketch arrangement
-        currentDateOfSketchArrangement = prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis());
+        currentDateOfSketchArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis());
 
         // init show on tab zero arrangemet now
         showCommandFragmentTabZero = "show_arrangement_now";
@@ -501,11 +498,11 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                 // show the settings for evaluation (like evaluation period, on/off-status, ...)
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsEvaluate);
-                if (prefs.getBoolean("showArrangementEvaluate", false)) {
+                if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false)) {
 
                     String tmpTxtEvaluate = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsEvaluateEnable);
                     String tmpTxtEvaluate1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsEvaluatePeriod);
-                    String tmpCompleteTxtEvaluate1String = String.format(tmpTxtEvaluate1, EfbHelperClass.timestampToDateFormat(prefs.getLong("startDataEvaluationInMills", System.currentTimeMillis()), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(prefs.getLong("startDataEvaluationInMills", System.currentTimeMillis()), "kk.mm"), EfbHelperClass.timestampToDateFormat(prefs.getLong("endDataEvaluationInMills", System.currentTimeMillis()), "dd.MM.yyyy"),EfbHelperClass.timestampToDateFormat(prefs.getLong("endDataEvaluationInMills", System.currentTimeMillis()), "kk.mm"));
+                    String tmpCompleteTxtEvaluate1String = String.format(tmpTxtEvaluate1, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), "kk.mm"), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy"),EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()), "kk.mm"));
                     tmpdialogTextView.setText(tmpTxtEvaluate + " " + tmpCompleteTxtEvaluate1String);
                 }
                 else {
@@ -517,18 +514,18 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsComment);
                 String tmpTxtComment, tmpTxtComment1, tmpTxtComment2, tmpTxtCommentSum;
 
-                if (prefs.getBoolean("showArrangementComment", false)) {
+                if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false)) {
 
                     tmpTxtComment = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentEnable);
 
-                    if (prefs.getInt("commentOurArrangementMaxComment",0) < commentLimitationBorder) { // write infinitely comments?
+                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) < commentLimitationBorder) { // write infinitely comments?
 
-                        if (prefs.getInt("commentOurArrangementMaxComment",0) == 1) {
+                        if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) == 1) {
                             tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountSingular);
                         }
                         else {
                             tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountPlural);
-                            tmpTxtComment1 = String.format(tmpTxtComment1, prefs.getInt("commentOurArrangementMaxComment",0));
+                            tmpTxtComment1 = String.format(tmpTxtComment1, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0));
                         }
                     }
                     else {
@@ -536,19 +533,19 @@ public class ActivityOurArrangement extends AppCompatActivity {
                     }
 
                     // count comment - status
-                    if (prefs.getInt("commentOurArrangementCountComment",0) < prefs.getInt("commentOurArrangementMaxComment",0)) {
-                        switch (prefs.getInt("commentOurArrangementCountComment", 0)) {
+                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0) < prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0)) {
+                        switch (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0)) {
                             case 0:
                                 tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCountCommentZero);
-                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong("commentOurArrangementTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"));
+                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"));
                                 break;
                             case 1:
                                 tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberSingular);
-                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong("commentOurArrangementTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"));
+                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"));
                                 break;
                             default:
                                 tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberPlural);
-                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong("commentOurArrangementTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt("commentOurArrangementCountComment",0));
+                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0));
                                 break;
                         }
                     }
@@ -567,7 +564,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                 // show the settings for old arrangement
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsOldArrangement);
-                if (prefs.getBoolean("showOldArrangements", false)) {
+                if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, false)) {
 
                     String tmpTxtOldArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsOldArrangementEnable);
                     tmpdialogTextView.setText(tmpTxtOldArrangement);
@@ -580,23 +577,23 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 // show the settings for sketch arrangement
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsSketchArrangement);
                 String tmpTxtSketchArrangementSum, tmpTxtSketchArrangement, tmpTxtSketchArrangement1, tmpTxtSketchArrangement2, tmpTxtSketchArrangement3;
-                if (prefs.getBoolean("showSketchArrangements", false)) {
+                if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false)) {
 
                     tmpTxtSketchArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchArrangementEnable);
 
                     // comment sketch arrangements?
-                    if (prefs.getBoolean("showCommentLinkSketchArrangements", false)) {
+                    if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowLinkCommentSketchArrangement, false)) {
 
                         tmpTxtSketchArrangement1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentArrangementEnable);
 
-                        if (prefs.getInt("commentSketchOurArrangementMaxComment",0) < commentLimitationBorder) { // write infinitely sketch comments?
+                        if (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,0) < commentLimitationBorder) { // write infinitely sketch comments?
 
-                            if (prefs.getInt("commentSketchOurArrangementMaxComment",0) == 1) {
+                            if (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,0) == 1) {
                                 tmpTxtSketchArrangement2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountSingular);
                             }
                             else {
                                 tmpTxtSketchArrangement2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountPlural);
-                                tmpTxtSketchArrangement2 = String.format(tmpTxtSketchArrangement2, prefs.getInt("commentSketchOurArrangementMaxComment",0));
+                                tmpTxtSketchArrangement2 = String.format(tmpTxtSketchArrangement2, prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,0));
                             }
                         }
                         else {
@@ -604,19 +601,19 @@ public class ActivityOurArrangement extends AppCompatActivity {
                         }
 
                         // count sketch comment - status
-                        if (prefs.getInt("commentSketchOurArrangementCountComment",0) < prefs.getInt("commentSketchOurArrangementMaxComment",0)) {
-                            switch (prefs.getInt("commentSketchOurArrangementCountComment", 0)) {
+                        if (prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0) < prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,0)) {
+                            switch (prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0)) {
                                 case 0:
                                     tmpTxtSketchArrangement3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCountCommentZero);
-                                    tmpTxtSketchArrangement3 = String.format(tmpTxtSketchArrangement3, EfbHelperClass.timestampToDateFormat(prefs.getLong("sketchCommentOurArrangementTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"));
+                                    tmpTxtSketchArrangement3 = String.format(tmpTxtSketchArrangement3, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"));
                                     break;
                                 case 1:
                                     tmpTxtSketchArrangement3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountNumberSingular);
-                                    tmpTxtSketchArrangement3 = String.format(tmpTxtSketchArrangement3, EfbHelperClass.timestampToDateFormat(prefs.getLong("sketchCommentOurArrangementTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"));
+                                    tmpTxtSketchArrangement3 = String.format(tmpTxtSketchArrangement3, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"));
                                     break;
                                 default:
                                     tmpTxtSketchArrangement3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountNumberPlural);
-                                    tmpTxtSketchArrangement3 = String.format(tmpTxtSketchArrangement3, EfbHelperClass.timestampToDateFormat(prefs.getLong("sketchCommentOurArrangementTimeSinceInMills", System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt("commentSketchOurArrangementCountComment",0));
+                                    tmpTxtSketchArrangement3 = String.format(tmpTxtSketchArrangement3, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0));
                                     break;
                             }
                         }
@@ -680,12 +677,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
         Intent evaluateAlarmIntent = new Intent(ActivityOurArrangement.this, AlarmReceiverOurArrangement.class);
 
         // get evaluate pause time and active time
-        evaluatePauseTime = prefs.getInt("evaluatePauseTimeInSeconds", 43200); // default value 43200 is 12 hours
-        evaluateActivTime = prefs.getInt("evaluateActivTimeInSeconds", 43200); // default value 43200 is 12 hours
+        evaluatePauseTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 43200); // default value 43200 is 12 hours
+        evaluateActivTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, 43200); // default value 43200 is 12 hours
 
         // get start time and end time for evaluation
-        Long startEvaluationDate = prefs.getLong("startDataEvaluationInMills", System.currentTimeMillis());
-        Long endEvaluationDate = prefs.getLong("endDataEvaluationInMills", System.currentTimeMillis());
+        Long startEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis());
+        Long endEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis());
 
         Long tmpSystemTimeInMills = System.currentTimeMillis();
         int tmpEvalutePaAcTime = evaluateActivTime * 1000;
@@ -696,7 +693,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
 
         // set alarm manager when current time is between start date and end date and evaluation is enable
-        if (prefs.getBoolean("showArrangementEvaluate", false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
 
             calendar.setTimeInMillis(startEvaluationDate);
 
@@ -714,7 +711,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
             } while (calendar.getTimeInMillis() < tmpSystemTimeInMills);
 
             // update table ourArrangement in db -> set or delete
-            myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),tmpChangeDbEvaluationStatus);
+            myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()),tmpChangeDbEvaluationStatus);
 
             // put extras to intent -> "evaluate" or "delete"
             evaluateAlarmIntent.putExtra("evaluateState",tmpIntentExtra);
@@ -728,7 +725,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         else { // delete alarm - it is out of time
 
             // update table ourArrangement in db -> evaluation disable
-            myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),"delete");
+            myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()),"delete");
             // crealte pending intent
             pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(ActivityOurArrangement.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             // delete alarm
@@ -764,7 +761,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     private void lookNewEntryOnTabZero () {
 
         // look for new entrys in db on tab zero
-        if (myDb.getCountAllNewEntryOurArrangementComment(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), "current") > 0 ) {
+        if (myDb.getCountAllNewEntryOurArrangementComment(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "current") > 0 ) {
             infoNewEntryOnTabZero = true;
             infoTextNewEntryPostFixTabZeroTitle = " " + this.getResources().getString(R.string.newEntryText);
         }
@@ -780,7 +777,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     private void lookNewEntryOnTabOne () {
 
         // look for new entrys in db on tab one
-        if (myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), "sketch") > 0) {
+        if (myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "sketch") > 0) {
             infoNewEntryOnTabOne = true;
             infoTextNewEntryPostFixTabOneTitle = " "+ this.getResources().getString(R.string.newEntryText);
         }
@@ -908,12 +905,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         switch (currentSketch) {
             case "current":
-                if (prefs.getInt("commentOurArrangementMaxComment",0) < commentLimitationBorder) { // is there a border for comments
+                if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) < commentLimitationBorder) { // is there a border for comments
                     return true; // comments are limited!
                 }
                 break;
             case "sketch":
-                if (prefs.getInt("commentSketchOurArrangementMaxComment",0) < commentLimitationBorder) { // is there a border for sketch comments
+                if (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,0) < commentLimitationBorder) { // is there a border for sketch comments
                     return true; // sketch comments are limited!
                 }
                 break;

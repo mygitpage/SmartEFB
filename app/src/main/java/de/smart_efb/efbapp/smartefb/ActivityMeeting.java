@@ -52,41 +52,44 @@ public class ActivityMeeting extends AppCompatActivity {
     MeetingFragmentMeetingFind referenceFragmentMeetingFind;
     MeetingFragmentMeetingChange referenceFragmentMeetingChange;
 
+
     // number of checkboxes for choosing timezones
-    static final int countNumberTimezones = 15;
+    //static final int countNumberTimezones = 15;
 
     // number of simultaneous meetings
-    static final int numberSimultaneousMeetings = 2;
+    //static final int numberSimultaneousMeetings = 2;
 
-    // boolean status array checkbox
-    Boolean [] makeMeetingCheckBoxListenerArray = new Boolean[countNumberTimezones];
+
 
     // prefs name for meeting status
-    static final String namePrefsMeetingStatus = "meetingStatus";
+    //static final String namePrefsMeetingStatus = "meetingStatus";
 
     // prefs name for meeting place
-    static final String namePrefsMeetingPlace = "meetingPlace";
+    //static final String namePrefsMeetingPlace = "meetingPlace";
 
     // prefs name for timezone array
-    static final String namePrefsArrayMeetingTimezoneArray = "meetingTimezone_";
+    //static final String namePrefsArrayMeetingTimezoneArray = "meetingTimezone_";
 
     // prefs name for meeting problem
-    static final String namePrefsMeetingProblem = "meetingProblem";
+    //static final String namePrefsMeetingProblem = "meetingProblem";
 
     // prefs name for meeting time and date
-    static final String namePrefsMeetingTimeAndDate = "meetingDateAndTime";
+    //static final String namePrefsMeetingTimeAndDate = "meetingDateAndTime";
 
     // prefs name for author meeting suggestion
-    static final String namePrefsAuthorMeetingSuggestion = "authorMeetingSuggestions";
+    //static final String namePrefsAuthorMeetingSuggestion = "authorMeetingSuggestions";
 
     // prefs name for info new meeting date and time (in mainActivity also!!!!!!!!!)
-    static final String namePrefsNewMeetingDateAndTime = "meetingNewDateAndTime";
+    //static final String namePrefsNewMeetingDateAndTime = "meetingNewDateAndTime";
 
     // prefs name for deadline for response of meeting suggestions
-    static final String namePrefsMeetingSuggestionsResponseDeadline = "meetingSuggestionsResponseDeadline";
+    //static final String namePrefsMeetingSuggestionsResponseDeadline = "meetingSuggestionsResponseDeadline";
 
     // prefs praefix for  (in mainActivity also!!!!!!!!!)
-    String [] prefsPraefixMeetings = {"_A","_B"};
+    //String [] prefsPraefixMeetings = {"_A","_B"};
+
+    // boolean status array checkbox
+    Boolean [] makeMeetingCheckBoxListenerArray = new Boolean[ConstantsClassMeeting.countNumberTimezones];
 
     // meeting status
     int meetingStatus = 0;
@@ -101,13 +104,13 @@ public class ActivityMeeting extends AppCompatActivity {
     String meetingSuggestionsAuthor = "";
 
     // meeting place
-    int [] meetingPlace = new int[numberSimultaneousMeetings];
+    int [] meetingPlace = new int[ConstantsClassMeeting.numberSimultaneousMeetings];
 
     // the current meeting date and time
-    long [] currentMeetingDateAndTime = new long [numberSimultaneousMeetings];
+    long [] currentMeetingDateAndTime = new long [ConstantsClassMeeting.numberSimultaneousMeetings];
 
     // info new meeting date and time
-    Boolean [] meetingNewDateAndTime = new Boolean[numberSimultaneousMeetings];
+    Boolean [] meetingNewDateAndTime = new Boolean[ConstantsClassMeeting.numberSimultaneousMeetings];
 
     // deadline for responding of meeting suggestions
     long meetingSuggestionsResponeseDeadline = 0;
@@ -147,29 +150,29 @@ public class ActivityMeeting extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         // init the prefs
-        prefs = getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+        prefs = getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
 
         // init prefs editor
         prefsEditor = prefs.edit();
 
         // get meeting status
-        meetingStatus = prefs.getInt(namePrefsMeetingStatus, 0);
+        meetingStatus = prefs.getInt(ConstantsClassMeeting.namePrefsMeetingStatus, 0);
 
         // get meeting problem
-        meetingProblem = prefs.getString(namePrefsMeetingProblem, "");
+        meetingProblem = prefs.getString(ConstantsClassMeeting.namePrefsMeetingProblem, "");
 
         // get author meeting suggestions
-        meetingSuggestionsAuthor = prefs.getString(namePrefsAuthorMeetingSuggestion, "Herr Terminmann");
+        meetingSuggestionsAuthor = prefs.getString(ConstantsClassMeeting.namePrefsAuthorMeetingSuggestion, "Herr Terminmann");
 
         // get response deadline for meeting suggestions
-        meetingSuggestionsResponeseDeadline = prefs.getLong(namePrefsMeetingSuggestionsResponseDeadline, 0);
+        meetingSuggestionsResponeseDeadline = prefs.getLong(ConstantsClassMeeting.namePrefsMeetingSuggestionsResponseDeadline, 0);
 
         // get from prefs meeting date and time and place
         getDateAndTimeFromPrefs ();
 
         //load timezone array for meeting
-        for (int i=0; i<countNumberTimezones; i++) {
-            makeMeetingCheckBoxListenerArray[i] = prefs.getBoolean(namePrefsArrayMeetingTimezoneArray+i, false);
+        for (int i=0; i<ConstantsClassMeeting.countNumberTimezones; i++) {
+            makeMeetingCheckBoxListenerArray[i] = prefs.getBoolean(ConstantsClassMeeting.namePrefsArrayMeetingTimezoneArray+i, false);
         }
 
         // init array for places name
@@ -207,18 +210,18 @@ public class ActivityMeeting extends AppCompatActivity {
     // get from prefs meeting date and time and place
     private void getDateAndTimeFromPrefs () {
 
-        for (int t=0; t < numberSimultaneousMeetings; t++) {
+        for (int t=0; t < ConstantsClassMeeting.numberSimultaneousMeetings; t++) {
 
             // get the current meeting date and time
-            currentMeetingDateAndTime[t] = prefs.getLong(namePrefsMeetingTimeAndDate + prefsPraefixMeetings[t], 0);
+            currentMeetingDateAndTime[t] = prefs.getLong(ConstantsClassMeeting.namePrefsMeetingTimeAndDate + ConstantsClassMeeting.prefsPraefixMeetings[t], 0);
 
             if (currentMeetingDateAndTime[t] > System.currentTimeMillis()) { // is meeting timestamp > current time?
 
                 // get meeting place
-                meetingPlace[t] = prefs.getInt(namePrefsMeetingPlace + prefsPraefixMeetings[t], 0);
+                meetingPlace[t] = prefs.getInt(ConstantsClassMeeting.namePrefsMeetingPlace + ConstantsClassMeeting.prefsPraefixMeetings[t], 0);
 
                 // get info new meeting date and time from prefs
-                meetingNewDateAndTime[t] = prefs.getBoolean(namePrefsNewMeetingDateAndTime  + prefsPraefixMeetings[t], false);
+                meetingNewDateAndTime[t] = prefs.getBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime  + ConstantsClassMeeting.prefsPraefixMeetings[t], false);
 
             }
             else { // no -> init with zero
@@ -261,7 +264,7 @@ public class ActivityMeeting extends AppCompatActivity {
             tmpMeetingIndexToChange = intentExtras.getInt("met_index",0);
 
             // get info back to fragement
-            tmpMeetingBackToFragment = intentExtras.getString("met_backto","now_meeting");
+            tmpMeetingBackToFragment = intentExtras.getString("met_backto","");
 
             // get info to update fragement or replace (find_meeting)
             tmpUpdateFragement = intentExtras.getBoolean("update", false);
@@ -320,6 +323,10 @@ public class ActivityMeeting extends AppCompatActivity {
                 if (tmpPopBackStack) {
                     fragmentManagerActivityMeeting.popBackStack("find_meeting", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
+
+                // delete back to fragment info
+                setMeetingBackToFragment ("");
+
             }
 
 
@@ -335,8 +342,14 @@ public class ActivityMeeting extends AppCompatActivity {
 
         } else {
 
-            if (tmpPopBackStack) {
+            if (tmpPopBackStack && getMeetingBackToFragment().equals("") ) {
+
                 fragmentManagerActivityMeeting.popBackStack("make_meeting", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+            } else if (tmpPopBackStack && getMeetingBackToFragment().equals("now_meeting") ) {
+
+                fragmentManagerActivityMeeting.popBackStack("change_meeting", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
             }
 
             // replace fragment MeetingFragmentMeetingMake
@@ -347,7 +360,11 @@ public class ActivityMeeting extends AppCompatActivity {
 
             if (tmpPopBackStack) {
                 fragmentManagerActivityMeeting.popBackStack("now_meeting", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
             }
+
+            // delete back to fragment info
+            setMeetingBackToFragment ("");
 
         }
 
@@ -427,11 +444,11 @@ public class ActivityMeeting extends AppCompatActivity {
     public void deleteMeetingTimestampAndPlace (int index) {
 
         // Delete timestamp from meeting _A or _B (look index)
-        prefsEditor.putLong(namePrefsMeetingTimeAndDate + prefsPraefixMeetings[index], 0);
+        prefsEditor.putLong(ConstantsClassMeeting.namePrefsMeetingTimeAndDate + ConstantsClassMeeting.prefsPraefixMeetings[index], 0);
         // Delete meeting place
-        prefsEditor.putInt(namePrefsMeetingPlace + prefsPraefixMeetings[index], 0);
+        prefsEditor.putInt(ConstantsClassMeeting.namePrefsMeetingPlace + ConstantsClassMeeting.prefsPraefixMeetings[index], 0);
         // Delete new info for meeting
-        prefsEditor.putBoolean(namePrefsNewMeetingDateAndTime + prefsPraefixMeetings[index], false);
+        prefsEditor.putBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime + ConstantsClassMeeting.prefsPraefixMeetings[index], false);
 
         prefsEditor.commit();
 
@@ -453,8 +470,8 @@ public class ActivityMeeting extends AppCompatActivity {
     public void setMeetingTimezoneSuggestions (Boolean [] tmpTimezoneSuggestion) {
 
         // store timezone suggestions result in prefs
-        for (int i=0; i<countNumberTimezones; i++) {
-            prefsEditor.putBoolean(namePrefsArrayMeetingTimezoneArray+i,tmpTimezoneSuggestion[i]);
+        for (int i=0; i<ConstantsClassMeeting.countNumberTimezones; i++) {
+            prefsEditor.putBoolean(ConstantsClassMeeting.namePrefsArrayMeetingTimezoneArray+i,tmpTimezoneSuggestion[i]);
             makeMeetingCheckBoxListenerArray[i] = tmpTimezoneSuggestion[i];
         }
 
@@ -476,7 +493,7 @@ public class ActivityMeeting extends AppCompatActivity {
 
         meetingStatus = tmpMeetingStatus;
 
-        prefsEditor.putInt(namePrefsMeetingStatus,tmpMeetingStatus);
+        prefsEditor.putInt(ConstantsClassMeeting.namePrefsMeetingStatus,tmpMeetingStatus);
 
         prefsEditor.commit();
 
@@ -504,7 +521,7 @@ public class ActivityMeeting extends AppCompatActivity {
 
         meetingPlace[placeIndex] = tmpMeetingPlace;
 
-        prefsEditor.putInt(namePrefsMeetingPlace + prefsPraefixMeetings[placeIndex],tmpMeetingPlace);
+        prefsEditor.putInt(ConstantsClassMeeting.namePrefsMeetingPlace + ConstantsClassMeeting.prefsPraefixMeetings[placeIndex],tmpMeetingPlace);
 
         prefsEditor.commit();
 
@@ -526,7 +543,7 @@ public class ActivityMeeting extends AppCompatActivity {
 
         meetingProblem = tmpMeetingProblem;
 
-        prefsEditor.putString(namePrefsMeetingProblem,tmpMeetingProblem);
+        prefsEditor.putString(ConstantsClassMeeting.namePrefsMeetingProblem,tmpMeetingProblem);
 
         prefsEditor.commit();
 
@@ -551,8 +568,8 @@ public class ActivityMeeting extends AppCompatActivity {
     // unset new status meetings (both new status for meeting is unset)
     public void unsetNewStatusMeeting () {
 
-        prefsEditor.putBoolean(namePrefsNewMeetingDateAndTime + prefsPraefixMeetings[0],false);
-        prefsEditor.putBoolean(namePrefsNewMeetingDateAndTime + prefsPraefixMeetings[1],false);
+        prefsEditor.putBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime + ConstantsClassMeeting.prefsPraefixMeetings[0],false);
+        prefsEditor.putBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime + ConstantsClassMeeting.prefsPraefixMeetings[1],false);
 
         prefsEditor.commit();
 

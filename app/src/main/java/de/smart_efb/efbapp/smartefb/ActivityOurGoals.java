@@ -409,9 +409,6 @@ public class ActivityOurGoals extends AppCompatActivity {
             ourGoalsViewPagerAdapter.notifyDataSetChanged();
 
             // set correct subtitle in toolbar in tab zero
-
-            Log.d("OurGoals","Sub-Else:"+arraySubTitleText[0]);
-
             toolbarOurGoals.setSubtitle(arraySubTitleText[0]);
 
         }
