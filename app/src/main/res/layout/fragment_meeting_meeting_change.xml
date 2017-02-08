@@ -92,12 +92,11 @@
             android:textColor="@color/text_color_white"
             android:hint="@string/inputChangeMeetingReasonHintText"
             android:gravity="left|top"
-            android:background="@color/inputfield_background"
+            android:background="@drawable/app_edittext_style"
             android:layout_margin="10dp"
             android:textColorHint="@color/text_color_white"
             android:inputType="textNoSuggestions|text|textMultiLine"
-            android:paddingBottom="15dp"/>
-
+            android:padding="5dp"/>
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -106,29 +105,30 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:background="@color/body_background">
+        android:background="@color/body_background"
+        android:layout_marginTop="20dp">
 
 
             <Button
                 android:id="@+id/buttonConfirmChangeMeeting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/bg_btn_join"
+                android:background="@drawable/app_button_style"
                 android:textColor="@color/white"
                 android:text="@string/btnConfirmChangeMeetingText"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginRight="5dp"
-                android:padding="5dp"/>
+                android:layout_marginRight="20dp"
+                android:padding="10dp"/>
 
             <Button
                 android:id="@+id/buttonAbbortChangeMeeting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/bg_btn_join"
+                android:background="@drawable/app_button_style"
                 android:textColor="@color/white"
                 android:text="@string/btnAbbortChangeMeetingText"
                 android:layout_gravity="center_horizontal"
-                android:padding="5dp"/>
+                android:padding="10dp"/>
 
     </LinearLayout>
 

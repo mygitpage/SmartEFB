@@ -5,8 +5,6 @@ package de.smart_efb.efbapp.smartefb;
  */
 public class ConstansClassOurArrangement {
 
-
-
     // Max number of comments (current and sketch) <-> Over this number you can write infinitely comments
     public static final int commentLimitationBorder = 1000;
 
@@ -33,7 +31,6 @@ public class ConstansClassOurArrangement {
 
     // prefs name for show link to comment sketch arrangement
     public static final String namePrefsShowLinkCommentSketchArrangement = " showCommentLinkSketchArrangements";
-
 
     // prefs name for start Date Evaluation in mills
     public static final String namePrefsStartDateEvaluationInMills = "startDataEvaluationInMills";
@@ -64,6 +61,10 @@ public class ConstansClassOurArrangement {
 
     // prefs name for evaluation active time in seconds
     public static final String namePrefsEvaluateActiveTimeInSeconds = "evaluateActivTimeInSeconds";
+
+    // default time for active and pause time in evaluation arrangement (time in seconds)
+    public static final int defaultTimeForActiveAndPauseEvaluationArrangement = 43200; // this is 12 hours
+
 
 
 

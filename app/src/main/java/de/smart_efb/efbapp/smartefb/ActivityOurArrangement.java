@@ -39,12 +39,6 @@ import java.util.Calendar;
  */
 public class ActivityOurArrangement extends AppCompatActivity {
 
-    // Max number of comments (current and sketch) <-> Over this number you can write infinitely comments
-    final int commentLimitationBorder = 1000;
-
-    // Number of different subtitles
-    final int numberOfDifferentSubtitle = 8;
-
     // Set subtitle first time
     Boolean setSubtitleFirstTime = false;
 
@@ -74,7 +68,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     OurArrangementViewPagerAdapter ourArrangementViewPagerAdapter;
 
     // Strings for subtitle ("Aktuelle vom...", "Älter als...", "Absprache kommentieren", "Kommentare zeigen", "Absprache bewerten", "Entwuerfe Absprachen" )
-    String [] arraySubTitleText = new String[numberOfDifferentSubtitle];
+    String [] arraySubTitleText = new String[ConstansClassOurArrangement.numberOfDifferentSubtitle];
 
     // what to show in tab zero (like show_comment_for_arrangement, comment_an_arrangement, show_arrangement_now, evaluate_an_arrangement)
     String showCommandFragmentTabZero = "";
@@ -131,7 +125,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         // and set tablayout with viewpager
         tabLayoutOurArrangement.setupWithViewPager(viewPagerOurArrangement);
-
 
         // set correct tab zero and one title with information new entry and color change -> FIRST TIME
         setTabZeroTitleAndColor();
@@ -446,7 +439,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         showCommandFragmentTabOne = "show_sketch_arrangement";
 
 
-        for (int t=0; t<numberOfDifferentSubtitle; t++) {
+        for (int t=0; t<ConstansClassOurArrangement.numberOfDifferentSubtitle; t++) {
             arraySubTitleText[t] = "";
         }
 
@@ -518,7 +511,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                     tmpTxtComment = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentEnable);
 
-                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) < commentLimitationBorder) { // write infinitely comments?
+                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) < ConstansClassOurArrangement.commentLimitationBorder) { // write infinitely comments?
 
                         if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) == 1) {
                             tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountSingular);
@@ -586,7 +579,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                         tmpTxtSketchArrangement1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentArrangementEnable);
 
-                        if (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,0) < commentLimitationBorder) { // write infinitely sketch comments?
+                        if (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,0) < ConstansClassOurArrangement.commentLimitationBorder) { // write infinitely sketch comments?
 
                             if (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,0) == 1) {
                                 tmpTxtSketchArrangement2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountSingular);
@@ -677,8 +670,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
         Intent evaluateAlarmIntent = new Intent(ActivityOurArrangement.this, AlarmReceiverOurArrangement.class);
 
         // get evaluate pause time and active time
-        evaluatePauseTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 43200); // default value 43200 is 12 hours
-        evaluateActivTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, 43200); // default value 43200 is 12 hours
+        evaluatePauseTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, ConstansClassOurArrangement.defaultTimeForActiveAndPauseEvaluationArrangement); // default value 43200 is 12 hours
+        evaluateActivTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, ConstansClassOurArrangement.defaultTimeForActiveAndPauseEvaluationArrangement); // default value 43200 is 12 hours
 
         // get start time and end time for evaluation
         Long startEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis());
@@ -905,12 +898,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         switch (currentSketch) {
             case "current":
-                if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) < commentLimitationBorder) { // is there a border for comments
+                if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) < ConstansClassOurArrangement.commentLimitationBorder) { // is there a border for comments
                     return true; // comments are limited!
                 }
                 break;
             case "sketch":
-                if (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,0) < commentLimitationBorder) { // is there a border for sketch comments
+                if (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,0) < ConstansClassOurArrangement.commentLimitationBorder) { // is there a border for sketch comments
                     return true; // sketch comments are limited!
                 }
                 break;
