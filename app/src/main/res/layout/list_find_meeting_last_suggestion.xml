@@ -66,11 +66,11 @@
             android:id="@+id/buttonSendSuggestionToCoach"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/bg_btn_join"
+            android:background="@drawable/app_button_style"
             android:textColor="@color/text_color_white"
             android:text="@string/btnTextSendSuggestionToCoach"
             android:layout_gravity="center_horizontal"
-            android:padding="5dp"/>
+            android:padding="10dp"/>
 
 
 </LinearLayout>

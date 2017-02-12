@@ -40,18 +40,18 @@ public class AlarmReceiverOurGoals extends BroadcastReceiver {
         myDb = new DBAdapter(context);
 
         // init the prefs
-        prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
+        prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
 
         // alarm time from the prefs
         int tmpAlarmTime = 0;
 
         // get start time and end time for evaluation
-        Long startEvaluationDate = prefs.getLong("startDataJointlyGoalsEvaluationInMills", System.currentTimeMillis());
-        Long endEvaluationDate = prefs.getLong("endDataJointlyGoalsEvaluationInMills", System.currentTimeMillis());
+        Long startEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
+        Long endEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
 
         // get evaluate pause time and active time in seconds
-        evaluatePauseTime = prefs.getInt("evaluateJointlyGoalsPauseTimeInSeconds", 43200); // default value 43200 is 12 hours
-        evaluateActivTime = prefs.getInt("evaluateJointlyGoalsActivTimeInSeconds", 43200); // default value 43200 is 12 hours
+        evaluatePauseTime = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, ConstansClassOurGoals.defaultTimeForActiveAndPauseEvaluationJointlyGoals); // default value 43200 is 12 hours
+        evaluateActivTime = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, ConstansClassOurGoals.defaultTimeForActiveAndPauseEvaluationJointlyGoals); // default value 43200 is 12 hours
 
         // get alarmManager
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -73,7 +73,7 @@ public class AlarmReceiverOurGoals extends BroadcastReceiver {
         }
 
         // set alarm manager when current time is between start date and end date and evaluation is enable
-        if (prefs.getBoolean("showEvaluateLinkJointlyGoals", false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
+        if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
 
             switch (evaluateState) {
 
@@ -84,7 +84,7 @@ public class AlarmReceiverOurGoals extends BroadcastReceiver {
                     // set intent -> next state evaluate
                     evaluateAlarmIntent.putExtra("evaluateState","evaluate");
                     // update table ourGoalsJointlyGoals in db -> evaluation enable
-                    myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()),"set");
+                    myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()),"set");
 
                     break;
                 case "evaluate": // alarm comes out of evaluate
@@ -94,7 +94,7 @@ public class AlarmReceiverOurGoals extends BroadcastReceiver {
                     // set intent -> next state pause
                     evaluateAlarmIntent.putExtra("evaluateState","pause");
                     // update table ourGoalsJointlyGoals in db -> evaluation disable
-                    myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()),"delete");
+                    myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()),"delete");
 
                     break;
                 default:
@@ -114,7 +114,7 @@ public class AlarmReceiverOurGoals extends BroadcastReceiver {
         }
         else { // delete alarm - it is out of time
             // update table ourArrangement in db -> evaluation disable
-            myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()),"delete");
+            myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()),"delete");
 
             // create pending intent
             pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);

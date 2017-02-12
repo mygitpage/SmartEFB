@@ -81,9 +81,9 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
         myDb = new DBAdapter(fragmentShowDebetableGoalCommentContext);
 
         // init the prefs
-        prefs = fragmentShowDebetableGoalCommentContext.getSharedPreferences("smartEfbSettings", fragmentShowDebetableGoalCommentContext.MODE_PRIVATE);
+        prefs = fragmentShowDebetableGoalCommentContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentShowDebetableGoalCommentContext.MODE_PRIVATE);
         //get current date of debetable goal
-        currentDateOfDebetableGoal = prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis());
+        currentDateOfDebetableGoal = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis());
 
         // Set correct subtitle in Activity -> "Einschaetzungen Entwuerfe ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleDebetableGoalsShowCommentText", "string", fragmentShowDebetableGoalCommentContext.getPackageName())) + " " + debetableGoalNumberInListView;

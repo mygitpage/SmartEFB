@@ -104,7 +104,7 @@
         android:id="@+id/buttonAbortShowSketchComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/bg_btn_join"
+        android:background="@drawable/app_button_style"
         android:textColor="@color/white"
         android:text="@string/ourArrangementBackLinkToSketchArrangement"
         android:layout_gravity="center_horizontal"

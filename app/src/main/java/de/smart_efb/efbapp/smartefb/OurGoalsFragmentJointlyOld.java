@@ -70,10 +70,10 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
         myDb = new DBAdapter(fragmentJointlyOldContext);
 
         // init the prefs
-        prefs = fragmentJointlyOldContext.getSharedPreferences("smartEfbSettings", fragmentJointlyOldContext.MODE_PRIVATE);
+        prefs = fragmentJointlyOldContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentJointlyOldContext.MODE_PRIVATE);
 
         //get current date of jointly goals
-        currentDateOfJointlyGoal = prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis());
+        currentDateOfJointlyGoal = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis());
 
     }
 
@@ -85,7 +85,7 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
         // find the listview
         ListView listView = (ListView) viewFragmentJointlyOld.findViewById(R.id.listOurGoalsJointlyOld);
 
-        if (prefs.getBoolean("showOldGoals", false) && listView != null) { // Function showOldJointlyGoals is available!!!!
+        if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkOldGoals, false) && listView != null) { // Function showOldJointlyGoals is available!!!!
 
 
             // get all old jointly goals from DB

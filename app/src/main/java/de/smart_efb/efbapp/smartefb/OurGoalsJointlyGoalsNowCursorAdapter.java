@@ -66,11 +66,11 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
         String tmpTextNewEntryComment = "";
 
         // open sharedPrefs
-        SharedPreferences prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
 
         if (cursor.isFirst() ) { // listview for first element
             TextView introTextfJointlyGoals = (TextView) view.findViewById(R.id.ourGoalsJointlyGoalsIntroText);
-            String txtArrangementNumber = context.getResources().getString(R.string.ourGoalsJointlyNowIntroText) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()), "dd.MM.yyyy");
+            String txtArrangementNumber = context.getResources().getString(R.string.ourGoalsJointlyNowIntroText) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "dd.MM.yyyy");
             introTextfJointlyGoals.setText(txtArrangementNumber);
         }
 
@@ -95,7 +95,7 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
         textViewGoalText.setText(title);
 
         // generate link for evaluate an jointly goal
-        if (prefs.getBoolean("showEvaluateLinkJointlyGoals", false)) {
+        if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false)) {
 
             // make link to evaluate jointly goal, when evaluation is possible for this goal
             if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE)) == 1) {
@@ -115,7 +115,7 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
         }
 
         // Show link for comment in our goal
-        if (prefs.getBoolean("showCommentLinkJointlyGoals", false)) {
+        if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, false)) {
             // get from DB  all comments for choosen goal (getCount)
             Cursor cursorGoalAllComments = myDb.getAllRowsOurGoalsJointlyGoalsComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
             // generate the number of comments to show
@@ -157,7 +157,7 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
                     .appendQueryParameter("com", "show_comment_for_jointly_goal");;
 
             // max comment < current comment -> no, the user can not comment anymore
-            if (prefs.getInt("commentJointlyGoalCountComment",0) < prefs.getInt("commentJointlyGoalMaxCountComment",0) || !commentLimitationBorder) {
+            if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment,0) < prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment,0) || !commentLimitationBorder) {
                 showJointlyGoalsCommentAnGoalLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourGoalsCommentString", "string", context.getPackageName()))+"</a>");
             }
             else {
@@ -175,7 +175,7 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
         }
 
         // show genaerate links for evaluate or/and comment
-        if (prefs.getBoolean("showCommentLinkJointlyGoals", false) || prefs.getBoolean("showEvaluateLinkJointlyGoals", false) ) {
+        if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, false) || prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false) ) {
 
             // create the comment link
             TextView linkCommentEvaluateAnGoal = (TextView) view.findViewById(R.id.linkCommentEvaluateAnGoal);

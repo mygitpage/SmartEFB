@@ -71,10 +71,10 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
         myDb = new DBAdapter(fragmentDebetableGoalNowContext);
 
         // init the prefs
-        prefs = fragmentDebetableGoalNowContext.getSharedPreferences("smartEfbSettings", fragmentDebetableGoalNowContext.MODE_PRIVATE);
+        prefs = fragmentDebetableGoalNowContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentDebetableGoalNowContext.MODE_PRIVATE);
 
         //get date of debetable goals
-        currentDateOfDebetableGoal = prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis());
+        currentDateOfDebetableGoal = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis());
 
     }
 
@@ -85,7 +85,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
         // find the listview
         ListView listView = (ListView) viewFragmentDebetablGoalNow.findViewById(R.id.listOurGoalsDebetableGoalsNow);
 
-        if (prefs.getBoolean("showDebetableGoals", false) && listView != null) { // Function showDebetableGoals is available!!!!
+        if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false) && listView != null) { // Function showDebetableGoals is available!!!!
 
             // get the data from db -> all debetable goals
             Cursor cursor = myDb.getAllDebetableRowsOurGoals(currentDateOfDebetableGoal);

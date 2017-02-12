@@ -97,12 +97,12 @@
             android:id="@+id/buttonSendConnectToServerKeyNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/bg_btn_join"
+            android:background="@drawable/app_button_style"
             android:textColor="@color/white"
             android:text="@string/buttonSendConnectToServerKeyNumberText"
             android:layout_gravity="center_horizontal"
             android:layout_marginRight="5dp"
-            android:padding="5dp"
+            android:padding="10dp"
             android:visibility="gone"
             android:layout_marginBottom="15dp"/>
 

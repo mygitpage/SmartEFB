@@ -82,9 +82,9 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
         myDb = new DBAdapter(fragmentShowCommentJointlyGoalsContext);
 
         // init the prefs
-        prefs = fragmentShowCommentJointlyGoalsContext.getSharedPreferences("smartEfbSettings", fragmentShowCommentJointlyGoalsContext.MODE_PRIVATE);
+        prefs = fragmentShowCommentJointlyGoalsContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentShowCommentJointlyGoalsContext.MODE_PRIVATE);
         //get current date of arrangement
-        currentDateOfJointlyGoals = prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis());
+        currentDateOfJointlyGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis());
 
         // Set correct subtitle in Activity -> "Kommentare Ziel ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleJointlyGoalsShowComment", "string", fragmentShowCommentJointlyGoalsContext.getPackageName())) + " " + jointlyGoalNumberInListView;

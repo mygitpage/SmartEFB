@@ -109,13 +109,13 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         myDb = new DBAdapter(fragmentEvaluateJointlyGoalsContext);
 
         // init the prefs
-        prefs = fragmentEvaluateJointlyGoalsContext.getSharedPreferences("smartEfbSettings", fragmentEvaluateJointlyGoalsContext.MODE_PRIVATE);
+        prefs = fragmentEvaluateJointlyGoalsContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentEvaluateJointlyGoalsContext.MODE_PRIVATE);
 
         // get choosen jointly goal
         cursorChoosenJointlyGoal = myDb.getJointlyRowOurGoals(jointlyGoalDbIdToEvaluate);
 
         // get all actual jointly goals
-        cursorNextJointlyGoalToEvaluate = myDb.getAllJointlyRowsOurGoals(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()), "equal");
+        cursorNextJointlyGoalToEvaluate = myDb.getAllJointlyRowsOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "equal");
 
         // Set correct subtitle in Activity -> "Ziel ... bewerten"
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleEvaluateJointlyGoal", "string", fragmentEvaluateJointlyGoalsContext.getPackageName()));
@@ -275,7 +275,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 if (evaluateNoError) {
 
                     // insert evaluation result in DB
-                    myDb.insertRowOurGoalsJointlyGoalEvaluate(jointlyGoalDbIdToEvaluate, prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString("userName", "John Doe"));
+                    myDb.insertRowOurGoalsJointlyGoalEvaluate(jointlyGoalDbIdToEvaluate, prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"));
 
                     // delete status evaluation possible for jointly goal
                     myDb.changeStatusEvaluationPossibleOurGoals(jointlyGoalDbIdToEvaluate, "delete");

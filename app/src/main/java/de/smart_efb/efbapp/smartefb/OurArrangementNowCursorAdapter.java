@@ -71,11 +71,11 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         String tmpTextNewEntryComment = "";
 
         // open sharedPrefs
-        SharedPreferences prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
 
         if (cursor.isFirst() ) { // listview for first element
             TextView numberOfArrangement = (TextView) view.findViewById(R.id.ourArrangementIntroText);
-            String txtArrangementNumber = context.getResources().getString(R.string.ourArrangementIntroText) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), "dd.MM.yyyy");;
+            String txtArrangementNumber = context.getResources().getString(R.string.ourArrangementIntroText) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy");;
             numberOfArrangement.setText(txtArrangementNumber);
         }
 
@@ -100,7 +100,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         textViewArrangement.setText(title);
 
         // generate link for evaluate an arrangement
-        if (prefs.getBoolean("showArrangementEvaluate", false)) {
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false)) {
 
             // make link to evaluate arrangement, when evaluation is possible for this arrangement
             if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE)) == 1) {
@@ -120,7 +120,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         }
 
         // Show link for comment in our arrangement
-        if (prefs.getBoolean("showArrangementComment", false)) {
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false)) {
 
             // get from DB  all comments for choosen arrangement (getCount)
             Cursor cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
@@ -163,7 +163,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                     .appendQueryParameter("com", "show_comment_for_arrangement");;
 
 
-            if (prefs.getInt("commentOurArrangementCountComment",0) < prefs.getInt("commentOurArrangementMaxComment",0) || !commentLimitationBorder) {
+            if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0) < prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) || !commentLimitationBorder) {
 
                 showCommentArrangementLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
 
@@ -186,7 +186,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
 
         // show genaerate links for evaluate or/and comment
-        if (prefs.getBoolean("showArrangementComment", false) || prefs.getBoolean("showArrangementEvaluate", false) ) {
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false) || prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) ) {
 
             // create the comment link
             TextView linkCommentAnArrangement = (TextView) view.findViewById(R.id.linkCommentAnArrangement);

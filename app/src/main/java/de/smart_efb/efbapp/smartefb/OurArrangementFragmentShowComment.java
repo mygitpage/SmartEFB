@@ -87,9 +87,9 @@ public class OurArrangementFragmentShowComment extends Fragment {
         myDb = new DBAdapter(fragmentShowCommentContext);
 
         // init the prefs
-        prefs = fragmentShowCommentContext.getSharedPreferences("smartEfbSettings", fragmentShowCommentContext.MODE_PRIVATE);
+        prefs = fragmentShowCommentContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentShowCommentContext.MODE_PRIVATE);
         //get current date of arrangement
-        currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
+        currentDateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
 
         // Set correct subtitle in Activity -> "Kommentare Absprache ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentShowCommentText", "string", fragmentShowCommentContext.getPackageName())) + " " + arrangementNumberInListView;

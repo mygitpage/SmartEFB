@@ -111,7 +111,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         myDb = new DBAdapter(fragmentDebetableGoalsContext);
 
         // init the prefs
-        prefs = fragmentDebetableGoalsContext.getSharedPreferences("smartEfbSettings", fragmentDebetableGoalsContext.MODE_PRIVATE);
+        prefs = fragmentDebetableGoalsContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentDebetableGoalsContext.MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         // init array for text description of scales levels
@@ -187,27 +187,27 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         TextView textViewMaxAndCount = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.infoDebetableGoalCommentMaxAndCount);
         String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral;
         // build text element max debetable goal comment
-        if (prefs.getInt("commentDebetableGoalsOurGoalsMaxComment", 0) == 1 && commentLimitationBorder) {
-            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextDebetableGoalCommentMaxSingular), prefs.getInt("commentDebetableGoalsOurGoalsMaxComment", 0));
+        if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment, 0) == 1 && commentLimitationBorder) {
+            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextDebetableGoalCommentMaxSingular), prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment, 0));
         }
-        else if (prefs.getInt("commentDebetableGoalsOurGoalsMaxComment", 0) > 1 && commentLimitationBorder){
-            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextDebetableGoalCommentMaxPlural), prefs.getInt("commentDebetableGoalsOurGoalsMaxComment", 0));
+        else if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment, 0) > 1 && commentLimitationBorder){
+            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextDebetableGoalCommentMaxPlural), prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment, 0));
         }
         else {
             tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextDebetableGoalCommentUnlimitedText);
         }
 
         // build text element count debetable goal comment count
-        if (prefs.getInt("commentDebetableGoalsOurGoalsCountComment", 0) == 0) {
+        if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, 0) == 0) {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextDebetableGoalCommentCountZero);
         }
-        else if (prefs.getInt("commentDebetableGoalsOurGoalsCountComment", 0) == 1) {
+        else if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, 0) == 1) {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextDebetableGoalCommentCountSingular);
         }
         else {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextDebetableGoalCommentCountPlural);
         }
-        tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt("commentDebetableGoalsOurGoalsCountComment", 0));
+        tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, 0));
         textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral);
 
 
@@ -273,8 +273,8 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                     Toast.makeText(fragmentDebetableGoalsContext, fragmentDebetableGoalsContext.getResources().getString(R.string.debetableGoalCommentSuccsesfulySend), Toast.LENGTH_SHORT).show();
 
                     // increment debetable goal comment count
-                    int countDebetableGoalsCommentSum = prefs.getInt("commentDebetableGoalsOurGoalsCountComment",0) + 1;
-                    prefsEditor.putInt("commentDebetableGoalsOurGoalsCountComment", countDebetableGoalsCommentSum);
+                    int countDebetableGoalsCommentSum = prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment,0) + 1;
+                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, countDebetableGoalsCommentSum);
                     prefsEditor.commit();
 
                     // build intent to get back to OurGoalsFragmentNow
@@ -432,7 +432,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         btnBackToDebetableGoals.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         btnBackToDebetableGoals.setTextSize(14);
         btnBackToDebetableGoals.setGravity(Gravity.CENTER);
-        btnBackToDebetableGoals.setBackgroundColor(ContextCompat.getColor(fragmentDebetableGoalsContext, R.color.bg_btn_join));
+        btnBackToDebetableGoals.setBackground(ContextCompat.getDrawable(fragmentDebetableGoalsContext,R.drawable.app_button_style));
         btnBackToDebetableGoals.setPadding(10,10,10,10);
         btnBackToDebetableGoals.setTop(25);
         btnBackToDebetableGoals.setOnClickListener(new View.OnClickListener() {

@@ -79,7 +79,7 @@
             android:textColor="@color/text_color_white"
             android:hint="@string/commentArrangementTextFieldHintText"
             android:gravity="left|top"
-            android:background="@color/inputfield_background"
+            android:background="@drawable/app_edittext_style"
             android:layout_margin="10dp"
             android:textColorHint="@color/text_color_white"
             android:inputType="textNoSuggestions|text|textMultiLine"
@@ -97,23 +97,23 @@
                 android:id="@+id/buttonSendArrangementComment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/bg_btn_join"
+                android:background="@drawable/app_button_style"
                 android:textColor="@color/white"
                 android:text="@string/btnSendArrangementComment"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="5dp"
-                android:padding="5dp"/>
+                android:padding="10dp"/>
 
             <Button
                 android:id="@+id/buttonAbortComment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/bg_btn_join"
+                android:background="@drawable/app_button_style"
                 android:textColor="@color/white"
                 android:text="@string/btnAbortComment"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="5dp"
-                android:padding="5dp"/>
+                android:padding="10dp"/>
 
         </LinearLayout>
 

@@ -77,10 +77,10 @@ public class OurArrangementFragmentSketch  extends Fragment {
         myDb = new DBAdapter(fragmentSketchContext);
 
         // init the prefs
-        prefs = fragmentSketchContext.getSharedPreferences("smartEfbSettings", fragmentSketchContext.MODE_PRIVATE);
+        prefs = fragmentSketchContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentSketchContext.MODE_PRIVATE);
 
         //get date of sketch arrangement
-        currentDateOfSketchArrangement = prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis());
+        currentDateOfSketchArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis());
 
     }
 
@@ -94,7 +94,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
         ListView listView = (ListView) viewFragmentSketch.findViewById(R.id.listOurArrangementSketch);
 
 
-        if (prefs.getBoolean("showSketchArrangements", false) && listView != null) { // Function showSketchArrangement is available!!!!
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false) && listView != null) { // Function showSketchArrangement is available!!!!
 
             // get the data from db -> all sketch arrangements
             Cursor cursor = myDb.getAllRowsSketchOurArrangement(currentDateOfSketchArrangement);

@@ -41,18 +41,18 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
         myDb = new DBAdapter(context);
 
         // init the prefs
-        prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
+        prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
 
         // alarm time from the prefs
         int tmpAlarmTime = 0;
 
         // get start time and end time for evaluation
-        Long startEvaluationDate = prefs.getLong("startDataEvaluationInMills", System.currentTimeMillis());
-        Long endEvaluationDate = prefs.getLong("endDataEvaluationInMills", System.currentTimeMillis());
+        Long startEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis());
+        Long endEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis());
 
         // get evaluate pause time and active time in seconds
-        evaluatePauseTime = prefs.getInt("evaluatePauseTimeInSeconds", 43200); // default value 43200 is 12 hours
-        evaluateActivTime = prefs.getInt("evaluateActivTimeInSeconds", 43200); // default value 43200 is 12 hours
+        evaluatePauseTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, ConstansClassOurArrangement.defaultTimeForActiveAndPauseEvaluationArrangement); // default value 43200 is 12 hours
+        evaluateActivTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, ConstansClassOurArrangement.defaultTimeForActiveAndPauseEvaluationArrangement); // default value 43200 is 12 hours
 
         // get alarmManager
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -74,7 +74,7 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
         }
 
         // set alarm manager when current time is between start date and end date and evaluation is enable
-        if (prefs.getBoolean("showArrangementEvaluate", false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
 
             switch (evaluateState) {
 
@@ -85,7 +85,7 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
                     // set intent -> next state evaluate
                     evaluateAlarmIntent.putExtra("evaluateState","evaluate");
                     // update table ourArrangement in db -> evaluation enable
-                    myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),"set");
+                    myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()),"set");
 
                     break;
                 case "evaluate": // alarm comes out of evaluate
@@ -95,7 +95,7 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
                     // set intent -> next state pause
                     evaluateAlarmIntent.putExtra("evaluateState","pause");
                     // update table ourArrangement in db -> evaluation disable
-                    myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),"delete");
+                    myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()),"delete");
 
                     break;
                 default:
@@ -116,7 +116,7 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
         else { // delete alarm - it is out of time
 
             // update table ourArrangement in db -> evaluation disable
-            myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()),"delete");
+            myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()),"delete");
 
             // crealte pending intent
             pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);

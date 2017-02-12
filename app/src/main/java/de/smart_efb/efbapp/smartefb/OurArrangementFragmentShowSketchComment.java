@@ -82,9 +82,9 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
         myDb = new DBAdapter(fragmentShowSketchCommentContext);
 
         // init the prefs
-        prefs = fragmentShowSketchCommentContext.getSharedPreferences("smartEfbSettings", fragmentShowSketchCommentContext.MODE_PRIVATE);
+        prefs = fragmentShowSketchCommentContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentShowSketchCommentContext.MODE_PRIVATE);
         //get current date of arrangement
-        currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
+        currentDateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
 
         // Set correct subtitle in Activity -> "Einschaetzungen Entwuerfe ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentShowSketchCommentText", "string", fragmentShowSketchCommentContext.getPackageName())) + " " + sketchArrangementNumberInListView;

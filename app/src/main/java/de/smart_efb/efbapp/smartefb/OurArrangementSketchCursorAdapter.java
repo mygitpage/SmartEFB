@@ -71,12 +71,12 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
         String tmpTextNewEntryComment = "";
 
         // open sharedPrefs
-        SharedPreferences prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
 
 
         if (cursor.isFirst() ) { // listview for first element? write intro text
             TextView tmpTextViewSketchIntroText = (TextView) view.findViewById(R.id.ourArrangementSketchIntroText);
-            String tmpTextIntroText = String.format(context.getResources().getString(R.string.ourArrangementSketchIntroText), prefs.getString("authorOfSketchArrangement", "John Dow"), EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), "dd.MM.yyyy"));
+            String tmpTextIntroText = String.format(context.getResources().getString(R.string.ourArrangementSketchIntroText), prefs.getString(ConstansClassOurArrangement.namePrefsAuthorOfSketchArrangement, "John Dow"), EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), "dd.MM.yyyy"));
             tmpTextViewSketchIntroText.setText(tmpTextIntroText);
         }
 
@@ -99,7 +99,7 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
         textViewArrangement.setText(title);
 
         // Show link for comment the sketch arrangements
-        if (prefs.getBoolean("showCommentLinkSketchArrangements", false)) {
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowLinkCommentSketchArrangement, false)) {
 
             // get from DB  all comments for choosen sketch arrangement (getCount)
             Cursor cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
@@ -142,7 +142,7 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
                     .appendQueryParameter("com", "show_comment_for_sketch_arrangement");;
 
 
-            if (prefs.getInt("commentSketchOurArrangementCountComment",0) < prefs.getInt("commentSketchOurArrangementMaxComment",0) || !commentLimitationBorder) {
+            if (prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0) < prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,0) || !commentLimitationBorder) {
 
                 showCommentSketchArrangementLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementAssessmentsString", "string", context.getPackageName()))+"</a>");
 

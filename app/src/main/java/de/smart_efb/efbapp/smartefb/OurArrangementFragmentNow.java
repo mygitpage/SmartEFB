@@ -115,10 +115,10 @@ public class OurArrangementFragmentNow extends Fragment {
         myDb = new DBAdapter(fragmentNowContext);
 
         // init the prefs
-        prefs = fragmentNowContext.getSharedPreferences("smartEfbSettings", fragmentNowContext.MODE_PRIVATE);
+        prefs = fragmentNowContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentNowContext.MODE_PRIVATE);
 
         //get current date of arrangement
-        currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
+        currentDateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
 
         // ask methode isCommentLimitationBorderSet() in ActivityOurArrangement to limitation in comments? true-> yes, linitation; false-> no
         commentLimitationBorder = ((ActivityOurArrangement) getActivity()).isCommentLimitationBorderSet("current");

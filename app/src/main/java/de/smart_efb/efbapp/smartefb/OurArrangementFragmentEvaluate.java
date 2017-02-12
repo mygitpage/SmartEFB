@@ -111,13 +111,13 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         myDb = new DBAdapter(fragmentEvaluateContext);
 
         // init the prefs
-        prefs = fragmentEvaluateContext.getSharedPreferences("smartEfbSettings", fragmentEvaluateContext.MODE_PRIVATE);
+        prefs = fragmentEvaluateContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentEvaluateContext.MODE_PRIVATE);
 
         // get choosen arrangement
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToEvaluate);
 
         // get all actual arrangements
-        cursorNextArrangementToEvaluate = myDb.getAllRowsCurrentOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), "equal");
+        cursorNextArrangementToEvaluate = myDb.getAllRowsCurrentOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "equal");
 
         // Set correct subtitle in Activity -> "Bewerten Absprache ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentEvaluateArrangementText", "string", fragmentEvaluateContext.getPackageName())) + " " + arrangementNumberInListView;
@@ -278,7 +278,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 if (evaluateNoError) {
 
                     // insert comment in DB
-                    myDb.insertRowOurArrangementEvaluate(arrangementDbIdToEvaluate, prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString("userName", "John Doe"));
+                    myDb.insertRowOurArrangementEvaluate(arrangementDbIdToEvaluate, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"));
 
                     // delete status evaluation possible for arrangement
                     myDb.changeStatusEvaluationPossibleOurArrangement(arrangementDbIdToEvaluate, "delete");

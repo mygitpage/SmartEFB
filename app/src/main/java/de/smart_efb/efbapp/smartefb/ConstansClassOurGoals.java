@@ -107,6 +107,8 @@ public class ConstansClassOurGoals {
     public static final int defaultTimeForActiveAndPauseEvaluationJointlyGoals = 43200; // this is 12 hours
 
 
+    // prefs name for author of debetable goals
+    public static final String namePrefsAuthorOfDebetableGoals = "authorOfDebetableGoals";
 
 
 

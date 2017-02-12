@@ -112,10 +112,10 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
         myDb = new DBAdapter(fragmentJointlyGoalsNowContext);
 
         // init the prefs
-        prefs = fragmentJointlyGoalsNowContext.getSharedPreferences("smartEfbSettings", fragmentJointlyGoalsNowContext.MODE_PRIVATE);
+        prefs = fragmentJointlyGoalsNowContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentJointlyGoalsNowContext.MODE_PRIVATE);
 
         //get current date of jointly goals
-        currentDateOfJointlyGoals = prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis());
+        currentDateOfJointlyGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis());
 
         // ask methode isCommentLimitationBorderSet() in ActivityOurGoals to limitation in comments? true-> yes, linitation; false-> no
         commentLimitationBorder = ((ActivityOurGoals) getActivity()).isCommentLimitationBorderSet("current");
@@ -138,7 +138,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
             setVisibilityTextViewTextNotAvailable("hide");
 
             // Set correct subtitle in Activity -> "Gemeinsame Ziele vom ..."
-            String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleJointlyGoalsNow", "string", fragmentJointlyGoalsNowContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()), "dd.MM.yyyy");
+            String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleJointlyGoalsNow", "string", fragmentJointlyGoalsNowContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "dd.MM.yyyy");
             ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyNow");
 
             // new dataadapter

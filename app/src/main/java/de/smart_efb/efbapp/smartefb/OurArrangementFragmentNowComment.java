@@ -99,7 +99,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         myDb = new DBAdapter(fragmentNowCommentContext);
 
         // init the prefs
-        prefs = fragmentNowCommentContext.getSharedPreferences("smartEfbSettings", fragmentNowCommentContext.MODE_PRIVATE);
+        prefs = fragmentNowCommentContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentNowCommentContext.MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         // get choosen arrangement
@@ -158,27 +158,27 @@ public class OurArrangementFragmentNowComment extends Fragment {
         TextView textViewMaxAndCount = (TextView) viewFragmentNowComment.findViewById(R.id.infoNowCommentMaxAndCount);
         String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral;
         // build text element max sketch comment
-        if (prefs.getInt("commentOurArrangementMaxComment", 0) == 1 && commentLimitationBorder) {
-            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextNowCommentMaxSingular), prefs.getInt("commentOurArrangementMaxComment", 0));
+        if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0) == 1 && commentLimitationBorder) {
+            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextNowCommentMaxSingular), prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0));
         }
-        else if (prefs.getInt("commentOurArrangementMaxComment", 0) > 1 && commentLimitationBorder) {
-            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextNowCommentMaxPlural), prefs.getInt("commentOurArrangementMaxComment", 0));
+        else if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0) > 1 && commentLimitationBorder) {
+            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextNowCommentMaxPlural), prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0));
          }
         else {
             tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentUnlimitedText);
         }
 
         // build text element count comment
-        if (prefs.getInt("commentOurArrangementCountComment", 0) == 0) {
+        if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0) == 0) {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentCountZero);
         }
-        else if (prefs.getInt("commentOurArrangementCountComment", 0) == 1) {
+        else if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0) == 1) {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentCountSingular);
         }
         else {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentCountPlural);
         }
-        tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt("commentOurArrangementCountComment", 0));
+        tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0));
         textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral);
 
 
@@ -196,14 +196,14 @@ public class OurArrangementFragmentNowComment extends Fragment {
                 if (txtInputArrangementComment.getText().toString().length() > 3) {
 
                     // insert comment in DB
-                    long newID = myDb.insertRowOurArrangementComment(txtInputArrangementComment.getText().toString(), prefs.getString("userName", "John Doe"), System.currentTimeMillis() , arrangementDbIdToComment, true, prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()));
+                    long newID = myDb.insertRowOurArrangementComment(txtInputArrangementComment.getText().toString(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"), System.currentTimeMillis() , arrangementDbIdToComment, true, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()));
 
                     // Toast "Comment sucsessfull send"
                     Toast.makeText(fragmentNowCommentContext, fragmentNowCommentContext.getResources().getString(R.string.commentSuccsesfulySend), Toast.LENGTH_SHORT).show();
 
                     // increment comment count
-                    int countCommentSum = prefs.getInt("commentOurArrangementCountComment",0) + 1;
-                    prefsEditor.putInt("commentOurArrangementCountComment", countCommentSum);
+                    int countCommentSum = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0) + 1;
+                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentCountComment, countCommentSum);
                     prefsEditor.commit();
 
                     // build intent to get back to OurArrangementFragmentNow
@@ -352,7 +352,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         btnBackToArrangement.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         btnBackToArrangement.setTextSize(14);
         btnBackToArrangement.setGravity(Gravity.CENTER);
-        btnBackToArrangement.setBackgroundColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.bg_btn_join));
+        btnBackToArrangement.setBackground(ContextCompat.getDrawable(fragmentNowCommentContext,R.drawable.app_button_style));
         btnBackToArrangement.setPadding(10,10,10,10);
         btnBackToArrangement.setTop(25);
         btnBackToArrangement.setOnClickListener(new View.OnClickListener() {

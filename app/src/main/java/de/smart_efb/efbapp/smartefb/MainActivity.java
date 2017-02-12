@@ -27,45 +27,36 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+
 
 public class MainActivity extends AppCompatActivity {
-
-
-    // total number of elements (in test-mode please edit variable in class SettingsEfbFragmentD please too!!!!!!!!!!!!!)
-    private static int mainMenueNumberOfElements=8;
-
-    // number of grid columns
-    final private int numberOfGridColumns = 2;
 
     // grid view adapter
     mainMenueGridViewApdapter mainMenueGridViewApdapter;
 
-
     // title of main Menue Elements
-    private String[] mainMenueElementTitle = new String [mainMenueNumberOfElements];
+    private String[] mainMenueElementTitle = new String [ConstansClassMain.mainMenueNumberOfElements];
     // color of active grid element
-    private String[] mainMenueElementColor = new String [mainMenueNumberOfElements];
+    private String[] mainMenueElementColor = new String [ConstansClassMain.mainMenueNumberOfElements];
     // color of inactive element
-    private String[] mainMenueElementColorLight = new String [mainMenueNumberOfElements];
+    private String[] mainMenueElementColorLight = new String [ConstansClassMain.mainMenueNumberOfElements];
 
     // background ressource of normal elements (image icon)
-    private int[] mainMenueElementBackgroundRessources = new int[mainMenueNumberOfElements];
+    private int[] mainMenueElementBackgroundRessources = new int[ConstansClassMain.mainMenueNumberOfElements];
     // background ressource of new entry elements (image icon)
-    private int[] mainMenueElementBackgroundRessourcesNewEntry = new int[mainMenueNumberOfElements];
+    private int[] mainMenueElementBackgroundRessourcesNewEntry = new int[ConstansClassMain.mainMenueNumberOfElements];
     // background ressource of inactiv elements (image icon)
-    private int[] mainMenueElementBackgroundRessourcesInactiv = new int[mainMenueNumberOfElements];
+    private int[] mainMenueElementBackgroundRessourcesInactiv = new int[ConstansClassMain.mainMenueNumberOfElements];
     // background ressource of elemts to show!
-    private int[] mainMenueShowElementBackgroundRessources = new int[mainMenueNumberOfElements];
-
+    private int[] mainMenueShowElementBackgroundRessources = new int[ConstansClassMain.mainMenueNumberOfElements];
 
     // show the menue element
-    private boolean[] showMainMenueElement = new boolean[mainMenueNumberOfElements];
+    private boolean[] showMainMenueElement = new boolean[ConstansClassMain.mainMenueNumberOfElements];
 
-    // prefs name for info new meeting date and time (in ActivityMeeting also!!!!!!!!!)
-    static final String namePrefsNewMeetingDateAndTime = "meetingNewDateAndTime";
-    // prefs praefix for  (in mainActivity also!!!!!!!!!)
-    String [] prefsPraefixMeetings = {"_A","_B"};
-
+    // context of main
     Context mainContext;
 
     // point to shared preferences
@@ -93,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         mainMenueGridViewApdapter = new mainMenueGridViewApdapter(this);
 
         gridview.setAdapter(mainMenueGridViewApdapter);
-        gridview.setNumColumns(numberOfGridColumns);
+        gridview.setNumColumns(ConstansClassMain.numberOfGridColumns);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -191,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         mainContext = this;
 
         // get the shared preferences
-        prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+        prefs = this.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
 
         // init the DB
         myDb = new DBAdapter(this);
@@ -207,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         tmpBackgroundRessourcesNewEntry = getResources().getStringArray(R.array.mainMenueElementImageNewEntry);
         tmpBackgroundRessourcesInactiv =  getResources().getStringArray(R.array.mainMenueElementImageInactiv);
 
-        for (int i=0; i<mainMenueNumberOfElements; i++) {
+        for (int i=0; i<ConstansClassMain.mainMenueNumberOfElements; i++) {
             mainMenueElementBackgroundRessources[i] = getResources().getIdentifier(tmpBackgroundRessources[i], "drawable", "de.smart_efb.efbapp.smartefb");
             mainMenueElementBackgroundRessourcesNewEntry[i] = getResources().getIdentifier(tmpBackgroundRessourcesNewEntry[i], "drawable", "de.smart_efb.efbapp.smartefb");
             mainMenueElementBackgroundRessourcesInactiv[i] = getResources().getIdentifier(tmpBackgroundRessourcesInactiv[i], "drawable", "de.smart_efb.efbapp.smartefb");
@@ -216,14 +207,35 @@ public class MainActivity extends AppCompatActivity {
         // init array show elements
         initShowElementArray();
 
+
+
+
+
+        // read configuration xml file ------- TEST
+        EfbXmlParser test = new EfbXmlParser();
+        try {
+            test.parseXmlInput(mainContext);
+        }
+        catch (XmlPullParserException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+
+
+
     }
 
     // init array show elements
     private void initShowElementArray () {
 
-        for (int i=0; i<mainMenueNumberOfElements; i++) {
+        for (int i=0; i<ConstansClassMain.mainMenueNumberOfElements; i++) {
 
-            String tmpMainMenueElementName ="mainMenueElementId_" + i;
+            String tmpMainMenueElementName = ConstansClassMain.namePrefsSubstringMainMenueElementId + i;
 
             showMainMenueElement[i] = false;
             if (prefs.getBoolean(tmpMainMenueElementName, false)) {
@@ -239,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
 
         boolean tmpNew = false;
 
-        for (int countElements=0; countElements < mainMenueNumberOfElements; countElements++) {
+        for (int countElements=0; countElements < ConstansClassMain.mainMenueNumberOfElements; countElements++) {
 
             switch (countElements) {
 
@@ -249,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                 case 1: // menue item "Absprachen"
                     if (showMainMenueElement[countElements]) { // is element aktiv?
 
-                        if (myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurArrangementComment(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), "current") > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), "sketch") > 0) {
+                        if (myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurArrangementComment(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "current") > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "sketch") > 0) {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                         } else {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
@@ -262,10 +274,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
                 case 2: // menue item "Ziele"
-
                     if (showMainMenueElement[countElements]) { // is element aktiv?
 
-                        if (myDb.getCountNewEntryOurGoals(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurGoals(prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurGoalsDebetableGoalsComment(prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis())) > 0) {
+                        if (myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurGoalsDebetableGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0) {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                         } else {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
@@ -285,9 +296,7 @@ public class MainActivity extends AppCompatActivity {
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
                 case 5: // menue item "Termine"
-
-
-                    if ( prefs.getBoolean(namePrefsNewMeetingDateAndTime  + prefsPraefixMeetings[0], false) || prefs.getBoolean(namePrefsNewMeetingDateAndTime  + prefsPraefixMeetings[1], false)) {
+                    if ( prefs.getBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime  + ConstantsClassMeeting.prefsPraefixMeetings[0], false) || prefs.getBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime  + ConstantsClassMeeting.prefsPraefixMeetings[1], false)) {
                         // meeting A or meeting B new!
                         mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                     } else {
@@ -295,12 +304,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     tmpNew = true;
 
-
-
-
-
-
-                    //mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
                 case 6: // menue item "Notfallhilfe"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
@@ -336,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
 
-            return mainMenueNumberOfElements;
+            return ConstansClassMain.mainMenueNumberOfElements;
         }
 
         @Override

@@ -36,14 +36,7 @@ import java.util.Date;
  */
 public class ActivitySettingsEfb extends AppCompatActivity {
 
-
-    // prefs name for connecting status
-    static final String namePrefsConnectingStatus = "connectingStatus";
-
-    // prefs name for random number for connectin to server
-    static final String namePrefsRandomNumberForConnection = "randomNumberForConnection";
-
-
+    // defenition toolbar and actionbar
     Toolbar toolbarSettingsEfb;
     ActionBar actionBar;
 
@@ -160,16 +153,16 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         // init the prefs
-        prefs = getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+        prefs = getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
 
         // init prefs editor
         prefsEditor = prefs.edit();
 
         // get meeting status
-        connectingStatus = prefs.getInt(namePrefsConnectingStatus, 0);
+        connectingStatus = prefs.getInt(ConstansClassSettings.namePrefsConnectingStatus, 0);
 
         //get random Number for connection
-        randomNumverForConnection = prefs.getInt(namePrefsRandomNumberForConnection, 0);
+        randomNumverForConnection = prefs.getInt(ConstansClassSettings.namePrefsRandomNumberForConnection, 0);
 
         // set correct subtitle
         String tmpSubtitleText = getSubtitleForTabZero();
@@ -273,7 +266,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
         connectingStatus = tmpConnectionStatus;
 
-        prefsEditor.putInt(namePrefsConnectingStatus,tmpConnectionStatus);
+        prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,tmpConnectionStatus);
 
         prefsEditor.commit();
 
@@ -293,7 +286,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
         randomNumverForConnection = tmpRandomNumber;
 
-        prefsEditor.putInt(namePrefsRandomNumberForConnection,tmpRandomNumber);
+        prefsEditor.putInt(ConstansClassSettings.namePrefsRandomNumberForConnection,tmpRandomNumber);
 
         prefsEditor.commit();
 

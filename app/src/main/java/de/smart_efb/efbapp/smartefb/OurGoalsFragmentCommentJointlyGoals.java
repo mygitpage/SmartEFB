@@ -95,7 +95,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         myDb = new DBAdapter(fragmentCommentContextJointlyGoals);
 
         // init the prefs
-        prefs = fragmentCommentContextJointlyGoals.getSharedPreferences("smartEfbSettings", fragmentCommentContextJointlyGoals.MODE_PRIVATE);
+        prefs = fragmentCommentContextJointlyGoals.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentCommentContextJointlyGoals.MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         // get choosen jointly goal
@@ -155,27 +155,27 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         TextView textViewMaxAndCount = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.infoJointlyGoalsCommentMaxAndCount);
         String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral;
         // build text element max sketch comment
-        if (prefs.getInt("commentJointlyGoalMaxCountComment", 0) == 1 && commentLimitationBorder) {
-            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextJointlyGoalsCommentMaxSingular), prefs.getInt("commentJointlyGoalMaxCountComment", 0));
+        if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, 0) == 1 && commentLimitationBorder) {
+            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextJointlyGoalsCommentMaxSingular), prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, 0));
         }
-        else if (prefs.getInt("commentJointlyGoalMaxCountComment", 0) > 1 && commentLimitationBorder) {
-            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextJointlyGoalsCommentMaxPlural), prefs.getInt("commentJointlyGoalMaxCountComment", 0));
+        else if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, 0) > 1 && commentLimitationBorder) {
+            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextJointlyGoalsCommentMaxPlural), prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, 0));
         }
         else {
             tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextJointlyGoalsCommentUnlimitedText);
         }
 
         // build text element count current comment
-        if (prefs.getInt("commentJointlyGoalCountComment", 0) == 0) {
+        if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0) == 0) {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextJointlyGoalsCommentCountZero);
         }
-        else if (prefs.getInt("commentJointlyGoalCountComment", 0) == 1) {
+        else if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0) == 1) {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextJointlyGoalsCommentCountSingular);
         }
         else {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextJointlyGoalsCommentCountPlural);
         }
-        tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt("commentJointlyGoalCountComment", 0));
+        tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0));
         textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral);
 
 
@@ -199,8 +199,8 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     Toast.makeText(fragmentCommentContextJointlyGoals, viewFragmentCommentJointlyGoals.getResources().getString(R.string.commentJointlyGoalSuccsesfulySend), Toast.LENGTH_SHORT).show();
 
                     // increment comment count
-                    int countCommentSum = prefs.getInt("commentJointlyGoalCountComment",0) + 1;
-                    prefsEditor.putInt("commentJointlyGoalCountComment", countCommentSum);
+                    int countCommentSum = prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment,0) + 1;
+                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, countCommentSum);
                     prefsEditor.commit();
 
                     // build intent to get back to OurGoalsFragmentJointlyGoals
@@ -349,7 +349,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         btnBackToJointlyGoals.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         btnBackToJointlyGoals.setTextSize(14);
         btnBackToJointlyGoals.setGravity(Gravity.CENTER);
-        btnBackToJointlyGoals.setBackgroundColor(ContextCompat.getColor(fragmentCommentContextJointlyGoals, R.color.bg_btn_join));
+        btnBackToJointlyGoals.setBackground(ContextCompat.getDrawable(fragmentCommentContextJointlyGoals,R.drawable.app_button_style));
         btnBackToJointlyGoals.setPadding(10,10,10,10);
         btnBackToJointlyGoals.setTop(25);
         btnBackToJointlyGoals.setOnClickListener(new View.OnClickListener() {

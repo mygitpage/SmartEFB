@@ -29,13 +29,13 @@ public class ConstantsClassMeeting {
     // prefs name for author meeting suggestion
     public static final String namePrefsAuthorMeetingSuggestion = "authorMeetingSuggestions";
 
-    // prefs name for info new meeting date and time (in mainActivity also!!!!!!!!!)
+    // prefs name for info new meeting date and time
     public static final String namePrefsNewMeetingDateAndTime = "meetingNewDateAndTime";
 
     // prefs name for deadline for response of meeting suggestions
     public static final String namePrefsMeetingSuggestionsResponseDeadline = "meetingSuggestionsResponseDeadline";
 
-    // prefs praefix for  (in mainActivity also!!!!!!!!!)
+    // prefs praefix for  meeting _A and _B in the name of pref
     public static String [] prefsPraefixMeetings = {"_A","_B"};
 
 }

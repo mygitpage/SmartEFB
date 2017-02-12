@@ -35,8 +35,6 @@ public class ActivityConnectBook extends AppCompatActivity {
     String userNameConnectBook; // the users name
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,10 +43,7 @@ public class ActivityConnectBook extends AppCompatActivity {
         // init the connect book
         initConnectBook();
 
-
         final EditText txtInputMsg = (EditText) findViewById(R.id.inputMsg);
-
-
 
 
         // send button init
@@ -90,11 +85,11 @@ public class ActivityConnectBook extends AppCompatActivity {
         myDb = new DBAdapter(getApplicationContext());
 
         // init the prefs
-        prefs = this.getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
+        prefs = this.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
 
         // init the connect book variables
-        roleConnectBook = prefs.getInt("connectBookRole", 0);
-        userNameConnectBook = prefs.getString("userName", "Jon Dow");
+        roleConnectBook = prefs.getInt(ConstansClassConnectBook.namePrefsConnectBookRole, 0);
+        userNameConnectBook = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Jon Dow");
 
 
     }

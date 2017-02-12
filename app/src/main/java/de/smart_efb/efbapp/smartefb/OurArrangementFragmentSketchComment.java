@@ -112,7 +112,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         myDb = new DBAdapter(fragmentSketchCommentContext);
 
         // init the prefs
-        prefs = fragmentSketchCommentContext.getSharedPreferences("smartEfbSettings", fragmentSketchCommentContext.MODE_PRIVATE);
+        prefs = fragmentSketchCommentContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentSketchCommentContext.MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
         // init array for text description of scales levels
@@ -188,27 +188,27 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         TextView textViewMaxAndCount = (TextView) viewFragmentSketchComment.findViewById(R.id.infoSketchCommentMaxAndCount);
         String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral;
         // build text element max sketch comment
-        if (prefs.getInt("commentSketchOurArrangementMaxComment", 0) == 1 && commentLimitationBorder) {
-            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextSketchCommentMaxSingular), prefs.getInt("commentSketchOurArrangementMaxComment", 0));
+        if (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment, 0) == 1 && commentLimitationBorder) {
+            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextSketchCommentMaxSingular), prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment, 0));
         }
-        else if (prefs.getInt("commentSketchOurArrangementMaxComment", 0) > 1 && commentLimitationBorder){
-            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextSketchCommentMaxPlural), prefs.getInt("commentSketchOurArrangementMaxComment", 0));
+        else if (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment, 0) > 1 && commentLimitationBorder){
+            tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextSketchCommentMaxPlural), prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment, 0));
         }
         else {
             tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentUnlimitedText);
         }
 
         // build text element count sketch comment
-        if (prefs.getInt("commentSketchOurArrangementCountComment", 0) == 0) {
+        if (prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0) == 0) {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentCountZero);
         }
-        else if (prefs.getInt("commentSketchOurArrangementCountComment", 0) == 1) {
+        else if (prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0) == 1) {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentCountSingular);
         }
         else {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentCountPlural);
         }
-        tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt("commentSketchOurArrangementCountComment", 0));
+        tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0));
         textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral);
 
 
@@ -268,14 +268,14 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 if (sketchCommentNoError) {
 
                     // insert comment in DB
-                    long newId = myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString("userName", "John Doe"), System.currentTimeMillis(), sketchArrangementDbIdToComment, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()));
+                    long newId = myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"), System.currentTimeMillis(), sketchArrangementDbIdToComment, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()));
 
                     // Toast "Comment sucsessfull send"
                     Toast.makeText(fragmentSketchCommentContext, fragmentSketchCommentContext.getResources().getString(R.string.sketchCommentSuccsesfulySend), Toast.LENGTH_SHORT).show();
 
                     // increment sketch comment count
-                    int countSketchCommentSum = prefs.getInt("commentSketchOurArrangementCountComment",0) + 1;
-                    prefsEditor.putInt("commentSketchOurArrangementCountComment", countSketchCommentSum);
+                    int countSketchCommentSum = prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0) + 1;
+                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, countSketchCommentSum);
                     prefsEditor.commit();
 
                     // build intent to get back to OurArrangementFragmentNow
@@ -417,14 +417,11 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
         } while (cursorSketchArrangementAllComments.moveToNext());
 
-
-
         // Linear Layout holds author, date and text new entry
         LinearLayout btnBack_inner_layout = new LinearLayout(fragmentSketchCommentContext);
         btnBack_inner_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         btnBack_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
         btnBack_inner_layout.setGravity(Gravity.CENTER);
-
 
         // create back button (to arrangement)
         Button btnBackToArrangement = new Button (fragmentSketchCommentContext);
@@ -433,7 +430,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         btnBackToArrangement.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         btnBackToArrangement.setTextSize(14);
         btnBackToArrangement.setGravity(Gravity.CENTER);
-        btnBackToArrangement.setBackgroundColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.bg_btn_join));
+        btnBackToArrangement.setBackground(ContextCompat.getDrawable(fragmentSketchCommentContext,R.drawable.app_button_style));
         btnBackToArrangement.setPadding(10,10,10,10);
         btnBackToArrangement.setTop(25);
         btnBackToArrangement.setOnClickListener(new View.OnClickListener() {
@@ -455,9 +452,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         commentHolderLayout.addView(btnBack_inner_layout);
 
     }
-
-
-
 
 
     //

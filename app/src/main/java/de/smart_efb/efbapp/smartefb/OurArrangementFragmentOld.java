@@ -76,10 +76,10 @@ public class OurArrangementFragmentOld extends Fragment {
         myDb = new DBAdapter(fragmentOldContext);
 
         // init the prefs
-        prefs = fragmentOldContext.getSharedPreferences("smartEfbSettings", fragmentOldContext.MODE_PRIVATE);
+        prefs = fragmentOldContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentOldContext.MODE_PRIVATE);
 
         //get current date of arrangement
-        currentDateOfArrangement = prefs.getLong("currentDateOfArrangement", System.currentTimeMillis());
+        currentDateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
 
     }
 
@@ -91,7 +91,7 @@ public class OurArrangementFragmentOld extends Fragment {
         // find the listview
         ListView listView = (ListView) viewFragmentOld.findViewById(R.id.listOurArrangementOld);
 
-        if (prefs.getBoolean("showOldArrangements", false) && listView != null) { // Function showOldArrangement is available!!!!
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, false) && listView != null) { // Function showOldArrangement is available!!!!
 
 
             // get all old arrangement from DB

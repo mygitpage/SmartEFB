@@ -40,15 +40,11 @@ public class SettingsEfbFragmentD extends Fragment {
     // fragment view
     View viewFragmentD;
 
-
     // reference to the DB
     DBAdapter myDb;
 
-
-    // total number of elements (in test-mode please edit variable in class MainActivity please too!!!!!!!!!!!!!)
-    private static int mainMenueNumberOfElements=8;
     // title of main Menue Elements
-    private String[] mainMenueElementTitle = new String [mainMenueNumberOfElements];
+    private String[] mainMenueElementTitle = new String [ConstansClassMain.mainMenueNumberOfElements];
 
 
     @Override
@@ -296,7 +292,7 @@ public class SettingsEfbFragmentD extends Fragment {
         mainMenueElementTitle = getResources().getStringArray(R.array.mainMenueElementTitle);
 
         // set menueButtonsChecked
-        for (int numberOfButtons=0; numberOfButtons < mainMenueNumberOfElements; numberOfButtons++) {
+        for (int numberOfButtons=0; numberOfButtons < ConstansClassMain.mainMenueNumberOfElements; numberOfButtons++) {
             tmpRessourceName ="menueButton_" + (numberOfButtons+1);
             tmpMainMenueElementName ="mainMenueElementId_" + numberOfButtons;
             try {

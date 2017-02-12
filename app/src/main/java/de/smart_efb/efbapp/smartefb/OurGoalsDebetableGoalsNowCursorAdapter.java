@@ -70,12 +70,12 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
         String tmpTextNewEntryComment = "";
 
         // open sharedPrefs
-        SharedPreferences prefs = context.getSharedPreferences("smartEfbSettings", context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
 
 
         if (cursor.isFirst() ) { // listview for first element? write intro text
             TextView tmpTextViewSketchIntroText = (TextView) view.findViewById(R.id.ourGoalsDebetableGoalsIntroText);
-            String tmpTextIntroText = String.format(context.getResources().getString(R.string.ourGoalsDebetableGoalsIntroText), prefs.getString("authorOfSketchArrangement", "John Dow"), EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis()), "dd.MM.yyyy"));
+            String tmpTextIntroText = String.format(context.getResources().getString(R.string.ourGoalsDebetableGoalsIntroText), prefs.getString(ConstansClassOurGoals.namePrefsAuthorOfDebetableGoals, "John Dow"), EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis()), "dd.MM.yyyy"));
             tmpTextViewSketchIntroText.setText(tmpTextIntroText);
         }
 
@@ -98,7 +98,7 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
         textViewDebetableGoal.setText(title);
 
         // Show link for comment the debetable goals
-        if (prefs.getBoolean("showCommentLinkDebetableGoals", false)) {
+        if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentDebetableGoals, false)) {
 
             // get from DB  all comments for choosen debetable goal (getCount)
             Cursor cursorDebetableGoalsAllComments = myDb.getAllRowsOurGoalsDebetableGoalsComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
@@ -141,7 +141,7 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
                     .appendQueryParameter("com", "show_comment_for_debetable_goal");;
 
 
-            if (prefs.getInt("commentDebetableGoalsOurGoalsCountComment",0) < prefs.getInt("commentDebetableGoalsOurGoalsMaxComment",0) || !commentLimitationBorder) {
+            if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment,0) < prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment,0) || !commentLimitationBorder) {
 
                 showCommentDebetableGoalLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourGoalsDebetableGoalsAssessmentsString", "string", context.getPackageName()))+"</a>");
 

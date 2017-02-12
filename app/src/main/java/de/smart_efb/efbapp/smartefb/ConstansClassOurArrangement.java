@@ -67,5 +67,12 @@ public class ConstansClassOurArrangement {
 
 
 
+    // prefs name for evaluation active time in seconds
+    public static final String namePrefsAuthorOfSketchArrangement = "authorOfSketchArrangement";
+
+
+
+
+
 
 }
