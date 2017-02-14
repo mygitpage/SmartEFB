@@ -12,6 +12,13 @@ public class ConstansClassSettings {
     public static final String namePrefsRandomNumberForConnection = "randomNumberForConnection";
 
 
+    // prefs name for app id
+    public static final String namePrefsAppId = "appId";
+
+    // prefs name for case id
+    public static final String namePrefsCaseId = "caseId";
+
+
 
 
 }

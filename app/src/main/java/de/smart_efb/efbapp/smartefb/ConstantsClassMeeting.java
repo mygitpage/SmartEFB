@@ -38,4 +38,7 @@ public class ConstantsClassMeeting {
     // prefs praefix for  meeting _A and _B in the name of pref
     public static String [] prefsPraefixMeetings = {"_A","_B"};
 
+    // prefs name for meeting Id
+    public static final String namePrefsMeetingId = "meetingId";
+
 }

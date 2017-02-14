@@ -212,9 +212,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         // read configuration xml file ------- TEST
-        EfbXmlParser test = new EfbXmlParser();
+        EfbXmlParser test = new EfbXmlParser(mainContext);
         try {
-            test.parseXmlInput(mainContext);
+            test.parseXmlInput();
         }
         catch (XmlPullParserException e) {
             // TODO Auto-generated catch block

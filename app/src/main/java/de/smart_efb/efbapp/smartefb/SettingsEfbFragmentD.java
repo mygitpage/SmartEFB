@@ -220,6 +220,13 @@ public class SettingsEfbFragmentD extends Fragment {
         prefsEditor.putInt("connectingStatus",0);
 
 
+        //+++++++++++++++++++++++++
+        // AppId
+        //
+        prefsEditor.putString(ConstansClassSettings.namePrefsAppId,"12345678");
+
+        // Case ID
+        prefsEditor.putInt(ConstansClassSettings.namePrefsCaseId,1298);
 
 
 

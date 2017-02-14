@@ -1,5 +1,17 @@
 <smartEfb>
+    <main>
+        <appid>12345678</appid>
+        <caseid>1298</caseid>
+    </main>
+    <settings>
+        <menueelement1>visible</menueelement1>
+        <menueelement2>invisible</menueelement2>
+    </settings>
+    <ourarrangement>
+        dies ist ein test
+    </ourarrangement>
 
-    <foo>Hello World!</foo>
+
+
 
 </smartEfb>
