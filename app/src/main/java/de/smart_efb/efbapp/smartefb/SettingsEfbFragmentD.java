@@ -119,7 +119,7 @@ public class SettingsEfbFragmentD extends Fragment {
 
         // put name and date of sketch arrangements in Prefs
         prefsEditor.putString("authorOfSketchArrangement", "Herr Testmann");
-        //prefsEditor.putLong("currentDateOfSketchArrangement", System.currentTimeMillis());
+        prefsEditor.putLong("currentDateOfSketchArrangement", 1474191169650L);
 
 
 
@@ -530,7 +530,7 @@ public class SettingsEfbFragmentD extends Fragment {
             @Override
             public void onClick(View v) {
 
-                long newID = myDb.insertRowOurArrangement(txtInputArrangement.getText().toString(), "testuser", prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), true, false, 0);
+                long newID = myDb.insertRowOurArrangement(txtInputArrangement.getText().toString(), "testuser", prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), true, false, 0, 0);
 
                 txtInputArrangement.setText("");
 
@@ -552,7 +552,7 @@ public class SettingsEfbFragmentD extends Fragment {
             @Override
             public void onClick(View v) {
 
-                long newID = myDb.insertRowOurArrangement(txtInputSketchArrangement.getText().toString(), "testuser", 0, true, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()));
+                long newID = myDb.insertRowOurArrangement(txtInputSketchArrangement.getText().toString(), "testuser", 0, true, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), 0);
 
                 txtInputSketchArrangement.setText("");
 
@@ -779,7 +779,7 @@ public class SettingsEfbFragmentD extends Fragment {
             @Override
             public void onClick(View v) {
 
-                long newID = myDb.insertRowOurGoals(txtInputJointlyGoal.getText().toString(), "testuser", prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()), true, false);
+                long newID = myDb.insertRowOurGoals(txtInputJointlyGoal.getText().toString(), "testuser", prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()), true, false, 0);
 
                 txtInputJointlyGoal.setText("");
 
@@ -801,7 +801,7 @@ public class SettingsEfbFragmentD extends Fragment {
             @Override
             public void onClick(View v) {
 
-                long newID = myDb.insertRowOurGoals(txtInputDebetableGoal.getText().toString(), "testuser", prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis()), true, true);
+                long newID = myDb.insertRowOurGoals(txtInputDebetableGoal.getText().toString(), "testuser", prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis()), true, true, 0);
 
                 txtInputDebetableGoal.setText("");
 

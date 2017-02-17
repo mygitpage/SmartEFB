@@ -267,7 +267,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                 if (debetableGoalCommentNoError) {
 
                     // insert comment in DB
-                    long newId = myDb.insertRowOurGoalsDebetableGoalsComment(txtInputDebetableCommentComment.getText().toString(), structQuestionResultDebetableGoalComment, 0, 0, prefs.getString("userName", "John Doe"), System.currentTimeMillis(), debetableGoalsDbIdToComment, true, prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis()));
+                    long newId = myDb.insertRowOurGoalsDebetableGoalsComment(txtInputDebetableCommentComment.getText().toString(), structQuestionResultDebetableGoalComment, 0, 0, prefs.getString("userName", "John Doe"), System.currentTimeMillis(), debetableGoalsDbIdToComment, true, prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis()), 0);
 
                     // Toast "Comment sucsessfull send"
                     Toast.makeText(fragmentDebetableGoalsContext, fragmentDebetableGoalsContext.getResources().getString(R.string.debetableGoalCommentSuccsesfulySend), Toast.LENGTH_SHORT).show();

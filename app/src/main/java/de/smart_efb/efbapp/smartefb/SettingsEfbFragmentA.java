@@ -85,7 +85,10 @@ public class SettingsEfbFragmentA extends Fragment {
         // connecting status 0 -> not connected to server
         if (connectingStatus == 0) {
 
-
+            // replace headline connect to server
+            TextView textViewConnectedWithServerHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
+            String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerIntroHeadingText);
+            textViewConnectedWithServerHeadlineText.setText(tmpTextHeadline);
 
             // show connecting intro text
             TextView textViewConnectToServerIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerIntro);
@@ -140,9 +143,29 @@ public class SettingsEfbFragmentA extends Fragment {
         // connecting status 1 -> waiting for response from server
         if (connectingStatus == 1) {
 
+            // replace headline connect to server
+            TextView textViewConnectedWithServerHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
+            String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerIntroHeadingText);
+            textViewConnectedWithServerHeadlineText.setText(tmpTextHeadline);
+
             // show waiting for response intro text
             TextView textViewConnectToServerIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsWaitingForResponseIntro);
             textViewConnectToServerIntroText.setVisibility(View.VISIBLE);
+
+        }
+
+        // connecting status 2 -> connected with server
+        if (connectingStatus == 2) {
+
+            // replace headline connected with server
+            TextView textViewConnectedWithServerHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
+            String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectedWithServerIntroHeadingText);
+            textViewConnectedWithServerHeadlineText.setText(tmpTextHeadline);
+
+            // show connected to server intro text
+            TextView textViewConnectedWithServerIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerSuccessful);
+            textViewConnectedWithServerIntroText.setVisibility(View.VISIBLE);
+            textViewConnectedWithServerIntroText.setMovementMethod(LinkMovementMethod.getInstance());
 
         }
 

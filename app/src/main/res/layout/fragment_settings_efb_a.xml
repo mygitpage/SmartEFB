@@ -23,7 +23,6 @@
             android:textSize="16dp"
             android:textColor="@color/text_color"
             android:textStyle="bold"
-            android:text="@string/settingsConnectToServerIntroHeadingText"
             android:gravity="left"
             android:paddingLeft="10dp"
             android:paddingBottom="5dp"/>
@@ -67,7 +66,6 @@
             android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:visibility="gone"/>
-
 
         <TextView
             android:id="@+id/settingConnectToServerKeyNumber"

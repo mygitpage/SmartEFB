@@ -275,7 +275,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 if (evaluateNoError) {
 
                     // insert evaluation result in DB
-                    myDb.insertRowOurGoalsJointlyGoalEvaluate(jointlyGoalDbIdToEvaluate, prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"));
+                    myDb.insertRowOurGoalsJointlyGoalEvaluate(jointlyGoalDbIdToEvaluate, prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"), 0);
 
                     // delete status evaluation possible for jointly goal
                     myDb.changeStatusEvaluationPossibleOurGoals(jointlyGoalDbIdToEvaluate, "delete");

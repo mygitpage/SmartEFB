@@ -56,11 +56,13 @@
 
     <!-- Fragment settings a (connect to server) -->
         <string name="settingsConnectToServerIntroHeadingText">Mit Server verbinden</string>
+        <string name="settingsConnectedWithServerIntroHeadingText">Serververbindung hergestellt</string>
+
         <string name="settingsConnectToServerIntroText">Damit eine sichere Kommunikation zwischen Ihrem Smartphone und dem Server möglich ist, müssen Sie Ihrer Beraterin/ Ihrem Berater folgende fünfstellige Nummer mitteilen und anschließend, wenn Sie dazu aufgefordert werden, auf \"Mit Server verbinden\" klicken.</string>
         <string name="settingsConnectToServerRemarkClickButtonText">Bitte klicken Sie nur auf den Button, wenn Sie dazu aufgefordert werden.</string>
         <string name="buttonSendConnectToServerKeyNumberText">Mit Server verbinden</string>
         <string name="sendConnectToServerKeyNumberSuccsesfulyText">Verbindungsnummer erfolgreich gesendet</string>
-        <string name="settingsConnectToServerSuccessfulText">Sie sind erfolgreich mit dem Server verbunden.</string>
+        <string name="settingsConnectToServerSuccessfulText">Sie sind erfolgreich mit dem Server verbunden und die Kommunikation funktioniert. Wenn Sie Fragen zu den übermittelten Daten haben, schauen Sie bitte <a href="smart.efb.deeplink://linkin/settings?com=show_contact">hier</a> nach, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
 
         <string name="settingsWaitingForResponseIntroText">Ihre Nummer wurde zum Server gesendet. Es wird auf eine Antwort gewartet!</string>
 
@@ -69,7 +71,7 @@
 
     <!-- Subtitle under Title Settings -->
 
-        <string name="settingsSubtitleConnectToServer">Mit Server verbinden</string>
+        <string name="settingsSubtitleConnectToServer">Serverkommunikation</string>
         <string name="settingsSubtitleWaitingForResponse">Auf Antwort warten</string>
         <string name="settingsSubtitleContactdetails">Telefon, Email, etc.</string>
         <string name="settingsSubtitleHelpForApp">Hilfe für die App</string>
@@ -421,7 +423,7 @@
 
 
         <!-- Subtitle under Title Our Goals -->
-            <string name="ourGoalsSubtitleNothingThere">Keine Ziele vorhanden</string>
+
             <string name="ourGoalsSubtitleJointlyGoalsNow">Gemeinsame Ziele vom</string>
             <string name="ourGoalsSubtitleJointlyGoalsComment">Ziel %1$d kommentieren</string>
             <string name="ourGoalsSubtitleJointlyGoalsShowComment">Kommentare gemeinsames Ziel</string>

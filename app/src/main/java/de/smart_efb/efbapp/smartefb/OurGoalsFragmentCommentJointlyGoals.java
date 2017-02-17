@@ -193,7 +193,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                 if (txtInputJointlyGoalComment.getText().toString().length() > 3) {
 
                     // insert comment in DB
-                    long newID = myDb.insertRowOurGoalJointlyGoalComment(txtInputJointlyGoalComment.getText().toString(), prefs.getString("userName", "John Doe"), System.currentTimeMillis() , goalDbIdToComment, true, prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()));
+                    long newID = myDb.insertRowOurGoalJointlyGoalComment(txtInputJointlyGoalComment.getText().toString(), prefs.getString("userName", "John Doe"), System.currentTimeMillis() , goalDbIdToComment, true, prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()), 0);
 
                     // Toast "Comment sucsessfull send"
                     Toast.makeText(fragmentCommentContextJointlyGoals, viewFragmentCommentJointlyGoals.getResources().getString(R.string.commentJointlyGoalSuccsesfulySend), Toast.LENGTH_SHORT).show();

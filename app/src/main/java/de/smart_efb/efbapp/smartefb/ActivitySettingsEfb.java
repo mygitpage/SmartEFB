@@ -58,7 +58,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
     int connectingStatus = 0;
 
     // actual random number for connetion to server
-    int randomNumverForConnection = 0;
+    int randomNumberForConnection = 0;
 
 
     @Override
@@ -162,7 +162,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         connectingStatus = prefs.getInt(ConstansClassSettings.namePrefsConnectingStatus, 0);
 
         //get random Number for connection
-        randomNumverForConnection = prefs.getInt(ConstansClassSettings.namePrefsRandomNumberForConnection, 0);
+        randomNumberForConnection = prefs.getInt(ConstansClassSettings.namePrefsRandomNumberForConnection, 0);
 
         // set correct subtitle
         String tmpSubtitleText = getSubtitleForTabZero();
@@ -276,7 +276,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
     public int getRandomNumberForConnection() {
 
 
-        return randomNumverForConnection;
+        return randomNumberForConnection;
 
 
     }
@@ -284,7 +284,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
     // setter for random number for connection to server
     public void setRandomNumberForConnection(int tmpRandomNumber) {
 
-        randomNumverForConnection = tmpRandomNumber;
+        randomNumberForConnection = tmpRandomNumber;
 
         prefsEditor.putInt(ConstansClassSettings.namePrefsRandomNumberForConnection,tmpRandomNumber);
 
@@ -459,7 +459,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            myDb.insertNewMeetingDateAndTime(date.getTime(),"Werder (Havel)", true);
+            myDb.insertNewMeetingDateAndTime(date.getTime(),"Werder (Havel)", true, 0);
 
             Toast.makeText(ActivitySettingsEfb.this, "Terminvorschlag Timestamp " + date.getTime(), Toast.LENGTH_SHORT).show();
 

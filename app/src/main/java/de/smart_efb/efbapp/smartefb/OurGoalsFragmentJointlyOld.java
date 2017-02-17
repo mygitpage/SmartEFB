@@ -119,8 +119,8 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                 setVisibilityTextViewFunctionNotAvailable ("hide");
                 setVisibilityTextViewNothingThere ("show");
 
-                // Set correct subtitle in Activity -> "Keine aelteren Ziele vorhanden"
-                tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNothingThere", "string", fragmentJointlyOldContext.getPackageName()));
+                // Set correct subtitle in Activity -> "Keine Ziele vorhanden"
+                tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleGoalsNothingThere", "string", fragmentJointlyOldContext.getPackageName()));
                 ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyOld");
             }
 

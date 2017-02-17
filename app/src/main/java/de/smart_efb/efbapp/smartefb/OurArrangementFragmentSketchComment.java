@@ -263,12 +263,11 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     tmpErrorTextView.setVisibility(View.GONE);
                 }
 
-
-
+                // check for errors?
                 if (sketchCommentNoError) {
 
                     // insert comment in DB
-                    long newId = myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"), System.currentTimeMillis(), sketchArrangementDbIdToComment, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()));
+                    long newId = myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"), System.currentTimeMillis(), sketchArrangementDbIdToComment, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), 0);
 
                     // Toast "Comment sucsessfull send"
                     Toast.makeText(fragmentSketchCommentContext, fragmentSketchCommentContext.getResources().getString(R.string.sketchCommentSuccsesfulySend), Toast.LENGTH_SHORT).show();
@@ -285,8 +284,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     getActivity().startActivity(intent);
 
                 }
-
-
             }
         });
 

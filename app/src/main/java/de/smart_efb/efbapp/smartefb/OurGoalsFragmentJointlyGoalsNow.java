@@ -158,7 +158,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
             setVisibilityTextViewTextNotAvailable("show");
 
             // Set correct subtitle in Activity -> "Keine gemeinsamen Ziele vorhanden"
-            String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleNothingThere", "string", fragmentJointlyGoalsNowContext.getPackageName()));
+            String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleGoalsNothingThere", "string", fragmentJointlyGoalsNowContext.getPackageName()));
             ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyNow");
 
         }

@@ -117,7 +117,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                 setVisibilityTextViewDebetableGoalsNowNotAvailable("hide");
                 setVisibilityTextViewDebetableGoalsNowNothingThere ("show");
 
-                // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
+                // Set correct subtitle in Activity -> "Keine Ziele vorhanden"
                 String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleGoalsNothingThere", "string", fragmentDebetableGoalNowContext.getPackageName()));
                 ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "debetableNow");
             }

@@ -187,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
         // init the DB
         myDb = new DBAdapter(this);
 
-
         mainMenueElementTitle = getResources().getStringArray(R.array.mainMenueElementTitle);
 
         mainMenueElementColor = getResources().getStringArray(R.array.mainMenueElementColor);
