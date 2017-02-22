@@ -30,7 +30,7 @@ public class ConstansClassOurArrangement {
     public static final String namePrefsShowSketchArrangement = "showSketchArrangements";
 
     // prefs name for show link to comment sketch arrangement
-    public static final String namePrefsShowLinkCommentSketchArrangement = " showCommentLinkSketchArrangements";
+    public static final String namePrefsShowLinkCommentSketchArrangement = "showCommentLinkSketchArrangements";
 
     // prefs name for start Date Evaluation in mills
     public static final String namePrefsStartDateEvaluationInMills = "startDataEvaluationInMills";

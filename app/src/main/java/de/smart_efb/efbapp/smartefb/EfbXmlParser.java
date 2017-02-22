@@ -48,6 +48,10 @@ public class EfbXmlParser {
         Boolean refreshOurArrangementNow = false;
         // refresh activity ourarrangement fragement sketch
         Boolean refreshOurArrangementSketch = false;
+        // refresh activity ourarrangement fragement now comment
+        Boolean refreshOurArrangementNowComment = false;
+        // refresh activity ourarrangement fragement sketch comment
+        Boolean refreshOurArrangementSketchComment = false;
 
 
 
@@ -551,16 +555,211 @@ public class EfbXmlParser {
     }
 
 
+    // read tag our arrangement now comment and push to database ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void readOurArrangementTag_NowComment() {
         Log.d("read_NOWCOMMENT", "Zeile " + xpp.getLineNumber());
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml our arrangement now tag
+        Boolean error = false;
+
+        // tmp data for database insert
+        String tmpCommentText = "";
+        String tmpAuthorName = "";
+        Long tmpCommentTime = 0L;
+        int tmpArrangementId = 0;
+        Long tmpArrangementTime = 0L;
+        String tmpOrder = "";
+        String tmpOldMd5 = "";
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("readOurTag_NOW_COMMENT", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_Comment:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get comment text
+                                if (xpp.getText().trim().length() > 0) { // check if commentText from xml > 0
+                                    tmpCommentText = xpp.getText().trim();
+
+                                    Log.d("Arrangement_NOWComment","MD5:"+EfbHelperClass.md5(tmpCommentText));
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_AuthorName:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get authorName text
+                                if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
+                                    tmpAuthorName = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get commentTime text
+                                if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
+                                    tmpCommentTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_ArrangementId:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get arrangementId text
+                                if (xpp.getText().trim().length() > 0) { // check if arrangementId from xml > 0
+                                    tmpArrangementId = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_DateOfArrangement:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get arrangementTime text
+                                if (xpp.getText().trim().length() > 0) { // check if arrangementTime from xml > 0
+                                    tmpArrangementTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_OldMd5:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get oldMd5 text
+                                if (xpp.getText().trim().length() > 0) { // check if oldMd5 from xml > 0
+                                    tmpOldMd5 = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
+
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
+                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of ourarrangement now
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurArrangement_NowComment)) {
+
+                        // check all data for arrangement now correct?
+                        if (!error) {
+
+                            Log.d("NowComment_DB","C:"+tmpCommentText+" - Au:"+tmpAuthorName+" - CTi:"+tmpCommentTime+" - AId"+tmpArrangementId+" - CoA:"+tmpArrangementTime);
+
+                            // our arrangement now comment order -> new entry?
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementId >= 0 && tmpArrangementTime > 0) {
+                                // insert new comment in DB
+                                myDb.insertRowOurArrangementComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpArrangementId, true, tmpArrangementTime, 4);
+
+                                // refresh activity ourarrangement and fragment now comment
+                                refreshOurArrangement = true;
+                                refreshOurArrangementNowComment = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our arrangement now comment order -> delete entry?
+
+                                // delete arrangement comment in DB
+                                myDb.deleteRowOurArrangementComment(tmpOldMd5);
+
+                                // refresh activity ourarrangement and fragment now comment
+                                refreshOurArrangement = true;
+                                refreshOurArrangementNowComment = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementId >= 0 && tmpArrangementTime > 0) { // our arrangement now comment order -> update entry?
+
+                                // update arrangement comment in DB
+                                myDb.updateRowOurArrangementComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpArrangementId, true,  tmpArrangementTime, 4, tmpOldMd5);
+
+                                // refresh activity ourarrangement and fragment now comment
+                                refreshOurArrangement = true;
+                                refreshOurArrangementNowComment = true;
+                            }
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
 
-    // read tag our arrangement sketch and push to database
+    // read tag our arrangement sketch and push to database ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void readOurArrangementTag_Sketch() {
         Log.d("read_SKETCH", "Zeile " + xpp.getLineNumber());
-
 
         Boolean parseAnymore = true;
 
@@ -573,8 +772,7 @@ public class EfbXmlParser {
         Long tmpSketchTime = 0L;
         Boolean tmpSketchCurrent = false;
         String tmpOrder = "";
-
-
+        String tmpOldMd5 = "";
 
         try {
             int eventType = xpp.next();
@@ -672,6 +870,20 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Sketch_OldMd5:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get oldMd5 text
+                                if (xpp.getText().trim().length() > 0) { // check if oldMd5 from xml > 0
+                                    tmpOldMd5 = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
                     }
                 }
                 eventType = xpp.next();
@@ -701,17 +913,17 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) { // our arrangement sketch order -> delete entry?
 
-                                // delete sketch arrangement in DB
-                                //myDb.insertRowOurArrangement(tmpArrangementText, tmpAuthorName, tmpArrangementTime, true, tmpSketchCurrent, 0);
+                                // delete arrangement in DB
+                                myDb.deleteRowOurArrangement(tmpOldMd5);
 
                                 // refresh activity ourarrangement and fragement sketch
                                 refreshOurArrangement = true;
-                                refreshOurArrangementNow = true;
+                                refreshOurArrangementSketch = true;
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update)) { // our arrangement sketch order -> update entry?
 
-                                // update sketch arrangement in DB
-                                //myDb.insertRowOurArrangement(tmpArrangementText, tmpAuthorName, tmpArrangementTime, true, tmpSketchCurrent, 0);
+                                // update sketch arrangement with tmpOldMd5
+                                myDb.updateRowOurArrangement(tmpArrangementText, tmpAuthorName, 0, true, tmpSketchCurrent, tmpSketchTime, 4, tmpOldMd5);
 
                                 // refresh activity ourarrangement and fragement sketch
                                 refreshOurArrangement = true;
@@ -740,7 +952,264 @@ public class EfbXmlParser {
 
     private void readOurArrangementTag_SketchComment() {
         Log.d("read_SKETCHCOMMENT", "Zeile " + xpp.getLineNumber());
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml our arrangement sketch comment tag
+        Boolean error = false;
+
+        // tmp data for database insert
+        String tmpCommentText = "";
+        int tmpREsultQuestionA = 0;
+        int tmpREsultQuestionB = 0;
+        int tmpREsultQuestionC = 0;
+        String tmpAuthorName = "";
+        Long tmpCommentTime = 0L;
+        int tmpArrangementId = 0;
+        Long tmpArrangementTime = 0L;
+        String tmpOrder = "";
+        String tmpOldMd5 = "";
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("readOur_SKETCH_COMMENT", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Comment:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get comment text
+                                if (xpp.getText().trim().length() > 0) { // check if commentText from xml > 0
+                                    tmpCommentText = xpp.getText().trim();
+
+                                    Log.d("Arrang_SKETCHComment","MD5:"+EfbHelperClass.md5(tmpCommentText));
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionA:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get result question A text
+                                if (xpp.getText().trim().length() > 0) { // check if result question A from xml > 0
+                                    tmpREsultQuestionA = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionB:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get result question B text
+                                if (xpp.getText().trim().length() > 0) { // check if result question B from xml > 0
+                                    tmpREsultQuestionB = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionC:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get result question C text
+                                if (xpp.getText().trim().length() > 0) { // check if result question C from xml > 0
+                                    tmpREsultQuestionC = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_AuthorName:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get authorName text
+                                if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
+                                    tmpAuthorName = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get commentTime text
+                                if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
+                                    tmpCommentTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ArrangementId:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get arrangementId text
+                                if (xpp.getText().trim().length() > 0) { // check if arrangementId from xml > 0
+                                    tmpArrangementId = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_DateOfArrangement:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get arrangementTime text
+                                if (xpp.getText().trim().length() > 0) { // check if arrangementTime from xml > 0
+                                    tmpArrangementTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_OldMd5:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get oldMd5 text
+                                if (xpp.getText().trim().length() > 0) { // check if oldMd5 from xml > 0
+                                    tmpOldMd5 = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
+
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
+                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of ourarrangement sketch comment
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment)) {
+
+                        // check all data for arrangement now correct?
+                        if (!error) {
+
+                            Log.d("SketchComment_DB","C:"+tmpCommentText+" - Au:"+tmpAuthorName+" - CTi:"+tmpCommentTime+" - AId"+tmpArrangementId+" - CoA:"+tmpArrangementTime);
+
+                            // our arrangement sketch comment order -> new entry?
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementId >= 0 && tmpArrangementTime > 0 && tmpREsultQuestionA >= 0 && tmpREsultQuestionB >= 0 && tmpREsultQuestionC >= 0) {
+                                // insert new comment in DB
+                                myDb.insertRowOurArrangementSketchComment(tmpCommentText, tmpREsultQuestionA, tmpREsultQuestionB, tmpREsultQuestionC, tmpAuthorName, tmpCommentTime, tmpArrangementId, true, tmpArrangementTime, 4);
+
+                                // refresh activity ourarrangement and fragment sketch comment
+                                refreshOurArrangement = true;
+                                refreshOurArrangementSketchComment = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our arrangement sketch comment order -> delete entry?
+
+                                // delete arrangement sketch comment in DB
+                                myDb.deleteRowOurArrangementSketchComment(tmpOldMd5);
+
+                                // refresh activity ourarrangement and fragment sketch comment
+                                refreshOurArrangement = true;
+                                refreshOurArrangementSketchComment = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementId >= 0 && tmpArrangementTime > 0 && tmpREsultQuestionA >= 0 && tmpREsultQuestionB >= 0 && tmpREsultQuestionC >= 0) { // our arrangement sketch comment order -> update entry?
+
+                                // update arrangement sketch comment in DB
+                                myDb.updateRowOurArrangementSketchComment(tmpCommentText, tmpREsultQuestionA, tmpREsultQuestionB, tmpREsultQuestionC, tmpAuthorName, tmpCommentTime, tmpArrangementId, true,  tmpArrangementTime, 4, tmpOldMd5);
+
+                                // refresh activity ourarrangement and fragment sketch comment
+                                refreshOurArrangement = true;
+                                refreshOurArrangementSketchComment = true;
+                            }
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
+
+
+
+
+
+
+
+
 
     private void readOurArrangementTag_Evaluate() {
         Log.d("read_EVALUATE", "Zeile " + xpp.getLineNumber());

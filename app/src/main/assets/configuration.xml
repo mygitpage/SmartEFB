@@ -8,19 +8,30 @@
     </settings>
     <ourarrangement>
 
-
+        <!--
         <ourarrangement_now>
-            <ourarrangement_now_order>delete</ourarrangement_now_order>
+            <ourarrangement_now_order>new</ourarrangement_now_order>
             <ourarrangement_now_oldmd5>aef0fa64ef3f420b21619152b2b761</ourarrangement_now_oldmd5>
-            <!--
-            <ourarrangement_now_arrangementtext>Dies ist eine überarbeitete Version des ersten Eintrages über XML</ourarrangement_now_arrangementtext>
+
+            <ourarrangement_now_arrangementtext>Dies ist eine überarbeitete Version eines Eintrages über XML</ourarrangement_now_arrangementtext>
             <ourarrangement_now_authorname>Max Mustermann</ourarrangement_now_authorname>
             <ourarrangement_now_arrangementtime>1479859200000</ourarrangement_now_arrangementtime>
             <ourarrangement_now_sketchcurrent>0</ourarrangement_now_sketchcurrent>
-            -->
+
         </ourarrangement_now>
+        <ourarrangement_now>
+            <ourarrangement_now_order>new</ourarrangement_now_order>
+            <ourarrangement_now_oldmd5>aef0fa64ef3f420b21619152b2b761</ourarrangement_now_oldmd5>
 
+            <ourarrangement_now_arrangementtext>Dies ist eine weitere Absprache, um zwei zu haben</ourarrangement_now_arrangementtext>
+            <ourarrangement_now_authorname>Max Mustermann</ourarrangement_now_authorname>
+            <ourarrangement_now_arrangementtime>1479859200000</ourarrangement_now_arrangementtime>
+            <ourarrangement_now_sketchcurrent>0</ourarrangement_now_sketchcurrent>
 
+        </ourarrangement_now>
+        -->
+
+        <!--
         <ourarrangement_sketch>
             <ourarrangement_sketch_order>new</ourarrangement_sketch_order>
             <ourarrangement_sketch_arrangementtext>Dies ist ein weiterer erneuter Entwurf einer Vereinbarung über XML</ourarrangement_sketch_arrangementtext>
@@ -29,6 +40,39 @@
             <ourarrangement_sketch_sketchtime>1474191169650</ourarrangement_sketch_sketchtime>
 
         </ourarrangement_sketch>
+        -->
+
+        <!--
+        <ourarrangement_nowcomment>
+
+            <ourarrangement_nowcomment_order>new</ourarrangement_nowcomment_order>
+            <ourarrangement_nowcomment_comment>Dies ist ein Kommentar über die XML-Datei!!!! für Vereinbarung mit der ID:10</ourarrangement_nowcomment_comment>
+            <ourarrangement_nowcomment_authorname>Max Knuspermann</ourarrangement_nowcomment_authorname>
+            <ourarrangement_nowcomment_commenttime>1479859200000</ourarrangement_nowcomment_commenttime>
+            <ourarrangement_nowcomment_arrangementid>10</ourarrangement_nowcomment_arrangementid>
+            <ourarrangement_nowcomment_dateofarrangement>1479859200000</ourarrangement_nowcomment_dateofarrangement>
+
+
+
+        </ourarrangement_nowcomment>
+        -->
+
+        <ourarrangement_sketchcomment>
+
+            <ourarrangement_sketchcomment_order>new</ourarrangement_sketchcomment_order>
+            <ourarrangement_sketchcomment_comment>Dies ist ein Kommentar über einen Entwurf über die XML-Datei!!!! für Vereinbarung mit der ID:1</ourarrangement_sketchcomment_comment>
+            <ourarrangement_sketchcomment_authorname>Max Knuspermann</ourarrangement_sketchcomment_authorname>
+            <ourarrangement_sketchcomment_commenttime>1479859200000</ourarrangement_sketchcomment_commenttime>
+            <ourarrangement_sketchcomment_arrangementid>1</ourarrangement_sketchcomment_arrangementid>
+            <ourarrangement_sketchcomment_dateofarrangement>1479859200000</ourarrangement_sketchcomment_dateofarrangement>
+            <ourarrangement_sketchcomment_resultquestion_a>4</ourarrangement_sketchcomment_resultquestion_a>
+
+
+
+        </ourarrangement_sketchcomment>
+
+
+
 
 
         <ourarrangement_sketchcomment></ourarrangement_sketchcomment>

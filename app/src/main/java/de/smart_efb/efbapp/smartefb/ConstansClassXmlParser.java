@@ -74,15 +74,84 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement sketch sketch time
             public static final String xmlNameForOurArrangement_Sketch_SketchTime = "ourarrangement_sketch_sketchtime";
 
-
+            // xml name for element our arrangement sketch old md5 hash
+            public static final String xmlNameForOurArrangement_Sketch_OldMd5 = "ourarrangement_sketch_oldmd5";
 
 
 
         // xml name for element our arrangement now comment
         public static final String xmlNameForOurArrangement_NowComment = "ourarrangement_nowcomment";
 
+            // xml name for element our arrangement now comment order
+            public static final String xmlNameForOurArrangement_NowComment_Order = "ourarrangement_nowcomment_order";
+
+            // xml name for element our arrangement now comment comment
+            public static final String xmlNameForOurArrangement_NowComment_Comment = "ourarrangement_nowcomment_comment";
+
+            // xml name for element our arrangement now comment author name
+            public static final String xmlNameForOurArrangement_NowComment_AuthorName = "ourarrangement_nowcomment_authorname";
+
+            // xml name for element our arrangement now comment time
+            public static final String xmlNameForOurArrangement_NowComment_CommentTime = "ourarrangement_nowcomment_commenttime";
+
+            // xml name for element our arrangement now comment id arrangement (on all smartphones must be the same!)
+            public static final String xmlNameForOurArrangement_NowComment_ArrangementId = "ourarrangement_nowcomment_arrangementid";
+
+            // xml name for element our arrangement now comment date of arrangement to comment
+            public static final String xmlNameForOurArrangement_NowComment_DateOfArrangement = "ourarrangement_nowcomment_dateofarrangement";
+
+            // xml name for element our arrangement old md5 hash
+            public static final String xmlNameForOurArrangement_NowComment_OldMd5 = "ourarrangement_nowcomment_oldmd5";
+
+
+
+
+
+
+
         // xml name for element our arrangement sketch comment
         public static final String xmlNameForOurArrangement_SketchComment = "ourarrangement_sketchcomment";
+
+            // xml name for element our arrangement sketch comment order
+            public static final String xmlNameForOurArrangement_SketchComment_Order = "ourarrangement_sketchcomment_order";
+
+            // xml name for element our arrangement sketch comment comment
+            public static final String xmlNameForOurArrangement_SketchComment_Comment = "ourarrangement_sketchcomment_comment";
+
+            // xml name for element our arrangement sketch comment result question A
+            public static final String xmlNameForOurArrangement_SketchComment_ResultQuestionA = "ourarrangement_sketchcomment_resultquestion_a";
+
+            // xml name for element our arrangement sketch comment result question B
+            public static final String xmlNameForOurArrangement_SketchComment_ResultQuestionB = "ourarrangement_sketchcomment_resultquestion_b";
+
+            // xml name for element our arrangement sketch comment result question C
+            public static final String xmlNameForOurArrangement_SketchComment_ResultQuestionC = "ourarrangement_sketchcomment_resultquestion_c";
+
+            // xml name for element our arrangement sketch comment author name
+            public static final String xmlNameForOurArrangement_SketchComment_AuthorName = "ourarrangement_sketchcomment_authorname";
+
+            // xml name for element our arrangement sketch comment time
+            public static final String xmlNameForOurArrangement_SketchComment_CommentTime = "ourarrangement_sketchcomment_commenttime";
+
+            // xml name for element our arrangement sketch comment id arrangement (on all smartphones must be the same!)
+            public static final String xmlNameForOurArrangement_SketchComment_ArrangementId = "ourarrangement_sketchcomment_arrangementid";
+
+            // xml name for element our arrangement sketch comment date of arrangement to comment
+            public static final String xmlNameForOurArrangement_SketchComment_DateOfArrangement = "ourarrangement_sketchcomment_dateofarrangement";
+
+            // xml name for element our arrangement sketch comment old md5 hash
+            public static final String xmlNameForOurArrangement_SketchComment_OldMd5 = "ourarrangement_sketchcomment_oldmd5";
+
+
+
+
+
+
+
+
+
+
+
 
         // xml name for element our arrangement evaluate
         public static final String xmlNameForOurArrangement_Evaluate = "ourarrangement_evaluate";

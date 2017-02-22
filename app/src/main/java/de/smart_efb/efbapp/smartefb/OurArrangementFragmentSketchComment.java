@@ -211,25 +211,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0));
         textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral);
 
-
-
-
-
-        // textview intro for the history of comments
-        /*
-        TextView textCommentHistoryIntro = (TextView) viewFragmentSketchComment.findViewById(R.id.commentHistoryIntro);
-        if (cursorArrangementAllComments.getCount() > 0) { // show comments for arrangement when count comments > 0
-            // show intro for comments
-            textCommentHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryIntroText)+ " " + arrangementNumberInListView);
-            // show comments
-            addActualCommentSetToView ();
-
-        } else { // else show nothing
-            LinearLayout comentHistoryLinearLayoutContainer = (LinearLayout) viewFragmentSketchComment.findViewById(R.id.commentHistoryContainer);
-            comentHistoryLinearLayoutContainer.setVisibility(View.INVISIBLE);
-        }
-        */
-
         // button send comment
         Button buttonSendSketchArrangementComment = (Button) viewFragmentSketchComment.findViewById(R.id.buttonSendSketchArrangementComment);
 
@@ -237,7 +218,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         buttonSendSketchArrangementComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 Boolean sketchCommentNoError = true;
                 TextView tmpErrorTextView;
@@ -269,6 +249,9 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     // insert comment in DB
                     long newId = myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"), System.currentTimeMillis(), sketchArrangementDbIdToComment, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), 0);
 
+
+                    Toast.makeText(fragmentSketchCommentContext, "Arrangement ID:"+sketchArrangementNumberInListView, Toast.LENGTH_SHORT).show();
+
                     // Toast "Comment sucsessfull send"
                     Toast.makeText(fragmentSketchCommentContext, fragmentSketchCommentContext.getResources().getString(R.string.sketchCommentSuccsesfulySend), Toast.LENGTH_SHORT).show();
 
@@ -277,7 +260,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, countSketchCommentSum);
                     prefsEditor.commit();
 
-                    // build intent to get back to OurArrangementFragmentNow
+                    // build intent to get back to OurArrangementFragmentSketchArrangement
                     Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.putExtra("com","show_sketch_arrangement");

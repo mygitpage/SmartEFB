@@ -12,12 +12,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.sql.Struct;
 import java.sql.Timestamp;
 
 
 public class DBAdapter extends SQLiteOpenHelper {
+
+    Context dbContext;
 
     // DB name
     public static final String DATABASE_NAME = "efbDb";
@@ -352,6 +355,8 @@ public class DBAdapter extends SQLiteOpenHelper {
     DBAdapter (Context context) {
 
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+        dbContext = context;
 
     }
 
@@ -866,6 +871,8 @@ public class DBAdapter extends SQLiteOpenHelper {
     // Add a new set of values to ourArrangementComment .
     public long insertRowOurArrangementComment(String comment, String authorName, long commentTime, int idArrangement, Boolean newEntry, long currentDateOfArrangement, int status) {
 
+        Toast.makeText(dbContext," ArrangementID: "+idArrangement, Toast.LENGTH_SHORT).show();
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues initialValues = new ContentValues();
@@ -887,6 +894,45 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Insert it into the database.
         return db.insert(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, null, initialValues);
+    }
+
+
+    // Change an existing row to be equal to oldMd5.
+    public boolean updateRowOurArrangementComment(String comment, String authorName, long commentTime, int idArrangement, Boolean newEntry, long currentDateOfArrangement, int status, String oldMd5) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_ARRANGEMENT_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
+
+        // Create row's data:
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, comment);
+        newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, authorName);
+        newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, commentTime);
+        newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_ID_ARRANGEMENT, idArrangement);
+        newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME, currentDateOfArrangement);
+        newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_STATUS, status);
+        newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from comment
+
+        // is it a new entry?
+        if (newEntry) {
+            newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY, 1);
+        } else {
+            newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY, 0);
+        }
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null) != 0;
+    }
+
+
+    // Delete a row from the database, by oldMd5
+    public boolean deleteRowOurArrangementComment(String oldMd5) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_ARRANGEMENT_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
+        return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, where, null) != 0;
     }
 
 
@@ -1008,6 +1054,48 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Insert it into the database.
         return db.insert(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, null, initialValues);
+    }
+
+
+    // Change an existing row to be equal to oldMd5.
+    public boolean updateRowOurArrangementSketchComment(String comment, int question_a, int question_b, int question_c, String authorName, long commentTime, int idArrangement, Boolean newEntry, long currentDateOfArrangement, int status, String oldMd5) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
+
+        // Create row's data:
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT, comment);
+        newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1, question_a);
+        newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2, question_b);
+        newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3, question_c);
+        newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME, authorName);
+        newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME, commentTime);
+        newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ID_ARRANGEMENT, idArrangement);
+        newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME, currentDateOfArrangement);
+        newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS, status);
+        newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from comment
+
+        // is it a new entry?
+        if (newEntry) {
+            newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY, 1);
+        } else {
+            newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY, 0);
+        }
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, newValues, where, null) != 0;
+    }
+
+
+    // Delete a row from the database, by oldMd5
+    public boolean deleteRowOurArrangementSketchComment(String oldMd5) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
+        return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, where, null) != 0;
     }
 
 

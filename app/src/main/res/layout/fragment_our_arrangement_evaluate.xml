@@ -97,7 +97,7 @@
                 android:gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:background="@color/inputfield_background">
+                android:background="@drawable/app_radiogroup_style">
 
                 <RadioButton android:id="@+id/questionOne_1"
                     android:layout_width="wrap_content"
@@ -200,7 +200,7 @@
             android:gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@color/inputfield_background">
+            android:background="@drawable/app_radiogroup_style">
 
             <RadioButton android:id="@+id/questionTwo_1"
                 android:layout_width="wrap_content"
@@ -304,7 +304,7 @@
             android:gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@color/inputfield_background">
+            android:background="@drawable/app_radiogroup_style">
 
             <RadioButton android:id="@+id/questionThree_1"
                 android:layout_width="wrap_content"
@@ -408,7 +408,7 @@
             android:gravity="center"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@color/inputfield_background">
+            android:background="@drawable/app_radiogroup_style">
 
             <RadioButton android:id="@+id/questionFour_1"
                 android:layout_width="wrap_content"
