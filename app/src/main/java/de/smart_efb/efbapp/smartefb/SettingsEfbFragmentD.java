@@ -88,14 +88,25 @@ public class SettingsEfbFragmentD extends Fragment {
     private void preSelectElements() {
 
 
+
+
         // put pause time and active time for evaluation in OurArrangement in prefs
         // put start data and end data of evaluation in prefs
         // in future comes from coach over internet
+
+/*
+
         prefsEditor.putInt("evaluatePauseTimeInSeconds", 30);
         prefsEditor.putInt("evaluateActivTimeInSeconds", 30);
 
         prefsEditor.putLong("startDataEvaluationInMills", System.currentTimeMillis());
         prefsEditor.putLong("endDataEvaluationInMills", System.currentTimeMillis()+150000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+        Log.d("SettingsFragment","++++++++ SystemTime"+System.currentTimeMillis());
+
+        prefsEditor.commit();
 
 
         // for current comment
@@ -210,6 +221,9 @@ public class SettingsEfbFragmentD extends Fragment {
          */
         //prefsEditor.putInt("meetingStatus", 0); //
         // get meeting status
+
+
+        /*
         int meetingStatus = prefs.getInt("meetingStatus", 0);
 
 
@@ -231,7 +245,10 @@ public class SettingsEfbFragmentD extends Fragment {
 
 
         prefsEditor.commit();
+        */
 
+
+        int meetingStatus = prefs.getInt("meetingStatus", 0);
 
 
         //

@@ -156,8 +156,77 @@ public class ConstansClassXmlParser {
         // xml name for element our arrangement evaluate
         public static final String xmlNameForOurArrangement_Evaluate = "ourarrangement_evaluate";
 
+            // TODO: insert elements
+
         // xml name for element our arrangement settings
         public static final String xmlNameForOurArrangement_Settings = "ourarrangement_settings";
+
+            // xml name for element our arrangement settings order
+            public static final String xmlNameForOurArrangement_Settings_Order = "ourarrangement_settings_order";
+
+            // xml name for element our arrangement settings evaluate pause time
+            public static final String xmlNameForOurArrangement_Settings_EvaluatePauseTime = "ourarrangement_settings_evaluatepausetime";
+
+            // xml name for element our arrangement settings evaluate active time
+            public static final String xmlNameForOurArrangement_Settings_EvaluateActiveTime = "ourarrangement_settings_evaluateactivetime";
+
+            // xml name for element our arrangement settings evaluate start date
+            public static final String xmlNameForOurArrangement_Settings_EvaluateStartDate = "ourarrangement_settings_evaluatestartdate";
+
+            // xml name for element our arrangement settings evaluate end date
+            public static final String xmlNameForOurArrangement_Settings_EvaluateEndDate = "ourarrangement_settings_evaluateenddate";
+
+            // xml name for element our arrangement settings comment max comment
+            public static final String xmlNameForOurArrangement_Settings_CommentMaxComment = "ourarrangement_settings_commentmaxcomment"; //value > 1000 -> no limitations with comments
+
+            // xml name for element our arrangement settings comment count comment
+            public static final String xmlNameForOurArrangement_Settings_CommentCountComment = "ourarrangement_settings_commentcountcomment";
+
+            // xml name for element our arrangement settings comment count comment since time
+            public static final String xmlNameForOurArrangement_Settings_CommentCountCommentSinceTime = "ourarrangement_settings_commentcountcommentsincetime";
+
+            // xml name for element our arrangement settings sketch comment max comment
+            public static final String xmlNameForOurArrangement_Settings_SketchCommentMaxComment = "ourarrangement_settings_sketchcommentmaxcomment"; //value > 1000 -> no limitations with comments
+
+            // xml name for element our arrangement settings sketch comment count comment
+            public static final String xmlNameForOurArrangement_Settings_SketchCommentCountComment = "ourarrangement_settings_sketchcommentcountcomment";
+
+            // xml name for element our arrangement settings sketch comment count comment since time
+            public static final String xmlNameForOurArrangement_Settings_SketchCommentCountCommentSinceTime = "ourarrangement_settings_sketchcommentcountcommentsincetime";
+
+            // xml name for element our arrangement settings sketch arrangement author name
+            public static final String xmlNameForOurArrangement_Settings_SketchArrangementAuthorName = "ourarrangement_settings_sketcharrangementauthorname";
+
+            // xml name for element our arrangement settings sketch current date of sketch arrangement
+            public static final String xmlNameForOurArrangement_Settings_SketchCurrentDateOfSketchArrangement = "ourarrangement_settings_sketchcurrentdateofsketcharrangement";
+
+            // xml name for element our arrangement settings current date of arrangement
+            public static final String xmlNameForOurArrangement_Settings_CurrentDateOfArrangement = "ourarrangement_settings_currentdateofarrangement";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

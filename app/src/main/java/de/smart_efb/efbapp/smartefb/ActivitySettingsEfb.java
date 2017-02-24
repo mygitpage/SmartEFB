@@ -25,6 +25,9 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -437,6 +440,28 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         dialog.show();
 
     }
+
+
+
+
+
+    public void onClick_readXMLConfigurationFile (View v) {
+
+        // read configuration xml file ------- TEST
+        EfbXmlParser test = new EfbXmlParser(getApplicationContext());
+        try {
+            test.parseXmlInput();
+        }
+        catch (XmlPullParserException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
 
 
 

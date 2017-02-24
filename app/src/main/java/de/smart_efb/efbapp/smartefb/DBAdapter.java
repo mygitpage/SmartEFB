@@ -1048,8 +1048,14 @@ public class DBAdapter extends SQLiteOpenHelper {
         // is it a new entry?
         if (newEntry) {
             initialValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY, 1);
+
+            Log.d("DBAdapter","NEW ENTRY!!!!!!!!!!!!!!");
+
         } else {
             initialValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY, 0);
+
+            Log.d("DBAdapter","NOTTTTTTT NEW ENTRY!!!!!!!!!!!!!!");
+
         }
 
         // Insert it into the database.
@@ -1104,7 +1110,6 @@ public class DBAdapter extends SQLiteOpenHelper {
     public Cursor getAllRowsOurArrangementSketchComment(int arrangementId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-
 
         // data filter
         String where = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ID_ARRANGEMENT + "=" + arrangementId;

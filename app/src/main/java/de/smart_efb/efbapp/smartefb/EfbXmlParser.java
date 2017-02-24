@@ -42,7 +42,7 @@ public class EfbXmlParser {
     Boolean xmlMainBlockFirstOk = false;
 
 
-    // refresh activity ourarrangement and fragement now
+    // refresh activity ourarrangement
     Boolean refreshOurArrangement = false;
         // refresh activity ourarrangement fragement now
         Boolean refreshOurArrangementNow = false;
@@ -52,9 +52,20 @@ public class EfbXmlParser {
         Boolean refreshOurArrangementNowComment = false;
         // refresh activity ourarrangement fragement sketch comment
         Boolean refreshOurArrangementSketchComment = false;
-
-
-
+        // refresh settings of our arrangement
+        Boolean refreshOurArrangementSettings = false;
+        // refresh data of evaluation process
+        Boolean refreshOurArrangementSettingsEvaluationProcess = false;
+        // refresh data of comment process
+        Boolean refreshOurArrangementSettingsCommentProcess = false;
+        // refresh data of sketch comment process
+        Boolean refreshOurArrangementSettingsSketchCommentProcess = false;
+        // refresh author name of sketch arragement
+        Boolean refreshOurArrangementSettingsSketchArrangmentAuthorName = false;
+        // refresh current date of sketch arrangement
+        Boolean refreshOurArrangementSettingsSketchCurrentDateOfSketchArrangement = false;
+        // refresg current date of arrangement
+        Boolean refreshOurArrangementSettingsCurrentDateOfArrangement = false;
 
 
 
@@ -988,6 +999,10 @@ public class EfbXmlParser {
                                         error = true;
                                         tmpOrder = "";
                                     }
+
+                                    Log.d("SKETCH COMMENT","ORDER: "+tmpOrder);
+
+
                                 }
                                 else {
                                     error = true;
@@ -1024,6 +1039,9 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get result question A text
                                 if (xpp.getText().trim().length() > 0) { // check if result question A from xml > 0
                                     tmpREsultQuestionA = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+
+                                    Log.d("readOur_SKETCH_COMMENT", "Question A: " + tmpREsultQuestionA);
+
                                 }
                                 else {
                                     error = true;
@@ -1040,6 +1058,9 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get result question B text
                                 if (xpp.getText().trim().length() > 0) { // check if result question B from xml > 0
                                     tmpREsultQuestionB = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+
+                                    Log.d("readOur_SKETCH_COMMENT", "Question B: " + tmpREsultQuestionB);
+
                                 }
                                 else {
                                     error = true;
@@ -1056,6 +1077,9 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get result question C text
                                 if (xpp.getText().trim().length() > 0) { // check if result question C from xml > 0
                                     tmpREsultQuestionC = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+
+                                    Log.d("readOur_SKETCH_COMMENT", "Question C: " + tmpREsultQuestionC);
+
                                 }
                                 else {
                                     error = true;
@@ -1072,6 +1096,10 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get authorName text
                                 if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
                                     tmpAuthorName = xpp.getText().trim();
+
+                                    Log.d("readOur_SKETCH_COMMENT", "Author Name: " + tmpAuthorName);
+
+
                                 }
                                 else {
                                     error = true;
@@ -1087,6 +1115,10 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get commentTime text
                                 if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
                                     tmpCommentTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+
+
+                                    Log.d("readOur_SKETCH_COMMENT", "Comment Time: " + tmpCommentTime);
+
                                 }
                                 else {
                                     error = true;
@@ -1102,6 +1134,9 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get arrangementId text
                                 if (xpp.getText().trim().length() > 0) { // check if arrangementId from xml > 0
                                     tmpArrangementId = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+
+                                    Log.d("readOur_SKETCH_COMMENT", "Arrangement ID: " + tmpArrangementId);
+
                                 }
                                 else {
                                     error = true;
@@ -1117,6 +1152,10 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get arrangementTime text
                                 if (xpp.getText().trim().length() > 0) { // check if arrangementTime from xml > 0
                                     tmpArrangementTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+
+
+                                    Log.d("readOur_SKETCH_COMMENT", "Arrangement Date: " + tmpArrangementTime);
+
                                 }
                                 else {
                                     error = true;
@@ -1132,6 +1171,9 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get oldMd5 text
                                 if (xpp.getText().trim().length() > 0) { // check if oldMd5 from xml > 0
                                     tmpOldMd5 = xpp.getText().trim();
+
+                                    Log.d("readOur_SKETCH_COMMENT", "Old MD5: " + tmpOldMd5);
+
                                 }
                                 else {
                                     error = true;
@@ -1162,6 +1204,9 @@ public class EfbXmlParser {
 
                             // our arrangement sketch comment order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementId >= 0 && tmpArrangementTime > 0 && tmpREsultQuestionA >= 0 && tmpREsultQuestionB >= 0 && tmpREsultQuestionC >= 0) {
+
+                                Log.d("SKETCH COMMENT","NEW AUSführen");
+
                                 // insert new comment in DB
                                 myDb.insertRowOurArrangementSketchComment(tmpCommentText, tmpREsultQuestionA, tmpREsultQuestionB, tmpREsultQuestionC, tmpAuthorName, tmpCommentTime, tmpArrangementId, true, tmpArrangementTime, 4);
 
@@ -1171,6 +1216,8 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our arrangement sketch comment order -> delete entry?
 
+                                Log.d("SKETCH COMMENT","DELETE AUSführen");
+
                                 // delete arrangement sketch comment in DB
                                 myDb.deleteRowOurArrangementSketchComment(tmpOldMd5);
 
@@ -1179,6 +1226,8 @@ public class EfbXmlParser {
                                 refreshOurArrangementSketchComment = true;
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementId >= 0 && tmpArrangementTime > 0 && tmpREsultQuestionA >= 0 && tmpREsultQuestionB >= 0 && tmpREsultQuestionC >= 0) { // our arrangement sketch comment order -> update entry?
+
+                                Log.d("SKETCH COMMENT","UPDATE AUSführen");
 
                                 // update arrangement sketch comment in DB
                                 myDb.updateRowOurArrangementSketchComment(tmpCommentText, tmpREsultQuestionA, tmpREsultQuestionB, tmpREsultQuestionC, tmpAuthorName, tmpCommentTime, tmpArrangementId, true,  tmpArrangementTime, 4, tmpOldMd5);
@@ -1213,10 +1262,464 @@ public class EfbXmlParser {
 
     private void readOurArrangementTag_Evaluate() {
         Log.d("read_EVALUATE", "Zeile " + xpp.getLineNumber());
+
+        // TODO: Implematation, when needed!!!!
+
+
     }
 
     private void readOurArrangementTag_Settings() {
         Log.d("read_SETTINGS", "Zeile " + xpp.getLineNumber());
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml our arrangement settings comment tag
+        Boolean error = false;
+
+        // tmp data for prefs and database insert
+        String tmpOrder = "";
+        int tmpEvaluatePauseTime = 0;
+        int tmpEvaluateActiveTime = 0;
+        Long tmpEvaluateStartDate = 0L;
+        Long tmpEvaluateEndDate = 0L;
+
+        int tmpCommentMaxComment = 0;
+        int tmpCommentCountComment = 0;
+        Long tmpCommentCountCommentSinceTime = 0L;
+
+        int tmpSketchCommentMaxComment = 0;
+        int tmpSketchCommentCountComment = 0;
+        Long tmpSketchCommentCountCommentSinceTime = 0L;
+
+        String tmpSketchAuthorName = "";
+
+        Long tmpSketchCurrentDateOfArrangement = 0L;
+        Long tmpCurrentDateOfArrangement = 0L;
+
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("readOur_SETTINGS", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+
+                                    Log.d("Arr Settings","ORDER: "+tmpOrder);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_EvaluatePauseTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get evaluate pause time
+                                if (xpp.getText().trim().length() > 0) { // check if pause time from xml > 0
+                                    tmpEvaluatePauseTime = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","EvaluatePauseTime"+tmpEvaluatePauseTime);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_EvaluateActiveTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get evaluate active time
+                                if (xpp.getText().trim().length() > 0) { // check if active time from xml > 0
+                                    tmpEvaluateActiveTime = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","EvaluateActiveTime"+tmpEvaluateActiveTime);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_EvaluateStartDate:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get evaluate start date
+                                if (xpp.getText().trim().length() > 0) { // check if start date from xml > 0
+                                    tmpEvaluateStartDate = Long.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","EvaluateStartDate"+tmpEvaluateStartDate);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_EvaluateEndDate:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get evaluate end date
+                                if (xpp.getText().trim().length() > 0) { // check if end date from xml > 0
+                                    tmpEvaluateEndDate = Long.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","EvaluateEndDate"+tmpEvaluateEndDate);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentMaxComment:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get max comment
+                                if (xpp.getText().trim().length() > 0) { // check if max comment from xml > 0
+                                    tmpCommentMaxComment = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","CommentMaxComment"+tmpCommentMaxComment);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentCountComment:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get count comment
+                                if (xpp.getText().trim().length() >= 0) { // check if count comment from xml >= 0
+                                    tmpCommentCountComment = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","CommentCountComment"+tmpCommentCountComment);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentCountCommentSinceTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get since time
+                                if (xpp.getText().trim().length() > 0) { // check if since time from xml > 0
+                                    tmpCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","CommentCountCommentSinceTime"+tmpCommentCountCommentSinceTime);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentMaxComment:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get max comment sketch
+                                if (xpp.getText().trim().length() > 0) { // check if max comment sketch from xml > 0
+                                    tmpSketchCommentMaxComment = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","SketchCommentMaxComment"+tmpSketchCommentMaxComment);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentCountComment:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get count comment sketch
+                                if (xpp.getText().trim().length() >= 0) { // check if count comment sketch from xml >= 0
+                                    tmpSketchCommentCountComment = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","SketchCommentCountComment"+tmpSketchCommentCountComment);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentCountCommentSinceTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get since time sketch
+                                if (xpp.getText().trim().length() > 0) { // check if since time sketch from xml > 0
+                                    tmpSketchCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","SketchCommentCountCommentSinceTime"+tmpSketchCommentCountCommentSinceTime);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchArrangementAuthorName:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get author name sketch
+                                if (xpp.getText().trim().length() > 0) { // check if author name sketch from xml > 0
+                                    tmpSketchAuthorName = xpp.getText().trim();
+
+                                    Log.d("Arrang_Settings","SketchAuthor Name"+tmpSketchAuthorName);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCurrentDateOfSketchArrangement:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get sketch current date of arragement
+                                if (xpp.getText().trim().length() > 0) { // check if sketch date of arrangement from xml > 0
+                                    tmpSketchCurrentDateOfArrangement = Long.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","SketchCurrentDateOfArrangement"+tmpSketchCurrentDateOfArrangement);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CurrentDateOfArrangement:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get current date of arrangement
+                                if (xpp.getText().trim().length() > 0) { // check if date of arrangement from xml > 0
+                                    tmpCurrentDateOfArrangement = Long.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","CurrentDateOfArrangement"+tmpCurrentDateOfArrangement);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
+                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of ourarrangement settings
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurArrangement_Settings)) {
+
+                        // check all data for arrangement settings correct?
+                        if (!error) {
+
+
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) ) { // our arrangement settings order -> delete?
+
+                                Log.d("Settings","DELETE AUSführen");
+
+
+                                // refresh activity ourarrangement because settings have change
+                                refreshOurArrangement = true;
+                                refreshOurArrangementSettings = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // our arrangement settings order -> update?
+
+                                Log.d("Settings","UPDATE AUSführen");
+
+                                // update evaluation of arrangements?
+                                if (tmpEvaluatePauseTime > 0 && tmpEvaluateActiveTime > 0 && tmpEvaluateStartDate > 0 && tmpEvaluateEndDate > 0) {
+
+                                    Log.d ("Settings--","PT:"+tmpEvaluatePauseTime+"AT:"+tmpEvaluateActiveTime+"SD:"+tmpEvaluateStartDate+"ED:"+tmpEvaluateEndDate);
+
+                                    // write data to prefs
+                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, tmpEvaluatePauseTime);
+                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, tmpEvaluateActiveTime);
+                                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, tmpEvaluateStartDate);
+                                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, tmpEvaluateEndDate);
+                                    prefsEditor.commit();
+
+                                    // something change in evaluation process
+                                    refreshOurArrangementSettingsEvaluationProcess = true;
+
+                                }
+
+                                // update comment max/count of arrangements?
+                                if (tmpCommentMaxComment > 0 && tmpCommentCountComment >= 0 && tmpCommentCountCommentSinceTime > 0) {
+
+                                    // write data to prefs
+                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, tmpSketchCommentMaxComment);
+                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentCountComment, tmpCommentCountComment);
+                                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, tmpCommentCountCommentSinceTime);
+                                    prefsEditor.commit();
+
+                                    // something change in arrangement comment process
+                                    refreshOurArrangementSettingsCommentProcess = true;
+
+                                }
+
+                                // update sketch comment max/count of sketch arrangements?
+                                if (tmpSketchCommentMaxComment > 0 && tmpSketchCommentCountComment >= 0 && tmpSketchCommentCountCommentSinceTime > 0) {
+
+                                    // write data to prefs
+                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,tmpSketchCommentMaxComment);
+                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, tmpSketchCommentCountComment);
+                                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, tmpSketchCommentCountCommentSinceTime);
+                                    prefsEditor.commit();
+
+                                    // something change in sketch arragement comment process
+                                    refreshOurArrangementSettingsSketchCommentProcess = true;
+
+                                }
+
+                                // update sketch arrangement author name?
+                                if (tmpSketchAuthorName.length() > 0) {
+
+                                    // write data to prefs
+                                    prefsEditor.putString(ConstansClassOurArrangement.namePrefsAuthorOfSketchArrangement, tmpSketchAuthorName);
+                                    prefsEditor.commit();
+
+                                    // something change in sketch arrangement author name
+                                    refreshOurArrangementSettingsSketchArrangmentAuthorName = true;
+
+                                }
+
+                                // update sketch current date of sketch arrangement?
+                                if (tmpSketchCurrentDateOfArrangement > 0) {
+
+                                    // write data to prefs
+                                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, tmpSketchCurrentDateOfArrangement);
+                                    prefsEditor.commit();
+
+                                    // something change in sketch arrangement author name
+                                    refreshOurArrangementSettingsSketchCurrentDateOfSketchArrangement = true;
+
+                                }
+
+                                // update current date of arrangement?
+                                if (tmpCurrentDateOfArrangement > 0) {
+
+                                    // write data to prefs
+                                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, tmpCurrentDateOfArrangement);
+                                    prefsEditor.commit();
+
+                                    // something change in sketch arrangement author name
+                                    refreshOurArrangementSettingsCurrentDateOfArrangement = true;
+
+                                }
+
+
+
+
+
+                                // refresh activity ourarrangement because settings have change
+                                refreshOurArrangement = true;
+                                refreshOurArrangementSettings = true;
+                            }
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // End read our arrangement -----------------------------------------------------------------------------------

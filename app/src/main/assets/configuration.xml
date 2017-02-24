@@ -51,31 +51,32 @@
             <ourarrangement_nowcomment_commenttime>1479859200000</ourarrangement_nowcomment_commenttime>
             <ourarrangement_nowcomment_arrangementid>10</ourarrangement_nowcomment_arrangementid>
             <ourarrangement_nowcomment_dateofarrangement>1479859200000</ourarrangement_nowcomment_dateofarrangement>
-
-
-
         </ourarrangement_nowcomment>
-        -->
-
         <ourarrangement_sketchcomment>
-
-            <ourarrangement_sketchcomment_order>new</ourarrangement_sketchcomment_order>
-            <ourarrangement_sketchcomment_comment>Dies ist ein Kommentar über einen Entwurf über die XML-Datei!!!! für Vereinbarung mit der ID:1</ourarrangement_sketchcomment_comment>
-            <ourarrangement_sketchcomment_authorname>Max Knuspermann</ourarrangement_sketchcomment_authorname>
+            <ourarrangement_sketchcomment_order>delete</ourarrangement_sketchcomment_order>
+            <ourarrangement_sketchcomment_comment>Dies ist eine Änderung am TestKommentar</ourarrangement_sketchcomment_comment>
+            <ourarrangement_sketchcomment_authorname>Thomas mit ganz Mann</ourarrangement_sketchcomment_authorname>
             <ourarrangement_sketchcomment_commenttime>1479859200000</ourarrangement_sketchcomment_commenttime>
-            <ourarrangement_sketchcomment_arrangementid>1</ourarrangement_sketchcomment_arrangementid>
-            <ourarrangement_sketchcomment_dateofarrangement>1479859200000</ourarrangement_sketchcomment_dateofarrangement>
+            <ourarrangement_sketchcomment_arrangementid>4</ourarrangement_sketchcomment_arrangementid>
+            <ourarrangement_sketchcomment_dateofarrangement>1474191169650</ourarrangement_sketchcomment_dateofarrangement>
             <ourarrangement_sketchcomment_resultquestion_a>4</ourarrangement_sketchcomment_resultquestion_a>
-
-
-
+            <ourarrangement_sketchcomment_oldmd5>e0bce9edff1bcd0cea1a434934f7ed4</ourarrangement_sketchcomment_oldmd5>
         </ourarrangement_sketchcomment>
 
+        -->
+
+
+        <ourarrangement_settings>
+
+            <ourarrangement_settings_order>update</ourarrangement_settings_order>
+            <ourarrangement_settings_evaluatepausetime>20</ourarrangement_settings_evaluatepausetime>
+            <ourarrangement_settings_evaluateactivetime>20</ourarrangement_settings_evaluateactivetime>
+            <ourarrangement_settings_evaluatestartdate>1487951266764</ourarrangement_settings_evaluatestartdate>
+            <ourarrangement_settings_evaluateenddate>1497951266764</ourarrangement_settings_evaluateenddate>
+        </ourarrangement_settings>
 
 
 
-
-        <ourarrangement_sketchcomment></ourarrangement_sketchcomment>
     </ourarrangement>
 
 

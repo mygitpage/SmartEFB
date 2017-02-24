@@ -115,13 +115,9 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
             }
 
             // check comments for new entry, the cursor is sorted DESC, so first element is newest!!! new entry is markt by == 1
-            if (cursorSketchArrangementAllComments.getCount() > 0) {
-                cursorSketchArrangementAllComments.moveToFirst();
-                if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY)) == 1) {
-                    tmpTextNewEntryComment = "<font color='"+ ContextCompat.getColor(context, R.color.text_accent_color) + "'>"+ context.getResources().getString(R.string.newEntryText) + "</font>";
-                }
+            if (myDb.getCountNewEntryOurArrangementSketchComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))) > 0) {
+                tmpTextNewEntryComment = "<font color='"+ ContextCompat.getColor(context, R.color.text_accent_color) + "'>"+ context.getResources().getString(R.string.newEntryText) + "</font>";
             }
-
 
             // make link to comment arrangement
             Uri.Builder commentLinkBuilder = new Uri.Builder();
