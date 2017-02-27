@@ -68,6 +68,35 @@ public class EfbXmlParser {
         Boolean refreshOurArrangementSettingsCurrentDateOfArrangement = false;
 
 
+    // refresh activity ourgoals
+    Boolean refreshOurGoals = false;
+        // refresh activity ourgoals fragment jointly now
+        Boolean refreshOurGoalsJointlyNow = false;
+        // refresh activity ourgoals fragment debetable now
+        Boolean refreshOurGoalsDebetableNow = false;
+        // refresh activity ourgoals fragment jointly comment
+        Boolean refreshOurGoalsJointlyComment = false;
+        // refresh activity ourgoals fragment debetable goals
+        Boolean refreshOurGoalsDebetableComment = false;
+
+
+    // refresh settings of activity our goals
+    Boolean refreshOurGoalsSettings = false;
+        // refresh data of evaluation process
+        Boolean refreshOurGoalsSettingsEvaluationProcess = false;
+        // refresh data of jointly comment process
+        Boolean refreshOurGoalsSettingsCommentProcess = false;
+        // refresh data of debetable comment process
+        Boolean refreshOurGoalsSettingsDebetableCommentProcess = false;
+        // refresh author name of debetable goals
+        Boolean refreshOurGoalsSettingsDebetableGoalsAuthorName = false;
+        // refresh current date of debetable goals
+        Boolean refreshOurGoalsSettingsDebetableCurrentDateOfDebetableGoals = false;
+        // refresh current date of jointly goals
+        Boolean refreshOurGoalsSettingsJointlyCurrentDateOfJointlyGoals = false;
+
+
+
 
 
     public EfbXmlParser (Context tmpXmlContext) {
@@ -127,7 +156,7 @@ public class EfbXmlParser {
                             readOurArrangementTag();
                             break;
                         case ConstansClassXmlParser.xmlNameForOurGoals:
-                            Log.d("XMLParser","OurGoals Zeile " + xpp.getLineNumber());
+                            readOurGoalsTag();
                             break;
                         case ConstansClassXmlParser.xmlNameForMeeting:
                             Log.d("XMLParser","Meeting Zeile " + xpp.getLineNumber());
@@ -1594,7 +1623,8 @@ public class EfbXmlParser {
                 eventType = xpp.next();
 
                 // Safety abbort end document
-                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
                     Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
@@ -1640,7 +1670,7 @@ public class EfbXmlParser {
                                 if (tmpCommentMaxComment > 0 && tmpCommentCountComment >= 0 && tmpCommentCountCommentSinceTime > 0) {
 
                                     // write data to prefs
-                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, tmpSketchCommentMaxComment);
+                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, tmpCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentCountComment, tmpCommentCountComment);
                                     prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, tmpCommentCountCommentSinceTime);
                                     prefsEditor.commit();
@@ -1723,6 +1753,1422 @@ public class EfbXmlParser {
     }
 
     // End read our arrangement -----------------------------------------------------------------------------------
+
+
+
+
+    //
+    // Begin read our goals -----------------------------------------------------------------------------------
+    //
+
+    // read element ourgoals
+    private void readOurGoalsTag() {
+
+        Boolean parseAnymore = true;
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("readOurGoalsTag", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow:
+                            readOurGoalsTag_JointlyNow();
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow:
+                            readOurGoalsTag_DebetableNow();
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate:
+                            readOurGoalsTag_JointlyEvaluate();
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment:
+                            readOurGoalsTag_JointlyComment();
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment:
+                            readOurGoalsTag_DebetableComment();
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings:
+                            readOurGoalsTag_Settings();
+                            break;
+
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
+                    Log.d("readOurGoalsTag", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of ourgoals
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals)) {
+
+                        Log.d("readOurGoalsTag", "End Tag ourgoals gefunden!");
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // read tag our goals jointly now and push to database
+    private void readOurGoalsTag_JointlyNow() {
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml our goals jointly now tag
+        Boolean error = false;
+
+        // tmp data for database insert
+        String tmpGoalText = "";
+        String tmpAuthorName = "";
+        Long tmpGoalTime = 0L;
+        Boolean tmpJointlyDebetable = false;
+        String tmpOrder = "";
+        String tmpOldMd5 = "";
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("readOurGoalTag_Jointly", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_GoalText:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get goalText text
+                                if (xpp.getText().trim().length() > 0) { // check if goalText from xml > 0
+                                    tmpGoalText = xpp.getText().trim();
+
+                                    Log.d("JointlyNOW::MD5","MD5:"+EfbHelperClass.md5(tmpGoalText));
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_AuthorName:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get authorName text
+                                if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
+                                    tmpAuthorName = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_GoalTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get goalTime text
+                                if (xpp.getText().trim().length() > 0) { // check if goalTime from xml > 0
+                                    tmpGoalTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_JointlyDebetable:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get jointlyDebetable text, only 0 is possible because 1 is debetable goal, look readOurGoalsTag_DebetableNow()
+                                if (xpp.getText().trim().length() > 0) { // check if jointlyDebetable from xml > 0
+                                    if (xpp.getText().trim().equals("0")) { // goal is a jointly goal?
+                                        tmpJointlyDebetable = false;
+                                    } else {
+                                        error = true;
+                                    }
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_OldMd5:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get oldMd5 text
+                                if (xpp.getText().trim().length() > 0) { // check if oldMd5 from xml > 0
+                                    tmpOldMd5 = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
+
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
+                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of ourgoals jointly now
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow)) {
+
+                        // check all data for jointly goal now correct?
+                        if (!error) {
+
+                            Log.d("JointlyNOW_DB","Te:"+tmpGoalText+" - Au:"+tmpAuthorName+" - ATi:"+tmpGoalTime+" - STi"+tmpJointlyDebetable);
+
+                            // our goal order -> new entry?
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpGoalText.length() > 0 && tmpAuthorName.length() > 0 && tmpGoalTime > 0) {
+                                // insert new jointly goal in DB
+                                myDb.insertRowOurGoals(tmpGoalText, tmpAuthorName, tmpGoalTime, true, tmpJointlyDebetable, 4);
+
+                                // refresh activity ourgoals and fragement jointly goal now
+                                refreshOurGoals = true;
+                                refreshOurGoalsJointlyNow = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our goal order -> delete entry?
+
+                                // delete goal in DB
+                                myDb.deleteRowOurGoals(tmpOldMd5);
+
+                                // refresh activity ourgoals and fragement jointly goal now
+                                refreshOurGoals = true;
+                                refreshOurGoalsJointlyNow = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpGoalText.length() > 0 && tmpAuthorName.length() > 0 && tmpGoalTime > 0) { // our goal order -> update entry?
+
+                                // update arrangement in DB
+                                myDb.updateRowOurGoals(tmpGoalText, tmpAuthorName, tmpGoalTime, true, tmpJointlyDebetable, 4, tmpOldMd5);
+
+                                // refresh activity ourgoals and fragement jointly goal now
+                                refreshOurGoals = true;
+                                refreshOurGoalsJointlyNow = true;
+                            }
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    // read tag our goals jointly comment and push to database
+    private void readOurGoalsTag_JointlyComment() {
+
+
+        Log.d("read_Jointly COMMENT", "Zeile " + xpp.getLineNumber());
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml our goals jointly comment tag
+        Boolean error = false;
+
+        // tmp data for database insert
+        String tmpCommentText = "";
+        String tmpAuthorName = "";
+        Long tmpCommentTime = 0L;
+        int tmpGoalId = 0;
+        Long tmpGoalTime = 0L;
+        String tmpOrder = "";
+        String tmpOldMd5 = "";
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("Tag_NOW_JointlyCOMMENT", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_Comment:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get comment text
+                                if (xpp.getText().trim().length() > 0) { // check if commentText from xml > 0
+                                    tmpCommentText = xpp.getText().trim();
+
+                                    Log.d("Goals_JointlyComment","MD5:"+EfbHelperClass.md5(tmpCommentText));
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_AuthorName:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get authorName text
+                                if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
+                                    tmpAuthorName = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_CommentTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get commentTime text
+                                if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
+                                    tmpCommentTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_GoalId:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get goalId text
+                                if (xpp.getText().trim().length() > 0) { // check if goalId from xml > 0
+                                    tmpGoalId = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_DateOfJointlyGoal:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get goalTime text
+                                if (xpp.getText().trim().length() > 0) { // check if goalTime from xml > 0
+                                    tmpGoalTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_OldMd5:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get oldMd5 text
+                                if (xpp.getText().trim().length() > 0) { // check if oldMd5 from xml > 0
+                                    tmpOldMd5 = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
+
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
+                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of our goals jointly comment
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment)) {
+
+                        // check all data for arrangement now correct?
+                        if (!error) {
+
+                            Log.d("JointlyComment_DB","C:"+tmpCommentText+" - Au:"+tmpAuthorName+" - CTi:"+tmpCommentTime+" - AId"+tmpGoalId+" - CoA:"+tmpGoalTime);
+
+                            // our goals jointly comment order -> new entry?
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpGoalId >= 0 && tmpGoalTime > 0) {
+                                // insert new comment in DB
+                                myDb.insertRowOurGoalJointlyGoalComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpGoalId, true, tmpGoalTime, 4);
+
+                                // refresh activity ourgoals and fragment jointly comment
+                                refreshOurGoals = true;
+                                refreshOurGoalsJointlyComment = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our goals jointly comment order -> delete entry?
+
+                                // delete arrangement comment in DB
+                                myDb.deleteRowOurGoalJointlyGoalComment(tmpOldMd5);
+
+                                // refresh activity ourgoals and fragment jointly comment
+                                refreshOurGoals = true;
+                                refreshOurGoalsJointlyComment = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpGoalId >= 0 && tmpGoalTime > 0) { // our goals jointly comment order -> update entry?
+
+                                // update jointly comment in DB
+                                myDb.updateRowOurGoalJointlyGoalComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpGoalId, true,  tmpGoalTime, 4, tmpOldMd5);
+
+                                // refresh activity ourgoals and fragment jointly comment
+                                refreshOurGoals = true;
+                                refreshOurGoalsJointlyComment = true;
+                            }
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    // read tag our goals jointly evaluate and push to database
+    private void readOurGoalsTag_JointlyEvaluate() {
+
+    }
+
+
+
+    // read tag our goals debetable comment and push to database
+    private void readOurGoalsTag_DebetableComment() {
+
+
+
+        Log.d("read_Debetable COMMENT", "Zeile " + xpp.getLineNumber());
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml our goals debetable comment tag
+        Boolean error = false;
+
+        // tmp data for database insert
+        String tmpCommentText = "";
+        int tmpREsultQuestionA = 0;
+        int tmpREsultQuestionB = 0;
+        int tmpREsultQuestionC = 0;
+        String tmpAuthorName = "";
+        Long tmpCommentTime = 0L;
+        int tmpGoalId = 0;
+        Long tmpGoalTime = 0L;
+        String tmpOrder = "";
+        String tmpOldMd5 = "";
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("TagNOW_DebetableCOMMENT", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_Comment:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get comment text
+                                if (xpp.getText().trim().length() > 0) { // check if commentText from xml > 0
+                                    tmpCommentText = xpp.getText().trim();
+
+                                    Log.d("Goals_DebetableComment","MD5:"+EfbHelperClass.md5(tmpCommentText));
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ResultQuestionA:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get result question A text
+                                if (xpp.getText().trim().length() > 0) { // check if result question A from xml > 0
+                                    tmpREsultQuestionA = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+
+                                    Log.d("reOur_DEBETABLE_COMMENT", "Question A: " + tmpREsultQuestionA);
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ResultQuestionB:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get result question B text
+                                if (xpp.getText().trim().length() > 0) { // check if result question B from xml > 0
+                                    tmpREsultQuestionB = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+
+                                    Log.d("reOur_DEBETABLE_COMMENT", "Question B: " + tmpREsultQuestionB);
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ResultQuestionC:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get result question C text
+                                if (xpp.getText().trim().length() > 0) { // check if result question C from xml > 0
+                                    tmpREsultQuestionC = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+
+                                    Log.d("reOur_DEBETABLE_COMMENT", "Question C: " + tmpREsultQuestionC);
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_AuthorName:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get authorName text
+                                if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
+                                    tmpAuthorName = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_CommentTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get commentTime text
+                                if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
+                                    tmpCommentTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_GoalId:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get goalId text
+                                if (xpp.getText().trim().length() > 0) { // check if goalId from xml > 0
+                                    tmpGoalId = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_DateOfDebetableGoal:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get goalTime text
+                                if (xpp.getText().trim().length() > 0) { // check if goalTime from xml > 0
+                                    tmpGoalTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_OldMd5:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get oldMd5 text
+                                if (xpp.getText().trim().length() > 0) { // check if oldMd5 from xml > 0
+                                    tmpOldMd5 = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
+
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
+                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of our goals jointly comment
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment)) {
+
+                        // check all data for arrangement now correct?
+                        if (!error) {
+
+                            Log.d("DebetableComment_DB","C:"+tmpCommentText+" - Au:"+tmpAuthorName+" - CTi:"+tmpCommentTime+" - AId"+tmpGoalId+" - CoA:"+tmpGoalTime);
+
+                            // our goals debetable comment order -> new entry?
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpGoalId >= 0 && tmpGoalTime > 0) {
+                                // insert new comment in DB
+                                myDb.insertRowOurGoalsDebetableGoalsComment(tmpCommentText, tmpREsultQuestionA, tmpREsultQuestionB, tmpREsultQuestionC, tmpAuthorName, tmpCommentTime, tmpGoalId, true, tmpGoalTime, 4);
+
+                                // refresh activity ourgoals and fragment debetable comment
+                                refreshOurGoals = true;
+                                refreshOurGoalsDebetableComment = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our goals jointly comment order -> delete entry?
+
+                                // delete arrangement comment in DB
+                                myDb.deleteRowOurGoalsDebetableGoalsComment(tmpOldMd5);
+
+                                // refresh activity ourgoals and fragment debetable comment
+                                refreshOurGoals = true;
+                                refreshOurGoalsDebetableComment = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpGoalId >= 0 && tmpGoalTime > 0) { // our goals jointly comment order -> update entry?
+
+                                // update jointly comment in DB
+                                myDb.updateRowOurGoalsDebetableGoalsComment(tmpCommentText, tmpREsultQuestionA, tmpREsultQuestionB, tmpREsultQuestionC, tmpAuthorName, tmpCommentTime, tmpGoalId, true,  tmpGoalTime, 4, tmpOldMd5);
+
+                                // refresh activity ourgoals and fragment debetable comment
+                                refreshOurGoals = true;
+                                refreshOurGoalsDebetableComment = true;
+                            }
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+    }
+
+
+    // read tag our goals debetable now and push to database
+    private void readOurGoalsTag_DebetableNow() {
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml our goals debetable now tag
+        Boolean error = false;
+
+        // tmp data for database insert
+        String tmpDebetableGoalText = "";
+        String tmpDebetableAuthorName = "";
+        Long tmpDebetableGoalTime = 0L;
+        Boolean tmpJointlyDebetable = false;
+        String tmpOrder = "";
+        String tmpOldMd5 = "";
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("reOurGoalTag_Debetable", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_GoalText:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get goalText text
+                                if (xpp.getText().trim().length() > 0) { // check if goalText from xml > 0
+                                    tmpDebetableGoalText = xpp.getText().trim();
+
+                                    Log.d("DebetableNOW::MD5","MD5:"+EfbHelperClass.md5(tmpDebetableGoalText));
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_AuthorName:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get authorName text
+                                if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
+                                    tmpDebetableAuthorName = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_GoalTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get goalTime text
+                                if (xpp.getText().trim().length() > 0) { // check if goalTime from xml > 0
+                                    tmpDebetableGoalTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_JointlyDebetable:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get jointlyDebetable text, only 1 is possible because 0 is jointly goal, look readOurGoalsTag_DebetableNow()
+                                if (xpp.getText().trim().length() > 0) { // check if jointlyDebetable from xml > 0
+                                    if (xpp.getText().trim().equals("1")) { // goal is a debetable goal?
+                                        tmpJointlyDebetable = true;
+                                    } else {
+                                        error = true;
+                                    }
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_OldMd5:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get oldMd5 text
+                                if (xpp.getText().trim().length() > 0) { // check if oldMd5 from xml > 0
+                                    tmpOldMd5 = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
+
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
+                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of ourgoals jointly now
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow)) {
+
+                        // check all data for debetable goal now correct?
+                        if (!error) {
+
+                            Log.d("DebetableNOW_DB","Te:"+tmpDebetableGoalText+" - Au:"+tmpDebetableAuthorName+" - ATi:"+tmpDebetableGoalTime+" - STi"+tmpJointlyDebetable);
+
+                            // our goal order -> new entry?
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpDebetableGoalText.length() > 0 && tmpDebetableAuthorName.length() > 0 && tmpDebetableGoalTime > 0) {
+                                // insert new debetable goal in DB
+                                myDb.insertRowOurGoals(tmpDebetableGoalText, tmpDebetableAuthorName, tmpDebetableGoalTime, true, tmpJointlyDebetable, 4);
+
+                                // refresh activity ourgoals and fragement debetable goal now
+                                refreshOurGoals = true;
+                                refreshOurGoalsDebetableNow = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our goal order -> delete entry?
+
+                                // delete goal in DB
+                                myDb.deleteRowOurGoals(tmpOldMd5);
+
+                                // refresh activity ourgoals and fragement debetable goal now
+                                refreshOurGoals = true;
+                                refreshOurGoalsDebetableNow = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpDebetableGoalText.length() > 0 && tmpDebetableAuthorName.length() > 0 && tmpDebetableGoalTime > 0) { // our goal order -> update entry?
+
+                                // update goal in DB
+                                myDb.updateRowOurGoals(tmpDebetableGoalText, tmpDebetableAuthorName, tmpDebetableGoalTime, true, tmpJointlyDebetable, 4, tmpOldMd5);
+
+                                // refresh activity ourgoals and fragement jointly goal now
+                                refreshOurGoals = true;
+                                refreshOurGoalsDebetableNow = true;
+                            }
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+    }
+
+
+    // read tag our goals settings and push to database/prefs
+    private void readOurGoalsTag_Settings() {
+
+        Log.d("read_SETTINGS", "Zeile " + xpp.getLineNumber());
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml our goals settings tag
+        Boolean error = false;
+
+        // tmp data for prefs and database insert
+        String tmpOrder = "";
+        int tmpJointlyEvaluatePauseTime = 0;
+        int tmpJointlyEvaluateActiveTime = 0;
+        Long tmpJointlyEvaluateStartDate = 0L;
+        Long tmpJointlyEvaluateEndDate = 0L;
+
+        int tmpJointlyCommentMaxComment = 0;
+        int tmpJointlyCommentCountComment = 0;
+        Long tmpJointlyCommentCountCommentSinceTime = 0L;
+
+        int tmpDebetableCommentMaxComment = 0;
+        int tmpDebetableCommentCountComment = 0;
+        Long tmpDebetableCommentCountCommentSinceTime = 0L;
+
+        String tmpDebetableGoalsAuthorName = "";
+
+        Long tmpDebetableCurrentDateOfGoals = 0L;
+        Long tmpJointlyCurrentDateOfGoals = 0L;
+
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("readGoals_SETTINGS", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+
+                                    Log.d("Goals Settings","ORDER: "+tmpOrder);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_EvaluatePauseTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get evaluate pause time
+                                if (xpp.getText().trim().length() > 0) { // check if pause time from xml > 0
+                                    tmpJointlyEvaluatePauseTime = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Goals_Settings","EvaluatePauseTime"+tmpJointlyEvaluatePauseTime);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_EvaluateActiveTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get evaluate active time
+                                if (xpp.getText().trim().length() > 0) { // check if active time from xml > 0
+                                    tmpJointlyEvaluateActiveTime = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Goals_Settings","EvaluateActiveTime"+tmpJointlyEvaluateActiveTime);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_EvaluateStartDate:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get evaluate start date
+                                if (xpp.getText().trim().length() > 0) { // check if start date from xml > 0
+                                    tmpJointlyEvaluateStartDate = Long.valueOf(xpp.getText().trim());
+
+                                    Log.d("Goals_Settings","EvaluateStartDate"+tmpJointlyEvaluateStartDate);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_EvaluateEndDate:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get evaluate end date
+                                if (xpp.getText().trim().length() > 0) { // check if end date from xml > 0
+                                    tmpJointlyEvaluateEndDate = Long.valueOf(xpp.getText().trim());
+
+                                    Log.d("Goals_Settings","EvaluateEndDate"+tmpJointlyEvaluateEndDate);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_CommentMaxComment:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get max comment
+                                if (xpp.getText().trim().length() > 0) { // check if max comment from xml > 0
+                                    tmpJointlyCommentMaxComment = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("goals_Settings","JointlyCommentMaxComment"+tmpJointlyCommentMaxComment);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_CommentCountComment:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get count comment
+                                if (xpp.getText().trim().length() >= 0) { // check if count comment from xml >= 0
+                                    tmpJointlyCommentCountComment = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Goals_Settings","JointlyCommentCountComment"+tmpJointlyCommentCountComment);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_CommentCountCommentSinceTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get since time
+                                if (xpp.getText().trim().length() > 0) { // check if since time from xml > 0
+                                    tmpJointlyCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim());
+
+                                    Log.d("Goals_Settings","JointlyCommentCountCommentSinceTime"+tmpJointlyCommentCountCommentSinceTime);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentMaxComment:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get max comment debetable goals
+                                if (xpp.getText().trim().length() > 0) { // check if max comment debetable goals from xml > 0
+                                    tmpDebetableCommentMaxComment = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Goals_Settings","DebetableCommentMaxComment"+tmpDebetableCommentMaxComment);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentCountComment:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get count comment debetable goals
+                                if (xpp.getText().trim().length() >= 0) { // check if count comment debetable from xml >= 0
+                                    tmpDebetableCommentCountComment = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Goals_Settings","DebetableCommentCountComment"+tmpDebetableCommentCountComment);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentCountCommentSinceTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get since time sketch
+                                if (xpp.getText().trim().length() > 0) { // check if since time sketch from xml > 0
+                                    tmpDebetableCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim());
+
+                                    Log.d("Goals_Settings","DebetableCommentCountCommentSinceTime"+tmpDebetableCommentCountCommentSinceTime);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableGoalsAuthorName:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get author name sketch
+                                if (xpp.getText().trim().length() > 0) { // check if author name sketch from xml > 0
+                                    tmpDebetableGoalsAuthorName = xpp.getText().trim();
+
+                                    Log.d("Goals_Settings","Debetable goals Author Name"+tmpDebetableGoalsAuthorName);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCurrentDateOfGoals:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get sketch current date of arragement
+                                if (xpp.getText().trim().length() > 0) { // check if sketch date of arrangement from xml > 0
+                                    tmpDebetableCurrentDateOfGoals = Long.valueOf(xpp.getText().trim());
+
+                                    Log.d("Goals_Settings","DebetableCurrentDateOfGoals"+tmpDebetableCurrentDateOfGoals);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_JointlyCurrentDateOfGoals:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get current date of arrangement
+                                if (xpp.getText().trim().length() > 0) { // check if date of arrangement from xml > 0
+                                    tmpJointlyCurrentDateOfGoals = Long.valueOf(xpp.getText().trim());
+
+                                    Log.d("Goals_Settings","JointlyCurrentDateOfGoals"+tmpJointlyCurrentDateOfGoals);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
+                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of ourarrangement settings
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals_Settings)) {
+
+                        // check all data for goals settings correct?
+                        if (!error) {
+
+
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) ) { // our goals settings order -> delete?
+
+                                Log.d("Goals Settings","DELETE AUSführen");
+
+
+                                // refresh activity ourgoals because settings have change
+                                refreshOurGoals = true;
+                                refreshOurGoalsSettings = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // our goals settings order -> update?
+
+                                Log.d("Goals Settings","UPDATE AUSführen");
+
+                                // update evaluation of jointly goals?
+                                if (tmpJointlyEvaluatePauseTime > 0 && tmpJointlyEvaluateActiveTime > 0 && tmpJointlyEvaluateStartDate > 0 && tmpJointlyEvaluateEndDate > 0) {
+
+                                    Log.d ("Goals Settings--","PT:"+tmpJointlyEvaluatePauseTime+"AT:"+tmpJointlyEvaluateActiveTime+"SD:"+tmpJointlyEvaluateStartDate+"ED:"+tmpJointlyEvaluateEndDate);
+
+                                    // write data to prefs
+                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, tmpJointlyEvaluatePauseTime);
+                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, tmpJointlyEvaluateActiveTime);
+                                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, tmpJointlyEvaluateStartDate);
+                                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, tmpJointlyEvaluateEndDate);
+                                    prefsEditor.commit();
+
+                                    // something change in evaluation process
+                                    refreshOurGoalsSettingsEvaluationProcess = true;
+
+                                }
+
+                                // update comment max/count of jointly goals?
+                                if (tmpJointlyCommentMaxComment > 0 && tmpJointlyCommentCountComment >= 0 && tmpJointlyCommentCountCommentSinceTime > 0) {
+
+                                    // write data to prefs
+                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, tmpJointlyCommentMaxComment);
+                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, tmpJointlyCommentCountComment);
+                                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, tmpJointlyCommentCountCommentSinceTime);
+                                    prefsEditor.commit();
+
+                                    // something change in jointly goals comment process
+                                    refreshOurGoalsSettingsCommentProcess = true;
+
+                                }
+
+                                // update debetable comment max/count of debetable goals?
+                                if (tmpDebetableCommentMaxComment > 0 && tmpDebetableCommentCountComment >= 0 && tmpDebetableCommentCountCommentSinceTime > 0) {
+
+                                    // write data to prefs
+                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment,tmpDebetableCommentMaxComment);
+                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, tmpDebetableCommentCountComment);
+                                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsDebetableCommentTimeSinceInMills, tmpDebetableCommentCountCommentSinceTime);
+                                    prefsEditor.commit();
+
+                                    // something change in debetable goals comment process
+                                    refreshOurGoalsSettingsDebetableCommentProcess = true;
+
+                                }
+
+                                // update debetable goals author name?
+                                if (tmpDebetableGoalsAuthorName.length() > 0) {
+
+                                    // write data to prefs
+                                    prefsEditor.putString(ConstansClassOurGoals.namePrefsAuthorOfDebetableGoals, tmpDebetableGoalsAuthorName);
+                                    prefsEditor.commit();
+
+                                    // something change in debetable goals author name
+                                    refreshOurGoalsSettingsDebetableGoalsAuthorName = true;
+
+                                }
+
+                                // update debetable current date of debetable goals?
+                                if (tmpDebetableCurrentDateOfGoals > 0) {
+
+                                    Log.d ("Set Debet date","Set: "+tmpDebetableCurrentDateOfGoals);
+                                    Log.d ("Set Debet Systime","SystemTime: "+System.currentTimeMillis());
+
+                                    // write data to prefs
+                                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, tmpDebetableCurrentDateOfGoals);
+                                    prefsEditor.commit();
+
+                                    // something change in current date of debetable goals
+                                    refreshOurGoalsSettingsDebetableCurrentDateOfDebetableGoals = true;
+
+                                }
+
+                                // update current date of jointly goals?
+                                if (tmpJointlyCurrentDateOfGoals > 0) {
+
+                                    // write data to prefs
+                                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, tmpJointlyCurrentDateOfGoals);
+                                    prefsEditor.commit();
+
+                                    // something change in current date of jointly goals
+                                    refreshOurGoalsSettingsJointlyCurrentDateOfJointlyGoals = true;
+
+                                }
+
+
+
+
+
+                                // refresh activity ourarrangement because settings have change
+                                refreshOurGoals = true;
+                                refreshOurGoalsSettings = true;
+                            }
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+    //
+    // End read our goals -----------------------------------------------------------------------------------
+    //
+
+
+
+
+
+
+
 
 
 

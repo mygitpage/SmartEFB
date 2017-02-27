@@ -22,10 +22,21 @@ public class ConstansClassXmlParser {
     public static final String xmlNameForMain_ConnectId = "connectid";
 
 
-
+    //
+    // ++++++++++++++++++++++ Connect Book ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
     // xml name for element connect book
     public static final String xmlNameForConnectBook = "connectbook";
 
+    //
+    // ++++++++++++++++++++++ End Connect Book ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
+
+
+
+    //
+    // ++++++++++++++++++++++ Our Arrangements ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
     // xml name for element our arrangement
     public static final String xmlNameForOurArrangement = "ourarrangement";
 
@@ -204,6 +215,9 @@ public class ConstansClassXmlParser {
             public static final String xmlNameForOurArrangement_Settings_CurrentDateOfArrangement = "ourarrangement_settings_currentdateofarrangement";
 
 
+    //
+    // ++++++++++++++++++++++ End Our Arrangements ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
 
 
 
@@ -231,24 +245,242 @@ public class ConstansClassXmlParser {
 
 
 
-
-
+    //
+    // ++++++++++++++++++++++ Our Goals ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
     // xml name for element our goals
     public static final String xmlNameForOurGoals = "ourgoals";
 
+
+        // xml name for element our goals jointly now
+        public static final String xmlNameForOurGoals_JointlyNow = "ourgoals_jointlynow";
+
+            // xml name for element our goals order -> the order can be new, delete or update (see definitions below)
+            public static final String xmlNameForOurGoals_JointlyNow_Order = "ourgoals_jointlynow_order";
+
+            // xml name for element our goal jointly now goal text
+            public static final String xmlNameForOurGoals_JointlyNow_GoalText = "ourgoals_jointlynow_goaltext";
+
+            // xml name for element our goal jointly now author name
+            public static final String xmlNameForOurGoals_JointlyNow_AuthorName = "ourgoals_jointlynow_authorname";
+
+            // xml name for element our goal jointly now goal time
+            public static final String xmlNameForOurGoals_JointlyNow_GoalTime = "ourgoals_jointlynow_goaltime";
+
+            // xml name for element our goal jointly now jointly/debetable
+            public static final String xmlNameForOurGoals_JointlyNow_JointlyDebetable = "ourgoals_jointlynow_jointlydebetable";
+
+            // xml name for element our goal jointly now old md5 hash
+            public static final String xmlNameForOurGoals_JointlyNow_OldMd5 = "ourgoals_jointlynow_oldmd5";
+
+
+
+
+
+
+        // xml name for element our goals debetable now
+        public static final String xmlNameForOurGoals_DebetableNow = "ourgoals_debetablenow";
+
+            // xml name for element our goals order -> the order can be new, delete or update (see definitions below)
+            public static final String xmlNameForOurGoals_DebetableNow_Order = "ourgoals_debetablenow_order";
+
+            // xml name for element our goal debetable now goal text
+            public static final String xmlNameForOurGoals_DebetableNow_GoalText = "ourgoals_debetablenow_goaltext";
+
+            // xml name for element our goal debetable now author name
+            public static final String xmlNameForOurGoals_DebetableNow_AuthorName = "ourgoals_debetablenow_authorname";
+
+            // xml name for element our goal debetable now goal time
+            public static final String xmlNameForOurGoals_DebetableNow_GoalTime = "ourgoals_debetablenow_goaltime";
+
+            // xml name for element our goal debetable now jointly/debetable
+            public static final String xmlNameForOurGoals_DebetableNow_JointlyDebetable = "ourgoals_debetablenow_jointlydebetable";
+
+            // xml name for element our goal debetable now old md5 hash
+            public static final String xmlNameForOurGoals_DebetableNow_OldMd5 = "ourgoals_debetablenow_oldmd5";
+
+
+
+
+
+
+
+
+
+
+
+
+        // xml name for element our goals jointly evaluate
+        public static final String xmlNameForOurGoals_JointlyEvaluate = "ourgoals_jointlyevaluate";
+
+        // TODO: Insert Definitions
+
+        // xml name for element our goals jointly comment
+        public static final String xmlNameForOurGoals_JointlyComment = "ourgoals_jointlycomment";
+
+            // xml name for element our goals jointly comment order
+            public static final String xmlNameForOurGoals_JointlyComment_Order = "ourgoals_jointlycomment_order";
+
+            // xml name for element our goals jointly comment comment
+            public static final String xmlNameForOurGoals_JointlyComment_Comment = "ourgoals_jointlycomment_comment";
+
+            // xml name for element our goals jointly comment author name
+            public static final String xmlNameForOurGoals_JointlyComment_AuthorName = "ourgoals_jointlycomment_authorname";
+
+            // xml name for element our goals jointly comment time
+            public static final String xmlNameForOurGoals_JointlyComment_CommentTime = "ourgoals_jointlycomment_commenttime";
+
+            // xml name for element our goals jointly comment id goal (on all smartphones must be the same!)
+            public static final String xmlNameForOurGoals_JointlyComment_GoalId = "ourgoals_jointlycomment_goalid";
+
+            // xml name for element our goals jointly comment date of jointly goal to comment
+            public static final String xmlNameForOurGoals_JointlyComment_DateOfJointlyGoal = "ourgoals_jointlycomment_dateofjointlygoal";
+
+            // xml name for element our goals jointly comment old md5 hash
+            public static final String xmlNameForOurGoals_JointlyComment_OldMd5 = "ourgoals_jointlycomment_oldmd5";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // xml name for element our goals debetable comment
+        public static final String xmlNameForOurGoals_DebetableComment = "ourgoals_debetablecomment";
+
+            // xml name for element our goals debetable comment order
+            public static final String xmlNameForOurGoals_DebetableComment_Order = "ourgoals_debetablecomment_order";
+
+            // xml name for element our goals debetable comment comment
+            public static final String xmlNameForOurGoals_DebetableComment_Comment = "ourgoals_debetablecomment_comment";
+
+            // xml name for element our goals debetable comment result question A
+            public static final String xmlNameForOurGoals_DebetableComment_ResultQuestionA = "ourgoals_debetablecomment_resultquestion_a";
+
+            // xml name for element our goals debetable comment result question B
+            public static final String xmlNameForOurGoals_DebetableComment_ResultQuestionB = "ourgoals_debetablecomment_resultquestion_b";
+
+            // xml name for element our goals debetable comment result question C
+            public static final String xmlNameForOurGoals_DebetableComment_ResultQuestionC = "ourgoals_debetablecomment_resultquestion_c";
+
+            // xml name for element our goals debetable comment author name
+            public static final String xmlNameForOurGoals_DebetableComment_AuthorName = "ourgoals_debetablecomment_authorname";
+
+            // xml name for element our goals debetable comment time
+            public static final String xmlNameForOurGoals_DebetableComment_CommentTime = "ourgoals_debetablecomment_commenttime";
+
+            // xml name for element our goals debetable comment id goal (on all smartphones must be the same!)
+            public static final String xmlNameForOurGoals_DebetableComment_GoalId = "ourgoals_debetablecomment_goalid";
+
+            // xml name for element our goals debetable comment date of debetable goal to comment
+            public static final String xmlNameForOurGoals_DebetableComment_DateOfDebetableGoal = "ourgoals_debetablecomment_dateofjointlygoal";
+
+            // xml name for element our goals debetable comment old md5 hash
+            public static final String xmlNameForOurGoals_DebetableComment_OldMd5 = "ourgoals_debetablecomment_oldmd5";
+
+
+
+
+
+
+
+
+    // xml name for element our goals settings
+        public static final String xmlNameForOurGoals_Settings = "ourgoals_settings";
+
+            // xml name for element our goals settings order
+            public static final String xmlNameForOurGoals_Settings_Order = "ourgoals_settings_order";
+
+            // xml name for element our goals settings evaluate pause time
+            public static final String xmlNameForOurGoals_Settings_EvaluatePauseTime = "ourgoals_settings_jointlyevaluatepausetime";
+
+            // xml name for element our goals settings evaluate active time
+            public static final String xmlNameForOurGoals_Settings_EvaluateActiveTime = "ourgoals_settings_joontlyevaluateactivetime";
+
+            // xml name for element our goals settings evaluate start date
+            public static final String xmlNameForOurGoals_Settings_EvaluateStartDate = "ourgoals_settings_jointlyevaluatestartdate";
+
+            // xml name for element our goals settings evaluate end date
+            public static final String xmlNameForOurGoals_Settings_EvaluateEndDate = "ourgoals_settings_jointlyevaluateenddate";
+
+            // xml name for element our goals settings comment max comment
+            public static final String xmlNameForOurGoals_Settings_CommentMaxComment = "ourgoals_settings_jointlycommentmaxcomment"; //value > 1000 -> no limitations with comments
+
+            // xml name for element our goals settings comment count comment
+            public static final String xmlNameForOurGoals_Settings_CommentCountComment = "ourgoals_settings_jointlycommentcountcomment";
+
+            // xml name for element our goals settings comment count comment since time
+            public static final String xmlNameForOurGoals_Settings_CommentCountCommentSinceTime = "ourgoals_settings_jointlycommentcountcommentsincetime";
+
+            // xml name for element our goals settings debetable comment max comment
+            public static final String xmlNameForOurGoals_Settings_DebetableCommentMaxComment = "ourgoals_settings_debetablecommentmaxcomment"; //value > 1000 -> no limitations with comments
+
+            // xml name for element our goals settings debetable comment count comment
+            public static final String xmlNameForOurGoals_Settings_DebetableCommentCountComment = "ourgoals_settings_debetablecommentcountcomment";
+
+            // xml name for element our goals settings debetable comment count comment since time
+            public static final String xmlNameForOurGoals_Settings_DebetableCommentCountCommentSinceTime = "ourgoals_settings_debetablecommentcountcommentsincetime";
+
+            // xml name for element our goals settings debetable goals author name
+            public static final String xmlNameForOurGoals_Settings_DebetableGoalsAuthorName = "ourgoals_settings_debetablegoalsauthorname";
+
+            // xml name for element our goals settings debetable goals current date of debetable goals
+            public static final String xmlNameForOurGoals_Settings_DebetableCurrentDateOfGoals = "ourgoals_settings_debetablecurrentdateofgoals";
+
+            // xml name for element our goals settings jointly goals current date of jointly goals
+            public static final String xmlNameForOurGoals_Settings_JointlyCurrentDateOfGoals = "ourgoals_settings_jointlycurrentdateofgoals";
+
+
+
+
+
+
+
+
+
+
+    //
+    // ++++++++++++++++++++++ End Our Goals ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
+
+
+
+
+
+    //
+    // ++++++++++++++++++++++ Meeting ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
     // xml name for element meeting
     public static final String xmlNameForMeeting = "meeting";
+    //
+    // ++++++++++++++++++++++ End Meeting ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
 
+    //
+    // ++++++++++++++++++++++ Main Settings ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
     // xml name for element settings
     public static final String xmlNameForSettings = "settings";
 
+    //
+    // ++++++++++++++++++++++ End Main Settings ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
 
 
 
 
 
-
-
+    //
+    // ++++++++++++++++++++++ Order Definitions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
     // Order defeinitions
 
     // xml name for element order "new"
@@ -259,6 +491,10 @@ public class ConstansClassXmlParser {
 
     // xml name for element order "update"
     public static final String xmlNameForOrder_Update = "update";
+
+    //
+    // ++++++++++++++++++++++ End Order Definitions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
 
 
 

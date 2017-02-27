@@ -1269,6 +1269,53 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
+    // Delete a row from the database, by oldMd5
+    public boolean deleteRowOurGoals(String oldMd5) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_MD5_HASH + "='" + oldMd5+"'";
+        return db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, where, null) != 0;
+    }
+
+
+
+
+    // Change an existing row to be equal to oldMd5.
+    public boolean updateRowOurGoals(String goal, String authorName, long goalTime, Boolean newEntry, Boolean jointlyDebetable, int status, String oldMd5) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_MD5_HASH + "='" + oldMd5+"'";
+
+        // Create row's data:
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL, goal);
+        newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME, authorName);
+        newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, goalTime);
+        newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_MD5_HASH, EfbHelperClass.md5(goal)); // generate md5 hash from goal
+        newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS, status);
+
+        // is it a new entry?
+        if (newEntry) {
+            newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY, 1);
+        } else {
+            newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY, 0);
+        }
+
+        // is it a debetable goal? jointlyDebetable -> true!
+        if (jointlyDebetable) {
+            newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE, 1);
+        } else {
+            newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE, 0);
+        }
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null) != 0;
+    }
+
+
     // Return all data from the database (table ourGoals) (equal: write_time = currentDateOfGoals, smaller: write_time < currentDateOfGoals)
     // the result is sorted by DESC
     public Cursor getAllJointlyRowsOurGoals(long currentDateOfGoals, String equalGreater) {
@@ -1498,6 +1545,44 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+    // Change an existing row to be equal to oldMd5.
+    public boolean updateRowOurGoalJointlyGoalComment(String comment, String authorName, long commentTime, int idGoal, Boolean newEntry, long currentDateOfGoal, int status, String oldMd5) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
+
+        // Create row's data:
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, comment);
+        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, authorName);
+        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, commentTime);
+        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL, idGoal);
+        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME, currentDateOfGoal);
+        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS, status);
+        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from comment
+
+        // is it a new entry?
+        if (newEntry) {
+            newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, 1);
+        } else {
+            newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, 0);
+        }
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null) != 0;
+    }
+
+
+    // Delete a row from the database, by oldMd5
+    public boolean deleteRowOurGoalJointlyGoalComment(String oldMd5) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
+        return db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, where, null) != 0;
+    }
+
 
 
     // Return all comments from the database for jointly goals with goal_id = id (table ourGoalsJointlyGoalsComment)
@@ -1649,6 +1734,48 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+    // Delete a row from the database, by oldMd5
+    public boolean deleteRowOurGoalsDebetableGoalsComment(String oldMd5) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
+        return db.delete(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, where, null) != 0;
+    }
+
+
+    // Change an existing row to be equal to oldMd5.
+    public boolean updateRowOurGoalsDebetableGoalsComment(String comment, int question_a, int question_b, int question_c, String authorName, long commentTime, int idGoal, Boolean newEntry, long currentDateOfGoal, int status, String oldMd5) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
+
+        // Create row's data:
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT, comment);
+        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1, question_a);
+        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2, question_b);
+        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3, question_c);
+        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME, authorName);
+        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, commentTime);
+        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL, idGoal);
+        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME, currentDateOfGoal);
+        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS, status);
+        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from comment
+
+        // is it a new entry?
+        if (newEntry) {
+            newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, 1);
+        } else {
+            newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, 0);
+        }
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null) != 0;
+    }
+
+
     // Return all comments from the database for debetable goal with goal_id = id (table ourGoalsDebetableGoalsComment)
     // the result is sorted by DESC
     public Cursor getAllRowsOurGoalsDebetableGoalsComment(int goalId) {
@@ -1736,47 +1863,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     /********************************* End!! TABLES FOR FUNCTION: Our Goals Debetable Goals Comment ***************************************/
     /****************************************************************************************************************************/
-
-
-
-
-
-
-
-
-    /********************************* TABLES FOR FUNCTION: Our Goals Jointly Goals Evaluate ******************************************/
-
-    // Add a new set of values to ourGoalsJointlyGoalsEvaluate .
-    /*
-
-    // status variable wurde eingefügt der Aufruf stimmt daher nicht !!!!!!!!!!!!!
-
-    public long insertRowOurGoalsJointlyGoalEvaluate(int goalId, long currentDateOfGoal, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName, int status) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues initialValues = new ContentValues();
-
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_ID, goalId);
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME, currentDateOfGoal);
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1, resultQuestion1);
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2, resultQuestion2);
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3, resultQuestion3);
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4, resultQuestion4);
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS, resultRemarks);
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME, resultTime);
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME, userName);
-
-
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_STATUS, status);
-
-        // Insert it into the database.
-        return db.insert(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE, null, initialValues);
-    }
-    */
-
-
-    /********************************* End!! TABLES FOR FUNCTION: Our Goals Jointly Goals Evaluate ***************************************/
 
 
 

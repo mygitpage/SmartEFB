@@ -58,11 +58,7 @@ public class ConstansClassOurGoals {
 
 
 
-    // prefs name for start date of jointly goals evaluation period in mills
-    public static final String namePrefsStartDateJointlyGoalsEvaluationPeriod = "startDataJointlyGoalsEvaluationInMills";
 
-    // prefs name for end date of jointly goals evaluation period in mills
-    public static final String namePrefsEndDateJointlyGoalsEvaluationPeriod = "endDataJointlyGoalsEvaluationInMills";
 
 
 
@@ -101,6 +97,9 @@ public class ConstansClassOurGoals {
 
     // prefs name for evaluation jointly goal active time in seconds
     public static final String namePrefsEvaluateJointlyGoalsActiveTimeInSeconds = "evaluateJointlyGoalsActivTimeInSeconds";
+
+
+
 
 
     // default time for active and pause time in evaluation jointly goal (time in seconds)

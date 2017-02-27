@@ -88,11 +88,8 @@ public class OurArrangementFragmentSketch  extends Fragment {
     // show listView with sketch arrangements or info: nothing there
     public void displaySketchArrangementSet () {
 
-
-
         // find the listview
         ListView listView = (ListView) viewFragmentSketch.findViewById(R.id.listOurArrangementSketch);
-
 
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false) && listView != null) { // Function showSketchArrangement is available!!!!
 

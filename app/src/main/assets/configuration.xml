@@ -65,7 +65,7 @@
 
         -->
 
-
+        <!--
         <ourarrangement_settings>
 
             <ourarrangement_settings_order>update</ourarrangement_settings_order>
@@ -73,11 +73,151 @@
             <ourarrangement_settings_evaluateactivetime>20</ourarrangement_settings_evaluateactivetime>
             <ourarrangement_settings_evaluatestartdate>1487951266764</ourarrangement_settings_evaluatestartdate>
             <ourarrangement_settings_evaluateenddate>1497951266764</ourarrangement_settings_evaluateenddate>
+
         </ourarrangement_settings>
 
+        <ourarrangement_settings>
+
+            <ourarrangement_settings_order>update</ourarrangement_settings_order>
+            <ourarrangement_settings_commentmaxcomment>4</ourarrangement_settings_commentmaxcomment>
+            <ourarrangement_settings_commentcountcomment>0</ourarrangement_settings_commentcountcomment>
+            <ourarrangement_settings_commentcountcommentsincetime>1487951266764</ourarrangement_settings_commentcountcommentsincetime>
+
+
+        </ourarrangement_settings>
+
+        <ourarrangement_settings>
+
+            <ourarrangement_settings_order>update</ourarrangement_settings_order>
+            <ourarrangement_settings_sketchcommentmaxcomment>5</ourarrangement_settings_sketchcommentmaxcomment>
+            <ourarrangement_settings_sketchcommentcountcomment>0</ourarrangement_settings_sketchcommentcountcomment>
+            <ourarrangement_settings_sketchcommentcountcommentsincetime>1487951266764</ourarrangement_settings_sketchcommentcountcommentsincetime>
+
+
+        </ourarrangement_settings>
+
+        <ourarrangement_settings>
+
+            <ourarrangement_settings_order>update</ourarrangement_settings_order>
+            <ourarrangement_settings_sketcharrangementauthorname>Franz Xaver</ourarrangement_settings_sketcharrangementauthorname>
+
+
+        </ourarrangement_settings>
+        -->
 
 
     </ourarrangement>
+
+
+
+
+    <ourgoals>
+
+        <!--
+        <ourgoals_settings>
+            <ourgoals_settings_order>update</ourgoals_settings_order>
+            <ourgoals_settings_jointlycurrentdateofgoals>1479879200000</ourgoals_settings_jointlycurrentdateofgoals>
+        </ourgoals_settings>
+        -->
+
+        <!--
+        <ourgoals_settings>
+            <ourgoals_settings_order>update</ourgoals_settings_order>
+            <ourgoals_settings_debetablecurrentdateofgoals>1487898000572</ourgoals_settings_debetablecurrentdateofgoals>
+        </ourgoals_settings>
+        -->
+
+        <ourgoals_settings>
+            <ourgoals_settings_order>update</ourgoals_settings_order>
+            <ourgoals_settings_debetablegoalsauthorname>Peter Pan</ourgoals_settings_debetablegoalsauthorname>
+        </ourgoals_settings>
+
+        <!--
+        <ourgoals_jointlynow>
+            <ourgoals_jointlynow_order>new</ourgoals_jointlynow_order>
+            <ourgoals_jointlynow_goaltext>Dies ist eine drittes Ziel über XML-Datei! Das zweite ist noch da und steht unterhalb dieses Eintrages.</ourgoals_jointlynow_goaltext>
+            <ourgoals_jointlynow_authorname>Max Zielmann</ourgoals_jointlynow_authorname>
+            <ourgoals_jointlynow_goaltime>1479879200000</ourgoals_jointlynow_goaltime>
+            <ourgoals_jointlynow_jointlydebetable>0</ourgoals_jointlynow_jointlydebetable>
+        </ourgoals_jointlynow>
+        -->
+
+        <!--
+        <ourgoals_debetablenow>
+            <ourgoals_debetablenow_order>new</ourgoals_debetablenow_order>
+            <ourgoals_debetablenow_goaltext>Dies ist drittes strittiges über die XML-Datei. Datum ist gefunden</ourgoals_debetablenow_goaltext>
+            <ourgoals_debetablenow_authorname>Max Zielmann</ourgoals_debetablenow_authorname>
+            <ourgoals_debetablenow_goaltime>1487898000572</ourgoals_debetablenow_goaltime>
+            <ourgoals_debetablenow_jointlydebetable>1</ourgoals_debetablenow_jointlydebetable>
+        </ourgoals_debetablenow>
+
+
+
+        <ourgoals_jointlycomment>
+
+            <ourgoals_jointlycomment_order>new</ourgoals_jointlycomment_order>
+            <ourgoals_jointlycomment_comment>Dies ist ein zweiter Kommentar über die XML-Datei. ID ist vermutlich klar.</ourgoals_jointlycomment_comment>
+            <ourgoals_jointlycomment_authorname>Ohne Namen</ourgoals_jointlycomment_authorname>
+            <ourgoals_jointlycomment_commenttime>1487899000572</ourgoals_jointlycomment_commenttime>
+            <ourgoals_jointlycomment_goalid>9</ourgoals_jointlycomment_goalid>
+            <ourgoals_jointlycomment_dateofjointlygoal>1479879200000</ourgoals_jointlycomment_dateofjointlygoal>
+
+
+        </ourgoals_jointlycomment>
+        -->
+
+        <!--
+        <ourgoals_jointlycomment>
+            <ourgoals_jointlycomment_order>delete</ourgoals_jointlycomment_order>
+            <ourgoals_jointlycomment_oldmd5>afc22d7ba859c398bcc92afbbedf2ea</ourgoals_jointlycomment_oldmd5>
+        </ourgoals_jointlycomment>
+        -->
+
+        <!--
+        <ourgoals_debetablecomment>
+
+            <ourgoals_debetablecomment_order>update</ourgoals_debetablecomment_order>
+            <ourgoals_debetablecomment_comment>Dies ist ein veränderter Kommentar über die XML-Datei. ID ist vermutlich klar.</ourgoals_debetablecomment_comment>
+            <ourgoals_debetablecomment_authorname>Ohne Namen</ourgoals_debetablecomment_authorname>
+            <ourgoals_debetablecomment_commenttime>1489899000572</ourgoals_debetablecomment_commenttime>
+            <ourgoals_debetablecomment_goalid>20</ourgoals_debetablecomment_goalid>
+            <ourgoals_debetablecomment_dateofjointlygoal>1487898000572</ourgoals_debetablecomment_dateofjointlygoal>
+            <ourgoals_debetablecomment_oldmd5>5aacb45762137ab6c4932c4113fea116</ourgoals_debetablecomment_oldmd5>
+            <ourgoals_debetablecomment_resultquestion_a>1</ourgoals_debetablecomment_resultquestion_a>
+
+
+        </ourgoals_debetablecomment>
+
+
+        <ourgoals_debetablecomment>
+
+            <ourgoals_debetablecomment_order>new</ourgoals_debetablecomment_order>
+            <ourgoals_debetablecomment_comment>Dies ist ein dritter strittiger Kommentar. Der zweite wird gleichzeitig überarbeitet.</ourgoals_debetablecomment_comment>
+            <ourgoals_debetablecomment_authorname>Mit langem Namen</ourgoals_debetablecomment_authorname>
+            <ourgoals_debetablecomment_commenttime>1489899000572</ourgoals_debetablecomment_commenttime>
+            <ourgoals_debetablecomment_goalid>20</ourgoals_debetablecomment_goalid>
+            <ourgoals_debetablecomment_dateofjointlygoal>1487898000572</ourgoals_debetablecomment_dateofjointlygoal>
+            <ourgoals_debetablecomment_resultquestion_a>3</ourgoals_debetablecomment_resultquestion_a>
+
+
+        </ourgoals_debetablecomment>
+        -->
+
+
+        <!--
+        <ourgoals_debetablecomment>
+
+            <ourgoals_debetablecomment_order>delete</ourgoals_debetablecomment_order>
+
+            <ourgoals_debetablecomment_oldmd5>684fa8d9d2441ad97e28e94174b7c76</ourgoals_debetablecomment_oldmd5>
+
+
+        </ourgoals_debetablecomment>
+        -->
+
+    </ourgoals>
+
+
 
 
 

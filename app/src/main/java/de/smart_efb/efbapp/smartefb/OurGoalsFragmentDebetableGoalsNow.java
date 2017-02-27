@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,9 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
         //get date of debetable goals
         currentDateOfDebetableGoal = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis());
 
+        Log.d("OurGoalsDebet","Date Time: "+currentDateOfDebetableGoal+" +++++++++");
+
+
     }
 
 
@@ -90,7 +94,12 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
             // get the data from db -> all debetable goals
             Cursor cursor = myDb.getAllDebetableRowsOurGoals(currentDateOfDebetableGoal);
 
+            Log.d("DebetableNOW","CurLae:"+cursor.getCount());
+
+
             if (cursor.getCount() > 0 && listView != null) {
+
+                Log.d("FragmentDebetable >0","Date:"+currentDateOfDebetableGoal);
 
                 // set listView visible, textView nothing there and not available gone
                 setVisibilityListViewDebetableGoalsNow("show");
@@ -112,6 +121,8 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
 
             } else {
 
+                Log.d("FragmentDebetable--","Date:"+currentDateOfDebetableGoal);
+
                 // set listView and textView not available gone, set textView nothing there visible
                 setVisibilityListViewDebetableGoalsNow("hide");
                 setVisibilityTextViewDebetableGoalsNowNotAvailable("hide");
@@ -124,6 +135,8 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
 
         }
         else {
+
+            Log.d("FragmentDebetable","Date:"+currentDateOfDebetableGoal);
 
             // set listView and textView nothing there gone, set textView not available visible
             setVisibilityListViewDebetableGoalsNow("hide");

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,8 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+
+        Log.d("CursorAdapter-Jointly","ID: "+cursor.getInt(cursor.getColumnIndex(myDb.KEY_ROWID)));
 
         // check if jointly goal comment entry new?
         if (cursor.getInt(cursor.getColumnIndex(myDb.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY)) == 1) {
