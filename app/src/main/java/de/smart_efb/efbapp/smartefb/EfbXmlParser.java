@@ -96,6 +96,20 @@ public class EfbXmlParser {
         Boolean refreshOurGoalsSettingsJointlyCurrentDateOfJointlyGoals = false;
 
 
+    // refresh activity meeting
+    Boolean refreshMeeting = false;
+        // refresh activity meeting settings
+        Boolean refreshMeetingSettings = false;
+        // refresh meeting setting date A
+        Boolean refreshMeetingSettingsUpdateDateA = false;
+        // refresh meeting setting date B
+        Boolean refreshMeetingSettingsUpdateDateB = false;
+        // refresh meeting status
+        Boolean refreshMeetingSettingsUpdateStatus = false;
+        // refresh new meeting suggestion
+        Boolean refreshMeetingNewSuggestion = false;
+
+
 
 
 
@@ -159,7 +173,7 @@ public class EfbXmlParser {
                             readOurGoalsTag();
                             break;
                         case ConstansClassXmlParser.xmlNameForMeeting:
-                            Log.d("XMLParser","Meeting Zeile " + xpp.getLineNumber());
+                            readMeetingTag();
                             break;
                         case ConstansClassXmlParser.xmlNameForSettings:
                             Log.d("XMLParser","Settings Zeile " + xpp.getLineNumber());
@@ -2222,6 +2236,8 @@ public class EfbXmlParser {
     // read tag our goals jointly evaluate and push to database
     private void readOurGoalsTag_JointlyEvaluate() {
 
+        // TODO: Implement Function
+
     }
 
 
@@ -3147,6 +3163,506 @@ public class EfbXmlParser {
             e.printStackTrace();
         }
 
+    }
+
+
+    //
+    // End read our goals -----------------------------------------------------------------------------------
+    //
+
+
+
+
+    //
+    // Begin read meeting -----------------------------------------------------------------------------------
+    //
+
+    // read element meeting
+    private void readMeetingTag() {
+
+        Boolean parseAnymore = true;
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("readMeetingTag", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForMeeting_Settings:
+                            readMeetingTag_Settings();
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestions:
+                            readMeetingTag_Suggestions();
+                            break;
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
+                    Log.d("readMeetingTag", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of meeting
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMeeting)) {
+
+                        Log.d("readMeetingTag", "End Tag meeting gefunden!");
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    // read tag our meeting settings and push to prefs
+    private void readMeetingTag_Settings() {
+
+        Log.d("read_MeetingSettings", "Zeile " + xpp.getLineNumber());
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml meeting settings tag
+        Boolean error = false;
+
+        // tmp data for prefs
+        String tmpOrder = "";
+        Long tmpMeetingDateA = 0L;
+        Long tmpMeetingDateB = 0L;
+        int tmpMeetingPlaceA = 0;
+        int tmpMeetingPlaceB = 0;
+        int tmpMeetingStatus = -1;
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("readMeeting_SETTINGS", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForMeeting_Settings_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+
+                                    Log.d("Meeting Settings","ORDER: "+tmpOrder);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Settings_MeetingDateA:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { //  get meeting date B
+                                if (xpp.getText().trim().length() > 0) { // check if meeting date B from xml > 0
+                                    tmpMeetingDateA = Long.valueOf(xpp.getText().trim());
+
+                                    Log.d("Meeting_Settings","Date A"+tmpMeetingDateA);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Settings_MeetingDateB:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting date B
+                                if (xpp.getText().trim().length() > 0) { // check if meeting date B from xml > 0
+                                    tmpMeetingDateB = Long.valueOf(xpp.getText().trim());
+
+                                    Log.d("Meeting_Settings","Date B"+tmpMeetingDateB);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Settings_MeetingPlaceA:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting place a
+                                if (xpp.getText().trim().length() > 0) { // check if meeting place a from xml > 0
+                                    tmpMeetingPlaceA = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Meetings_Settings","Place A"+tmpMeetingPlaceA);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Settings_MeetingPlaceB:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting place b
+                                if (xpp.getText().trim().length() > 0) { // check if meeting place b from xml > 0
+                                    tmpMeetingPlaceB = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Meetings_Settings","Place B"+tmpMeetingPlaceB);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_MeetingStatus:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting status
+                                if (xpp.getText().trim().length() > 0) { // check if meeting status from xml > 0
+                                    tmpMeetingStatus = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("meeting_Settings","Meeting status"+tmpMeetingStatus);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
+                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of meeting settings
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMeeting_Settings)) {
+
+                        // check all data for meeting settings correct?
+                        if (!error) {
+
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) ) { // meting settings order -> delete?
+
+                                Log.d("meeting Settings","DELETE AUSführen");
+
+                                // refresh activity meeting because settings have change
+                                refreshMeeting = true;
+                                refreshMeetingSettings = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // meeting settings order -> update?
+
+                                Log.d("meeting Settings","UPDATE AUSführen");
+
+                                // update meeting date a and place a?
+                                if (tmpMeetingDateA > 0 && tmpMeetingPlaceA > 0 ) {
+
+                                    Log.d ("Meetings Settings--","Date A:"+tmpMeetingDateA+" PLace A:"+tmpMeetingPlaceA);
+
+                                    // write data to prefs (A is index zero, B is index 1)
+                                    prefsEditor.putInt(ConstantsClassMeeting.namePrefsMeetingPlace + ConstantsClassMeeting.prefsPraefixMeetings[0], tmpMeetingPlaceA);
+                                    prefsEditor.putLong(ConstantsClassMeeting.namePrefsMeetingTimeAndDate + ConstantsClassMeeting.prefsPraefixMeetings[0], tmpMeetingDateA);
+                                    // Sign new meeting date a
+                                    prefsEditor.putBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime + ConstantsClassMeeting.prefsPraefixMeetings[0], true);
+                                    prefsEditor.commit();
+
+                                    // something change in evaluation process
+                                    refreshMeetingSettingsUpdateDateA = true;
+
+                                }
+
+                                // update meeting date b and place b?
+                                if (tmpMeetingDateB > 0 && tmpMeetingPlaceB > 0 ) {
+
+                                    Log.d ("Meetings Settings--","Date B:"+tmpMeetingDateB+" PLace A:"+tmpMeetingPlaceB);
+
+                                    // write data to prefs (A is index zero, B is index 1)
+                                    prefsEditor.putInt(ConstantsClassMeeting.namePrefsMeetingPlace + ConstantsClassMeeting.prefsPraefixMeetings[1], tmpMeetingPlaceB);
+                                    prefsEditor.putLong(ConstantsClassMeeting.namePrefsMeetingTimeAndDate + ConstantsClassMeeting.prefsPraefixMeetings[1], tmpMeetingDateB);
+                                    // Sign new meeting date b
+                                    prefsEditor.putBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime + ConstantsClassMeeting.prefsPraefixMeetings[1], true);
+                                    prefsEditor.commit();
+
+                                    // something change in evaluation process
+                                    refreshMeetingSettingsUpdateDateB = true;
+
+                                }
+
+                                // update meeting status?
+                                if (tmpMeetingStatus >= 0) {
+
+                                    // write data to prefs
+                                    prefsEditor.putInt(ConstantsClassMeeting.namePrefsMeetingStatus, tmpMeetingStatus);
+                                    prefsEditor.commit();
+
+                                    // something change in meeting status
+                                    refreshMeetingSettingsUpdateStatus = true;
+
+                                }
+
+                                // refresh activity meeting because settings have change
+                                refreshMeeting = true;
+                                refreshMeetingSettings = true;
+                            }
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    // read tag our meeting suggestions and push to database
+    private void readMeetingTag_Suggestions() {
+
+
+
+        // insertNewMeetingDateAndTime (long meetingDateAndTime, String meetingPlace,
+
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml meeting suggestions tag
+        Boolean error = false;
+
+        // tmp data for database insert
+        Long tmpMeetingSuggestionTime = 0L;
+        Long tmpResponseDeadline = 0L;
+        String tmpMeetingSuggestionPlace = "";
+        String tmpOrder = "";
+        String tmpAuthorSuggestions = "";
+        Long tmpOldMeetingSuggestionTime = 0L;
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("MeetingTag_Suggestions", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestions_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestions_DateTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting Time text
+                                if (xpp.getText().trim().length() > 0) { // check if meeting Time from xml > 0
+                                    tmpMeetingSuggestionTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestions_Place:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting Place text
+                                if (xpp.getText().trim().length() > 0) { // check if meeting Place length from xml > 0
+                                    tmpMeetingSuggestionPlace = xpp.getText().trim(); // make int from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestions_AuthorName:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get authorName text
+                                if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
+                                    tmpAuthorSuggestions = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestions_ResponseDeadline:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting response deadline text
+                                if (xpp.getText().trim().length() > 0) { // check if meeting response deadline from xml > 0
+                                    tmpResponseDeadline = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestions_OldMeetingTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting old time text
+                                if (xpp.getText().trim().length() > 0) { // check if meeting old time from xml > 0
+                                    tmpOldMeetingSuggestionTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
+                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of meeting suggestions
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMeeting_Suggestions)) {
+
+                        // check all data for meeting suggestions correct?
+                        if (!error) {
+
+                            Log.d("MeetingSuggestion","Time:"+tmpMeetingSuggestionTime+" - Place:"+tmpMeetingSuggestionPlace);
+
+                            // meeting suggestion -> new entry?
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpMeetingSuggestionTime > 0 && tmpMeetingSuggestionPlace.length() > 0) {
+                                // insert new debetable goal in DB
+                                myDb.insertNewMeetingDateAndTime(tmpMeetingSuggestionTime, tmpMeetingSuggestionPlace, true, 4);
+
+                                // long meetingDateAndTime, String meetingPlace, Boolean newEntry, int status
+
+
+                                // refresh activity meeting
+                                refreshMeeting = true;
+                                refreshMeetingNewSuggestion = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMeetingSuggestionTime > 0) { // meeting order -> delete suggestion entry?
+
+                                // delete meeting suggestion in DB
+                                myDb.deleteRowMeetingDateAndTime(tmpOldMeetingSuggestionTime);
+
+                                // refresh activity meeting
+                                refreshMeeting = true;
+                                refreshMeetingNewSuggestion = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMeetingSuggestionTime > 0 && tmpMeetingSuggestionTime > 0 && tmpMeetingSuggestionPlace.length() > 0) { // meeting suggestion order -> update entry?
+
+                                // update goal in DB
+                                myDb.updateMeetingDateAndTime(tmpMeetingSuggestionTime, tmpMeetingSuggestionPlace, tmpOldMeetingSuggestionTime, true, 4);
+
+                                // refresh activity meeting
+                                refreshMeeting = true;
+                                refreshMeetingNewSuggestion = true;
+                            }
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
 
@@ -3158,17 +3674,9 @@ public class EfbXmlParser {
 
     }
 
-
     //
-    // End read our goals -----------------------------------------------------------------------------------
+    // End read meeting -----------------------------------------------------------------------------------
     //
-
-
-
-
-
-
-
 
 
 

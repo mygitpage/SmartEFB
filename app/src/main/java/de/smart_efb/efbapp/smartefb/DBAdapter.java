@@ -1895,6 +1895,43 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+    // Change an existing row to be equal to oldMeetingTime.
+    public boolean updateMeetingDateAndTime(long meetingDateAndTime, String meetingPlace, long oldMeetingTime, Boolean newEntry, int status) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = MEETING_FIND_MEETING_KEY_DATE_TIME + "=" + oldMeetingTime;
+
+        // Create row's data:
+        ContentValues newValues = new ContentValues();
+        newValues.put(MEETING_FIND_MEETING_KEY_MEETING_PLACE, meetingPlace);
+        newValues.put(MEETING_FIND_MEETING_KEY_DATE_TIME, meetingDateAndTime);
+        newValues.put(MEETING_FIND_MEETING_KEY_APPROVAL,0); // --> no approval so far
+        newValues.put(MEETING_FIND_MEETING_KEY_STATUS, status);
+
+        // is it a new entry?
+        if (newEntry) {
+            newValues.put(MEETING_FIND_MEETING_KEY_NEW_ENTRY, 1);
+        } else {
+            newValues.put(MEETING_FIND_MEETING_KEY_NEW_ENTRY, 0);
+        }
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_MEETING_FIND_MEETING, newValues, where, null) != 0;
+    }
+
+
+    // Delete a row from the database, by oldMeetingTime
+    public boolean deleteRowMeetingDateAndTime(Long oldMeetingTime) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = MEETING_FIND_MEETING_KEY_DATE_TIME + "=" + oldMeetingTime;
+        return db.delete(DATABASE_TABLE_MEETING_FIND_MEETING, where, null) != 0;
+    }
+
+
+
     // Return all meetings from the database
     // the result is sorted by DESC
     public Cursor getAllRowsSuggesteMeetings() {

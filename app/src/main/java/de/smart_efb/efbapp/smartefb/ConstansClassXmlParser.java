@@ -460,6 +460,54 @@ public class ConstansClassXmlParser {
     //
     // xml name for element meeting
     public static final String xmlNameForMeeting = "meeting";
+    // xml name for element meeting settings
+    public static final String xmlNameForMeeting_Settings = "meeting_settings";
+        // xml name for element meeting settings order
+        public static final String xmlNameForMeeting_Settings_Order = "meeting_settings_order";
+        // xml name for element meeting settings date A
+        public static final String xmlNameForMeeting_Settings_MeetingDateA = "meeting_settings_date_a";
+        // xml name for element meeting settings date B
+        public static final String xmlNameForMeeting_Settings_MeetingDateB = "meeting_settings_date_b";
+        // xml name for element meeting settings place A
+        public static final String xmlNameForMeeting_Settings_MeetingPlaceA = "meeting_settings_place_a";
+        // xml name for element meeting settings place B
+        public static final String xmlNameForMeeting_Settings_MeetingPlaceB = "meeting_settings_place_b";
+
+
+    // xml name for element meeting status
+    public static final String xmlNameForMeeting_MeetingStatus = "meeting_status";
+
+
+
+
+
+
+    // xml name for element meeting suggestions
+    public static final String xmlNameForMeeting_Suggestions = "meeting_suggestions";
+
+        // xml name for element meeting suggestions order
+        public static final String xmlNameForMeeting_Suggestions_Order = "meeting_suggestions_order";
+        // xml name for element meeting suggestions date time
+        public static final String xmlNameForMeeting_Suggestions_DateTime = "meeting_suggestions_datetime";
+        // xml name for element meeting suggestions place
+        public static final String xmlNameForMeeting_Suggestions_Place = "meeting_suggestions_place";
+        // xml name for element meeting suggestions author name
+        public static final String xmlNameForMeeting_Suggestions_AuthorName = "meeting_suggestions_authorname";
+        // xml name for element meeting suggestions response deadline
+        public static final String xmlNameForMeeting_Suggestions_ResponseDeadline = "meeting_suggestions_responsedeadline";
+        // xml name for element meeting suggestions old meeting time (need for delete)
+        public static final String xmlNameForMeeting_Suggestions_OldMeetingTime = "meeting_suggestions_oldtime";
+
+
+
+
+
+
+
+
+
+
+
     //
     // ++++++++++++++++++++++ End Meeting ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //
