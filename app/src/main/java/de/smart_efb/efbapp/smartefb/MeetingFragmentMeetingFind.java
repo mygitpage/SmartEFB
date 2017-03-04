@@ -346,8 +346,8 @@ public class MeetingFragmentMeetingFind extends Fragment {
                     // show time place and set visible
                     TextView tmpShowPlaceText_B = (TextView) viewFragmentMeetingFind.findViewById(R.id.nextMeetingPlace_B);
                     tmpShowPlaceText_B.setVisibility(View.VISIBLE);
-                    if (meetingPlace[indexNumberFirstMeetingToShow] == 1 || meetingPlace[indexNumberFirstMeetingToShow] == 2) { // show meeting place name
-                        tmpShowPlaceText_B.setText(meetingPlaceName[indexNumberFirstMeetingToShow]);
+                    if (meetingPlace[indexNumberSecondMeetingToShow ] == 1 || meetingPlace[indexNumberSecondMeetingToShow ] == 2) { // show meeting place name
+                        tmpShowPlaceText_B.setText(meetingPlaceName[indexNumberSecondMeetingToShow ]);
                     } else {
                         tmpShowPlaceText_B.setText(meetingPlaceName[0]); // show place "Kein Ort gewaehlt"
                     }

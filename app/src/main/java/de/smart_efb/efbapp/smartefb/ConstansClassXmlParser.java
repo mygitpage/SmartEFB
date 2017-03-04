@@ -537,6 +537,9 @@ public class ConstansClassXmlParser {
     // xml name for element order "delete"
     public static final String xmlNameForOrder_Delete = "delete";
 
+    // xml name for element order "delete_all"
+    public static final String xmlNameForOrder_Delete_All = "delete_all";
+
     // xml name for element order "update"
     public static final String xmlNameForOrder_Update = "update";
 

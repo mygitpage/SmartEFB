@@ -217,6 +217,31 @@
 
     </ourgoals>
 
+    <meeting>
+
+        <meeting_settings>
+            <meeting_settings_order>update</meeting_settings_order>
+            <meeting_settings_date_a>1488722400000</meeting_settings_date_a>
+            <meeting_settings_place_a>1</meeting_settings_place_a>
+
+            <meeting_settings_date_b>1488722400000</meeting_settings_date_b>
+            <meeting_settings_place_b>2</meeting_settings_place_b>
+
+            <meeting_status>7</meeting_status>
+
+
+        </meeting_settings>
+
+
+
+
+
+
+    </meeting>
+
+
+
+
 
 
 

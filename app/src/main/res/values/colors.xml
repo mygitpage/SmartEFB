@@ -55,7 +55,7 @@
     <color name="bg_btn_join">#150656</color>
     <color name="bg_msg_input">#d6d6d6</color>
     <color name="text_msg_input">#626262</color>
-    <color name="lblFromName">#ffffff</color>
+    <color name="lblFromName">#150656</color>
 
     <!-- End Colors for Connect Book-->
 

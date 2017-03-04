@@ -108,6 +108,10 @@ public class EfbXmlParser {
         Boolean refreshMeetingSettingsUpdateStatus = false;
         // refresh new meeting suggestion
         Boolean refreshMeetingNewSuggestion = false;
+        // refresh new author of suggestions
+        Boolean refreshMeetingAuthorSuggestion = false;
+        // refresh response deadline
+        Boolean refreshMeetingResponseDeadline = false;
 
 
 
@@ -164,7 +168,7 @@ public class EfbXmlParser {
                             }
                             break;
                         case ConstansClassXmlParser.xmlNameForConnectBook:
-                            Log.d("XMLParser","ConnectBook Zeile " + xpp.getLineNumber());
+                            readConnectBookTag();
                             break;
                         case ConstansClassXmlParser.xmlNameForOurArrangement:
                             readOurArrangementTag();
@@ -3258,7 +3262,7 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get order text
                                 if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
                                     tmpOrder = xpp.getText().trim();
-                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
                                         error = true;
                                         tmpOrder = "";
                                     }
@@ -3402,6 +3406,12 @@ public class EfbXmlParser {
                                 refreshMeeting = true;
                                 refreshMeetingSettings = true;
 
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) ) { // meeting settings order -> delete all?
+
+                                // delete all meeting suggestions in DB
+                                myDb.deleteAllRowsMeetingDateAndTime();
+
+
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // meeting settings order -> update?
 
                                 Log.d("meeting Settings","UPDATE AUSführen");
@@ -3443,6 +3453,8 @@ public class EfbXmlParser {
                                 // update meeting status?
                                 if (tmpMeetingStatus >= 0) {
 
+                                    Log.d ("Meetings Settings--","Status:"+tmpMeetingStatus);
+
                                     // write data to prefs
                                     prefsEditor.putInt(ConstantsClassMeeting.namePrefsMeetingStatus, tmpMeetingStatus);
                                     prefsEditor.commit();
@@ -3474,10 +3486,6 @@ public class EfbXmlParser {
 
     // read tag our meeting suggestions and push to database
     private void readMeetingTag_Suggestions() {
-
-
-
-        // insertNewMeetingDateAndTime (long meetingDateAndTime, String meetingPlace,
 
 
         Boolean parseAnymore = true;
@@ -3626,9 +3634,6 @@ public class EfbXmlParser {
                                 // insert new debetable goal in DB
                                 myDb.insertNewMeetingDateAndTime(tmpMeetingSuggestionTime, tmpMeetingSuggestionPlace, true, 4);
 
-                                // long meetingDateAndTime, String meetingPlace, Boolean newEntry, int status
-
-
                                 // refresh activity meeting
                                 refreshMeeting = true;
                                 refreshMeetingNewSuggestion = true;
@@ -3650,6 +3655,32 @@ public class EfbXmlParser {
                                 // refresh activity meeting
                                 refreshMeeting = true;
                                 refreshMeetingNewSuggestion = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpAuthorSuggestions.length() > 0) { // meeting suggestion order -> update author name?
+
+
+                                Log.d("Meetings Suggestions--", "Author NAme:" + tmpAuthorSuggestions);
+
+                                // write new author name of suggestions to prefs
+                                prefsEditor.putString(ConstantsClassMeeting.namePrefsAuthorMeetingSuggestion, tmpAuthorSuggestions);
+                                prefsEditor.commit();
+
+                                // refresh activity meeting
+                                refreshMeeting = true;
+                                refreshMeetingAuthorSuggestion = true;
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpResponseDeadline > 0) { // meeting suggestion order -> update response deadline?
+
+
+                                Log.d("Meetings Suggestions--", "Response Deadline:" + tmpResponseDeadline);
+
+                                // write new author name of suggestions to prefs
+                                prefsEditor.putLong(ConstantsClassMeeting.namePrefsMeetingSuggestionsResponseDeadline, tmpResponseDeadline);
+                                prefsEditor.commit();
+
+                                // refresh activity meeting
+                                refreshMeeting = true;
+                                refreshMeetingResponseDeadline = true;
                             }
                         }
 
@@ -3664,19 +3695,24 @@ public class EfbXmlParser {
             e.printStackTrace();
         }
 
-
-
-
-
-
-
-
-
     }
 
     //
     // End read meeting -----------------------------------------------------------------------------------
     //
+
+
+
+    //
+    // Begin read connect book -----------------------------------------------------------------------------------
+    //
+
+    // read element connect book
+    private void readConnectBookTag() {
+
+    }
+
+
 
 
 

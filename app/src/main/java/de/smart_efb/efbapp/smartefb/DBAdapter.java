@@ -1931,6 +1931,15 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+    // Delete all rows (suggestions) from the database
+    public boolean deleteAllRowsMeetingDateAndTime() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        return db.delete(DATABASE_TABLE_MEETING_FIND_MEETING, null, null) != 0;
+    }
+
+
 
     // Return all meetings from the database
     // the result is sorted by DESC
