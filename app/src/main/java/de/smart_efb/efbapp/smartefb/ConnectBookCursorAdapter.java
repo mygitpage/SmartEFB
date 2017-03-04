@@ -184,12 +184,6 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
 
                     }
 
-
-
-
-
-
-
             }
 
             // default Role -> center
