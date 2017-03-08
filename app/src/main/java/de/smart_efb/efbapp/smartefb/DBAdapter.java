@@ -493,14 +493,16 @@ public class DBAdapter extends SQLiteOpenHelper {
         c.close();
     }
 
-    // Return all data in the database.
+    // Return all data in the database. chat messages sorted by write time ASC
     public Cursor getAllRowsChatMessage() {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = null;
+        // sort string
+        String sort = CHAT_MESSAGE_KEY_WRITE_TIME + " ASC";
+
         Cursor c = 	db.query(true, DATABASE_TABLE_CHAT_MESSAGE, CHAT_MESSAGE_ALL_KEYS,
-                where, null, null, null, null, null);
+                null, null, null, null, sort, null);
 
         if (c != null) {
             c.moveToFirst();

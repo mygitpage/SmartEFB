@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -36,38 +37,39 @@
 
 
 
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/parentBubble"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="left">
+    android:gravity="right">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/childBubble"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/bubblenextleft">
+        android:background="@drawable/bubblenextright">
 
         <TextView
             android:id="@+id/lblMsgFrom"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/lblFromName"
             android:textSize="12dp"
             android:textStyle="italic"
-            android:gravity="left"/>
+            android:gravity="right"/>
 
         <TextView
             android:id="@+id/txtMsg"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxEms="15"
             android:textSize="14dp"
-            android:gravity="left"
-            android:layout_gravity="center"
+            android:gravity="right"
             android:textColor="@color/black"/>
 
+        <!--android:background="@drawable/bg_msg_you"-->
 
     </LinearLayout>
 
@@ -101,7 +103,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-
 
 </LinearLayout>

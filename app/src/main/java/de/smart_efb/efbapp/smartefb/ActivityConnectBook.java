@@ -34,6 +34,12 @@ public class ActivityConnectBook extends AppCompatActivity {
     int roleConnectBook; // the role 0=mother; 1=father; 2=third
     String userNameConnectBook; // the users name
 
+    // stores the old date from cursor adapter and listview
+    String oldMessageDate = "";
+
+    // true -> show date before message in cursor adapter, false -> do not show date
+    Boolean showMessageGroupDateChange;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +71,7 @@ public class ActivityConnectBook extends AppCompatActivity {
             }
         });
 
-        displayMessageSet();
+
 
     }
 
@@ -90,6 +96,9 @@ public class ActivityConnectBook extends AppCompatActivity {
         // init the connect book variables
         roleConnectBook = prefs.getInt(ConstansClassConnectBook.namePrefsConnectBookRole, 0);
         userNameConnectBook = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Jon Dow");
+
+        // init the ui
+        displayMessageSet();
 
 
     }
@@ -143,6 +152,40 @@ public class ActivityConnectBook extends AppCompatActivity {
 
 
     }
+
+
+
+    // setter for old message date
+    public void setOldMessageDate (String tmpOldDate) {
+
+        oldMessageDate = tmpOldDate;
+
+
+    }
+
+    // getter for old message date
+    public String getOldMessageDate () {
+
+        return oldMessageDate;
+
+    }
+
+
+    // setter for ShowMessageGroupDateChange
+    public void setShowMessageGroupDateChange (Boolean tmpShow) {
+
+        showMessageGroupDateChange = tmpShow;
+
+    }
+
+    // getter for ShowMessageGroupDateChange
+    public Boolean getShowMessageGroupDateChange () {
+
+        return showMessageGroupDateChange;
+
+    }
+
+
 
 
 }

@@ -46,6 +46,7 @@
 
     <color name="title_gray">#434343</color>
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
 
     <color name="bg_msg_myself">#c75814</color>
     <color name="bg_msg_other">#9e4812</color>
