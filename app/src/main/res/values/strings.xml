@@ -28,12 +28,12 @@
     <string name="mainMenueElementId_1">Übergabe</string>
     <string name="mainMenueElementId_2">Absprachen</string>
     <string name="mainMenueElementId_3">Ziele</string>
-    <string name="mainMenueElementId_4">Prävention</string>
-    <string name="mainMenueElementId_5">FAQ</string>
-    <string name="mainMenueElementId_6">Termine</string>
-    <string name="mainMenueElementId_7">Notfallhilfe</string>
-    <!--<string name="mainMenueElementId_8">Evaluation</string>-->
-    <string name="mainMenueElementId_8">Einstellungen</string>
+    <string name="mainMenueElementId_4">Zeitplan</string>
+    <string name="mainMenueElementId_5">Prävention</string>
+    <string name="mainMenueElementId_6">FAQ</string>
+    <string name="mainMenueElementId_7">Termine</string>
+    <string name="mainMenueElementId_8">Notfallhilfe</string>
+    <string name="mainMenueElementId_9">Einstellungen</string>
 
 
     <string name="main_menue_text_inactiv">Inaktiv</string>

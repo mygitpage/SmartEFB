@@ -113,31 +113,40 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("title", mainMenueElementTitle[position]);
                             mainContext.startActivity(intent);
                             break;
-                        case 3: // grid "praevention"
+
+                        case 3: // grid "zeitplan"
+                            intent = new Intent(getApplicationContext(), ActivityTimeTable.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
+                            break;
+
+
+                        case 4: // grid "praevention"
                             //intent = new Intent(getApplicationContext(), ActivityPrevention.class);
                             //intent.putExtra("position", position);
                             //intent.putExtra("title", mainMenueElementTitle[position]);
                             //mainContext.startActivity(intent);
                             break;
-                        case 4: // grid "faq"
+                        case 5: // grid "faq"
                             intent = new Intent(getApplicationContext(), ActivityFaq.class);
                             intent.putExtra("position", position);
                             intent.putExtra("title", mainMenueElementTitle[position]);
                             mainContext.startActivity(intent);
                             break;
-                        case 5: // grid "termine"
+                        case 6: // grid "termine"
                             intent = new Intent(getApplicationContext(), ActivityMeeting.class);
                             intent.putExtra("position", position);
                             intent.putExtra("title", mainMenueElementTitle[position]);
                             mainContext.startActivity(intent);
                             break;
-                        case 6: // grid "hilfe"
+                        case 7: // grid "hilfe"
                             intent = new Intent(getApplicationContext(), ActivityEmergencyHelp.class);
                             intent.putExtra("position", position);
                             intent.putExtra("title", mainMenueElementTitle[position]);
                             mainContext.startActivity(intent);
                             break;
-                        case 7:
+                        case 8:
                             // grid "einstellungen"
                             intent = new Intent(getApplicationContext(), ActivitySettingsEfb.class);
                             intent.putExtra("position", position);
@@ -207,15 +216,6 @@ public class MainActivity extends AppCompatActivity {
         initShowElementArray();
 
 
-
-
-
-
-
-
-
-
-
     }
 
     // init array show elements
@@ -277,13 +277,19 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     break;
-                case 3: // menue item "Praevention"
+
+                case 3: // menue item "Zeitplan"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-                case 4: // menue item "FAQ"
+
+
+                case 4: // menue item "Praevention"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-                case 5: // menue item "Termine"
+                case 5: // menue item "FAQ"
+                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    break;
+                case 6: // menue item "Termine"
                     if ( prefs.getBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime  + ConstantsClassMeeting.prefsPraefixMeetings[0], false) || prefs.getBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime  + ConstantsClassMeeting.prefsPraefixMeetings[1], false)) {
                         // meeting A or meeting B new!
                         mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
@@ -293,13 +299,13 @@ public class MainActivity extends AppCompatActivity {
                     tmpNew = true;
 
                     break;
-                case 6: // menue item "Notfallhilfe"
+                case 7: // menue item "Notfallhilfe"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-                case 7: // menue item "Evaluation"
+                case 8: // menue item "Evaluation"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-                case 8: // menue item "Einstellungen"
+                case 9: // menue item "Einstellungen"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
                 default:
@@ -397,8 +403,6 @@ public class MainActivity extends AppCompatActivity {
             return grid;
         }
     }
-
-
 
 }
 

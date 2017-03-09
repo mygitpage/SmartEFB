@@ -11,7 +11,7 @@
         <item>@string/mainMenueElementId_6</item>
         <item>@string/mainMenueElementId_7</item>
         <item>@string/mainMenueElementId_8</item>
-        <!--<item>@string/mainMenueElementId_9</item>-->
+        <item>@string/mainMenueElementId_9</item>
     </string-array>
 
     // Main menue button color active
@@ -24,7 +24,7 @@
         <item>#FFED686A</item>
         <item>#FF354644</item>
         <item>#FFACAAA4</item>
-        <!--<item>#FFFBBE5E</item>-->
+        <item>#FFFBBE5E</item>
     </string-array>
 
 
@@ -38,7 +38,7 @@
         <item>#FFF8C4C3</item>
         <item>#FFAEB5B4</item>
         <item>#FFDEDDDB</item>
-        <!--<item>#FFFDDEAE</item>-->
+        <item>#FFFDDEAE</item>
     </string-array>
 
 
@@ -47,11 +47,11 @@
         <item>main_pic_connectbook_normal</item><!--Uebergabe-->
         <item>main_pic_arrangement_normal</item><!--Absprachen-->
         <item>main_pic_goal_normal</item><!--Ziele-->
+        <item>main_pic_setting_normal</item><!--Zeitplan-->
         <item>main_pic_prevetion_normal</item><!--Praevention-->
         <item>main_pic_faq_normal</item><!--FAQ-->
         <item>main_pic_event_normal</item><!--Termine-->
         <item>main_pic_emergencyhelp_normal</item><!--Hilfe-->
-        <!--<item>main_pic_evaluation_normal</item> Evaluation-->
         <item>main_pic_setting_normal</item><!--Einstellungen-->
     </string-array>
 
@@ -61,11 +61,11 @@
         <item>main_pic_connectbook_new_entry</item><!--Uebergabe-->
         <item>main_pic_arrangement_new_entry</item><!--Absprachen-->
         <item>main_pic_goal_new_entry</item><!--Ziele-->
+        <item>main_pic_setting_normal</item><!--Zeitplan-->
         <item>main_pic_prevention_new_entry</item><!--Praevention-->
         <item>main_pic_faq_new_entry</item><!--FAQ-->
         <item>main_pic_event_new_entry</item><!--Termine-->
         <item>main_pic_emergencyhelp_normal</item><!--Hilfe - there is no need for new entry-->
-        <!-- <item>main_pic_evaluation_normal</item> Evaluation - there is no need for new entry-->
         <item>main_pic_setting_normal</item><!--Einstellungen - there is no need for new entry-->
     </string-array>
 
@@ -75,11 +75,11 @@
         <item>main_pic_connectbook_inactiv</item><!--Uebergabe-->
         <item>main_pic_arrangement_inactiv</item><!--Absprachen-->
         <item>main_pic_goal_inactiv</item><!--Ziele-->
+        <item>main_pic_setting_normal</item><!--Zeitplan-->
         <item>main_pic_prevetion_inactiv</item><!--Praevention-->
         <item>main_pic_faq_inactiv</item><!--FAQ-->
         <item>main_pic_event_inactiv</item><!--Termine-->
         <item>main_pic_emergencyhelp_inactiv</item><!--Hilfe-->
-        <!-- <item>main_pic_evaluation_inactiv</item> Evaluation-->
         <item>main_pic_setting_inactiv</item><!--Einstellungen-->
     </string-array>
 

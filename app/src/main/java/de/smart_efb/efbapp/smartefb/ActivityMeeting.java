@@ -52,42 +52,6 @@ public class ActivityMeeting extends AppCompatActivity {
     MeetingFragmentMeetingFind referenceFragmentMeetingFind;
     MeetingFragmentMeetingChange referenceFragmentMeetingChange;
 
-
-    // number of checkboxes for choosing timezones
-    //static final int countNumberTimezones = 15;
-
-    // number of simultaneous meetings
-    //static final int numberSimultaneousMeetings = 2;
-
-
-
-    // prefs name for meeting status
-    //static final String namePrefsMeetingStatus = "meetingStatus";
-
-    // prefs name for meeting place
-    //static final String namePrefsMeetingPlace = "meetingPlace";
-
-    // prefs name for timezone array
-    //static final String namePrefsArrayMeetingTimezoneArray = "meetingTimezone_";
-
-    // prefs name for meeting problem
-    //static final String namePrefsMeetingProblem = "meetingProblem";
-
-    // prefs name for meeting time and date
-    //static final String namePrefsMeetingTimeAndDate = "meetingDateAndTime";
-
-    // prefs name for author meeting suggestion
-    //static final String namePrefsAuthorMeetingSuggestion = "authorMeetingSuggestions";
-
-    // prefs name for info new meeting date and time (in mainActivity also!!!!!!!!!)
-    //static final String namePrefsNewMeetingDateAndTime = "meetingNewDateAndTime";
-
-    // prefs name for deadline for response of meeting suggestions
-    //static final String namePrefsMeetingSuggestionsResponseDeadline = "meetingSuggestionsResponseDeadline";
-
-    // prefs praefix for  (in mainActivity also!!!!!!!!!)
-    //String [] prefsPraefixMeetings = {"_A","_B"};
-
     // boolean status array checkbox
     Boolean [] makeMeetingCheckBoxListenerArray = new Boolean[ConstantsClassMeeting.countNumberTimezones];
 

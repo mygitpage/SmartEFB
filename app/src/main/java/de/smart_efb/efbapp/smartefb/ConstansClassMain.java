@@ -12,7 +12,7 @@ public class ConstansClassMain {
     public static final String namePrefsSubstringMainMenueElementId = "mainMenueElementId_";
 
     // total number of elements in main menue (in test-mode please edit variable in class SettingsEfbFragmentD please too!!!!!!!!!!!!!)
-    public static final int mainMenueNumberOfElements = 8;
+    public static final int mainMenueNumberOfElements = 9;
 
     // number of grid columns in main menue
     public static final int numberOfGridColumns = 2;

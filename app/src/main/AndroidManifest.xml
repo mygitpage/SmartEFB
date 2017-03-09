@@ -41,35 +41,51 @@
             android:launchMode="singleTop">
         </activity>
 
-        <!-- Activity FAQ -->
+        <!-- Activity Time Table -->
         <activity
-            android:name=".ActivityFaq"
+            android:name=".ActivityTimeTable"
+            android:label="@string/mainMenueElementId_4"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
+        </activity>
+
+        <!-- Activity Prevetion -->
+        <!--
+        <activity
+            android:name=".ActivityPrevention"
             android:label="@string/mainMenueElementId_5"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        -->
 
-        <!-- Activity Settings -->
+        <!-- Activity FAQ -->
         <activity
-            android:name=".ActivitySettingsEfb"
-            android:label="@string/mainMenueElementId_8"
+            android:name=".ActivityFaq"
+            android:label="@string/mainMenueElementId_6"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <!-- Activity Meeting -->
         <activity
             android:name=".ActivityMeeting"
-            android:label="@string/mainMenueElementId_6"
+            android:label="@string/mainMenueElementId_7"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
-
         </activity>
 
         <!-- Activity Emergency Help -->
         <activity
             android:name=".ActivityEmergencyHelp"
-            android:label="@string/mainMenueElementId_7"
+            android:label="@string/mainMenueElementId_8"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
+        </activity>
+
+        <!-- Activity Settings -->
+        <activity
+            android:name=".ActivitySettingsEfb"
+            android:label="@string/mainMenueElementId_9"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <!-- Dispatcher activity for deep links -->

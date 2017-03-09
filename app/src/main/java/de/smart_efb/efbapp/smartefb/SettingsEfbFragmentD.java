@@ -1022,6 +1022,17 @@ public class SettingsEfbFragmentD extends Fragment {
                         aktiv_passivText = "deaktiviert";
                     }
                     break;
+                case 8:
+                    prefsMenueButtonName = "mainMenueElementId_8";
+                    if (checked) {
+                        buttonBooleanValue=true;
+                        aktiv_passivText = "aktiviert";
+                    }
+                    else {
+                        buttonBooleanValue=false;
+                        aktiv_passivText = "deaktiviert";
+                    }
+                    break;
            }
 
             prefsEditor.putBoolean(prefsMenueButtonName, buttonBooleanValue);

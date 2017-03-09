@@ -34,12 +34,6 @@ public class ActivityConnectBook extends AppCompatActivity {
     int roleConnectBook; // the role 0=mother; 1=father; 2=third
     String userNameConnectBook; // the users name
 
-    // stores the old date from cursor adapter and listview
-    String oldMessageDate = "";
-
-    // true -> show date before message in cursor adapter, false -> do not show date
-    Boolean showMessageGroupDateChange;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +45,6 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         final EditText txtInputMsg = (EditText) findViewById(R.id.inputMsg);
 
-
         // send button init
         Button buttonSendConnectBook = (Button) findViewById(R.id.buttonSendMessage);
 
@@ -62,21 +55,20 @@ public class ActivityConnectBook extends AppCompatActivity {
 
                 long newID = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), txtInputMsg.getText().toString(), roleConnectBook, 2, false);
 
+                // delete text in edittextfield
                 txtInputMsg.setText("");
 
+                // refresh display
                 displayMessageSet();
 
+                // show succsesfull message
                 displayToast();
 
             }
         });
-
-
-
     }
 
-
-
+    // init activity
     private void initConnectBook() {
 
         // init the toolbar
@@ -103,8 +95,7 @@ public class ActivityConnectBook extends AppCompatActivity {
 
     }
 
-
-
+    // show toast message succesfull insert in db
     private void displayToast() {
         Toast.makeText(this," Nachricht eingetragen ", Toast.LENGTH_SHORT).show();
     }
@@ -123,7 +114,6 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
-
             case android.R.id.home:
                 onBackPressed();
                 return true;
@@ -134,6 +124,7 @@ public class ActivityConnectBook extends AppCompatActivity {
     }
 
 
+    // display connect book messages in listview
     public void displayMessageSet () {
 
         Cursor cursor = myDb.getAllRowsChatMessage();
@@ -152,40 +143,5 @@ public class ActivityConnectBook extends AppCompatActivity {
 
 
     }
-
-
-
-    // setter for old message date
-    public void setOldMessageDate (String tmpOldDate) {
-
-        oldMessageDate = tmpOldDate;
-
-
-    }
-
-    // getter for old message date
-    public String getOldMessageDate () {
-
-        return oldMessageDate;
-
-    }
-
-
-    // setter for ShowMessageGroupDateChange
-    public void setShowMessageGroupDateChange (Boolean tmpShow) {
-
-        showMessageGroupDateChange = tmpShow;
-
-    }
-
-    // getter for ShowMessageGroupDateChange
-    public Boolean getShowMessageGroupDateChange () {
-
-        return showMessageGroupDateChange;
-
-    }
-
-
-
 
 }

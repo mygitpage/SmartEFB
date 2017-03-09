@@ -27,48 +27,50 @@
                 android:textColor="@color/white"
                 android:textSize="14dp"
                 android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"/>
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/parentBubble"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="right">
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/childBubble"
-        android:layout_width="wrap_content"
+        android:id="@+id/parentBubble"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/bubblefromright">
+        android:gravity="right">
 
-        <TextView
-            android:id="@+id/lblMsgFrom"
-            android:layout_width="match_parent"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/childBubble"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/lblFromName"
-            android:textSize="12dp"
-            android:textStyle="italic"
-            android:gravity="right"/>
+            android:orientation="vertical"
+            android:background="@drawable/bubblefromright">
 
-        <TextView
-            android:id="@+id/txtMsg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxEms="15"
-            android:textSize="14dp"
-            android:gravity="right"
-            android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/lblMsgFrom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/lblFromName"
+                android:textSize="12dp"
+                android:textStyle="italic"
+                android:gravity="right"/>
+
+            <TextView
+                android:id="@+id/txtMsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxEms="15"
+                android:textSize="14dp"
+                android:gravity="right"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/connectBookDateParentLast"
@@ -92,8 +94,10 @@
                 android:textColor="@color/white"
                 android:textSize="14dp"
                 android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"/>
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"/>
 
         </LinearLayout>
 
