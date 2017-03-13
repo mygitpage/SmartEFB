@@ -652,11 +652,51 @@
 
         <!-- End help dialog -->
 
-    textDialogEmergencyHelpSettingsIntro
-
 
     <!-- Activity EmergencyHelp End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Activity TimeTable -->
+
+
+    <!-- timetable -->
+
+
+        <string name="timeTableIntroText">Ihr gemeinsamer Beratungsstand:</string>
+        <string name="timeTableIntroTextComputeValueExplain">Wie entsteht dieser Wert?</string>
+
+    <!-- end timetable -->
+
+    <!-- Activity TimeTable -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Activity Prevention -->
+
+
+    <!-- prevention -->
+
+        <string name="textPreventionNothingThere">Zurzeit liegen keine Präventionsinhalte vor.</string>
+
+
+    <!-- end prevention -->
+
+    <!-- help dialog -->
+
+
+
+
+    <!-- help dialog -->
+
+    <!-- Activity Prevention -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
 
 
 

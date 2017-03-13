@@ -50,13 +50,13 @@
         </activity>
 
         <!-- Activity Prevetion -->
-        <!--
         <activity
             android:name=".ActivityPrevention"
             android:label="@string/mainMenueElementId_5"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
         </activity>
-        -->
+
 
         <!-- Activity FAQ -->
         <activity

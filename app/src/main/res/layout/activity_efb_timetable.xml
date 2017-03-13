@@ -33,19 +33,19 @@
 
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/containerTimeTable"
+            android:id="@+id/containerShowEmergencyHelpInformation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:gravity="left"
+            android:gravity="center_horizontal"
             android:background="@color/body_background"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
@@ -53,30 +53,63 @@
             android:paddingRight="10dp">
 
 
+
             <TextView
-                android:id="@+id/introTextTimeTable"
+                    android:id="@+id/introTextTimeTable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold"
+                    android:text="@string/timeTableIntroText"
+                    android:gravity="left"
+                    android:paddingBottom="15dp"/>
+
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:layout_centerInParent="true"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progress="40"
+                    android:progressDrawable="@drawable/progress_bar_circular"
+                    android:secondaryProgress="0" />
+
+
+                <TextView
+                    android:id="@+id/txtProgress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/progressBar"
+                    android:layout_centerInParent="true"
+                    android:textSize="20dp"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold"/>
+                <!-- android:textAppearance="?android:attr/textAppearanceSmall"  -->
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/introTextComputeValueExplain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:textSize="16dp"
                 android:textColor="@color/text_color"
                 android:textStyle="bold"
-                android:text="@string/emergencyHelpEmergencyCallText"
-                android:gravity="center"
-                android:paddingBottom="5dp"/>
-
-            <!-- http://stackoverflow.com/questions/27213381/how-to-create-circular-progressbar-in-android -->
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:max="500"
-                android:progress="0"
-                android:progressDrawable="@drawable/progress_bar_circular" />
-
+                android:text="@string/timeTableIntroTextComputeValueExplain"
+                android:gravity="left"
+                android:paddingBottom="15dp"/>
 
         </LinearLayout>
 

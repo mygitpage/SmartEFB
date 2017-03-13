@@ -113,20 +113,17 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("title", mainMenueElementTitle[position]);
                             mainContext.startActivity(intent);
                             break;
-
                         case 3: // grid "zeitplan"
                             intent = new Intent(getApplicationContext(), ActivityTimeTable.class);
                             intent.putExtra("position", position);
                             intent.putExtra("title", mainMenueElementTitle[position]);
                             mainContext.startActivity(intent);
                             break;
-
-
                         case 4: // grid "praevention"
-                            //intent = new Intent(getApplicationContext(), ActivityPrevention.class);
-                            //intent.putExtra("position", position);
-                            //intent.putExtra("title", mainMenueElementTitle[position]);
-                            //mainContext.startActivity(intent);
+                            intent = new Intent(getApplicationContext(), ActivityPrevention.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
                             break;
                         case 5: // grid "faq"
                             intent = new Intent(getApplicationContext(), ActivityFaq.class);

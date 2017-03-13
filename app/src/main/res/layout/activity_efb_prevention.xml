@@ -1,0 +1,71 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="de.smart_efb.efbapp.smartefb.ActivityPrevention">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarPrevention"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <Button android:id="@+id/helpPrevention"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/activity_help_toolbar_icon" />
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/body_background"
+        android:id="@+id/listPreventionContentHolder"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
+            android:id="@+id/textPreventionNothingThere"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:text="@string/textPreventionNothingThere"
+            android:paddingTop="15dp"
+            android:paddingLeft="15dp"/>
+
+
+        <ListView
+            android:id="@+id/listPrevention"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:transcriptMode="normal"
+            android:layout_weight="1"
+            android:stackFromBottom="false"
+            android:background="@null"
+            android:divider="@null">
+        </ListView>
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
+
+
+

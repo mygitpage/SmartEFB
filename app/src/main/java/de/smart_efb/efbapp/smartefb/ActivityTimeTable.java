@@ -4,12 +4,15 @@ import android.animation.ObjectAnimator;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 /**
  * Created by ich on 09.03.2017.
@@ -31,6 +34,11 @@ public class ActivityTimeTable extends AppCompatActivity {
 
 
 
+    private TextView txtProgress;
+    private ProgressBar progressBar;
+    private int pStatus = 0;
+    private Handler handler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +52,32 @@ public class ActivityTimeTable extends AppCompatActivity {
 
 
 
-        //
-        ProgressBar progressBar = (ProgressBar) this.findViewById(R.id.progressBar);
-        ObjectAnimator animation = ObjectAnimator.ofInt (progressBar, "progress", 0, 500); // see this max value coming back here, we animale towards that value
-        animation.setDuration (5000); //in milliseconds
-        animation.setInterpolator (new DecelerateInterpolator());
-        animation.start ();
+        txtProgress = (TextView) findViewById(R.id.txtProgress);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        txtProgress.setText("40 %");
 
-        //
-
-
+        /*
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (pStatus <= 100) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setProgress(pStatus);
+                            txtProgress.setText(pStatus + " %");
+                        }
+                    });
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    pStatus++;
+                }
+            }
+        }).start();
+        */
 
 
     }
@@ -77,4 +101,25 @@ public class ActivityTimeTable extends AppCompatActivity {
 
 
     }
+
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+
+
 }
