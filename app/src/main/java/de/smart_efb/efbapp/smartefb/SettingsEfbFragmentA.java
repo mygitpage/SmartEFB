@@ -1,8 +1,11 @@
 package de.smart_efb.efbapp.smartefb;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -37,8 +40,11 @@ public class SettingsEfbFragmentA extends Fragment {
     // actual random number for connetion to server
     int randomNumverForConnection = 0;
 
+    // Connection helper object
+    EfbHelperConnectionClass efbHelperConnectionClass;
 
-
+    // Progress Dialog
+    private ProgressDialog pDialog;
 
 
     @Override
@@ -60,6 +66,8 @@ public class SettingsEfbFragmentA extends Fragment {
         super.onViewCreated(view, saveInstanceState);
 
         fragmentConnectToServerContext = getActivity().getApplicationContext();
+
+        efbHelperConnectionClass = new EfbHelperConnectionClass(fragmentConnectToServerContext);
 
         // init the fragment connect to server
         initFragmentConnectToServer();
@@ -120,14 +128,36 @@ public class SettingsEfbFragmentA extends Fragment {
                     ((ActivitySettingsEfb)getActivity()).setConnectionStatus(1);
                     connectingStatus = 1;
 
+
+                    if (efbHelperConnectionClass.internetAvailable()) {
+
+                        pDialog = new ProgressDialog(getActivity());
+                        pDialog.setMessage("Es besteht eine Internetverbindung");
+                        pDialog.setIndeterminate(false);
+                        pDialog.setCancelable(true);
+                        pDialog.show();
+
+                    } else {
+
+                        pDialog = new ProgressDialog(getActivity());
+                        pDialog.setMessage("Keine Internetverbindung");
+                        pDialog.setIndeterminate(false);
+                        pDialog.setCancelable(true);
+                        pDialog.show();
+
+
+                    }
+
+
                     // show toast number succsessfull send
                     Toast.makeText(fragmentConnectToServerContext, fragmentConnectToServerContext.getResources().getString(R.string.sendConnectToServerKeyNumberSuccsesfulyText), Toast.LENGTH_SHORT).show();
 
-
+                    /*
                     Intent intent = new Intent(fragmentConnectToServerContext, ActivitySettingsEfb.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("com","show_waiting_response");
                     fragmentConnectToServerContext.startActivity(intent);
+                    */
 
                 }
             });
@@ -174,6 +204,8 @@ public class SettingsEfbFragmentA extends Fragment {
 
 
     }
+
+
 
 
 

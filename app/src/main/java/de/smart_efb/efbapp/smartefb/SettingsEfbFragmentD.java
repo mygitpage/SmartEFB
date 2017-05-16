@@ -247,6 +247,8 @@ public class SettingsEfbFragmentD extends Fragment {
         prefsEditor.commit();
         */
 
+        prefsEditor.putInt("connectingStatus",0);
+        prefsEditor.commit();
 
         int meetingStatus = prefs.getInt("meetingStatus", 0);
 
