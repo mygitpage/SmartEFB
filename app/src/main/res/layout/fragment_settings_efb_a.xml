@@ -27,25 +27,12 @@
             android:paddingLeft="10dp"
             android:paddingBottom="5dp"/>
 
-        <TextView
-            android:id="@+id/settingsConnectToServerSuccessful"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settingsConnectToServerSuccessfulText"
-            android:textSize="16dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
-            android:textColor="@color/text_color"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:visibility="gone"/>
 
 
         <TextView
             android:id="@+id/settingsConnectToServerIntro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/settingsConnectToServerIntroText"
             android:textSize="16dp"
             android:paddingLeft="10dp"
             android:paddingBottom="15dp"
@@ -54,18 +41,7 @@
             android:gravity="left"
             android:visibility="gone"/>
 
-        <TextView
-            android:id="@+id/settingsWaitingForResponseIntro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settingsWaitingForResponseIntroText"
-            android:textSize="16dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
-            android:textColor="@color/text_color"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:visibility="gone"/>
+
 
         <TextView
             android:id="@+id/settingConnectToServerKeyNumber"
@@ -82,7 +58,6 @@
             android:id="@+id/settingsConnectToServerRemarkClickButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/settingsConnectToServerRemarkClickButtonText"
             android:textSize="16dp"
             android:paddingLeft="10dp"
             android:paddingBottom="15dp"

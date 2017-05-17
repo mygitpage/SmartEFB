@@ -185,7 +185,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
                 tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleConnectToServer", "string", getPackageName()));
                 break;
             case 1:
-                tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleWaitingForResponse", "string", getPackageName()));
+                tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleNoNetworkAvailable", "string", getPackageName()));
                 break;
             default:
                 tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleConnectToServer", "string", getPackageName()));
@@ -226,7 +226,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             TabLayout.Tab tab = tabLayoutSettingsEfb.getTabAt(1);
             tab.select();
 
-        } if (command.equals("show_waiting_response")) { // Show tab 0 -> waiting for response from server to link app with server
+        } if (command.equals("show_no_network_try_again")) { // Show tab 0 -> no network available, try again
 
 
             // set correct subtitle

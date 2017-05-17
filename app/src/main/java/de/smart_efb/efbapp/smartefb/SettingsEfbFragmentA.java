@@ -3,12 +3,14 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +36,7 @@ public class SettingsEfbFragmentA extends Fragment {
     static int randomNumverForConnectionMin = 10000;
     static int randomNumverForConnectionMax = 99999;
 
-    // the connecting status (0=not connected, 1=try to connect, 2=connected)
+    // the connecting status (0=not connected, 1=no network, try again, 2= pin out of time, 3=connected)
     int connectingStatus = 0;
 
     // actual random number for connetion to server
@@ -98,8 +100,10 @@ public class SettingsEfbFragmentA extends Fragment {
             String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerIntroHeadingText);
             textViewConnectedWithServerHeadlineText.setText(tmpTextHeadline);
 
-            // show connecting intro text
+            // replace text and show connecting intro text
             TextView textViewConnectToServerIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerIntro);
+            String tmpTextIntroText = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerIntroText);
+            textViewConnectToServerIntroText.setText(tmpTextIntroText);
             textViewConnectToServerIntroText.setVisibility(View.VISIBLE);
 
             // generate and show random number for connecting
@@ -111,8 +115,12 @@ public class SettingsEfbFragmentA extends Fragment {
 
             // show remark for clicking button
             TextView textViewConnectToServerRemarkClickButtonText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerRemarkClickButton);
+            String tmpTextRemarkClickButton = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerRemarkClickButtonText);
+            textViewConnectToServerRemarkClickButtonText.setText(tmpTextRemarkClickButton);
             textViewConnectToServerRemarkClickButtonText.setVisibility(View.VISIBLE);
 
+
+            // send button
             Button tmpButton = (Button) viewFragmentConnectToServer.findViewById(R.id.buttonSendConnectToServerKeyNumber);
             tmpButton.setVisibility(View.VISIBLE);
 
@@ -121,36 +129,38 @@ public class SettingsEfbFragmentA extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    // call setter-methode setRandomNumberForConnection in ActivitySettingsEfb to set random number
-                    ((ActivitySettingsEfb)getActivity()).setRandomNumberForConnection(randomNumverForConnection);
 
-                    // call setter-methode setConnectionStatus in ActivitySettingsEfb to set connection status waiting for response
-                    ((ActivitySettingsEfb)getActivity()).setConnectionStatus(1);
-                    connectingStatus = 1;
 
 
                     if (efbHelperConnectionClass.internetAvailable()) {
 
-                        pDialog = new ProgressDialog(getActivity());
-                        pDialog.setMessage("Es besteht eine Internetverbindung");
-                        pDialog.setIndeterminate(false);
-                        pDialog.setCancelable(true);
-                        pDialog.show();
+                        dialogWaitingForResponse ();
 
-                    } else {
+                    } else { // no network connection!
 
-                        pDialog = new ProgressDialog(getActivity());
-                        pDialog.setMessage("Keine Internetverbindung");
-                        pDialog.setIndeterminate(false);
-                        pDialog.setCancelable(true);
-                        pDialog.show();
+                        // call setter-methode setRandomNumberForConnection in ActivitySettingsEfb to set random number
+                        ((ActivitySettingsEfb)getActivity()).setRandomNumberForConnection(randomNumverForConnection);
+
+                        // call setter-methode setConnectionStatus in ActivitySettingsEfb to set connection status waiting for response
+                        ((ActivitySettingsEfb)getActivity()).setConnectionStatus(1);
+
+                        connectingStatus = 1;
+
+
+                        dialogNoInternetAvailable ();
+
+
+                        Intent intent = new Intent(fragmentConnectToServerContext, ActivitySettingsEfb.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("com","show_no_network_try_again");
+                        fragmentConnectToServerContext.startActivity(intent);
 
 
                     }
 
 
                     // show toast number succsessfull send
-                    Toast.makeText(fragmentConnectToServerContext, fragmentConnectToServerContext.getResources().getString(R.string.sendConnectToServerKeyNumberSuccsesfulyText), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(fragmentConnectToServerContext, fragmentConnectToServerContext.getResources().getString(R.string.sendConnectToServerKeyNumberSuccsesfulyText), Toast.LENGTH_SHORT).show();
 
                     /*
                     Intent intent = new Intent(fragmentConnectToServerContext, ActivitySettingsEfb.class);
@@ -170,8 +180,80 @@ public class SettingsEfbFragmentA extends Fragment {
         }
 
 
-        // connecting status 1 -> waiting for response from server
+        // connecting status 1 -> no connection, no network, try again
         if (connectingStatus == 1) {
+
+
+            // replace headline no network available
+            TextView textViewConnectedWithServerHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
+            String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerHeadingNoInternet);
+            textViewConnectedWithServerHeadlineText.setText(tmpTextHeadline);
+
+            // replace text and show info text try again
+            TextView textViewConnectToServerIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerIntro);
+            String tmpTextIntroText = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerIntroTextNoInternet);
+            textViewConnectToServerIntroText.setText(tmpTextIntroText);
+            textViewConnectToServerIntroText.setVisibility(View.VISIBLE);
+
+            // get random number from prefs and show
+            randomNumverForConnection = ((ActivitySettingsEfb)getActivity()).getRandomNumberForConnection();
+
+
+            TextView textViewRandomNumberText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingConnectToServerKeyNumber);
+            textViewRandomNumberText.setVisibility(View.VISIBLE);
+            textViewRandomNumberText.setText(""+randomNumverForConnection);
+
+            // show remark for clicking button
+            TextView textViewConnectToServerRemarkClickButtonText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerRemarkClickButton);
+            String tmpTextRemarkClickButton = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerRemarkNoInternetClickButtonText);
+            textViewConnectToServerRemarkClickButtonText.setText(tmpTextRemarkClickButton);
+            textViewConnectToServerRemarkClickButtonText.setVisibility(View.VISIBLE);
+
+            Button tmpButton = (Button) viewFragmentConnectToServer.findViewById(R.id.buttonSendConnectToServerKeyNumber);
+            tmpButton.setVisibility(View.VISIBLE);
+
+            // onClick listener make meeting
+            tmpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+
+
+                    if (efbHelperConnectionClass.internetAvailable()) {
+
+                        dialogWaitingForResponse ();
+
+                    } else { // no network connection!
+
+
+
+
+                        dialogNoInternetAvailable ();
+
+
+
+
+                    }
+
+
+                    // show toast number succsessfull send
+                    //Toast.makeText(fragmentConnectToServerContext, fragmentConnectToServerContext.getResources().getString(R.string.sendConnectToServerKeyNumberSuccsesfulyText), Toast.LENGTH_SHORT).show();
+
+                    /*
+                    Intent intent = new Intent(fragmentConnectToServerContext, ActivitySettingsEfb.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("com","show_waiting_response");
+                    fragmentConnectToServerContext.startActivity(intent);
+                    */
+
+                }
+            });
+
+
+
+
+            /*
 
             // replace headline connect to server
             TextView textViewConnectedWithServerHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
@@ -182,6 +264,7 @@ public class SettingsEfbFragmentA extends Fragment {
             TextView textViewConnectToServerIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsWaitingForResponseIntro);
             textViewConnectToServerIntroText.setVisibility(View.VISIBLE);
 
+            */
         }
 
         // connecting status 2 -> connected with server
@@ -192,11 +275,12 @@ public class SettingsEfbFragmentA extends Fragment {
             String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectedWithServerIntroHeadingText);
             textViewConnectedWithServerHeadlineText.setText(tmpTextHeadline);
 
+            /*
             // show connected to server intro text
             TextView textViewConnectedWithServerIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerSuccessful);
             textViewConnectedWithServerIntroText.setVisibility(View.VISIBLE);
             textViewConnectedWithServerIntroText.setMovementMethod(LinkMovementMethod.getInstance());
-
+            */
         }
 
 
@@ -207,7 +291,32 @@ public class SettingsEfbFragmentA extends Fragment {
 
 
 
+    private void dialogNoInternetAvailable () {
 
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setTitle(fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerDialogNoInternetHeadline));
+        alertDialog.setMessage(fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerDialogNoInternetInfoText));
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerDialogOkButton),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+
+    }
+
+
+
+    private void dialogWaitingForResponse () {
+
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setMessage("Es besteht eine Internetverbindung");
+        pDialog.setIndeterminate(false);
+        pDialog.setCancelable(true);
+        pDialog.show();
+
+    }
 
 
 }
