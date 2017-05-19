@@ -19,6 +19,10 @@ public class ConstansClassSettings {
     public static final String namePrefsCaseId = "caseId";
 
 
+    // URL first connect to server
+    public static final String urlFirstConnectToServer = "http://192.168.0.126/index.php?com=exchange&subcom=establish";
+
+
 
 
 }

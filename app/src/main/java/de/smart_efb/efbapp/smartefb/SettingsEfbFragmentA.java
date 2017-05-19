@@ -7,17 +7,29 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 
 /**
  * Created by ich on 20.06.16.
@@ -95,6 +107,8 @@ public class SettingsEfbFragmentA extends Fragment {
         // connecting status 0 -> not connected to server
         if (connectingStatus == 0) {
 
+            Log.d("Settings A","ConnectinStatus == 0");
+
             // replace headline connect to server
             TextView textViewConnectedWithServerHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
             String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerIntroHeadingText);
@@ -134,7 +148,14 @@ public class SettingsEfbFragmentA extends Fragment {
 
                     if (efbHelperConnectionClass.internetAvailable()) {
 
-                        dialogWaitingForResponse ();
+                        Log.d ("MAIN","Before new AsynTask!");
+
+
+                        new sendPinToServer().execute(Integer.toString(randomNumverForConnection));
+
+
+
+                        Log.d ("MAIN","After new AsynTask!");
 
                     } else { // no network connection!
 
@@ -184,6 +205,8 @@ public class SettingsEfbFragmentA extends Fragment {
         if (connectingStatus == 1) {
 
 
+            Log.d ("MAIN","Status=1");
+
             // replace headline no network available
             TextView textViewConnectedWithServerHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
             String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerHeadingNoInternet);
@@ -222,7 +245,16 @@ public class SettingsEfbFragmentA extends Fragment {
 
                     if (efbHelperConnectionClass.internetAvailable()) {
 
-                        dialogWaitingForResponse ();
+                        Log.d ("MAIN","Before new AsynTask!");
+
+
+                        new sendPinToServer().execute(Integer.toString(randomNumverForConnection));
+
+
+
+                        Log.d ("MAIN","After new AsynTask!");
+
+
 
                     } else { // no network connection!
 
@@ -291,7 +323,7 @@ public class SettingsEfbFragmentA extends Fragment {
 
 
 
-    private void dialogNoInternetAvailable () {
+    public void dialogNoInternetAvailable () {
 
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         alertDialog.setTitle(fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerDialogNoInternetHeadline));
@@ -311,12 +343,122 @@ public class SettingsEfbFragmentA extends Fragment {
     private void dialogWaitingForResponse () {
 
         pDialog = new ProgressDialog(getActivity());
-        pDialog.setMessage("Es besteht eine Internetverbindung");
+        pDialog.setMessage(fragmentConnectToServerContext.getResources().getString(R.string.settingsSendingToServerDialogInfoText));
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();
 
     }
+
+
+
+
+
+
+
+
+    //+++++++++++++++++++++++++++++
+
+    /**
+     * Background Async Task to send pin to server
+     * */
+    class sendPinToServer extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            Log.d("AsynTask","Vor Pre execut!");
+            dialogWaitingForResponse();
+        }
+
+        /**
+         * getting clientID and configuration from server
+         */
+        protected String doInBackground(String... args) {
+
+            Log.d("AsynTask","Vor try Gesendet");
+
+            try {
+                String textparam = "clientpin=" + URLEncoder.encode(args[0], "UTF-8");
+
+                URL scripturl = new URL(ConstansClassSettings.urlFirstConnectToServer);
+                HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                connection.setRequestMethod("POST");
+                connection.setFixedLengthStreamingMode(textparam.getBytes().length);
+
+                OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
+                contentWriter.write(textparam);
+                contentWriter.flush();
+
+                contentWriter.close();
+
+
+                InputStream answerInputStream = connection.getInputStream();
+
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
+                StringBuilder stringBuilder = new StringBuilder();
+
+                String aktuelleZeile;
+                try {
+                    while ((aktuelleZeile = reader.readLine()) != null){
+                        stringBuilder.append(aktuelleZeile);
+                        stringBuilder.append("\n");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                //return stringBuilder.toString().trim();
+
+
+
+                //final String answer = getTextFromInputStream(answerInputStream);
+
+
+                answerInputStream.close();
+                connection.disconnect();
+
+
+                Log.d("AsynTask","Empfangen:"+stringBuilder.toString().trim());
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute() {
+
+            Log.d ("AsynTask","OnPostExecute!t");
+
+            // dismiss the dialog after getting clientID and configuration
+            pDialog.dismiss();
+
+
+        }
+
+
+        //+++++++++++++++++++++++++++++++++
+
+    }
+
+
+
+
+
+
 
 
 }

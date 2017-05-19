@@ -77,6 +77,8 @@
         <string name="settingsConnectToServerHeadingNoInternet">Keine Internetverbindung</string>
         <string name="settingsConnectToServerIntroTextNoInternet">Es besteht keine Verbindung mit dem Internet. Bitte stellen Sie eine Verbindung zum Internet her und versuchen Sie sich erneut mit dem Server zu verbinden. Bei Fragen kann Ihnen gerne Ihre Beraterin/ Ihr Berater helfen.\n\nIhre Pin-Nummer ist gleich geblieben.</string>
 
+        <string name="settingsSendingToServerDialogInfoText">Senden und Empfangen von Daten</string>
+
     <!-- End Fragment settings a (connect to server) -->
 
 
