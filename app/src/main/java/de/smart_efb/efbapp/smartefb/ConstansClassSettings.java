@@ -12,15 +12,15 @@ public class ConstansClassSettings {
     public static final String namePrefsRandomNumberForConnection = "randomNumberForConnection";
 
 
-    // prefs name for app id
-    public static final String namePrefsAppId = "appId";
+    // prefs name for client id
+    public static final String namePrefsClientId = "clientId";
 
     // prefs name for case id
     public static final String namePrefsCaseId = "caseId";
 
 
     // URL first connect to server
-    public static final String urlFirstConnectToServer = "http://192.168.0.126/index.php?com=exchange&subcom=establish";
+    public static final String urlFirstConnectToServer = "http://172.29.25.53/index.php?com=exchange&subcom=establish";
 
 
 

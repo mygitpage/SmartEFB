@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +22,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.xmlpull.v1.XmlSerializer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -383,7 +387,9 @@ public class SettingsEfbFragmentA extends Fragment {
             Log.d("AsynTask","Vor try Gesendet");
 
             try {
-                String textparam = "clientpin=" + URLEncoder.encode(args[0], "UTF-8");
+                //String textparam = "clientpin=" + URLEncoder.encode(args[0], "UTF-8");
+
+                String textparam = "xmlcode=" + URLEncoder.encode(makeXMLRequestForFirstConnection (args[0]), "UTF-8");
 
                 URL scripturl = new URL(ConstansClassSettings.urlFirstConnectToServer);
                 HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
@@ -433,13 +439,15 @@ public class SettingsEfbFragmentA extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             return null;
         }
 
         /**
          * After completing background task Dismiss the progress dialog
          **/
-        protected void onPostExecute() {
+        @Override
+        protected void onPostExecute(String result) {
 
             Log.d ("AsynTask","OnPostExecute!t");
 
@@ -456,7 +464,67 @@ public class SettingsEfbFragmentA extends Fragment {
 
 
 
+    private String makeXMLRequestForFirstConnection (String clientpin) {
 
+        XmlSerializer xmlSerializer = Xml.newSerializer();
+
+        StringWriter writer = new StringWriter();
+
+        try {
+
+            xmlSerializer.setOutput(writer);
+
+            //Start Document
+            xmlSerializer.startDocument("UTF-8", true);
+            xmlSerializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
+
+            //Open Tag <file>
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
+            //xmlSerializer.attribute("", "ID", "000001");
+
+            // start tag main order -> first connection, send pin
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMainOrder);
+            xmlSerializer.text("first");
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMainOrder);
+
+            // start tag client pin
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMainClientPin);
+            xmlSerializer.text(clientpin);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMainClientPin);
+
+            /*
+            xmlSerializer.startTag("", "name");
+            xmlSerializer.text("CO");
+            xmlSerializer.endTag("", "name");
+
+            xmlSerializer.endTag("", "something");
+            */
+
+
+            // end tag main
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
+
+
+            // end tag smartEfb
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+
+            xmlSerializer.endDocument();
+
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Log.d ("Make XML","Result:"+writer.toString());
+
+        return writer.toString();
+
+
+
+    }
 
 
 

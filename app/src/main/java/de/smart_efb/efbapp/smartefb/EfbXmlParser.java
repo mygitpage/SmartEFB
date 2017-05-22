@@ -242,7 +242,7 @@ public class EfbXmlParser {
 
                     switch (xpp.getName().trim()) {
 
-                        case ConstansClassXmlParser.xmlNameForMain_AppId: // xml data normal
+                        case ConstansClassXmlParser.xmlNameForMain_ClientID: // xml data normal
                             eventType = xpp.next();
 
                             if (eventType == XmlPullParser.TEXT) {
@@ -252,7 +252,7 @@ public class EfbXmlParser {
 
                                     //Log.d("ReadMain","APPID PREFS: " + prefs.getString(ConstansClassSettings.namePrefsAppId, "TEST"));
 
-                                    if (tmpAppId.equals(prefs.getString(ConstansClassSettings.namePrefsAppId, ""))) { // check if appid local equal appid from xml
+                                    if (tmpAppId.equals(prefs.getString(ConstansClassSettings.namePrefsClientId, ""))) { // check if clientid local equal clientid from xml
 
                                         //Log.d("ReadMain","APPID GLEICH!!!!!!!!!!!!!!!!!");
 
@@ -299,13 +299,13 @@ public class EfbXmlParser {
 
                                                 if (eventType == XmlPullParser.START_TAG) { // get start tag appId
 
-                                                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain_AppId)) {
+                                                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain_ClientID)) {
                                                         eventType = xpp.next();
                                                         if (eventType == XmlPullParser.TEXT) { // get appId text
                                                             if (xpp.getText().trim().length() > 0) { // check if appid from xml > 0
                                                                 String tmpAppId = xpp.getText().trim();
-                                                                // write appId to prefs
-                                                                prefsEditor.putString(ConstansClassSettings.namePrefsAppId, "");
+                                                                // write client id to prefs
+                                                                prefsEditor.putString(ConstansClassSettings.namePrefsClientId, "");
                                                                 // set connection status to connect
                                                                 prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,2);
                                                                 prefsEditor.commit();
