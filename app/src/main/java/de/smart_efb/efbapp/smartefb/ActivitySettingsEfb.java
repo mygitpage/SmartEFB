@@ -447,6 +447,8 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
     public void onClick_readXMLConfigurationFile (View v) {
 
+
+        /*
         // read configuration xml file ------- TEST
         EfbXmlParser test = new EfbXmlParser(getApplicationContext());
         try {
@@ -459,6 +461,8 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+        */
 
     }
 

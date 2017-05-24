@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.BufferedReader;
@@ -34,6 +35,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Map;
 
 /**
  * Created by ich on 20.06.16.
@@ -63,6 +65,9 @@ public class SettingsEfbFragmentA extends Fragment {
 
     // Progress Dialog
     private ProgressDialog pDialog;
+
+    // return information for change
+    Map<String, String> returnMap;
 
 
     @Override
@@ -421,6 +426,11 @@ public class SettingsEfbFragmentA extends Fragment {
                     e.printStackTrace();
                 }
 
+
+                EfbXmlParser test = new EfbXmlParser(fragmentConnectToServerContext);
+                returnMap = test.parseXmlInput(answerInputStream);
+
+
                 //return stringBuilder.toString().trim();
 
 
@@ -437,6 +447,8 @@ public class SettingsEfbFragmentA extends Fragment {
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
                 e.printStackTrace();
             }
 
@@ -485,9 +497,9 @@ public class SettingsEfbFragmentA extends Fragment {
             //xmlSerializer.attribute("", "ID", "000001");
 
             // start tag main order -> first connection, send pin
-            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMainOrder);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
             xmlSerializer.text("first");
-            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMainOrder);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
 
             // start tag client pin
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMainClientPin);

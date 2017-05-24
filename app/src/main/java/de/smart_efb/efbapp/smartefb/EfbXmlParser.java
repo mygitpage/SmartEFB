@@ -12,6 +12,8 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by ich on 06.02.2017.
@@ -34,12 +36,21 @@ public class EfbXmlParser {
     // reference to the DB
     DBAdapter myDb;
 
+    // return information for change
+    Map<String, String> returnMap;
+
+
+
+
     // true -> <main></main> block of xml file for 'normal' interaction is ok
     Boolean xmlMainBlockNormalOk = false;
     // true -> <main></main> block of xml file for 'make meeting' interaction is ok
     Boolean xmlMainBlockMeetingOk = false;
     // true -> <main></main> block of xml file for 'first' interachtion is ok
     Boolean xmlMainBlockFirstOk = false;
+
+
+
 
 
     // refresh activity ourarrangement
@@ -130,11 +141,21 @@ public class EfbXmlParser {
         prefsEditor = prefs.edit();
 
 
+
+        // init return map
+        returnMap = new HashMap<String, String>();
+
+        returnMap.put("MainOrder","");
+        returnMap.put("ErrorText","");
+        returnMap.put("ClientId","");
+
+
+
     }
 
 
 
-    public void parseXmlInput () throws XmlPullParserException, IOException {
+    public Map<String, String> parseXmlInput (InputStream xmlInput) throws XmlPullParserException, IOException {
 
         // true -> master element of xml file was found
         Boolean masterElementFound = false;
@@ -145,12 +166,20 @@ public class EfbXmlParser {
 
             xpp = xppf.newPullParser();
 
-            AssetManager manager = xmlContext.getResources().getAssets(); //getBaseContext().getAssets(); //getBaseContext().getResources().getAssets();
-            InputStream input = manager.open("configuration.xml");
-            xpp.setInput(input, null);
+            //AssetManager manager = xmlContext.getResources().getAssets(); //getBaseContext().getAssets(); //getBaseContext().getResources().getAssets();
+            //InputStream input = manager.open("configuration.xml");
+
+
+
+            xpp.setInput(xmlInput, null);
             int eventType = xpp.getEventType();
 
+            Log.d("XML","Starten!!!!!!!!");
+
+
             while (eventType != XmlPullParser.END_DOCUMENT) {
+
+                Log.d("XML","In der While Schleife");
 
                 if (eventType == XmlPullParser.START_TAG) {
                     Log.d("XMLParser","Start tag " + xpp.getName());
@@ -158,10 +187,16 @@ public class EfbXmlParser {
                     switch (xpp.getName().trim()) {
 
                         case ConstansClassXmlParser.xmlNameForMasterElement:
+
+                            Log.d("XML","Master Element gefunden");
+
                             masterElementFound = true;
                             break;
 
                         case ConstansClassXmlParser.xmlNameForMain:
+
+                            Log.d("XML","Main Element gefunden");
+
                             if (xpp.getLineNumber() < 3 && masterElementFound) { // strict -> main element must begin line < 3
                                 readMainTag();
                                 Log.d("XMLParser","ZURUECK AUS READ MAIN");
@@ -220,6 +255,9 @@ public class EfbXmlParser {
         }
 
 
+
+        return returnMap;
+
     }
 
 
@@ -230,6 +268,11 @@ public class EfbXmlParser {
     private void readMainTag() {
 
         Boolean readMoreXml = true;
+
+        String tmpClientId = "";
+        String tmpMainOrder = "";
+        String tmpErrorText = "";
+        String tmpMeetingId = "";
 
         try {
 
@@ -242,22 +285,78 @@ public class EfbXmlParser {
 
                     switch (xpp.getName().trim()) {
 
-                        case ConstansClassXmlParser.xmlNameForMain_ClientID: // xml data normal
+
+
+                        case ConstansClassXmlParser.xmlNameForMain_Order: // xml data order
                             eventType = xpp.next();
 
                             if (eventType == XmlPullParser.TEXT) {
 
-                                if (xpp.getText().trim().length() > 0) { // check if appid from xml > 0
-                                    String tmpAppId = xpp.getText().trim();
+                                if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
+
+                                    tmpMainOrder = xpp.getText().trim(); // copy main order
 
                                     //Log.d("ReadMain","APPID PREFS: " + prefs.getString(ConstansClassSettings.namePrefsAppId, "TEST"));
 
+                                    /*
                                     if (tmpAppId.equals(prefs.getString(ConstansClassSettings.namePrefsClientId, ""))) { // check if clientid local equal clientid from xml
 
                                         //Log.d("ReadMain","APPID GLEICH!!!!!!!!!!!!!!!!!");
 
                                         xmlMainBlockNormalOk = true; // set xmlBlockNormalOk = true
                                     }
+                                    */
+                                }
+                            }
+                            break;
+
+
+
+                        case ConstansClassXmlParser.xmlNameForMain_ErrorText: // xml data error text
+                            eventType = xpp.next();
+
+                            if (eventType == XmlPullParser.TEXT) {
+
+                                if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
+
+                                    tmpErrorText = xpp.getText().trim(); // copy main order
+
+                                    //Log.d("ReadMain","APPID PREFS: " + prefs.getString(ConstansClassSettings.namePrefsAppId, "TEST"));
+
+                                    /*
+                                    if (tmpAppId.equals(prefs.getString(ConstansClassSettings.namePrefsClientId, ""))) { // check if clientid local equal clientid from xml
+
+                                        //Log.d("ReadMain","APPID GLEICH!!!!!!!!!!!!!!!!!");
+
+                                        xmlMainBlockNormalOk = true; // set xmlBlockNormalOk = true
+                                    }
+                                    */
+                                }
+                            }
+                            break;
+
+
+
+
+                        case ConstansClassXmlParser.xmlNameForMain_ClientID: // xml data client id
+                            eventType = xpp.next();
+
+                            if (eventType == XmlPullParser.TEXT) {
+
+                                if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
+
+                                    tmpClientId = xpp.getText().trim(); // copy client id
+
+                                    //Log.d("ReadMain","APPID PREFS: " + prefs.getString(ConstansClassSettings.namePrefsAppId, "TEST"));
+
+                                    /*
+                                    if (tmpAppId.equals(prefs.getString(ConstansClassSettings.namePrefsClientId, ""))) { // check if clientid local equal clientid from xml
+
+                                        //Log.d("ReadMain","APPID GLEICH!!!!!!!!!!!!!!!!!");
+
+                                        xmlMainBlockNormalOk = true; // set xmlBlockNormalOk = true
+                                    }
+                                    */
                                 }
                             }
                             break;
@@ -268,17 +367,20 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) {
 
                                 if (xpp.getText().trim().length() > 0) { // check if meetingid from xml > 0
-                                    String tmpMeetingId = xpp.getText().trim();
+                                    tmpMeetingId = xpp.getText().trim();
 
                                     //Log.d("ReadMain","MEETINGID PREFS: " + prefs.getString(ConstantsClassMeeting.namePrefsMeetingId, "TEST"));
 
+                                    /*
                                     if (tmpMeetingId.equals(prefs.getString(ConstantsClassMeeting.namePrefsMeetingId, ""))) { // check if appid local equal appid from xml
                                         xmlMainBlockMeetingOk = true; // set xmlBlockMeetingOk = true
                                     }
+                                    */
                                 }
                             }
                             break;
 
+                        /*
                         case ConstansClassXmlParser.xmlNameForMain_ConnectId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get connectId text
@@ -322,6 +424,7 @@ public class EfbXmlParser {
                             }
 
                             break;
+                            */
                     }
 
                 } else if (eventType == XmlPullParser.END_DOCUMENT) {
@@ -334,6 +437,43 @@ public class EfbXmlParser {
 
 
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain)) {
+
+                        switch (tmpMainOrder) {
+                            case "init":
+
+                                Log.d("XML","Order: init");
+
+                                if (tmpClientId.trim().length() > 0 ) {
+                                    // write client id to prefs
+                                    prefsEditor.putString(ConstansClassSettings.namePrefsClientId, tmpClientId);
+                                    // set connection status to connect
+                                    prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,2);
+                                    prefsEditor.commit();
+
+                                    returnMap.put("ClientId",tmpClientId);
+                                    returnMap.put("MainOrder","init");
+
+                                    Log.d("XML","Order: init ausgefuehrt!!!!!!!!!!");
+                                }
+
+
+
+                                break;
+                            case "data":
+
+                                // TODO:
+
+                                break;
+                            case "error":
+
+                                // TODO:
+
+                                break;
+                        }
+
+
+
+
 
                         readMoreXml = false;
 

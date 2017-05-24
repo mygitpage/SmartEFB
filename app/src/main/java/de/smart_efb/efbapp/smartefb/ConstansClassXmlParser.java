@@ -13,10 +13,13 @@ public class ConstansClassXmlParser {
     public static final String xmlNameForMain = "main";
 
     // xml name for element main order
-    public static final String xmlNameForMainOrder = "main_order";
+    public static final String xmlNameForMain_Order = "main_order";
 
     // xml name for element main_ClientID
     public static final String xmlNameForMain_ClientID = "clientid";
+
+    // xml name for element error text
+    public static final String xmlNameForMain_ErrorText = "errortext";
 
 
     // xml name for element main_Client Pin
@@ -26,8 +29,7 @@ public class ConstansClassXmlParser {
     // xml name for element main_meetingId
     public static final String xmlNameForMain_MeetingId = "meetingid";
 
-    // xml name for element main_connectNumber
-    public static final String xmlNameForMain_ConnectId = "connectid";
+
 
 
     //
