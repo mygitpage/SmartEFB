@@ -18,6 +18,9 @@ public class ConstansClassSettings {
     // prefs name for case id
     public static final String namePrefsCaseId = "caseId";
 
+    // prefs name for last error messages
+    public static final String namePrefsLastErrorMessages = "lastError";
+
 
     // URL first connect to server
     public static final String urlFirstConnectToServer = "http://172.29.25.53/index.php?com=exchange&subcom=establish";

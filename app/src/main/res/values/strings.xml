@@ -58,6 +58,8 @@
         <string name="settingsConnectToServerIntroHeadingText">Mit Server verbinden</string>
         <string name="settingsConnectedWithServerIntroHeadingText">Serververbindung hergestellt</string>
 
+        <string name="settingsConnectedWithServerErrorIntroHeadingText">Verbindungsfehler aufgetreten</string>
+
         <string name="settingsConnectToServerIntroText">Damit eine sichere Kommunikation zwischen Ihrem Smartphone und dem Server möglich ist, müssen Sie Ihrer Beraterin/ Ihrem Berater folgende fünfstellige Nummer mitteilen und anschließend, wenn Sie dazu aufgefordert werden, auf \"Mit Server verbinden\" klicken.</string>
         <string name="settingsConnectToServerRemarkClickButtonText">Bitte klicken Sie nur auf den Button, wenn Sie dazu aufgefordert werden.</string>
 
@@ -65,7 +67,7 @@
 
         <string name="buttonSendConnectToServerKeyNumberText">Mit Server verbinden</string>
         <string name="sendConnectToServerKeyNumberSuccsesfulyText">Verbindungsnummer erfolgreich gesendet</string>
-        <string name="settingsConnectToServerSuccessfulText">Sie sind erfolgreich mit dem Server verbunden und die Kommunikation funktioniert. Wenn Sie Fragen zu den übermittelten Daten haben, schauen Sie bitte <a href="smart.efb.deeplink://linkin/settings?com=show_contact">hier</a> nach, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
+        <string name="settingsConnectToServerSuccessfulText">Sie sind erfolgreich mit dem Server verbunden und die Kommunikation funktioniert.\nWenn Sie Fragen zu den übermittelten Daten haben, schauen Sie bitte <a href="smart.efb.deeplink://linkin/settings?com=show_contact">hier</a> nach, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.\nSelbstverständlich können Sie auch Ihre Beraterin/ Ihren Berater fragen.</string>
 
         <string name="settingsWaitingForResponseIntroText">Ihre Nummer wurde zum Server gesendet. Es wird auf eine Antwort gewartet!</string>
 
@@ -77,7 +79,9 @@
         <string name="settingsConnectToServerHeadingNoInternet">Keine Internetverbindung</string>
         <string name="settingsConnectToServerIntroTextNoInternet">Es besteht keine Verbindung mit dem Internet. Bitte stellen Sie eine Verbindung zum Internet her und versuchen Sie sich erneut mit dem Server zu verbinden. Bei Fragen kann Ihnen gerne Ihre Beraterin/ Ihr Berater helfen.\n\nIhre Pin-Nummer ist gleich geblieben.</string>
 
-        <string name="settingsSendingToServerDialogInfoText">Senden und Empfangen von Daten</string>
+        <string name="settingsConnectToServerErrorPreIntroText">Während der Kommunikation mit dem Server ist ein Fehler aufgetreten. Folgender Fehlertext wurde übermittelt:</string>
+
+        <string name="settingsSendingToServerDialogInfoText">Daten senden</string>
 
     <!-- End Fragment settings a (connect to server) -->
 
@@ -85,7 +89,8 @@
     <!-- Subtitle under Title Settings -->
 
         <string name="settingsSubtitleConnectToServer">Serverkommunikation</string>
-        <string name="settingsSubtitleWaitingForResponse">Auf Antwort warten</string>
+        <string name="settingsSubtitleConnectionError">Verbindungsfehler</string>
+        <string name="settingsSubtitleSucsessfullConnected">Verbindung hergestellt</string>
         <string name="settingsSubtitleNoNetworkAvailable">Keine Internetverbindung</string>
         <string name="settingsSubtitleContactdetails">Telefon, Email, etc.</string>
         <string name="settingsSubtitleHelpForApp">Hilfe für die App</string>

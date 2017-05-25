@@ -41,6 +41,47 @@
             android:gravity="left"
             android:visibility="gone"/>
 
+        <TextView
+            android:id="@+id/settingsConnectToServerSucsessfullIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:text="@string/settingsConnectToServerSuccessfulText"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="left"
+            android:visibility="gone"/>
+
+        <!-- Start Error section -->
+        <TextView
+            android:id="@+id/settingsConnectToServerConnectionErrorPreIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:text="@string/settingsConnectToServerErrorPreIntroText"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="left"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/settingsConnectToServerConnectionErrorTextError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="left"
+            android:visibility="gone"/>
+
+
+        <!-- End Error section -->
 
 
         <TextView

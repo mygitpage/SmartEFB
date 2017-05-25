@@ -9,6 +9,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -148,6 +149,7 @@ public class EfbXmlParser {
         returnMap.put("MainOrder","");
         returnMap.put("ErrorText","");
         returnMap.put("ClientId","");
+        returnMap.put("ConnectionStatus","0");
 
 
 
@@ -155,7 +157,7 @@ public class EfbXmlParser {
 
 
 
-    public Map<String, String> parseXmlInput (InputStream xmlInput) throws XmlPullParserException, IOException {
+    public Map<String, String> parseXmlInput (String xmlInput) throws XmlPullParserException, IOException {
 
         // true -> master element of xml file was found
         Boolean masterElementFound = false;
@@ -171,7 +173,7 @@ public class EfbXmlParser {
 
 
 
-            xpp.setInput(xmlInput, null);
+            xpp.setInput( new StringReader (xmlInput));
             int eventType = xpp.getEventType();
 
             Log.d("XML","Starten!!!!!!!!");
@@ -197,7 +199,7 @@ public class EfbXmlParser {
 
                             Log.d("XML","Main Element gefunden");
 
-                            if (xpp.getLineNumber() < 3 && masterElementFound) { // strict -> main element must begin line < 3
+                            if (masterElementFound) {
                                 readMainTag();
                                 Log.d("XMLParser","ZURUECK AUS READ MAIN");
                             }
@@ -219,26 +221,9 @@ public class EfbXmlParser {
                             break;
                     }
 
-
                 }
-                 /*
-                 else if (eventType == XmlPullParser.END_TAG) {
-                    Log.d("XMLParser","End tag " + xpp.getName());
 
-                    //System.out.println("End tag " + xpp.getName());
-
-                } else if (eventType == XmlPullParser.TEXT) {
-
-                    if (xpp.getText().trim().length() > 0){
-                        Log.d("XMLParser", "Text " + xpp.getText());
-                    }
-
-
-                    //System.out.println("Text " + xpp.getText());
-
-                }
-                */
-
+                // Next XML Element
                 eventType = xpp.next();
 
             }
@@ -285,78 +270,30 @@ public class EfbXmlParser {
 
                     switch (xpp.getName().trim()) {
 
-
-
                         case ConstansClassXmlParser.xmlNameForMain_Order: // xml data order
                             eventType = xpp.next();
-
                             if (eventType == XmlPullParser.TEXT) {
-
                                 if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
-
                                     tmpMainOrder = xpp.getText().trim(); // copy main order
-
-                                    //Log.d("ReadMain","APPID PREFS: " + prefs.getString(ConstansClassSettings.namePrefsAppId, "TEST"));
-
-                                    /*
-                                    if (tmpAppId.equals(prefs.getString(ConstansClassSettings.namePrefsClientId, ""))) { // check if clientid local equal clientid from xml
-
-                                        //Log.d("ReadMain","APPID GLEICH!!!!!!!!!!!!!!!!!");
-
-                                        xmlMainBlockNormalOk = true; // set xmlBlockNormalOk = true
-                                    }
-                                    */
                                 }
                             }
                             break;
-
-
 
                         case ConstansClassXmlParser.xmlNameForMain_ErrorText: // xml data error text
                             eventType = xpp.next();
-
                             if (eventType == XmlPullParser.TEXT) {
-
                                 if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
-
                                     tmpErrorText = xpp.getText().trim(); // copy main order
-
-                                    //Log.d("ReadMain","APPID PREFS: " + prefs.getString(ConstansClassSettings.namePrefsAppId, "TEST"));
-
-                                    /*
-                                    if (tmpAppId.equals(prefs.getString(ConstansClassSettings.namePrefsClientId, ""))) { // check if clientid local equal clientid from xml
-
-                                        //Log.d("ReadMain","APPID GLEICH!!!!!!!!!!!!!!!!!");
-
-                                        xmlMainBlockNormalOk = true; // set xmlBlockNormalOk = true
-                                    }
-                                    */
-                                }
+                               }
                             }
                             break;
-
-
-
 
                         case ConstansClassXmlParser.xmlNameForMain_ClientID: // xml data client id
                             eventType = xpp.next();
 
                             if (eventType == XmlPullParser.TEXT) {
-
                                 if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
-
                                     tmpClientId = xpp.getText().trim(); // copy client id
-
-                                    //Log.d("ReadMain","APPID PREFS: " + prefs.getString(ConstansClassSettings.namePrefsAppId, "TEST"));
-
-                                    /*
-                                    if (tmpAppId.equals(prefs.getString(ConstansClassSettings.namePrefsClientId, ""))) { // check if clientid local equal clientid from xml
-
-                                        //Log.d("ReadMain","APPID GLEICH!!!!!!!!!!!!!!!!!");
-
-                                        xmlMainBlockNormalOk = true; // set xmlBlockNormalOk = true
-                                    }
-                                    */
                                 }
                             }
                             break;
@@ -365,76 +302,20 @@ public class EfbXmlParser {
                             eventType = xpp.next();
 
                             if (eventType == XmlPullParser.TEXT) {
-
                                 if (xpp.getText().trim().length() > 0) { // check if meetingid from xml > 0
                                     tmpMeetingId = xpp.getText().trim();
-
-                                    //Log.d("ReadMain","MEETINGID PREFS: " + prefs.getString(ConstantsClassMeeting.namePrefsMeetingId, "TEST"));
-
-                                    /*
-                                    if (tmpMeetingId.equals(prefs.getString(ConstantsClassMeeting.namePrefsMeetingId, ""))) { // check if appid local equal appid from xml
-                                        xmlMainBlockMeetingOk = true; // set xmlBlockMeetingOk = true
-                                    }
-                                    */
                                 }
                             }
                             break;
 
-                        /*
-                        case ConstansClassXmlParser.xmlNameForMain_ConnectId:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get connectId text
-
-                                if (xpp.getText().trim().length() > 0) { // check if connectId from xml > 0
-                                    int tmpConnectId = Integer.valueOf(xpp.getText().trim());
-                                    if (tmpConnectId == prefs.getInt(ConstansClassSettings.namePrefsRandomNumberForConnection, 0)) {
-
-                                        // get end tag from xml element connectId
-                                        eventType = xpp.next();
-                                        if (eventType == XmlPullParser.END_TAG) { // get end tag connectID
-                                            if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain_ConnectId)) {
-
-                                                do { // look for next start tag
-                                                    eventType = xpp.next();
-                                                    if (eventType == XmlPullParser.END_DOCUMENT) {break;}
-                                                } while (eventType != XmlPullParser.START_TAG);
-
-                                                if (eventType == XmlPullParser.START_TAG) { // get start tag appId
-
-                                                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain_ClientID)) {
-                                                        eventType = xpp.next();
-                                                        if (eventType == XmlPullParser.TEXT) { // get appId text
-                                                            if (xpp.getText().trim().length() > 0) { // check if appid from xml > 0
-                                                                String tmpAppId = xpp.getText().trim();
-                                                                // write client id to prefs
-                                                                prefsEditor.putString(ConstansClassSettings.namePrefsClientId, "");
-                                                                // set connection status to connect
-                                                                prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,2);
-                                                                prefsEditor.commit();
-
-                                                                xmlMainBlockFirstOk = true;
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            break;
-                            */
                     }
 
                 } else if (eventType == XmlPullParser.END_DOCUMENT) {
                         Log.d("ReadMain","END OF DOCUMENT");
                         readMoreXml = false;
 
-
                 } else if (eventType == XmlPullParser.END_TAG) {
                     Log.d("ReadMain", "End tag " + xpp.getName());
-
 
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain)) {
 
@@ -444,14 +325,22 @@ public class EfbXmlParser {
                                 Log.d("XML","Order: init");
 
                                 if (tmpClientId.trim().length() > 0 ) {
+
+
                                     // write client id to prefs
                                     prefsEditor.putString(ConstansClassSettings.namePrefsClientId, tmpClientId);
                                     // set connection status to connect
-                                    prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,2);
+                                    prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,3);
+                                    // write last error messages to prefs
+                                    prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
+
                                     prefsEditor.commit();
+
 
                                     returnMap.put("ClientId",tmpClientId);
                                     returnMap.put("MainOrder","init");
+                                    returnMap.put("ConnectionStatus","3");
+
 
                                     Log.d("XML","Order: init ausgefuehrt!!!!!!!!!!");
                                 }
@@ -465,6 +354,18 @@ public class EfbXmlParser {
 
                                 break;
                             case "error":
+
+
+                                // write last error messages to prefs
+                                prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText);
+                                // set connection status to error
+                                prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,1);
+                                prefsEditor.commit();
+
+                                returnMap.put("ClientId","");
+                                returnMap.put("MainOrder","error");
+                                returnMap.put("ConnectionStatus","1");
+                                returnMap.put("ErrorText",tmpErrorText);
 
                                 // TODO:
 

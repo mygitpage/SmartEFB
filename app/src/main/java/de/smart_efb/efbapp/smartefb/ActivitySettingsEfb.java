@@ -187,6 +187,15 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             case 1:
                 tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleNoNetworkAvailable", "string", getPackageName()));
                 break;
+
+            case 2:
+                tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleConnectionError", "string", getPackageName()));
+                break;
+
+            case 3:
+                tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleSucsessfullConnected", "string", getPackageName()));
+                break;
+
             default:
                 tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleConnectToServer", "string", getPackageName()));
                 break;
@@ -236,7 +245,31 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             // notify view pager adapter that data change
             settingsEfbViewPagerAdapter.notifyDataSetChanged();
 
+        } if (command.equals("show_connect_sucsessfull")) { // Show tab 0 -> connection sucsessfull, connect with server
+
+
+            // set correct subtitle
+            String tmpSubtitleText = ActivitySettingsEfb.this.getSubtitleForTabZero();
+            setSettingsToolbarSubtitle(tmpSubtitleText);
+
+            // notify view pager adapter that data change
+            settingsEfbViewPagerAdapter.notifyDataSetChanged();
+
+        } if (command.equals("show_connect_error")) { // Show tab 0 -> connection error
+
+            // set correct subtitle
+            String tmpSubtitleText = ActivitySettingsEfb.this.getSubtitleForTabZero();
+            setSettingsToolbarSubtitle(tmpSubtitleText);
+
+            // notify view pager adapter that data change
+            settingsEfbViewPagerAdapter.notifyDataSetChanged();
+
+
         }
+
+
+
+
         else {
 
 
@@ -275,6 +308,10 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
     }
 
+
+
+
+
     // getter for random number for connection to server
     public int getRandomNumberForConnection() {
 
@@ -294,6 +331,16 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         prefsEditor.commit();
 
     }
+
+
+
+    public String getLastErrorText () {
+
+        return prefs.getString(ConstansClassSettings.namePrefsLastErrorMessages,"");
+
+    }
+
+
 
 
 
