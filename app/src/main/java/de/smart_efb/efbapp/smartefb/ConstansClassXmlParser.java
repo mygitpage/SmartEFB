@@ -22,8 +22,11 @@ public class ConstansClassXmlParser {
     public static final String xmlNameForMain_ErrorText = "errortext";
 
 
-    // xml name for element main_Client Pin
+    // xml name for element main client pin
     public static final String xmlNameForMainClientPin = "clientpin";
+
+    // xml name for element main client name
+    public static final String xmlNameForMain_ClientName = "clientname";
 
 
     // xml name for element main_meetingId
@@ -200,6 +203,9 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement settings comment max comment
             public static final String xmlNameForOurArrangement_Settings_CommentMaxComment = "ourarrangement_settings_commentmaxcomment"; //value > 1000 -> no limitations with comments
 
+            // xml name for element our arrangement settings comment max letters
+            public static final String xmlNameForOurArrangement_Settings_CommentMaxLetters = "ourarrangement_settings_commentmaxletters";
+
             // xml name for element our arrangement settings comment count comment
             public static final String xmlNameForOurArrangement_Settings_CommentCountComment = "ourarrangement_settings_commentcountcomment";
 
@@ -208,6 +214,9 @@ public class ConstansClassXmlParser {
 
             // xml name for element our arrangement settings sketch comment max comment
             public static final String xmlNameForOurArrangement_Settings_SketchCommentMaxComment = "ourarrangement_settings_sketchcommentmaxcomment"; //value > 1000 -> no limitations with comments
+
+            // xml name for element our arrangement settings sketch comment max letters
+            public static final String xmlNameForOurArrangement_Settings_SketchCommentMaxLetters = "ourarrangement_settings_sketchcommentmaxletters";
 
             // xml name for element our arrangement settings sketch comment count comment
             public static final String xmlNameForOurArrangement_Settings_SketchCommentCountComment = "ourarrangement_settings_sketchcommentcountcomment";
@@ -424,6 +433,9 @@ public class ConstansClassXmlParser {
             // xml name for element our goals settings comment max comment
             public static final String xmlNameForOurGoals_Settings_CommentMaxComment = "ourgoals_settings_jointlycommentmaxcomment"; //value > 1000 -> no limitations with comments
 
+            // xml name for element our goals settings comment max letters
+            public static final String xmlNameForOurGoals_Settings_CommentMaxLetters = "ourgoals_settings_jointlycommentmaxletters";
+
             // xml name for element our goals settings comment count comment
             public static final String xmlNameForOurGoals_Settings_CommentCountComment = "ourgoals_settings_jointlycommentcountcomment";
 
@@ -432,6 +444,9 @@ public class ConstansClassXmlParser {
 
             // xml name for element our goals settings debetable comment max comment
             public static final String xmlNameForOurGoals_Settings_DebetableCommentMaxComment = "ourgoals_settings_debetablecommentmaxcomment"; //value > 1000 -> no limitations with comments
+
+            // xml name for element our goals settings debetable comment max letters
+            public static final String xmlNameForOurGoals_Settings_DebetableCommentMaxLetters = "ourgoals_settings_debetablecommentmaxletters";
 
             // xml name for element our goals settings debetable comment count comment
             public static final String xmlNameForOurGoals_Settings_DebetableCommentCountComment = "ourgoals_settings_debetablecommentcountcomment";

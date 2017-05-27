@@ -65,6 +65,9 @@ public class ConstansClassOurGoals {
     // prefs name for jointly comment max count comments
     public static final String namePrefsCommentMaxCountJointlyComment = "commentJointlyGoalMaxCountComment";
 
+    // prefs name for jointly comment max letters
+    public static final String namePrefsCommentMaxCountJointlyLetters = "commentJointlyGoalMaxCountLetters";
+
     // prefs name for jointly comment count comments
     public static final String namePrefsCommentCountJointlyComment = "commentJointlyGoalCountComment";
 
@@ -76,6 +79,9 @@ public class ConstansClassOurGoals {
 
     // prefs name for debetable comment max count comments
     public static final String namePrefsCommentMaxCountDebetableComment = "commentDebetableGoalsOurGoalsMaxComment";
+
+    // prefs name for debetable comment max count comments
+    public static final String namePrefsCommentMaxCountDebetableLetters = "commentDebetableGoalsOurGoalsMaxLetters";
 
     // prefs name for debetable comment count comments
     public static final String namePrefsCommentCountDebetableComment = "commentDebetableGoalsOurGoalsCountComment";

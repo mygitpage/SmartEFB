@@ -217,7 +217,7 @@ public class EfbXmlParser {
                             readMeetingTag();
                             break;
                         case ConstansClassXmlParser.xmlNameForSettings:
-                            Log.d("XMLParser","Settings Zeile " + xpp.getLineNumber());
+                            readSettingTag();
                             break;
                     }
 
@@ -1372,10 +1372,12 @@ public class EfbXmlParser {
         Long tmpEvaluateEndDate = 0L;
 
         int tmpCommentMaxComment = 0;
+        int tmpCommentMaxLetters = 0;
         int tmpCommentCountComment = 0;
         Long tmpCommentCountCommentSinceTime = 0L;
 
         int tmpSketchCommentMaxComment = 0;
+        int tmpSketchCommentMaxLetters = 0;
         int tmpSketchCommentCountComment = 0;
         Long tmpSketchCommentCountCommentSinceTime = 0L;
 
@@ -1518,6 +1520,26 @@ public class EfbXmlParser {
 
                             break;
 
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentMaxLetters:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get max letters
+                                if (xpp.getText().trim().length() > 0) { // check if max letters from xml > 0
+                                    tmpCommentMaxLetters = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","CommentMaxLetters"+tmpCommentMaxLetters);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentCountComment:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get count comment
@@ -1565,6 +1587,26 @@ public class EfbXmlParser {
                                     tmpSketchCommentMaxComment = Integer.valueOf(xpp.getText().trim());
 
                                     Log.d("Arrang_Settings","SketchCommentMaxComment"+tmpSketchCommentMaxComment);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentMaxLetters:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get max comment sketch letters
+                                if (xpp.getText().trim().length() > 0) { // check if max comment sketch letters from xml > 0
+                                    tmpSketchCommentMaxLetters = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","SketchCommentMaxLetters"+tmpSketchCommentMaxLetters);
 
 
                                 }
@@ -1726,10 +1768,11 @@ public class EfbXmlParser {
                                 }
 
                                 // update comment max/count of arrangements?
-                                if (tmpCommentMaxComment > 0 && tmpCommentCountComment >= 0 && tmpCommentCountCommentSinceTime > 0) {
+                                if (tmpCommentMaxComment > 0 && tmpCommentMaxLetters > 0 && tmpCommentCountComment >= 0 && tmpCommentCountCommentSinceTime > 0) {
 
                                     // write data to prefs
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, tmpCommentMaxComment);
+                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters, tmpCommentMaxLetters);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentCountComment, tmpCommentCountComment);
                                     prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, tmpCommentCountCommentSinceTime);
                                     prefsEditor.commit();
@@ -1740,10 +1783,11 @@ public class EfbXmlParser {
                                 }
 
                                 // update sketch comment max/count of sketch arrangements?
-                                if (tmpSketchCommentMaxComment > 0 && tmpSketchCommentCountComment >= 0 && tmpSketchCommentCountCommentSinceTime > 0) {
+                                if (tmpSketchCommentMaxComment > 0 && tmpSketchCommentMaxLetters > 0 && tmpSketchCommentCountComment >= 0 && tmpSketchCommentCountCommentSinceTime > 0) {
 
                                     // write data to prefs
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,tmpSketchCommentMaxComment);
+                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters,tmpSketchCommentMaxLetters);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, tmpSketchCommentCountComment);
                                     prefsEditor.putLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, tmpSketchCommentCountCommentSinceTime);
                                     prefsEditor.commit();
@@ -2768,10 +2812,12 @@ public class EfbXmlParser {
         Long tmpJointlyEvaluateEndDate = 0L;
 
         int tmpJointlyCommentMaxComment = 0;
+        int tmpJointlyCommentMaxLetters = 0;
         int tmpJointlyCommentCountComment = 0;
         Long tmpJointlyCommentCountCommentSinceTime = 0L;
 
         int tmpDebetableCommentMaxComment = 0;
+        int tmpDebetableCommentMaxLetters = 0;
         int tmpDebetableCommentCountComment = 0;
         Long tmpDebetableCommentCountCommentSinceTime = 0L;
 
@@ -2914,6 +2960,26 @@ public class EfbXmlParser {
 
                             break;
 
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_CommentMaxLetters:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get max comment letters
+                                if (xpp.getText().trim().length() > 0) { // check if max comment letters from xml > 0
+                                    tmpJointlyCommentMaxLetters = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("goals_Settings","JointlyCommentMaxLetters"+tmpJointlyCommentMaxLetters);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_CommentCountComment:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get count comment
@@ -2961,6 +3027,26 @@ public class EfbXmlParser {
                                     tmpDebetableCommentMaxComment = Integer.valueOf(xpp.getText().trim());
 
                                     Log.d("Goals_Settings","DebetableCommentMaxComment"+tmpDebetableCommentMaxComment);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentMaxLetters:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get max comment debetable letters goals
+                                if (xpp.getText().trim().length() > 0) { // check if max comment debetable letters goals from xml > 0
+                                    tmpDebetableCommentMaxLetters = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Goals_Settings","DebetableCommentMaxLetters"+tmpDebetableCommentMaxLetters);
 
 
                                 }
@@ -3121,10 +3207,11 @@ public class EfbXmlParser {
                                 }
 
                                 // update comment max/count of jointly goals?
-                                if (tmpJointlyCommentMaxComment > 0 && tmpJointlyCommentCountComment >= 0 && tmpJointlyCommentCountCommentSinceTime > 0) {
+                                if (tmpJointlyCommentMaxComment > 0 && tmpJointlyCommentMaxLetters > 0 && tmpJointlyCommentCountComment >= 0 && tmpJointlyCommentCountCommentSinceTime > 0) {
 
                                     // write data to prefs
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, tmpJointlyCommentMaxComment);
+                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyLetters, tmpJointlyCommentMaxLetters);
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, tmpJointlyCommentCountComment);
                                     prefsEditor.putLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, tmpJointlyCommentCountCommentSinceTime);
                                     prefsEditor.commit();
@@ -3135,10 +3222,11 @@ public class EfbXmlParser {
                                 }
 
                                 // update debetable comment max/count of debetable goals?
-                                if (tmpDebetableCommentMaxComment > 0 && tmpDebetableCommentCountComment >= 0 && tmpDebetableCommentCountCommentSinceTime > 0) {
+                                if (tmpDebetableCommentMaxComment > 0 && tmpDebetableCommentMaxLetters > 0 && tmpDebetableCommentCountComment >= 0 && tmpDebetableCommentCountCommentSinceTime > 0) {
 
                                     // write data to prefs
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment,tmpDebetableCommentMaxComment);
+                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableLetters,tmpDebetableCommentMaxLetters);
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, tmpDebetableCommentCountComment);
                                     prefsEditor.putLong(ConstansClassOurGoals.namePrefsDebetableCommentTimeSinceInMills, tmpDebetableCommentCountCommentSinceTime);
                                     prefsEditor.commit();
@@ -3751,7 +3839,184 @@ public class EfbXmlParser {
     // read element connect book
     private void readConnectBookTag() {
 
+
+        /* TODO: Anpassen des Programmblocks - kommt von read main tag
+
+        Boolean readMoreXml = true;
+
+        String tmpClientId = "";
+        String tmpMainOrder = "";
+        String tmpErrorText = "";
+        String tmpMeetingId = "";
+
+        try {
+
+            int eventType = xpp.next();
+
+            while (readMoreXml) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("ReadMain","Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+
+                        case ConstansClassXmlParser.xmlNameForMain_Order: // xml data order
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) {
+                                if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
+                                    tmpMainOrder = xpp.getText().trim(); // copy main order
+                                }
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMain_ErrorText: // xml data error text
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) {
+                                if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
+                                    tmpErrorText = xpp.getText().trim(); // copy main order
+                               }
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMain_ClientID: // xml data client id
+                            eventType = xpp.next();
+
+                            if (eventType == XmlPullParser.TEXT) {
+                                if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
+                                    tmpClientId = xpp.getText().trim(); // copy client id
+                                }
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMain_MeetingId: // xml data make meeting
+                            eventType = xpp.next();
+
+                            if (eventType == XmlPullParser.TEXT) {
+                                if (xpp.getText().trim().length() > 0) { // check if meetingid from xml > 0
+                                    tmpMeetingId = xpp.getText().trim();
+                                }
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMain_ClientName: // xml data client name
+                            eventType = xpp.next();
+
+                            if (eventType == XmlPullParser.TEXT) {
+                                if (xpp.getText().trim().length() > 0) { // check if client name from xml > 0
+                                    tmpClientName = xpp.getText().trim();
+                                }
+                            }
+                            break;
+
+                    }
+
+                } else if (eventType == XmlPullParser.END_DOCUMENT) {
+                        Log.d("ReadMain","END OF DOCUMENT");
+                        readMoreXml = false;
+
+                } else if (eventType == XmlPullParser.END_TAG) {
+                    Log.d("ReadMain", "End tag " + xpp.getName());
+
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain)) {
+
+                        switch (tmpMainOrder) {
+                            case "init":
+
+                                Log.d("XML","Order: init");
+
+                                if (tmpClientId.trim().length() > 0 ) {
+
+
+                                    // write client id to prefs
+                                    prefsEditor.putString(ConstansClassSettings.namePrefsClientId, tmpClientId);
+                                    // write client name (user name) to prefs
+                                    prefsEditor.putString(ConstansClassConnectBook.namePrefsConnectBookUserName, tmpClientName);
+                                    // set connection status to connect
+                                    prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,3);
+                                    // write last error messages to prefs
+                                    prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
+
+                                    prefsEditor.commit();
+
+
+                                    returnMap.put("ClientId",tmpClientId);
+                                    returnMap.put("MainOrder","init");
+                                    returnMap.put("ConnectionStatus","3");
+
+
+                                    Log.d("XML","Order: init ausgefuehrt!!!!!!!!!!");
+                                }
+
+
+
+                                break;
+                            case "data":
+
+                                // TODO:
+
+                                break;
+                            case "error":
+
+
+                                // write last error messages to prefs
+                                prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText);
+                                // set connection status to error
+                                prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,1);
+                                prefsEditor.commit();
+
+                                returnMap.put("ClientId","");
+                                returnMap.put("MainOrder","error");
+                                returnMap.put("ConnectionStatus","1");
+                                returnMap.put("ErrorText",tmpErrorText);
+
+                                // TODO:
+
+                                break;
+                        }
+
+
+
+
+
+                        readMoreXml = false;
+
+                    }
+                }
+                eventType = xpp.next();
+            }
+        }
+        catch (XmlPullParserException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+         */
+
+
+
+
     }
+
+
+
+    //
+    // Begin read settings -----------------------------------------------------------------------------------
+    //
+
+    // read element settings
+    private void readSettingTag() {
+
+    }
+
+
+
+
+
+
 
 
 

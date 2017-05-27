@@ -336,7 +336,13 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
     public String getLastErrorText () {
 
-        return prefs.getString(ConstansClassSettings.namePrefsLastErrorMessages,"");
+
+        String tmp_errortext = prefs.getString(ConstansClassSettings.namePrefsLastErrorMessages,"");
+
+        // check if erorrtext is set
+        if (tmp_errortext.length() == 0 ) {tmp_errortext = "Leider kein Fehlertext übermittelt!";}
+
+        return tmp_errortext;
 
     }
 

@@ -268,7 +268,6 @@ public class SettingsEfbFragmentA extends Fragment {
             // show error pre intro text
             TextView textViewConnectedWithServerErrorPreIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerConnectionErrorPreIntro);
             textViewConnectedWithServerErrorPreIntroText.setVisibility(View.VISIBLE);
-            //textViewConnectedWithServerIntroText.setMovementMethod(LinkMovementMethod.getInstance());
 
             // show error text
             TextView textViewConnectedWithServerErrorTextError = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerConnectionErrorTextError);
@@ -276,6 +275,15 @@ public class SettingsEfbFragmentA extends Fragment {
             String lastErrorText = ((ActivitySettingsEfb)getActivity()).getLastErrorText();
             textViewConnectedWithServerErrorTextError.setText(lastErrorText);
             textViewConnectedWithServerErrorTextError.setVisibility(View.VISIBLE);
+
+            // show error post intro text
+            TextView textViewConnectedWithServerErrorPostIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerConnectionErrorPostIntro);
+            textViewConnectedWithServerErrorPostIntroText.setVisibility(View.VISIBLE);
+
+            // set connection status to not connected so far
+            ((ActivitySettingsEfb)getActivity()).setConnectionStatus(0); // 0 -> not connected so far
+
+            connectingStatus = 0;
 
 
 

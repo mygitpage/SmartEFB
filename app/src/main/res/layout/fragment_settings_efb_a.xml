@@ -75,6 +75,19 @@
             android:textSize="16dp"
             android:paddingLeft="10dp"
             android:paddingBottom="15dp"
+            android:textColor="@color/text_accent_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="left"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/settingsConnectToServerConnectionErrorPostIntro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp"
+            android:text="@string/settingsConnectToServerErrorPostIntroText"
             android:textColor="@color/text_color"
             android:textColorLink="@color/colorPrimary"
             android:gravity="left"

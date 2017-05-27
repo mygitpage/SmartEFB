@@ -80,7 +80,7 @@
         <string name="settingsConnectToServerIntroTextNoInternet">Es besteht keine Verbindung mit dem Internet. Bitte stellen Sie eine Verbindung zum Internet her und versuchen Sie sich erneut mit dem Server zu verbinden. Bei Fragen kann Ihnen gerne Ihre Beraterin/ Ihr Berater helfen.\n\nIhre Pin-Nummer ist gleich geblieben.</string>
 
         <string name="settingsConnectToServerErrorPreIntroText">Während der Kommunikation mit dem Server ist ein Fehler aufgetreten. Folgender Fehlertext wurde übermittelt:</string>
-
+        <string name="settingsConnectToServerErrorPostIntroText">Bitte teilen Sie diesen Fehlertext Ihrer Beraterin/ Ihrem Berater mit. Kehren Sie anschließend zum Hauptmenü zurück und versuchen Sie es noch einmal.</string>
         <string name="settingsSendingToServerDialogInfoText">Daten senden</string>
 
     <!-- End Fragment settings a (connect to server) -->
