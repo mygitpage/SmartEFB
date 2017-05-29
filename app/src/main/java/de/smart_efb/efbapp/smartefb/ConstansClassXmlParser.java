@@ -53,6 +53,9 @@ public class ConstansClassXmlParser {
     // xml name for element our arrangement
     public static final String xmlNameForOurArrangement = "ourarrangement";
 
+        // xml name for element our arrangement turn on/off
+        public static final String xmlNameForOurArrangement_TurnOnOff = "ourarrangement_turnonoff";
+
         // xml name for element our arrangement now
         public static final String xmlNameForOurArrangement_Now = "ourarrangement_now";
 
@@ -83,6 +86,9 @@ public class ConstansClassXmlParser {
         // xml name for element our arrangement sketch
         public static final String xmlNameForOurArrangement_Sketch = "ourarrangement_sketch";
 
+        // xml name for element our arrangement turn on/off
+        public static final String xmlNameForOurArrangement_Sketch_TurnOnOff = "ourarrangement_sketch_turnonoff";
+
             // xml name for element our arrangement sketch order -> the order can be new, delete or update (see definitions below)
             public static final String xmlNameForOurArrangement_Sketch_Order = "ourarrangement_sketch_order";
 
@@ -105,6 +111,9 @@ public class ConstansClassXmlParser {
 
         // xml name for element our arrangement now comment
         public static final String xmlNameForOurArrangement_NowComment = "ourarrangement_nowcomment";
+
+        // xml name for element our arrangement now comment turn on/off
+        public static final String xmlNameForOurArrangement_NowComment_TurnOnOff = "ourarrangement_nowcomment_turnonoff";
 
             // xml name for element our arrangement now comment order
             public static final String xmlNameForOurArrangement_NowComment_Order = "ourarrangement_nowcomment_order";
@@ -135,6 +144,9 @@ public class ConstansClassXmlParser {
 
         // xml name for element our arrangement sketch comment
         public static final String xmlNameForOurArrangement_SketchComment = "ourarrangement_sketchcomment";
+
+        // xml name for element our arrangement sketch comment turn on/off
+        public static final String xmlNameForOurArrangement_SketchComment_TurnOnOff = "ourarrangement_sketchcomment_turnonoff";
 
             // xml name for element our arrangement sketch comment order
             public static final String xmlNameForOurArrangement_SketchComment_Order = "ourarrangement_sketchcomment_order";
@@ -169,18 +181,14 @@ public class ConstansClassXmlParser {
 
 
 
-
-
-
-
-
-
-
-
         // xml name for element our arrangement evaluate
         public static final String xmlNameForOurArrangement_Evaluate = "ourarrangement_evaluate";
 
+        // xml name for element our arrangement evaluate turn on/off
+        public static final String xmlNameForOurArrangement_Evaluate_TurnOnOff = "ourarrangement_evaluate_turnonoff";
+
             // TODO: insert elements
+
 
         // xml name for element our arrangement settings
         public static final String xmlNameForOurArrangement_Settings = "ourarrangement_settings";
@@ -270,6 +278,8 @@ public class ConstansClassXmlParser {
     // xml name for element our goals
     public static final String xmlNameForOurGoals = "ourgoals";
 
+        // xml name for element our goals turn on/off
+        public static final String xmlNameForOurGoals_TurnOnOff = "ourgoals_turnonoff";
 
         // xml name for element our goals jointly now
         public static final String xmlNameForOurGoals_JointlyNow = "ourgoals_jointlynow";
@@ -300,6 +310,9 @@ public class ConstansClassXmlParser {
         // xml name for element our goals debetable now
         public static final String xmlNameForOurGoals_DebetableNow = "ourgoals_debetablenow";
 
+        // xml name for element our goals debetable turn on/off
+        public static final String xmlNameForOurGoals_DebetableNow_TurnOnOff = "ourgoals_debetablenow_turnonoff";
+
             // xml name for element our goals order -> the order can be new, delete or update (see definitions below)
             public static final String xmlNameForOurGoals_DebetableNow_Order = "ourgoals_debetablenow_order";
 
@@ -320,22 +333,21 @@ public class ConstansClassXmlParser {
 
 
 
-
-
-
-
-
-
-
-
-
         // xml name for element our goals jointly evaluate
         public static final String xmlNameForOurGoals_JointlyEvaluate = "ourgoals_jointlyevaluate";
 
+        // xml name for element our goals jointly evaluate turn on/off
+        public static final String xmlNameForOurGoals_JointlyEvaluate_TurnOnOff = "ourgoals_jointlyevaluate_turnonoff";
+
         // TODO: Insert Definitions
+
+
 
         // xml name for element our goals jointly comment
         public static final String xmlNameForOurGoals_JointlyComment = "ourgoals_jointlycomment";
+
+        // xml name for element our goals jointly comment turn on/off
+        public static final String xmlNameForOurGoals_JointlyComment_TurnOnOff = "ourgoals_jointlycomment_turnonoff";
 
             // xml name for element our goals jointly comment order
             public static final String xmlNameForOurGoals_JointlyComment_Order = "ourgoals_jointlycomment_order";
@@ -360,20 +372,11 @@ public class ConstansClassXmlParser {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         // xml name for element our goals debetable comment
         public static final String xmlNameForOurGoals_DebetableComment = "ourgoals_debetablecomment";
+
+        // xml name for element our goals debetable comment turn on/off
+        public static final String xmlNameForOurGoals_DebetableComment_TurnOnOff = "ourgoals_debetablecomment_turnonoff";
 
             // xml name for element our goals debetable comment order
             public static final String xmlNameForOurGoals_DebetableComment_Order = "ourgoals_debetablecomment_order";
@@ -542,6 +545,22 @@ public class ConstansClassXmlParser {
     //
     // xml name for element settings
     public static final String xmlNameForSettings = "settings";
+
+        // xml name for element settings order
+        public static final String xmlNameForSettings_Order = "settings_order";
+
+        // xml name for element settings prevention turn on/off
+        public static final String xmlNameForSettings_Prevention_TurnOnOff = "settings_prevention_turnonoff";
+
+        // xml name for element settings faq turn on/off
+        public static final String xmlNameForSettings_Faq_TurnOnOff = "settings_faq_turnonoff";
+
+        // xml name for element settings emergency turn on/off
+        public static final String xmlNameForSettings_Emergency_TurnOnOff = "settings_emergency_turnonoff";
+
+        // xml name for element settings settings turn on/off
+        public static final String xmlNameForSettings_Settings_TurnOnOff = "settings_settings_turnonoff";
+
 
     //
     // ++++++++++++++++++++++ End Main Settings ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

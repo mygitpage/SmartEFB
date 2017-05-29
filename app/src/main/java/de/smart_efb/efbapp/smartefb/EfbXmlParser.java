@@ -152,6 +152,20 @@ public class EfbXmlParser {
         returnMap.put("ConnectionStatus","0");
 
 
+        returnMap.put("OurArrangement","0");
+        returnMap.put("OurArrangementSettings","0");
+        returnMap.put("OurArrangementSettingsEvaluationProcess","0");
+        returnMap.put("OurArrangementSettingsCommentProcess","0");
+
+
+
+        returnMap.put("Settings","0");
+
+
+
+
+
+
 
     }
 
@@ -1365,24 +1379,38 @@ public class EfbXmlParser {
         Boolean error = false;
 
         // tmp data for prefs and database insert
+        // switch for arrangement functions
+        Boolean tmpArrangementOnOff = false;
+        Boolean tmpArrangementSketchOnOff = false;
+        Boolean tmpArrangementCommentOnOff = false;
+        Boolean tmpArrangementSketchCommentOnOff = false;
+        Boolean tmpArrangementEvaluationOnOff = false;
+
+        // settings order
         String tmpOrder = "";
+
+        // evaluation settings
         int tmpEvaluatePauseTime = 0;
         int tmpEvaluateActiveTime = 0;
         Long tmpEvaluateStartDate = 0L;
         Long tmpEvaluateEndDate = 0L;
 
+        // arrangement comment settings
         int tmpCommentMaxComment = 0;
         int tmpCommentMaxLetters = 0;
         int tmpCommentCountComment = 0;
         Long tmpCommentCountCommentSinceTime = 0L;
 
+        // arragnement sketch comment settings
         int tmpSketchCommentMaxComment = 0;
         int tmpSketchCommentMaxLetters = 0;
         int tmpSketchCommentCountComment = 0;
         Long tmpSketchCommentCountCommentSinceTime = 0L;
 
+        // author name for sketch arrangement
         String tmpSketchAuthorName = "";
 
+        // current date for sketch arrangement and now arragement
         Long tmpSketchCurrentDateOfArrangement = 0L;
         Long tmpCurrentDateOfArrangement = 0L;
 
@@ -1419,6 +1447,122 @@ public class EfbXmlParser {
                             }
 
                             break;
+
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch our arrangement turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpArrangementOnOff = true;}
+                                    else {tmpArrangementOnOff = false;}
+
+                                    Log.d("Arrang_Settings","Arrangement On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Sketch_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch our arrangement sketch turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpArrangementSketchOnOff = true;}
+                                    else {tmpArrangementSketchOnOff = false;}
+
+                                    Log.d("Arrang_Settings","Sketch Arrangement On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch our arrangement comment turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpArrangementCommentOnOff = true;}
+                                    else {tmpArrangementCommentOnOff = false;}
+
+                                    Log.d("Arrang_Settings","Arrangement Comment On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch our arrangement sketch comment turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpArrangementSketchCommentOnOff = true;}
+                                    else {tmpArrangementSketchCommentOnOff = false;}
+
+                                    Log.d("Arrang_Settings","Arrangement Sketch Comment On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch our arrangement evaluation turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpArrangementEvaluationOnOff = true;}
+                                    else {tmpArrangementEvaluationOnOff = false;}
+
+                                    Log.d("Arrang_Settings","Arrangement Evaluation On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+
+
 
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_EvaluatePauseTime:
                             eventType = xpp.next();
@@ -1743,19 +1887,20 @@ public class EfbXmlParser {
 
 
                                 // refresh activity ourarrangement because settings have change
-                                refreshOurArrangement = true;
-                                refreshOurArrangementSettings = true;
+                                returnMap.put("OurArrangement","1");
+                                returnMap.put("OurArrangementSettings","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // our arrangement settings order -> update?
 
                                 Log.d("Settings","UPDATE AUSführen");
 
                                 // update evaluation of arrangements?
-                                if (tmpEvaluatePauseTime > 0 && tmpEvaluateActiveTime > 0 && tmpEvaluateStartDate > 0 && tmpEvaluateEndDate > 0) {
+                                if (tmpArrangementEvaluationOnOff && tmpEvaluatePauseTime > 0 && tmpEvaluateActiveTime > 0 && tmpEvaluateStartDate > 0 && tmpEvaluateEndDate > 0) {
 
                                     Log.d ("Settings--","PT:"+tmpEvaluatePauseTime+"AT:"+tmpEvaluateActiveTime+"SD:"+tmpEvaluateStartDate+"ED:"+tmpEvaluateEndDate);
 
                                     // write data to prefs
+                                    prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, tmpArrangementEvaluationOnOff); // turn function on
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, tmpEvaluatePauseTime);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, tmpEvaluateActiveTime);
                                     prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, tmpEvaluateStartDate);
@@ -1763,14 +1908,19 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
 
                                     // something change in evaluation process
-                                    refreshOurArrangementSettingsEvaluationProcess = true;
-
+                                    returnMap.put("OurArrangementSettingsEvaluationProcess","1");
+                                }
+                                else { // turn function arrangement evaluation off
+                                    prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, tmpArrangementEvaluationOnOff); // turn function off
+                                    prefsEditor.commit();
+                                    // something change in evaluation process
+                                    returnMap.put("OurArrangementSettingsEvaluationProcess","1");
                                 }
 
                                 // update comment max/count of arrangements?
-                                if (tmpCommentMaxComment > 0 && tmpCommentMaxLetters > 0 && tmpCommentCountComment >= 0 && tmpCommentCountCommentSinceTime > 0) {
-
+                                if (tmpArrangementCommentOnOff && tmpCommentMaxComment > 0 && tmpCommentMaxLetters > 0 && tmpCommentCountComment >= 0 && tmpCommentCountCommentSinceTime > 0) {
                                     // write data to prefs
+                                    prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, tmpArrangementCommentOnOff); // turn function on
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, tmpCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters, tmpCommentMaxLetters);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentCountComment, tmpCommentCountComment);
@@ -1778,14 +1928,19 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
 
                                     // something change in arrangement comment process
-                                    refreshOurArrangementSettingsCommentProcess = true;
-
+                                    returnMap.put("OurArrangementSettingsCommentProcess","1");
+                                }
+                                else { // turn function arrangement comment off
+                                    prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, tmpArrangementCommentOnOff); // turn function on
+                                    prefsEditor.commit();
+                                    // something change in arrangement comment process
+                                    returnMap.put("OurArrangementSettingsCommentProcess","1");
                                 }
 
                                 // update sketch comment max/count of sketch arrangements?
-                                if (tmpSketchCommentMaxComment > 0 && tmpSketchCommentMaxLetters > 0 && tmpSketchCommentCountComment >= 0 && tmpSketchCommentCountCommentSinceTime > 0) {
-
+                                if (tmpArrangementSketchCommentOnOff && tmpSketchCommentMaxComment > 0 && tmpSketchCommentMaxLetters > 0 && tmpSketchCommentCountComment >= 0 && tmpSketchCommentCountCommentSinceTime > 0) {
                                     // write data to prefs
+                                    prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowLinkCommentSketchArrangement, tmpArrangementSketchCommentOnOff); // turn function on
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,tmpSketchCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters,tmpSketchCommentMaxLetters);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, tmpSketchCommentCountComment);
@@ -1793,8 +1948,13 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
 
                                     // something change in sketch arragement comment process
-                                    refreshOurArrangementSettingsSketchCommentProcess = true;
-
+                                    returnMap.put("OurArrangementSettingsSketchCommentProcess","1");
+                                }
+                                else { // turn function arrangement sketch comment off
+                                    prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowLinkCommentSketchArrangement, tmpArrangementSketchCommentOnOff); // turn function on
+                                    prefsEditor.commit();
+                                    // something change in sketch arragement comment process
+                                    returnMap.put("OurArrangementSettingsSketchCommentProcess","1");
                                 }
 
                                 // update sketch arrangement author name?
@@ -1838,8 +1998,9 @@ public class EfbXmlParser {
 
 
                                 // refresh activity ourarrangement because settings have change
-                                refreshOurArrangement = true;
-                                refreshOurArrangementSettings = true;
+                                returnMap.put("OurArrangement","1");
+                                returnMap.put("OurArrangementSettings","1");
+
                             }
                         }
 
@@ -2805,7 +2966,15 @@ public class EfbXmlParser {
         Boolean error = false;
 
         // tmp data for prefs and database insert
+        // switch for goals functions
+        Boolean tmpGoalsOnOff = false;
+        Boolean tmpGoalsJointlyCommentOnOff = false;
+        Boolean tmpGoalsDebetableOnOff = false;
+        Boolean tmpGoalsDebetableCommentOnOff = false;
+        Boolean tmpGoalsEvaluationOnOff = false;
+
         String tmpOrder = "";
+
         int tmpJointlyEvaluatePauseTime = 0;
         int tmpJointlyEvaluateActiveTime = 0;
         Long tmpJointlyEvaluateStartDate = 0L;
@@ -2859,6 +3028,124 @@ public class EfbXmlParser {
                             }
 
                             break;
+
+
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch our goals turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpGoalsOnOff = true;}
+                                    else {tmpGoalsOnOff = false;}
+
+                                    Log.d("Goals_Settings","Goals On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch our goals debetable turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpGoalsDebetableOnOff = true;}
+                                    else {tmpGoalsDebetableOnOff = false;}
+
+                                    Log.d("Goals_Settings","Goals Dedetable On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch our goals evaluation turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpGoalsEvaluationOnOff = true;}
+                                    else {tmpGoalsEvaluationOnOff = false;}
+
+                                    Log.d("Goals_Settings","Goals Evaluation On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch our goals jointly comment turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpGoalsJointlyCommentOnOff = true;}
+                                    else {tmpGoalsJointlyCommentOnOff = false;}
+
+                                    Log.d("Goals_Settings","Goals Join Comment On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch our goals debetable comment turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpGoalsDebetableCommentOnOff = true;}
+                                    else {tmpGoalsDebetableCommentOnOff = false;}
+
+                                    Log.d("Goals_Settings","Goals Debet Comment On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
 
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_EvaluatePauseTime:
                             eventType = xpp.next();
@@ -4010,7 +4297,213 @@ public class EfbXmlParser {
     // read element settings
     private void readSettingTag() {
 
+
+        Log.d("read_SETTINGS", "Zeile " + xpp.getLineNumber());
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml our arrangement settings comment tag
+        Boolean error = false;
+
+        // tmp data for prefs and database insert
+        // switch for functions
+        Boolean tmpPreventionOnOff = false;
+        Boolean tmpFaqOnOff = false;
+        Boolean tmpEmergencyOnOff = false;
+        Boolean tmpSettingsOnOff = false;
+
+        // settings order
+        String tmpOrder = "";
+
+
+
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("readOur_SETTINGS", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForSettings_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+
+                                    Log.d("Settings Settings", "ORDER: " + tmpOrder);
+
+
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForSettings_Prevention_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch prevention turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {
+                                        tmpPreventionOnOff = true;
+                                    } else {
+                                        tmpPreventionOnOff = false;
+                                    }
+
+                                    Log.d("Settings", "Prevention On/Off" + tmpSwitchValue);
+
+
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForSettings_Faq_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch faq turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {
+                                        tmpFaqOnOff = true;
+                                    } else {
+                                        tmpFaqOnOff = false;
+                                    }
+
+                                    Log.d("Settings", "Faq On/Off" + tmpSwitchValue);
+
+
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForSettings_Emergency_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch emergency help turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {
+                                        tmpEmergencyOnOff = true;
+                                    } else {
+                                        tmpEmergencyOnOff = false;
+                                    }
+
+                                    Log.d("Settings", "Emergency On/Off" + tmpSwitchValue);
+
+
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForSettings_Settings_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch settings turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {
+                                        tmpSettingsOnOff = true;
+                                    } else {
+                                        tmpSettingsOnOff = false;
+                                    }
+
+                                    Log.d("Settings", "Settings On/Off" + tmpSwitchValue);
+
+
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+
+                            break;
+
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
+                    Log.d("ABBRUCH Settings!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of settings
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForSettings)) {
+
+                        // check all data for settings correct?
+                        if (!error) {
+
+
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) ) { // settings order -> delete?
+
+                                Log.d("Settings","DELETE AUSführen");
+
+
+                                // refresh activity settings because settings have change
+                                returnMap.put("Settings","1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // settings order -> update?
+
+                                Log.d("Settings","UPDATE AUSführen");
+
+
+                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Prevention, tmpPreventionOnOff); // turn function prevention on/off
+                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Faq, tmpFaqOnOff); // turn function faq on/off
+                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_EmergencyHelp, tmpEmergencyOnOff); // turn function emergency help on/off
+                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Settings, tmpSettingsOnOff); // turn function settings on/off
+                                prefsEditor.commit();
+
+                                // refresh activity settings because settings have change
+                                returnMap.put("Settings","1");
+
+
+                            }
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
+
+
+
+
 
 
 
