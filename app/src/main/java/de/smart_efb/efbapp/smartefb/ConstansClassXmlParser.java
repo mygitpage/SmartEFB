@@ -41,6 +41,22 @@ public class ConstansClassXmlParser {
     // xml name for element connect book
     public static final String xmlNameForConnectBook = "connectbook";
 
+    // xml name for element connect book messages
+    public static final String xmlNameForConnectBook_Messages = "connectbook_messages";
+
+    // xml name for element connect book settings
+    public static final String xmlNameForConnectBook_Settings = "connectbook_settings";
+
+    // xml name for element connect book turn on/off
+    public static final String xmlNameForConnectBook_TurnOnOff = "connectbook_turnonoff";
+
+    // xml name for element connect book order
+    public static final String xmlNameForConnectBook_Order = "connectbook_order";
+
+    // xml name for element connect book author name
+    public static final String xmlNameForConnectBook_ClientName = "connectbook_clientrname";
+
+
     //
     // ++++++++++++++++++++++ End Connect Book ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //
@@ -490,6 +506,10 @@ public class ConstansClassXmlParser {
     public static final String xmlNameForMeeting = "meeting";
     // xml name for element meeting settings
     public static final String xmlNameForMeeting_Settings = "meeting_settings";
+
+    // xml name for element meeting turn on/off
+    public static final String xmlNameForMeeting_TurnOnOff = "meeting_turnonoff";
+
         // xml name for element meeting settings order
         public static final String xmlNameForMeeting_Settings_Order = "meeting_settings_order";
         // xml name for element meeting settings date A
@@ -504,10 +524,6 @@ public class ConstansClassXmlParser {
 
     // xml name for element meeting status
     public static final String xmlNameForMeeting_MeetingStatus = "meeting_status";
-
-
-
-
 
 
     // xml name for element meeting suggestions
@@ -525,15 +541,6 @@ public class ConstansClassXmlParser {
         public static final String xmlNameForMeeting_Suggestions_ResponseDeadline = "meeting_suggestions_responsedeadline";
         // xml name for element meeting suggestions old meeting time (need for delete)
         public static final String xmlNameForMeeting_Suggestions_OldMeetingTime = "meeting_suggestions_oldtime";
-
-
-
-
-
-
-
-
-
 
 
     //
@@ -566,6 +573,25 @@ public class ConstansClassXmlParser {
     // ++++++++++++++++++++++ End Main Settings ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //
 
+
+    //
+    // ++++++++++++++++++++++ Time Table ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
+    // xml name for element time table
+    public static final String xmlNameForTimeTable = "timetable";
+
+    // xml name for element time table order
+    public static final String xmlNameForTimeTable_Order = "timetable_order";
+
+    // xml name for element time table turn on/off
+    public static final String xmlNameForTimeTable_TurnOnOff = "timetable_turnonoff";
+
+    // xml name for element time table value
+    public static final String xmlNameForTimeTable_Value = "timetable_value";
+
+    //
+    // ++++++++++++++++++++++ End Time Table ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
 
 
 

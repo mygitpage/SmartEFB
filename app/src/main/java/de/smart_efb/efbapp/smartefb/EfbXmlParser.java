@@ -41,94 +41,6 @@ public class EfbXmlParser {
     Map<String, String> returnMap;
 
 
-
-
-    // true -> <main></main> block of xml file for 'normal' interaction is ok
-    Boolean xmlMainBlockNormalOk = false;
-    // true -> <main></main> block of xml file for 'make meeting' interaction is ok
-    Boolean xmlMainBlockMeetingOk = false;
-    // true -> <main></main> block of xml file for 'first' interachtion is ok
-    Boolean xmlMainBlockFirstOk = false;
-
-
-
-
-
-    // refresh activity ourarrangement
-    Boolean refreshOurArrangement = false;
-        // refresh activity ourarrangement fragement now
-        Boolean refreshOurArrangementNow = false;
-        // refresh activity ourarrangement fragement sketch
-        Boolean refreshOurArrangementSketch = false;
-        // refresh activity ourarrangement fragement now comment
-        Boolean refreshOurArrangementNowComment = false;
-        // refresh activity ourarrangement fragement sketch comment
-        Boolean refreshOurArrangementSketchComment = false;
-        // refresh settings of our arrangement
-        Boolean refreshOurArrangementSettings = false;
-        // refresh data of evaluation process
-        Boolean refreshOurArrangementSettingsEvaluationProcess = false;
-        // refresh data of comment process
-        Boolean refreshOurArrangementSettingsCommentProcess = false;
-        // refresh data of sketch comment process
-        Boolean refreshOurArrangementSettingsSketchCommentProcess = false;
-        // refresh author name of sketch arragement
-        Boolean refreshOurArrangementSettingsSketchArrangmentAuthorName = false;
-        // refresh current date of sketch arrangement
-        Boolean refreshOurArrangementSettingsSketchCurrentDateOfSketchArrangement = false;
-        // refresg current date of arrangement
-        Boolean refreshOurArrangementSettingsCurrentDateOfArrangement = false;
-
-
-    // refresh activity ourgoals
-    Boolean refreshOurGoals = false;
-        // refresh activity ourgoals fragment jointly now
-        Boolean refreshOurGoalsJointlyNow = false;
-        // refresh activity ourgoals fragment debetable now
-        Boolean refreshOurGoalsDebetableNow = false;
-        // refresh activity ourgoals fragment jointly comment
-        Boolean refreshOurGoalsJointlyComment = false;
-        // refresh activity ourgoals fragment debetable goals
-        Boolean refreshOurGoalsDebetableComment = false;
-
-
-    // refresh settings of activity our goals
-    Boolean refreshOurGoalsSettings = false;
-        // refresh data of evaluation process
-        Boolean refreshOurGoalsSettingsEvaluationProcess = false;
-        // refresh data of jointly comment process
-        Boolean refreshOurGoalsSettingsCommentProcess = false;
-        // refresh data of debetable comment process
-        Boolean refreshOurGoalsSettingsDebetableCommentProcess = false;
-        // refresh author name of debetable goals
-        Boolean refreshOurGoalsSettingsDebetableGoalsAuthorName = false;
-        // refresh current date of debetable goals
-        Boolean refreshOurGoalsSettingsDebetableCurrentDateOfDebetableGoals = false;
-        // refresh current date of jointly goals
-        Boolean refreshOurGoalsSettingsJointlyCurrentDateOfJointlyGoals = false;
-
-
-    // refresh activity meeting
-    Boolean refreshMeeting = false;
-        // refresh activity meeting settings
-        Boolean refreshMeetingSettings = false;
-        // refresh meeting setting date A
-        Boolean refreshMeetingSettingsUpdateDateA = false;
-        // refresh meeting setting date B
-        Boolean refreshMeetingSettingsUpdateDateB = false;
-        // refresh meeting status
-        Boolean refreshMeetingSettingsUpdateStatus = false;
-        // refresh new meeting suggestion
-        Boolean refreshMeetingNewSuggestion = false;
-        // refresh new author of suggestions
-        Boolean refreshMeetingAuthorSuggestion = false;
-        // refresh response deadline
-        Boolean refreshMeetingResponseDeadline = false;
-
-
-
-
-
     public EfbXmlParser (Context tmpXmlContext) {
 
         // init context
@@ -152,20 +64,50 @@ public class EfbXmlParser {
         returnMap.put("ConnectionStatus","0");
 
 
+        returnMap.put ("ConnectBook","0");
+        returnMap.put ("ConnectBookSettings","0");
+        returnMap.put ("ConnectBookSettingsClientName","0");
+
+
         returnMap.put("OurArrangement","0");
+        returnMap.put("OurArrangementNow","0");
+        returnMap.put("OurArrangementNowComment","0");
+        returnMap.put("OurArrangementSketch","0");
+        returnMap.put("OurArrangementSketchComment","0");
         returnMap.put("OurArrangementSettings","0");
         returnMap.put("OurArrangementSettingsEvaluationProcess","0");
         returnMap.put("OurArrangementSettingsCommentProcess","0");
+        returnMap.put("OurArrangementSettingsSketchCurrentDateOfSketchArrangement","0");
+        returnMap.put("OurArrangementSettingsSketchArrangmentAuthorName","0");
+        returnMap.put("OurArrangementSettingsCurrentDateOfArrangement","0");
 
+
+        returnMap.put ("OurGoals","0");
+        returnMap.put ("OurGoalsJointlyNow","0");
+        returnMap.put ("OurGoalsDebetableNow","0");
+        returnMap.put ("OurGoalsJointlyComment","0");
+        returnMap.put ("OurGoalsDebetableComment","0");
+        returnMap.put ("OurGoalsSettings","0");
+        returnMap.put ("OurGoalsSettingsEvaluationProcess","0");
+        returnMap.put ("OurGoalsSettingsCommentProcess","0");
+        returnMap.put ("OurGoalsSettingsDebetableCommentProcess","0");
+        returnMap.put ("OurGoalsSettingsDebetableGoalsAuthorName","0");
+        returnMap.put ("OurGoalsSettingsDebetableCurrentDateOfDebetableGoals","0");
+        returnMap.put ("OurGoalsSettingsJointlyCurrentDateOfJointlyGoals","0");
+
+
+        returnMap.put ("Meeting","0");
+        returnMap.put ("MeetingSettings","0");
+        returnMap.put ("MeetingSettingsUpdateStatus","0");
+        returnMap.put ("MeetingSettingsUpdateDateB","0");
+        returnMap.put ("MeetingSettingsUpdateDateA","0");
+
+
+        returnMap.put("TimeTable","0");
+        returnMap.put("TimeTableValue","0");
 
 
         returnMap.put("Settings","0");
-
-
-
-
-
-
 
     }
 
@@ -203,35 +145,28 @@ public class EfbXmlParser {
                     switch (xpp.getName().trim()) {
 
                         case ConstansClassXmlParser.xmlNameForMasterElement:
-
-                            Log.d("XML","Master Element gefunden");
-
                             masterElementFound = true;
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMain:
-
-                            Log.d("XML","Main Element gefunden");
-
-                            if (masterElementFound) {
-                                readMainTag();
-                                Log.d("XMLParser","ZURUECK AUS READ MAIN");
-                            }
+                            if (masterElementFound) {readMainTag(); }
                             break;
                         case ConstansClassXmlParser.xmlNameForConnectBook:
-                            readConnectBookTag();
+                            if (masterElementFound) {readConnectBookTag();}
                             break;
                         case ConstansClassXmlParser.xmlNameForOurArrangement:
-                            readOurArrangementTag();
+                            if (masterElementFound) {readOurArrangementTag();}
                             break;
                         case ConstansClassXmlParser.xmlNameForOurGoals:
-                            readOurGoalsTag();
+                            if (masterElementFound) {readOurGoalsTag();}
                             break;
                         case ConstansClassXmlParser.xmlNameForMeeting:
-                            readMeetingTag();
+                            if (masterElementFound) {readMeetingTag();}
+                            break;
+                        case ConstansClassXmlParser.xmlNameForTimeTable:
+                            if (masterElementFound) {readTimeTableTag();}
                             break;
                         case ConstansClassXmlParser.xmlNameForSettings:
-                            readSettingTag();
+                            if (masterElementFound) {readSettingTag();}
                             break;
                     }
 
@@ -385,9 +320,6 @@ public class EfbXmlParser {
 
                                 break;
                         }
-
-
-
 
 
                         readMoreXml = false;
@@ -632,8 +564,8 @@ public class EfbXmlParser {
                                 myDb.insertRowOurArrangement(tmpArrangementText, tmpAuthorName, tmpArrangementTime, true, tmpSketchCurrent, 0, 4);
 
                                 // refresh activity ourarrangement and fragement now
-                                refreshOurArrangement = true;
-                                refreshOurArrangementNow = true;
+                                returnMap.put("OurArrangement","1");
+                                returnMap.put("OurArrangementNow","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our arrangement order -> delete entry?
 
@@ -641,8 +573,8 @@ public class EfbXmlParser {
                                 myDb.deleteRowOurArrangement(tmpOldMd5);
 
                                 // refresh activity ourarrangement and fragement now
-                                refreshOurArrangement = true;
-                                refreshOurArrangementNow = true;
+                                returnMap.put("OurArrangement","1");
+                                returnMap.put("OurArrangementNow","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpArrangementTime > 0) { // our arrangement order -> update entry?
 
@@ -650,8 +582,8 @@ public class EfbXmlParser {
                                 myDb.updateRowOurArrangement(tmpArrangementText, tmpAuthorName, tmpArrangementTime, true, tmpSketchCurrent, 0, 4, tmpOldMd5);
 
                                 // refresh activity ourarrangement and fragement now
-                                refreshOurArrangement = true;
-                                refreshOurArrangementNow = true;
+                                returnMap.put("OurArrangement","1");
+                                returnMap.put("OurArrangementNow","1");
                             }
                         }
 
@@ -833,8 +765,8 @@ public class EfbXmlParser {
                                 myDb.insertRowOurArrangementComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpArrangementId, true, tmpArrangementTime, 4);
 
                                 // refresh activity ourarrangement and fragment now comment
-                                refreshOurArrangement = true;
-                                refreshOurArrangementNowComment = true;
+                                returnMap.put("OurArrangement","1");
+                                returnMap.put("OurArrangementNowComment","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our arrangement now comment order -> delete entry?
 
@@ -842,8 +774,8 @@ public class EfbXmlParser {
                                 myDb.deleteRowOurArrangementComment(tmpOldMd5);
 
                                 // refresh activity ourarrangement and fragment now comment
-                                refreshOurArrangement = true;
-                                refreshOurArrangementNowComment = true;
+                                returnMap.put("OurArrangement","1");
+                                returnMap.put("OurArrangementNowComment","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementId >= 0 && tmpArrangementTime > 0) { // our arrangement now comment order -> update entry?
 
@@ -851,8 +783,8 @@ public class EfbXmlParser {
                                 myDb.updateRowOurArrangementComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpArrangementId, true,  tmpArrangementTime, 4, tmpOldMd5);
 
                                 // refresh activity ourarrangement and fragment now comment
-                                refreshOurArrangement = true;
-                                refreshOurArrangementNowComment = true;
+                                returnMap.put("OurArrangement","1");
+                                returnMap.put("OurArrangementNowComment","1");
                             }
                         }
 
@@ -1021,8 +953,8 @@ public class EfbXmlParser {
                                 myDb.insertRowOurArrangement(tmpArrangementText,tmpAuthorName,0,true,tmpSketchCurrent,tmpSketchTime, 4);
 
                                 // refresh activity ourarrangement and fragement sketch
-                                refreshOurArrangement = true;
-                                refreshOurArrangementSketch = true;
+                                returnMap.put("OurArrangement","1");
+                                returnMap.put("OurArrangementSketch","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) { // our arrangement sketch order -> delete entry?
 
@@ -1030,8 +962,8 @@ public class EfbXmlParser {
                                 myDb.deleteRowOurArrangement(tmpOldMd5);
 
                                 // refresh activity ourarrangement and fragement sketch
-                                refreshOurArrangement = true;
-                                refreshOurArrangementSketch = true;
+                                returnMap.put("OurArrangement","1");
+                                returnMap.put("OurArrangementSketch","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update)) { // our arrangement sketch order -> update entry?
 
@@ -1039,8 +971,8 @@ public class EfbXmlParser {
                                 myDb.updateRowOurArrangement(tmpArrangementText, tmpAuthorName, 0, true, tmpSketchCurrent, tmpSketchTime, 4, tmpOldMd5);
 
                                 // refresh activity ourarrangement and fragement sketch
-                                refreshOurArrangement = true;
-                                refreshOurArrangementSketch = true;
+                                returnMap.put("OurArrangement","1");
+                                returnMap.put("OurArrangementSketch","1");
                             }
                         }
 
@@ -1313,8 +1245,8 @@ public class EfbXmlParser {
                                 myDb.insertRowOurArrangementSketchComment(tmpCommentText, tmpREsultQuestionA, tmpREsultQuestionB, tmpREsultQuestionC, tmpAuthorName, tmpCommentTime, tmpArrangementId, true, tmpArrangementTime, 4);
 
                                 // refresh activity ourarrangement and fragment sketch comment
-                                refreshOurArrangement = true;
-                                refreshOurArrangementSketchComment = true;
+                                returnMap.put("OurArrangement","1");
+                                returnMap.put("OurArrangementSketchComment","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our arrangement sketch comment order -> delete entry?
 
@@ -1324,8 +1256,8 @@ public class EfbXmlParser {
                                 myDb.deleteRowOurArrangementSketchComment(tmpOldMd5);
 
                                 // refresh activity ourarrangement and fragment sketch comment
-                                refreshOurArrangement = true;
-                                refreshOurArrangementSketchComment = true;
+                                returnMap.put("OurArrangement","1");
+                                returnMap.put("OurArrangementSketchComment","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementId >= 0 && tmpArrangementTime > 0 && tmpREsultQuestionA >= 0 && tmpREsultQuestionB >= 0 && tmpREsultQuestionC >= 0) { // our arrangement sketch comment order -> update entry?
 
@@ -1335,8 +1267,8 @@ public class EfbXmlParser {
                                 myDb.updateRowOurArrangementSketchComment(tmpCommentText, tmpREsultQuestionA, tmpREsultQuestionB, tmpREsultQuestionC, tmpAuthorName, tmpCommentTime, tmpArrangementId, true,  tmpArrangementTime, 4, tmpOldMd5);
 
                                 // refresh activity ourarrangement and fragment sketch comment
-                                refreshOurArrangement = true;
-                                refreshOurArrangementSketchComment = true;
+                                returnMap.put("OurArrangement","1");
+                                returnMap.put("OurArrangementSketchComment","1");
                             }
                         }
 
@@ -1963,9 +1895,8 @@ public class EfbXmlParser {
                                     // write data to prefs
                                     prefsEditor.putString(ConstansClassOurArrangement.namePrefsAuthorOfSketchArrangement, tmpSketchAuthorName);
                                     prefsEditor.commit();
-
                                     // something change in sketch arrangement author name
-                                    refreshOurArrangementSettingsSketchArrangmentAuthorName = true;
+                                    returnMap.put("OurArrangementSettingsSketchArrangmentAuthorName","1");
 
                                 }
 
@@ -1977,7 +1908,7 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
 
                                     // something change in sketch arrangement author name
-                                    refreshOurArrangementSettingsSketchCurrentDateOfSketchArrangement = true;
+                                    returnMap.put("OurArrangementSettingsSketchCurrentDateOfSketchArrangement","1");
 
                                 }
 
@@ -1989,13 +1920,9 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
 
                                     // something change in sketch arrangement author name
-                                    refreshOurArrangementSettingsCurrentDateOfArrangement = true;
+                                    returnMap.put("OurArrangementSettingsCurrentDateOfArrangement","1");
 
                                 }
-
-
-
-
 
                                 // refresh activity ourarrangement because settings have change
                                 returnMap.put("OurArrangement","1");
@@ -2241,8 +2168,8 @@ public class EfbXmlParser {
                                 myDb.insertRowOurGoals(tmpGoalText, tmpAuthorName, tmpGoalTime, true, tmpJointlyDebetable, 4);
 
                                 // refresh activity ourgoals and fragement jointly goal now
-                                refreshOurGoals = true;
-                                refreshOurGoalsJointlyNow = true;
+                                returnMap.put ("OurGoals","1");
+                                returnMap.put ("OurGoalsJointlyNow","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our goal order -> delete entry?
 
@@ -2250,8 +2177,8 @@ public class EfbXmlParser {
                                 myDb.deleteRowOurGoals(tmpOldMd5);
 
                                 // refresh activity ourgoals and fragement jointly goal now
-                                refreshOurGoals = true;
-                                refreshOurGoalsJointlyNow = true;
+                                returnMap.put ("OurGoals","1");
+                                returnMap.put ("OurGoalsJointlyNow","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpGoalText.length() > 0 && tmpAuthorName.length() > 0 && tmpGoalTime > 0) { // our goal order -> update entry?
 
@@ -2259,8 +2186,9 @@ public class EfbXmlParser {
                                 myDb.updateRowOurGoals(tmpGoalText, tmpAuthorName, tmpGoalTime, true, tmpJointlyDebetable, 4, tmpOldMd5);
 
                                 // refresh activity ourgoals and fragement jointly goal now
-                                refreshOurGoals = true;
-                                refreshOurGoalsJointlyNow = true;
+                                returnMap.put ("OurGoals","1");
+                                returnMap.put ("OurGoalsJointlyNow","1");
+
                             }
                         }
 
@@ -2446,8 +2374,8 @@ public class EfbXmlParser {
                                 myDb.insertRowOurGoalJointlyGoalComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpGoalId, true, tmpGoalTime, 4);
 
                                 // refresh activity ourgoals and fragment jointly comment
-                                refreshOurGoals = true;
-                                refreshOurGoalsJointlyComment = true;
+                                returnMap.put ("OurGoals","1");
+                                returnMap.put ("OurGoalsJointlyComment","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our goals jointly comment order -> delete entry?
 
@@ -2455,8 +2383,8 @@ public class EfbXmlParser {
                                 myDb.deleteRowOurGoalJointlyGoalComment(tmpOldMd5);
 
                                 // refresh activity ourgoals and fragment jointly comment
-                                refreshOurGoals = true;
-                                refreshOurGoalsJointlyComment = true;
+                                returnMap.put ("OurGoals","1");
+                                returnMap.put ("OurGoalsJointlyComment","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpGoalId >= 0 && tmpGoalTime > 0) { // our goals jointly comment order -> update entry?
 
@@ -2464,8 +2392,9 @@ public class EfbXmlParser {
                                 myDb.updateRowOurGoalJointlyGoalComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpGoalId, true,  tmpGoalTime, 4, tmpOldMd5);
 
                                 // refresh activity ourgoals and fragment jointly comment
-                                refreshOurGoals = true;
-                                refreshOurGoalsJointlyComment = true;
+                                returnMap.put ("OurGoals","1");
+                                returnMap.put ("OurGoalsJointlyComment","1");
+
                             }
                         }
 
@@ -2722,8 +2651,8 @@ public class EfbXmlParser {
                                 myDb.insertRowOurGoalsDebetableGoalsComment(tmpCommentText, tmpREsultQuestionA, tmpREsultQuestionB, tmpREsultQuestionC, tmpAuthorName, tmpCommentTime, tmpGoalId, true, tmpGoalTime, 4);
 
                                 // refresh activity ourgoals and fragment debetable comment
-                                refreshOurGoals = true;
-                                refreshOurGoalsDebetableComment = true;
+                                returnMap.put ("OurGoals","1");
+                                returnMap.put ("OurGoalsDebetableComment","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our goals jointly comment order -> delete entry?
 
@@ -2731,8 +2660,8 @@ public class EfbXmlParser {
                                 myDb.deleteRowOurGoalsDebetableGoalsComment(tmpOldMd5);
 
                                 // refresh activity ourgoals and fragment debetable comment
-                                refreshOurGoals = true;
-                                refreshOurGoalsDebetableComment = true;
+                                returnMap.put ("OurGoals","1");
+                                returnMap.put ("OurGoalsDebetableComment","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpGoalId >= 0 && tmpGoalTime > 0) { // our goals jointly comment order -> update entry?
 
@@ -2740,8 +2669,8 @@ public class EfbXmlParser {
                                 myDb.updateRowOurGoalsDebetableGoalsComment(tmpCommentText, tmpREsultQuestionA, tmpREsultQuestionB, tmpREsultQuestionC, tmpAuthorName, tmpCommentTime, tmpGoalId, true,  tmpGoalTime, 4, tmpOldMd5);
 
                                 // refresh activity ourgoals and fragment debetable comment
-                                refreshOurGoals = true;
-                                refreshOurGoalsDebetableComment = true;
+                                returnMap.put ("OurGoals","1");
+                                returnMap.put ("OurGoalsDebetableComment","1");
                             }
                         }
 
@@ -2914,8 +2843,8 @@ public class EfbXmlParser {
                                 myDb.insertRowOurGoals(tmpDebetableGoalText, tmpDebetableAuthorName, tmpDebetableGoalTime, true, tmpJointlyDebetable, 4);
 
                                 // refresh activity ourgoals and fragement debetable goal now
-                                refreshOurGoals = true;
-                                refreshOurGoalsDebetableNow = true;
+                                returnMap.put ("OurGoals","1");
+                                returnMap.put ("OurGoalsDebetableNow","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our goal order -> delete entry?
 
@@ -2923,8 +2852,8 @@ public class EfbXmlParser {
                                 myDb.deleteRowOurGoals(tmpOldMd5);
 
                                 // refresh activity ourgoals and fragement debetable goal now
-                                refreshOurGoals = true;
-                                refreshOurGoalsDebetableNow = true;
+                                returnMap.put ("OurGoals","1");
+                                returnMap.put ("OurGoalsDebetableNow","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpDebetableGoalText.length() > 0 && tmpDebetableAuthorName.length() > 0 && tmpDebetableGoalTime > 0) { // our goal order -> update entry?
 
@@ -2932,8 +2861,9 @@ public class EfbXmlParser {
                                 myDb.updateRowOurGoals(tmpDebetableGoalText, tmpDebetableAuthorName, tmpDebetableGoalTime, true, tmpJointlyDebetable, 4, tmpOldMd5);
 
                                 // refresh activity ourgoals and fragement jointly goal now
-                                refreshOurGoals = true;
-                                refreshOurGoalsDebetableNow = true;
+                                returnMap.put ("OurGoals","1");
+                                returnMap.put ("OurGoalsDebetableNow","1");
+
                             }
                         }
 
@@ -3469,58 +3399,76 @@ public class EfbXmlParser {
 
 
                                 // refresh activity ourgoals because settings have change
-                                refreshOurGoals = true;
-                                refreshOurGoalsSettings = true;
+                                returnMap.put ("OurGoals","1");
+                                returnMap.put ("OurGoalsSettings","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // our goals settings order -> update?
 
                                 Log.d("Goals Settings","UPDATE AUSführen");
 
                                 // update evaluation of jointly goals?
-                                if (tmpJointlyEvaluatePauseTime > 0 && tmpJointlyEvaluateActiveTime > 0 && tmpJointlyEvaluateStartDate > 0 && tmpJointlyEvaluateEndDate > 0) {
+                                if (tmpGoalsEvaluationOnOff && tmpJointlyEvaluatePauseTime > 0 && tmpJointlyEvaluateActiveTime > 0 && tmpJointlyEvaluateStartDate > 0 && tmpJointlyEvaluateEndDate > 0) {
 
                                     Log.d ("Goals Settings--","PT:"+tmpJointlyEvaluatePauseTime+"AT:"+tmpJointlyEvaluateActiveTime+"SD:"+tmpJointlyEvaluateStartDate+"ED:"+tmpJointlyEvaluateEndDate);
 
                                     // write data to prefs
+                                    prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, tmpGoalsEvaluationOnOff); // turn function on
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, tmpJointlyEvaluatePauseTime);
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, tmpJointlyEvaluateActiveTime);
                                     prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, tmpJointlyEvaluateStartDate);
                                     prefsEditor.putLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, tmpJointlyEvaluateEndDate);
                                     prefsEditor.commit();
-
                                     // something change in evaluation process
-                                    refreshOurGoalsSettingsEvaluationProcess = true;
-
+                                    returnMap.put ("OurGoalsSettingsEvaluationProcess","1");
+                                }
+                                else { // turn function our goals evaluation off
+                                    // write data to prefs
+                                    prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, tmpGoalsEvaluationOnOff); // turn function off
+                                    prefsEditor.commit();
+                                    // something change in evaluation process
+                                    returnMap.put ("OurGoalsSettingsEvaluationProcess","1");
                                 }
 
                                 // update comment max/count of jointly goals?
-                                if (tmpJointlyCommentMaxComment > 0 && tmpJointlyCommentMaxLetters > 0 && tmpJointlyCommentCountComment >= 0 && tmpJointlyCommentCountCommentSinceTime > 0) {
+                                if (tmpGoalsJointlyCommentOnOff && tmpJointlyCommentMaxComment > 0 && tmpJointlyCommentMaxLetters > 0 && tmpJointlyCommentCountComment >= 0 && tmpJointlyCommentCountCommentSinceTime > 0) {
 
                                     // write data to prefs
+                                    prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, tmpGoalsJointlyCommentOnOff); // turn function on
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, tmpJointlyCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyLetters, tmpJointlyCommentMaxLetters);
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, tmpJointlyCommentCountComment);
                                     prefsEditor.putLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, tmpJointlyCommentCountCommentSinceTime);
                                     prefsEditor.commit();
-
                                     // something change in jointly goals comment process
-                                    refreshOurGoalsSettingsCommentProcess = true;
-
+                                    returnMap.put ("OurGoalsSettingsCommentProcess","1");
+                                }
+                                else { // turn function our goals jointly comment off
+                                    // write data to prefs
+                                    prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, tmpGoalsJointlyCommentOnOff); // turn function off
+                                    prefsEditor.commit();
+                                    // something change in jointly goals comment process
+                                    returnMap.put ("OurGoalsSettingsCommentProcess","1");
                                 }
 
                                 // update debetable comment max/count of debetable goals?
-                                if (tmpDebetableCommentMaxComment > 0 && tmpDebetableCommentMaxLetters > 0 && tmpDebetableCommentCountComment >= 0 && tmpDebetableCommentCountCommentSinceTime > 0) {
+                                if (tmpGoalsDebetableCommentOnOff && tmpDebetableCommentMaxComment > 0 && tmpDebetableCommentMaxLetters > 0 && tmpDebetableCommentCountComment >= 0 && tmpDebetableCommentCountCommentSinceTime > 0) {
 
                                     // write data to prefs
+                                    prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentDebetableGoals, tmpGoalsDebetableCommentOnOff); // turn function on
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment,tmpDebetableCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableLetters,tmpDebetableCommentMaxLetters);
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, tmpDebetableCommentCountComment);
                                     prefsEditor.putLong(ConstansClassOurGoals.namePrefsDebetableCommentTimeSinceInMills, tmpDebetableCommentCountCommentSinceTime);
                                     prefsEditor.commit();
-
                                     // something change in debetable goals comment process
-                                    refreshOurGoalsSettingsDebetableCommentProcess = true;
-
+                                    returnMap.put ("OurGoalsSettingsDebetableCommentProcess","1");
+                                }
+                                else { // turn function our goals debetable comment off
+                                    // write data to prefs
+                                    prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentDebetableGoals, tmpGoalsDebetableCommentOnOff); // turn function off
+                                    prefsEditor.commit();
+                                    // something change in debetable goals comment process
+                                    returnMap.put ("OurGoalsSettingsDebetableCommentProcess","1");
                                 }
 
                                 // update debetable goals author name?
@@ -3529,10 +3477,8 @@ public class EfbXmlParser {
                                     // write data to prefs
                                     prefsEditor.putString(ConstansClassOurGoals.namePrefsAuthorOfDebetableGoals, tmpDebetableGoalsAuthorName);
                                     prefsEditor.commit();
-
                                     // something change in debetable goals author name
-                                    refreshOurGoalsSettingsDebetableGoalsAuthorName = true;
-
+                                    returnMap.put ("OurGoalsSettingsDebetableGoalsAuthorName","1");
                                 }
 
                                 // update debetable current date of debetable goals?
@@ -3544,10 +3490,8 @@ public class EfbXmlParser {
                                     // write data to prefs
                                     prefsEditor.putLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, tmpDebetableCurrentDateOfGoals);
                                     prefsEditor.commit();
-
                                     // something change in current date of debetable goals
-                                    refreshOurGoalsSettingsDebetableCurrentDateOfDebetableGoals = true;
-
+                                    returnMap.put ("OurGoalsSettingsDebetableCurrentDateOfDebetableGoals","1");
                                 }
 
                                 // update current date of jointly goals?
@@ -3556,19 +3500,14 @@ public class EfbXmlParser {
                                     // write data to prefs
                                     prefsEditor.putLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, tmpJointlyCurrentDateOfGoals);
                                     prefsEditor.commit();
-
                                     // something change in current date of jointly goals
-                                    refreshOurGoalsSettingsJointlyCurrentDateOfJointlyGoals = true;
-
+                                    returnMap.put ("OurGoalsSettingsJointlyCurrentDateOfJointlyGoals","1");
                                 }
 
-
-
-
-
                                 // refresh activity ourarrangement because settings have change
-                                refreshOurGoals = true;
-                                refreshOurGoalsSettings = true;
+                                returnMap.put ("OurGoals","1");
+                                returnMap.put ("OurGoalsSettings","1");
+
                             }
                         }
 
@@ -3657,6 +3596,7 @@ public class EfbXmlParser {
         Boolean error = false;
 
         // tmp data for prefs
+        Boolean tmpMeetingOnOff = false;
         String tmpOrder = "";
         Long tmpMeetingDateA = 0L;
         Long tmpMeetingDateB = 0L;
@@ -3696,6 +3636,30 @@ public class EfbXmlParser {
                             }
 
                             break;
+
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch meeting turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpMeetingOnOff = true;}
+                                    else {tmpMeetingOnOff = false;}
+
+                                    Log.d("Meeting_Settings","Meeting On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
 
                         case ConstansClassXmlParser.xmlNameForMeeting_Settings_MeetingDateA:
                             eventType = xpp.next();
@@ -3819,18 +3783,27 @@ public class EfbXmlParser {
                                 Log.d("meeting Settings","DELETE AUSführen");
 
                                 // refresh activity meeting because settings have change
-                                refreshMeeting = true;
-                                refreshMeetingSettings = true;
+                                returnMap.put ("Meeting","1");
+                                returnMap.put ("MeetingSettings","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) ) { // meeting settings order -> delete all?
 
                                 // delete all meeting suggestions in DB
                                 myDb.deleteAllRowsMeetingDateAndTime();
 
+                                // refresh activity meeting because settings have change
+                                returnMap.put ("Meeting","1");
+                                returnMap.put ("MeetingSettings","1");
+
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // meeting settings order -> update?
 
                                 Log.d("meeting Settings","UPDATE AUSführen");
+
+                                // in every case -> write data meeting on off to prefs
+                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, tmpMeetingOnOff);
+                                prefsEditor.commit();
+
 
                                 // update meeting date a and place a?
                                 if (tmpMeetingDateA > 0 && tmpMeetingPlaceA > 0 ) {
@@ -3845,7 +3818,7 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
 
                                     // something change in evaluation process
-                                    refreshMeetingSettingsUpdateDateA = true;
+                                    returnMap.put ("MeetingSettingsUpdateDateA","1");
 
                                 }
 
@@ -3862,7 +3835,7 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
 
                                     // something change in evaluation process
-                                    refreshMeetingSettingsUpdateDateB = true;
+                                    returnMap.put ("MeetingSettingsUpdateDateB","1");
 
                                 }
 
@@ -3876,13 +3849,14 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
 
                                     // something change in meeting status
-                                    refreshMeetingSettingsUpdateStatus = true;
+                                    returnMap.put ("MeetingSettingsUpdateStatus","1");
 
                                 }
 
                                 // refresh activity meeting because settings have change
-                                refreshMeeting = true;
-                                refreshMeetingSettings = true;
+                                returnMap.put ("Meeting","1");
+                                returnMap.put ("MeetingSettings","1");
+
                             }
                         }
 
@@ -3966,7 +3940,7 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting Place text
                                 if (xpp.getText().trim().length() > 0) { // check if meeting Place length from xml > 0
-                                    tmpMeetingSuggestionPlace = xpp.getText().trim(); // make int from xml-text
+                                    tmpMeetingSuggestionPlace = xpp.getText().trim();
                                 }
                                 else {
                                     error = true;
@@ -4051,8 +4025,9 @@ public class EfbXmlParser {
                                 myDb.insertNewMeetingDateAndTime(tmpMeetingSuggestionTime, tmpMeetingSuggestionPlace, true, 4);
 
                                 // refresh activity meeting
-                                refreshMeeting = true;
-                                refreshMeetingNewSuggestion = true;
+                                returnMap.put ("Meeting","1");
+                                returnMap.put ("MeetingNewSuggestion","1");
+
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMeetingSuggestionTime > 0) { // meeting order -> delete suggestion entry?
 
@@ -4060,8 +4035,8 @@ public class EfbXmlParser {
                                 myDb.deleteRowMeetingDateAndTime(tmpOldMeetingSuggestionTime);
 
                                 // refresh activity meeting
-                                refreshMeeting = true;
-                                refreshMeetingNewSuggestion = true;
+                                returnMap.put ("Meeting","1");
+                                returnMap.put ("MeetingNewSuggestion","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMeetingSuggestionTime > 0 && tmpMeetingSuggestionTime > 0 && tmpMeetingSuggestionPlace.length() > 0) { // meeting suggestion order -> update entry?
 
@@ -4069,10 +4044,10 @@ public class EfbXmlParser {
                                 myDb.updateMeetingDateAndTime(tmpMeetingSuggestionTime, tmpMeetingSuggestionPlace, tmpOldMeetingSuggestionTime, true, 4);
 
                                 // refresh activity meeting
-                                refreshMeeting = true;
-                                refreshMeetingNewSuggestion = true;
+                                returnMap.put ("Meeting","1");
+                                returnMap.put ("MeetingNewSuggestion","1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpAuthorSuggestions.length() > 0) { // meeting suggestion order -> update author name?
+                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpAuthorSuggestions.length() > 0) { // meeting suggestion order -> update author name?
 
 
                                 Log.d("Meetings Suggestions--", "Author NAme:" + tmpAuthorSuggestions);
@@ -4082,8 +4057,8 @@ public class EfbXmlParser {
                                 prefsEditor.commit();
 
                                 // refresh activity meeting
-                                refreshMeeting = true;
-                                refreshMeetingAuthorSuggestion = true;
+                                returnMap.put ("Meeting","1");
+                                returnMap.put ("MeetingAuthorSuggestion","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpResponseDeadline > 0) { // meeting suggestion order -> update response deadline?
 
@@ -4095,8 +4070,8 @@ public class EfbXmlParser {
                                 prefsEditor.commit();
 
                                 // refresh activity meeting
-                                refreshMeeting = true;
-                                refreshMeetingResponseDeadline = true;
+                                returnMap.put ("Meeting","1");
+                                returnMap.put ("MeetingResponseDeadline","1");
                             }
                         }
 
@@ -4123,170 +4098,234 @@ public class EfbXmlParser {
     // Begin read connect book -----------------------------------------------------------------------------------
     //
 
+
     // read element connect book
     private void readConnectBookTag() {
 
-
-        /* TODO: Anpassen des Programmblocks - kommt von read main tag
-
-        Boolean readMoreXml = true;
-
-        String tmpClientId = "";
-        String tmpMainOrder = "";
-        String tmpErrorText = "";
-        String tmpMeetingId = "";
+        Boolean parseAnymore = true;
 
         try {
-
             int eventType = xpp.next();
 
-            while (readMoreXml) {
+            while (parseAnymore) {
 
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("ReadMain","Start tag " + xpp.getName());
+                    Log.d("readMeetingTag", "Start tag " + xpp.getName());
 
                     switch (xpp.getName().trim()) {
-
-                        case ConstansClassXmlParser.xmlNameForMain_Order: // xml data order
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) {
-                                if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
-                                    tmpMainOrder = xpp.getText().trim(); // copy main order
-                                }
-                            }
+                        case ConstansClassXmlParser.xmlNameForConnectBook_Messages:
+                            readConnectBookTag_Messages();
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForMain_ErrorText: // xml data error text
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) {
-                                if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
-                                    tmpErrorText = xpp.getText().trim(); // copy main order
-                               }
-                            }
+                        case ConstansClassXmlParser.xmlNameForConnectBook_Settings:
+                            readConnectBookTag_Settings();
                             break;
-
-                        case ConstansClassXmlParser.xmlNameForMain_ClientID: // xml data client id
-                            eventType = xpp.next();
-
-                            if (eventType == XmlPullParser.TEXT) {
-                                if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
-                                    tmpClientId = xpp.getText().trim(); // copy client id
-                                }
-                            }
-                            break;
-
-                        case ConstansClassXmlParser.xmlNameForMain_MeetingId: // xml data make meeting
-                            eventType = xpp.next();
-
-                            if (eventType == XmlPullParser.TEXT) {
-                                if (xpp.getText().trim().length() > 0) { // check if meetingid from xml > 0
-                                    tmpMeetingId = xpp.getText().trim();
-                                }
-                            }
-                            break;
-
-                        case ConstansClassXmlParser.xmlNameForMain_ClientName: // xml data client name
-                            eventType = xpp.next();
-
-                            if (eventType == XmlPullParser.TEXT) {
-                                if (xpp.getText().trim().length() > 0) { // check if client name from xml > 0
-                                    tmpClientName = xpp.getText().trim();
-                                }
-                            }
-                            break;
-
                     }
+                }
+                eventType = xpp.next();
 
-                } else if (eventType == XmlPullParser.END_DOCUMENT) {
-                        Log.d("ReadMain","END OF DOCUMENT");
-                        readMoreXml = false;
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
+                    Log.d("readConnectBookTag", "ABBRUCH DURCH END DOCUMENT!");
+                }
 
-                } else if (eventType == XmlPullParser.END_TAG) {
-                    Log.d("ReadMain", "End tag " + xpp.getName());
+                // look for end tag of connect book
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForConnectBook)) {
 
-                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain)) {
-
-                        switch (tmpMainOrder) {
-                            case "init":
-
-                                Log.d("XML","Order: init");
-
-                                if (tmpClientId.trim().length() > 0 ) {
-
-
-                                    // write client id to prefs
-                                    prefsEditor.putString(ConstansClassSettings.namePrefsClientId, tmpClientId);
-                                    // write client name (user name) to prefs
-                                    prefsEditor.putString(ConstansClassConnectBook.namePrefsConnectBookUserName, tmpClientName);
-                                    // set connection status to connect
-                                    prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,3);
-                                    // write last error messages to prefs
-                                    prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
-
-                                    prefsEditor.commit();
+                        Log.d("readConnect Book Tag", "End Tag connect book  gefunden!");
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
-                                    returnMap.put("ClientId",tmpClientId);
-                                    returnMap.put("MainOrder","init");
-                                    returnMap.put("ConnectionStatus","3");
 
 
-                                    Log.d("XML","Order: init ausgefuehrt!!!!!!!!!!");
+    // read element connect book messages
+    private void readConnectBookTag_Messages() {
+
+
+    }
+
+
+
+
+
+
+    // read element connect book settings
+    private void readConnectBookTag_Settings() {
+
+        Log.d("read_ConnectBSettings", "Zeile " + xpp.getLineNumber());
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml connect book settings tag
+        Boolean error = false;
+
+        // tmp data for prefs
+        Boolean tmpConnectBookOnOff = false;
+        String tmpOrder = "";
+        String tmpClientName = "";
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("readConnectB_SETTINGS", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForConnectBook_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+
+                                    Log.d("Meeting Settings","ORDER: "+tmpOrder);
+
+
                                 }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
 
 
+                        case ConstansClassXmlParser.xmlNameForConnectBook_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch meeting turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpConnectBookOnOff = true;}
+                                    else {tmpConnectBookOnOff = false;}
 
-                                break;
-                            case "data":
-
-                                // TODO:
-
-                                break;
-                            case "error":
-
-
-                                // write last error messages to prefs
-                                prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText);
-                                // set connection status to error
-                                prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,1);
-                                prefsEditor.commit();
-
-                                returnMap.put("ClientId","");
-                                returnMap.put("MainOrder","error");
-                                returnMap.put("ConnectionStatus","1");
-                                returnMap.put("ErrorText",tmpErrorText);
-
-                                // TODO:
-
-                                break;
-                        }
+                                    Log.d("Connect B_Settings","C Book On/Off"+tmpSwitchValue);
 
 
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
 
 
+                        case ConstansClassXmlParser.xmlNameForConnectBook_ClientName:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { //  get client name
+                                if (xpp.getText().trim().length() > 0) { // check if client name from xml > 0
+                                    tmpClientName =  xpp.getText().trim();
 
-                        readMoreXml = false;
+                                    Log.d("Connect B_Settings","Client Name"+tmpClientName);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
 
                     }
                 }
                 eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
+                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of connect book settings
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForConnectBook_Settings)) {
+
+                        // check all data for connect book settings correct?
+                        if (!error) {
+
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) ) { // connect book settings order -> delete?
+
+                                Log.d("Connect Book Settings","DELETE AUSführen");
+
+                                // refresh activity connect book because settings have change
+                                returnMap.put ("ConnectBook","1");
+                                returnMap.put ("ConnectBookSettings","1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // connect book settings order -> update?
+
+                                Log.d("connect book Settings","UPDATE AUSführen");
+
+                                // in every case -> write data connect book on off to prefs
+                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_ConnectBook, tmpConnectBookOnOff);
+                                prefsEditor.commit();
+
+                                // update client name?
+                                if (tmpClientName.length() > 0) {
+
+                                    Log.d ("Connect Book Settings--","Nmae:"+tmpClientName);
+
+                                    // write data to prefs
+                                    prefsEditor.putString(ConstansClassConnectBook.namePrefsConnectBookUserName, tmpClientName);
+                                    prefsEditor.commit();
+
+                                    // something change in meeting status
+                                    returnMap.put ("ConnectBookSettingsClientName","1");
+
+                                }
+
+                                // refresh activity connect book because settings have change
+                                returnMap.put ("ConnectBook","1");
+                                returnMap.put ("ConnectBookSettings","1");
+
+                            }
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
             }
         }
         catch (XmlPullParserException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-
-         */
-
-
-
-
     }
+
+
+
+    //
+    // End read connect book -----------------------------------------------------------------------------------
+    //
+
 
 
 
@@ -4314,8 +4353,6 @@ public class EfbXmlParser {
 
         // settings order
         String tmpOrder = "";
-
-
 
 
         try {
@@ -4505,11 +4542,162 @@ public class EfbXmlParser {
 
 
 
+    // read element time table
+    private void readTimeTableTag() {
+
+
+        Log.d("read_TimeTable", "Zeile " + xpp.getLineNumber());
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml time table tag
+        Boolean error = false;
+
+        // tmp data for prefs and database insert
+        Boolean tmpTimeTableOnOff = false; // switch for functions
+        int tmpTimeTableValue = -1;
+
+        // time table order
+        String tmpOrder = "";
 
 
 
 
+        try {
+            int eventType = xpp.next();
 
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("read TimeTable", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForTimeTable_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+
+                                    Log.d("Time Table", "ORDER: " + tmpOrder);
+
+
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForTimeTable_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch time table turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {
+                                        tmpTimeTableOnOff = true;
+                                    } else {
+                                        tmpTimeTableOnOff = false;
+                                    }
+
+                                    Log.d("Settings", "Time Table On/Off" + tmpSwitchValue);
+
+
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForTimeTable_Value:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch faq turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    tmpTimeTableValue = Integer.valueOf(xpp.getText().trim());
+
+
+                                    Log.d("TimeTable", "Value: " + tmpTimeTableValue);
+
+
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+
+                            break;
+
+
+
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
+                    Log.d("ABBRUCH Settings!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of settings
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForTimeTable)) {
+
+                        // check all data for time table correct?
+                        if (!error) {
+
+
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) ) { // settings order -> delete?
+
+                                Log.d("TimeTable","DELETE AUSführen");
+
+
+                                // refresh activity time table because settings have change
+                                returnMap.put("TimeTable","1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // settings order -> update?
+
+                                Log.d("TimeTable","UPDATE AUSführen");
+
+                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_TimeTable, tmpTimeTableOnOff); // turn function time table on/off
+
+                                if (tmpTimeTableValue >= 0) { // change time table value?
+                                    prefsEditor.putInt(ConstansClassTimeTable.namePrefsTimeTableValue, tmpTimeTableValue); // set value for time table
+                                    returnMap.put("TimeTableValue","1");
+                                }
+
+                                prefsEditor.commit();
+
+
+                                // refresh activity time table because settings have change
+                                returnMap.put("TimeTable","1");
+
+
+                            }
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
