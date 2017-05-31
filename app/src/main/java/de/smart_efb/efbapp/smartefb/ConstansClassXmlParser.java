@@ -212,6 +212,9 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement settings order
             public static final String xmlNameForOurArrangement_Settings_Order = "ourarrangement_settings_order";
 
+            // xml name for element our arrangement old turn on/off
+            public static final String xmlNameForOurArrangementOld_TurnOnOff = "ourarrangement_old_turnonoff";
+
             // xml name for element our arrangement settings evaluate pause time
             public static final String xmlNameForOurArrangement_Settings_EvaluatePauseTime = "ourarrangement_settings_evaluatepausetime";
 
@@ -436,6 +439,9 @@ public class ConstansClassXmlParser {
 
             // xml name for element our goals settings order
             public static final String xmlNameForOurGoals_Settings_Order = "ourgoals_settings_order";
+
+            // xml name for element our goals old turn on/off
+            public static final String xmlNameForOurGoalsOld_TurnOnOff = "ourgoals_old_turnonoff";
 
             // xml name for element our goals settings evaluate pause time
             public static final String xmlNameForOurGoals_Settings_EvaluatePauseTime = "ourgoals_settings_jointlyevaluatepausetime";

@@ -1317,6 +1317,7 @@ public class EfbXmlParser {
         Boolean tmpArrangementCommentOnOff = false;
         Boolean tmpArrangementSketchCommentOnOff = false;
         Boolean tmpArrangementEvaluationOnOff = false;
+        Boolean tmpArrangementOldOnOff = false;
 
         // settings order
         String tmpOrder = "";
@@ -1447,6 +1448,31 @@ public class EfbXmlParser {
                             }
 
                             break;
+
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangementOld_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch our arrangement old turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpArrangementOldOnOff = true;}
+                                    else {tmpArrangementOldOnOff = false;}
+
+                                    Log.d("Arrang_Settings","Arrangement Old On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
 
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_TurnOnOff:
                             eventType = xpp.next();
@@ -1824,11 +1850,17 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // our arrangement settings order -> update?
 
-                                Log.d("Settings","UPDATE AUSführen");
+                                Log.d("Settings Arrangement","UPDATE AUSführen");
+
+                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, tmpArrangementOnOff); // turn function our arrangement on/off
+                                prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, tmpArrangementSketchOnOff); // turn function our arrangement sketch on/off
+                                prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, tmpArrangementOldOnOff); // turn function our arrangement old on/off
+                                prefsEditor.commit();
 
                                 // update evaluation of arrangements?
                                 if (tmpArrangementEvaluationOnOff && tmpEvaluatePauseTime > 0 && tmpEvaluateActiveTime > 0 && tmpEvaluateStartDate > 0 && tmpEvaluateEndDate > 0) {
 
+                                    Log.d("Arrangement Evaluation","einschalten");
                                     Log.d ("Settings--","PT:"+tmpEvaluatePauseTime+"AT:"+tmpEvaluateActiveTime+"SD:"+tmpEvaluateStartDate+"ED:"+tmpEvaluateEndDate);
 
                                     // write data to prefs
@@ -1847,6 +1879,9 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
                                     // something change in evaluation process
                                     returnMap.put("OurArrangementSettingsEvaluationProcess","1");
+
+                                    Log.d("Arrangement Evaluation","ausschalten");
+
                                 }
 
                                 // update comment max/count of arrangements?
@@ -1867,6 +1902,8 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
                                     // something change in arrangement comment process
                                     returnMap.put("OurArrangementSettingsCommentProcess","1");
+
+                                    Log.d("Arrangement comment","ausschalten");
                                 }
 
                                 // update sketch comment max/count of sketch arrangements?
@@ -1887,6 +1924,8 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
                                     // something change in sketch arragement comment process
                                     returnMap.put("OurArrangementSettingsSketchCommentProcess","1");
+
+                                    Log.d("Arrang sketch comment","ausschalten");
                                 }
 
                                 // update sketch arrangement author name?
@@ -2902,6 +2941,7 @@ public class EfbXmlParser {
         Boolean tmpGoalsDebetableOnOff = false;
         Boolean tmpGoalsDebetableCommentOnOff = false;
         Boolean tmpGoalsEvaluationOnOff = false;
+        Boolean tmpGoalsOldOnOff = false;
 
         String tmpOrder = "";
 
@@ -3075,6 +3115,28 @@ public class EfbXmlParser {
 
                             break;
 
+
+                        case ConstansClassXmlParser.xmlNameForOurGoalsOld_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch our goals old turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpGoalsOldOnOff = true;}
+                                    else {tmpGoalsOldOnOff = false;}
+
+                                    Log.d("Goals_Settings","Goals Old On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
 
 
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_EvaluatePauseTime:
@@ -3405,6 +3467,13 @@ public class EfbXmlParser {
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // our goals settings order -> update?
 
                                 Log.d("Goals Settings","UPDATE AUSführen");
+
+                                // write data to prefs
+                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, tmpGoalsOnOff); // turn function our goals on/off
+                                prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, tmpGoalsDebetableOnOff); // turn function our goals debetable on/off
+                                prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkOldGoals, tmpGoalsOldOnOff); // turn function our goals old on/off
+                                prefsEditor.commit();
+
 
                                 // update evaluation of jointly goals?
                                 if (tmpGoalsEvaluationOnOff && tmpJointlyEvaluatePauseTime > 0 && tmpJointlyEvaluateActiveTime > 0 && tmpJointlyEvaluateStartDate > 0 && tmpJointlyEvaluateEndDate > 0) {
@@ -4110,7 +4179,7 @@ public class EfbXmlParser {
             while (parseAnymore) {
 
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readMeetingTag", "Start tag " + xpp.getName());
+                    Log.d("readConnectBTag", "Start tag " + xpp.getName());
 
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForConnectBook_Messages:
@@ -4133,7 +4202,7 @@ public class EfbXmlParser {
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForConnectBook)) {
 
-                        Log.d("readConnect Book Tag", "End Tag connect book  gefunden!");
+                        Log.d("readConnect Book Tag", "End Tag connect book gefunden!");
                         parseAnymore = false;
                     }
                 }
