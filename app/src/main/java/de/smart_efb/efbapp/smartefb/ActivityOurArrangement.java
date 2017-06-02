@@ -100,6 +100,13 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // reference to dialog settings
     AlertDialog alertDialogSettings;
 
+    // activ/inactiv sub-functions
+    // our arrangements sub functions activ/ inactiv
+    Boolean subfunction_arrangement_comment = false;
+    Boolean subfunction_arrangement_evaluation = false;
+    Boolean subfunction_arrangement_sketch = false;
+    Boolean subfunction_arrangement_sketchcomment = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -428,6 +435,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
         prefs = this.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
+        // our arrangements sub functions activ/ inactiv
+        subfunction_arrangement_comment = prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false);
+        subfunction_arrangement_evaluation = prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false);
+        subfunction_arrangement_sketch = prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false);
+        subfunction_arrangement_sketchcomment = prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowLinkCommentSketchArrangement, false);
+
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
         //get date of sketch arrangement
@@ -453,13 +466,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // create help dialog in OurArrangement
         createHelpDialog();
 
-
-
     }
-
-
-
-
 
 
     // help dialog
@@ -505,7 +512,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                 // show the settings for comment (like on/off-status, count comment...)
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsComment);
-                String tmpTxtComment, tmpTxtComment1, tmpTxtComment2, tmpTxtCommentSum;
+                String tmpTxtComment, tmpTxtComment1, tmpTxtComment2, tmpTxtComment3, tmpTxtCommentSum;
 
                 if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false)) {
 
@@ -541,12 +548,18 @@ public class ActivityOurArrangement extends AppCompatActivity {
                                 tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0));
                                 break;
                         }
+
+                        // set text max letters for comment
+                        tmpTxtComment3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentMaxLetters);
+                        tmpTxtComment3 = String.format(tmpTxtComment3, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters,0));
+
                     }
                     else {
                         tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberOff);
+                        tmpTxtComment3 = "";
                     }
 
-                    tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2;
+                    tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2 + tmpTxtComment3;
 
                     tmpdialogTextView.setText(tmpTxtCommentSum);
                 }
@@ -569,7 +582,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                 // show the settings for sketch arrangement
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsSketchArrangement);
-                String tmpTxtSketchArrangementSum, tmpTxtSketchArrangement, tmpTxtSketchArrangement1, tmpTxtSketchArrangement2, tmpTxtSketchArrangement3;
+                String tmpTxtSketchArrangementSum, tmpTxtSketchArrangement, tmpTxtSketchArrangement1, tmpTxtSketchArrangement2, tmpTxtSketchArrangement3, tmpTxtSketchArrangement4;
                 if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false)) {
 
                     tmpTxtSketchArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchArrangementEnable);
@@ -609,17 +622,24 @@ public class ActivityOurArrangement extends AppCompatActivity {
                                     tmpTxtSketchArrangement3 = String.format(tmpTxtSketchArrangement3, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0));
                                     break;
                             }
+
+                            // set text max letters for sketch comment
+                            tmpTxtSketchArrangement4 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentMaxLetters);
+                            tmpTxtSketchArrangement4 = String.format(tmpTxtSketchArrangement4, prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters,0));
+
                         }
                         else {
                             tmpTxtSketchArrangement3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountNumberOff);
+                            tmpTxtSketchArrangement4 = "";
                         }
                     }
                     else {
                         tmpTxtSketchArrangement1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentArrangementDisable);
                         tmpTxtSketchArrangement2 = "";
                         tmpTxtSketchArrangement3 = "";
+                        tmpTxtSketchArrangement4 = "";
                     }
-                    tmpTxtSketchArrangementSum = tmpTxtSketchArrangement + " " + tmpTxtSketchArrangement1 + " " + tmpTxtSketchArrangement2 + " " + tmpTxtSketchArrangement3;
+                    tmpTxtSketchArrangementSum = tmpTxtSketchArrangement + " " + tmpTxtSketchArrangement1 + " " + tmpTxtSketchArrangement2 + " " + tmpTxtSketchArrangement3  + tmpTxtSketchArrangement4;
 
                 }
                 else {
@@ -754,7 +774,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     private void lookNewEntryOnTabZero () {
 
         // look for new entrys in db on tab zero
-        if (myDb.getCountAllNewEntryOurArrangementComment(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "current") > 0 ) {
+        if ((subfunction_arrangement_comment && myDb.getCountAllNewEntryOurArrangementComment(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis())) > 0) || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "current") > 0 ) {
             infoNewEntryOnTabZero = true;
             infoTextNewEntryPostFixTabZeroTitle = " " + this.getResources().getString(R.string.newEntryText);
         }
@@ -770,7 +790,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     private void lookNewEntryOnTabOne () {
 
         // look for new entrys in db on tab one
-        if (myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "sketch") > 0) {
+        if ((subfunction_arrangement_sketchcomment && myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis())) > 0) || (subfunction_arrangement_sketch && myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "sketch") > 0)) {
             infoNewEntryOnTabOne = true;
             infoTextNewEntryPostFixTabOneTitle = " "+ this.getResources().getString(R.string.newEntryText);
         }

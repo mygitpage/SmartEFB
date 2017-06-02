@@ -93,6 +93,13 @@ public class ActivityOurGoals extends AppCompatActivity {
     // evaluate next goal true -> yes, there is a next goal to evaluate; false -> there is nothing more
     Boolean evaluateNextJointlyGoal = false;
 
+    // activ/inactiv sub-functions
+    // our goals sub functions activ/ inactiv
+    Boolean subfunction_goals_comment = false;
+    Boolean subfunction_goals_evaluation = false;
+    Boolean subfunction_goals_debetable = false;
+    Boolean subfunction_goals_debetablecomment = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -426,6 +433,12 @@ public class ActivityOurGoals extends AppCompatActivity {
         prefs = this.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
+        // our goals sub functions activ/ inactiv
+        subfunction_goals_comment = prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, false);
+        subfunction_goals_evaluation = prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false);
+        subfunction_goals_debetable = prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false);
+        subfunction_goals_debetablecomment = prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentDebetableGoals, false);
+
         //get current date of jointly goals
         currentDateOfJointlyGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis());
         //get date of debetable goals
@@ -499,7 +512,7 @@ public class ActivityOurGoals extends AppCompatActivity {
 
                 // show the settings for comment (like on/off-status, count comment...)
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsJointlyGoalsSettingsComment);
-                String tmpTxtComment, tmpTxtComment1, tmpTxtComment2, tmpTxtCommentSum;
+                String tmpTxtComment, tmpTxtComment1, tmpTxtComment2, tmpTxtComment3, tmpTxtCommentSum;
 
                 if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, false)) {
 
@@ -535,12 +548,19 @@ public class ActivityOurGoals extends AppCompatActivity {
                                 tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment,0));
                                 break;
                         }
+
+                        // set text max letters for comment
+                        tmpTxtComment3 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentMaxLetters);
+                        tmpTxtComment3 = String.format(tmpTxtComment3, prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyLetters,0));
+
+
                     }
                     else {
                         tmpTxtComment2 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberOff);
+                        tmpTxtComment3 = "";
                     }
 
-                    tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2;
+                    tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2 + tmpTxtComment3;
 
                     tmpdialogTextView.setText(tmpTxtCommentSum);
                 }
@@ -563,7 +583,7 @@ public class ActivityOurGoals extends AppCompatActivity {
 
                 // show the settings for debetable goals
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsDebetableGoalsSettings);
-                String tmpTxtDebetablGoalSum, tmpTxtDebetableGoal, tmpTxtDebetableGoal1, tmpTxtDebetableGoal2, tmpTxtDebetableGoal3;
+                String tmpTxtDebetablGoalSum, tmpTxtDebetableGoal, tmpTxtDebetableGoal1, tmpTxtDebetableGoal2, tmpTxtDebetableGoal3, tmpTxtDebetableGoal4;
                 if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false)) {
 
                     tmpTxtDebetableGoal = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsEnable);
@@ -607,17 +627,25 @@ public class ActivityOurGoals extends AppCompatActivity {
                                     tmpTxtDebetableGoal3 = String.format(tmpTxtDebetableGoal3, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsDebetableCommentTimeSinceInMills, System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment,0));
                                     break;
                             }
+
+                            // set text max letters for debetable comment
+                            tmpTxtDebetableGoal4 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentMaxLetters);
+                            tmpTxtDebetableGoal4 = String.format(tmpTxtDebetableGoal4, prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableLetters,0));
+
+
                         }
                         else {
                             tmpTxtDebetableGoal3 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentNumberOff);
+                            tmpTxtDebetableGoal4 = "";
                         }
                     }
                     else {
                         tmpTxtDebetableGoal1 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentDisable);
                         tmpTxtDebetableGoal2 = "";
                         tmpTxtDebetableGoal3 = "";
+                        tmpTxtDebetableGoal4 = "";
                     }
-                    tmpTxtDebetablGoalSum = tmpTxtDebetableGoal + " " + tmpTxtDebetableGoal1 + " " + tmpTxtDebetableGoal2 + " " + tmpTxtDebetableGoal3;
+                    tmpTxtDebetablGoalSum = tmpTxtDebetableGoal + " " + tmpTxtDebetableGoal1 + " " + tmpTxtDebetableGoal2 + " " + tmpTxtDebetableGoal3 + tmpTxtDebetableGoal4;
 
                 }
                 else {
@@ -862,7 +890,7 @@ public class ActivityOurGoals extends AppCompatActivity {
     private void lookNewEntryOnTabZero () {
 
         // look for new entrys in db on tab zero
-        if (myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 ) {
+        if (myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 || (subfunction_goals_comment && myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 )) {
             infoNewEntryOnTabZero = true;
             infoTextNewEntryPostFixTabZeroTitle = " " + this.getResources().getString(R.string.newEntryText);
         }
@@ -878,7 +906,7 @@ public class ActivityOurGoals extends AppCompatActivity {
     private void lookNewEntryOnTabOne () {
 
         // look for new entrys in db on tab one
-        if ( myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0 ||  myDb.getCountAllNewEntryOurGoalsDebetableGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0) {
+        if ((subfunction_goals_debetable && myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0) ||  (subfunction_goals_debetablecomment && myDb.getCountAllNewEntryOurGoalsDebetableGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0)) {
             infoNewEntryOnTabOne = true;
             infoTextNewEntryPostFixTabOneTitle = " "+ this.getResources().getString(R.string.newEntryText);
         }

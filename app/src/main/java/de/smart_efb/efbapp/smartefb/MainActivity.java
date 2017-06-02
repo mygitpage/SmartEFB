@@ -65,6 +65,19 @@ public class MainActivity extends AppCompatActivity {
     // reference to the DB
     DBAdapter myDb;
 
+    // activ/inactiv sub-functions
+    // our arrangements sub functions activ/ inactiv
+    Boolean subfunction_arrangement_comment = false;
+    Boolean subfunction_arrangement_evaluation = false;
+    Boolean subfunction_arrangement_sketch = false;
+    Boolean subfunction_arrangement_sketchcomment = false;
+    // our goals sub functions activ/ inactiv
+    Boolean subfunction_goals_comment = false;
+    Boolean subfunction_goals_evaluation = false;
+    Boolean subfunction_goals_debetable = false;
+    Boolean subfunction_goals_debetablecomment = false;
+
+
 
 
     @Override
@@ -209,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
             mainMenueElementBackgroundRessourcesInactiv[i] = getResources().getIdentifier(tmpBackgroundRessourcesInactiv[i], "drawable", "de.smart_efb.efbapp.smartefb");
         }
 
-        // init array show elements
+        // init array show elements and activ/inactiv sub-functions
         initShowElementArray();
 
 
@@ -228,6 +241,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        // our arrangements sub functions activ/ inactiv
+        subfunction_arrangement_comment = prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false);
+        subfunction_arrangement_evaluation = prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false);
+        subfunction_arrangement_sketch = prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false);
+        subfunction_arrangement_sketchcomment = prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowLinkCommentSketchArrangement, false);
+
+        // our goals sub functions activ/ inactiv
+        subfunction_goals_comment = prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, false);
+        subfunction_goals_evaluation = prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false);
+        subfunction_goals_debetable = prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false);
+        subfunction_goals_debetablecomment = prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentDebetableGoals, false);
+
     }
 
 
@@ -243,10 +268,10 @@ public class MainActivity extends AppCompatActivity {
                 case 0: // menue item "Uebergabe"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
+
                 case 1: // menue item "Absprachen"
                     if (showMainMenueElement[countElements]) { // is element aktiv?
-
-                        if (myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurArrangementComment(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "current") > 0 || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "sketch") > 0) {
+                        if ((subfunction_arrangement_sketchcomment && myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis())) > 0) || ( subfunction_arrangement_comment && myDb.getCountAllNewEntryOurArrangementComment(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis())) > 0) || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "current") > 0 || (subfunction_arrangement_sketch && myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "sketch") > 0)) {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                         } else {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
@@ -258,10 +283,10 @@ public class MainActivity extends AppCompatActivity {
                         tmpNew = true;
                     }
                     break;
+
                 case 2: // menue item "Ziele"
                     if (showMainMenueElement[countElements]) { // is element aktiv?
-
-                        if (myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 || myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0 || myDb.getCountAllNewEntryOurGoalsDebetableGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0) {
+                        if (myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 || (subfunction_goals_comment && myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0) || (subfunction_goals_debetable && myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0) || (subfunction_goals_debetablecomment && myDb.getCountAllNewEntryOurGoalsDebetableGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0)) {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                         } else {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
@@ -272,20 +297,20 @@ public class MainActivity extends AppCompatActivity {
                         mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesInactiv[countElements];
                         tmpNew = true;
                     }
-
                     break;
 
                 case 3: // menue item "Zeitplan"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
 
-
                 case 4: // menue item "Praevention"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
+
                 case 5: // menue item "FAQ"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
+
                 case 6: // menue item "Termine"
                     if ( prefs.getBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime  + ConstantsClassMeeting.prefsPraefixMeetings[0], false) || prefs.getBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime  + ConstantsClassMeeting.prefsPraefixMeetings[1], false)) {
                         // meeting A or meeting B new!
@@ -294,17 +319,20 @@ public class MainActivity extends AppCompatActivity {
                         mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     }
                     tmpNew = true;
-
                     break;
+
                 case 7: // menue item "Notfallhilfe"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
+
                 case 8: // menue item "Evaluation"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
+
                 case 9: // menue item "Einstellungen"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
+
                 default:
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
@@ -383,7 +411,6 @@ public class MainActivity extends AppCompatActivity {
                     linearLayoutView.addView(imageView,0);
 
                 }
-
 
                 txtView.setText(mainMenueElementTitle[position]);
                 txtView.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_white));

@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
@@ -154,10 +157,10 @@ public class OurArrangementFragmentNowComment extends Fragment {
             comentHistoryLinearLayoutContainer.setVisibility(View.INVISIBLE);
         }
 
-        // textview for max comments and count comments
+        // textview for max comments, count comments and max letters
         TextView textViewMaxAndCount = (TextView) viewFragmentNowComment.findViewById(R.id.infoNowCommentMaxAndCount);
-        String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral;
-        // build text element max sketch comment
+        String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral, tmpInfoTextCommentMaxLetters;
+        // build text element max comment
         if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0) == 1 && commentLimitationBorder) {
             tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextNowCommentMaxSingular), prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0));
         }
@@ -179,15 +182,50 @@ public class OurArrangementFragmentNowComment extends Fragment {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentCountPlural);
         }
         tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0));
-        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral);
 
+        // generate text comment max letters
+        tmpInfoTextCommentMaxLetters =  this.getResources().getString(R.string.infoTextNowCommentCommentMaxLetters);
+        tmpInfoTextCommentMaxLetters = String.format(tmpInfoTextCommentMaxLetters, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters, 0));
+
+        // show info text
+        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextCommentMaxLetters);
+
+        // get max letters for edit text comment
+        final int tmpMaxLength = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters, 10);
+
+        // get textView to count input letters and init it
+        final TextView textViewCountLettersCommentEditText = (TextView) viewFragmentNowComment.findViewById(R.id.countLettersCommentEditText);
+        String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
+        tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", tmpMaxLength);
+        textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
 
         // comment textfield -> insert new comment
         final EditText txtInputArrangementComment = (EditText) viewFragmentNowComment.findViewById(R.id.inputArrangementComment);
-        // button send comment
+
+        // set text watcher to count letters in comment field
+        final TextWatcher txtInputArrangementCommentTextWatcher = new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //
+                String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
+                tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, String.valueOf(s.length()), tmpMaxLength);
+                textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
+            }
+            public void afterTextChanged(Editable s) {
+            }
+        };
+
+        // set text watcher to count input letters
+        txtInputArrangementComment.addTextChangedListener(txtInputArrangementCommentTextWatcher);
+
+        // set input filter max length for comment field
+        txtInputArrangementComment.setFilters(new InputFilter[] {new InputFilter.LengthFilter(tmpMaxLength)});
+
+        // get button send comment
         Button buttonSendArrangementComment = (Button) viewFragmentNowComment.findViewById(R.id.buttonSendArrangementComment);
 
-        // onClick listener send arrangement comment
+        // set onClick listener send arrangement comment
         buttonSendArrangementComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -47,7 +47,7 @@
         <item>main_pic_connectbook_normal</item><!--Uebergabe-->
         <item>main_pic_arrangement_normal</item><!--Absprachen-->
         <item>main_pic_goal_normal</item><!--Ziele-->
-        <item>main_pic_setting_normal</item><!--Zeitplan-->
+        <item>main_pic_timetable_normal</item><!--Zeitplan-->
         <item>main_pic_prevetion_normal</item><!--Praevention-->
         <item>main_pic_faq_normal</item><!--FAQ-->
         <item>main_pic_event_normal</item><!--Termine-->
@@ -61,7 +61,7 @@
         <item>main_pic_connectbook_new_entry</item><!--Uebergabe-->
         <item>main_pic_arrangement_new_entry</item><!--Absprachen-->
         <item>main_pic_goal_new_entry</item><!--Ziele-->
-        <item>main_pic_setting_normal</item><!--Zeitplan-->
+        <item>main_pic_timetable_new_entry</item><!--Zeitplan-->
         <item>main_pic_prevention_new_entry</item><!--Praevention-->
         <item>main_pic_faq_new_entry</item><!--FAQ-->
         <item>main_pic_event_new_entry</item><!--Termine-->

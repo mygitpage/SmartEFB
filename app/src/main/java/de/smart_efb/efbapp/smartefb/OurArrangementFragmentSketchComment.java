@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
@@ -186,7 +189,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
         // textview for max comments and count comments
         TextView textViewMaxAndCount = (TextView) viewFragmentSketchComment.findViewById(R.id.infoSketchCommentMaxAndCount);
-        String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral;
+        String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral, tmpInfoTextSketchCommentMaxLetters;
         // build text element max sketch comment
         if (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment, 0) == 1 && commentLimitationBorder) {
             tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextSketchCommentMaxSingular), prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment, 0));
@@ -209,7 +212,48 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentCountPlural);
         }
         tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0));
-        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral);
+
+
+        // generate text comment max letters
+        tmpInfoTextSketchCommentMaxLetters =  this.getResources().getString(R.string.infoTextSketchCommentMaxLetters);
+        tmpInfoTextSketchCommentMaxLetters = String.format(tmpInfoTextSketchCommentMaxLetters, prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters, 0));
+
+        // show info text
+        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextSketchCommentMaxLetters);
+
+        // get max letters for edit text sketch comment
+        final int tmpMaxLength = prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters, 10);
+
+        // get textView to count input letters and init it
+        final TextView textViewCountLettersCommentEditText = (TextView) viewFragmentSketchComment.findViewById(R.id.countLettersSketchCommentEditText);
+        String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
+        tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", tmpMaxLength);
+        textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
+
+
+        // get edit text field for sketch comment
+        final EditText txtInputSketchArrangementComment = (EditText) viewFragmentSketchComment.findViewById(R.id.inputSketchArrangementComment);
+
+
+        // set text watcher to count letters in comment field
+        final TextWatcher txtInputArrangementCommentTextWatcher = new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //
+                String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
+                tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, String.valueOf(s.length()), tmpMaxLength);
+                textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
+            }
+            public void afterTextChanged(Editable s) {
+            }
+        };
+
+        // set text watcher to count input letters
+        txtInputSketchArrangementComment.addTextChangedListener(txtInputArrangementCommentTextWatcher);
+
+        // set input filter max length for sketch comment field
+        txtInputSketchArrangementComment.setFilters(new InputFilter[] {new InputFilter.LengthFilter(tmpMaxLength)});
 
         // button send comment
         Button buttonSendSketchArrangementComment = (Button) viewFragmentSketchComment.findViewById(R.id.buttonSendSketchArrangementComment);
@@ -235,7 +279,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
                 // comment textfield -> insert new comment
                 tmpErrorTextView = (TextView) viewFragmentSketchComment.findViewById(R.id.errorFreeQuestionForCommentSketchArrangement);
-                EditText txtInputSketchArrangementComment = (EditText) viewFragmentSketchComment.findViewById(R.id.inputSketchArrangementComment);
                 if (txtInputSketchArrangementComment.getText().toString().length() < 3 && tmpErrorTextView != null) {
                     sketchCommentNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);

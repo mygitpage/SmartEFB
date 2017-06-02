@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -185,7 +188,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
 
         // textview for max comments and count comments
         TextView textViewMaxAndCount = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.infoDebetableGoalCommentMaxAndCount);
-        String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral;
+        String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral, tmpInfoTextCommentMaxLetters;
         // build text element max debetable goal comment
         if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment, 0) == 1 && commentLimitationBorder) {
             tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextDebetableGoalCommentMaxSingular), prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment, 0));
@@ -208,26 +211,48 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextDebetableGoalCommentCountPlural);
         }
         tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, 0));
-        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral);
+
+        // generate text comment max letters
+        tmpInfoTextCommentMaxLetters =  this.getResources().getString(R.string.infoTextDebetableGoalCommentMaxLetters);
+        tmpInfoTextCommentMaxLetters = String.format(tmpInfoTextCommentMaxLetters, prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableLetters, 0));
+
+        // show info text
+        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextCommentMaxLetters);
 
 
 
 
+        // get max letters for edit text comment
+        final int tmpMaxLength = prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableLetters, 10);
 
-        // textview intro for the history of comments
-        /*
-        TextView textCommentHistoryIntro = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.commentHistoryIntro);
-        if (cursorArrangementAllComments.getCount() > 0) { // show comments for arrangement when count comments > 0
-            // show intro for comments
-            textCommentHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryIntroText)+ " " + arrangementNumberInListView);
-            // show comments
-            addActualCommentSetToView ();
+        // get textView to count input letters and init it
+        final TextView textViewCountLettersCommentEditText = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.countLettersCommentEditText);
+        String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
+        tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", tmpMaxLength);
+        textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
 
-        } else { // else show nothing
-            LinearLayout comentHistoryLinearLayoutContainer = (LinearLayout) viewFragmentDebetableGoalsComment.findViewById(R.id.commentHistoryContainer);
-            comentHistoryLinearLayoutContainer.setVisibility(View.INVISIBLE);
-        }
-        */
+        // comment textfield -> insert new comment
+        final EditText txtInputDebetableCommentComment = (EditText) viewFragmentDebetableGoalsComment.findViewById(R.id.inputDebetableGoalComment);
+
+        // set text watcher to count letters in comment field
+        final TextWatcher txtInputArrangementCommentTextWatcher = new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //
+                String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
+                tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, String.valueOf(s.length()), tmpMaxLength);
+                textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
+            }
+            public void afterTextChanged(Editable s) {
+            }
+        };
+
+        // set text watcher to count input letters
+        txtInputDebetableCommentComment.addTextChangedListener(txtInputArrangementCommentTextWatcher);
+
+        // set input filter max length for comment field
+        txtInputDebetableCommentComment.setFilters(new InputFilter[] {new InputFilter.LengthFilter(tmpMaxLength)});
 
         // button send comment
         Button buttonSendDebetableCommentComment = (Button) viewFragmentDebetableGoalsComment.findViewById(R.id.buttonSendDebetableGoalComment);
@@ -254,7 +279,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
 
                 // comment textfield -> insert new comment
                 tmpErrorTextView = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.errorFreeQuestionForCommentDebetableGoal);
-                EditText txtInputDebetableCommentComment = (EditText) viewFragmentDebetableGoalsComment.findViewById(R.id.inputDebetableGoalComment);
                 if (txtInputDebetableCommentComment.getText().toString().length() < 3 && tmpErrorTextView != null) {
                     debetableGoalCommentNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);

@@ -4243,6 +4243,9 @@ public class EfbXmlParser {
         Boolean tmpConnectBookOnOff = false;
         String tmpOrder = "";
         String tmpClientName = "";
+        int tmpMaxLetters = -1;
+        int tmpMaxMessages = -1;
+        int tmpDelayTime = -1;
 
         try {
             int eventType = xpp.next();
@@ -4321,7 +4324,65 @@ public class EfbXmlParser {
 
                             break;
 
+                        case ConstansClassXmlParser.xmlNameForConnectBook_DelayTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get send delay time
+                                if (xpp.getText().trim().length() > 0) { // check if delay time from xml > 0
+                                    tmpDelayTime = Integer.valueOf(xpp.getText().trim());
 
+                                    Log.d("ConnectB_Settings","SendDelayTime"+tmpDelayTime);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForConnectBook_MaxMessages:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get max messages
+                                if (xpp.getText().trim().length() > 0) { // check if max messages from xml > 0
+                                    tmpMaxMessages = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("ConnectB_Settings","Max Messages"+tmpMaxMessages);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForConnectBook_MaxLetters:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get max letters
+                                if (xpp.getText().trim().length() > 0) { // check if max letters from xml > 0
+                                    tmpMaxLetters = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("ConnectB_Settings","Max Letters"+tmpMaxLetters);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
 
                     }
                 }
@@ -4354,6 +4415,14 @@ public class EfbXmlParser {
                                 // in every case -> write data connect book on off to prefs
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_ConnectBook, tmpConnectBookOnOff);
                                 prefsEditor.commit();
+
+                                // write send delay time, max letters and max messages to prefs when all set
+                                if (tmpDelayTime >=0 && tmpMaxLetters>=0 && tmpMaxMessages>=0) {
+                                    prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, tmpDelayTime);
+                                    prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectMaxLetters, tmpMaxLetters);
+                                    prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectMaxMessages, tmpMaxMessages);
+                                    prefsEditor.commit();
+                                }
 
                                 // update client name?
                                 if (tmpClientName.length() > 0) {

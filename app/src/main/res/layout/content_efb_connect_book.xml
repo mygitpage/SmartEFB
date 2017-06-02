@@ -18,12 +18,27 @@
         android:stackFromBottom="true">
     </ListView>
 
+
+    <TextView
+        android:id="@+id/countLettersCommentEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:text="10 von 100"
+        android:textColor="@color/text_color"
+        android:paddingLeft="5dp"
+        android:gravity="left" />
+
+
+
     <LinearLayout
         android:id="@+id/llMsgCompose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal">
+
+
 
         <EditText
             android:id="@+id/inputMsg"
@@ -34,9 +49,11 @@
             android:textColor="@color/white"
             android:ems="10"
             android:maxHeight="80dp"
-            android:padding="5dp"
             android:layout_margin="5dp"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
+            android:padding="5dp"
+            android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
 
         <Button
             android:id="@+id/buttonSendMessage"
@@ -52,25 +69,8 @@
 
     </LinearLayout>
 
+
+
 </LinearLayout>
 
 
-
-
-
-<!--
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="de.smart_efb.efbapp.smartefb.ActivityConnectBook"
-    tools:showIn="@layout/activity_efb_connect_book">
-
-</RelativeLayout>
--->

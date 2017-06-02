@@ -11,6 +11,15 @@ public class ConstansClassConnectBook {
     // prefs name for the user name in connect book
     public static final String namePrefsConnectBookUserName = "userName";
 
+    // prefs name for connect book max letters
+    public static final String namePrefsConnectMaxLetters = "connectBookMaxLetters";
+
+    // prefs name for connect book max messages
+    public static final String namePrefsConnectMaxMessages = "connectBookMaxMessages";
+
+    // prefs name for connect book send delay time
+    public static final String namePrefsConnectSendDelayTime = "connectBookDelayTime";
+
 
 
 

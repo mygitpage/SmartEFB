@@ -180,6 +180,7 @@
             <string name="infoTextNowCommentCountZero">Sie haben noch keinen Kommentar geschrieben.</string>
             <string name="infoTextNowCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
             <string name="infoTextNowCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
+            <string name="infoTextNowCommentCommentMaxLetters">Ihr Kommentar darf maximal %1$d Zeichen lang sein.</string>
             <string name="errorInputArrangementComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz!</string>
         <!-- End String Fragment comment -->
 
@@ -231,6 +232,7 @@
             <string name="infoTextSketchCommentCountZero">Sie haben noch keine Einschätzung geschrieben.</string>
             <string name="infoTextSketchCommentCountSingular">Davon haben Sie bereits %1$d Einschätzung geschrieben.</string>
             <string name="infoTextSketchCommentCountPlural">Davon haben Sie bereits %1$d Einschätzungen geschrieben.</string>
+            <string name="infoTextSketchCommentMaxLetters">Ihre Einschätzung darf maximal %1$d Zeichen lang sein.</string>
             <string name="ourArrangementAssessmentsString">Einschätzen</string>
             <string name="commentSketchHistoryIntroText">Alle bisherigen Einschätzungen zum Entwurf</string>
             <string name="showSketchCommentIntroText">Die Einschätzungen zum Entwurf</string>
@@ -263,6 +265,7 @@
             <string name="textDialogOurArrangementSettingsCommentCountSingular">Dabei können Sie maximal einen Kommentar schreiben.</string>
             <string name="textDialogOurArrangementSettingsCommentCountNumberPlural">Seit dem %1$s haben Sie %2$d Kommentare geschrieben.</string>
             <string name="textDialogOurArrangementSettingsCommentCountNumberSingular">Seit dem %1$s haben Sie einen Kommentar geschrieben.</string>
+            <string name="textDialogOurArrangementSettingsCommentMaxLetters">\nDer Kommentartext darf maximal %1$d Zeichen lang sein.</string>
             <string name="textDialogOurArrangementSettingsCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Kommentare geschrieben.</string>
             <string name="textDialogOurArrangementSettingsCountCommentZero">Seit dem %1$s haben Sie noch keinen Kommentar geschrieben.</string>
             <string name="textDialogOurArrangementSettingsOldArrangementEnable">Ihnen stehen die älteren Absprachen zur Verfügung.</string>
@@ -278,6 +281,7 @@
             <string name="textDialogOurArrangementSettingsSketchCommentCountNumberSingular">Seit dem %1$s haben Sie eine Einschätzung geschrieben.</string>
             <string name="textDialogOurArrangementSettingsSketchCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Einschätzungen geschrieben.</string>
             <string name="textDialogOurArrangementSettingsSketchCountCommentZero">Seit dem %1$s haben Sie noch keine Einschätzung geschrieben.</string>
+            <string name="textDialogOurArrangementSettingsSketchCommentMaxLetters">\nDer Einschätzungstext darf maximal %1$d Zeichen lang sein.</string>
         <!-- End our arrangement dialog settings -->
 
     <!-- Activity our arrangement End -->
@@ -321,6 +325,7 @@
             <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberSingular">Seit dem %1$s haben Sie einen Kommentar geschrieben.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberPlural">Seit dem %1$s haben Sie %2$d Kommentare geschrieben.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Kommentare geschrieben.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentMaxLetters">\nDer Kommentartext darf maximal %1$d Zeichen lang sein.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDisable">Sie können keine gemeinsamen Ziele kommentieren.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsOldEnable">Ihnen stehen die älteren gemeinsamen Ziele zur Verfügung.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsOldDisable">Ihnen stehen die älteren gemeinsamen Ziele nicht zur Verfügung.</string>
@@ -335,6 +340,7 @@
             <string name="textDialogOurGoalsDebetableGoalsSettingsCommentNumberSingular">Seit dem %1$s haben Sie eine Einschätzung geschrieben.</string>
             <string name="textDialogOurGoalsDebetableGoalsSettingsCommentNumberNumberPlural">Seit dem %1$s haben Sie %2$d Einschätzungen geschrieben.</string>
             <string name="textDialogOurGoalsDebetableGoalsSettingsCommentNumberOff">Seit dem %1$s haben Sie alle möglichen Einschätzungen geschrieben.</string>
+            <string name="textDialogOurGoalsDebetableGoalsSettingsCommentMaxLetters">\nDer Kommentartext darf maximal %1$d Zeichen lang sein.</string>
         <!-- end our goals dialog settings -->
 
 
@@ -356,6 +362,7 @@
             <string name="infoTextJointlyGoalsCommentCountZero">Sie haben noch keinen Kommentar geschrieben.</string>
             <string name="infoTextJointlyGoalsCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
             <string name="infoTextJointlyGoalsCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
+            <string name="infoTextJointlyGoalsCommentCommentMaxLetters">Ihr Kommentar darf maximal %1$d Zeichen lang sein.</string>
             <string name="commentJointlyGoalSuccsesfulySend">Kommentar erfolgreich gesendet</string>
             <string name="btnSendJointlyGoalComment">Kommentar senden</string>
             <string name ="commentJointlyGoalTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
@@ -404,27 +411,28 @@
         <!-- fragment debetable goals comment-->
             <string name="showDebetableGoalsIntroText">Strittiges Ziel</string>
             <string name="ourGoalsBackLinkToDebetableGoals">Zurück zu strittigen Zielen</string>
-            <string name="commentDebetableGoalHistoryIntroText">Alle bisherigen Kommentare zum strittigen Ziel</string>
+            <string name="commentDebetableGoalHistoryIntroText">Alle bisherigen Einschätzungen zum strittigen Ziel</string>
             <string name="introStructQuestionForCommentDdebetableGoal">Wie schätzen Sie Ihre Zustimmung zu dem strittigen Ziel ein?</string>
             <string name="errorStructQuestionForCommentDebetableGoal">Bitte geben Sie den Grad Ihrer Zustimmung an!</string>
-            <string name="introFreeQuestionForCommentDebetableGoal">Bitte erläutern Sie Ihre obige Zustimmungseinschätzung</string>
-            <string name="errorFreeQuestionForCommentDebetableGoal">Bitte kontrollieren Sie Ihren Text zur obigen Zustimmungseinschätzung! Er ist zu kurz!</string>
-            <string name="commentFreeQuestionDebetableGoalTextFieldHintText">Bitte erläutern Sie hier Ihre Zustimmung.</string>
+            <string name="introFreeQuestionForCommentDebetableGoal">Bitte erläutern Sie Ihre obige Auswahl</string>
+            <string name="errorFreeQuestionForCommentDebetableGoal">Bitte kontrollieren Sie Ihren Text zur obigen Auswahl! Er ist zu kurz!</string>
+            <string name="commentFreeQuestionDebetableGoalTextFieldHintText">Bitte erläutern Sie hier Ihre Auswahl.</string>
             <string name="buttonSendDebetableGoalComment">Einschätzung senden</string>
-            <string name="debetableGoalCommentSuccsesfulySend">Zustimmungseinschätzung erfolgreich gesendet</string>
-            <string name="infoTextDebetableGoalCommentMaxSingular">Sie könnnen maximal %1$d Kommentar schreiben.</string>
-            <string name="infoTextDebetableGoalCommentMaxPlural">Sie könnnen maximal %1$d Kommentare schreiben.</string>
-            <string name="infoTextDebetableGoalCommentUnlimitedText">Sie könnnen beliebig viele Kommentare schreiben.</string>
-            <string name="infoTextDebetableGoalCommentCountZero">Sie haben noch keinen Kommentar geschrieben.</string>
-            <string name="infoTextDebetableGoalCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
-            <string name="infoTextDebetableGoalCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
+            <string name="debetableGoalCommentSuccsesfulySend">Einschätzung erfolgreich gesendet</string>
+            <string name="infoTextDebetableGoalCommentMaxSingular">Sie könnnen maximal %1$d Einschätzung schreiben.</string>
+            <string name="infoTextDebetableGoalCommentMaxPlural">Sie könnnen maximal %1$d Einschätzungen schreiben.</string>
+            <string name="infoTextDebetableGoalCommentUnlimitedText">Sie könnnen beliebig viele Einschätzungen schreiben.</string>
+            <string name="infoTextDebetableGoalCommentCountZero">Sie haben noch keine Einschätzung geschrieben.</string>
+            <string name="infoTextDebetableGoalCommentCountSingular">Davon haben Sie bereits %1$d Einschätzung geschrieben.</string>
+            <string name="infoTextDebetableGoalCommentCountPlural">Davon haben Sie bereits %1$d Einschätzungen geschrieben.</string>
+            <string name="infoTextDebetableGoalCommentMaxLetters">Ihre Einschätzung darf maximal %1$d Zeichen lang sein.</string>
             <string name="showDebetableGoalCommentIntroText">Die Einschätzungen zum strittigen Ziel</string>
             <string name="evaluateDebetableGoalSuggestion_1">Sehr stark</string>
             <string name="evaluateDebetableGoalSuggestion_2">Stark</string>
             <string name="evaluateDebetableGoalSuggestion_3">Mittelmäßig</string>
             <string name="evaluateDebetableGoalSuggestion_4">Wenig</string>
             <string name="evaluateDebetableGoalSuggestion_5">Keine</string>
-            <string name="textDebetableGoalCommentActualResultStructQuestion">Mit dem Kommentar wurde folgende Zustimmungseinschätzung zum strittigen Ziel abgegeben: %1$s</string>
+            <string name="textDebetableGoalCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum strittigen Ziel abgegeben: %1$s</string>
         <!-- End fragment debetable goals comment -->
 
 
@@ -450,7 +458,7 @@
             <string name="ourGoalsSubtitleDebetableGoalsNow">Strittige Ziele vom</string>
             <string name="ourGoalsSubtitleFunctionNotAvailable">Funktion nicht möglich</string>
             <string name="ourGoalsSubtitleGoalsNothingThere">Keine Ziele vorhanden</string>
-            <string name="ourGoalsSubtitleDebetableGoalsComment">Strittiges Ziel %1$d kommentieren</string>
+            <string name="ourGoalsSubtitleDebetableGoalsComment">Strittiges Ziel %1$d einschätzen</string>
             <string name="ourGoalsSubtitleDebetableGoalsShowCommentText">Einschätzungen strittiges Ziel</string>
             <string name="ourGoalsSubtitleOldJointlyGoals">Älter als</string>
         <!-- End subtitle -->
@@ -716,7 +724,11 @@
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
+    <!-- Edit Text String Filter Definition -->
+        <string name="editTextInputFilterTextAlphaNumeric">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ÄäÖöÜüß +-,;.:()§*!=?</string>
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
+    <string name="infoTextCountLettersForComment">%1$s von %2$d Zeichen</string>
 
 
 </resources>

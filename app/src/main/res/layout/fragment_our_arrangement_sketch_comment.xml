@@ -177,8 +177,20 @@
             android:background="@drawable/app_edittext_style"
             android:layout_margin="10dp"
             android:textColorHint="@color/text_color_white"
-            android:inputType="textNoSuggestions|text|textMultiLine"
-            android:padding="5dp"/>
+            android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
+
+        <TextView
+            android:id="@+id/countLettersSketchCommentEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10dp"
+            android:textColor="@color/text_color"
+            android:paddingRight="15dp"
+            android:gravity="right" />
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"

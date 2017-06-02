@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
@@ -153,7 +156,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
         // textview for max comments and count comments
         TextView textViewMaxAndCount = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.infoJointlyGoalsCommentMaxAndCount);
-        String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral;
+        String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral, tmpInfoTextCommentMaxLetters;
         // build text element max sketch comment
         if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, 0) == 1 && commentLimitationBorder) {
             tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextJointlyGoalsCommentMaxSingular), prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, 0));
@@ -176,11 +179,48 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
             tmpInfoTextCountSingluarPluaral = this.getResources().getString(R.string.infoTextJointlyGoalsCommentCountPlural);
         }
         tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0));
-        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral);
 
+
+        // generate text comment max letters
+        tmpInfoTextCommentMaxLetters =  this.getResources().getString(R.string.infoTextJointlyGoalsCommentCommentMaxLetters);
+        tmpInfoTextCommentMaxLetters = String.format(tmpInfoTextCommentMaxLetters, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters, 0));
+
+
+        // show info text
+        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextCommentMaxLetters);
+
+        // get max letters for edit text comment
+        final int tmpMaxLength = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters, 10);
+
+        // get textView to count input letters and init it
+        final TextView textViewCountLettersCommentEditText = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.countLettersCommentEditText);
+        String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
+        tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", tmpMaxLength);
+        textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
 
         // comment textfield -> insert new comment
         final EditText txtInputJointlyGoalComment = (EditText) viewFragmentCommentJointlyGoals.findViewById(R.id.inputJointlyGoalComment);
+
+        // set text watcher to count letters in comment field
+        final TextWatcher txtInputArrangementCommentTextWatcher = new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //
+                String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
+                tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, String.valueOf(s.length()), tmpMaxLength);
+                textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
+            }
+            public void afterTextChanged(Editable s) {
+            }
+        };
+
+        // set text watcher to count input letters
+        txtInputJointlyGoalComment.addTextChangedListener(txtInputArrangementCommentTextWatcher);
+
+        // set input filter max length for comment field
+        txtInputJointlyGoalComment.setFilters(new InputFilter[] {new InputFilter.LengthFilter(tmpMaxLength)});
+
         // button send comment
         Button buttonSendJointlyGoalComment = (Button) viewFragmentCommentJointlyGoals.findViewById(R.id.buttonSendJointlyGoalComment);
 
