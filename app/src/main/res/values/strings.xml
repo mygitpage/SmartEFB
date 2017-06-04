@@ -6,19 +6,31 @@
     <!-- Activity Connect Book -->
     <!-- String Activity Connect Book -->
 
-
-    <string name="buttonSendMessage">SENDEN</string>
-
+        <string name="buttonSendMessage">SENDEN</string>
+        <string name="infoTextCountCurrentMessages">%1$s von %2$d Nachrichten in 24 Stunden</string>
 
     <!-- End String Activity Connect Book -->
+
+    <!-- connect book dialog settings -->
+        <string name="textDialogConnectBookCloseDialog">Schließen</string>
+        <string name="textDialogConnectBookTitleDialog">Einstellungen Übergabe</string>
+        <string name="textDialogConnectBookSettingsIntro">Für die Funktion Übergabe gelten folgende Einstellungen.</string>
+        <string name="textDialogConnectBookSettingsMaxMessagesSingular">Sie können innerhalb von 24 Stunden maximal %1s Nachricht schreiben.</string>
+        <string name="textDialogConnectBookSettingsMaxMessagesPlural">Sie können innerhalb von 24 Stunden maximal %1$s Nachrichten schreiben.</string>
+        <string name="textDialogConnectBookSettingsCountCurrentMessagesSingular">Davon haben Sie bereits %1s Nachricht geschrieben.</string>
+        <string name="textDialogConnectBookSettingsCountCurrentMessagesPlural">Davon haben Sie bereits %1s Nachrichten geschrieben.</string>
+        <string name="textDialogConnectBookSettingsCountCurrentMessagesNothing">Davon haben Sie bisher noch keine Nachricht geschrieben.</string>
+        <string name="textDialogConnectBookSettingsCountCurrentMessagesNoMorePossible">Weitere Nachrichten sind somit erst nach Ablauf von 24 Stunden möglich.</string>
+        <string name="textDialogConnectBookSettingsDelayTimeSingular">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minute zugestellt.</string>
+        <string name="textDialogConnectBookSettingsDelayTimePlural">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minuten zugestellt.</string>
+        <string name="textDialogConnectBookSettingsInfoTextReadByCoach">Alle in der Funktion Übergabe geschriebenen Nachrichten können von Ihrer Beraterin/ Ihrem Berater gelesen und kommentiert werden..</string>
+        <string name="textDialogConnectBookSettingsInfoTextContactCoach">Sollten Sie Fragen oder Änderungswünsche zu diesen Einstellungen haben, wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.</string>
+    <!-- End connect book dialog settings -->
+
+
+
     <!-- End Activity Connect Book -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-
-
-
-
-
 
 
 
@@ -57,32 +69,22 @@
     <!-- Fragment settings a (connect to server) -->
         <string name="settingsConnectToServerIntroHeadingText">Mit Server verbinden</string>
         <string name="settingsConnectedWithServerIntroHeadingText">Serververbindung hergestellt</string>
-
         <string name="settingsConnectedWithServerErrorIntroHeadingText">Verbindungsfehler aufgetreten</string>
-
         <string name="settingsConnectToServerIntroText">Damit eine sichere Kommunikation zwischen Ihrem Smartphone und dem Server möglich ist, müssen Sie Ihrer Beraterin/ Ihrem Berater folgende fünfstellige Nummer mitteilen und anschließend, wenn Sie dazu aufgefordert werden, auf \"Mit Server verbinden\" klicken.</string>
         <string name="settingsConnectToServerRemarkClickButtonText">Bitte klicken Sie nur auf den Button, wenn Sie dazu aufgefordert werden.</string>
-
         <string name="settingsConnectToServerRemarkNoInternetClickButtonText">Bitte klicken Sie erneut auf den Button. Danke.</string>
-
         <string name="buttonSendConnectToServerKeyNumberText">Mit Server verbinden</string>
         <string name="sendConnectToServerKeyNumberSuccsesfulyText">Verbindungsnummer erfolgreich gesendet</string>
         <string name="settingsConnectToServerSuccessfulText">Sie sind erfolgreich mit dem Server verbunden und die Kommunikation funktioniert.\nWenn Sie Fragen zu den übermittelten Daten haben, schauen Sie bitte <a href="smart.efb.deeplink://linkin/settings?com=show_contact">hier</a> nach, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.\nSelbstverständlich können Sie auch Ihre Beraterin/ Ihren Berater fragen.</string>
-
         <string name="settingsWaitingForResponseIntroText">Ihre Nummer wurde zum Server gesendet. Es wird auf eine Antwort gewartet!</string>
-
         <string name="settingsConnectToServerDialogNoInternetHeadline">Keine Internetverbindung</string>
         <string name="settingsConnectToServerDialogNoInternetInfoText">Es besteht keine Verbindung zum Internet. Bitte verbinden Sie sich und versuchen Sie es noch einmal.</string>
         <string name="settingsConnectToServerDialogOkButton">Ok</string>
-
-
         <string name="settingsConnectToServerHeadingNoInternet">Keine Internetverbindung</string>
         <string name="settingsConnectToServerIntroTextNoInternet">Es besteht keine Verbindung mit dem Internet. Bitte stellen Sie eine Verbindung zum Internet her und versuchen Sie sich erneut mit dem Server zu verbinden. Bei Fragen kann Ihnen gerne Ihre Beraterin/ Ihr Berater helfen.\n\nIhre Pin-Nummer ist gleich geblieben.</string>
-
         <string name="settingsConnectToServerErrorPreIntroText">Während der Kommunikation mit dem Server ist ein Fehler aufgetreten. Folgender Fehlertext wurde übermittelt:</string>
         <string name="settingsConnectToServerErrorPostIntroText">Bitte teilen Sie diesen Fehlertext Ihrer Beraterin/ Ihrem Berater mit. Kehren Sie anschließend zum Hauptmenü zurück und versuchen Sie es noch einmal.</string>
         <string name="settingsSendingToServerDialogInfoText">Daten senden</string>
-
     <!-- End Fragment settings a (connect to server) -->
 
 

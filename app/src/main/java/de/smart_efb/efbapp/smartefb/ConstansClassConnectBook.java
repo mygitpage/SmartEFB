@@ -14,6 +14,9 @@ public class ConstansClassConnectBook {
     // prefs name for connect book max letters
     public static final String namePrefsConnectMaxLetters = "connectBookMaxLetters";
 
+    // prefs name for connect book count current messages (set to 0 after 24h from service)
+    public static final String namePrefsConnectCountCurrentMessages = "connectBookCountMessages";
+
     // prefs name for connect book max messages
     public static final String namePrefsConnectMaxMessages = "connectBookMaxMessages";
 

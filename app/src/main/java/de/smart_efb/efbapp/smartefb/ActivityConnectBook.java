@@ -1,17 +1,26 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ActivityConnectBook extends AppCompatActivity {
@@ -25,6 +34,7 @@ public class ActivityConnectBook extends AppCompatActivity {
 
     // shared prefs for the settings
     SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
     // reference for the toolbar
     Toolbar toolbar;
@@ -33,6 +43,9 @@ public class ActivityConnectBook extends AppCompatActivity {
     // variables for the connect book
     int roleConnectBook; // the role 0=mother; 1=father; 2=third
     String userNameConnectBook; // the users name
+
+    // reference to dialog settings
+    AlertDialog alertDialogSettings;
 
 
     @Override
@@ -43,7 +56,48 @@ public class ActivityConnectBook extends AppCompatActivity {
         // init the connect book
         initConnectBook();
 
+       // get max letters for message
+        final int tmpMaxLength = prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxLetters, 10);
+
+        // get textView to count input letters and init it
+        final TextView textViewCountLettersMessageEditText = (TextView) findViewById(R.id.countLettersAndMessagesInfoText);
+        String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
+        tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", tmpMaxLength);
+
+        // get current number of send messages and max numbers
+        final int tmpMaxMessages = prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxMessages, 1);
+        int tmpCountCurrentMessages = prefs.getInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0);
+
+        String tmpInfoTextCountCurrentMessages = getResources().getString(R.string.infoTextCountCurrentMessages);
+        tmpInfoTextCountCurrentMessages = String.format(tmpInfoTextCountCurrentMessages, tmpCountCurrentMessages, tmpMaxMessages);
+        textViewCountLettersMessageEditText.setText(tmpInfoTextCountLetters + " - " + tmpInfoTextCountCurrentMessages);
+
+        // get edit text field for message
         final EditText txtInputMsg = (EditText) findViewById(R.id.inputMsg);
+
+        // set text watcher to count letters in comment field
+        final TextWatcher txtInputArrangementCommentTextWatcher = new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // get count messages from prefs
+                int tmpCountCurrentMessages = prefs.getInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0);
+                String tmpInfoTextCountCurrentMessages = getResources().getString(R.string.infoTextCountCurrentMessages);
+                tmpInfoTextCountCurrentMessages = String.format(tmpInfoTextCountCurrentMessages, tmpCountCurrentMessages, tmpMaxMessages);
+                // set count letters
+                String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
+                tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, String.valueOf(s.length()), tmpMaxLength);
+                textViewCountLettersMessageEditText.setText(tmpInfoTextCountLetters + " - " + tmpInfoTextCountCurrentMessages);
+            }
+            public void afterTextChanged(Editable s) {
+            }
+        };
+
+        // set text watcher to count input letters from message
+        txtInputMsg.addTextChangedListener(txtInputArrangementCommentTextWatcher);
+
+        // set input filter max length for message field
+        txtInputMsg.setFilters(new InputFilter[] {new InputFilter.LengthFilter(tmpMaxLength)});
 
         // send button init
         Button buttonSendConnectBook = (Button) findViewById(R.id.buttonSendMessage);
@@ -53,16 +107,47 @@ public class ActivityConnectBook extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                long newID = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), txtInputMsg.getText().toString(), roleConnectBook, 2, false);
+                int tmpCountCurrentMessages = prefs.getInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0);
 
-                // delete text in edittextfield
-                txtInputMsg.setText("");
+                // check number of send messages in 24h
+                if (tmpCountCurrentMessages < tmpMaxMessages) {
 
-                // refresh display
-                displayMessageSet();
 
-                // show succsesfull message
-                displayToast();
+                    long newID = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), txtInputMsg.getText().toString(), roleConnectBook, 2, false);
+
+                    // add current number of send messages and write to prefs
+                    tmpCountCurrentMessages++;
+                    prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, tmpCountCurrentMessages);
+                    prefsEditor.commit();
+
+
+                    // delete text in edittextfield
+                    txtInputMsg.setText("");
+
+                    // refresh display
+                    displayMessageSet();
+
+                    // show succsesfull message
+                    displayToast();
+
+
+                    if (tmpCountCurrentMessages >= tmpMaxMessages) { // set hint text no more messages
+                        txtInputMsg.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_color_white));
+                        txtInputMsg.setHint("Sie haben die maximale Anzahl an Nachrichten in 24 Stunden gesendet!");
+                    }
+                }
+                else {
+
+                    // delete text in edittextfield
+                    txtInputMsg.setText("");
+                    // set hint text no more messages
+                    txtInputMsg.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_color_white));
+                    txtInputMsg.setHint("Sie haben die maximale Anzahl an Nachrichten in 24 Stunden gesendet!");
+
+
+
+
+                }
 
             }
         });
@@ -84,10 +169,14 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         // init the prefs
         prefs = this.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
         // init the connect book variables
         roleConnectBook = prefs.getInt(ConstansClassConnectBook.namePrefsConnectBookRole, 0);
         userNameConnectBook = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Jon Dow");
+
+        // create help dialog in Connect Book
+        createHelpDialog();
 
         // init the ui
         displayMessageSet();
@@ -143,5 +232,176 @@ public class ActivityConnectBook extends AppCompatActivity {
 
 
     }
+
+
+
+
+    // help dialog
+    void createHelpDialog () {
+
+        Button tmpHelpButtonConnectBook = (Button) findViewById(R.id.helpConnectBook);
+
+
+        // add button listener to question mark in activity Cconnect Book (toolbar)
+        tmpHelpButtonConnectBook.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                TextView tmpdialogTextView;
+                LayoutInflater dialogInflater;
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityConnectBook.this);
+
+                // Get the layout inflater
+                dialogInflater = (LayoutInflater) ActivityConnectBook.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                // inflate and get the view
+                View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_connect_book, null);
+
+
+
+
+
+                // show the settings for connect book
+                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogConnectBookSettings);
+                String tmpTxtElement, tmpTxtElement1, tmpTxtElement2, tmpTxtElement3, tmpTxtElementSum;
+
+
+                // generate text for max messages
+                if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxMessages, 0) > 1) {
+                    tmpTxtElement = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsMaxMessagesPlural);
+                }
+                else {
+                    tmpTxtElement = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsMaxMessagesSingular);
+                }
+                tmpTxtElement = String.format(tmpTxtElement, prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxMessages, 0));
+
+                // generate text for count current messages
+                if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0) > 1) {
+                    tmpTxtElement1 = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsCountCurrentMessagesPlural);
+                    tmpTxtElement1 = String.format(tmpTxtElement1, prefs.getInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0));
+                }
+                else if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0) == 1) {
+                    tmpTxtElement1 = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsCountCurrentMessagesSingular);
+                    tmpTxtElement1 = String.format(tmpTxtElement1, prefs.getInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0));
+                }
+                else {
+                    tmpTxtElement1 = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsCountCurrentMessagesNothing);
+                }
+
+                tmpTxtElement2 = "";
+                if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0) == prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxMessages, 0)) {
+                    tmpTxtElement2 = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsCountCurrentMessagesNoMorePossible);
+
+                }
+
+
+                // generate text for delay time
+                if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, 0) > 1) {
+                    tmpTxtElement3 = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsDelayTimePlural);
+                }
+                else {
+                    tmpTxtElement3 = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsDelayTimeSingular);
+                }
+                tmpTxtElement3 = String.format(tmpTxtElement3, prefs.getInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, 0));
+
+
+
+                // set generate text to view
+                tmpdialogTextView.setText(tmpTxtElement + " " + tmpTxtElement1 + " " + tmpTxtElement2 + " " + tmpTxtElement3);
+
+
+
+
+                //tmpTxtElement = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsMaxMessagesPlural);
+
+                /*
+                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) < ConstansClassOurArrangement.commentLimitationBorder) { // write infinitely comments?
+
+                        if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) == 1) {
+                            tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountSingular);
+                        }
+                        else {
+                            tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountPlural);
+                            tmpTxtComment1 = String.format(tmpTxtComment1, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0));
+                        }
+                    }
+                    else {
+                        tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountInfinitely);
+                    }
+
+                    // count comment - status
+                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0) < prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0)) {
+                        switch (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0)) {
+                            case 0:
+                                tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCountCommentZero);
+                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"));
+                                break;
+                            case 1:
+                                tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberSingular);
+                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"));
+                                break;
+                            default:
+                                tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberPlural);
+                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0));
+                                break;
+                        }
+
+                        // set text max letters for comment
+                        tmpTxtComment3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentMaxLetters);
+                        tmpTxtComment3 = String.format(tmpTxtComment3, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters,0));
+
+                    }
+                    else {
+                        tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberOff);
+                        tmpTxtComment3 = "";
+                    }
+
+                    tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2 + tmpTxtComment3;
+
+                    tmpdialogTextView.setText(tmpTxtCommentSum);
+                }
+                else {
+                    tmpTxtComment = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentDisable);
+                    tmpdialogTextView.setText(tmpTxtComment);
+                }
+
+                */
+
+
+
+                // get string ressources
+                String tmpTextCloseDialog = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookCloseDialog);
+                String tmpTextTitleDialog = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookTitleDialog);
+
+                // build the dialog
+                builder.setView(dialogSettings)
+
+                        // Add close button
+                        .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                alertDialogSettings.cancel();
+                            }
+                        })
+
+                        // add title
+                        .setTitle(tmpTextTitleDialog);
+
+                // and create
+                alertDialogSettings = builder.create();
+
+                // and show the dialog
+                builder.show();
+
+            }
+        });
+
+    }
+
+
+
+
+
 
 }
