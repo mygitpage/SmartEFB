@@ -556,6 +556,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
                     }
                     else {
                         tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberOff);
+                        tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"));
                         tmpTxtComment3 = "";
                     }
 

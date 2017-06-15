@@ -38,6 +38,9 @@ public class OurArrangementFragmentOld extends Fragment {
     // the current date of arrangement -> the other are old
     long currentDateOfArrangement;
 
+    // block id of cuurrent arrangements
+    String currentBlockIdOfArrangement = "";
+
     // reference cursorAdapter for the listview
     OurArrangementOldCursorAdapter dataAdapter;
 
@@ -81,6 +84,10 @@ public class OurArrangementFragmentOld extends Fragment {
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
 
+        //get current block id of arrangements
+        currentBlockIdOfArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0");
+
+
     }
 
 
@@ -95,7 +102,7 @@ public class OurArrangementFragmentOld extends Fragment {
 
 
             // get all old arrangement from DB
-            Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfArrangement,"smaller");
+            Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentBlockIdOfArrangement,"notEqualBlockId");
 
             if (cursor.getCount() > 0) {
 

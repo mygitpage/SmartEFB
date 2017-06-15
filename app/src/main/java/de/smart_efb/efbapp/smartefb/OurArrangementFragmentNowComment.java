@@ -1,6 +1,7 @@
 package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
@@ -41,6 +43,9 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
     // layout inflater for fragment
     LayoutInflater layoutInflaterForFragment;
+
+    // dialog for information no more messages possible
+    AlertDialog alertDialogNoMoreMessages;
 
     // reference to the DB
     DBAdapter myDb;
@@ -230,31 +235,29 @@ public class OurArrangementFragmentNowComment extends Fragment {
             @Override
             public void onClick(View v) {
 
-
                 if (txtInputArrangementComment.getText().toString().length() > 3) {
 
                     // insert comment in DB
-                    long newID = myDb.insertRowOurArrangementComment(txtInputArrangementComment.getText().toString(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"), System.currentTimeMillis() , arrangementDbIdToComment, true, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), 0);
+                    long newID = myDb.insertRowOurArrangementComment(txtInputArrangementComment.getText().toString(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"), System.currentTimeMillis(), arrangementDbIdToComment, true, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), 0);
 
                     // Toast "Comment sucsessfull send"
                     Toast.makeText(fragmentNowCommentContext, fragmentNowCommentContext.getResources().getString(R.string.commentSuccsesfulySend), Toast.LENGTH_SHORT).show();
 
                     // increment comment count
-                    int countCommentSum = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0) + 1;
+                    int countCommentSum = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0) + 1;
                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentCountComment, countCommentSum);
                     prefsEditor.commit();
 
                     // build intent to get back to OurArrangementFragmentNow
                     Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent.putExtra("com","show_arrangement_now");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.putExtra("com", "show_arrangement_now");
                     getActivity().startActivity(intent);
 
                 } else {
 
                     TextView tmpErrorTextView = (TextView) viewFragmentNowComment.findViewById(R.id.errorInputArrangementComment);
                     tmpErrorTextView.setVisibility(View.VISIBLE);
-
                 }
 
             }
@@ -412,5 +415,8 @@ public class OurArrangementFragmentNowComment extends Fragment {
         commentHolderLayout.addView(btnBack_inner_layout);
 
     }
+
+
+
 
 }

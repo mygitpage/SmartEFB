@@ -14,6 +14,9 @@ public class ConstansClassOurArrangement {
     // prefs name for current date of arrangement
     public static final String namePrefsCurrentDateOfArrangement = "currentDateOfArrangement";
 
+    // prefs name for current block id of arrangement
+    public static final String namePrefsCurrentBlockIdOfArrangement = "currentBlockIdOfArrangement";
+
     // prefs name for current date of sketch arrangement
     public static final String namePrefsCurrentDateOfSketchArrangement = "currentDateOfSketchArrangement";
 

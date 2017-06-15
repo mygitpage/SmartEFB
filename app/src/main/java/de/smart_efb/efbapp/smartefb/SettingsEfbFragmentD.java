@@ -247,6 +247,19 @@ public class SettingsEfbFragmentD extends Fragment {
         prefsEditor.commit();
         */
 
+        // set number of send messages (connect book) to zero
+        prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0);
+
+
+        // set current date of arrangements
+        //prefsEditor.putLong("currentDateOfArrangement", System.currentTimeMillis());
+
+
+        // set blockid to zero
+        prefsEditor.putString("currentBlockIdOfArrangement", "0");
+
+
+
         prefsEditor.putInt("connectingStatus",0);
         prefsEditor.commit();
 
@@ -549,7 +562,7 @@ public class SettingsEfbFragmentD extends Fragment {
             @Override
             public void onClick(View v) {
 
-                long newID = myDb.insertRowOurArrangement(txtInputArrangement.getText().toString(), "testuser", prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), true, false, 0, 0);
+                long newID = myDb.insertRowOurArrangement(txtInputArrangement.getText().toString(), "testuser", prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), true, false, 0, 0, 1234, "123456789");
 
                 txtInputArrangement.setText("");
 
@@ -571,7 +584,7 @@ public class SettingsEfbFragmentD extends Fragment {
             @Override
             public void onClick(View v) {
 
-                long newID = myDb.insertRowOurArrangement(txtInputSketchArrangement.getText().toString(), "testuser", 0, true, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), 0);
+                long newID = myDb.insertRowOurArrangement(txtInputSketchArrangement.getText().toString(), "testuser", 0, true, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), 0, 1234, "123456789");
 
                 txtInputSketchArrangement.setText("");
 

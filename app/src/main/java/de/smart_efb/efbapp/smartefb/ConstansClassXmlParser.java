@@ -98,10 +98,11 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement now sketch current
             public static final String xmlNameForOurArrangement_Now_SketchCurrent = "ourarrangement_now_sketchcurrent";
 
-            // xml name for element our arrangement old md5 hash
-            public static final String xmlNameForOurArrangement_Now_OldMd5 = "ourarrangement_now_oldmd5";
+            // xml name for element our arrangement block id
+            public static final String xmlNameForOurArrangement_Now_BlockId = "ourarrangement_now_blockid";
 
-
+            // xml name for element our arrangement block id
+            public static final String xmlNameForOurArrangement_Now_ServerId = "ourarrangement_now_serverid";
 
 
 
@@ -128,8 +129,11 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement sketch sketch time
             public static final String xmlNameForOurArrangement_Sketch_SketchTime = "ourarrangement_sketch_sketchtime";
 
-            // xml name for element our arrangement sketch old md5 hash
-            public static final String xmlNameForOurArrangement_Sketch_OldMd5 = "ourarrangement_sketch_oldmd5";
+            // xml name for element our arrangement block id
+            public static final String xmlNameForOurArrangement_Sketch_BlockId = "ourarrangement_sketch_blockid";
+
+            // xml name for element our arrangement block id
+            public static final String xmlNameForOurArrangement_Sketch_ServerId = "ourarrangement_sketch_serverid";
 
 
 

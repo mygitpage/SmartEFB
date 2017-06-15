@@ -41,6 +41,9 @@ public class OurArrangementFragmentNow extends Fragment {
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
 
+    // block id of cuurrent arrangements
+    String currentBlockIdOfArrangement = "";
+
     // reference cursorAdapter for the listview
     OurArrangementNowCursorAdapter dataAdapterListViewOurArrangement = null;
 
@@ -97,7 +100,7 @@ public class OurArrangementFragmentNow extends Fragment {
             // notify listView that data has changed (evaluate-link is activ or passiv)
             if (dataAdapterListViewOurArrangement != null) {
                 // get new data from db
-                Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfArrangement, "equal");
+                Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentBlockIdOfArrangement, "equalBlockId");
                 // and notify listView
                 dataAdapterListViewOurArrangement.changeCursor(cursor);
                 dataAdapterListViewOurArrangement.notifyDataSetChanged();
@@ -120,6 +123,9 @@ public class OurArrangementFragmentNow extends Fragment {
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
 
+        //get current block id of arrangements
+        currentBlockIdOfArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0");
+
         // ask methode isCommentLimitationBorderSet() in ActivityOurArrangement to limitation in comments? true-> yes, linitation; false-> no
         commentLimitationBorder = ((ActivityOurArrangement) getActivity()).isCommentLimitationBorderSet("current");
 
@@ -129,7 +135,7 @@ public class OurArrangementFragmentNow extends Fragment {
     // show listView with current arrangements or info: mothing there
     public void displayActualArrangementSet () {
 
-        Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentDateOfArrangement, "equal");
+        Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentBlockIdOfArrangement, "equalBlockId");
 
         // find the listview
         ListView listView = (ListView) viewFragmentNow.findViewById(R.id.listOurArrangementNow);

@@ -38,7 +38,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 31;
+    public static final int DATABASE_VERSION = 32;
 
     // Common column names
     public static final String KEY_ROWID = "_id";
@@ -54,12 +54,13 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE = "eval_possible";
     public static final String OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT = "sketch";
     public static final String OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME = "sketch_time";
-    public static final String OUR_ARRANGEMENT_KEY_MD5_HASH = "md5_hash";
+    public static final String OUR_ARRANGEMENT_KEY_SERVER_ID = "serverid";
+    public static final String OUR_ARRANGEMENT_KEY_BLOCK_ID = "blockid";
     public static final String OUR_ARRANGEMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
 
     // All keys from table app settings in a String
-    public static final String[] OUR_ARRANGEMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_KEY_ARRANGEMENT, OUR_ARRANGEMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE, OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT, OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME, OUR_ARRANGEMENT_KEY_MD5_HASH, OUR_ARRANGEMENT_KEY_STATUS };
+    public static final String[] OUR_ARRANGEMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_KEY_ARRANGEMENT, OUR_ARRANGEMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE, OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT, OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME, OUR_ARRANGEMENT_KEY_SERVER_ID, OUR_ARRANGEMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_KEY_STATUS };
 
     // SQL String to create our arrangement table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT =
@@ -71,7 +72,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE + " INTEGER DEFAULT 0, "
                     + OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + " INTEGER DEFAULT 0, "
                     + OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME + " INTEGER DEFAULT 0, "
-                    + OUR_ARRANGEMENT_KEY_MD5_HASH + " TEXT not null, "
+                    + OUR_ARRANGEMENT_KEY_SERVER_ID + " INTEGER DEFAULT 0, "
+                    + OUR_ARRANGEMENT_KEY_BLOCK_ID + " TEXT not null, "
                     + OUR_ARRANGEMENT_KEY_STATUS + " INTEGER DEFAULT 0"
                     + ");";
 
@@ -573,7 +575,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         status -> the arragement status 0=ready to send, 1=message send, 4=external message
      */
 
-    public long insertRowOurArrangement(String arrangement, String authorName, long arrangementTime, Boolean newEntry, Boolean sketchCurrent, long sketchTime, int status) {
+    public long insertRowOurArrangement(String arrangement, String authorName, long arrangementTime, Boolean newEntry, Boolean sketchCurrent, long sketchTime, int status, int serverId, String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -581,7 +583,8 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         initialValues.put(OUR_ARRANGEMENT_KEY_ARRANGEMENT, arrangement);
         initialValues.put(OUR_ARRANGEMENT_KEY_AUTHOR_NAME, authorName);
-        initialValues.put(OUR_ARRANGEMENT_KEY_MD5_HASH, EfbHelperClass.md5(arrangement)); // generate md5 hash from arrangement
+        initialValues.put(OUR_ARRANGEMENT_KEY_SERVER_ID, serverId); // id of arrangement on the server -> unique identifier for arrangement
+        initialValues.put(OUR_ARRANGEMENT_KEY_BLOCK_ID, blockId); // id of the block of arrangement -> current block number is safe in prefs to find the block in db
         initialValues.put(OUR_ARRANGEMENT_KEY_STATUS, status);
 
         // is it a new entry?
@@ -607,18 +610,19 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // Change an existing row to be equal to oldMd5.
-    public boolean updateRowOurArrangement(String arrangement, String authorName, long arrangementTime, Boolean newEntry, Boolean sketchCurrent, long sketchTime, int status, String oldMd5) {
+    // Change an existing row of arrangement to be equal to serverId.
+    public boolean updateRowOurArrangement(String arrangement, String authorName, long arrangementTime, Boolean newEntry, Boolean sketchCurrent, long sketchTime, int status, int serverId, String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = OUR_ARRANGEMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
+        String where = OUR_ARRANGEMENT_KEY_SERVER_ID + "=" + serverId;
 
         // Create row's data:
         ContentValues newValues = new ContentValues();
         newValues.put(OUR_ARRANGEMENT_KEY_ARRANGEMENT, arrangement);
         newValues.put(OUR_ARRANGEMENT_KEY_AUTHOR_NAME, authorName);
-        newValues.put(OUR_ARRANGEMENT_KEY_MD5_HASH, EfbHelperClass.md5(arrangement)); // generate md5 hash from arrangement
+        newValues.put(OUR_ARRANGEMENT_KEY_SERVER_ID, serverId); // id of arrangement on the server -> unique identifier for arrangement
+        newValues.put(OUR_ARRANGEMENT_KEY_BLOCK_ID, blockId); // id of the block of arrangement -> current block number is safe in prefs to find the block in db
         newValues.put(OUR_ARRANGEMENT_KEY_STATUS, status);
 
         // is it a new entry?
@@ -645,19 +649,20 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Delete a row from the database, by oldMd5
-    public boolean deleteRowOurArrangement(String oldMd5) {
+    public boolean deleteRowOurArrangement(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = OUR_ARRANGEMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
+        String where = OUR_ARRANGEMENT_KEY_SERVER_ID + "=" + serverId;
         return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT, where, null) != 0;
+
     }
 
 
 
-    // Return all data from the database (table ourArrangement) (equal: write_time = currentDateOfArrangement, smaller: write_time < currentDateOfArrangement)
+    // Return all data from the database (table ourArrangement) -> see order!
     // the result is sorted by DESC
-    public Cursor getAllRowsCurrentOurArrangement(long currentDateOfArrangement, String equalGreater) {
+    public Cursor getAllRowsCurrentOurArrangement(String blockID, String order) {
 
         String where = "";
 
@@ -666,16 +671,18 @@ public class DBAdapter extends SQLiteOpenHelper {
         // get only arrangments and no sketches
         where = OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=0 AND ";
 
-        switch (equalGreater) {
+        switch (order) {
 
-            case "equal":
-                where += OUR_ARRANGEMENT_KEY_WRITE_TIME + "=" + currentDateOfArrangement;
+
+            case "equalBlockId":
+                where += OUR_ARRANGEMENT_KEY_BLOCK_ID + "='" + blockID + "'";
                 break;
-            case "smaller":
-                where += OUR_ARRANGEMENT_KEY_WRITE_TIME + "<" + currentDateOfArrangement;
+
+            case "notEqualBlockID":
+                where += OUR_ARRANGEMENT_KEY_BLOCK_ID + "!='" + blockID + "'";
                 break;
             default:
-                where += OUR_ARRANGEMENT_KEY_WRITE_TIME + "=" + currentDateOfArrangement;
+                where += OUR_ARRANGEMENT_KEY_BLOCK_ID + "='" + blockID + "'";
                 break;
         }
 
@@ -871,7 +878,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Arrangement Comment ******************************************/
 
     // Add a new set of values to ourArrangementComment .
-    public long insertRowOurArrangementComment(String comment, String authorName, long commentTime, int idArrangement, Boolean newEntry, long currentDateOfArrangement, int status) {
+    public long insertRowOurArrangementComment(String comment, String authorName, long commentTime, int idArrangement, Boolean newEntry, long currentDateOfArrangement, int status ) {
 
         Toast.makeText(dbContext," ArrangementID: "+idArrangement, Toast.LENGTH_SHORT).show();
 
@@ -935,6 +942,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         String where = OUR_ARRANGEMENT_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
         return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, where, null) != 0;
+
     }
 
 

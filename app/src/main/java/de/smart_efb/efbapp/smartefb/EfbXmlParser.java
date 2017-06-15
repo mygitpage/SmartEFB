@@ -427,7 +427,8 @@ public class EfbXmlParser {
         Long tmpArrangementTime = 0L;
         Boolean tmpSketchCurrent = false;
         String tmpOrder = "";
-        String tmpOldMd5 = "";
+        String tmpBlockId = "";
+        int tmpServerId = 0;
 
         try {
             int eventType = xpp.next();
@@ -444,6 +445,7 @@ public class EfbXmlParser {
                                 if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
                                     tmpOrder = xpp.getText().trim();
                                     if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                        Log.d("NOW Arr", "Fehler Order!!!");
                                         error = true;
                                         tmpOrder = "";
                                     }
@@ -464,7 +466,7 @@ public class EfbXmlParser {
                                 if (xpp.getText().trim().length() > 0) { // check if arrangementText from xml > 0
                                     tmpArrangementText = xpp.getText().trim();
 
-                                    Log.d("Arrangement_NOW::MD5","MD5:"+EfbHelperClass.md5(tmpArrangementText));
+                                    Log.d("Arrangement_NOW:Text","Text"+tmpArrangementText);
 
 
                                 }
@@ -482,6 +484,9 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get authorName text
                                 if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
                                     tmpAuthorName = xpp.getText().trim();
+
+                                    Log.d("NOW Arr", "Author"+tmpAuthorName);
+
                                 }
                                 else {
                                     error = true;
@@ -496,7 +501,10 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get arrangementTime text
                                 if (xpp.getText().trim().length() > 0) { // check if arrangementTime from xml > 0
-                                    tmpArrangementTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                    tmpArrangementTime = Long.valueOf(xpp.getText().trim())*1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("NOW Arr", "Author"+tmpArrangementTime);
+
                                 }
                                 else {
                                     error = true;
@@ -511,7 +519,11 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get sketchCurrent text, only 0 is possible because 1 is sketch arrangement, look readOurArrangementTag_Sketch()
                                 if (xpp.getText().trim().length() > 0) { // check if sketchCurrent from xml > 0
-                                    if (xpp.getText().trim().equals("0")) { // arrangement is a current arrangement?
+
+                                    Log.d("NOW Arr", "Arrangement Status: "+xpp.getText().trim());
+
+
+                                    if (xpp.getText().trim().equals("normal")) { // arrangement is a current arrangement?
                                         tmpSketchCurrent = false;
                                     } else {
                                         error = true;
@@ -525,11 +537,11 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_Now_OldMd5:
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Now_BlockId:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get oldMd5 text
-                                if (xpp.getText().trim().length() > 0) { // check if oldMd5 from xml > 0
-                                    tmpOldMd5 = xpp.getText().trim();
+                            if (eventType == XmlPullParser.TEXT) { // get BlockId text
+                                if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
+                                    tmpBlockId = xpp.getText().trim();
                                 }
                                 else {
                                     error = true;
@@ -538,6 +550,22 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Now_ServerId:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get server id text
+                                if (xpp.getText().trim().length() > 0) { // check if server id from xml > 0
+                                    tmpServerId = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
                             break;
 
                     }
@@ -551,7 +579,14 @@ public class EfbXmlParser {
 
                 // look for end tag of ourarrangement now
                 if (eventType == XmlPullParser.END_TAG) {
+
+                    Log.d("NOW Arr", "END TAG gefunden!");
+
+
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurArrangement_Now)) {
+
+
+                        Log.d("NOW Arr", "END TAG Arr NOW gefunden!");
 
                         // check all data for arrangement now correct?
                         if (!error) {
@@ -559,27 +594,38 @@ public class EfbXmlParser {
                             Log.d("NOW__DB","Te:"+tmpArrangementText+" - Au:"+tmpAuthorName+" - ATi:"+tmpArrangementTime+" - STi"+tmpSketchCurrent);
 
                             // our arrangement order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpArrangementTime > 0) {
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpArrangementTime > 0 && tmpServerId > 0 && tmpBlockId.length() > 0) {
+
+                                Log.d("NOW Arr", "NEW Arra Entry!!!");
+
                                 // insert new arrangement in DB
-                                myDb.insertRowOurArrangement(tmpArrangementText, tmpAuthorName, tmpArrangementTime, true, tmpSketchCurrent, 0, 4);
+                                myDb.insertRowOurArrangement(tmpArrangementText, tmpAuthorName, tmpArrangementTime, true, tmpSketchCurrent, 0, 4, tmpServerId, tmpBlockId);
+
+                                // write current date of arrangements to pref
+                                prefsEditor.putLong("currentDateOfArrangement", tmpArrangementTime);
+                                // write block id of arrangements to prefs
+                                prefsEditor.putString("currentBlockIdOfArrangement", tmpBlockId);
+                                prefsEditor.commit();
+
 
                                 // refresh activity ourarrangement and fragement now
                                 returnMap.put("OurArrangement","1");
                                 returnMap.put("OurArrangementNow","1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our arrangement order -> delete entry?
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpServerId > 0) { // our arrangement order -> delete entry?
 
                                 // delete arrangement in DB
-                                myDb.deleteRowOurArrangement(tmpOldMd5);
+                                myDb.deleteRowOurArrangement(tmpServerId);
 
                                 // refresh activity ourarrangement and fragement now
                                 returnMap.put("OurArrangement","1");
                                 returnMap.put("OurArrangementNow","1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpArrangementTime > 0) { // our arrangement order -> update entry?
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpServerId > 0 && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpArrangementTime > 0) { // our arrangement order -> update entry?
 
                                 // update arrangement in DB
-                                myDb.updateRowOurArrangement(tmpArrangementText, tmpAuthorName, tmpArrangementTime, true, tmpSketchCurrent, 0, 4, tmpOldMd5);
+                                myDb.updateRowOurArrangement(tmpArrangementText, tmpAuthorName, tmpArrangementTime, true, tmpSketchCurrent, 0, 4, tmpServerId, tmpBlockId);
+
 
                                 // refresh activity ourarrangement and fragement now
                                 returnMap.put("OurArrangement","1");
@@ -590,6 +636,9 @@ public class EfbXmlParser {
                         parseAnymore = false;
                     }
                 }
+
+                Log.d("NOW Arr", "Ende der Funktion Arr NOW!");
+
             }
         }
         catch (XmlPullParserException e) {
@@ -817,7 +866,8 @@ public class EfbXmlParser {
         Long tmpSketchTime = 0L;
         Boolean tmpSketchCurrent = false;
         String tmpOrder = "";
-        String tmpOldMd5 = "";
+        String tmpBlockId = "";
+        int tmpServerId = 0;
 
         try {
             int eventType = xpp.next();
@@ -915,11 +965,11 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_Sketch_OldMd5:
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Sketch_BlockId:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get oldMd5 text
-                                if (xpp.getText().trim().length() > 0) { // check if oldMd5 from xml > 0
-                                    tmpOldMd5 = xpp.getText().trim();
+                            if (eventType == XmlPullParser.TEXT) { // get BlockId text
+                                if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
+                                    tmpBlockId = xpp.getText().trim();
                                 }
                                 else {
                                     error = true;
@@ -928,6 +978,22 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Sketch_ServerId:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get server id text
+                                if (xpp.getText().trim().length() > 0) { // check if server id from xml > 0
+                                    tmpServerId = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
                             break;
                     }
                 }
@@ -950,7 +1016,7 @@ public class EfbXmlParser {
                             // our arrangement sketch order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New)) {
                                 // insert new sketch arrangement in DB
-                                myDb.insertRowOurArrangement(tmpArrangementText,tmpAuthorName,0,true,tmpSketchCurrent,tmpSketchTime, 4);
+                                myDb.insertRowOurArrangement(tmpArrangementText,tmpAuthorName,0,true,tmpSketchCurrent,tmpSketchTime, 4, tmpServerId, tmpBlockId);
 
                                 // refresh activity ourarrangement and fragement sketch
                                 returnMap.put("OurArrangement","1");
@@ -959,7 +1025,7 @@ public class EfbXmlParser {
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) { // our arrangement sketch order -> delete entry?
 
                                 // delete arrangement in DB
-                                myDb.deleteRowOurArrangement(tmpOldMd5);
+                                myDb.deleteRowOurArrangement(tmpServerId);
 
                                 // refresh activity ourarrangement and fragement sketch
                                 returnMap.put("OurArrangement","1");
@@ -968,7 +1034,7 @@ public class EfbXmlParser {
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update)) { // our arrangement sketch order -> update entry?
 
                                 // update sketch arrangement with tmpOldMd5
-                                myDb.updateRowOurArrangement(tmpArrangementText, tmpAuthorName, 0, true, tmpSketchCurrent, tmpSketchTime, 4, tmpOldMd5);
+                                myDb.updateRowOurArrangement(tmpArrangementText, tmpAuthorName, 0, true, tmpSketchCurrent, tmpSketchTime, 4, tmpServerId, tmpBlockId);
 
                                 // refresh activity ourarrangement and fragement sketch
                                 returnMap.put("OurArrangement","1");

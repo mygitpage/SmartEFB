@@ -112,14 +112,12 @@ public class ActivityConnectBook extends AppCompatActivity {
                 // check number of send messages in 24h
                 if (tmpCountCurrentMessages < tmpMaxMessages) {
 
-
                     long newID = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), txtInputMsg.getText().toString(), roleConnectBook, 2, false);
 
                     // add current number of send messages and write to prefs
                     tmpCountCurrentMessages++;
                     prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, tmpCountCurrentMessages);
                     prefsEditor.commit();
-
 
                     // delete text in edittextfield
                     txtInputMsg.setText("");
@@ -130,28 +128,21 @@ public class ActivityConnectBook extends AppCompatActivity {
                     // show succsesfull message
                     displayToast();
 
-
-                    if (tmpCountCurrentMessages >= tmpMaxMessages) { // set hint text no more messages
-                        txtInputMsg.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_color_white));
-                        txtInputMsg.setHint("Sie haben die maximale Anzahl an Nachrichten in 24 Stunden gesendet!");
-                    }
                 }
                 else {
 
                     // delete text in edittextfield
                     txtInputMsg.setText("");
-                    // set hint text no more messages
-                    txtInputMsg.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_color_white));
-                    txtInputMsg.setHint("Sie haben die maximale Anzahl an Nachrichten in 24 Stunden gesendet!");
 
-
-
+                    // show dialog no more messages
+                    createInfoDialogNoMoreMessages();
 
                 }
 
             }
         });
     }
+
 
     // init activity
     private void initConnectBook() {
@@ -183,6 +174,7 @@ public class ActivityConnectBook extends AppCompatActivity {
 
 
     }
+
 
     // show toast message succesfull insert in db
     private void displayToast() {
@@ -234,8 +226,6 @@ public class ActivityConnectBook extends AppCompatActivity {
     }
 
 
-
-
     // help dialog
     void createHelpDialog () {
 
@@ -258,10 +248,6 @@ public class ActivityConnectBook extends AppCompatActivity {
 
                 // inflate and get the view
                 View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_connect_book, null);
-
-
-
-
 
                 // show the settings for connect book
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogConnectBookSettings);
@@ -296,7 +282,6 @@ public class ActivityConnectBook extends AppCompatActivity {
 
                 }
 
-
                 // generate text for delay time
                 if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, 0) > 1) {
                     tmpTxtElement3 = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsDelayTimePlural);
@@ -306,70 +291,8 @@ public class ActivityConnectBook extends AppCompatActivity {
                 }
                 tmpTxtElement3 = String.format(tmpTxtElement3, prefs.getInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, 0));
 
-
-
                 // set generate text to view
                 tmpdialogTextView.setText(tmpTxtElement + " " + tmpTxtElement1 + " " + tmpTxtElement2 + " " + tmpTxtElement3);
-
-
-
-
-                //tmpTxtElement = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsMaxMessagesPlural);
-
-                /*
-                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) < ConstansClassOurArrangement.commentLimitationBorder) { // write infinitely comments?
-
-                        if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) == 1) {
-                            tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountSingular);
-                        }
-                        else {
-                            tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountPlural);
-                            tmpTxtComment1 = String.format(tmpTxtComment1, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0));
-                        }
-                    }
-                    else {
-                        tmpTxtComment1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountInfinitely);
-                    }
-
-                    // count comment - status
-                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0) < prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0)) {
-                        switch (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0)) {
-                            case 0:
-                                tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCountCommentZero);
-                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"));
-                                break;
-                            case 1:
-                                tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberSingular);
-                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"));
-                                break;
-                            default:
-                                tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberPlural);
-                                tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0));
-                                break;
-                        }
-
-                        // set text max letters for comment
-                        tmpTxtComment3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentMaxLetters);
-                        tmpTxtComment3 = String.format(tmpTxtComment3, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters,0));
-
-                    }
-                    else {
-                        tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberOff);
-                        tmpTxtComment3 = "";
-                    }
-
-                    tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2 + tmpTxtComment3;
-
-                    tmpdialogTextView.setText(tmpTxtCommentSum);
-                }
-                else {
-                    tmpTxtComment = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentDisable);
-                    tmpdialogTextView.setText(tmpTxtComment);
-                }
-
-                */
-
-
 
                 // get string ressources
                 String tmpTextCloseDialog = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookCloseDialog);
@@ -398,6 +321,49 @@ public class ActivityConnectBook extends AppCompatActivity {
         });
 
     }
+
+
+
+
+    // Dialog for info no more messages possible
+    void createInfoDialogNoMoreMessages () {
+
+        LayoutInflater dialogInflater;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ActivityConnectBook.this);
+
+        // Get the layout inflater
+        dialogInflater = (LayoutInflater) ActivityConnectBook.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // inflate and get the view
+        View dialogNoMoreMessages = dialogInflater.inflate(R.layout.dialog_connect_book_no_more_messages, null);
+
+        // get string ressources
+        String tmpTextCloseDialog = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookCloseDialog);
+        String tmpTextTitleDialog = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookTitleNoMoreMessages);
+
+        // build the dialog
+        builder.setView(dialogNoMoreMessages)
+
+                // Add close button
+                .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        alertDialogSettings.cancel();
+                    }
+                })
+
+                // add title
+                .setTitle(tmpTextTitleDialog);
+
+        // and create
+        alertDialogSettings = builder.create();
+
+        // and show the dialog
+        builder.show();
+
+    }
+
+
 
 
 

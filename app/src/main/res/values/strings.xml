@@ -27,6 +27,11 @@
         <string name="textDialogConnectBookSettingsInfoTextContactCoach">Sollten Sie Fragen oder Änderungswünsche zu diesen Einstellungen haben, wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.</string>
     <!-- End connect book dialog settings -->
 
+    <!-- connect book dialog no more messages -->
+        <string name="textDialogConnectBookTitleNoMoreMessages">Keine weiteren Nachrichten</string>
+        <string name="textDialogConnectBookNoMoreMessages">Sie haben alle möglichen Nachrichten, die Sie in 24 Stunden schreiben können, geschrieben.</string>
+        <string name="textDialogConnectBookInfoCoach">Sollten Sie Fragen oder Änderungswünsche zu dieser Einschränkung haben, wenden Sie sich bitte an Ihre Beraterin oder Ihren Berater.</string>
+    <!-- End connect book dialog no more messages -->
 
 
     <!-- End Activity Connect Book -->
@@ -285,6 +290,12 @@
             <string name="textDialogOurArrangementSettingsSketchCountCommentZero">Seit dem %1$s haben Sie noch keine Einschätzung geschrieben.</string>
             <string name="textDialogOurArrangementSettingsSketchCommentMaxLetters">\nDer Einschätzungstext darf maximal %1$d Zeichen lang sein.</string>
         <!-- End our arrangement dialog settings -->
+
+        <!-- our arrangement dialog no more messages -->
+            <string name="textDialogOurArrangementTitleNoMoreMessages">Keine weiteren Kommentare</string>
+            <string name="textDialogOurArrangementNoMoreMessages">Sie haben alle möglichen Kommentare geschrieben. Maximal konnten Sie %1s Kommentare schreiben.</string>
+            <string name="textDialogOurArrangementInfoCoach">Sollten Sie Fragen oder Änderungswünsche zu dieser Einschränkung haben, wenden Sie sich bitte an Ihre Beraterin oder Ihren Berater.</string>
+        <!-- End our arrangement dialog no more messages -->
 
     <!-- Activity our arrangement End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
