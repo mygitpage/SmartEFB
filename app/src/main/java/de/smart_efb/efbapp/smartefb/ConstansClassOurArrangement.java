@@ -20,6 +20,9 @@ public class ConstansClassOurArrangement {
     // prefs name for current date of sketch arrangement
     public static final String namePrefsCurrentDateOfSketchArrangement = "currentDateOfSketchArrangement";
 
+    // prefs name for current block id of sketch arrangement
+    public static final String namePrefsCurrentBlockIdOfSketchArrangement = "currentBlockIdOfSketchArrangement";
+
     // prefs name for show evaluate arrangement
     public static final String namePrefsShowEvaluateArrangement = "showArrangementEvaluate";
 
@@ -75,9 +78,15 @@ public class ConstansClassOurArrangement {
     public static final int defaultTimeForActiveAndPauseEvaluationArrangement = 43200; // this is 12 hours
 
 
+    // max number of authors for sketch arrangements -> the same number is on server!
+    public static final int maxNumberOfSketchAuthors = 4;
 
-    // prefs name for evaluation active time in seconds
-    public static final String namePrefsAuthorOfSketchArrangement = "authorOfSketchArrangement";
+    // prefs name for author blueprint of sketch arrangements; concatenate with the number of author; the number of authors is limited with maxNumberOfSketchAuthors
+    public static final String namePrefsAuthorOfSketchArrangement = "authorOfSketchArrangement"; // + X
+
+
+
+
 
 
 

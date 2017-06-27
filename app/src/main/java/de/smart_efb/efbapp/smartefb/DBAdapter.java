@@ -648,12 +648,34 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // Delete a row from the database, by oldMd5
+    // Delete a row from the database, by serverId
     public boolean deleteRowOurArrangement(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = OUR_ARRANGEMENT_KEY_SERVER_ID + "=" + serverId;
+        return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT, where, null) != 0;
+
+    }
+
+
+    // Delete all arrangements with the same blockId
+    public boolean deleteAllRowsOurArrangement(String blockId, Boolean sketchCurrent) {
+
+        int tmpStatus;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        if (sketchCurrent) {
+            tmpStatus = 1;
+        } else {
+            tmpStatus = 0;
+        }
+
+        String where = OUR_ARRANGEMENT_KEY_BLOCK_ID + "='" + blockId + "' AND " + OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=" + tmpStatus ;
+
+        Log.d("DB-Fuc DelAll","where:"+where);
+
         return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT, where, null) != 0;
 
     }
@@ -687,7 +709,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         // sort string
-        String sort = OUR_ARRANGEMENT_KEY_WRITE_TIME + " DESC, " + KEY_ROWID + " DESC";
+        String sort = KEY_ROWID + " ASC";
 
 
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
@@ -703,17 +725,17 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return sketch arrangmenet from the database (table ourArrangement)
     // the result is sorted by DESC
-    public Cursor getAllRowsSketchOurArrangement(long currentDateOfArrangement) {
+    public Cursor getAllRowsSketchOurArrangement(String blockID) {
 
         String where = "";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         // get only arrangments and no sketches
-        where = OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=1 AND " + OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME + "=" + currentDateOfArrangement;;
+        where = OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=1 AND " + OUR_ARRANGEMENT_KEY_BLOCK_ID + "=" + blockID;
 
         // sort string
-        String sort = KEY_ROWID + " DESC";
+        String sort = KEY_ROWID + " ASC";
 
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
                 where, null, null, null, sort, null);
@@ -721,6 +743,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         if (c != null) {
             c.moveToFirst();
         }
+
 
         return c;
     }

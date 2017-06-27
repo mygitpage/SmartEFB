@@ -41,7 +41,7 @@ public class OurArrangementFragmentNow extends Fragment {
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
 
-    // block id of cuurrent arrangements
+    // block id of current arrangements
     String currentBlockIdOfArrangement = "";
 
     // reference cursorAdapter for the listview

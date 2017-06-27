@@ -75,8 +75,40 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
 
 
         if (cursor.isFirst() ) { // listview for first element? write intro text
+
+
+
             TextView tmpTextViewSketchIntroText = (TextView) view.findViewById(R.id.ourArrangementSketchIntroText);
-            String tmpTextIntroText = String.format(context.getResources().getString(R.string.ourArrangementSketchIntroText), prefs.getString(ConstansClassOurArrangement.namePrefsAuthorOfSketchArrangement, "John Dow"), EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), "dd.MM.yyyy"));
+
+            String tmpAuthorNames = "";
+            String tmpOneAuthor = "";
+            String tmpPrefsName = "";
+            int tmpNumberOfAuthors = 0;
+
+            for (Integer t=0; t<ConstansClassOurArrangement.maxNumberOfSketchAuthors; t++) {
+
+                tmpPrefsName = ConstansClassOurArrangement.namePrefsAuthorOfSketchArrangement.concat(t.toString());
+
+                tmpOneAuthor = prefs.getString(tmpPrefsName,"");
+                if (tmpOneAuthor.length() > 0) {
+                    if (tmpNumberOfAuthors > 0) {tmpAuthorNames.concat(", ");}
+                    tmpAuthorNames.concat(tmpOneAuthor);
+                    tmpNumberOfAuthors++;
+                }
+
+
+
+            }
+
+            String tmpTextIntroText = "";
+            if (tmpNumberOfAuthors == 1) {
+                tmpTextIntroText = String.format(context.getResources().getString(R.string.ourArrangementSketchIntroTextSingular), tmpAuthorNames, EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), "dd.MM.yyyy"));
+            }
+            else {
+                tmpTextIntroText = String.format(context.getResources().getString(R.string.ourArrangementSketchIntroTextPlural), tmpAuthorNames , EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), "dd.MM.yyyy"));
+            }
+
+
             tmpTextViewSketchIntroText.setText(tmpTextIntroText);
         }
 

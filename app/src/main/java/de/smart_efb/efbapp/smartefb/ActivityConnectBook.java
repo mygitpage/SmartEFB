@@ -213,14 +213,18 @@ public class ActivityConnectBook extends AppCompatActivity {
         // find the listview
         ListView listView = (ListView) findViewById(R.id.list_view_messages);
 
-        // new dataadapter
-        dataAdapter = new ConnectBookCursorAdapter(
-                ActivityConnectBook.this,
-                cursor,
-                0);
+        if (cursor.getCount() > 0 && listView != null) {
 
-        // Assign adapter to ListView
-        listView.setAdapter(dataAdapter);
+            // new dataadapter
+            dataAdapter = new ConnectBookCursorAdapter(
+                    ActivityConnectBook.this,
+                    cursor,
+                    0);
+
+            // Assign adapter to ListView
+            listView.setAdapter(dataAdapter);
+
+        }
 
 
     }

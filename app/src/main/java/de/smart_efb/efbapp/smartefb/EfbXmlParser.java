@@ -444,7 +444,10 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get order text
                                 if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
                                     tmpOrder = xpp.getText().trim();
-                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+
+                                    Log.d("NOW Arr", "Order:"+tmpOrder);
+
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
                                         Log.d("NOW Arr", "Fehler Order!!!");
                                         error = true;
                                         tmpOrder = "";
@@ -517,7 +520,7 @@ public class EfbXmlParser {
                             break;
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Now_SketchCurrent:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get sketchCurrent text, only 0 is possible because 1 is sketch arrangement, look readOurArrangementTag_Sketch()
+                            if (eventType == XmlPullParser.TEXT) { // get sketchCurrent text
                                 if (xpp.getText().trim().length() > 0) { // check if sketchCurrent from xml > 0
 
                                     Log.d("NOW Arr", "Arrangement Status: "+xpp.getText().trim());
@@ -542,6 +545,8 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get BlockId text
                                 if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
                                     tmpBlockId = xpp.getText().trim();
+
+                                    Log.d("NOW Arr", "BlockID:"+tmpBlockId);
                                 }
                                 else {
                                     error = true;
@@ -602,9 +607,9 @@ public class EfbXmlParser {
                                 myDb.insertRowOurArrangement(tmpArrangementText, tmpAuthorName, tmpArrangementTime, true, tmpSketchCurrent, 0, 4, tmpServerId, tmpBlockId);
 
                                 // write current date of arrangements to pref
-                                prefsEditor.putLong("currentDateOfArrangement", tmpArrangementTime);
+                                prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, tmpArrangementTime);
                                 // write block id of arrangements to prefs
-                                prefsEditor.putString("currentBlockIdOfArrangement", tmpBlockId);
+                                prefsEditor.putString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, tmpBlockId);
                                 prefsEditor.commit();
 
 
@@ -630,6 +635,15 @@ public class EfbXmlParser {
                                 // refresh activity ourarrangement and fragement now
                                 returnMap.put("OurArrangement","1");
                                 returnMap.put("OurArrangementNow","1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
+
+                                Log.d("NOW Arr", "Delete All!!!");
+
+                                // delete all arrangements now with the blockId
+                                myDb.deleteAllRowsOurArrangement(tmpBlockId, false); // false -> all now arrangements; true -> all sketch arrangements
+
+
                             }
                         }
 
@@ -883,7 +897,7 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get order text
                                 if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
                                     tmpOrder = xpp.getText().trim();
-                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
                                         error = true;
                                         tmpOrder = "";
                                     }
@@ -935,9 +949,12 @@ public class EfbXmlParser {
 
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Sketch_SketchCurrent:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get sketchCurrent text, only 1 is possible because 0 is current arrangement, look readOurArrangementTag_Now()
+                            if (eventType == XmlPullParser.TEXT) { // get sketchCurrent text
                                 if (xpp.getText().trim().length() > 0) { // check if sketchCurrent from xml > 0
-                                    if (xpp.getText().trim().equals("1")) { // arrangement is a sketch arrangement?
+                                    Log.d("Sketch Arr", "Arrangement Status: "+xpp.getText().trim());
+
+
+                                    if (xpp.getText().trim().equals("sketch")) { // arrangement is a sketch arrangement?
                                         tmpSketchCurrent = true;
                                     } else {
                                         error = true;
@@ -955,7 +972,7 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get sketchTime text
                                 if (xpp.getText().trim().length() > 0) { // check if sketchTime from xml > 0
-                                    tmpSketchTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                    tmpSketchTime = Long.valueOf(xpp.getText().trim())*1000; // make Long from xml-text in milliseconds!!!!!
                                 }
                                 else {
                                     error = true;
@@ -1004,7 +1021,7 @@ public class EfbXmlParser {
                     Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
-                // look for end tag of ourarrangement now
+                // look for end tag of ourarrangement sketch
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurArrangement_Sketch)) {
 
@@ -1014,15 +1031,26 @@ public class EfbXmlParser {
                             Log.d("SKETCH__DB","Te:"+tmpArrangementText+" - Au:"+tmpAuthorName+" - SATi:"+tmpSketchTime+" - STi"+tmpSketchCurrent);
 
                             // our arrangement sketch order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New)) {
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpSketchTime > 0 && tmpServerId > 0 && tmpBlockId.length() > 0) {
+
+                                Log.d("Sketch Arr", "NEW Sketch Entry!!!");
+
                                 // insert new sketch arrangement in DB
                                 myDb.insertRowOurArrangement(tmpArrangementText,tmpAuthorName,0,true,tmpSketchCurrent,tmpSketchTime, 4, tmpServerId, tmpBlockId);
+
+
+                                // write current date of sketch arrangements to pref
+                                prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, tmpSketchTime);
+                                // write block id of sketch arrangements to prefs
+                                prefsEditor.putString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, tmpBlockId);
+                                prefsEditor.commit();
+
 
                                 // refresh activity ourarrangement and fragement sketch
                                 returnMap.put("OurArrangement","1");
                                 returnMap.put("OurArrangementSketch","1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) { // our arrangement sketch order -> delete entry?
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpServerId > 0) { // our arrangement order -> delete entry?
 
                                 // delete arrangement in DB
                                 myDb.deleteRowOurArrangement(tmpServerId);
@@ -1031,7 +1059,7 @@ public class EfbXmlParser {
                                 returnMap.put("OurArrangement","1");
                                 returnMap.put("OurArrangementSketch","1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update)) { // our arrangement sketch order -> update entry?
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpServerId > 0 && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpSketchTime > 0) { // our arrangement order -> update entry?
 
                                 // update sketch arrangement with tmpOldMd5
                                 myDb.updateRowOurArrangement(tmpArrangementText, tmpAuthorName, 0, true, tmpSketchCurrent, tmpSketchTime, 4, tmpServerId, tmpBlockId);
@@ -1039,6 +1067,15 @@ public class EfbXmlParser {
                                 // refresh activity ourarrangement and fragement sketch
                                 returnMap.put("OurArrangement","1");
                                 returnMap.put("OurArrangementSketch","1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
+
+                                Log.d("Sketch Arr", "Delete All!!!");
+
+                                // delete all arrangements sketch with the blockId
+                                myDb.deleteAllRowsOurArrangement(tmpBlockId, true); // false -> all now arrangements; true -> all sketch arrangements
+
+
                             }
                         }
 

@@ -38,6 +38,9 @@ public class OurArrangementFragmentSketch  extends Fragment {
     // the date of sketch arrangement
     long currentDateOfSketchArrangement;
 
+    // block id of current sketch arrangements
+    String currentBlockIdOfSketchArrangement = "";
+
     // reference cursorAdapter for the listview
     OurArrangementSketchCursorAdapter dataAdapterListViewOurArrangementSketch = null;
 
@@ -82,6 +85,9 @@ public class OurArrangementFragmentSketch  extends Fragment {
         //get date of sketch arrangement
         currentDateOfSketchArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis());
 
+        //get block id of sketch arrangement
+        currentBlockIdOfSketchArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0");;
+
     }
 
 
@@ -94,7 +100,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false) && listView != null) { // Function showSketchArrangement is available!!!!
 
             // get the data from db -> all sketch arrangements
-            Cursor cursor = myDb.getAllRowsSketchOurArrangement(currentDateOfSketchArrangement);
+            Cursor cursor = myDb.getAllRowsSketchOurArrangement(currentBlockIdOfSketchArrangement);
 
             if (cursor.getCount() > 0 && listView != null) {
 

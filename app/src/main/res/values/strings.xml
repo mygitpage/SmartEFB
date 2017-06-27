@@ -254,7 +254,8 @@
         <!-- String Fragment sketch arrangement -->
             <string name="ourArrangementSketchArrangementNothingThere">Es sind keine Entwürfe für Absprachen vorhanden!</string>
             <string name="ourArrangementSketchArrangementFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
-            <string name="ourArrangementSketchIntroText">%1$s hat am %2$s folgende Entwürfe für Absprachen eingestellt.</string>
+            <string name="ourArrangementSketchIntroTextSingular">Ihre BeraterIn (%1$s) hat am %2$s folgende Entwürfe für Absprachen eingestellt.</string>
+            <string name="ourArrangementSketchIntroTextPlural">Ihre BeraterInnen (%1$s) haben am %2$s folgende Entwürfe für Absprachen eingestellt.</string>
             <string name="showSketchArrangementNumberText">Entwurf Absprache</string>
         <!-- End Fragment sketch arrangement -->
 
