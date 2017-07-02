@@ -104,6 +104,8 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement block id
             public static final String xmlNameForOurArrangement_Now_ServerId = "ourarrangement_now_serverid";
 
+            // xml name for element our arrangement change to
+            public static final String xmlNameForOurArrangement_Now_ChangeTo = "ourarrangement_now_changeto";
 
 
 
@@ -135,6 +137,9 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement block id
             public static final String xmlNameForOurArrangement_Sketch_ServerId = "ourarrangement_sketch_serverid";
 
+            // xml name for element our arrangement change to
+            public static final String xmlNameForOurArrangement_Sketch_ChangeTo = "ourarrangement_sketch_changeto";
+
 
 
         // xml name for element our arrangement now comment
@@ -155,14 +160,17 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement now comment time
             public static final String xmlNameForOurArrangement_NowComment_CommentTime = "ourarrangement_nowcomment_commenttime";
 
-            // xml name for element our arrangement now comment id arrangement (on all smartphones must be the same!)
+            // xml name for element our arrangement now comment id arrangement
             public static final String xmlNameForOurArrangement_NowComment_ArrangementId = "ourarrangement_nowcomment_arrangementid";
 
             // xml name for element our arrangement now comment date of arrangement to comment
             public static final String xmlNameForOurArrangement_NowComment_DateOfArrangement = "ourarrangement_nowcomment_dateofarrangement";
 
-            // xml name for element our arrangement old md5 hash
-            public static final String xmlNameForOurArrangement_NowComment_OldMd5 = "ourarrangement_nowcomment_oldmd5";
+            // xml name for element our arrangement server id arrangement
+            public static final String xmlNameForOurArrangement_NowComment_ServerIdArrangement = "ourarrangement_nowcomment_serverid";
+
+            // xml name for element our arrangement comment id in smartphone db
+            public static final String xmlNameForOurArrangement_NowComment_CommentIdSmartphoneDb = "ourarrangement_nowcomment_smartphonedbid";
 
 
 
@@ -262,9 +270,6 @@ public class ConstansClassXmlParser {
 
             // xml name for element our arrangement settings sketch comment count comment since time
             public static final String xmlNameForOurArrangement_Settings_SketchCommentCountCommentSinceTime = "ourarrangement_settings_sketchcommentcountcommentsincetime";
-
-            // xml name for element our arrangement settings sketch arrangement author name
-            public static final String xmlNameForOurArrangement_Settings_SketchArrangementAuthorName = "ourarrangement_settings_sketcharrangementauthorname";
 
             // xml name for element our arrangement settings sketch current date of sketch arrangement
             public static final String xmlNameForOurArrangement_Settings_SketchCurrentDateOfSketchArrangement = "ourarrangement_settings_sketchcurrentdateofsketcharrangement";

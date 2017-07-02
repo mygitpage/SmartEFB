@@ -29,6 +29,11 @@
     <color name="colorTextMainMenueElement">#FFFFFF</color>
 
 
+
+    // general background color list view elements (like arrangements, sketch, goals, etc.)
+    <color name="listview_elements_background">#17a9ec</color>
+
+
     // all tabs selected color
     <color name="all_tabs_selected_color">#150656</color>
 

@@ -78,11 +78,17 @@ public class ConstansClassOurArrangement {
     public static final int defaultTimeForActiveAndPauseEvaluationArrangement = 43200; // this is 12 hours
 
 
-    // max number of authors for sketch arrangements -> the same number is on server!
-    public static final int maxNumberOfSketchAuthors = 4;
+    // constans for normal arrangement in change to
+    public static final String arrangementStatusNormal = "normal";
 
-    // prefs name for author blueprint of sketch arrangements; concatenate with the number of author; the number of authors is limited with maxNumberOfSketchAuthors
-    public static final String namePrefsAuthorOfSketchArrangement = "authorOfSketchArrangement"; // + X
+    // constans for sketch arrangement in change to
+    public static final String arrangementStatusSketch = "sketch";
+
+    // constans for nothing in change to
+    public static final String arrangementStatusNothing = "nothing";
+
+
+
 
 
 

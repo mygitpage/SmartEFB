@@ -84,6 +84,11 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         String txtArrangementNumber = context.getResources().getString(R.string.showArrangementIntroText)+ " " + Integer.toString(cursor.getPosition()+1);
         numberOfArrangement.setText(txtArrangementNumber);
 
+        // put author name
+        TextView tmpTextViewAuthorNameText = (TextView) view.findViewById(R.id.listTextAuthorName);
+        String tmpTextAuthorNameText = String.format(context.getResources().getString(R.string.ourArrangementAuthorNameText), cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)));
+        tmpTextViewAuthorNameText.setText(tmpTextAuthorNameText);
+
         // check if arrangement entry new?
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_NEW_ENTRY)) == 1) {
 

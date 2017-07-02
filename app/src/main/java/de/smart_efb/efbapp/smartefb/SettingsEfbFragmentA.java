@@ -467,11 +467,9 @@ public class SettingsEfbFragmentA extends Fragment {
             xmlSerializer.startDocument("UTF-8", true);
             xmlSerializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
 
-            //Open Tag <file>
+            // Open Tag
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
-
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
-            //xmlSerializer.attribute("", "ID", "000001");
 
             // start tag main order -> first connection, send pin
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
@@ -483,40 +481,22 @@ public class SettingsEfbFragmentA extends Fragment {
             xmlSerializer.text(clientpin);
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMainClientPin);
 
-            /*
-            xmlSerializer.startTag("", "name");
-            xmlSerializer.text("CO");
-            xmlSerializer.endTag("", "name");
-
-            xmlSerializer.endTag("", "something");
-            */
-
-
             // end tag main
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
-
 
             // end tag smartEfb
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
 
             xmlSerializer.endDocument();
 
-
         }
         catch (IOException e) {
             e.printStackTrace();
         }
 
-        Log.d ("Make XML","Result:"+writer.toString());
-
         return writer.toString();
 
-
-
     }
-
-
-
 
 }
 

@@ -164,6 +164,7 @@
         <!-- fragment show current arrangements -->
             <string name="ourArrangementNowArrangementNothingThere">Es sind keine aktuellen Absprachen vorhanden!</string>
             <string name="ourArrangementIntroText">Die aktuellen Absprachen vom</string>
+            <string name="ourArrangementAuthorNameText">Geschrieben von %1$s</string>
         <!-- End show now arrangements -->
 
         <!-- Link text for comment, show comments and evaluate-->
@@ -254,9 +255,10 @@
         <!-- String Fragment sketch arrangement -->
             <string name="ourArrangementSketchArrangementNothingThere">Es sind keine Entwürfe für Absprachen vorhanden!</string>
             <string name="ourArrangementSketchArrangementFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
-            <string name="ourArrangementSketchIntroTextSingular">Ihre BeraterIn (%1$s) hat am %2$s folgende Entwürfe für Absprachen eingestellt.</string>
-            <string name="ourArrangementSketchIntroTextPlural">Ihre BeraterInnen (%1$s) haben am %2$s folgende Entwürfe für Absprachen eingestellt.</string>
+            <string name="ourArrangementSketchIntroTextPlural">Ihre BeraterInnen haben am %1$s folgende Entwürfe für Absprachen eingestellt.</string>
+            <string name="ourArrangementSketchIntroTextChangeTo">Ihre BeraterInnen haben am %1s die folgenden Entwürfe für Absprachen, vielleicht mit einigen Änderungen, als verbindliche Absprachen gespeichert.</string>
             <string name="showSketchArrangementNumberText">Entwurf Absprache</string>
+            <string name="ourArrangementSketchAuthorNameText">Geschrieben von %1$s</string>
         <!-- End Fragment sketch arrangement -->
 
         <!-- our arrangement dialog settings -->
