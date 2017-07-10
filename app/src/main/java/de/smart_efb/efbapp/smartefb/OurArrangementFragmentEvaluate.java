@@ -40,8 +40,8 @@ public class OurArrangementFragmentEvaluate extends Fragment {
     // shared prefs for the evaluate arrangement
     SharedPreferences prefs;
 
-    // DB-Id of arrangement to comment
-    int arrangementDbIdToEvaluate = 0;
+    // DB-Id of arrangement to evaluate
+    int arrangementServerDbIdToEvaluate = 0;
 
     // arrangement number in list view
     int arrangementNumberInListView = 0;
@@ -52,7 +52,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
     Cursor cursorNextArrangementToEvaluate;
 
     // values for the next arrangement to evaluate
-    int nextArrangementDbIdToEvaluate = 0;
+    int nextArrangementServerDbIdToEvaluate = 0;
     int nextArrangementListPositionToEvaluate = 0;
 
     // evaluate next arrangement
@@ -95,7 +95,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         callGetterFunctionInSuper();
 
         // init the fragment evaluate only when an arrangement is choosen
-        if (arrangementDbIdToEvaluate != 0) {
+        if (arrangementServerDbIdToEvaluate != 0) {
 
             // init the fragment now
             initFragmentEvaluate();
@@ -114,7 +114,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         prefs = fragmentEvaluateContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentEvaluateContext.MODE_PRIVATE);
 
         // get choosen arrangement
-        cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToEvaluate);
+        cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToEvaluate);
 
         // get all actual arrangements
         cursorNextArrangementToEvaluate = myDb.getAllRowsCurrentOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0"),  "equalBlockId");
@@ -151,15 +151,15 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         // set textview for the next arrangement to evaluate
         TextView textViewNextArrangementEvaluateIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.arrangementNextToEvaluateIntroText);
         TextView textViewThankAndEvaluateNext = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateThankAndNextEvaluation);
-        nextArrangementDbIdToEvaluate = 0;
+        nextArrangementServerDbIdToEvaluate = 0;
         nextArrangementListPositionToEvaluate = 0;
         if (cursorNextArrangementToEvaluate != null) { // is there another arrangement to evaluate?
 
             cursorNextArrangementToEvaluate.moveToFirst();
             do {
 
-                if (cursorNextArrangementToEvaluate.getInt(cursorNextArrangementToEvaluate.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE)) == 1 && cursorNextArrangementToEvaluate.getInt(cursorNextArrangementToEvaluate.getColumnIndex(DBAdapter.KEY_ROWID)) != arrangementDbIdToEvaluate) { // evaluation possible for arrangement?
-                    nextArrangementDbIdToEvaluate = cursorNextArrangementToEvaluate.getInt(cursorNextArrangementToEvaluate.getColumnIndex(DBAdapter.KEY_ROWID));
+                if (cursorNextArrangementToEvaluate.getInt(cursorNextArrangementToEvaluate.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE)) == 1 && cursorNextArrangementToEvaluate.getInt(cursorNextArrangementToEvaluate.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)) != arrangementServerDbIdToEvaluate) { // evaluation possible for arrangement?
+                    nextArrangementServerDbIdToEvaluate = cursorNextArrangementToEvaluate.getInt(cursorNextArrangementToEvaluate.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID));
                     nextArrangementListPositionToEvaluate = cursorNextArrangementToEvaluate.getPosition() + 1;
                 }
 
@@ -168,7 +168,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         }
 
         // set textview textViewNextArrangementEvaluateIntro
-        if (nextArrangementDbIdToEvaluate != 0) { // with text: next arrangement to evaluate
+        if (nextArrangementServerDbIdToEvaluate != 0) { // with text: next arrangement to evaluate
 
             //textViewNextArrangementEvaluateIntro.setText(this.getResources().getString(R.string.showNextArrangementToEvaluateIntroText) + " " + nextArrangementListPositionToEvaluate);
             textViewNextArrangementEvaluateIntro.setText(String.format(this.getResources().getString(R.string.showNextArrangementToEvaluateIntroText), nextArrangementListPositionToEvaluate));
@@ -278,14 +278,14 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 if (evaluateNoError) {
 
                     // insert comment in DB
-                    myDb.insertRowOurArrangementEvaluate(arrangementDbIdToEvaluate, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"), 0);
+                    myDb.insertRowOurArrangementEvaluate(arrangementServerDbIdToEvaluate, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"), 0);
 
                     // delete status evaluation possible for arrangement
-                    myDb.changeStatusEvaluationPossibleOurArrangement(arrangementDbIdToEvaluate, "delete");
+                    myDb.changeStatusEvaluationPossibleOurArrangement(arrangementServerDbIdToEvaluate, "delete");
 
 
                     // When last evaluation show toast, because textView is not visible -> new fragment
-                    if (nextArrangementDbIdToEvaluate == 0 ) {
+                    if (nextArrangementServerDbIdToEvaluate == 0 ) {
                         Toast.makeText(fragmentEvaluateContext, fragmentEvaluateContext.getResources().getString(R.string.evaluateResultSuccsesfulySend), Toast.LENGTH_SHORT).show();
                     }
 
@@ -293,12 +293,12 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     resetEvaluateResult ();
 
                     // build and send intent to next evaluation arrangement or back to OurArrangementNow
-                    if (nextArrangementDbIdToEvaluate != 0) { // is there another arrangement to evaluate?
+                    if (nextArrangementServerDbIdToEvaluate != 0) { // is there another arrangement to evaluate?
 
                         Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.putExtra("com","evaluate_an_arrangement");
-                        intent.putExtra("db_id", (int) nextArrangementDbIdToEvaluate);
+                        intent.putExtra("db_id", (int) nextArrangementServerDbIdToEvaluate);
                         intent.putExtra("arr_num", (int) nextArrangementListPositionToEvaluate);
                         intent.putExtra("eval_next", true );
 
@@ -458,7 +458,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         tmpArrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
 
         if (tmpArrangementDbIdToComment > 0) {
-            arrangementDbIdToEvaluate = tmpArrangementDbIdToComment;
+            arrangementServerDbIdToEvaluate = tmpArrangementDbIdToComment;
 
             // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
             arrangementNumberInListView = ((ActivityOurArrangement) getActivity()).getArrangementNumberInListview();

@@ -698,8 +698,9 @@ public class EfbXmlParser {
         String tmpCommentText = "";
         String tmpAuthorName = "";
         Long tmpCommentTime = 0L;
-        int tmpArrangementId = 0;
+        String tmpBlockId = "";
         Long tmpArrangementTime = 0L;
+        Long tmpUploadTime = 0L;
         String tmpOrder = "";
         int tmpServerIdArrangement = 0;
         int tmpCommentIdSmartphoneDb = 0;
@@ -782,11 +783,11 @@ public class EfbXmlParser {
                             }
 
                             break;
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_ArrangementId:
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_UploadTime:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get arrangementId text
-                                if (xpp.getText().trim().length() > 0) { // check if arrangementId from xml > 0
-                                    tmpArrangementId = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+                            if (eventType == XmlPullParser.TEXT) { // get upload time text
+                                if (xpp.getText().trim().length() > 0) { // check if uploadTime from xml > 0
+                                    tmpUploadTime = Long.valueOf(xpp.getText().trim()); // make long from xml-text
                                 }
                                 else {
                                     error = true;
@@ -797,6 +798,24 @@ public class EfbXmlParser {
                             }
 
                             break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_BlockId:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get BlockId text
+                                if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
+                                    tmpBlockId = xpp.getText().trim();
+
+                                    Log.d("NOW Arr", "BlockID:"+tmpBlockId);
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
+
                         case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_DateOfArrangement:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get arrangementTime text
@@ -828,7 +847,7 @@ public class EfbXmlParser {
                             }
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentIdSmartphoneDb:
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentIdSmartphoneDb: // not needed for insert comment in db
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get comment id smartphone db text
                                 if (xpp.getText().trim().length() > 0) { // check if comment id smartphone db from xml > 0
@@ -858,16 +877,26 @@ public class EfbXmlParser {
                         // check all data for arrangement now correct?
                         if (!error) {
 
-                            Log.d("NowComment_DB","C:"+tmpCommentText+" - Au:"+tmpAuthorName+" - CTi:"+tmpCommentTime+" - AId"+tmpArrangementId+" - CoA:"+tmpArrangementTime);
 
                             // our arrangement now comment order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementId >= 0 && tmpArrangementTime > 0 && tmpServerIdArrangement >= 0) {
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpUploadTime >= 0 && tmpBlockId.length() > 0) {
+
+                                Log.d("NowComment_DB","C:"+tmpCommentText+" - Au:"+tmpAuthorName+" - CTi:"+tmpCommentTime+" - AId"+tmpServerIdArrangement+" - CoA:"+tmpArrangementTime);
+
                                 // insert new comment in DB
-                                myDb.insertRowOurArrangementComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpArrangementId, true, tmpArrangementTime, 4, tmpServerIdArrangement);
+                                myDb.insertRowOurArrangementComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpArrangementTime, 4, tmpServerIdArrangement);
 
                                 // refresh activity ourarrangement and fragment now comment
                                 returnMap.put("OurArrangement","1");
                                 returnMap.put("OurArrangementNowComment","1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) { // delete all comments; needed by init process
+
+                                Log.d("NOW Comment Arr", "Delete All!!!");
+
+                                // delete all comments for all current arrangements now with the blockId
+                                myDb.deleteAllRowsOurArrangementComment(tmpBlockId);
+
 
                             }
                         }

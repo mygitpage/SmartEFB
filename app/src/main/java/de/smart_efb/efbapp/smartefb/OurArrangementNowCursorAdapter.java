@@ -113,7 +113,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                 evaluateLinkBuilder.scheme("smart.efb.deeplink")
                         .authority("linkin")
                         .path("ourarrangement")
-                        .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
+                        .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID))))
                         .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition() + 1))
                         .appendQueryParameter("com", "evaluate_an_arrangement");
 
@@ -128,7 +128,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false)) {
 
             // get from DB  all comments for choosen arrangement (getCount)
-            Cursor cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
+            Cursor cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
             // generate the number of comments to show
             String tmpCountComments;
             int tmpIntCountComments = cursorArrangementAllComments.getCount();
@@ -154,7 +154,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
             commentLinkBuilder.scheme("smart.efb.deeplink")
                     .authority("linkin")
                     .path("ourarrangement")
-                    .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
+                    .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID))))
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "comment_an_arrangement");
 
@@ -163,7 +163,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
             showCommentLinkBuilder.scheme("smart.efb.deeplink")
                     .authority("linkin")
                     .path("ourarrangement")
-                    .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
+                    .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID))))
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "show_comment_for_arrangement");;
 

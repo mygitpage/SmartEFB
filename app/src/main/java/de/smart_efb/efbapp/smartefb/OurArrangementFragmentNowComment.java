@@ -54,8 +54,8 @@ public class OurArrangementFragmentNowComment extends Fragment {
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
 
-    // DB-Id of arrangement to comment
-    int arrangementDbIdToComment = 0;
+    // Server DB-Id of arrangement to comment (the server id of arrangement is anchor)
+    int arrangementServerDbIdToComment = 0;
 
     // arrangement number in list view
     int arrangementNumberInListView = 0;
@@ -94,7 +94,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         callGetterFunctionInSuper();
 
         // init the fragment now only when an arrangement is choosen
-        if (arrangementDbIdToComment != 0) {
+        if (arrangementServerDbIdToComment != 0) {
             initFragmentNowComment();
         }
     }
@@ -111,10 +111,10 @@ public class OurArrangementFragmentNowComment extends Fragment {
         prefsEditor = prefs.edit();
 
         // get choosen arrangement
-        cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToComment);
+        cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToComment);
 
         // get all comments for choosen arrangement
-        cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementDbIdToComment);
+        cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToComment);
 
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentNowCommentText", "string", fragmentNowCommentContext.getPackageName())) + " " + arrangementNumberInListView;
@@ -238,7 +238,10 @@ public class OurArrangementFragmentNowComment extends Fragment {
                 if (txtInputArrangementComment.getText().toString().length() > 3) {
 
                     // insert comment in DB
-                    myDb.insertRowOurArrangementComment(txtInputArrangementComment.getText().toString(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"), System.currentTimeMillis(), arrangementDbIdToComment, true, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), 0, cursorChoosenArrangement.getInt(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
+                    myDb.insertRowOurArrangementComment(txtInputArrangementComment.getText().toString(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), System.currentTimeMillis(), 0, cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID)), true, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), 0, cursorChoosenArrangement.getInt(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
+
+
+
 
                     // increment comment count
                     int countCommentSum = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0) + 1;
@@ -283,13 +286,13 @@ public class OurArrangementFragmentNowComment extends Fragment {
     // call getter Functions in ActivityOurArrangement for some data
     private void callGetterFunctionInSuper () {
 
-        int tmpArrangementDbIdToComment = 0;
+        int tmparrangementServerDbIdToComment = 0;
 
         // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
-        tmpArrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
+        tmparrangementServerDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
 
-        if (tmpArrangementDbIdToComment > 0) {
-            arrangementDbIdToComment = tmpArrangementDbIdToComment;
+        if (tmparrangementServerDbIdToComment > 0) {
+            arrangementServerDbIdToComment = tmparrangementServerDbIdToComment;
 
             // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
             arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();

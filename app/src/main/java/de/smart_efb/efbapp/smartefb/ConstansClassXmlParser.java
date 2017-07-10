@@ -160,8 +160,8 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement now comment time
             public static final String xmlNameForOurArrangement_NowComment_CommentTime = "ourarrangement_nowcomment_commenttime";
 
-            // xml name for element our arrangement now comment id arrangement
-            public static final String xmlNameForOurArrangement_NowComment_ArrangementId = "ourarrangement_nowcomment_arrangementid";
+            // xml name for element our arrangement now comment upload time of comment
+            public static final String xmlNameForOurArrangement_NowComment_UploadTime = "ourarrangement_nowcomment_uploadtime";
 
             // xml name for element our arrangement now comment date of arrangement to comment
             public static final String xmlNameForOurArrangement_NowComment_DateOfArrangement = "ourarrangement_nowcomment_dateofarrangement";
@@ -171,6 +171,9 @@ public class ConstansClassXmlParser {
 
             // xml name for element our arrangement comment id in smartphone db
             public static final String xmlNameForOurArrangement_NowComment_CommentIdSmartphoneDb = "ourarrangement_nowcomment_smartphonedbid";
+
+            // xml name for element our arrangement now comment upload time of comment
+            public static final String xmlNameForOurArrangement_NowComment_BlockId = "ourarrangement_nowcomment_blockid";
 
 
 
