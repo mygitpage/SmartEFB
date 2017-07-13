@@ -10,6 +10,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,18 +78,27 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
 
             TextView tmpTextViewSketchIntroText = (TextView) view.findViewById(R.id.ourArrangementSketchIntroText);
             String tmpTextIntroText = "";
-            if (cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_CHANGE_TO)) == ConstansClassOurArrangement.arrangementStatusNothing) {
+
+            Log.d("C_Adapter Sketch Arr","ChangeTo:"+cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_CHANGE_TO)));
+
+            if (cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_CHANGE_TO)).equals(ConstansClassOurArrangement.arrangementStatusNothing)) {
+
+                Log.d("C_Adapter Sketch Arr","In Nothimg Bereich - Constants:" + ConstansClassOurArrangement.arrangementStatusNothing);
+
                 tmpTextIntroText = String.format(context.getResources().getString(R.string.ourArrangementSketchIntroTextPlural), EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), "dd.MM.yyyy"));
                 tmpTextViewSketchIntroText.setText(tmpTextIntroText);
             }
             else {
+
+                Log.d("C_Adapter Sketch Arr","Im anderen Bereich- Constants:" + ConstansClassOurArrangement.arrangementStatusNothing);
+
                 tmpTextIntroText = String.format(context.getResources().getString(R.string.ourArrangementSketchIntroTextChangeTo), EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME)), "dd.MM.yyyy"));
                 tmpTextViewSketchIntroText.setText(tmpTextIntroText);
             }
 
         }
 
-        // put arrangement number
+        // put sketch arrangement number
         TextView tmpTextViewNumberOfArrangement = (TextView) view.findViewById(R.id.listArrangementSketchNumberText);
         String tmpTextSketchArrangementNumber = context.getResources().getString(R.string.showSketchArrangementNumberText)+ " " + Integer.toString(cursor.getPosition()+1);
         tmpTextViewNumberOfArrangement.setText(tmpTextSketchArrangementNumber);
@@ -106,7 +116,7 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
             myDb.deleteStatusNewEntryOurArrangement(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
         }
 
-        // put arrangement text
+        // put sketch arrangement text
         TextView textViewArrangement = (TextView) view.findViewById(R.id.listTextSketchArrangement);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(title);

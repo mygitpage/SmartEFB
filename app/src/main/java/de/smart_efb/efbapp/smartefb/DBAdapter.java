@@ -112,6 +112,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     /**********************************************************************************************/
     /**********************************************************************************************/
     // Our Arrangement Sketch Comment- column names and numbers
+
+
+    // TODO: Umstellen der Entwurfskommentare auf Basis der Server id der Absprache !!!!!!!!!!!!!!!!!!!!!!!!!!
+
     public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT = "comment";
     public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1 = "result_q_a";
     public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2 = "result_q_b";
@@ -706,7 +710,7 @@ public class DBAdapter extends SQLiteOpenHelper {
                 where += OUR_ARRANGEMENT_KEY_BLOCK_ID + "='" + blockID + "'";
                 break;
 
-            case "notEqualBlockID":
+            case "notEqualBlockId":
                 where += OUR_ARRANGEMENT_KEY_BLOCK_ID + "!='" + blockID + "'";
                 break;
             default:
@@ -716,7 +720,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // sort string
         String sort = KEY_ROWID + " ASC";
-
 
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
                 where, null, null, null, sort, null);
@@ -1006,8 +1009,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID + "='" + blockId + "'";
-
-        Log.d("DB-Fuc DelAll","where:"+where);
 
         return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, where, null) != 0;
 

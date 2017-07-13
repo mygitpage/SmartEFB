@@ -91,6 +91,18 @@ public class OurArrangementFragmentNow extends Fragment {
     }
 
 
+    @Override
+    public void onPause() {
+
+        super.onPause();  // call the superclass method first
+
+
+        Log.d("OnPause Arrangement NOW","PAUSE!!!!!!!!!!!!!!!");
+    }
+
+
+
+
     // Broadcast receiver for action ARRANGEMENT_EVALUATE_STATUS_UPDATE -> comes from alarmmanager ourArrangement
     private BroadcastReceiver ourArrangementFragmentNowBrodcastReceiver = new BroadcastReceiver() {
 

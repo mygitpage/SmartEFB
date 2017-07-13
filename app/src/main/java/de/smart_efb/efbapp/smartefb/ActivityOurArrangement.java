@@ -418,6 +418,21 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
+
+
+    @Override
+    public void onPause() {
+
+        super.onPause();  // call the superclass method first
+
+
+        Log.d("OnPause Our Arrangement","PAUSE!!!!!!!!!!!!!!!");
+    }
+
+
+
+
+
     // init the activity
     private void initOurArrangement() {
 

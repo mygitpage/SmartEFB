@@ -23,7 +23,7 @@ public class ConstansClassSettings {
 
 
     // URL first connect to server
-    public static final String urlFirstConnectToServer = "http://192.168.2.105/index.php?com=exchange&subcom=establish";
+    public static final String urlFirstConnectToServer = "http://192.168.1.119/index.php?com=exchange&subcom=establish";
 
 
 

@@ -719,10 +719,14 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get order text
                                 if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
                                     tmpOrder = xpp.getText().trim();
-                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
                                         error = true;
                                         tmpOrder = "";
                                     }
+
+                                    Log.d("Now Comment","ORDER: "+tmpOrder);
+
+
                                 }
                                 else {
                                     error = true;
@@ -772,7 +776,7 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get commentTime text
                                 if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
-                                    tmpCommentTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                    tmpCommentTime = Long.valueOf(xpp.getText().trim())*1000; // make Long from xml-text in milliseconds!!!!!
                                 }
                                 else {
                                     error = true;
@@ -787,7 +791,7 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get upload time text
                                 if (xpp.getText().trim().length() > 0) { // check if uploadTime from xml > 0
-                                    tmpUploadTime = Long.valueOf(xpp.getText().trim()); // make long from xml-text
+                                    tmpUploadTime = Long.valueOf(xpp.getText().trim())*1000; // make Long from xml-text in milliseconds!!!!!
                                 }
                                 else {
                                     error = true;
@@ -837,6 +841,10 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get server id arrangement text
                                 if (xpp.getText().trim().length() > 0) { // check if server id arrangement from xml > 0
                                     tmpServerIdArrangement = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Now Comment","ServerID:"+tmpServerIdArrangement);
+
+
                                 }
                                 else {
                                     error = true;
@@ -877,11 +885,13 @@ public class EfbXmlParser {
                         // check all data for arrangement now correct?
                         if (!error) {
 
-
                             // our arrangement now comment order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpUploadTime >= 0 && tmpBlockId.length() > 0) {
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpBlockId.length() > 0) {
 
-                                Log.d("NowComment_DB","C:"+tmpCommentText+" - Au:"+tmpAuthorName+" - CTi:"+tmpCommentTime+" - AId"+tmpServerIdArrangement+" - CoA:"+tmpArrangementTime);
+                                Log.d("IN_NowComment_DB","C:"+tmpCommentText+" - Au:"+tmpAuthorName+" - CTi:"+tmpCommentTime+" - AId"+tmpServerIdArrangement+" - CoA:"+tmpArrangementTime);
+
+                                // set upload time on smartphone for commeent
+                                tmpUploadTime = System.currentTimeMillis();
 
                                 // insert new comment in DB
                                 myDb.insertRowOurArrangementComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpArrangementTime, 4, tmpServerIdArrangement);
@@ -1112,10 +1122,6 @@ public class EfbXmlParser {
                                 // write block id of sketch arrangements to prefs
                                 prefsEditor.putString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, tmpBlockId);
                                 prefsEditor.commit();
-
-
-
-
 
                                 // refresh activity ourarrangement and fragement sketch
                                 returnMap.put("OurArrangement","1");
