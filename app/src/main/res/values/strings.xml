@@ -250,6 +250,7 @@
             <string name="evaluateSketchSuggestion_4">Wenig</string>
             <string name="evaluateSketchSuggestion_5">Keine</string>
             <string name="textSketchCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Entwurf abgegeben: %1$s</string>
+            <string name="textSketchCommentNoActualResultStructQuestion">Mit der Einschätzung wurden keine Zustimmungswerte abgegeben.</string>
         <!-- End fragment comment sketch arrangement -->
 
         <!-- String Fragment sketch arrangement -->

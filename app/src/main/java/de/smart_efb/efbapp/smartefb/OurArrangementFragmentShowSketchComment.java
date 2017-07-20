@@ -35,8 +35,8 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
     // reference cursorAdapter for the listview
     OurArrangementShowSketchCommentCursorAdapter showSketchCommentCursorAdapter;
 
-    // DB-Id of arrangement to comment
-    int sketchArrangementDbIdToShow = 0;
+    // Server DB-Id of arrangement to comment
+    int sketchArrangementServerDbIdToShow = 0;
 
     // arrangement number in list view
     int sketchArrangementNumberInListView = 0;
@@ -63,7 +63,7 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
         callGetterFunctionInSuper();
 
         // init and display data from fragment show sketch comment only when an arrangement is choosen
-        if (sketchArrangementDbIdToShow != 0) {
+        if (sketchArrangementServerDbIdToShow != 0) {
 
             // init the fragment now
             initFragmentShowComment();
@@ -102,7 +102,7 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
         tmpArrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getSketchArrangementDbIdFromLink();
 
         if (tmpArrangementDbIdToComment > 0) {
-            sketchArrangementDbIdToShow = tmpArrangementDbIdToComment;
+            sketchArrangementServerDbIdToShow = tmpArrangementDbIdToComment;
 
             // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
             sketchArrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getSketchArrangementNumberInListview();
@@ -116,11 +116,11 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
     public void displayActualCommentSet () {
 
         // get the data (all comments from an sketch arrangement) from DB
-        Cursor cursor = myDb.getAllRowsOurArrangementSketchComment(sketchArrangementDbIdToShow);
+        Cursor cursor = myDb.getAllRowsOurArrangementSketchComment(sketchArrangementServerDbIdToShow);
 
-        // get the data (the choosen arrangement) from the DB
+        // get the data (the choosen sketch arrangement) from the DB
         String arrangement = "";
-        Cursor choosenArrangement = myDb.getRowSketchOurArrangement(sketchArrangementDbIdToShow);
+        Cursor choosenArrangement = myDb.getRowSketchOurArrangement(sketchArrangementServerDbIdToShow);
         arrangement = choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
 
         // find the listview
@@ -131,7 +131,7 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
                 getActivity(),
                 cursor,
                 0,
-                sketchArrangementDbIdToShow,
+                sketchArrangementServerDbIdToShow,
                 sketchArrangementNumberInListView,
                 arrangement);
 

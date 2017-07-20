@@ -76,7 +76,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     String showCommandFragmentTabOne = "";
 
     // arrangement db-id - for comment, sketch comment, show comment or show sketch comment
-    int arrangementDbIdFromLink = 0;
+    int arrangementServerDbIdFromLink = 0;
     int arrangementSketchDbIdFromLink = 0;
     //arrangement number and sketch number in listview
     int arrangementNumberInListView = 0;
@@ -220,7 +220,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // Extras from intent that holds data
         Bundle intentExtras = null;
 
-        arrangementDbIdFromLink = 0;
+        arrangementServerDbIdFromLink = 0;
         arrangementNumberInListView = 0;
         evaluateNextArrangement = false;
 
@@ -230,31 +230,31 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // get the link data from URI and from the extra
         intentExtras = intent.getExtras();
 
-        int tmpDbId = 0;
+        int tmpServerDbId = 0;
         int tmpNumberinListView = 0;
         Boolean tmpEvalNext = false;
 
         if (intentExtras != null) {
            // get data that comes with extras
-            tmpDbId = intentExtras.getInt("db_id",0);
+            tmpServerDbId = intentExtras.getInt("db_id",0);
             tmpNumberinListView = intentExtras.getInt("arr_num",0);
             tmpEvalNext = intentExtras.getBoolean("eval_next");
             // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"), tmpDbId, tmpNumberinListView, tmpEvalNext);
+            executeIntentCommand (intentExtras.getString("com"), tmpServerDbId, tmpNumberinListView, tmpEvalNext);
         }
 
     }
 
 
     // execute the commands that comes from link or intend
-    public void executeIntentCommand (String command, int tmpDbId, int tmpNumberinListView, Boolean tmpEvalNext) {
+    public void executeIntentCommand (String command, int tmpServerDbId, int tmpNumberinListView, Boolean tmpEvalNext) {
 
         String tmpTabTitle = "";
 
         if (command.equals("show_comment_for_arrangement")) { // Show fragment all comments for arrangement
 
             // set global varibales
-            arrangementDbIdFromLink = tmpDbId;
+            arrangementServerDbIdFromLink = tmpServerDbId;
             arrangementNumberInListView = tmpNumberinListView;
             evaluateNextArrangement = tmpEvalNext;
 
@@ -279,7 +279,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         } else if (command.equals("comment_an_arrangement")) { // Show fragment comment arrangement
 
             // set global varibales
-            arrangementDbIdFromLink = tmpDbId;
+            arrangementServerDbIdFromLink = tmpServerDbId;
             arrangementNumberInListView = tmpNumberinListView;
             evaluateNextArrangement = tmpEvalNext;
 
@@ -302,7 +302,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         } else if (command.equals("evaluate_an_arrangement")) { // Show evaluate a arrangement
 
             // set global varibales
-            arrangementDbIdFromLink = tmpDbId;
+            arrangementServerDbIdFromLink = tmpServerDbId;
             arrangementNumberInListView = tmpNumberinListView;
             evaluateNextArrangement = tmpEvalNext;
 
@@ -326,7 +326,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         } else if (command.equals("comment_an_sketch_arrangement")) { // Comment sketch arrangement -> TAB ONE
 
             // set global varibales
-            arrangementSketchDbIdFromLink = tmpDbId;
+            arrangementSketchDbIdFromLink = tmpServerDbId;
             arrangementSketchNumberInListView = tmpNumberinListView;
 
             //set fragment in tab one to comment an sketch arrangement
@@ -348,7 +348,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         } else if (command.equals("show_sketch_arrangement")) { // Show sketch Arrangments -> TAB ONE
 
             // set global varibales
-            arrangementSketchDbIdFromLink = tmpDbId;
+            arrangementSketchDbIdFromLink = tmpServerDbId;
             arrangementSketchNumberInListView = tmpNumberinListView;
 
             //set fragment in tab one to show sketch arrangement
@@ -370,7 +370,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         } else if (command.equals("show_comment_for_sketch_arrangement")) { // Show comments for sketch Arrangments -> TAB ONE
 
             // set global varibales
-            arrangementSketchDbIdFromLink = tmpDbId;
+            arrangementSketchDbIdFromLink = tmpServerDbId;
             arrangementSketchNumberInListView = tmpNumberinListView;
 
             //set fragment in tab one to show comment sketch arrangement
@@ -393,7 +393,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         else { // Show fragment arrangement now -> Tab 0
 
             // set global varibales
-            arrangementDbIdFromLink = tmpDbId;
+            arrangementServerDbIdFromLink = tmpServerDbId;
             arrangementNumberInListView = tmpNumberinListView;
             evaluateNextArrangement = tmpEvalNext;
 
@@ -890,7 +890,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // getter for DB-Id of arrangement
     public int getArrangementDbIdFromLink () {
 
-        return arrangementDbIdFromLink;
+        return arrangementServerDbIdFromLink;
 
     }
 

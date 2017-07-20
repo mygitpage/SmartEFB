@@ -38,7 +38,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 34;
+    public static final int DATABASE_VERSION = 35;
 
     // Common column names
     public static final String KEY_ROWID = "_id";
@@ -113,23 +113,21 @@ public class DBAdapter extends SQLiteOpenHelper {
     /**********************************************************************************************/
     // Our Arrangement Sketch Comment- column names and numbers
 
-
-    // TODO: Umstellen der Entwurfskommentare auf Basis der Server id der Absprache !!!!!!!!!!!!!!!!!!!!!!!!!!
-
     public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT = "comment";
     public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1 = "result_q_a";
     public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2 = "result_q_b";
     public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3 = "result_q_c";
     public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME = "author_name";
     public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME = "comment_time";
-    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ID_ARRANGEMENT = "id_arrangement";
+    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_UPLOAD_TIME = "upload_time";
+    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID = "blockid";
+    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT = "server_id";
     public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY = "new_entry";
     public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME = "arrangement_time";
-    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_MD5_HASH = "md5_hash";
     public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
     // All keys from table sketch comment
-    public static final String[] OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ID_ARRANGEMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_MD5_HASH, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS };
+    public static final String[] OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_UPLOAD_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS };
 
     // SQL String to create our arrangement sketch comment table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_SKETCH_COMMENT =
@@ -140,10 +138,11 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT + " TEXT not null, "
                     + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME + " STRING not null, "
                     + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME + " INTEGER not null, "
-                    + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ID_ARRANGEMENT + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_UPLOAD_TIME + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID + " TEXT not null, "
+                    + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT + " INTEGER not null, "
                     + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
                     + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME + " INTEGER not null, "
-                    + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_MD5_HASH + " TEXT not null, "
                     + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS + " INTEGER DEFAULT 0"
                     + ");";
 
@@ -763,7 +762,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = OUR_ARRANGEMENT_KEY_SERVER_ID + "=" + serverId;
+        String where = OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=0 AND " + OUR_ARRANGEMENT_KEY_SERVER_ID + "=" + serverId;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
@@ -776,11 +775,11 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get a specific row from the sketch arrangement (by rowId)
-    public Cursor getRowSketchOurArrangement(int rowId) {
+    public Cursor getRowSketchOurArrangement(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=1 AND " + KEY_ROWID + "=" + rowId;
+        String where = OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=1 AND " + OUR_ARRANGEMENT_KEY_SERVER_ID + "=" + serverId;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
@@ -1027,7 +1026,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Arrangement Sketch Comment ******************************************/
 
     // Add a new set of values to ourArrangementSketchComment .
-    public long insertRowOurArrangementSketchComment(String comment, int question_a, int question_b, int question_c, String authorName, long commentTime, int idArrangement, Boolean newEntry, long currentDateOfArrangement, int status) {
+    public long insertRowOurArrangementSketchComment(String comment, int question_a, int question_b, int question_c, String authorName, long commentTime, long upload_time, String blockid, Boolean newEntry, long currentDateOfArrangement, int status, int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1039,10 +1038,11 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3, question_c);
         initialValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME, authorName);
         initialValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME, commentTime);
-        initialValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ID_ARRANGEMENT, idArrangement);
+        initialValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_UPLOAD_TIME, upload_time);
+        initialValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID, blockid);
         initialValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME, currentDateOfArrangement);
-        initialValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from comment
         initialValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS, status);
+        initialValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT, serverId);
 
         // is it a new entry?
         if (newEntry) {
@@ -1058,14 +1058,14 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    // Return all comments from the database for sketch arrangement with arrangement_id = id (table ourArrangementSketchComment)
+    // Return all comments from the database for sketch arrangement with server arrangement id = id (table ourArrangementSketchComment)
     // the result is sorted by DESC
-    public Cursor getAllRowsOurArrangementSketchComment(int arrangementId) {
+    public Cursor getAllRowsOurArrangementSketchComment(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         // data filter
-        String where = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ID_ARRANGEMENT + "=" + arrangementId;
+        String where = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT + "=" + serverId;
 
         // sort string
         String sort = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME + " DESC";
@@ -1086,30 +1086,8 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-
-
         // new_entry = 1 (true)?
         String where = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME + "=" + currentDateOfArrangement;
-        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS,
-                where, null, null, null, null, null);
-
-        if (c != null) {
-            c.moveToFirst();
-        }
-
-        // return how many
-        return c.getCount();
-    }
-
-
-
-    // Get the number of new rows in comment for choosen sketch arrangement, look arrangementRowId (new entrys)
-    public int getCountNewEntryOurArrangementSketchComment(int arrangementRowId) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        // new_entry = 1 (true) and choosen arrangement like arrangementRowId?
-        String where = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ID_ARRANGEMENT + "=" + arrangementRowId;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
@@ -1139,6 +1117,16 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+    // delete all comments for sketch arrangements with the same block id
+    public Boolean deleteAllRowsOurArrangementSketchComment (String blockId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID + "='" + blockId + "'";
+
+        return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, where, null) != 0;
+
+    }
 
 
     /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Sketch Comment ***************************************/

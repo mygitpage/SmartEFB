@@ -53,8 +53,8 @@ public class OurArrangementFragmentSketchComment extends Fragment {
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
 
-    // DB-Id of arrangement to comment
-    int sketchArrangementDbIdToComment = 0;
+    // Server DB-Id of arrangement to comment
+    int sketchArrangementServerDbIdToComment = 0;
 
     // arrangement number in list view
     int sketchArrangementNumberInListView = 0;
@@ -99,7 +99,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         callGetterFunctionInSuper();
 
         // init the fragment now only when an arrangement is choosen
-        if (sketchArrangementDbIdToComment != 0) {
+        if (sketchArrangementServerDbIdToComment != 0) {
 
             // init the fragment now
             initFragmentSketchComment();
@@ -122,10 +122,10 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         evaluateSketchCommentScalesLevel = getResources().getStringArray(R.array.evaluateSketchCommentScalesLevel);
 
         // get choosen arrangement
-        cursorChoosenSketchArrangement = myDb.getRowSketchOurArrangement(sketchArrangementDbIdToComment);
+        cursorChoosenSketchArrangement = myDb.getRowSketchOurArrangement(sketchArrangementServerDbIdToComment);
 
         // get all comments for choosen sketch arrangement
-        cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(sketchArrangementDbIdToComment);
+        cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(sketchArrangementServerDbIdToComment);
 
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
         String tmpSubtitle = String.format(getResources().getString(getResources().getIdentifier("subtitleFragmentSketchCommentText", "string", fragmentSketchCommentContext.getPackageName())), sketchArrangementNumberInListView);
@@ -289,14 +289,8 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 // check for errors?
                 if (sketchCommentNoError) {
 
-                    // insert comment in DB
-                    long newId = myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"), System.currentTimeMillis(), sketchArrangementDbIdToComment, true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), 0);
-
-
-                    Toast.makeText(fragmentSketchCommentContext, "Arrangement ID:"+sketchArrangementNumberInListView, Toast.LENGTH_SHORT).show();
-
-                    // Toast "Comment sucsessfull send"
-                    Toast.makeText(fragmentSketchCommentContext, fragmentSketchCommentContext.getResources().getString(R.string.sketchCommentSuccsesfulySend), Toast.LENGTH_SHORT).show();
+                    // insert comment for sketch arrangement in DB
+                    myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), System.currentTimeMillis(), 0, cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID)), true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), 0, cursorChoosenSketchArrangement.getInt(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
 
                     // increment sketch comment count
                     int countSketchCommentSum = prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0) + 1;
@@ -342,7 +336,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         tmpArrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getSketchArrangementDbIdFromLink();
 
         if (tmpArrangementDbIdToComment > 0) {
-            sketchArrangementDbIdToComment = tmpArrangementDbIdToComment;
+            sketchArrangementServerDbIdToComment = tmpArrangementDbIdToComment;
 
             // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
             sketchArrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getSketchArrangementNumberInListview();
@@ -372,8 +366,14 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
             //add textView for actual result struct question
             TextView txtViewSketchCommentResultStructQuestion = new TextView (fragmentSketchCommentContext);
-            String actualResultStructQuestion = getResources().getString(R.string.textSketchCommentActualResultStructQuestion);
-            actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateSketchCommentScalesLevel[cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1))-1]);
+            String actualResultStructQuestion;
+            if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1)) > 0) {
+                actualResultStructQuestion = getResources().getString(R.string.textSketchCommentActualResultStructQuestion);
+                actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateSketchCommentScalesLevel[cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1))-1]);
+
+            } else {
+                actualResultStructQuestion = getResources().getString(R.string.textSketchCommentNoActualResultStructQuestion);
+            }
             txtViewSketchCommentResultStructQuestion.setText(actualResultStructQuestion);
             txtViewSketchCommentResultStructQuestion.setId(actualCursorNumber);
             txtViewSketchCommentResultStructQuestion.setTextColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.text_color));

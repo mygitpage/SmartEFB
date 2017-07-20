@@ -108,7 +108,7 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
         String tmpTextAuthorNameText = String.format(context.getResources().getString(R.string.ourArrangementSketchAuthorNameText), cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)));
         tmpTextViewSketchAuthorNameText.setText(tmpTextAuthorNameText);
 
-        // check if arrangement entry new?
+        // check if sketch arrangement entry new?
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_NEW_ENTRY)) == 1) {
             TextView newEntryOfSketchArrangement = (TextView) view.findViewById(R.id.listArrangementNewSketchText);
             String txtNewEntryOfSketchArrangement = context.getResources().getString(R.string.newEntryText);
@@ -125,7 +125,7 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowLinkCommentSketchArrangement, false)) {
 
             // get from DB  all comments for choosen sketch arrangement (getCount)
-            Cursor cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
+            Cursor cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
             // generate the number of comments to show
             String tmpCountAssessments;
             int tmpIntCountComments = cursorSketchArrangementAllComments.getCount();
@@ -137,17 +137,24 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
                 tmpCountAssessments = numberCountForAssessments[cursorSketchArrangementAllComments.getCount()];
             }
 
+
+
             // check comments for new entry, the cursor is sorted DESC, so first element is newest!!! new entry is markt by == 1
-            if (myDb.getCountNewEntryOurArrangementSketchComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))) > 0) {
-                tmpTextNewEntryComment = "<font color='"+ ContextCompat.getColor(context, R.color.text_accent_color) + "'>"+ context.getResources().getString(R.string.newEntryText) + "</font>";
+            if (cursorSketchArrangementAllComments.getCount() > 0) {
+                cursorSketchArrangementAllComments.moveToFirst();
+                if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY)) == 1) {
+                    tmpTextNewEntryComment = "<font color='"+ ContextCompat.getColor(context, R.color.text_accent_color) + "'>"+ context.getResources().getString(R.string.newEntryText) + "</font>";
+                }
             }
+
+
 
             // make link to comment arrangement
             Uri.Builder commentLinkBuilder = new Uri.Builder();
             commentLinkBuilder.scheme("smart.efb.deeplink")
                     .authority("linkin")
                     .path("ourarrangement")
-                    .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
+                    .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID))))
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "comment_an_sketch_arrangement");
 
@@ -156,7 +163,7 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
             showCommentLinkBuilder.scheme("smart.efb.deeplink")
                     .authority("linkin")
                     .path("ourarrangement")
-                    .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
+                    .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID))))
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "show_comment_for_sketch_arrangement");;
 

@@ -91,9 +91,15 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
         textViewShowActualComment.setText(actualComment);
 
         // show actual result struct question
+        String actualResultStructQuestion;
         TextView textViewShowResultStructQuestion = (TextView) view.findViewById(R.id.listActualResultStructQuestion);
-        String actualResultStructQuestion = context.getResources().getString(R.string.textSketchCommentActualResultStructQuestion);
-        actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateSketchCommentScalesLevel[cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1))-1]);
+        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1)) > 0) {
+            actualResultStructQuestion = context.getResources().getString(R.string.textSketchCommentActualResultStructQuestion);
+            actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateSketchCommentScalesLevel[cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1)) - 1]);
+
+        } else {
+            actualResultStructQuestion = context.getResources().getString(R.string.textSketchCommentNoActualResultStructQuestion);
+        }
         textViewShowResultStructQuestion.setText(actualResultStructQuestion);
 
         // show author and date

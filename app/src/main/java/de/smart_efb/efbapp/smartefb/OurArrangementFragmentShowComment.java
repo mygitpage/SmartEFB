@@ -39,8 +39,8 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // reference cursorAdapter for the listview
     OurArrangementShowCommentCursorAdapter showCommentCursorAdapter;
 
-    // DB-Id of arrangement to comment
-    int arrangementDbIdToShow = 0;
+    // Server DB-Id of arrangement to comment
+    int arrangementServerDbIdToShow = 0;
 
     // arrangement number in list view
     int arrangementNumberInListView = 0;
@@ -67,7 +67,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
         callGetterFunctionInSuper();
 
         // init and display data from fragment show comment only when an arrangement is choosen
-        if (arrangementDbIdToShow != 0) {
+        if (arrangementServerDbIdToShow != 0) {
 
             // init the fragment now
             initFragmentShowComment();
@@ -107,7 +107,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
         tmpArrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
 
         if (tmpArrangementDbIdToComment > 0) {
-            arrangementDbIdToShow = tmpArrangementDbIdToComment;
+            arrangementServerDbIdToShow = tmpArrangementDbIdToComment;
 
             // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
             arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
@@ -123,11 +123,11 @@ public class OurArrangementFragmentShowComment extends Fragment {
     public void displayActualCommentSet () {
 
         // get the data (all comments from an arrangement) from DB
-        Cursor cursor = myDb.getAllRowsOurArrangementComment(arrangementDbIdToShow);
+        Cursor cursor = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToShow);
 
         // get the data (the choosen arrangement) from the DB
         String arrangement = "";
-        Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementDbIdToShow);
+        Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToShow);
         arrangement = choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
 
         // find the listview
@@ -138,7 +138,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
                 getActivity(),
                 cursor,
                 0,
-                arrangementDbIdToShow,
+                arrangementServerDbIdToShow,
                 arrangementNumberInListView,
                 arrangement);
 

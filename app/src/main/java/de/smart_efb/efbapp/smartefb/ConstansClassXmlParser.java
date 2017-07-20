@@ -172,7 +172,7 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement comment id in smartphone db
             public static final String xmlNameForOurArrangement_NowComment_CommentIdSmartphoneDb = "ourarrangement_nowcomment_smartphonedbid";
 
-            // xml name for element our arrangement now comment upload time of comment
+            // xml name for element our arrangement now comment block number for arrangements
             public static final String xmlNameForOurArrangement_NowComment_BlockId = "ourarrangement_nowcomment_blockid";
 
 
@@ -208,14 +208,22 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement sketch comment time
             public static final String xmlNameForOurArrangement_SketchComment_CommentTime = "ourarrangement_sketchcomment_commenttime";
 
-            // xml name for element our arrangement sketch comment id arrangement (on all smartphones must be the same!)
-            public static final String xmlNameForOurArrangement_SketchComment_ArrangementId = "ourarrangement_sketchcomment_arrangementid";
+            // xml name for element our arrangement sketch comment upload time of comment
+            public static final String xmlNameForOurArrangement_SketchComment_UploadTime = "ourarrangement_nowcomment_uploadtime";
 
             // xml name for element our arrangement sketch comment date of arrangement to comment
             public static final String xmlNameForOurArrangement_SketchComment_DateOfArrangement = "ourarrangement_sketchcomment_dateofarrangement";
 
-            // xml name for element our arrangement sketch comment old md5 hash
-            public static final String xmlNameForOurArrangement_SketchComment_OldMd5 = "ourarrangement_sketchcomment_oldmd5";
+            // xml name for element our arrangement sketch comment server id arrangement
+            public static final String xmlNameForOurArrangement_SketchComment_ServerIdArrangement = "ourarrangement_sketchcomment_serverid";
+
+            // xml name for element our arrangement sketch comment id in smartphone db
+            public static final String xmlNameForOurArrangement_SketchComment_CommentIdSmartphoneDb = "ourarrangement_sketchcomment_smartphonedbid";
+
+            // xml name for element our arrangement sketch comment block number for sketch arrangements
+            public static final String xmlNameForOurArrangement_SketchComment_BlockId = "ourarrangement_sketchcomment_blockid";
+
+
 
 
 
