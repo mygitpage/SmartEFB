@@ -57,6 +57,8 @@ public class EfbXmlParser {
         // init return map
         returnMap = new HashMap<String, String>();
 
+        returnMap.put("Error", "0");
+
         returnMap.put("MainOrder", "");
         returnMap.put("ErrorText", "");
         returnMap.put("ClientId", "");
@@ -191,10 +193,16 @@ public class EfbXmlParser {
             Log.d("XMLParser", "End document");
             //System.out.println("End document");
         } catch (XmlPullParserException e) {
-            // TODO Auto-generated catch block
+
+            // set error
+            setErrorMessageInPrefs();
+
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+
+            // set error
+            setErrorMessageInPrefs();
+
             e.printStackTrace();
         }
 
@@ -298,6 +306,7 @@ public class EfbXmlParser {
                                     returnMap.put("ClientId", tmpClientId);
                                     returnMap.put("MainOrder", "init");
                                     returnMap.put("ConnectionStatus", "3");
+                                    returnMap.put("ErrorText", "");
 
 
                                     Log.d("XML", "Order: init ausgefuehrt!!!!!!!!!!");
@@ -337,10 +346,12 @@ public class EfbXmlParser {
                 eventType = xpp.next();
             }
         } catch (XmlPullParserException e) {
-            // TODO Auto-generated catch block
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
     }
@@ -410,8 +421,12 @@ public class EfbXmlParser {
                 }
             }
         } catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
     }
@@ -665,8 +680,12 @@ public class EfbXmlParser {
 
             }
         } catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
     }
@@ -886,8 +905,12 @@ public class EfbXmlParser {
                 }
             }
         } catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
     }
@@ -1114,8 +1137,12 @@ public class EfbXmlParser {
                 }
             }
         } catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
 
@@ -1442,8 +1469,12 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
     }
@@ -2109,8 +2140,12 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
     }
@@ -2182,8 +2217,12 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
     }
@@ -2370,8 +2409,12 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
     }
@@ -2576,8 +2619,12 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
     }
@@ -2852,8 +2899,12 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
 
@@ -3045,8 +3096,12 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
 
@@ -3719,8 +3774,12 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
 
@@ -3779,8 +3838,12 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
     }
@@ -4068,8 +4131,12 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
 
@@ -4283,8 +4350,12 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
 
@@ -4342,8 +4413,12 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
     }
@@ -4584,8 +4659,12 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
 
@@ -4801,8 +4880,12 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
     }
@@ -4964,14 +5047,38 @@ public class EfbXmlParser {
             }
         }
         catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs();
             e.printStackTrace();
         }
     }
 
 
 
+    
+    
+    private void setErrorMessageInPrefs () {
+
+        String tmpErrorText = "Es ist ein Kommunikationsfehler (XML) aufgetreten";
+        
+        // write last error messages to prefs
+        prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText);
+        
+        // set connection status to error
+        prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 1);
+        
+        prefsEditor.commit();
+        
+        setErrorMessageInPrefs();
+        
+    }
+    
+    
+    
 
 
 

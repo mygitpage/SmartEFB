@@ -278,7 +278,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 if (evaluateNoError) {
 
                     // insert comment in DB
-                    myDb.insertRowOurArrangementEvaluate(arrangementServerDbIdToEvaluate, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"), 0);
+                    myDb.insertRowOurArrangementEvaluate(arrangementServerDbIdToEvaluate, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), 0, prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()));
 
                     // delete status evaluation possible for arrangement
                     myDb.changeStatusEvaluationPossibleOurArrangement(arrangementServerDbIdToEvaluate, "delete");

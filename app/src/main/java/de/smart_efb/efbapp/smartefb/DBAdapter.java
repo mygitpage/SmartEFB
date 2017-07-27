@@ -157,11 +157,13 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4 = "result_q_d";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS = "result_remarks";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME = "result_time";
+    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME = "start_block_time";
+    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME = "end_block_time";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME = "username";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
     // All keys from table app settings in a String
-    public static final String[] OUR_ARRANGEMENT_EVALUATE_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME, OUR_ARRANGEMENT_EVALUATE_KEY_STATUS};
+    public static final String[] OUR_ARRANGEMENT_EVALUATE_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME, OUR_ARRANGEMENT_EVALUATE_KEY_STATUS, OUR_ARRANGEMENT_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME};
 
     // SQL String to create our arrangement evaluate table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_EVALUATE =
@@ -175,6 +177,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS + " TEXT not null, "
                     + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME + " INTEGER not null, "
                     + OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME + " STRING not null, "
+                    + OUR_ARRANGEMENT_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME + " INTEGER not null, "
                     + OUR_ARRANGEMENT_EVALUATE_KEY_STATUS + " INTEGER DEFAULT 0"
                     + ");";
 
@@ -1136,7 +1140,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Arrangement Evaluate ******************************************/
 
     // Add a new set of values to ourArrangementEvaluate .
-    public long insertRowOurArrangementEvaluate(int serverId, long currentDateOfArrangement, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName, int status) {
+    public long insertRowOurArrangementEvaluate(int serverId, long currentDateOfArrangement, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName, int status, long startEvaluationTime, long endEvaluationTime) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1150,6 +1154,8 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4, resultQuestion4);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS, resultRemarks);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, resultTime);
+        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME, startEvaluationTime);
+        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME, endEvaluationTime);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME, userName);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_STATUS, status);
 

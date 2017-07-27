@@ -152,42 +152,30 @@ public class SettingsEfbFragmentA extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-
-
+                    // call setter-methode setRandomNumberForConnection in ActivitySettingsEfb to set random number
+                    ((ActivitySettingsEfb)getActivity()).setRandomNumberForConnection(randomNumberForConnection);
 
                     if (efbHelperConnectionClass.internetAvailable()) {
 
-                        Log.d ("MAIN = 0","Before new AsynTask!");
-
-
+                        // new thread -> send pin to server and get answer (xml data with arrangement, goals, meeting, settings, etc.)
                         new sendPinToServer().execute(Integer.toString(randomNumberForConnection));
 
 
 
-
-
-
-                        Log.d ("MAIN = 0","After new AsynTask!");
-
                     } else { // no network connection!
 
-                        // call setter-methode setRandomNumberForConnection in ActivitySettingsEfb to set random number
-                        ((ActivitySettingsEfb)getActivity()).setRandomNumberForConnection(randomNumberForConnection);
 
                         // call setter-methode setConnectionStatus in ActivitySettingsEfb
                         ((ActivitySettingsEfb)getActivity()).setConnectionStatus(1); // 1 -> no internet
 
                         connectingStatus = 1;
 
-
                         dialogNoInternetAvailable ();
-
 
                         Intent intent = new Intent(fragmentConnectToServerContext, ActivitySettingsEfb.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("com","show_no_network_try_again");
                         fragmentConnectToServerContext.startActivity(intent);
-
 
                     }
 
@@ -202,18 +190,17 @@ public class SettingsEfbFragmentA extends Fragment {
 
             // replace headline no network available
             TextView textViewConnectedWithServerHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
-            String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerHeadingNoInternet);
+            String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerHeadingNoInternetOrError);
             textViewConnectedWithServerHeadlineText.setText(tmpTextHeadline);
 
             // replace text and show info text try again
             TextView textViewConnectToServerIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerIntro);
-            String tmpTextIntroText = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerIntroTextNoInternet);
+            String tmpTextIntroText = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerIntroTextNoInternetOrError);
             textViewConnectToServerIntroText.setText(tmpTextIntroText);
             textViewConnectToServerIntroText.setVisibility(View.VISIBLE);
 
             // get random number from prefs and show
             randomNumberForConnection = ((ActivitySettingsEfb)getActivity()).getRandomNumberForConnection();
-
 
             TextView textViewRandomNumberText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingConnectToServerKeyNumber);
             textViewRandomNumberText.setVisibility(View.VISIBLE);
@@ -236,12 +223,11 @@ public class SettingsEfbFragmentA extends Fragment {
                     // check internet available
                     if (efbHelperConnectionClass.internetAvailable()) {
 
-                        Log.d ("MAIN = 1","Before new AsynTask!");
-
-                        // generate new asyn task
+                        // new thread -> send pin to server and get answer (xml data with arrangement, goals, meeting, settings, etc.)
                         new sendPinToServer().execute(Integer.toString(randomNumberForConnection));
 
-                        Log.d ("MAIN = 1","After new AsynTask!");
+
+
 
                     } else { // no network connection!
                         
@@ -255,7 +241,6 @@ public class SettingsEfbFragmentA extends Fragment {
 
         }
 
-
         // connecting status 2 -> connection error
         if (connectingStatus == 2) {
 
@@ -263,7 +248,6 @@ public class SettingsEfbFragmentA extends Fragment {
             TextView textViewConnectedWithServerHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
             String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectedWithServerErrorIntroHeadingText);
             textViewConnectedWithServerHeadlineText.setText(tmpTextHeadline);
-
 
             // show error pre intro text
             TextView textViewConnectedWithServerErrorPreIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerConnectionErrorPreIntro);
@@ -281,15 +265,11 @@ public class SettingsEfbFragmentA extends Fragment {
             textViewConnectedWithServerErrorPostIntroText.setVisibility(View.VISIBLE);
 
             // set connection status to not connected so far
-            ((ActivitySettingsEfb)getActivity()).setConnectionStatus(0); // 0 -> not connected so far
+            ((ActivitySettingsEfb)getActivity()).setConnectionStatus(1); // 0 -> not connected so far
 
-            connectingStatus = 0;
-
-
-
+            connectingStatus = 1;
 
         }
-
 
         // connecting status 3 -> sucsessfull connected with server
         if (connectingStatus == 3) {
@@ -336,6 +316,8 @@ public class SettingsEfbFragmentA extends Fragment {
         pDialog.show();
 
     }
+
+
 
 
     // Background Async Task
@@ -392,14 +374,96 @@ public class SettingsEfbFragmentA extends Fragment {
                 EfbXmlParser xmlparser = new EfbXmlParser(fragmentConnectToServerContext);
                 returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
 
+
                 // close input stream and disconnect
                 answerInputStream.close();
                 connection.disconnect();
 
 
+                // connection status correct and no error occured?
+                if (returnMap.get("ConnectionStatus") == "3" && returnMap.get("Error") == "0" ) { // connection status 3 -> connection sucsessfull; 2 -> connection error; 1 -> no internet; 0 -> no try to connect so far
+
+                    // set connection status to connect
+                    ((ActivitySettingsEfb)getActivity()).setConnectionStatus(3); // 3 -> Connect with server
+
+                    connectingStatus = 3;
 
 
-                Log.d("AsynTask","Empfangen:"+stringBuilder.toString().trim());
+                    // prepair data to send
+                    String xmlCodeEstablished = "xmlcode=" + URLEncoder.encode(makeXMLRequestForConnectionEstablished (returnMap.get("ClientId")), "UTF-8");
+                    // set url and parameters
+                    URL scriptEstablishedUrl = new URL(ConstansClassSettings.urlConnectionEstablishedToServer);
+                    HttpURLConnection connectionEstablished = (HttpURLConnection) scriptEstablishedUrl.openConnection();
+                    connectionEstablished.setDoOutput(true);
+                    connectionEstablished.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    connectionEstablished.setRequestMethod("POST");
+                    connectionEstablished.setFixedLengthStreamingMode(xmlCodeEstablished.getBytes().length);
+
+                    // generate output stream and send
+                    OutputStreamWriter contentWriterEstablished = new OutputStreamWriter(connectionEstablished.getOutputStream());
+                    contentWriterEstablished.write(xmlCodeEstablished);
+                    contentWriterEstablished.flush();
+
+                    contentWriterEstablished.close();
+
+
+
+                    //tmp
+
+                    // get answer from input
+                    InputStream answerInputStream1 = connectionEstablished.getInputStream();
+                    BufferedReader reader1 = new BufferedReader(new InputStreamReader(answerInputStream1));
+                    StringBuilder stringBuilder1 = new StringBuilder();
+
+                    // convert input stream to string
+                    String currentRow1;
+                    try {
+                        while ((currentRow1 = reader1.readLine()) != null){
+                            stringBuilder1.append(currentRow1);
+                            stringBuilder1.append("\n");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Log.d("AsynTask","Fehler:"+stringBuilder1.toString().trim());
+
+
+                    // tmp
+
+
+
+                    connectionEstablished.disconnect();
+
+
+                    // show text connect sucsessfull
+                    Intent intent = new Intent(fragmentConnectToServerContext, ActivitySettingsEfb.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("com","show_connect_sucsessfull");
+                    fragmentConnectToServerContext.startActivity(intent);
+
+                } else { // connection error
+
+                    // set connection status to connect error
+                    ((ActivitySettingsEfb)getActivity()).setConnectionStatus(2); // 2 -> Connect error
+
+                    connectingStatus = 2;
+
+
+                    // show error text
+                    Intent intent = new Intent(fragmentConnectToServerContext, ActivitySettingsEfb.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("com","show_connect_error");
+                    fragmentConnectToServerContext.startActivity(intent);
+
+                }
+
+
+
+
+
+
+                Log.d("AsynTask","Empfangen: "+stringBuilder.toString().trim());
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -419,37 +483,14 @@ public class SettingsEfbFragmentA extends Fragment {
             // dismiss the dialog after getting clientID and configuration
             pDialog.dismiss();
 
-            if (returnMap.get("ConnectionStatus") == "3") { // connection sucsessfull 3 -> connection sucsessfull; 2 -> connection error; 1 -> no internet; 0 -> no try to connect
-
-                // set connection status to connect
-                ((ActivitySettingsEfb)getActivity()).setConnectionStatus(3); // 3 -> Connect with server
-
-                connectingStatus = 3;
-
-                // show text connect sucsessfull
-                Intent intent = new Intent(fragmentConnectToServerContext, ActivitySettingsEfb.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("com","show_connect_sucsessfull");
-                fragmentConnectToServerContext.startActivity(intent);
-
-            } else { // connection error
-
-                // set connection status to connect error
-                ((ActivitySettingsEfb)getActivity()).setConnectionStatus(2); // 2 -> Connect error
-
-                connectingStatus = 2;
-
-                // show error text
-                Intent intent = new Intent(fragmentConnectToServerContext, ActivitySettingsEfb.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("com","show_connect_error");
-                fragmentConnectToServerContext.startActivity(intent);
-
-            }
-
         }
 
     }
+
+
+
+
+
 
 
 
@@ -497,6 +538,59 @@ public class SettingsEfbFragmentA extends Fragment {
         return writer.toString();
 
     }
+
+
+
+
+
+    private String makeXMLRequestForConnectionEstablished (String clientId) {
+
+        XmlSerializer xmlSerializer = Xml.newSerializer();
+
+        StringWriter writer = new StringWriter();
+
+        try {
+
+            xmlSerializer.setOutput(writer);
+
+            //Start Document
+            xmlSerializer.startDocument("UTF-8", true);
+            xmlSerializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
+
+            // Open Tag
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
+
+            // start tag main order -> connection established, send client ID
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+            xmlSerializer.text("established");
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+
+            // start tag client id
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+            xmlSerializer.text(clientId);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+
+            // end tag main
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
+
+            // end tag smartEfb
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+
+            xmlSerializer.endDocument();
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return writer.toString();
+
+    }
+
+
+
+
 
 }
 
