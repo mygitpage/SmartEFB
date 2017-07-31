@@ -23,8 +23,7 @@
 
 
     // general background color text input fields
-    <color name="inputfield_background">#150656</color>
-
+    <color name="inputfield_background">#17a9ec</color>  // old color: #150656
 
     <color name="colorTextMainMenueElement">#FFFFFF</color>
 

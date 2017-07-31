@@ -161,12 +161,19 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         if (cursorSketchArrangementAllComments.getCount() > 0) { // show comments for arrangement when count comments > 0
             // show intro for comments
             textCommentSketchHistoryIntro.setText(this.getResources().getString(R.string.commentSketchHistoryIntroText)+ " " + sketchArrangementNumberInListView);
+            textCommentSketchHistoryIntro.setGravity(Gravity.LEFT);
             // show comments
             addActualCommentSetToView ();
 
         } else { // else show nothing
-            LinearLayout comentHistoryLinearLayoutContainer = (LinearLayout) viewFragmentSketchComment.findViewById(R.id.commentSketchHistoryContainer);
+
+            // hide linear layout comment holder
+            LinearLayout comentHistoryLinearLayoutContainer = (LinearLayout) viewFragmentSketchComment.findViewById(R.id.commentSketchHolder);
             comentHistoryLinearLayoutContainer.setVisibility(View.INVISIBLE);
+
+            // show intro no comments available
+            textCommentSketchHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryNoCommentIntroText));
+            textCommentSketchHistoryIntro.setGravity(Gravity.CENTER);
         }
 
         // set onClickListener for radio button in radio group question 1-4
@@ -449,7 +456,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         // create back button (to arrangement)
         Button btnBackToArrangement = new Button (fragmentSketchCommentContext);
         btnBackToArrangement.setText(this.getResources().getString(R.string.ourArrangementBackLinkToSketchArrangement));
-        btnBackToArrangement.setTextColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.text_color_white));
+        btnBackToArrangement.setTextColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.text_color));
         btnBackToArrangement.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         btnBackToArrangement.setTextSize(14);
         btnBackToArrangement.setGravity(Gravity.CENTER);

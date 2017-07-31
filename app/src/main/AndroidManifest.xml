@@ -107,6 +107,17 @@
         <!-- Alarm receiver for our arrangement -->
         <receiver android:name=".AlarmReceiverOurArrangement"/>
 
+        <!-- Alarm receiver for exchange service -->
+        <receiver
+            android:name=".AlarmReceiverExchangeService"
+            android:process=":remote">
+        </receiver>
+
+        <!-- exchange service -->
+        <service
+            android:name=".ExchangeServiceEfb"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

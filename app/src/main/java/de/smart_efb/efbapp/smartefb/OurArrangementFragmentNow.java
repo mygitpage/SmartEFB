@@ -152,6 +152,10 @@ public class OurArrangementFragmentNow extends Fragment {
         // find the listview
         ListView listView = (ListView) viewFragmentNow.findViewById(R.id.listOurArrangementNow);
 
+
+        Log.d("Arrangement NOW","Anzahl:"+cursor.getCount());
+
+
         if (cursor.getCount() > 0 && listView != null) {
 
             // set listView visible and textView hide

@@ -38,7 +38,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 35;
+    public static final int DATABASE_VERSION = 36;
 
     // Common column names
     public static final String KEY_ROWID = "_id";

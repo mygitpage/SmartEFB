@@ -154,12 +154,19 @@ public class OurArrangementFragmentNowComment extends Fragment {
         if (cursorArrangementAllComments.getCount() > 0) { // show comments for arrangement when count comments > 0
             // show intro for comments
             textCommentHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryIntroText)+ " " + arrangementNumberInListView);
+            textCommentHistoryIntro.setGravity(Gravity.LEFT);
             // show comments
             addActualCommentSetToView ();
 
-        } else { // else show nothing
-            LinearLayout comentHistoryLinearLayoutContainer = (LinearLayout) viewFragmentNowComment.findViewById(R.id.commentHistoryContainer);
+        } else { // else show text no comments
+
+            // hide linear layout comment holder
+            LinearLayout comentHistoryLinearLayoutContainer = (LinearLayout) viewFragmentNowComment.findViewById(R.id.commentHolder);
             comentHistoryLinearLayoutContainer.setVisibility(View.INVISIBLE);
+
+            // show intro no comments available
+            textCommentHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryNoCommentIntroText));
+            textCommentHistoryIntro.setGravity(Gravity.CENTER);
         }
 
         // textview for max comments, count comments and max letters
@@ -386,7 +393,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         // create back button (to arrangement)
         Button btnBackToArrangement = new Button (fragmentNowCommentContext);
         btnBackToArrangement.setText(this.getResources().getString(R.string.btnAbortShowComment));
-        btnBackToArrangement.setTextColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.text_color_white));
+        btnBackToArrangement.setTextColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.text_color));
         btnBackToArrangement.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         btnBackToArrangement.setTextSize(14);
         btnBackToArrangement.setGravity(Gravity.CENTER);

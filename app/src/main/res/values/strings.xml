@@ -151,7 +151,7 @@
         <!-- End subtitle -->
 
         <!-- String Activity Our Arrangement -->
-            <string name="ourArrangementBackLinkToArrangement">Zurück zu allen Absprachen</string>
+            <string name="ourArrangementBackLinkToArrangement">Zurück</string>
             <string name="newEntryText">(Neu)</string>
         <!-- End String Activity Our Arrangement -->
 
@@ -159,6 +159,7 @@
             <string name="ourArrangementOldArrangementFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
             <string name="ourArrangementOldArrangementNothingThere">Es sind keine älteren Absprachen vorhanden!</string>
             <string name="ourArrangementOldArrangementDateIntro">Absprachen vom</string>
+            <string name="showOldArrangementIntroText">Alte Absprache</string>
         <!-- End fragment show old arrangements -->
 
         <!-- fragment show current arrangements -->
@@ -179,6 +180,7 @@
             <string name="btnAbortComment">Zurück</string>
             <string name="arrangementCommentIntro">Bitte kommentieren Sie Absprache</string>
             <string name="commentHistoryIntroText">Alle bisherigen Kommentare zu Absprache</string>
+            <string name="commentHistoryNoCommentIntroText">Bisher sind noch keine Kommentare zur Absprache vorhanden!</string>
             <string name ="commentArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
             <string name="commentSuccsesfulySend">Kommentar erfolgreich gesendet</string>
             <string name="commentToShort">Ihr Kommentar ist zu kurz!</string>
@@ -232,7 +234,7 @@
             <string name="errorFreeQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihren Text zur obigen Einschätzung! Er ist zu kurz!</string>
             <string name="commentFreeQuestionSketchArrangementTextFieldHintText">Bitte erläutern Sie hier Ihre Einschätzung.</string>
             <string name="buttonSendSketchArrangementComment">Einschätzung senden</string>
-            <string name="ourArrangementBackLinkToSketchArrangement">Zurück zu allen Entwürfen</string>
+            <string name="ourArrangementBackLinkToSketchArrangement">Zurück</string>
             <string name="sketchCommentSuccsesfulySend">Einschätzung erfolgreich gesendet</string>
             <string name="infoTextSketchCommentMaxSingular">Sie könnnen maximal %1$d Einschätzung schreiben.</string>
             <string name="infoTextSketchCommentMaxPlural">Sie könnnen maximal %1$d Einschätzungen schreiben.</string>
@@ -243,6 +245,7 @@
             <string name="infoTextSketchCommentMaxLetters">Ihre Einschätzung darf maximal %1$d Zeichen lang sein.</string>
             <string name="ourArrangementAssessmentsString">Einschätzen</string>
             <string name="commentSketchHistoryIntroText">Alle bisherigen Einschätzungen zum Entwurf</string>
+            <string name="commentSketchHistoryNoCommentIntroText">Bisher sind noch keine Einschätzungen zu Entwürfen vorhanden!</string>
             <string name="showSketchCommentIntroText">Die Einschätzungen zum Entwurf</string>
             <string name="evaluateSketchSuggestion_1">Sehr stark</string>
             <string name="evaluateSketchSuggestion_2">Stark</string>

@@ -14,12 +14,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16dp"
-        android:textColor="@color/text_color_white"
-        android:gravity="center"
+        android:textColor="@color/text_color"
+        android:gravity="left"
         android:textStyle="bold"
-        android:background="?attr/colorPrimary"
-        android:padding="5dp"/>
+        android:padding="5dp"
+        android:background="@drawable/list_element_style"/>
+        <!-- android:background="?attr/colorPrimary" -->
 
+    <TextView
+        android:id="@+id/listOldArrangementNumberText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="left"
+        android:textStyle="bold"
+        android:layout_marginLeft="3dp"/>
 
     <TextView
         android:id="@+id/listOldTextArrangement"
@@ -28,7 +38,6 @@
         android:textSize="16dp"
         android:textColor="@color/text_color"
         android:gravity="top|left"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"/>
+        android:paddingLeft="10dp"/>
 
 </LinearLayout>

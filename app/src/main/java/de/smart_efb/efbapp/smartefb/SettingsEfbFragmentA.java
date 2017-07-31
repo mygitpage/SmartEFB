@@ -36,6 +36,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by ich on 20.06.16.
@@ -342,6 +343,10 @@ public class SettingsEfbFragmentA extends Fragment {
                 // set url and parameters
                 URL scripturl = new URL(ConstansClassSettings.urlFirstConnectToServer);
                 HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
+                // set timeout for connection
+                connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
+                connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
+
                 connection.setDoOutput(true);
                 connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 connection.setRequestMethod("POST");
@@ -405,32 +410,6 @@ public class SettingsEfbFragmentA extends Fragment {
                     contentWriterEstablished.flush();
 
                     contentWriterEstablished.close();
-
-
-
-                    //tmp
-
-                    // get answer from input
-                    InputStream answerInputStream1 = connectionEstablished.getInputStream();
-                    BufferedReader reader1 = new BufferedReader(new InputStreamReader(answerInputStream1));
-                    StringBuilder stringBuilder1 = new StringBuilder();
-
-                    // convert input stream to string
-                    String currentRow1;
-                    try {
-                        while ((currentRow1 = reader1.readLine()) != null){
-                            stringBuilder1.append(currentRow1);
-                            stringBuilder1.append("\n");
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    Log.d("AsynTask","Fehler:"+stringBuilder1.toString().trim());
-
-
-                    // tmp
-
 
 
                     connectionEstablished.disconnect();

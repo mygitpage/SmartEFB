@@ -35,7 +35,7 @@
                 android:id="@+id/arrangementShowCommentBackLinkNow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
+                android:textSize="14dp"
                 android:textColor="@color/text_color"
                 android:textColorLink="@color/colorPrimary"
                 android:gravity="right"/>
@@ -77,12 +77,12 @@
             android:id="@+id/inputArrangementComment"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:textColor="@color/text_color_white"
+            android:textColor="@color/text_color"
             android:hint="@string/commentArrangementTextFieldHintText"
             android:gravity="left|top"
             android:background="@drawable/app_edittext_style"
             android:layout_margin="10dp"
-            android:textColorHint="@color/text_color_white"
+            android:textColorHint="@color/text_color"
             android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
             android:paddingTop="5dp"
             android:paddingRight="5dp"
@@ -111,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/app_button_style"
-                android:textColor="@color/white"
+                android:textColor="@color/text_color"
                 android:text="@string/btnSendArrangementComment"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="5dp"
@@ -122,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/app_button_style"
-                android:textColor="@color/white"
+                android:textColor="@color/text_color"
                 android:text="@string/btnAbortComment"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="5dp"
@@ -139,6 +139,15 @@
             android:gravity="center"
             android:paddingBottom="35dp"/>
 
+        <TextView
+            android:id="@+id/borderBetweenArrangement"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"/>
+
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -154,7 +163,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
                 android:textColor="@color/text_color"
-                android:gravity="left"
                 android:textStyle="bold" />
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -162,7 +170,8 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center_vertical|left"
-                android:id="@+id/commentHolder"/>
+                android:id="@+id/commentHolder"
+                android:visibility="visible"/>
 
         </LinearLayout>
 

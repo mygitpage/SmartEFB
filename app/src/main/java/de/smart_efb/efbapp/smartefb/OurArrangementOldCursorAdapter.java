@@ -54,6 +54,11 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
         }
 
 
+        // put old arrangement number
+        TextView numberOfOldArrangement = (TextView) view.findViewById(R.id.listOldArrangementNumberText);
+        String txtOldArrangementNumber = context.getResources().getString(R.string.showOldArrangementIntroText)+ " " + Integer.toString(cursor.getPosition()+1);
+        numberOfOldArrangement.setText(txtOldArrangementNumber);
+
         // set old arrangement text
         TextView textViewArrangement = (TextView) view.findViewById(R.id.listOldTextArrangement);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));

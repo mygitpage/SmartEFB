@@ -30,6 +30,7 @@ import android.widget.Toast;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -206,6 +207,9 @@ public class MainActivity extends AppCompatActivity {
         // init the DB
         myDb = new DBAdapter(this);
 
+        // start excahnge service with intent
+        setAlarmForExchangeService();
+
         mainMenueElementTitle = getResources().getStringArray(R.array.mainMenueElementTitle);
 
         mainMenueElementColor = getResources().getStringArray(R.array.mainMenueElementColor);
@@ -343,6 +347,34 @@ public class MainActivity extends AppCompatActivity {
         return tmpNew;
 
     }
+
+
+
+
+    public void setAlarmForExchangeService () {
+
+
+        Log.d("MAIN", "Start Service with Intent");
+
+        // get calendar and init
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
+        calendar.add(Calendar.SECOND, ConstansClassMain.wakeUpTimeExchangeService);
+        int tmpAlarmTime = ConstansClassMain.wakeUpTimeExchangeService * 1000; // make mills-seconds
+
+
+
+        Intent startIntentService = new Intent (getApplicationContext(), AlarmReceiverExchangeService.class);
+
+        final PendingIntent pIntentService = PendingIntent.getBroadcast(this, 0, startIntentService, PendingIntent.FLAG_UPDATE_CURRENT );
+
+
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpAlarmTime, pIntentService);
+    }
+
 
 
     // inner class grid view adapter

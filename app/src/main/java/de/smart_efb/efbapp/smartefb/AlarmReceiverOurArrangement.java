@@ -101,12 +101,12 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
                 default:
                     // next cycle is pause -> set pause time
                     calendar.add(Calendar.SECOND, evaluatePauseTime);
-                    tmpAlarmTime = evaluatePauseTime;
+                    tmpAlarmTime = evaluatePauseTime * 1000;
                     // set intent -> next state pause
                     evaluateAlarmIntent.putExtra("evaluateState","pause");
             }
 
-            // crealte pending intent
+            // create pending intent
             pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             // set alarm manager
             manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpAlarmTime, pendingIntentOurArrangementEvaluate);

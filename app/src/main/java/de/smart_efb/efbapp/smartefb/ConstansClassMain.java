@@ -45,6 +45,10 @@ public class ConstansClassMain {
     public static final int numberOfGridColumns = 2;
 
 
+    // wake up time in secondes for exchange service
+    public static final int wakeUpTimeExchangeService = 50; // secondes
+
+
 
 
 }

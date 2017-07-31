@@ -34,7 +34,7 @@
                 android:id="@+id/arrangementShowCommentBackLinkNow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
+                android:textSize="14dp"
                 android:textColor="@color/text_color"
                 android:textColorLink="@color/colorPrimary"
                 android:gravity="right"/>
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateSketchSuggestion_1"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/text_color"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -101,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateSketchSuggestion_2"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/text_color"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -112,7 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateSketchSuggestion_3"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/text_color"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -123,7 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateSketchSuggestion_4"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/text_color"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -134,7 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateSketchSuggestion_5"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/text_color"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -171,12 +171,12 @@
             android:id="@+id/inputSketchArrangementComment"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:textColor="@color/text_color_white"
+            android:textColor="@color/text_color"
             android:hint="@string/commentFreeQuestionSketchArrangementTextFieldHintText"
             android:gravity="left|top"
             android:background="@drawable/app_edittext_style"
             android:layout_margin="10dp"
-            android:textColorHint="@color/text_color_white"
+            android:textColorHint="@color/text_color"
             android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
             android:paddingTop="5dp"
             android:paddingRight="5dp"
@@ -205,7 +205,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/app_button_style"
-                android:textColor="@color/white"
+                android:textColor="@color/text_color"
                 android:text="@string/buttonSendSketchArrangementComment"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="5dp"
@@ -216,7 +216,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/app_button_style"
-                android:textColor="@color/white"
+                android:textColor="@color/text_color"
                 android:text="@string/btnAbortComment"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="5dp"
@@ -233,14 +233,22 @@
             android:gravity="center"
             android:paddingBottom="35dp"/>
 
+        <TextView
+            android:id="@+id/borderBetweenArrangement"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"/>
+
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="left"
             android:layout_gravity="left"
-            android:id="@+id/commentSketchHistoryContainer"
-            android:visibility="visible">
+            android:id="@+id/commentSketchHistoryContainer">
 
             <TextView
                 android:id="@+id/commentSketchHistoryIntro"
@@ -248,15 +256,16 @@
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
                 android:textColor="@color/text_color"
-                android:gravity="left"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginBottom="20dp"/>
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center_vertical|left"
-                android:id="@+id/commentSketchHolder"/>
+                android:id="@+id/commentSketchHolder"
+                android:visibility="visible"/>
 
 
         </LinearLayout>

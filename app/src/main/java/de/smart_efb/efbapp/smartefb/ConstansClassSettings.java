@@ -22,6 +22,15 @@ public class ConstansClassSettings {
     public static final String namePrefsLastErrorMessages = "lastError";
 
 
+    // connection timeout for connection that is established in millisec
+    public static final int connectionEstablishedTimeOut = 15000;
+
+    // connection timeout for connection that is read in millisec
+    public static final int connectionReadTimeOut = 15000;
+
+
+
+
     // URL first connect to server
     public static final String urlFirstConnectToServer = "http://192.168.1.119/index.php?com=exchange&subcom=establish";
     //public static final String urlFirstConnectToServer = "http://192.168.178.28/index.php?com=exchange&subcom=establish";
