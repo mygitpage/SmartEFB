@@ -169,9 +169,6 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement server id arrangement
             public static final String xmlNameForOurArrangement_NowComment_ServerIdArrangement = "ourarrangement_nowcomment_serverid";
 
-            // xml name for element our arrangement comment id in smartphone db
-            public static final String xmlNameForOurArrangement_NowComment_CommentIdSmartphoneDb = "ourarrangement_nowcomment_smartphonedbid";
-
             // xml name for element our arrangement now comment block number for arrangements
             public static final String xmlNameForOurArrangement_NowComment_BlockId = "ourarrangement_nowcomment_blockid";
 
@@ -216,9 +213,6 @@ public class ConstansClassXmlParser {
 
             // xml name for element our arrangement sketch comment server id arrangement
             public static final String xmlNameForOurArrangement_SketchComment_ServerIdArrangement = "ourarrangement_sketchcomment_serverid";
-
-            // xml name for element our arrangement sketch comment id in smartphone db
-            public static final String xmlNameForOurArrangement_SketchComment_CommentIdSmartphoneDb = "ourarrangement_sketchcomment_smartphonedbid";
 
             // xml name for element our arrangement sketch comment block number for sketch arrangements
             public static final String xmlNameForOurArrangement_SketchComment_BlockId = "ourarrangement_sketchcomment_blockid";
@@ -633,7 +627,7 @@ public class ConstansClassXmlParser {
     //
     // ++++++++++++++++++++++ Order Definitions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //
-    // Order defeinitions
+    // Order definitions
 
     // xml name for element order "new"
     public static final String xmlNameForOrder_New = "new";
@@ -646,6 +640,29 @@ public class ConstansClassXmlParser {
 
     // xml name for element order "update"
     public static final String xmlNameForOrder_Update = "update";
+
+
+
+    // xml name for element order "init"
+    public static final String xmlNameForOrder_Init = "init";
+
+    // xml name for element order "init"
+    public static final String xmlNameForOrder_Error = "error";
+
+    // xml name for element order "data"
+    public static final String xmlNameForOrder_Data = "data";
+
+    // xml name for element order "receive ok and send"
+    public static final String xmlNameForOrder_Receive_Ok_Send = "receive_ok_send";
+
+    // xml name for send now comment of arrangement to server
+    public static final String xmlNameForSendToServer_CommentArrangement = "sendarrangementcomment";
+
+
+
+
+    // xml feature link for init xml serializer
+    public static final String xmlFeatureLink = "http://xmlpull.org/v1/doc/features.html#indent-output";
 
     //
     // ++++++++++++++++++++++ End Order Definitions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

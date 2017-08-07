@@ -394,7 +394,7 @@ public class SettingsEfbFragmentA extends Fragment {
                     connectingStatus = 3;
 
 
-                    // prepair data to send
+                    // prepair data to send -> send all data correct received to server
                     String xmlCodeEstablished = "xmlcode=" + URLEncoder.encode(makeXMLRequestForConnectionEstablished (returnMap.get("ClientId")), "UTF-8");
                     // set url and parameters
                     URL scriptEstablishedUrl = new URL(ConstansClassSettings.urlConnectionEstablishedToServer);
@@ -485,7 +485,7 @@ public class SettingsEfbFragmentA extends Fragment {
 
             //Start Document
             xmlSerializer.startDocument("UTF-8", true);
-            xmlSerializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
+            xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
 
             // Open Tag
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
@@ -534,7 +534,7 @@ public class SettingsEfbFragmentA extends Fragment {
 
             //Start Document
             xmlSerializer.startDocument("UTF-8", true);
-            xmlSerializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
+            xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
 
             // Open Tag
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);

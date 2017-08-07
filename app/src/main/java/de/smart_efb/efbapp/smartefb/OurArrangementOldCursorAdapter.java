@@ -27,6 +27,10 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
     // old arrangement change true -> change, false -> no change, same Date!
     Boolean oldArrangementDateChange = false;
 
+    // count old arrangement for view
+    int countOldArrangementForView = 1;
+
+
 
     // Default constructor
     public OurArrangementOldCursorAdapter (Context context, Cursor cursor, int flags) {
@@ -53,12 +57,6 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
             oldArrangementDateChange = false;
         }
 
-
-        // put old arrangement number
-        TextView numberOfOldArrangement = (TextView) view.findViewById(R.id.listOldArrangementNumberText);
-        String txtOldArrangementNumber = context.getResources().getString(R.string.showOldArrangementIntroText)+ " " + Integer.toString(cursor.getPosition()+1);
-        numberOfOldArrangement.setText(txtOldArrangementNumber);
-
         // set old arrangement text
         TextView textViewArrangement = (TextView) view.findViewById(R.id.listOldTextArrangement);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
@@ -77,10 +75,24 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_old_start, parent, false);
             actualArrangementDate = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_WRITE_TIME));
             oldArrangementDateChange = true;
+
+            countOldArrangementForView = 1;
+
+            TextView numberOfOldArrangement = (TextView) inflatedView.findViewById(R.id.listOldArrangementNumberText);
+            String txtOldArrangementNumber = context.getResources().getString(R.string.showOldArrangementIntroText)+ " " + countOldArrangementForView;
+            numberOfOldArrangement.setText(txtOldArrangementNumber);
+
         }
         else { // listview for "normal" element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_old, parent, false);
             oldArrangementDateChange = false;
+
+            countOldArrangementForView++;
+
+            TextView numberOfOldArrangement = (TextView) inflatedView.findViewById(R.id.listOldArrangementNumberText);
+            String txtOldArrangementNumber = context.getResources().getString(R.string.showOldArrangementIntroText)+ " " + countOldArrangementForView;
+            numberOfOldArrangement.setText(txtOldArrangementNumber);
+
         }
 
         return inflatedView;

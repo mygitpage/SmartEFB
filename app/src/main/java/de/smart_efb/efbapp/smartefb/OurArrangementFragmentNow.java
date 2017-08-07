@@ -56,8 +56,8 @@ public class OurArrangementFragmentNow extends Fragment {
 
         viewFragmentNow = layoutInflater.inflate(R.layout.fragment_our_arrangement_now, null);
 
-        // register broadcast receiver and intent filter for action ARRANGEMENT_EVALUATE_STATUS_UPDATE
-        IntentFilter filter = new IntentFilter("ARRANGEMENT_EVALUATE_STATUS_UPDATE");
+        // register broadcast receiver and intent filter for action ARRANGEMENT_FRAGMENT_NOW_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ARRANGEMENT_FRAGMENT_NOW_STATUS_UPDATE");
         getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentNowBrodcastReceiver, filter);
 
         return viewFragmentNow;
@@ -103,11 +103,24 @@ public class OurArrangementFragmentNow extends Fragment {
 
 
 
-    // Broadcast receiver for action ARRANGEMENT_EVALUATE_STATUS_UPDATE -> comes from alarmmanager ourArrangement
+    // Broadcast receiver for action ARRANGEMENT_FRAGMENT_NOW_STATUS_UPDATE -> comes from alarmmanager ourArrangement
     private BroadcastReceiver ourArrangementFragmentNowBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                if (intentExtras.getString("Success").equals("yes")) {
+                    Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
+                }
+
+            }
 
             // notify listView that data has changed (evaluate-link is activ or passiv)
             if (dataAdapterListViewOurArrangement != null) {

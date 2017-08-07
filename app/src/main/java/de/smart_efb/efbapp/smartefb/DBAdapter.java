@@ -722,7 +722,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         // sort string
-        String sort = KEY_ROWID + " ASC";
+        String sort = OUR_ARRANGEMENT_KEY_WRITE_TIME + " DESC," + KEY_ROWID + " ASC";
 
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
                 where, null, null, null, sort, null);
@@ -919,6 +919,9 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         ContentValues initialValues = new ContentValues();
 
+        Log.d("TIME","TIME IN DB:"+commentTime);
+
+
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, comment);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, authorName);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, commentTime);
@@ -942,12 +945,11 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    // Return all commens from the database for arrangement with  server id = id (table ourArrangementComment)
+    // Return all comments from the database for arrangement with  server id = id (table ourArrangementComment)
     // the result is sorted by DESC
     public Cursor getAllRowsOurArrangementComment(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-
 
         // data filter
         String where = OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT + "=" + serverId;
@@ -1017,6 +1019,43 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     }
 
+
+    // Return one comment from the database for arrangement with row id = dbid (table ourArrangementComment)
+    public Cursor getOneRowOurArrangementComment(Long dbId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // data filter
+        String where = KEY_ROWID + "=" + dbId;
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+    }
+
+
+
+
+    // update status comment in table ourArrangementComment
+    // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Comment
+    public boolean updateStatusOurArrangementComment (Long rowId, int status) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row status with status
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_STATUS, status);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null) != 0;
+    }
 
 
 

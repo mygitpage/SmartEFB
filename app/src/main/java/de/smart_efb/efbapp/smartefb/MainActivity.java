@@ -349,29 +349,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
+    // set alarm manager to start every wakeUpTimeExchangeService seconds the service to check server for new data
     public void setAlarmForExchangeService () {
-
-
-        Log.d("MAIN", "Start Service with Intent");
 
         // get calendar and init
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
 
+        // set calendar object with seconds
         calendar.add(Calendar.SECOND, ConstansClassMain.wakeUpTimeExchangeService);
         int tmpAlarmTime = ConstansClassMain.wakeUpTimeExchangeService * 1000; // make mills-seconds
 
-
-
+        // make intent for  alarm receiver
         Intent startIntentService = new Intent (getApplicationContext(), AlarmReceiverExchangeService.class);
 
+        // make pending intent
         final PendingIntent pIntentService = PendingIntent.getBroadcast(this, 0, startIntentService, PendingIntent.FLAG_UPDATE_CURRENT );
 
-
+        // get alarm manager service
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
 
+        // set alarm manager to call exchange receiver
         alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpAlarmTime, pIntentService);
     }
 

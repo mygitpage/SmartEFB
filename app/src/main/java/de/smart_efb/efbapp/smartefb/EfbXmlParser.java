@@ -63,6 +63,7 @@ public class EfbXmlParser {
         returnMap.put("ErrorText", "");
         returnMap.put("ClientId", "");
         returnMap.put("ConnectionStatus", "0");
+        returnMap.put("SendSucsessfull", "0");
 
 
         returnMap.put("ConnectBook", "0");
@@ -285,63 +286,59 @@ public class EfbXmlParser {
 
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain)) {
 
-                        switch (tmpMainOrder) {
-                            case "init":
 
-                                Log.d("XML", "Order: init");
+                        if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Init) && tmpClientId.trim().length() > 0) { // init client smartphone
 
-                                if (tmpClientId.trim().length() > 0) {
+                            Log.d("XML", "Order: init");
 
+                            // write client id to prefs
+                            prefsEditor.putString(ConstansClassSettings.namePrefsClientId, tmpClientId);
+                            // set connection status to connect
+                            prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 3);
+                            // write last error messages to prefs
+                            prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
+                            prefsEditor.commit();
 
-                                    // write client id to prefs
-                                    prefsEditor.putString(ConstansClassSettings.namePrefsClientId, tmpClientId);
-                                    // set connection status to connect
-                                    prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 3);
-                                    // write last error messages to prefs
-                                    prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
+                            returnMap.put("ClientId", tmpClientId);
+                            returnMap.put("MainOrder", "init");
+                            returnMap.put("ConnectionStatus", "3");
+                            returnMap.put("ErrorText", "");
 
-                                    prefsEditor.commit();
+                            Log.d("XML", "Order: init ausgefuehrt!!!!!!!!!!");
 
-
-                                    returnMap.put("ClientId", tmpClientId);
-                                    returnMap.put("MainOrder", "init");
-                                    returnMap.put("ConnectionStatus", "3");
-                                    returnMap.put("ErrorText", "");
-
-
-                                    Log.d("XML", "Order: init ausgefuehrt!!!!!!!!!!");
-                                }
-
-
-                                break;
-                            case "data":
-
-                                // TODO:
-
-                                break;
-                            case "error":
-
-
-                                // write last error messages to prefs
-                                prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText);
-                                // set connection status to error
-                                prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 1);
-                                prefsEditor.commit();
-
-                                returnMap.put("ClientId", "");
-                                returnMap.put("MainOrder", "error");
-                                returnMap.put("ConnectionStatus", "1");
-                                returnMap.put("ErrorText", tmpErrorText);
-
-                                // TODO:
-
-                                break;
                         }
 
 
-                        readMoreXml = false;
+                    } else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Receive_Ok_Send)) { // data send and now receive data
+
+                        Log.d("XML", "Order: RECEIVE SEND AUSGEFUEHRT!");
+                        returnMap.put("ClientId", tmpClientId);
+                        returnMap.put("SendSucsessfull", "1");
+
+
+
+                    } else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Data)) { // receive data
+
+
+
+
+                    } else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Error)) { // Error in main tag
+
+                        // write last error messages to prefs
+                        prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText);
+                        // set connection status to error
+                        prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 1);
+                        prefsEditor.commit();
+
+                        returnMap.put("ClientId", "");
+                        returnMap.put("MainOrder", "error");
+                        returnMap.put("ConnectionStatus", "1");
+                        returnMap.put("ErrorText", tmpErrorText);
 
                     }
+
+                    readMoreXml = false;
+
                 }
                 eventType = xpp.next();
             }
@@ -709,7 +706,6 @@ public class EfbXmlParser {
         Long tmpUploadTime = 0L;
         String tmpOrder = "";
         int tmpServerIdArrangement = 0;
-        int tmpCommentIdSmartphoneDb = 0;
 
         try {
             int eventType = xpp.next();
@@ -845,18 +841,6 @@ public class EfbXmlParser {
                             }
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentIdSmartphoneDb: // not needed for insert comment in db
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get comment id smartphone db text
-                                if (xpp.getText().trim().length() > 0) { // check if comment id smartphone db from xml > 0
-                                    tmpCommentIdSmartphoneDb = Integer.valueOf(xpp.getText().trim());
-                                } else {
-                                    error = true;
-                                }
-                            } else {
-                                error = true;
-                            }
-                            break;
                     }
                 }
                 eventType = xpp.next();
@@ -1174,7 +1158,7 @@ public class EfbXmlParser {
         String tmpOrder = "";
         String tmpBlockId = "";
         int tmpServerIdArrangement = 0;
-        int tmpCommentIdSmartphoneDb = 0;
+
 
 
         try {
@@ -1402,20 +1386,6 @@ public class EfbXmlParser {
                             }
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentIdSmartphoneDb: // not needed for insert comment in db
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get comment id smartphone db text
-                                if (xpp.getText().trim().length() > 0) { // check if comment id smartphone db from xml > 0
-                                    tmpCommentIdSmartphoneDb = Integer.valueOf(xpp.getText().trim());
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-                            break;
                     }
 
                 }
