@@ -121,53 +121,132 @@ public class OurArrangementFragmentNowComment extends Fragment {
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "nowComment");
 
         // build the view
+
         //textview for the comment intro
         TextView textCommentNumberIntro = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementCommentNumberIntro);
         textCommentNumberIntro.setText(this.getResources().getString(R.string.showArrangementIntroText) + " " + arrangementNumberInListView);
 
-
-        // generate back link "zurueck zu allen Absprachen"
-        Uri.Builder commentLinkBuilder = new Uri.Builder();
-        commentLinkBuilder.scheme("smart.efb.deeplink")
-                .authority("linkin")
-                .path("ourarrangement")
-                .appendQueryParameter("db_id", "0")
-                .appendQueryParameter("arr_num", "0")
-                .appendQueryParameter("com", "show_arrangement_now");
-        TextView linkShowCommentBackLink = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementShowCommentBackLinkNow);
-        linkShowCommentBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+fragmentNowCommentContext.getResources().getString(fragmentNowCommentContext.getResources().getIdentifier("ourArrangementBackLinkToArrangement", "string", fragmentNowCommentContext.getPackageName()))+"</a>"));
-        linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
-
+        // textview for the author of arrangement
+        TextView tmpTextViewAuthorNameText = (TextView) viewFragmentNowComment.findViewById(R.id.textAuthorName);
+        String tmpTextAuthorNameText = String.format(fragmentNowCommentContext.getResources().getString(R.string.ourArrangementAuthorNameText), cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)));
+        tmpTextViewAuthorNameText.setText(tmpTextAuthorNameText);
 
         // textview for the arrangement
         TextView textViewArrangement = (TextView) viewFragmentNowComment.findViewById(R.id.choosenArrangement);
         String arrangement = cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(arrangement);
 
-        //textview for the comment intro
-        TextView textCommentIntro = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementCommentIntro);
-        textCommentIntro.setText(this.getResources().getString(R.string.arrangementCommentIntro) + " " + arrangementNumberInListView);
+
+        // generate back link "zurueck zu allen Absprachen"
+        Uri.Builder backArrangementLinkBuilder = new Uri.Builder();
+        backArrangementLinkBuilder.scheme("smart.efb.deeplink")
+                .authority("linkin")
+                .path("ourarrangement")
+                .appendQueryParameter("db_id", "0")
+                .appendQueryParameter("arr_num", "0")
+                .appendQueryParameter("com", "show_arrangement_now");
+        TextView linkShowCommentBackLink = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementShowCommentBackLinkNow);
+        linkShowCommentBackLink.setText(Html.fromHtml("<a href=\"" + backArrangementLinkBuilder.build().toString() + "\">"+fragmentNowCommentContext.getResources().getString(fragmentNowCommentContext.getResources().getIdentifier("ourArrangementBackLinkToArrangementFromComment", "string", fragmentNowCommentContext.getPackageName()))+"</a>"));
+        linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
+
+        // some comments for arrangement available?
+        if (cursorArrangementAllComments.getCount() > 0) {
+
+            //textview for the last actual comment intro
+            TextView textLastActualCommentIntro = (TextView) viewFragmentNowComment.findViewById(R.id.lastActualCommentInfoText);
+            textLastActualCommentIntro.setText(this.getResources().getString(R.string.lastActualCommentText));
+
+            // position one for comment cursor
+            cursorArrangementAllComments.moveToFirst();
+
+            // check if comment entry new?
+            if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
+
+                TextView newEntryOfComment = (TextView) viewFragmentNowComment.findViewById(R.id.lastActualCommentNewInfoText);
+                String txtNewEntryOfComment = fragmentNowCommentContext.getResources().getString(R.string.newEntryText);
+                newEntryOfComment.setText(txtNewEntryOfComment);
+                myDb.deleteStatusNewEntryOurArrangementComment(cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
+
+            }
+
+            // textview for the author of last actual comment
+            TextView tmpTextViewAuthorNameLastActualComment = (TextView) viewFragmentNowComment.findViewById(R.id.textAuthorNameLastActualComment);
+            String tmpAuthorName = cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME));
+            String commentDate = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");;
+            String commentTime = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "HH:mm");;
+            String tmpTextAuthorNameLastActualComment = String.format(fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
+            tmpTextViewAuthorNameLastActualComment.setText(tmpTextAuthorNameLastActualComment);
 
 
-        // textview intro for the history of comments
-        TextView textCommentHistoryIntro = (TextView) viewFragmentNowComment.findViewById(R.id.commentHistoryIntro);
-        if (cursorArrangementAllComments.getCount() > 0) { // show comments for arrangement when count comments > 0
-            // show intro for comments
-            textCommentHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryIntroText)+ " " + arrangementNumberInListView);
-            textCommentHistoryIntro.setGravity(Gravity.LEFT);
-            // show comments
-            addActualCommentSetToView ();
+            // textview for the author of last actual comment
+            if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 0) {
+                TextView tmpTextViewSendInfoLastActualComment = (TextView) viewFragmentNowComment.findViewById(R.id.textSendInfoLastActualComment);
+                String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendInfo);
+                tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
+                tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
 
-        } else { // else show text no comments
 
-            // hide linear layout comment holder
-            LinearLayout comentHistoryLinearLayoutContainer = (LinearLayout) viewFragmentNowComment.findViewById(R.id.commentHolder);
-            comentHistoryLinearLayoutContainer.setVisibility(View.INVISIBLE);
+            }
 
-            // show intro no comments available
-            textCommentHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryNoCommentIntroText));
-            textCommentHistoryIntro.setGravity(Gravity.CENTER);
+
+            // textview for the comment text
+            TextView tmpTextViewCommentText = (TextView) viewFragmentNowComment.findViewById(R.id.lastActualCommentText);
+            String tmpCommentText = cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT));
+            tmpTextViewCommentText.setText(tmpCommentText);
+
+
+
+            TextView tmpTextViewLInkToShowAllComment = (TextView) viewFragmentNowComment.findViewById(R.id.commentLInkToShowAllComments);
+
+            // more than one comment available?
+            if (cursorArrangementAllComments.getCount() > 1) {
+
+                // generate link to show all comments and set
+                Uri.Builder commentLinkBuilder = new Uri.Builder();
+                commentLinkBuilder.scheme("smart.efb.deeplink")
+                        .authority("linkin")
+                        .path("ourarrangement")
+                        .appendQueryParameter("db_id", Integer.toString(arrangementServerDbIdToComment))
+                        .appendQueryParameter("arr_num", Integer.toString(arrangementNumberInListView))
+                        .appendQueryParameter("com", "show_comment_for_arrangement");
+
+                if (cursorArrangementAllComments.getCount() == 2) {
+                    String tmpLinkStringShowAllComments = String.format(fragmentNowCommentContext.getResources().getString(fragmentNowCommentContext.getResources().getIdentifier("ourArrangementCommentLinkToShowAllCommentsSingular", "string", fragmentNowCommentContext.getPackageName())),cursorArrangementAllComments.getCount()-1);
+                    tmpTextViewLInkToShowAllComment.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllComments + "</a>"));
+                }
+                else {
+                    String tmpLinkStringShowAllComments = String.format(fragmentNowCommentContext.getResources().getString(fragmentNowCommentContext.getResources().getIdentifier("ourArrangementCommentLinkToShowAllCommentsPlural", "string", fragmentNowCommentContext.getPackageName())),cursorArrangementAllComments.getCount()-1);
+                    tmpTextViewLInkToShowAllComment.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllComments + "</a>"));
+                }
+                tmpTextViewLInkToShowAllComment.setMovementMethod(LinkMovementMethod.getInstance());
+
+            }
+            else {
+                // no comment anymore
+                String tmpLinkStringShowAllComments = fragmentNowCommentContext.getResources().getString(fragmentNowCommentContext.getResources().getIdentifier("ourArrangementCommentLinkToShowAllCommentsNotAvailable", "string", fragmentNowCommentContext.getPackageName()));
+                tmpTextViewLInkToShowAllComment.setText(tmpLinkStringShowAllComments);
+            }
+
         }
+        else { // no comments
+
+            //textview for the last actual comment intro
+            TextView textLastActualCommentIntro = (TextView) viewFragmentNowComment.findViewById(R.id.lastActualCommentInfoText);
+            textLastActualCommentIntro.setText(this.getResources().getString(R.string.lastActualCommentTextNoCommentAvailabel));
+
+            // position one for comment cursor
+            cursorArrangementAllComments.moveToFirst();
+
+            // textview for the author of last actual comment
+            TextView tmpTextViewAuthorNameLastActualComment = (TextView) viewFragmentNowComment.findViewById(R.id.textAuthorNameLastActualComment);
+            tmpTextViewAuthorNameLastActualComment.setText(this.getResources().getString(R.string.lastActualCommentTextNoCommentAvailabelFirstAuthor));
+
+            // textview for the comment text
+            TextView tmpTextViewCommentText = (TextView) viewFragmentNowComment.findViewById(R.id.lastActualCommentText);
+            tmpTextViewCommentText.setVisibility(View.GONE);
+
+        }
+
 
         // textview for max comments, count comments and max letters
         TextView textViewMaxAndCount = (TextView) viewFragmentNowComment.findViewById(R.id.infoNowCommentMaxAndCount);
@@ -202,6 +281,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         // show info text
         textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextCommentMaxLetters);
 
+
         // get max letters for edit text comment
         final int tmpMaxLength = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters, 10);
 
@@ -211,7 +291,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", tmpMaxLength);
         textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
 
-        // comment textfield -> insert new comment
+        // comment textfield -> set hint text
         final EditText txtInputArrangementComment = (EditText) viewFragmentNowComment.findViewById(R.id.inputArrangementComment);
 
         // set text watcher to count letters in comment field
@@ -244,10 +324,8 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
                 if (txtInputArrangementComment.getText().toString().length() > 3) {
 
-                    Log.d("System TIME","SYSTEMTIME 1 : "+System.currentTimeMillis());
-
                     // insert comment in DB
-                    Long tmpDbId = myDb.insertRowOurArrangementComment(txtInputArrangementComment.getText().toString(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), System.currentTimeMillis(), 0, cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID)), false, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), 0, cursorChoosenArrangement.getInt(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
+                    Long tmpDbId = myDb.insertRowOurArrangementComment(txtInputArrangementComment.getText().toString(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), System.currentTimeMillis(), 0, cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID)), true, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), 0, cursorChoosenArrangement.getInt(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
 
                     // increment comment count
                     int countCommentSum = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0) + 1;
@@ -316,7 +394,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
     }
 
-
+    /*
     public void addActualCommentSetToView () {
 
         LinearLayout commentHolderLayout = (LinearLayout) viewFragmentNowComment.findViewById(R.id.commentHolder);
@@ -427,7 +505,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         commentHolderLayout.addView(btnBack_inner_layout);
 
     }
-
+    */
 
 
 

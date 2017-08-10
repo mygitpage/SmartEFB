@@ -126,7 +126,7 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
 
         // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
         Intent tmpIntent = new Intent();
-        tmpIntent.setAction("ARRANGEMENT_FRAGMENT_NOW_STATUS_UPDATE");
+        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
         context.sendBroadcast(tmpIntent);
 
     }

@@ -1172,6 +1172,47 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+    // Return one comment from the database for sketch arrangement with row id = dbid (table ourArrangementSketchComment)
+    public Cursor getOneRowOurArrangementSketchComment(Long dbId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // data filter
+        String where = KEY_ROWID + "=" + dbId;
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+    }
+
+
+
+
+    // update status comment in table ourArrangementSketchComment
+    // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Comment
+    public boolean updateStatusOurArrangementSketchComment (Long rowId, int status) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row status with status
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS, status);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, newValues, where, null) != 0;
+    }
+
+
+
+
+
     /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Sketch Comment ***************************************/
     /****************************************************************************************************************************/
 

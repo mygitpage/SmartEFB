@@ -63,6 +63,10 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
         fragmentSketchContext = getActivity().getApplicationContext();
 
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentSketchBrodcastReceiver, filter);
+
         // init the fragment now
         initFragmentSketch();
 
@@ -71,6 +75,17 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
 
     }
+
+
+    // fragment is destroyed
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // de-register broadcast receiver
+        getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentSketchBrodcastReceiver);
+
+    }
+
 
 
     // inits the fragment for use
@@ -89,6 +104,50 @@ public class OurArrangementFragmentSketch  extends Fragment {
         currentBlockIdOfSketchArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0");;
 
     }
+
+
+
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    private BroadcastReceiver ourArrangementFragmentSketchBrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                // check intent order
+                if (intentExtras.getString("OurArrangement","0").equals("1") || intentExtras.getString("OurArrangementSketch","0").equals("1") || intentExtras.getString("OurArrangementSketchComment","0").equals("1")) {
+                    // TODO: Some action when things change
+                }
+
+                // send successfull?
+                if (intentExtras.getString("SendSuccessfull").equals("1")) {
+                    Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
+                } else { // no
+                    Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            // notify listView that data has changed
+            if (dataAdapterListViewOurArrangementSketch != null) {
+                // get new data from db
+                Cursor cursor = myDb.getAllRowsSketchOurArrangement(currentBlockIdOfSketchArrangement);
+                // and notify listView
+                dataAdapterListViewOurArrangementSketch.changeCursor(cursor);
+                dataAdapterListViewOurArrangementSketch.notifyDataSetChanged();
+
+            }
+
+        }
+    };
+
+
+
+
 
 
     // show listView with sketch arrangements or info: nothing there

@@ -16,20 +16,58 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/arrangementCommentNumberIntro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="3dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textAuthorName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:paddingBottom="5dp"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/choosenArrangement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:paddingLeft="10dp"/>
+
+
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="5dp">
-
-            <TextView
-                android:id="@+id/arrangementCommentNumberIntro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/text_color"
-                android:gravity="left"
-                android:textStyle="bold"/>
+            android:paddingTop="10dp">
 
             <TextView
                 android:id="@+id/arrangementShowCommentBackLinkNow"
@@ -42,24 +80,111 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/choosenArrangement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/text_color"
-            android:gravity="left"
-            android:paddingLeft="10dp"
-            android:paddingBottom="5dp"/>
 
         <TextView
-            android:id="@+id/arrangementCommentIntro"
+            android:id="@+id/borderBetweenArrangement1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"/>
+
+
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/lastActualCommentInfoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="3dp"/>
+
+                <TextView
+                    android:id="@+id/lastActualCommentNewInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/text_accent_color"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textAuthorNameLastActualComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:paddingBottom="5dp"
+                android:layout_marginLeft="3dp"/>
+
+            <TextView
+                android:id="@+id/textSendInfoLastActualComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:paddingBottom="5dp"
+                android:layout_marginLeft="3dp"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/lastActualCommentText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/text_color"
             android:gravity="left"
-            android:textStyle="bold"/>
+            android:paddingLeft="10dp"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/commentLInkToShowAllComments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/text_color"
+                android:textColorLink="@color/colorPrimary"
+                android:gravity="right"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/borderBetweenArrangement2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"/>
 
         <TextView
             android:id="@+id/errorInputArrangementComment"
@@ -73,30 +198,29 @@
             android:paddingBottom="5dp"/>
 
 
-        <EditText
-            android:id="@+id/inputArrangementComment"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:textColor="@color/text_color"
-            android:hint="@string/commentArrangementTextFieldHintText"
-            android:gravity="left|top"
-            android:background="@drawable/app_edittext_style"
-            android:layout_margin="10dp"
-            android:textColorHint="@color/text_color"
-            android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
-            android:paddingTop="5dp"
-            android:paddingRight="5dp"
-            android:paddingLeft="5dp"
-            android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
-
         <TextView
             android:id="@+id/countLettersCommentEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="10dp"
-            android:textColor="@color/text_color"
-            android:paddingRight="15dp"
+            android:textSize="13dp"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="right" />
+
+        <EditText
+            android:id="@+id/inputArrangementComment"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left|top"
+            android:background="@drawable/app_edittext_style"
+            android:hint="@string/arrangementCommentHintText"
+            android:layout_margin="5dp"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
+            android:padding="5dp"
+            android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
+
+
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
@@ -111,7 +235,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/app_button_style"
-                android:textColor="@color/text_color"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="@string/btnSendArrangementComment"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="5dp"
@@ -122,7 +246,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/app_button_style"
-                android:textColor="@color/text_color"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="@string/btnAbortComment"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="5dp"
@@ -135,10 +259,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="center"
             android:paddingBottom="35dp"/>
 
+        <!--
         <TextView
             android:id="@+id/borderBetweenArrangement"
             android:layout_width="match_parent"
@@ -175,6 +300,7 @@
 
         </LinearLayout>
 
+        -->
     </LinearLayout>
 
 </ScrollView>

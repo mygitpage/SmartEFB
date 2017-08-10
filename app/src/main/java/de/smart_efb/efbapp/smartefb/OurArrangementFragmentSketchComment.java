@@ -297,12 +297,19 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 if (sketchCommentNoError) {
 
                     // insert comment for sketch arrangement in DB
-                    myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), System.currentTimeMillis(), 0, cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID)), true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), 0, cursorChoosenSketchArrangement.getInt(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
+                    Long tmpDbId = myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), System.currentTimeMillis(), 0, cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID)), true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), 0, cursorChoosenSketchArrangement.getInt(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
 
                     // increment sketch comment count
                     int countSketchCommentSum = prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0) + 1;
                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, countSketchCommentSum);
                     prefsEditor.commit();
+
+
+                    // send intent to service to start the service and send comment to server!
+                    Intent startServiceIntent = new Intent(fragmentSketchCommentContext, ExchangeServiceEfb.class);
+                    startServiceIntent.putExtra("com","send_sketch_comment_arrangement");
+                    startServiceIntent.putExtra("dbid",tmpDbId);
+                    fragmentSketchCommentContext.startService(startServiceIntent);
 
                     // build intent to get back to OurArrangementFragmentSketchArrangement
                     Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);

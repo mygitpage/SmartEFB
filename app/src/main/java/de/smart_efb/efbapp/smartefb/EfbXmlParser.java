@@ -63,13 +63,11 @@ public class EfbXmlParser {
         returnMap.put("ErrorText", "");
         returnMap.put("ClientId", "");
         returnMap.put("ConnectionStatus", "0");
-        returnMap.put("SendSucsessfull", "0");
-
+        returnMap.put("SendSuccessfull", "0");
 
         returnMap.put("ConnectBook", "0");
         returnMap.put("ConnectBookSettings", "0");
         returnMap.put("ConnectBookSettingsClientName", "0");
-
 
         returnMap.put("OurArrangement", "0");
         returnMap.put("OurArrangementNow", "0");
@@ -82,7 +80,6 @@ public class EfbXmlParser {
         returnMap.put("OurArrangementSettingsSketchCurrentDateOfSketchArrangement", "0");
         returnMap.put("OurArrangementSettingsSketchArrangmentAuthorName", "0");
         returnMap.put("OurArrangementSettingsCurrentDateOfArrangement", "0");
-
 
         returnMap.put("OurGoals", "0");
         returnMap.put("OurGoalsJointlyNow", "0");
@@ -97,17 +94,14 @@ public class EfbXmlParser {
         returnMap.put("OurGoalsSettingsDebetableCurrentDateOfDebetableGoals", "0");
         returnMap.put("OurGoalsSettingsJointlyCurrentDateOfJointlyGoals", "0");
 
-
         returnMap.put("Meeting", "0");
         returnMap.put("MeetingSettings", "0");
         returnMap.put("MeetingSettingsUpdateStatus", "0");
         returnMap.put("MeetingSettingsUpdateDateB", "0");
         returnMap.put("MeetingSettingsUpdateDateA", "0");
 
-
         returnMap.put("TimeTable", "0");
         returnMap.put("TimeTableValue", "0");
-
 
         returnMap.put("Settings", "0");
 
@@ -123,17 +117,12 @@ public class EfbXmlParser {
 
             XmlPullParserFactory xppf = XmlPullParserFactory.newInstance();
 
+            // new pull parser
             xpp = xppf.newPullParser();
 
-            //AssetManager manager = xmlContext.getResources().getAssets(); //getBaseContext().getAssets(); //getBaseContext().getResources().getAssets();
-            //InputStream input = manager.open("configuration.xml");
-
-
+            // set input for pull parser
             xpp.setInput(new StringReader(xmlInput));
             int eventType = xpp.getEventType();
-
-            Log.d("XML", "Starten!!!!!!!!");
-
 
             while (eventType != XmlPullParser.END_DOCUMENT) {
 
@@ -313,7 +302,7 @@ public class EfbXmlParser {
 
                         Log.d("XML", "Order: RECEIVE SEND AUSGEFUEHRT!");
                         returnMap.put("ClientId", tmpClientId);
-                        returnMap.put("SendSucsessfull", "1");
+                        returnMap.put("SendSuccessfull", "1");
 
 
 
@@ -1496,19 +1485,18 @@ public class EfbXmlParser {
         // arrangement comment settings
         int tmpCommentMaxComment = 0;
         int tmpCommentMaxLetters = 0;
+        int tmpCommentDelaytime = 0;
         int tmpCommentCountComment = 0;
         Long tmpCommentCountCommentSinceTime = 0L;
 
         // arragnement sketch comment settings
         int tmpSketchCommentMaxComment = 0;
         int tmpSketchCommentMaxLetters = 0;
+        int tmpSketchCommentDelaytime = 0;
         int tmpSketchCommentCountComment = 0;
         Long tmpSketchCommentCountCommentSinceTime = 0L;
 
-        // author name for sketch arrangement
-        //String tmpSketchAuthorName = "";
-
-        // current date for sketch arrangement and now arragement
+        // current date for sketch arrangement and now arrangement
         Long tmpSketchCurrentDateOfArrangement = 0L;
         Long tmpCurrentDateOfArrangement = 0L;
 
@@ -1807,6 +1795,30 @@ public class EfbXmlParser {
 
                             break;
 
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentDelaytime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get delaytime
+                                if (xpp.getText().trim().length() > 0) { // check if delaytime from xml > 0
+                                    tmpCommentDelaytime = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","CommentDelaytime"+tmpCommentDelaytime);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+
+
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentCountComment:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get count comment
@@ -1874,6 +1886,27 @@ public class EfbXmlParser {
                                     tmpSketchCommentMaxLetters = Integer.valueOf(xpp.getText().trim());
 
                                     Log.d("Arrang_Settings","SketchCommentMaxLetters"+tmpSketchCommentMaxLetters);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentDelaytime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get comment sketch delaytime
+                                if (xpp.getText().trim().length() > 0) { // check if comment sketch delaytime from xml > 0
+                                    tmpSketchCommentDelaytime = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","SketchCommentDelaytime"+tmpSketchCommentDelaytime);
 
 
                                 }
@@ -2030,11 +2063,12 @@ public class EfbXmlParser {
                                 }
 
                                 // update comment max/count of arrangements?
-                                if (tmpArrangementCommentOnOff && tmpCommentMaxComment > 0 && tmpCommentMaxLetters > 0 && tmpCommentCountComment >= 0 && tmpCommentCountCommentSinceTime > 0) {
+                                if (tmpArrangementCommentOnOff && tmpCommentMaxComment > 0 && tmpCommentMaxLetters > 0 && tmpCommentDelaytime > 0 && tmpCommentCountComment >= 0 && tmpCommentCountCommentSinceTime > 0) {
                                     // write data to prefs
                                     prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, tmpArrangementCommentOnOff); // turn function on
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, tmpCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters, tmpCommentMaxLetters);
+                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, tmpCommentDelaytime);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentCountComment, tmpCommentCountComment);
                                     prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, tmpCommentCountCommentSinceTime);
                                     prefsEditor.commit();
@@ -2052,10 +2086,11 @@ public class EfbXmlParser {
                                 }
 
                                 // update sketch comment max/count of sketch arrangements?
-                                if (tmpArrangementSketchCommentOnOff && tmpSketchCommentMaxComment > 0 && tmpSketchCommentMaxLetters > 0 && tmpSketchCommentCountComment >= 0 && tmpSketchCommentCountCommentSinceTime > 0) {
+                                if (tmpArrangementSketchCommentOnOff && tmpSketchCommentMaxComment > 0 && tmpSketchCommentMaxLetters > 0 && tmpSketchCommentDelaytime > 0 && tmpSketchCommentCountComment >= 0 && tmpSketchCommentCountCommentSinceTime > 0) {
                                     // write data to prefs
                                     prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowLinkCommentSketchArrangement, tmpArrangementSketchCommentOnOff); // turn function on
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,tmpSketchCommentMaxComment);
+                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime,tmpSketchCommentDelaytime);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters,tmpSketchCommentMaxLetters);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, tmpSketchCommentCountComment);
                                     prefsEditor.putLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, tmpSketchCommentCountCommentSinceTime);

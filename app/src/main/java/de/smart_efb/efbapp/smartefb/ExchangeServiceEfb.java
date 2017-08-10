@@ -82,6 +82,9 @@ import java.util.Map;
 
 
 
+
+        //++++++++++++++++++ TASK AREA ++++++++++++++++++++++++++++++++++++++++++++++
+
         // Ask server for new data and get answer from server
         public class ExchangeTaskCheckNewContent implements Runnable {
 
@@ -217,16 +220,10 @@ import java.util.Map;
                 prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
                 prefsEditor = prefs.edit();
 
-
-                Log.d ("Exchange Service", "in SendNowComment dbid="+dbId);
-
             }
 
             // the task
             public void run() {
-
-
-                Log.d("Exchange Service", "Exchange Task Send Now Comment RUN!");
 
                 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -240,7 +237,6 @@ import java.util.Map;
 
                     // get client id from prefs
                     String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
-
 
                     // generate xml output text
                     XmlSerializer xmlSerializer = Xml.newSerializer();
@@ -350,7 +346,6 @@ import java.util.Map;
 
                         contentWriter.close();
 
-
                         // get answer from input
                         InputStream answerInputStream = connection.getInputStream();
                         BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
@@ -371,32 +366,22 @@ import java.util.Map;
                         EfbXmlParser xmlparser = new EfbXmlParser(context);
                         returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
 
-
-                        if (returnMap.get("SendSucsessfull").equals("1")) {
+                        if (returnMap.get("SendSuccessfull").equals("1")) {
                             myDb.updateStatusOurArrangementComment (dbId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                            Log.d("SEND RESULT","UPDATE IN DB OK!");
                         }
-
-                        Log.d("SEND RESULT","DATA SEND: "+returnMap.get("SendSucsessfull"));
 
                         // close input stream and disconnect
                         answerInputStream.close();
                         connection.disconnect();
 
-
                         // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
-                        Intent tmpIntent = new Intent();
-                        tmpIntent.putExtra("Success","yes");
-                        tmpIntent.putExtra("Message","Der Kommentar wurde gesendet!");
-                        tmpIntent.setAction("ARRANGEMENT_FRAGMENT_NOW_STATUS_UPDATE");
+                        Intent tmpIntent = translateMapToIntent (returnMap);
+                        tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageCommentSendSuccessfull));
+                        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
                         context.sendBroadcast(tmpIntent);
 
-
-                    }
-
-
-                    catch (MalformedURLException e) {
-                     //   e.printStackTrace();
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (XmlPullParserException e) {
@@ -404,30 +389,19 @@ import java.util.Map;
                     }
 
 
-
-
-
-
-
-
-
-
                 }
                 else { // no network enable -> try to send comment to server later
 
                     // send intent to receiver in OurArrangementFragmentNow to show toast to user
                     Intent tmpIntent = new Intent();
-                    tmpIntent.setAction("ARRANGEMENT_FRAGMENT_NOW_STATUS_UPDATE");
-                    tmpIntent.putExtra("Success","no");
-                    tmpIntent.putExtra("Message","Senden niicht möglich. Kein Netzwerk!");
+                    tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                    tmpIntent.putExtra("SendSuccessfull","0");
+                    tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageCommentNotSendSuccessfullNoNetwork));
                     context.sendBroadcast(tmpIntent);
                 }
 
-
+                // stop the task with service
                 stopSelf();
-
-
-
 
             }
 
@@ -435,7 +409,273 @@ import java.util.Map;
 
 
 
+    // send sketch comment arrangement to server and get answer from server
+    public class ExchangeTaskSendSketchCommentArrangement implements Runnable {
 
+        // id of the data row in db
+        private Long dbId;
+
+        // reference to the DB
+        private DBAdapter myDb;
+
+        // context of task
+        Context context;
+
+        // shared prefs
+        SharedPreferences prefs;
+        SharedPreferences.Editor prefsEditor;
+
+        // return information for change
+        Map<String, String> returnMap;
+
+
+        // Constructor
+        public ExchangeTaskSendSketchCommentArrangement (Context context, Long dbid) {
+
+            // id of the data row in db
+            this.dbId = dbid;
+
+            // context of task
+            this.context = context;
+
+            // init the DB
+            myDb = new DBAdapter(context);
+
+            // init the prefs
+            prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
+            prefsEditor = prefs.edit();
+
+        }
+
+        // the task
+        public void run() {
+
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+            if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+
+                Log.d("Exchange Service Sketch", "Network on in send sketch");
+
+                // get comment from db
+                Cursor commentData = myDb.getOneRowOurArrangementSketchComment(dbId);
+
+                // get client id from prefs
+                String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
+
+                // generate xml output text
+                XmlSerializer xmlSerializer = Xml.newSerializer();
+                StringWriter writer = new StringWriter();
+                try {
+
+                    xmlSerializer.setOutput(writer);
+
+                    //Start Document
+                    xmlSerializer.startDocument("UTF-8", true);
+                    xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
+
+                    // Open Tag
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                    // start tag main order -> send sketch comment and client id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+                    xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_CommentSketchArrangement);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+
+                    // start tag client id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.text(tmpClientId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+
+                    // end tag main
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
+
+
+                    // open comment sketch arrangement tag
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment);
+
+                    // start tag comment sketch arrangement order
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Order );
+                    xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_New);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Order );
+
+                    // start tag comment text
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Comment);
+                    xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT)));
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Comment);
+
+                    // start tag author name text
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_AuthorName);
+                    xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME)));
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_AuthorName);
+
+                    // start tag comment time
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentTime);
+                    xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentTime);
+
+                    // start tag sketch arrangement time
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_DateOfArrangement);
+                    xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME))/1000)); // convert millis to timestamp
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_DateOfArrangement);
+
+
+
+                    // start tag sketch comment result question A
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionA);
+                    xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1))));
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionA);
+
+                    // start tag sketch comment result question B
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionB);
+                    xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2))));
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionB);
+
+                    // start tag sketch comment result question C
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionC);
+                    xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3))));
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionC);
+
+
+
+
+
+
+                    // start tag block number of sketch arrangement
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_BlockId);
+                    xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID)));
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_BlockId);
+
+                    // start tag server id sketch arrangement
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ServerIdArrangement);
+                    xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT)));
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ServerIdArrangement);
+
+                    // end tag comment now arrangement
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment);
+
+                    // end tag smartEfb
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+
+                    xmlSerializer.endDocument();
+
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                // and send xml text to server
+                try {
+                    // prepair data to send
+                    String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
+
+                    // set url and parameters
+                    URL scripturl = new URL(ConstansClassSettings.urlConnectionSendNewSketchCommentArrangementToServer);
+                    HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
+
+                    // set timeout for connection
+                    connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
+                    connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
+
+                    connection.setDoOutput(true);
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    connection.setRequestMethod("POST");
+                    connection.setFixedLengthStreamingMode(textparam.getBytes().length);
+
+                    // generate output stream and send
+                    OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
+                    contentWriter.write(textparam);
+                    contentWriter.flush();
+
+                    contentWriter.close();
+
+                    // get answer from input
+                    InputStream answerInputStream = connection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    // convert input stream to string
+                    String currentRow;
+                    try {
+                        while ((currentRow = reader.readLine()) != null) {
+                            stringBuilder.append(currentRow);
+                            stringBuilder.append("\n");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    // call xml parser with input
+                    EfbXmlParser xmlparser = new EfbXmlParser(context);
+                    returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
+
+                    if (returnMap.get("SendSuccessfull").equals("1")) {
+                        myDb.updateStatusOurArrangementSketchComment (dbId, 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                    }
+
+                    // close input stream and disconnect
+                    answerInputStream.close();
+                    connection.disconnect();
+
+                    // send intent to receiver in OurArrangementFragmentSketch to update listView OurArrangement (when active)
+                    Intent tmpIntent = translateMapToIntent (returnMap);
+                    tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageCommentSendSuccessfull));
+                    tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                    context.sendBroadcast(tmpIntent);
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+            else { // no network enable -> try to send comment to server later
+
+                // send intent to receiver in OurArrangementFragmentSketch to show toast to user
+                Intent tmpIntent = new Intent();
+                tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                tmpIntent.putExtra("SendSuccessfull","0");
+                tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageCommentNotSendSuccessfullNoNetwork));
+                context.sendBroadcast(tmpIntent);
+            }
+
+            // stop the task with service
+            stopSelf();
+
+        }
+
+    }
+
+
+
+
+
+
+    //++++++++++++++++++ END TASK AREA ++++++++++++++++++++++++++++++++++++++++++++++
+
+
+        // convert the returnMap from the EfbXMLParser to extras in Intents for the fragments
+        public Intent translateMapToIntent (Map<String, String> returnMap) {
+
+            Intent intent = new Intent();
+
+            for( Map.Entry <String, String> entry : returnMap.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                // put to intent when value = "1"
+                if (value.equals("1")) {
+                    intent.putExtra(key,"1");
+                }
+            }
+
+            return intent;
+        }
 
 
 
@@ -451,10 +691,8 @@ import java.util.Map;
 
 
         @Override
+        // check the commands for service and start the task to handle the command
         public int onStartCommand(Intent intent, int flags, int startId) {
-
-            Log.d("Exchange Service", "In onStartCommand");
-
 
             // Extras from intent that holds data
             Bundle intentExtras = null;
@@ -462,16 +700,7 @@ import java.util.Map;
             // get data from intent
             intentExtras = intent.getExtras();
 
-
             if (intentExtras != null && !this.isRunning) {
-                // get data that comes with extras
-                //tmpServerDbId = intentExtras.getInt("db_id",0);
-                //tmpNumberinListView = intentExtras.getInt("arr_num",0);
-                //tmpEvalNext = intentExtras.getBoolean("eval_next");
-                // get command and execute it
-                //executeIntentCommand (intentExtras.getString("com"), tmpServerDbId, tmpNumberinListView, tmpEvalNext);
-
-                Log.d("Exchange Service", "In IntentExtras");
 
                 // get command from intent extras
                 String command = intentExtras.getString("com");
@@ -479,164 +708,40 @@ import java.util.Map;
                 // get db id from intent extras
                 Long dbId = intentExtras.getLong("dbid", 0);
 
-
-                Log.d ("Exchange Service", "in OnStartCommand dbid="+dbId);
-
-
-
-
                 if (command.equals("ask_new_data")) { // Ask server for new data
 
-
+                    // generate new background task
                     this.backgroundThread = new Thread(new ExchangeTaskCheckNewContent());
-
-                    // task is running
+                    // set task is running
                     this.isRunning = true;
-
                     // start task
                     this.backgroundThread.start();
-
-
-                    Log.d("Exchange Service", "In ask new data");
 
                 } else if (command.equals("send_now_comment_arrangement") && dbId > 0) { // send new arrangement comment to server
 
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendNowCommentArrangement (context, dbId));
-
                     // task is running
                     this.isRunning = true;
-
                     // start task
                     this.backgroundThread.start();
 
+                } else if (command.equals("send_sketch_comment_arrangement") && dbId > 0) { // send new sketch arrangement comment to server
 
-                    Log.d("Exchange Service", "send_now_comment_arrangement");
+                    // generate new send task
+                    this.backgroundThread = new Thread(new ExchangeTaskSendSketchCommentArrangement (context, dbId));
+                    // task is running
+                    this.isRunning = true;
+                    // start task
+                    this.backgroundThread.start();
 
                 }
 
-
-
-
-
             }
-
-
-
-
-            /*
-
-
-            protected void onNewIntent(Intent intent) {
-
-        // Extras from intent that holds data
-        Bundle intentExtras = null;
-
-        arrangementServerDbIdFromLink = 0;
-        arrangementNumberInListView = 0;
-        evaluateNextArrangement = false;
-
-        // call super
-        super.onNewIntent(intent);
-
-        // get the link data from URI and from the extra
-        intentExtras = intent.getExtras();
-
-        int tmpServerDbId = 0;
-        int tmpNumberinListView = 0;
-        Boolean tmpEvalNext = false;
-
-        if (intentExtras != null) {
-           // get data that comes with extras
-            tmpServerDbId = intentExtras.getInt("db_id",0);
-            tmpNumberinListView = intentExtras.getInt("arr_num",0);
-            tmpEvalNext = intentExtras.getBoolean("eval_next");
-            // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"), tmpServerDbId, tmpNumberinListView, tmpEvalNext);
-        }
-
-    }
-
-
-    // execute the commands that comes from link or intend
-    public void executeIntentCommand (String command, int tmpServerDbId, int tmpNumberinListView, Boolean tmpEvalNext) {
-
-        String tmpTabTitle = "";
-
-        if (command.equals("show_comment_for_arrangement")) { // Show fragment all comments for arrangement
-
-            // set global varibales
-            arrangementServerDbIdFromLink = tmpServerDbId;
-            arrangementNumberInListView = tmpNumberinListView;
-            evaluateNextArrangement = tmpEvalNext;
-
-            //set fragment in tab zero to comment
-            OurArrangementViewPagerAdapter.setFragmentTabZero("show_comment_for_arrangement");
-
-            // set correct tab zero title with information new entry and color change
-            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1b", "string", getPackageName()));
-            setTabZeroTitleAndColor();
-
-            // set command show variable
-            showCommandFragmentTabZero = "show_comment_for_arrangement";
-
-            // call notify data change
-            ourArrangementViewPagerAdapter.notifyDataSetChanged();
-
-            // set correct subtitle in toolbar in tab zero
-            toolbar.setSubtitle(arraySubTitleText[4]);
-
-
-
-        } else if (command.equals("comment_an_arrangement")) { // Show fragment comment arrangement
-
-            // set global varibales
-            arrangementServerDbIdFromLink = tmpServerDbId;
-            arrangementNumberInListView = tmpNumberinListView;
-            evaluateNextArrangement = tmpEvalNext;
-
-            //set fragment in tab zero to comment
-            OurArrangementViewPagerAdapter.setFragmentTabZero("comment_an_arrangement");
-
-            // set correct tab zero title with information new entry and color change
-            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1a", "string", getPackageName()));
-            setTabZeroTitleAndColor();
-
-            // set command show variable
-            showCommandFragmentTabZero = "comment_an_arrangement";
-
-            // call notify data change
-            ourArrangementViewPagerAdapter.notifyDataSetChanged();
-
-            // set correct subtitle in toolbar in tab zero
-            toolbar.setSubtitle(arraySubTitleText[3]);
-
-        }
-
-
-
-             */
-
-
-
-
-
-
-
-
-
 
             return START_STICKY;
 
         }
-
-
-
-
-
-
-
-
 
 
 

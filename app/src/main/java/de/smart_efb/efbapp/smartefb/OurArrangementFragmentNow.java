@@ -56,8 +56,8 @@ public class OurArrangementFragmentNow extends Fragment {
 
         viewFragmentNow = layoutInflater.inflate(R.layout.fragment_our_arrangement_now, null);
 
-        // register broadcast receiver and intent filter for action ARRANGEMENT_FRAGMENT_NOW_STATUS_UPDATE
-        IntentFilter filter = new IntentFilter("ARRANGEMENT_FRAGMENT_NOW_STATUS_UPDATE");
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
         getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentNowBrodcastReceiver, filter);
 
         return viewFragmentNow;
@@ -103,7 +103,7 @@ public class OurArrangementFragmentNow extends Fragment {
 
 
 
-    // Broadcast receiver for action ARRANGEMENT_FRAGMENT_NOW_STATUS_UPDATE -> comes from alarmmanager ourArrangement
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeServiceEfb
     private BroadcastReceiver ourArrangementFragmentNowBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
@@ -114,15 +114,21 @@ public class OurArrangementFragmentNow extends Fragment {
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
-                if (intentExtras.getString("Success").equals("yes")) {
+                // check intent order
+                if (intentExtras.getString("OurArrangement","0").equals("1") || intentExtras.getString("OurArrangementNow","0").equals("1") || intentExtras.getString("OurArrangementNowComment","0").equals("1")) {
+                    // TODO: Some action when things change
+                }
+
+                // send successfull?
+                if (intentExtras.getString("SendSuccessfull").equals("1")) {
                     Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
-                } else {
+                } else { // no
                     Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
                 }
 
             }
 
-            // notify listView that data has changed (evaluate-link is activ or passiv)
+            // notify listView that data has changed
             if (dataAdapterListViewOurArrangement != null) {
                 // get new data from db
                 Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentBlockIdOfArrangement, "equalBlockId");

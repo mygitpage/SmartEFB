@@ -258,6 +258,9 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement settings comment max letters
             public static final String xmlNameForOurArrangement_Settings_CommentMaxLetters = "ourarrangement_settings_commentmaxletters";
 
+            // xml name for element our arrangement settings comment delaytime
+            public static final String xmlNameForOurArrangement_Settings_CommentDelaytime = "ourarrangement_settings_commentdelaytime";
+
             // xml name for element our arrangement settings comment count comment
             public static final String xmlNameForOurArrangement_Settings_CommentCountComment = "ourarrangement_settings_commentcountcomment";
 
@@ -269,6 +272,9 @@ public class ConstansClassXmlParser {
 
             // xml name for element our arrangement settings sketch comment max letters
             public static final String xmlNameForOurArrangement_Settings_SketchCommentMaxLetters = "ourarrangement_settings_sketchcommentmaxletters";
+
+            // xml name for element our arrangement settings sketch comment delaytime
+            public static final String xmlNameForOurArrangement_Settings_SketchCommentDelaytime = "ourarrangement_settings_sketchcommentdelaytime";
 
             // xml name for element our arrangement settings sketch comment count comment
             public static final String xmlNameForOurArrangement_Settings_SketchCommentCountComment = "ourarrangement_settings_sketchcommentcountcomment";
@@ -657,6 +663,9 @@ public class ConstansClassXmlParser {
 
     // xml name for send now comment of arrangement to server
     public static final String xmlNameForSendToServer_CommentArrangement = "sendarrangementcomment";
+
+    // xml name for send comment of sketch arrangement to server
+    public static final String xmlNameForSendToServer_CommentSketchArrangement = "sendsketcharrangementcomment";
 
 
 

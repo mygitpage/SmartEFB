@@ -153,6 +153,9 @@
         <!-- String Activity Our Arrangement -->
             <string name="ourArrangementBackLinkToArrangement">Zurück</string>
             <string name="newEntryText">(Neu)</string>
+            <string name="toastMessageCommentSendSuccessfull">Der Kommentar wurde gesendet!</string>
+            <string name="toastMessageCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
+
         <!-- End String Activity Our Arrangement -->
 
         <!-- fragment show old arrangements -->
@@ -178,7 +181,7 @@
             <string name="arrangementComment">Absprachen kommentieren</string>
             <string name="btnSendArrangementComment">Kommentar senden</string>
             <string name="btnAbortComment">Zurück</string>
-            <string name="arrangementCommentIntro">Bitte kommentieren Sie Absprache</string>
+            <string name="arrangementCommentHintText"><b>Bitte kommentieren Sie die Absprache!</b></string>
             <string name="commentHistoryIntroText">Alle bisherigen Kommentare zu Absprache</string>
             <string name="commentHistoryNoCommentIntroText">Bisher sind noch keine Kommentare zur Absprache vorhanden!</string>
             <string name ="commentArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
@@ -192,6 +195,15 @@
             <string name="infoTextNowCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
             <string name="infoTextNowCommentCommentMaxLetters">Ihr Kommentar darf maximal %1$d Zeichen lang sein.</string>
             <string name="errorInputArrangementComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz!</string>
+            <string name="lastActualCommentText">Aktuellster Kommentar zur Absprache</string>
+            <string name="lastActualCommentTextNoCommentAvailabel">Keine Kommentare vorhanden</string>
+            <string name="lastActualCommentTextNoCommentAvailabelFirstAuthor">Werden Sie erster Autohr eines Kommentares</string>
+            <string name="ourArrangementCommentAuthorNameWithDate">Geschrieben von %1$s am %2$s um %3$s</string>
+            <string name="ourArrangementCommentLinkToShowAllCommentsPlural">%1$d weitere Kommentare vorhanden</string>
+            <string name="ourArrangementCommentLinkToShowAllCommentsSingular">%1$d weiterer Kommentar vorhanden</string>
+            <string name="ourArrangementCommentLinkToShowAllCommentsNotAvailable">Keine weiteren Kommentare vorhanden</string>
+            <string name="ourArrangementBackLinkToArrangementFromComment">Zurück zu den aktuellen Absprachen</string>
+            <string name="ourArrangementCommentSendInfo">Der Kommentar wurde noch nicht gesendet</string>
         <!-- End String Fragment comment -->
 
         <!-- String Fragment show comment -->

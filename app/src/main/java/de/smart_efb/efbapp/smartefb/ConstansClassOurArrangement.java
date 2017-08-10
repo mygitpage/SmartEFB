@@ -50,6 +50,9 @@ public class ConstansClassOurArrangement {
     // prefs name for count max letters
     public static final String namePrefsCommentMaxLetters = "commentOurArrangementMaxLetters";
 
+    // prefs name for count delaytime
+    public static final String namePrefsCommentDelaytime = "commentOurArrangementDelaytime";
+
     // prefs name for count comment
     public static final String namePrefsCommentCountComment = "commentOurArrangementCountComment";
 
@@ -61,6 +64,9 @@ public class ConstansClassOurArrangement {
 
     // prefs name for count max sketch comment letters
     public static final String namePrefsMaxSketchCommentLetters = "commentSketchOurArrangementMaxCommentLetters";
+
+    // prefs name for count sketch comment delaytime
+    public static final String namePrefsSketchCommentDelaytime = "commentSketchOurArrangementDelaytime";
 
     // prefs name for count sketch comment
     public static final String namePrefsSketchCommentCountComment = "commentSketchOurArrangementCountComment";
