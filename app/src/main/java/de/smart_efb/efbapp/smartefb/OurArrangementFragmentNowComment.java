@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -29,6 +30,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ich on 01.07.16.
@@ -128,7 +131,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
         // textview for the author of arrangement
         TextView tmpTextViewAuthorNameText = (TextView) viewFragmentNowComment.findViewById(R.id.textAuthorName);
-        String tmpTextAuthorNameText = String.format(fragmentNowCommentContext.getResources().getString(R.string.ourArrangementAuthorNameText), cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)));
+        String tmpTextAuthorNameText = String.format(fragmentNowCommentContext.getResources().getString(R.string.ourArrangementAuthorNameTextWithDate), cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
         tmpTextViewAuthorNameText.setText(tmpTextAuthorNameText);
 
         // textview for the arrangement
@@ -161,12 +164,10 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
             // check if comment entry new?
             if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
-
                 TextView newEntryOfComment = (TextView) viewFragmentNowComment.findViewById(R.id.lastActualCommentNewInfoText);
                 String txtNewEntryOfComment = fragmentNowCommentContext.getResources().getString(R.string.newEntryText);
                 newEntryOfComment.setText(txtNewEntryOfComment);
                 myDb.deleteStatusNewEntryOurArrangementComment(cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
-
             }
 
             // textview for the author of last actual comment
@@ -178,16 +179,57 @@ public class OurArrangementFragmentNowComment extends Fragment {
             tmpTextViewAuthorNameLastActualComment.setText(tmpTextAuthorNameLastActualComment);
 
 
-            // textview for the author of last actual comment
+            // textview for status 0 of the last actual comment
+            final TextView tmpTextViewSendInfoLastActualComment = (TextView) viewFragmentNowComment.findViewById(R.id.textSendInfoLastActualComment);
             if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 0) {
-                TextView tmpTextViewSendInfoLastActualComment = (TextView) viewFragmentNowComment.findViewById(R.id.textSendInfoLastActualComment);
+
                 String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendInfo);
                 tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
                 tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
 
 
-            }
+            } else if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 1) {
+                // textview for status 1 of the last actual comment
 
+                // set textview visible
+                tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
+
+                // calculate run time for timer in MILLISECONDS!!!
+                Long nowTime = System.currentTimeMillis();
+                Long writeTimeComment = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
+                Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from miutes
+                Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
+                // start the timer with the calculated milliseconds
+                if (runTimeForTimer > 0) {
+                    new CountDownTimer(runTimeForTimer, 1000) {
+                        public void onTick(long millisUntilFinished) {
+                            // gernate count down timer
+                            String FORMAT = "%02d:%02d:%02d";
+                            String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendDelayInfo);
+                            String tmpTime = String.format(FORMAT,
+                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                            // put count down to string
+                            String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                            // and show
+                            tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
+                        }
+
+                        public void onFinish() {
+                            // count down is over -> show
+                            String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
+                            tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                        }
+                    }.start();
+
+                }
+                else {
+                    // no count down anymore -> hide textview
+                    tmpTextViewSendInfoLastActualComment.setVisibility(View.GONE);
+                }
+
+            }
 
             // textview for the comment text
             TextView tmpTextViewCommentText = (TextView) viewFragmentNowComment.findViewById(R.id.lastActualCommentText);
@@ -195,7 +237,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
             tmpTextViewCommentText.setText(tmpCommentText);
 
 
-
+            // get textview for Link to Show all comments
             TextView tmpTextViewLInkToShowAllComment = (TextView) viewFragmentNowComment.findViewById(R.id.commentLInkToShowAllComments);
 
             // more than one comment available?
@@ -274,12 +316,26 @@ public class OurArrangementFragmentNowComment extends Fragment {
         }
         tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0));
 
+        // build text element delay time
+        String tmpInfoTextDelaytimeSingluarPluaral = "";
+        if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) == 0) {
+            tmpInfoTextDelaytimeSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentDelaytimeNoDelay);
+        }
+        else if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) == 1) {
+            tmpInfoTextDelaytimeSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentDelaytimeSingular);
+        }
+        else {
+            tmpInfoTextDelaytimeSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentDelaytimePlural);
+            tmpInfoTextDelaytimeSingluarPluaral = String.format(tmpInfoTextDelaytimeSingluarPluaral, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0));
+
+        }
+
         // generate text comment max letters
-        tmpInfoTextCommentMaxLetters =  this.getResources().getString(R.string.infoTextNowCommentCommentMaxLetters);
+        tmpInfoTextCommentMaxLetters =  this.getResources().getString(R.string.infoTextNowCommentCommentMaxLettersAndDelaytime);
         tmpInfoTextCommentMaxLetters = String.format(tmpInfoTextCommentMaxLetters, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters, 0));
 
         // show info text
-        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextCommentMaxLetters);
+        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextCommentMaxLetters + " " +tmpInfoTextDelaytimeSingluarPluaral);
 
 
         // get max letters for edit text comment
@@ -368,8 +424,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
             }
         });
 
-        // End build the view
-
     }
 
 
@@ -393,120 +447,5 @@ public class OurArrangementFragmentNowComment extends Fragment {
         }
 
     }
-
-    /*
-    public void addActualCommentSetToView () {
-
-        LinearLayout commentHolderLayout = (LinearLayout) viewFragmentNowComment.findViewById(R.id.commentHolder);
-
-        cursorArrangementAllComments.moveToFirst();
-
-        do {
-
-            int actualCursorNumber = cursorArrangementAllComments.getPosition()+1;
-
-            // Linear Layout holds comment text and linear layout with author,date and new entry text
-            LinearLayout l_inner_layout = new LinearLayout(fragmentNowCommentContext);
-            l_inner_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            l_inner_layout.setOrientation(LinearLayout.VERTICAL);
-
-            //add textView for comment text
-            TextView txtViewCommentText = new TextView (fragmentNowCommentContext);
-            txtViewCommentText.setText(cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)));
-            txtViewCommentText.setId(actualCursorNumber);
-            txtViewCommentText.setTextColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.text_color));
-            txtViewCommentText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            txtViewCommentText.setTextSize(16);
-            txtViewCommentText.setGravity(Gravity.LEFT);
-            txtViewCommentText.setPadding(15,0,0,0);
-
-            // Linear Layout holds author, date and text new entry
-            LinearLayout aadn_inner_layout = new LinearLayout(fragmentNowCommentContext);
-            aadn_inner_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            aadn_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
-
-            // check if comment new entry
-            if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
-                //add textView for text new entry
-                TextView txtViewCommentNewEntry = new TextView (fragmentNowCommentContext);
-                txtViewCommentNewEntry.setText(this.getResources().getString(R.string.newEntryText));
-                txtViewCommentNewEntry.setId(actualCursorNumber);
-                txtViewCommentNewEntry.setTextColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.text_accent_color));
-                txtViewCommentNewEntry.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                txtViewCommentNewEntry.setTextSize(14);
-                txtViewCommentNewEntry.setGravity(Gravity.LEFT);
-                txtViewCommentNewEntry.setPadding(15,0,0,0);
-
-                // add new entry text to linear layout
-                aadn_inner_layout.addView (txtViewCommentNewEntry);
-
-                // delete status new entry in db
-                myDb.deleteStatusNewEntryOurArrangementComment(cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
-            }
-
-            //add textView for comment author and date
-            TextView txtViewCommentAuthorAndDate = new TextView (fragmentNowCommentContext);
-            long writeTime = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
-            String authorAndDate = cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME)) + ", " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy - HH:mm");
-            txtViewCommentAuthorAndDate.setText(authorAndDate);
-            txtViewCommentAuthorAndDate.setId(actualCursorNumber);
-            txtViewCommentAuthorAndDate.setTextColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.text_color));
-            txtViewCommentAuthorAndDate.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            txtViewCommentAuthorAndDate.setTextSize(14);
-            txtViewCommentAuthorAndDate.setGravity(Gravity.RIGHT);
-            txtViewCommentAuthorAndDate.setPadding(0,0,0,55);
-
-            aadn_inner_layout.addView (txtViewCommentAuthorAndDate);
-
-            // add elements to inner linear layout
-            l_inner_layout.addView (txtViewCommentText);
-            l_inner_layout.addView (aadn_inner_layout);
-
-            // add inner layout to comment holder (linear layout in xml-file)
-            commentHolderLayout.addView(l_inner_layout);
-
-        } while (cursorArrangementAllComments.moveToNext());
-
-
-
-        // Linear Layout holds author, date and text new entry
-        LinearLayout btnBack_inner_layout = new LinearLayout(fragmentNowCommentContext);
-        btnBack_inner_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        btnBack_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
-        btnBack_inner_layout.setGravity(Gravity.CENTER);
-
-
-        // create back button (to arrangement)
-        Button btnBackToArrangement = new Button (fragmentNowCommentContext);
-        btnBackToArrangement.setText(this.getResources().getString(R.string.btnAbortShowComment));
-        btnBackToArrangement.setTextColor(ContextCompat.getColor(fragmentNowCommentContext, R.color.text_color));
-        btnBackToArrangement.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        btnBackToArrangement.setTextSize(14);
-        btnBackToArrangement.setGravity(Gravity.CENTER);
-        btnBackToArrangement.setBackground(ContextCompat.getDrawable(fragmentNowCommentContext,R.drawable.app_button_style));
-        btnBackToArrangement.setPadding(10,10,10,10);
-        btnBackToArrangement.setTop(25);
-        btnBackToArrangement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent.putExtra("com","show_arrangement_now");
-                getActivity().startActivity(intent);
-
-            }
-        });
-
-        // add elements to inner linear layout
-        btnBack_inner_layout.addView (btnBackToArrangement);
-
-        // add back button to comment holder (linear layout in xml-file)
-        commentHolderLayout.addView(btnBack_inner_layout);
-
-    }
-    */
-
-
 
 }

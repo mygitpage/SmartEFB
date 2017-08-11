@@ -169,6 +169,7 @@
             <string name="ourArrangementNowArrangementNothingThere">Es sind keine aktuellen Absprachen vorhanden!</string>
             <string name="ourArrangementIntroText">Die aktuellen Absprachen vom</string>
             <string name="ourArrangementAuthorNameText">Geschrieben von %1$s</string>
+            <string name="ourArrangementAuthorNameTextWithDate">Geschrieben von %1$s am %2$s</string>
         <!-- End show now arrangements -->
 
         <!-- Link text for comment, show comments and evaluate-->
@@ -193,23 +194,31 @@
             <string name="infoTextNowCommentCountZero">Sie haben noch keinen Kommentar geschrieben.</string>
             <string name="infoTextNowCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
             <string name="infoTextNowCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
-            <string name="infoTextNowCommentCommentMaxLetters">Ihr Kommentar darf maximal %1$d Zeichen lang sein.</string>
+            <string name="infoTextNowCommentCommentMaxLettersAndDelaytime">Ihr Kommentar darf maximal %1$d Zeichen lang sein und </string>
             <string name="errorInputArrangementComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz!</string>
             <string name="lastActualCommentText">Aktuellster Kommentar zur Absprache</string>
             <string name="lastActualCommentTextNoCommentAvailabel">Keine Kommentare vorhanden</string>
             <string name="lastActualCommentTextNoCommentAvailabelFirstAuthor">Werden Sie erster Autohr eines Kommentares</string>
-            <string name="ourArrangementCommentAuthorNameWithDate">Geschrieben von %1$s am %2$s um %3$s</string>
+            <string name="ourArrangementCommentAuthorNameWithDate">Geschrieben von %1$s am %2$s um %3$s Uhr.</string>
             <string name="ourArrangementCommentLinkToShowAllCommentsPlural">%1$d weitere Kommentare vorhanden</string>
             <string name="ourArrangementCommentLinkToShowAllCommentsSingular">%1$d weiterer Kommentar vorhanden</string>
             <string name="ourArrangementCommentLinkToShowAllCommentsNotAvailable">Keine weiteren Kommentare vorhanden</string>
             <string name="ourArrangementBackLinkToArrangementFromComment">Zurück zu den aktuellen Absprachen</string>
-            <string name="ourArrangementCommentSendInfo">Der Kommentar wurde noch nicht gesendet</string>
-        <!-- End String Fragment comment -->
+            <string name="ourArrangementCommentSendInfo">Der Kommentar wurde noch nicht gesendet.</string>
+            <string name="ourArrangementCommentSendSuccsessfullInfo">Der Kommentar wurde gesendet.</string>
+            <string name="ourArrangementCommentSendDelayInfo">Der Kommentar wurde gesendet und wird in %1$s zugestellt.</string>
+            <string name="infoTextNowCommentDelaytimeNoDelay">die Kommentare werden sofort zugestellt (wenn eine Internetverbindung besteht)</string>
+            <string name="infoTextNowCommentDelaytimeSingular">die Kommentare werden mit einer Verzögerungszeit von einer Minute zugestellt (wenn eine Internetverbindung besteht)</string>
+            <string name="infoTextNowCommentDelaytimePlural">die Kommentare werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
+
+
+    <!-- End String Fragment comment -->
 
         <!-- String Fragment show comment -->
             <string name="btnAbortShowComment">Zurück </string>
             <string name="showCommentIntroText">Die Kommentare zur Absprache</string>
             <string name="showArrangementIntroText">Absprache</string>
+            <string name="ourArrangementBackLinkToArrangementFromShowComment">Zurück zu den aktuellen Absprachen</string>
         <!-- End String Fragment show comment -->
 
         <!-- String Fragment evaluate arrangement -->
@@ -294,6 +303,9 @@
             <string name="textDialogOurArrangementSettingsCommentMaxLetters">\nDer Kommentartext darf maximal %1$d Zeichen lang sein.</string>
             <string name="textDialogOurArrangementSettingsCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Kommentare geschrieben.</string>
             <string name="textDialogOurArrangementSettingsCountCommentZero">Seit dem %1$s haben Sie noch keinen Kommentar geschrieben.</string>
+            <string name="textDialogOurArrangementSettingsCommentDelaytimeNoDelay">\nDie Kommentare werden ohne Verzögerungszeit zugestellt (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurArrangementSettingsCommentDelaytimeSingular">\nDie Kommentare werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurArrangementSettingsCommentDelaytimePlural">\nDie Kommentare werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogOurArrangementSettingsOldArrangementEnable">Ihnen stehen die älteren Absprachen zur Verfügung.</string>
             <string name="textDialogOurArrangementSettingsOldArrangementDisable">Ihnen stehen die älteren Absprachen nicht zur Verfügung.</string>
             <string name="textDialogOurArrangementSettingsSketchArrangementEnable">Ihnen stehen die Entwürfe der Absprachen zur Verfügung.</string>
@@ -308,6 +320,9 @@
             <string name="textDialogOurArrangementSettingsSketchCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Einschätzungen geschrieben.</string>
             <string name="textDialogOurArrangementSettingsSketchCountCommentZero">Seit dem %1$s haben Sie noch keine Einschätzung geschrieben.</string>
             <string name="textDialogOurArrangementSettingsSketchCommentMaxLetters">\nDer Einschätzungstext darf maximal %1$d Zeichen lang sein.</string>
+            <string name="textDialogOurArrangementSettingsSketchCommentDelaytimeNoDelay">\nDie Einschätzungen werden ohne Verzögerungszeit zugestellt (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurArrangementSettingsSketchCommentDelaytimeSingular">\nDie Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurArrangementSettingsSketchCommentDelaytimePlural">\nDie Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
         <!-- End our arrangement dialog settings -->
 
         <!-- our arrangement dialog no more messages -->

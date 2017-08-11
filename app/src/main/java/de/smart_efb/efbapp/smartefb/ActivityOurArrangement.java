@@ -527,7 +527,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                 // show the settings for comment (like on/off-status, count comment...)
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsComment);
-                String tmpTxtComment, tmpTxtComment1, tmpTxtComment2, tmpTxtComment3, tmpTxtCommentSum;
+                String tmpTxtComment, tmpTxtComment1, tmpTxtComment2, tmpTxtComment3, tmpTxtComment4, tmpTxtCommentSum;
 
                 if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false)) {
 
@@ -568,14 +568,30 @@ public class ActivityOurArrangement extends AppCompatActivity {
                         tmpTxtComment3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentMaxLetters);
                         tmpTxtComment3 = String.format(tmpTxtComment3, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters,0));
 
+                        // show delaytime for comments
+                        switch (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0)) {
+                            case 0:
+                                tmpTxtComment4 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentDelaytimeNoDelay);
+                                break;
+                            case 1:
+                                tmpTxtComment4 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentDelaytimeSingular);
+                                break;
+                            default:
+                                tmpTxtComment4 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentDelaytimePlural);
+                                tmpTxtComment4 = String.format(tmpTxtComment4, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime,0));
+                                break;
+                        }
+
                     }
                     else {
                         tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberOff);
                         tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"));
                         tmpTxtComment3 = "";
+                        tmpTxtComment4 = "";
                     }
 
-                    tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2 + tmpTxtComment3;
+
+                    tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2 + tmpTxtComment3 + tmpTxtComment4;
 
                     tmpdialogTextView.setText(tmpTxtCommentSum);
                 }
@@ -598,7 +614,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                 // show the settings for sketch arrangement
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsSketchArrangement);
-                String tmpTxtSketchArrangementSum, tmpTxtSketchArrangement, tmpTxtSketchArrangement1, tmpTxtSketchArrangement2, tmpTxtSketchArrangement3, tmpTxtSketchArrangement4;
+                String tmpTxtSketchArrangementSum, tmpTxtSketchArrangement, tmpTxtSketchArrangement1, tmpTxtSketchArrangement2, tmpTxtSketchArrangement3, tmpTxtSketchArrangement4, tmpTxtSketchArrangement5;
                 if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false)) {
 
                     tmpTxtSketchArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchArrangementEnable);
@@ -643,10 +659,27 @@ public class ActivityOurArrangement extends AppCompatActivity {
                             tmpTxtSketchArrangement4 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentMaxLetters);
                             tmpTxtSketchArrangement4 = String.format(tmpTxtSketchArrangement4, prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters,0));
 
+
+                            // show delaytime for comments
+                            switch (prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime, 0)) {
+                                case 0:
+                                    tmpTxtSketchArrangement5 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentDelaytimeNoDelay);
+                                    break;
+                                case 1:
+                                    tmpTxtSketchArrangement5 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentDelaytimeSingular);
+                                    break;
+                                default:
+                                    tmpTxtSketchArrangement5 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentDelaytimePlural);
+                                    tmpTxtSketchArrangement5 = String.format(tmpTxtSketchArrangement5, prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime,0));
+                                    break;
+                            }
+
+
                         }
                         else {
                             tmpTxtSketchArrangement3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountNumberOff);
                             tmpTxtSketchArrangement4 = "";
+                            tmpTxtSketchArrangement5 = "";
                         }
                     }
                     else {
@@ -654,8 +687,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
                         tmpTxtSketchArrangement2 = "";
                         tmpTxtSketchArrangement3 = "";
                         tmpTxtSketchArrangement4 = "";
+                        tmpTxtSketchArrangement5 = "";
                     }
-                    tmpTxtSketchArrangementSum = tmpTxtSketchArrangement + " " + tmpTxtSketchArrangement1 + " " + tmpTxtSketchArrangement2 + " " + tmpTxtSketchArrangement3  + tmpTxtSketchArrangement4;
+                    tmpTxtSketchArrangementSum = tmpTxtSketchArrangement + " " + tmpTxtSketchArrangement1 + " " + tmpTxtSketchArrangement2 + " " + tmpTxtSketchArrangement3  + tmpTxtSketchArrangement4 + tmpTxtSketchArrangement5;
 
                 }
                 else {

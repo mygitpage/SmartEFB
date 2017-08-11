@@ -180,18 +180,18 @@ public class EfbXmlParser {
 
             }
 
-            Log.d("XMLParser", "End document");
+            Log.d("XMLParser", "End document +++++++++++++");
             //System.out.println("End document");
         } catch (XmlPullParserException e) {
 
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(33);
 
             e.printStackTrace();
         } catch (IOException e) {
 
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(34);
 
             e.printStackTrace();
         }
@@ -231,6 +231,9 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) {
                                 if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
                                     tmpMainOrder = xpp.getText().trim(); // copy main order
+
+                                    Log.d("MAIN", "MAIN ORDER +++++++++++ :"+tmpMainOrder);
+
                                 }
                             }
                             break;
@@ -240,6 +243,9 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) {
                                 if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
                                     tmpErrorText = xpp.getText().trim(); // copy main order
+
+                                    Log.d("MAIN", "ERROR TEXT +++++++++++ :"+tmpErrorText);
+
                                 }
                             }
                             break;
@@ -250,6 +256,10 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) {
                                 if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
                                     tmpClientId = xpp.getText().trim(); // copy client id
+
+                                    Log.d("MAIN", "CLIENT ID +++++++++++ :"+tmpClientId);
+
+
                                 }
                             }
                             break;
@@ -271,10 +281,11 @@ public class EfbXmlParser {
                     readMoreXml = false;
 
                 } else if (eventType == XmlPullParser.END_TAG) {
-                    Log.d("ReadMain", "End tag " + xpp.getName());
+                    Log.d("ReadMain", "End tag ++++++++++++++++ " + xpp.getName());
 
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain)) {
 
+                        Log.d("XML", "END MAIN TAG ++++++++++");
 
                         if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Init) && tmpClientId.trim().length() > 0) { // init client smartphone
 
@@ -291,9 +302,12 @@ public class EfbXmlParser {
                             returnMap.put("ClientId", tmpClientId);
                             returnMap.put("MainOrder", "init");
                             returnMap.put("ConnectionStatus", "3");
+                            returnMap.put("Error", "0");
                             returnMap.put("ErrorText", "");
 
                             Log.d("XML", "Order: init ausgefuehrt!!!!!!!!!!");
+
+                            readMoreXml = false;
 
                         }
 
@@ -304,17 +318,16 @@ public class EfbXmlParser {
                         returnMap.put("ClientId", tmpClientId);
                         returnMap.put("SendSuccessfull", "1");
 
-
+                        readMoreXml = false;
 
                     } else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Data)) { // receive data
 
-
-
+                        readMoreXml = false;
 
                     } else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Error)) { // Error in main tag
 
                         // write last error messages to prefs
-                        prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText);
+                        prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText + " (Position:Main)");
                         // set connection status to error
                         prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 1);
                         prefsEditor.commit();
@@ -322,22 +335,26 @@ public class EfbXmlParser {
                         returnMap.put("ClientId", "");
                         returnMap.put("MainOrder", "error");
                         returnMap.put("ConnectionStatus", "1");
+                        returnMap.put("Error", "1");
                         returnMap.put("ErrorText", tmpErrorText);
 
+                        readMoreXml = false;
                     }
 
-                    readMoreXml = false;
+
+
 
                 }
+
                 eventType = xpp.next();
             }
         } catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(35);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(36);
             e.printStackTrace();
         }
     }
@@ -408,11 +425,11 @@ public class EfbXmlParser {
             }
         } catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(37);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(38);
             e.printStackTrace();
         }
     }
@@ -667,11 +684,11 @@ public class EfbXmlParser {
             }
         } catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(39);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(40);
             e.printStackTrace();
         }
     }
@@ -879,11 +896,11 @@ public class EfbXmlParser {
             }
         } catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(41);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(42);
             e.printStackTrace();
         }
     }
@@ -1111,11 +1128,11 @@ public class EfbXmlParser {
             }
         } catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(1);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(2);
             e.printStackTrace();
         }
 
@@ -1429,11 +1446,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(3);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(4);
             e.printStackTrace();
         }
     }
@@ -2146,11 +2163,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(5);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(6);
             e.printStackTrace();
         }
     }
@@ -2223,11 +2240,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(7);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(8);
             e.printStackTrace();
         }
     }
@@ -2415,11 +2432,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(9);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(10);
             e.printStackTrace();
         }
     }
@@ -2625,11 +2642,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(11);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(12);
             e.printStackTrace();
         }
     }
@@ -2905,11 +2922,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(13);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(14);
             e.printStackTrace();
         }
 
@@ -3102,11 +3119,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(15);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(16);
             e.printStackTrace();
         }
 
@@ -3780,11 +3797,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(17);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(18);
             e.printStackTrace();
         }
 
@@ -3844,11 +3861,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(19);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(20);
             e.printStackTrace();
         }
     }
@@ -4137,11 +4154,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(21);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(22);
             e.printStackTrace();
         }
 
@@ -4356,11 +4373,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(23);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(24);
             e.printStackTrace();
         }
 
@@ -4419,11 +4436,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(25);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(26);
             e.printStackTrace();
         }
     }
@@ -4665,11 +4682,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(27);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(28);
             e.printStackTrace();
         }
 
@@ -4886,11 +4903,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(29);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(30);
             e.printStackTrace();
         }
     }
@@ -5053,11 +5070,11 @@ public class EfbXmlParser {
         }
         catch (XmlPullParserException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(31);
             e.printStackTrace();
         } catch (IOException e) {
             // set error
-            setErrorMessageInPrefs();
+            setErrorMessageInPrefs(32);
             e.printStackTrace();
         }
     }
@@ -5066,9 +5083,9 @@ public class EfbXmlParser {
 
     
     
-    private void setErrorMessageInPrefs () {
+    private void setErrorMessageInPrefs (int position) {
 
-        String tmpErrorText = "Es ist ein Kommunikationsfehler (XML) aufgetreten";
+        String tmpErrorText = "Es ist ein Kommunikationsfehler (XML) aufgetreten (Position:" + position + ")";
         
         // write last error messages to prefs
         prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText);
@@ -5078,7 +5095,7 @@ public class EfbXmlParser {
         
         prefsEditor.commit();
         
-        setErrorMessageInPrefs();
+        //setErrorMessageInPrefs();
         
     }
     

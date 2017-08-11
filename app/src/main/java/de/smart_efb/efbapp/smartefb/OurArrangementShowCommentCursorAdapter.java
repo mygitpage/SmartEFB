@@ -94,10 +94,10 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
         String authorAndDate = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME)) + ", " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy - HH:mm");
         textViewShowActualAuthorAndDate.setText(authorAndDate);
 
-        // generate link "zurueck zu den Absprachen" and set text intro "Die kommentare zur Absprache ...", when cursor position is first
+        // is cursor position first?
         if (cursor.isFirst()) {
 
-            // set text intro "Absprache ..."
+            // set text intro
             TextView textViewShowArrangementIntro = (TextView) view.findViewById(R.id.arrangementShowArrangementIntro);
             String txtArrangementIntro = contextForActivity.getResources().getString(R.string.showArrangementIntroText)+ " " + arrangementNumberInListView;
             textViewShowArrangementIntro.setText(txtArrangementIntro);
@@ -111,12 +111,12 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
                     .appendQueryParameter("arr_num", "0")
                     .appendQueryParameter("com", "show_arrangement_now");
             TextView linkShowCommentBackLink = (TextView) view.findViewById(R.id.arrangementShowCommentBackLink);
-            Spanned tmpBackLink = Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementBackLinkToArrangement", "string", context.getPackageName()))+"</a>");
+            Spanned tmpBackLink = Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementBackLinkToArrangementFromShowComment", "string", context.getPackageName()))+"</a>");
             linkShowCommentBackLink.setText(tmpBackLink);
             linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
 
             // show choosen arrangement
-            TextView textViewShowChoosenArrangement = (TextView) view.findViewById(R.id.actualCommentTextInShowComment);
+            TextView textViewShowChoosenArrangement = (TextView) view.findViewById(R.id.choosenArrangement);
             textViewShowChoosenArrangement.setText(choosenArrangement);
 
             // set text intro "Die Kommentare zur Absprache ..."

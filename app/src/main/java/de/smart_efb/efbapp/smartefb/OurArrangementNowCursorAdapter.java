@@ -75,7 +75,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
         if (cursor.isFirst() ) { // listview for first element
             TextView numberOfArrangement = (TextView) view.findViewById(R.id.ourArrangementIntroText);
-            String txtArrangementNumber = context.getResources().getString(R.string.ourArrangementIntroText) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy");;
+            String txtArrangementNumber = context.getResources().getString(R.string.ourArrangementIntroText) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy");
             numberOfArrangement.setText(txtArrangementNumber);
         }
 
