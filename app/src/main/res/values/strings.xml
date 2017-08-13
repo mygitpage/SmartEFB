@@ -169,7 +169,7 @@
             <string name="ourArrangementNowArrangementNothingThere">Es sind keine aktuellen Absprachen vorhanden!</string>
             <string name="ourArrangementIntroText">Die aktuellen Absprachen vom</string>
             <string name="ourArrangementAuthorNameText">Geschrieben von %1$s</string>
-            <string name="ourArrangementAuthorNameTextWithDate">Geschrieben von %1$s am %2$s</string>
+            <string name="ourArrangementAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
         <!-- End show now arrangements -->
 
         <!-- Link text for comment, show comments and evaluate-->
@@ -198,8 +198,8 @@
             <string name="errorInputArrangementComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz!</string>
             <string name="lastActualCommentText">Aktuellster Kommentar zur Absprache</string>
             <string name="lastActualCommentTextNoCommentAvailabel">Keine Kommentare vorhanden</string>
-            <string name="lastActualCommentTextNoCommentAvailabelFirstAuthor">Werden Sie erster Autohr eines Kommentares</string>
-            <string name="ourArrangementCommentAuthorNameWithDate">Geschrieben von %1$s am %2$s um %3$s Uhr.</string>
+            <string name="lastActualCommentTextNoCommentAvailabelFirstAuthor">Werden Sie erster Autor eines Kommentares</string>
+            <string name="ourArrangementCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourArrangementCommentLinkToShowAllCommentsPlural">%1$d weitere Kommentare vorhanden</string>
             <string name="ourArrangementCommentLinkToShowAllCommentsSingular">%1$d weiterer Kommentar vorhanden</string>
             <string name="ourArrangementCommentLinkToShowAllCommentsNotAvailable">Keine weiteren Kommentare vorhanden</string>
@@ -210,16 +210,25 @@
             <string name="infoTextNowCommentDelaytimeNoDelay">die Kommentare werden sofort zugestellt (wenn eine Internetverbindung besteht)</string>
             <string name="infoTextNowCommentDelaytimeSingular">die Kommentare werden mit einer Verzögerungszeit von einer Minute zugestellt (wenn eine Internetverbindung besteht)</string>
             <string name="infoTextNowCommentDelaytimePlural">die Kommentare werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
+            <string name="ourArrangementCommentPersonalAuthorName">Ihnen</string>
 
 
     <!-- End String Fragment comment -->
 
         <!-- String Fragment show comment -->
-            <string name="btnAbortShowComment">Zurück </string>
-            <string name="showCommentIntroText">Die Kommentare zur Absprache</string>
+            <string name="btnAbortShowComment">Zurück zu den aktuellen Absprachen</string>
             <string name="showArrangementIntroText">Absprache</string>
+            <string name="showCommentHeadlineWithNumber">Kommentar</string>
+            <string name="showCommentHeadlineWithNumberExtraNewest">(Aktuellster)</string>
             <string name="ourArrangementBackLinkToArrangementFromShowComment">Zurück zu den aktuellen Absprachen</string>
-        <!-- End String Fragment show comment -->
+            <string name="ourArrangementShowCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+            <string name="ourArrangementShowCommentSendInfo">Der Kommentar wurde noch nicht gesendet.</string>
+            <string name="ourArrangementShowCommentSendDelayInfo">Der Kommentar wurde gesendet und wird in %1$s zugestellt.</string>
+            <string name="ourArrangementShowCommentSendSuccsessfullInfo">Der Kommentar wurde gesendet.</string>
+            <string name="ourArrangementShowCommentLinkToCommentAnArrangement">Absprache %1$d kommentieren</string>
+            <string name="ourArrangementShowCommentPersonalAuthorName">Ihnen</string>
+
+    <!-- End String Fragment show comment -->
 
         <!-- String Fragment evaluate arrangement -->
             <string name="showEvaluateArrangementIntroText">Bewerten Sie Absprache</string>

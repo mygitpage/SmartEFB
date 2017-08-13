@@ -90,9 +90,6 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"/>
 
-
-
-
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -261,44 +258,7 @@
             android:gravity="center"
             android:paddingBottom="35dp"/>
 
-        <!--
-        <TextView
-            android:id="@+id/borderBetweenArrangement"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"/>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="left"
-            android:layout_gravity="left"
-            android:id="@+id/commentHistoryContainer"
-            android:visibility="visible">
-
-            <TextView
-                android:id="@+id/commentHistoryIntro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/text_color"
-                android:textStyle="bold" />
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center_vertical|left"
-                android:id="@+id/commentHolder"
-                android:visibility="visible"/>
-
-        </LinearLayout>
-
-        -->
     </LinearLayout>
 
 </ScrollView>

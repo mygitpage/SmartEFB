@@ -9,11 +9,6 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
 
-
-
-
-
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -76,7 +71,6 @@
 
     </LinearLayout>
 
-
     <TextView
         android:id="@+id/borderBetweenArrangement1"
         android:layout_width="match_parent"
@@ -87,44 +81,59 @@
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"/>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <TextView
-        android:id="@+id/actualCommentTextInShowComment"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textColor="@color/text_color"
-        android:textColorLink="@color/colorPrimary"
-        android:gravity="left"
-        android:paddingBottom="15dp"
-        android:paddingLeft="10dp"/>
+        android:orientation="vertical"
+        android:background="@drawable/list_element_style">
 
-    <TextView
-        android:id="@+id/arrangementShowCommentIntro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textColor="@color/text_color"
-        android:gravity="left"
-        android:textStyle="bold"
-        android:paddingBottom="5dp"/>
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/actualCommentInfoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:layout_marginLeft="3dp"/>
+
+            <TextView
+                android:id="@+id/actualCommentNewInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/text_accent_color"
+                android:gravity="left"
+                android:paddingLeft="10dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textAuthorNameActualComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:layout_marginLeft="3dp"/>
+
+        <TextView
+            android:id="@+id/textSendInfoActualComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="3dp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/listActualTextComment"
@@ -132,32 +141,25 @@
         android:layout_height="wrap_content"
         android:textSize="16dp"
         android:textColor="@color/text_color"
-        android:gravity="top|left"
+        android:gravity="left"
         android:paddingLeft="10dp"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="5dp">
+        android:paddingTop="10dp">
 
         <TextView
-            android:id="@+id/listActualTextNewComment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12dp"
-            android:textColor="@color/text_accent_color"
-            android:gravity="left"
-            android:paddingLeft="10dp"/>
-
-        <TextView
-            android:id="@+id/listActualCommentAuthorAndDate"
+            android:id="@+id/linkToCommentAnArrangement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="12dp"
+            android:textSize="14dp"
             android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="right"/>
 
     </LinearLayout>
+
 
 </LinearLayout>

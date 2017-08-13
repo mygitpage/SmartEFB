@@ -132,7 +132,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         // textview for the author of arrangement
         TextView tmpTextViewAuthorNameText = (TextView) viewFragmentNowComment.findViewById(R.id.textAuthorName);
         String tmpTextAuthorNameText = String.format(fragmentNowCommentContext.getResources().getString(R.string.ourArrangementAuthorNameTextWithDate), cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
-        tmpTextViewAuthorNameText.setText(tmpTextAuthorNameText);
+        tmpTextViewAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
 
         // textview for the arrangement
         TextView textViewArrangement = (TextView) viewFragmentNowComment.findViewById(R.id.choosenArrangement);
@@ -173,10 +173,16 @@ public class OurArrangementFragmentNowComment extends Fragment {
             // textview for the author of last actual comment
             TextView tmpTextViewAuthorNameLastActualComment = (TextView) viewFragmentNowComment.findViewById(R.id.textAuthorNameLastActualComment);
             String tmpAuthorName = cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME));
+
+            if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
+                tmpAuthorName = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentPersonalAuthorName);
+            }
+
+
             String commentDate = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");;
             String commentTime = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "HH:mm");;
             String tmpTextAuthorNameLastActualComment = String.format(fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
-            tmpTextViewAuthorNameLastActualComment.setText(tmpTextAuthorNameLastActualComment);
+            tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
 
             // textview for status 0 of the last actual comment
@@ -225,8 +231,9 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
                 }
                 else {
-                    // no count down anymore -> hide textview
-                    tmpTextViewSendInfoLastActualComment.setVisibility(View.GONE);
+                    // no count down anymore -> show send successfull
+                    String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
+                    tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
                 }
 
             }
@@ -243,7 +250,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
             // more than one comment available?
             if (cursorArrangementAllComments.getCount() > 1) {
 
-                // generate link to show all comments and set
+                // generate link to show all comments
                 Uri.Builder commentLinkBuilder = new Uri.Builder();
                 commentLinkBuilder.scheme("smart.efb.deeplink")
                         .authority("linkin")

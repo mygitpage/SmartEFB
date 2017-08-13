@@ -45,6 +45,9 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // arrangement number in list view
     int arrangementNumberInListView = 0;
 
+    // true-> comments are limited, false -> comments are not limited
+    Boolean commentLimitationBorder = false;
+
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
@@ -113,6 +116,10 @@ public class OurArrangementFragmentShowComment extends Fragment {
             arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();
             if (arrangementNumberInListView < 1) arrangementNumberInListView = 1; // check borders
 
+            // call getter-methode isCommentLimitationBorderSet in ActivityOurArrangement to get true-> comments are limited, false-> comments are not limited
+            commentLimitationBorder = ((ActivityOurArrangement)getActivity()).isCommentLimitationBorderSet("current");
+
+
         }
 
     }
@@ -123,24 +130,25 @@ public class OurArrangementFragmentShowComment extends Fragment {
     public void displayActualCommentSet () {
 
         // get the data (all comments from an arrangement) from DB
-        Cursor cursor = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToShow);
+        Cursor cursorComments = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToShow);
 
         // get the data (the choosen arrangement) from the DB
         String arrangement = "";
         Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToShow);
-        arrangement = choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
+        //arrangement = choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
 
         // find the listview
         ListView listView = (ListView) viewFragmentShowComment.findViewById(R.id.listOurArrangementShowComment);
 
-        // new dataadapter with custom constructor
+        // new dataadapter with custom constructor for show comments now
         showCommentCursorAdapter = new OurArrangementShowCommentCursorAdapter(
                 getActivity(),
-                cursor,
+                cursorComments,
                 0,
                 arrangementServerDbIdToShow,
                 arrangementNumberInListView,
-                arrangement);
+                commentLimitationBorder,
+                choosenArrangement);
 
         // Assign adapter to ListView
         listView.setAdapter(showCommentCursorAdapter);

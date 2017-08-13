@@ -31,9 +31,11 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
     // reference to the DB
     private DBAdapter myDb;
 
-    //limitation in count comments true-> yes, there is a border; no, there is no border, wirte infitisly comments
+    //limitation in count comments true-> yes, there is a border; no, there is no border
     Boolean commentLimitationBorder;
 
+    // for prefs
+    SharedPreferences prefs;
 
     // number for count comments for arrangement (12 numbers!)
     private String[] numberCountForComments = new String [12];
@@ -52,13 +54,39 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         // init array for count comments
         numberCountForComments = context.getResources().getStringArray(R.array.ourArrangementCountComments);
 
+        //limitation in count comments true-> yes, there is a border; no, there is no border
         commentLimitationBorder = ((ActivityOurArrangement)context).isCommentLimitationBorderSet("current");
+
+        // open sharedPrefs
+        prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
 
     }
 
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+
+
+        // is cursor first?
+        if (cursor.isFirst() ) {
+            TextView numberOfArrangement = (TextView) view.findViewById(R.id.ourArrangementIntroText);
+            String txtArrangementNumber = context.getResources().getString(R.string.ourArrangementIntroText) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy");
+            numberOfArrangement.setText(txtArrangementNumber);
+        }
+
+        // is cursor last?
+        if (cursor.isLast() ) { // listview for last element -> set gap to bottom of display
+            TextView tmpGapToBottom = (TextView) view.findViewById(R.id.borderToBottomOfDisplayWhenNeeded);
+            tmpGapToBottom.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+
+        View inflatedView;
 
         // link to show comments
         Spanned showCommentsLinkTmp = null;
@@ -70,37 +98,33 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         // text for new comment entry
         String tmpTextNewEntryComment = "";
 
-        // open sharedPrefs
-        SharedPreferences prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
-
         if (cursor.isFirst() ) { // listview for first element
-            TextView numberOfArrangement = (TextView) view.findViewById(R.id.ourArrangementIntroText);
-            String txtArrangementNumber = context.getResources().getString(R.string.ourArrangementIntroText) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy");
-            numberOfArrangement.setText(txtArrangementNumber);
+            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_now_first, parent, false);
+        }
+        else { // listview for "normal" element
+            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_now, parent, false);
         }
 
         // put arrangement number
-        TextView numberOfArrangement = (TextView) view.findViewById(R.id.listArrangementNumberText);
+        TextView numberOfArrangement = (TextView) inflatedView.findViewById(R.id.listArrangementNumberText);
         String txtArrangementNumber = context.getResources().getString(R.string.showArrangementIntroText)+ " " + Integer.toString(cursor.getPosition()+1);
         numberOfArrangement.setText(txtArrangementNumber);
 
         // put author name
-        TextView tmpTextViewAuthorNameText = (TextView) view.findViewById(R.id.listTextAuthorName);
-        String tmpTextAuthorNameText = String.format(context.getResources().getString(R.string.ourArrangementAuthorNameText), cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)));
-        tmpTextViewAuthorNameText.setText(tmpTextAuthorNameText);
+        TextView tmpTextViewAuthorNameText = (TextView) inflatedView.findViewById(R.id.listTextAuthorName);
+        String tmpTextAuthorNameText = String.format(context.getResources().getString(R.string.ourArrangementAuthorNameTextWithDate), cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
+        tmpTextViewAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
 
         // check if arrangement entry new?
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_NEW_ENTRY)) == 1) {
-
-            TextView newEntryOfArrangement = (TextView) view.findViewById(R.id.listArrangementNewArrangementText);
+            TextView newEntryOfArrangement = (TextView) inflatedView.findViewById(R.id.listArrangementNewArrangementText);
             String txtnewEntryOfArrangement = context.getResources().getString(R.string.newEntryText);
             newEntryOfArrangement.setText(txtnewEntryOfArrangement);
             myDb.deleteStatusNewEntryOurArrangement(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
-
         }
 
         // put arrangement text
-        TextView textViewArrangement = (TextView) view.findViewById(R.id.listTextArrangement);
+        TextView textViewArrangement = (TextView) inflatedView.findViewById(R.id.listTextArrangement);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(title);
 
@@ -148,7 +172,6 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                 }
             }
 
-
             // make link to comment arrangement
             Uri.Builder commentLinkBuilder = new Uri.Builder();
             commentLinkBuilder.scheme("smart.efb.deeplink")
@@ -169,32 +192,26 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
 
             if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0) < prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) || !commentLimitationBorder) {
-
                 showCommentArrangementLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
-
             }
             else {
                 showCommentArrangementLinkTmp = Html.fromHtml(" ("+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+")");
-
             }
-
 
             if (tmpIntCountComments == 0) {
                 showCommentsLinkTmp = Html.fromHtml(tmpCountComments + " &middot;");
             }
             else {
                 showCommentsLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountComments + "</a> " + tmpTextNewEntryComment + " &middot;");
-
             }
 
         }
 
-
-        // show genaerate links for evaluate or/and comment
+        // show generate links for evaluate or/and comment
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false) || prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) ) {
 
             // create the comment link
-            TextView linkCommentAnArrangement = (TextView) view.findViewById(R.id.linkCommentAnArrangement);
+            TextView linkCommentAnArrangement = (TextView) inflatedView.findViewById(R.id.linkCommentAnArrangement);
 
             if (showEvaluateCommentLinkTmp != null && showCommentsLinkTmp != null && showCommentArrangementLinkTmp != null) {
                 linkCommentAnArrangement.setText(TextUtils.concat(showEvaluateCommentLinkTmp, showCommentsLinkTmp, showCommentArrangementLinkTmp));
@@ -210,20 +227,6 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
         }
 
-    }
-
-
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-
-        View inflatedView;
-
-        if (cursor.isFirst() ) { // listview for first element
-            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_now_first, parent, false);
-        }
-        else { // listview for "normal" element
-            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_now, parent, false);
-        }
 
         return inflatedView;
 
