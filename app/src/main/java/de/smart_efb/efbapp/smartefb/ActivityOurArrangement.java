@@ -97,8 +97,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // reference to the DB
     DBAdapter myDb;
 
-    // reference to dialog settings
+    // reference to dialog settings and Arrangement change
     AlertDialog alertDialogSettings;
+    AlertDialog alertDialogArrangementChange;
 
     // activ/inactiv sub-functions
     // our arrangements sub functions activ/ inactiv
@@ -743,6 +744,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
         evaluatePauseTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, ConstansClassOurArrangement.defaultTimeForActiveAndPauseEvaluationArrangement); // default value 43200 is 12 hours
         evaluateActivTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, ConstansClassOurArrangement.defaultTimeForActiveAndPauseEvaluationArrangement); // default value 43200 is 12 hours
 
+
+        Log.d("Alarm Evaluation", "PAuse:"+evaluatePauseTime+"+++ Active:"+evaluateActivTime);
+
+
         // get start time and end time for evaluation
         Long startEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis());
         Long endEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis());
@@ -756,7 +761,19 @@ public class ActivityOurArrangement extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
 
         // set alarm manager when current time is between start date and end date and evaluation is enable
+
+
+        Log.d("Alarm Evaluation", "Start:"+startEvaluationDate);
+        Log.d("Alarm Evaluation", "End:"+endEvaluationDate);
+        Log.d("Alarm Evaluation", "Jetzt:"+System.currentTimeMillis());
+
+
+
+
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
+
+            Log.d("Alarm Evaluation"," STARTEN ------- ");
+
 
             calendar.setTimeInMillis(startEvaluationDate);
 
@@ -787,9 +804,13 @@ public class ActivityOurArrangement extends AppCompatActivity {
         }
         else { // delete alarm - it is out of time
 
+
+            Log.d("Alarm Evaluation"," BEENDEN   +++------- ");
+
+
             // update table ourArrangement in db -> evaluation disable
             myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()),"delete");
-            // crealte pending intent
+            // create pending intent
             pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(ActivityOurArrangement.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             // delete alarm
             manager.cancel(pendingIntentOurArrangementEvaluate);
@@ -1023,5 +1044,60 @@ public class ActivityOurArrangement extends AppCompatActivity {
         }
 
     }
+
+
+
+
+
+
+    public void alertDialogArrangementChange () {
+
+        TextView tmpdialogTextView;
+        LayoutInflater dialogInflater;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ActivityOurArrangement.this);
+
+        // Get the layout inflater
+        dialogInflater = (LayoutInflater) ActivityOurArrangement.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // inflate and get the view
+        View dialogSettings = dialogInflater.inflate(R.layout.dialog_info_arrangement_change, null);
+
+
+
+
+
+        // get string ressources
+        String tmpTextCloseDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementArrangementChangeCloseButton);
+        String tmpTextTitleDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementArrangementChangeHeadline);
+
+        // build the dialog
+        builder.setView(dialogSettings)
+
+                // Add close button
+                .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        alertDialogArrangementChange.cancel();
+                    }
+                })
+
+                // add title
+                .setTitle(tmpTextTitleDialog);
+
+        // and create
+        alertDialogArrangementChange = builder.create();
+
+        // and show the dialog
+        builder.show();
+
+    }
+
+
+
+
+
+
+
+
 
 }

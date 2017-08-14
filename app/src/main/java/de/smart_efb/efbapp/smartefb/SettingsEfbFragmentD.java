@@ -94,15 +94,16 @@ public class SettingsEfbFragmentD extends Fragment {
         // put start data and end data of evaluation in prefs
         // in future comes from coach over internet
 
-/*
+
 
         prefsEditor.putInt("evaluatePauseTimeInSeconds", 30);
         prefsEditor.putInt("evaluateActivTimeInSeconds", 30);
 
+
         prefsEditor.putLong("startDataEvaluationInMills", System.currentTimeMillis());
-        prefsEditor.putLong("endDataEvaluationInMills", System.currentTimeMillis()+150000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        prefsEditor.putLong("endDataEvaluationInMills", System.currentTimeMillis()+350000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
+/*
 
         Log.d("SettingsFragment","++++++++ SystemTime"+System.currentTimeMillis());
 
@@ -248,7 +249,7 @@ public class SettingsEfbFragmentD extends Fragment {
         */
 
         // set number of send messages (connect book) to zero
-        prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0);
+        //prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0);
 
 
         // set current date of arrangements
@@ -256,11 +257,11 @@ public class SettingsEfbFragmentD extends Fragment {
 
 
         // set blockid to zero
-        prefsEditor.putString("currentBlockIdOfArrangement", "0");
+        //prefsEditor.putString("currentBlockIdOfArrangement", "0");
 
 
 
-        prefsEditor.putInt("connectingStatus",0);
+        //prefsEditor.putInt("connectingStatus",0);
         prefsEditor.commit();
 
         int meetingStatus = prefs.getInt("meetingStatus", 0);
@@ -368,6 +369,7 @@ public class SettingsEfbFragmentD extends Fragment {
             @Override
             public void onClick(View v) {
 
+
                 boolean checkBoxBooleanValue=false;
                 String aktiv_passivText ="";
 
@@ -386,7 +388,10 @@ public class SettingsEfbFragmentD extends Fragment {
                 prefsEditor.putBoolean("showArrangementComment", checkBoxBooleanValue);
                 prefsEditor.commit();
 
+
                 Toast.makeText(fragmentContextD, "Vereinbarungen Kommentare " + aktiv_passivText, Toast.LENGTH_SHORT).show();
+
+
 
             }
         });
@@ -562,12 +567,23 @@ public class SettingsEfbFragmentD extends Fragment {
             @Override
             public void onClick(View v) {
 
+
+                /*
                 long newID = myDb.insertRowOurArrangement(txtInputArrangement.getText().toString(), "testuser", prefs.getLong("currentDateOfArrangement", System.currentTimeMillis()), true, false, 0, 0, 1234, "123456789", "nothing");
 
                 txtInputArrangement.setText("");
 
 
                 Toast.makeText(fragmentContextD, "Neue aktuelle Testabsprache eingetragen", Toast.LENGTH_SHORT).show();
+                */
+
+
+
+                prefsEditor.putInt("connectingStatus",0);
+                prefsEditor.commit();
+
+                Toast.makeText(fragmentContextD, "Connection Status zurückgesetzt!", Toast.LENGTH_SHORT).show();
+
 
 
             }

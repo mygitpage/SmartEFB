@@ -1696,7 +1696,7 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get evaluate pause time
                                 if (xpp.getText().trim().length() > 0) { // check if pause time from xml > 0
-                                    tmpEvaluatePauseTime = Integer.valueOf(xpp.getText().trim());
+                                    tmpEvaluatePauseTime = Integer.valueOf(xpp.getText().trim()) * 3600; // make seconds from hours
 
                                     Log.d("Arrang_Settings","EvaluatePauseTime"+tmpEvaluatePauseTime);
 
@@ -1716,7 +1716,7 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get evaluate active time
                                 if (xpp.getText().trim().length() > 0) { // check if active time from xml > 0
-                                    tmpEvaluateActiveTime = Integer.valueOf(xpp.getText().trim());
+                                    tmpEvaluateActiveTime = Integer.valueOf(xpp.getText().trim())* 3600; // make seconds from hours
 
                                     Log.d("Arrang_Settings","EvaluateActiveTime"+tmpEvaluateActiveTime);
 
@@ -1736,7 +1736,7 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get evaluate start date
                                 if (xpp.getText().trim().length() > 0) { // check if start date from xml > 0
-                                    tmpEvaluateStartDate = Long.valueOf(xpp.getText().trim());
+                                    tmpEvaluateStartDate = Long.valueOf(xpp.getText().trim())* 1000; // make mills from seconds
 
                                     Log.d("Arrang_Settings","EvaluateStartDate"+tmpEvaluateStartDate);
 
@@ -1756,7 +1756,7 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get evaluate end date
                                 if (xpp.getText().trim().length() > 0) { // check if end date from xml > 0
-                                    tmpEvaluateEndDate = Long.valueOf(xpp.getText().trim());
+                                    tmpEvaluateEndDate = Long.valueOf(xpp.getText().trim())* 1000; // make mills from seconds
 
                                     Log.d("Arrang_Settings","EvaluateEndDate"+tmpEvaluateEndDate);
 

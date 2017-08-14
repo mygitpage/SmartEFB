@@ -2,6 +2,7 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,6 +40,9 @@ public class OurArrangementFragmentNow extends Fragment {
     // shared prefs for the settings
     SharedPreferences prefs;
 
+    // the list view for the arrangements
+    ListView listViewArrangements = null;
+
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
 
@@ -49,6 +54,9 @@ public class OurArrangementFragmentNow extends Fragment {
 
     //limitation in count comments true-> yes, there is a border; no, there is no border, wirte infitisly comments
     Boolean commentLimitationBorder;
+
+    // reference to dialog settings
+    AlertDialog alertDialogSettings;
 
 
     @Override
@@ -111,32 +119,61 @@ public class OurArrangementFragmentNow extends Fragment {
 
             // Extras from intent that holds data
             Bundle intentExtras = null;
+
+            // true-> update the list view with arrangements
+            Boolean updateListView = false;
+
+            Log.d("REceiver Now","DRIN DRIN!!!!!");
+
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
                 // check intent order
-                if (intentExtras.getString("OurArrangement","0").equals("1") || intentExtras.getString("OurArrangementNow","0").equals("1") || intentExtras.getString("OurArrangementNowComment","0").equals("1")) {
-                    // TODO: Some action when things change
-                }
 
-                // send successfull?
-                if (intentExtras.getString("SendSuccessfull").equals("1")) {
+                String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
+                String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
+                String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
+                String tmpUpdateEvaluationLink = intentExtras.getString("UpdateEvaluationLink");
+
+                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
+
+                    //update current block id of arrangements
+                    currentBlockIdOfArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0");
+
+                    // show dialog arrangement change
+                    ((ActivityOurArrangement) getActivity()).alertDialogArrangementChange();
+
+                    updateListView = true;
+
+                }
+                else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1")) { // send successfull?
+
                     Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
-                } else { // no
-                    Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
+
+                } else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
+
+                    updateListView = true;
                 }
 
             }
 
-            // notify listView that data has changed
-            if (dataAdapterListViewOurArrangement != null) {
-                // get new data from db
-                Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentBlockIdOfArrangement, "equalBlockId");
-                // and notify listView
-                dataAdapterListViewOurArrangement.changeCursor(cursor);
-                dataAdapterListViewOurArrangement.notifyDataSetChanged();
 
+
+            Log.d("REceiver Now","Vor Listview update");
+
+            // update the list view with arrangements
+            if (updateListView && listViewArrangements != null) {
+
+                Log.d("REceiver Now","In Listview update");
+
+                listViewArrangements.destroyDrawingCache();
+                listViewArrangements.setVisibility(ListView.INVISIBLE);
+                listViewArrangements.setVisibility(ListView.VISIBLE);
+
+                displayActualArrangementSet ();
             }
+
+            Log.d("REceiver Now","Nach Listview update");
 
         }
     };
@@ -160,6 +197,9 @@ public class OurArrangementFragmentNow extends Fragment {
         // ask methode isCommentLimitationBorderSet() in ActivityOurArrangement to limitation in comments? true-> yes, linitation; false-> no
         commentLimitationBorder = ((ActivityOurArrangement) getActivity()).isCommentLimitationBorderSet("current");
 
+        // find the listview for the arrangements
+        listViewArrangements = (ListView) viewFragmentNow.findViewById(R.id.listOurArrangementNow);
+
     }
 
 
@@ -168,14 +208,9 @@ public class OurArrangementFragmentNow extends Fragment {
 
         Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentBlockIdOfArrangement, "equalBlockId");
 
-        // find the listview
-        ListView listView = (ListView) viewFragmentNow.findViewById(R.id.listOurArrangementNow);
-
-
         Log.d("Arrangement NOW","Anzahl:"+cursor.getCount());
 
-
-        if (cursor.getCount() > 0 && listView != null) {
+        if (cursor.getCount() > 0 && listViewArrangements != null) {
 
             // set listView visible and textView hide
             setVisibilityListViewNowArrangements("show");
@@ -192,7 +227,7 @@ public class OurArrangementFragmentNow extends Fragment {
                     0);
 
             // Assign adapter to ListView
-            listView.setAdapter(dataAdapterListViewOurArrangement);
+            listViewArrangements.setAdapter(dataAdapterListViewOurArrangement);
 
         }
         else {
@@ -263,6 +298,14 @@ public class OurArrangementFragmentNow extends Fragment {
         return  commentLimitationBorder;
 
     }
+
+
+
+
+
+
+
+
 
 
 }

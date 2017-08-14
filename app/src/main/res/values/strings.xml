@@ -340,6 +340,14 @@
             <string name="textDialogOurArrangementInfoCoach">Sollten Sie Fragen oder Änderungswünsche zu dieser Einschränkung haben, wenden Sie sich bitte an Ihre Beraterin oder Ihren Berater.</string>
         <!-- End our arrangement dialog no more messages -->
 
+
+
+        <!-- our arrangement dialog arrangement change -->
+            <string name="textDialogOurArrangementArrangementChangeCloseButton">Schliessen</string>
+            <string name="textDialogOurArrangementArrangementChangeHeadline">Änderung der Absprachen</string>
+            <string name="textDialogOurArrangementArrangementChangeInfoText">Es stehen neue Absprachen zur Verfügung, die bereits geladen wurden.\nSobald Sie diesen Dialog beenden, sehen Sie die neuen Absprachen.\nEin eventuell gesendeter Kommentar wird bei den älteren Absprachen archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Beraterin.</string>
+        <!-- End our arrangement dialog arrangement change -->
+
     <!-- Activity our arrangement End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 

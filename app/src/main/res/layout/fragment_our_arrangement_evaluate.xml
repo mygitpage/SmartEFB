@@ -15,32 +15,42 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
+
+
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp">
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style">
 
-
-            <TextView
-                android:id="@+id/arrangementEvalauteIntroText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/text_color"
-                android:gravity="left"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/arrangementShowEvaluateBackLink"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
-                android:textColor="@color/text_color"
-                android:textColorLink="@color/colorPrimary"
-                android:gravity="right"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/arrangementEvalauteIntroText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="3dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textAuthorName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
 
         </LinearLayout>
+
 
         <TextView
             android:id="@+id/evaluateArrangement"
@@ -49,8 +59,44 @@
             android:textSize="16dp"
             android:textColor="@color/text_color"
             android:gravity="left"
-            android:paddingLeft="10dp"
-            android:paddingBottom="5dp"/>
+            android:paddingLeft="10dp"/>
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/arrangementShowEvaluateBackLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/text_color"
+                android:textColorLink="@color/colorPrimary"
+                android:gravity="right"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/borderBetweenArrangement1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"/>
+
+
+
+
+
+
+
+
+
 
         <TextView
             android:id="@+id/evaluateThankAndNextEvaluation"
@@ -69,7 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
             android:text="@string/questionOneEvaluateMySelf"
@@ -103,7 +149,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/evaluateArrangementSuggestion_1"
-                    android:textColor="@color/text_color_white"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="12dp"
                     android:gravity="center"
                     android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -114,7 +160,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/evaluateArrangementSuggestion_2"
-                    android:textColor="@color/text_color_white"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="12dp"
                     android:gravity="center"
                     android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -125,7 +171,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/evaluateArrangementSuggestion_3"
-                    android:textColor="@color/text_color_white"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="12dp"
                     android:gravity="center"
                     android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -136,7 +182,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/evaluateArrangementSuggestion_4"
-                    android:textColor="@color/text_color_white"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="12dp"
                     android:gravity="center"
                     android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -147,7 +193,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/evaluateArrangementSuggestion_5"
-                    android:textColor="@color/text_color_white"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="12dp"
                     android:gravity="center"
                     android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -158,7 +204,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/evaluateArrangementSuggestion_6"
-                    android:textColor="@color/text_color_white"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="12dp"
                     android:gravity="center"
                     android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -172,7 +218,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
             android:text="@string/questionTwoEvaluateMyEx"
@@ -206,7 +252,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_1"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -217,7 +263,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_2"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -228,7 +274,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_3"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -239,7 +285,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_4"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -250,7 +296,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_5"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -261,7 +307,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_6"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -276,7 +322,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
             android:text="@string/questionThreeEvaluateChildreen"
@@ -310,7 +356,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_1"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -321,7 +367,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_2"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -332,7 +378,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_3"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -343,7 +389,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_4"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -354,7 +400,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_5"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -365,7 +411,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_6"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -380,7 +426,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
             android:text="@string/questionFourEvaluateThirdPeople"
@@ -414,7 +460,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_1"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -425,7 +471,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_2"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -436,7 +482,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_3"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -447,7 +493,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_4"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -458,7 +504,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_5"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -469,7 +515,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_6"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -495,14 +541,18 @@
             android:id="@+id/inputEvaluateResultComment"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:textColor="@color/text_color_white"
+            android:textColor="@color/colorPrimaryDark"
             android:hint="@string/commentEvaluateResultTextFieldHintText"
             android:gravity="left|top"
             android:background="@drawable/app_edittext_style"
             android:layout_margin="10dp"
-            android:textColorHint="@color/text_color_white"
-            android:inputType="textNoSuggestions|text|textMultiLine"
-            android:padding="5dp"/>
+            android:textColorHint="@color/colorPrimaryDark"
+            android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
+            android:padding="5dp"
+            android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
+
+
+            />
 
 
         <TextView
@@ -510,7 +560,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
             android:paddingBottom="5dp"/>
@@ -528,7 +578,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/app_button_style"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="@string/btnSendEvaluateResult"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="5dp"
@@ -539,7 +589,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/app_button_style"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="@string/btnAbortEvaluate"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="5dp"

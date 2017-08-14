@@ -123,6 +123,8 @@ public class OurArrangementFragmentSketch  extends Fragment {
                     // TODO: Some action when things change
                 }
 
+
+                /*
                 // send successfull?
                 if (intentExtras.getString("SendSuccessfull").equals("1")) {
                     Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
@@ -130,6 +132,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
                     Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
                 }
 
+                */
             }
 
             // notify listView that data has changed

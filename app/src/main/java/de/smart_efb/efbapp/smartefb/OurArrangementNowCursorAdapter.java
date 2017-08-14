@@ -67,6 +67,10 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
 
+
+
+
+
         // is cursor first?
         if (cursor.isFirst() ) {
             TextView numberOfArrangement = (TextView) view.findViewById(R.id.ourArrangementIntroText);
@@ -79,6 +83,17 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
             TextView tmpGapToBottom = (TextView) view.findViewById(R.id.borderToBottomOfDisplayWhenNeeded);
             tmpGapToBottom.setVisibility(View.VISIBLE);
         }
+
+
+
+
+
+
+
+
+
+
+
 
     }
 
@@ -98,12 +113,16 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         // text for new comment entry
         String tmpTextNewEntryComment = "";
 
+
         if (cursor.isFirst() ) { // listview for first element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_now_first, parent, false);
         }
         else { // listview for "normal" element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_now, parent, false);
         }
+
+
+
 
         // put arrangement number
         TextView numberOfArrangement = (TextView) inflatedView.findViewById(R.id.listArrangementNumberText);
@@ -129,6 +148,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         textViewArrangement.setText(title);
 
         // generate link for evaluate an arrangement
+        TextView linkEvaluateAnArrangement = (TextView) inflatedView.findViewById(R.id.linkToEvaluateAnArrangement);
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false)) {
 
             // make link to evaluate arrangement, when evaluation is possible for this arrangement
@@ -141,14 +161,66 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                         .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition() + 1))
                         .appendQueryParameter("com", "evaluate_an_arrangement");
 
-                showEvaluateCommentLinkTmp = Html.fromHtml("<a href=\"" + evaluateLinkBuilder.build().toString() + "\">" + context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateString", "string", context.getPackageName())) + "</a> &middot; ");
+                showEvaluateCommentLinkTmp = Html.fromHtml("<a href=\"" + evaluateLinkBuilder.build().toString() + "\">" + context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateString", "string", context.getPackageName())) + "</a>");
             } else { // link is not possible, so do it with text
 
-                showEvaluateCommentLinkTmp = Html.fromHtml("(" + context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateString", "string", context.getPackageName())) + ") &middot; ");
+                showEvaluateCommentLinkTmp = Html.fromHtml("(" + context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateString", "string", context.getPackageName())) + ")");
             }
+
+            linkEvaluateAnArrangement.setText(showEvaluateCommentLinkTmp);
+            linkEvaluateAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
+
+            /*
+            // calculate run time for timer in MILLISECONDS!!!
+            Long nowTime = System.currentTimeMillis();
+            Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
+            Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from miutes
+            Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
+            // start the timer with the calculated milliseconds
+            if (runTimeForTimer > 0) {
+                new CountDownTimer(runTimeForTimer, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        // gernate count down timer
+                        String FORMAT = "%02d:%02d:%02d";
+                        String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendDelayInfo);
+                        String tmpTime = String.format(FORMAT,
+                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                        // put count down to string
+                        String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                        // and show
+                        tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
+                    }
+
+                    public void onFinish() {
+                        // count down is over -> show
+                        String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+                        tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                    }
+                }.start();
+
+            }
+            else {
+                // no count down anymore -> show send successfull
+                String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+                tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+            }
+             */
+
+
+
+
+
+        }
+        else { // evaluation not possible/ deactivated
+            linkEvaluateAnArrangement.setVisibility(View.GONE);
         }
 
-        // Show link for comment in our arrangement
+        // Show link for comment an arrangement and to show all comments for an arrangement
+        TextView linkCommentAnArrangement = (TextView) inflatedView.findViewById(R.id.linkCommentAnArrangement);
+        TextView linkShowCommentOfArrangement = (TextView) inflatedView.findViewById(R.id.linkToShowCommentsOfArrangements);
+
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false)) {
 
             // get from DB  all comments for choosen arrangement (getCount)
@@ -197,15 +269,32 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
             else {
                 showCommentArrangementLinkTmp = Html.fromHtml(" ("+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+")");
             }
+            linkCommentAnArrangement.setText(showCommentArrangementLinkTmp);
+            linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
+
 
             if (tmpIntCountComments == 0) {
-                showCommentsLinkTmp = Html.fromHtml(tmpCountComments + " &middot;");
+                showCommentsLinkTmp = Html.fromHtml(tmpCountComments);
             }
             else {
-                showCommentsLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountComments + "</a> " + tmpTextNewEntryComment + " &middot;");
+                showCommentsLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountComments + "</a> " + tmpTextNewEntryComment);
             }
+            linkShowCommentOfArrangement.setText(showCommentsLinkTmp);
+            linkShowCommentOfArrangement.setMovementMethod(LinkMovementMethod.getInstance());
 
         }
+        else { // comment and show comment are deactivated -> hide them
+
+            linkCommentAnArrangement.setVisibility(View.GONE);
+            linkShowCommentOfArrangement.setVisibility(View.GONE);
+
+
+        }
+
+
+
+
+        /*
 
         // show generate links for evaluate or/and comment
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false) || prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) ) {
@@ -226,6 +315,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
             linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
 
         }
+        */
 
 
         return inflatedView;
