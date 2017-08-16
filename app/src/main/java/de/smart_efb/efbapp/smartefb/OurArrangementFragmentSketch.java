@@ -34,6 +34,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
     // shared prefs for the settings
     SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
     // the date of sketch arrangement
     long currentDateOfSketchArrangement;
@@ -44,11 +45,18 @@ public class OurArrangementFragmentSketch  extends Fragment {
     // reference cursorAdapter for the listview
     OurArrangementSketchCursorAdapter dataAdapterListViewOurArrangementSketch = null;
 
+    // the list view for the sketch arrangements
+    ListView listViewSketchArrangement;
+
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
         viewFragmentSketch = layoutInflater.inflate(R.layout.fragment_our_arrangement_sketch, null);
+
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentSketchBrodcastReceiver, filter);
 
         return viewFragmentSketch;
 
@@ -62,10 +70,6 @@ public class OurArrangementFragmentSketch  extends Fragment {
         super.onViewCreated(view, saveInstanceState);
 
         fragmentSketchContext = getActivity().getApplicationContext();
-
-        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
-        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
-        getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentSketchBrodcastReceiver, filter);
 
         // init the fragment now
         initFragmentSketch();
@@ -96,6 +100,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
         // init the prefs
         prefs = fragmentSketchContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentSketchContext.MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
         //get date of sketch arrangement
         currentDateOfSketchArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis());
@@ -103,7 +108,11 @@ public class OurArrangementFragmentSketch  extends Fragment {
         //get block id of sketch arrangement
         currentBlockIdOfSketchArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0");;
 
+        // find the listview for sketch arrangement
+        listViewSketchArrangement = (ListView) viewFragmentSketch.findViewById(R.id.listOurArrangementSketch);
+
     }
+
 
 
 
@@ -115,39 +124,86 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
             // Extras from intent that holds data
             Bundle intentExtras = null;
+
+            // true-> update the list view with arrangements
+            Boolean updateListView = false;
+
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
                 // check intent order
-                if (intentExtras.getString("OurArrangement","0").equals("1") || intentExtras.getString("OurArrangementSketch","0").equals("1") || intentExtras.getString("OurArrangementSketchComment","0").equals("1")) {
-                    // TODO: Some action when things change
+                String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
+                String tmpExtraOurArrangementSketch = intentExtras.getString("OurArrangementSketch","0");
+                String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
+
+                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketch != null && tmpExtraOurArrangementSketch.equals("1")) {
+
+                    //update current block id of sketch arrangements
+                    currentBlockIdOfSketchArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0");
+
+                    checkUpdateForShowDialog ();
+
+                    updateListView = true;
+
+                }
+                else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1")) { // send successfull?
+
+                    Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
+
                 }
 
-
-                /*
-                // send successfull?
-                if (intentExtras.getString("SendSuccessfull").equals("1")) {
-                    Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
-                } else { // no
-                    Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
-                }
-
-                */
             }
 
-            // notify listView that data has changed
-            if (dataAdapterListViewOurArrangementSketch != null) {
-                // get new data from db
-                Cursor cursor = myDb.getAllRowsSketchOurArrangement(currentBlockIdOfSketchArrangement);
-                // and notify listView
-                dataAdapterListViewOurArrangementSketch.changeCursor(cursor);
-                dataAdapterListViewOurArrangementSketch.notifyDataSetChanged();
-
+            // update the list view with sketch arrangements
+            if (updateListView) {
+                updateListView();
             }
 
         }
     };
 
+
+
+    // check prefs for update now and sketch arrangement or only sketch arrangements?
+    public void checkUpdateForShowDialog () {
+
+
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false) && prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false)) {
+
+            // set signal arrangements and sketch arrangements are update to false; because user is informed by dialog!
+            prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false);
+            prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false);
+            prefsEditor.commit();
+
+            // show dialog arrangement and sketch arrangement change
+            ((ActivityOurArrangement) getActivity()).alertDialogArrangementChange("currentSketch");
+
+        }
+        else if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false)) {
+            // set signal sketch arrangements are update to false; because user is informed by dialog!
+            prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false);
+            prefsEditor.commit();
+
+            // show dialog arrangement change
+            ((ActivityOurArrangement) getActivity()).alertDialogArrangementChange("sketch");
+
+        }
+
+
+    }
+
+
+    // update the list view with sketch arrangements
+    public void updateListView () {
+
+        if (listViewSketchArrangement != null) {
+            listViewSketchArrangement.destroyDrawingCache();
+            listViewSketchArrangement.setVisibility(ListView.INVISIBLE);
+            listViewSketchArrangement.setVisibility(ListView.VISIBLE);
+
+            displaySketchArrangementSet ();
+        }
+    }
 
 
 
@@ -156,15 +212,12 @@ public class OurArrangementFragmentSketch  extends Fragment {
     // show listView with sketch arrangements or info: nothing there
     public void displaySketchArrangementSet () {
 
-        // find the listview
-        ListView listView = (ListView) viewFragmentSketch.findViewById(R.id.listOurArrangementSketch);
-
-        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false) && listView != null) { // Function showSketchArrangement is available!!!!
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false) && listViewSketchArrangement != null) { // Function showSketchArrangement is available!!!!
 
             // get the data from db -> all sketch arrangements
             Cursor cursor = myDb.getAllRowsSketchOurArrangement(currentBlockIdOfSketchArrangement);
 
-            if (cursor.getCount() > 0 && listView != null) {
+            if (cursor.getCount() > 0) {
 
                 // set listView visible, textView nothing there and not available gone
                 setVisibilityListViewSketchArrangements("show");
@@ -182,7 +235,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
                         0);
 
                 // Assign adapter to ListView
-                listView.setAdapter(dataAdapterListViewOurArrangementSketch);
+                listViewSketchArrangement.setAdapter(dataAdapterListViewOurArrangementSketch);
 
             } else {
 

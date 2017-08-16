@@ -29,14 +29,14 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
     // reference to the DB
     private DBAdapter myDb;
 
-    // actual arrangement date, which is "at work"
-    long actualArrangementDate = 0;
-
     // number for count comments for arrangement (12 numbers!)
     private String[] numberCountForAssessments = new String [12];
 
     //limitation in count comments true-> yes, there is a border; no, there is no border, wirte infitisly comments
     Boolean commentLimitationBorder;
+
+    // for prefs
+    SharedPreferences prefs;
 
 
 
@@ -56,73 +56,109 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
 
         commentLimitationBorder = ((ActivityOurArrangement)context).isCommentLimitationBorderSet("sketch");
 
+        // open sharedPrefs
+        prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
+
     }
 
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        // link to show comments
-        Spanned showCommentsLinkTmp = null;
-        // link to comment an arrangement
-        Spanned showCommentSketchArrangementLinkTmp = null;
-
-
-        // text for new comment entry
-        String tmpTextNewEntryComment = "";
-
-        // open sharedPrefs
-        SharedPreferences prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
-
         if (cursor.isFirst() ) { // listview for first element? write intro text
 
             TextView tmpTextViewSketchIntroText = (TextView) view.findViewById(R.id.ourArrangementSketchIntroText);
             String tmpTextIntroText = "";
 
-            Log.d("C_Adapter Sketch Arr","ChangeTo:"+cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_CHANGE_TO)));
-
             if (cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_CHANGE_TO)).equals(ConstansClassOurArrangement.arrangementStatusNothing)) {
-
-                Log.d("C_Adapter Sketch Arr","In Nothimg Bereich - Constants:" + ConstansClassOurArrangement.arrangementStatusNothing);
-
                 tmpTextIntroText = String.format(context.getResources().getString(R.string.ourArrangementSketchIntroTextPlural), EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), "dd.MM.yyyy"));
                 tmpTextViewSketchIntroText.setText(tmpTextIntroText);
             }
             else {
-
-                Log.d("C_Adapter Sketch Arr","Im anderen Bereich- Constants:" + ConstansClassOurArrangement.arrangementStatusNothing);
-
                 tmpTextIntroText = String.format(context.getResources().getString(R.string.ourArrangementSketchIntroTextChangeTo), EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME)), "dd.MM.yyyy"));
                 tmpTextViewSketchIntroText.setText(tmpTextIntroText);
             }
 
         }
 
+        // is cursor last?
+        if (cursor.isLast() ) { // listview for last element -> set gap to bottom of display
+            // show gap to bottom of display
+            TextView tmpGapToBottom = (TextView) view.findViewById(R.id.borderToBottomOfDisplayWhenNeeded);
+            tmpGapToBottom.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+
+
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+
+        View inflatedView;
+
+        // link to show comments
+        Spanned showCommentsLinkTmp = null;
+        // link to comment an arrangement
+        Spanned showCommentSketchArrangementLinkTmp = null;
+        // text for new comment entry
+        String tmpTextNewEntryComment = "";
+
+
+        if (cursor.isFirst()) { // listview for first element
+            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_sketch_first, parent, false);
+        }
+        else { // listview for next elements
+            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_sketch, parent, false);
+        }
+
         // put sketch arrangement number
-        TextView tmpTextViewNumberOfArrangement = (TextView) view.findViewById(R.id.listArrangementSketchNumberText);
+        TextView tmpTextViewNumberOfArrangement = (TextView) inflatedView.findViewById(R.id.listArrangementSketchNumberText);
         String tmpTextSketchArrangementNumber = context.getResources().getString(R.string.showSketchArrangementNumberText)+ " " + Integer.toString(cursor.getPosition()+1);
         tmpTextViewNumberOfArrangement.setText(tmpTextSketchArrangementNumber);
 
         // put author name
-        TextView tmpTextViewSketchAuthorNameText = (TextView) view.findViewById(R.id.listTextSketchAuthorName);
-        String tmpTextAuthorNameText = String.format(context.getResources().getString(R.string.ourArrangementSketchAuthorNameText), cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)));
-        tmpTextViewSketchAuthorNameText.setText(tmpTextAuthorNameText);
+        TextView tmpTextViewSketchAuthorNameText = (TextView) inflatedView.findViewById(R.id.listTextSketchAuthorName);
+        String tmpTextAuthorNameText = String.format(context.getResources().getString(R.string.ourArrangementSketchAuthorNameTextWithDate), cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
+        tmpTextViewSketchAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
 
         // check if sketch arrangement entry new?
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_NEW_ENTRY)) == 1) {
-            TextView newEntryOfSketchArrangement = (TextView) view.findViewById(R.id.listArrangementNewSketchText);
+            TextView newEntryOfSketchArrangement = (TextView) inflatedView.findViewById(R.id.listArrangementNewSketchText);
             String txtNewEntryOfSketchArrangement = context.getResources().getString(R.string.newEntryText);
             newEntryOfSketchArrangement.setText(txtNewEntryOfSketchArrangement);
             myDb.deleteStatusNewEntryOurArrangement(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
         }
 
         // put sketch arrangement text
-        TextView textViewArrangement = (TextView) view.findViewById(R.id.listTextSketchArrangement);
+        TextView textViewArrangement = (TextView) inflatedView.findViewById(R.id.listTextSketchArrangement);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(title);
 
         // Show link for comment the sketch arrangements
+        TextView linkSketchCommentAnArrangement = (TextView) inflatedView.findViewById(R.id.linkSketchCommentAnArrangement);
+        TextView linkShowSketchCommentOfArrangement = (TextView) inflatedView.findViewById(R.id.linkToShowSketchCommentsOfArrangements);
+
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowLinkCommentSketchArrangement, false)) {
+
+            // generate difference text for comment anymore
+            String tmpNumberCommentsPossible;
+            int tmpDifferenceComments = prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment, 0) - prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0);
+            if (commentLimitationBorder) {
+                if (tmpDifferenceComments > 0) {
+                    if (tmpDifferenceComments > 1) { //plural comments
+                        tmpNumberCommentsPossible = String.format(context.getString(R.string.infoTextNumberOfSketchCommentsPossiblePlural), tmpDifferenceComments);
+                    } else { // singular comments
+                        tmpNumberCommentsPossible = String.format(context.getString(R.string.infoTextNumberOfSketchCommentsPossibleSingular), tmpDifferenceComments);
+                    }
+                }
+                else {
+                    tmpNumberCommentsPossible = context.getString(R.string.infoTextNumberOfSketchCommentsPossibleNoMore);
+                }
+            }
+            else {
+                tmpNumberCommentsPossible = context.getString(R.string.infoTextNumberOfSketchCommentsPossibleNoBorder);
+            }
 
             // get from DB  all comments for choosen sketch arrangement (getCount)
             Cursor cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
@@ -137,8 +173,6 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
                 tmpCountAssessments = numberCountForAssessments[cursorSketchArrangementAllComments.getCount()];
             }
 
-
-
             // check comments for new entry, the cursor is sorted DESC, so first element is newest!!! new entry is markt by == 1
             if (cursorSketchArrangementAllComments.getCount() > 0) {
                 cursorSketchArrangementAllComments.moveToFirst();
@@ -146,8 +180,6 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
                     tmpTextNewEntryComment = "<font color='"+ ContextCompat.getColor(context, R.color.text_accent_color) + "'>"+ context.getResources().getString(R.string.newEntryText) + "</font>";
                 }
             }
-
-
 
             // make link to comment arrangement
             Uri.Builder commentLinkBuilder = new Uri.Builder();
@@ -167,54 +199,28 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
                     .appendQueryParameter("com", "show_comment_for_sketch_arrangement");;
 
-
             if (prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0) < prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,0) || !commentLimitationBorder) {
-
-                showCommentSketchArrangementLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementAssessmentsString", "string", context.getPackageName()))+"</a>");
-
+                showCommentSketchArrangementLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementAssessmentsString", "string", context.getPackageName()))+ " " + tmpNumberCommentsPossible + "</a>");
             }
             else {
-                showCommentSketchArrangementLinkTmp = Html.fromHtml(" ("+context.getResources().getString(context.getResources().getIdentifier("ourArrangementAssessmentsString", "string", context.getPackageName()))+")");
-
+                showCommentSketchArrangementLinkTmp = Html.fromHtml(context.getResources().getString(context.getResources().getIdentifier("ourArrangementAssessmentsString", "string", context.getPackageName()))+ " " + tmpNumberCommentsPossible);
             }
+            linkSketchCommentAnArrangement.setText(showCommentSketchArrangementLinkTmp);
+            linkSketchCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
 
 
             if (tmpIntCountComments == 0) {
-                showCommentsLinkTmp = Html.fromHtml(tmpCountAssessments + " &middot;");
+                showCommentsLinkTmp = Html.fromHtml(tmpCountAssessments);
             }
             else {
-                showCommentsLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountAssessments + "</a> " + tmpTextNewEntryComment + " &middot;");
+                showCommentsLinkTmp = Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpCountAssessments + "</a> " + tmpTextNewEntryComment);
 
             }
-
-
-            // get textview from view
-            TextView linkCommentAnSketchArrangement = (TextView) view.findViewById(R.id.linkCommentAnSketchArrangement);
-
-            linkCommentAnSketchArrangement.setText(TextUtils.concat(showCommentsLinkTmp, showCommentSketchArrangementLinkTmp));
-            linkCommentAnSketchArrangement.setMovementMethod(LinkMovementMethod.getInstance());
+            linkShowSketchCommentOfArrangement.setText(showCommentsLinkTmp);
+            linkShowSketchCommentOfArrangement.setMovementMethod(LinkMovementMethod.getInstance());
 
         }
 
-
-    }
-
-
-
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-
-        View inflatedView;
-
-        if (cursor.isFirst()) { // listview for first element
-            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_sketch_first, parent, false);
-
-
-        }
-        else { // listview for next elements
-            inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_sketch, parent, false);
-
-        }
 
         return inflatedView;
 

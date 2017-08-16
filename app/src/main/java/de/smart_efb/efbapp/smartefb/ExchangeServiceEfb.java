@@ -607,6 +607,9 @@ import java.util.Map;
                         e.printStackTrace();
                     }
 
+                    Log.d("Sketch Comment XML", "Content:"+stringBuilder.toString().trim());
+
+
                     // call xml parser with input
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
                     returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
@@ -614,6 +617,9 @@ import java.util.Map;
                     if (returnMap.get("SendSuccessfull").equals("1")) {
                         myDb.updateStatusOurArrangementSketchComment (dbId, 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
                     }
+
+
+
 
                     // close input stream and disconnect
                     answerInputStream.close();
@@ -727,6 +733,8 @@ import java.util.Map;
                     this.backgroundThread.start();
 
                 } else if (command.equals("send_sketch_comment_arrangement") && dbId > 0) { // send new sketch arrangement comment to server
+
+                    Log.d("Excange Service", "Command erhalten !!!!!!!!");
 
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendSketchCommentArrangement (context, dbId));

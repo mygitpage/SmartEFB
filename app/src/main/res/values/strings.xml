@@ -154,6 +154,7 @@
             <string name="ourArrangementBackLinkToArrangement">Zurück</string>
             <string name="newEntryText">(Neu)</string>
             <string name="toastMessageCommentSendSuccessfull">Der Kommentar wurde gesendet!</string>
+            <string name="toastMessageSketchCommentSendSuccessfull">Der Die Einschätzung wurde gesendet!</string>
             <string name="toastMessageCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
 
         <!-- End String Activity Our Arrangement -->
@@ -173,9 +174,13 @@
         <!-- End show now arrangements -->
 
         <!-- Link text for comment, show comments and evaluate-->
-            <string name="ourArrangementCommentString">Kommentieren</string>
-            <string name="ourArrangementShowCommentString">Keine Kommentare</string>
-            <string name="ourArrangementEvaluateString">Bewerten</string>
+            <string name="ourArrangementCommentString">Absprache kommentieren</string>
+            <string name="ourArrangementEvaluateStringNextPassivPeriod">Absprache bewerten für %1$s</string>
+            <string name="ourArrangementEvaluateStringNextActivePeriod">Nächste Bewertungsperiode in %1$s</string>
+            <string name="infoTextNumberOfCommentsPossiblePlural">(%1$d verbleiben)</string>
+            <string name="infoTextNumberOfCommentsPossibleSingular">(%1$d verbleibt)</string>
+            <string name="infoTextNumberOfCommentsPossibleNoMore">(Alle aufgebraucht)</string>
+            <string name="infoTextNumberOfCommentsPossibleNoBorder">(Keine Begrenzung)</string>
         <!-- End link text -->
 
         <!-- String Fragment comment arrangement -->
@@ -211,9 +216,7 @@
             <string name="infoTextNowCommentDelaytimeSingular">die Kommentare werden mit einer Verzögerungszeit von einer Minute zugestellt (wenn eine Internetverbindung besteht)</string>
             <string name="infoTextNowCommentDelaytimePlural">die Kommentare werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
             <string name="ourArrangementCommentPersonalAuthorName">Ihnen</string>
-
-
-    <!-- End String Fragment comment -->
+        <!-- End String Fragment comment -->
 
         <!-- String Fragment show comment -->
             <string name="btnAbortShowComment">Zurück zu den aktuellen Absprachen</string>
@@ -227,8 +230,7 @@
             <string name="ourArrangementShowCommentSendSuccsessfullInfo">Der Kommentar wurde gesendet.</string>
             <string name="ourArrangementShowCommentLinkToCommentAnArrangement">Absprache %1$d kommentieren</string>
             <string name="ourArrangementShowCommentPersonalAuthorName">Ihnen</string>
-
-    <!-- End String Fragment show comment -->
+        <!-- End String Fragment show comment -->
 
         <!-- String Fragment evaluate arrangement -->
             <string name="showEvaluateArrangementIntroText">Bewerten Sie Absprache</string>
@@ -245,7 +247,6 @@
             <string name="evaluateArrangementSuggestion_4">Kaum\n</string>
             <string name="evaluateArrangementSuggestion_5">Nie\n</string>
             <string name="evaluateArrangementSuggestion_6">Nicht\nbetroffen</string>
-            <string name="commentEvaluateResultTextFieldHintText">Bitte geben Sie Ihre Anmerkungen hier ein.</string>
             <string name="evaluateResultSuccsesfulySend">Vielen Dank für die Bewertung der letzten Absprache!</string>
             <string name="evaluateResultNotCompletely">Ihre Bewertung ist nicht vollständig! Bitte kontrollieren Sie die markierten Fragen!</string>
             <string name="evaluateErrorTextByQuestion">Bitte kontrollieren Sie diese Frage!</string>
@@ -253,18 +254,25 @@
             <string name="showNothingNextArrangementToEvaluateText">Bitte klicken Sie auf Speichern. Es sind keine weiteren Absprachen zu bewerten.</string>
             <string name="evaluateThankAndNextEvaluationText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die folgende Absprache.</string>
             <string name="evaluateThankAndNextEvaluationLastText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die letzte Absprache.</string>
+            <string name="ourArrangementEvaluationBackLinkToArrangement">Zurück zu den aktuellen Absprachen</string>
+            <string name="ourArrangementEvaluationAuthorNameWithDateForArrangement">Die Absprache wurde von &lt;u>%1$s&lt;/u> am %2$s geschrieben.</string>
+            <string name="ourArrangementEvaluationInfoEvaluationPeriod">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Für eine Bewertung stehen jeweils %5$d Stunden zur Verfügung. Die Pause beträgt %6$d Stunden.</string>
+            <string name="ourArrangementEvaluationNoEvaluationPossibleWhenEvaluate">Wenn Sie eine Absprache bewertet haben, ist eine weitere Bewertung erst nach Ablauf der Pausenzeit möglich.</string>
+            <string name="ourArrangementEvaluatePeriodExpired">Bewertungszeitraum abgelaufen</string>
+            <string name="ourArrangementEvaluateTextEvaluationModulSwitchOn">Bewertungsmodul wird eingeschaltet</string>
+            <string name="ourArrangementEvaluateTextEvaluationModulSwitchOff">Bewertungsmodul wird ausgeschaltet</string>
         <!-- End Fragment evaluate arrangement -->
 
         <!-- fragment comment sketch arrangement -->
-            <string name="showSketchArrangementIntroText">Entwurf</string>
+            <string name="showSketchArrangementIntroText">Absprache Entwurf</string>
             <string name="commentSketchArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
             <string name="introStructQuestionForCommentSketchArrangement">Wie schätzen Sie Ihre Zustimmung zu dem Entwurf ein?</string>
             <string name="errorStructQuestionForCommentSketchArrangement">Bitte wählen Sie eine Einschätzung!</string>
-            <string name="introFreeQuestionForCommentSketchArrangement">Bitte erläutern Sie Ihre obige Einschätzung</string>
+            <string name="introFreeQuestionForCommentSketchArrangementHint"><b>Bitte erläutern Sie Ihre obige Einschätzung</b></string>
             <string name="errorFreeQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihren Text zur obigen Einschätzung! Er ist zu kurz!</string>
             <string name="commentFreeQuestionSketchArrangementTextFieldHintText">Bitte erläutern Sie hier Ihre Einschätzung.</string>
             <string name="buttonSendSketchArrangementComment">Einschätzung senden</string>
-            <string name="ourArrangementBackLinkToSketchArrangement">Zurück</string>
+            <string name="ourArrangementBackLinkToSketchArrangement">Zurück zu den Entwürfen</string>
             <string name="sketchCommentSuccsesfulySend">Einschätzung erfolgreich gesendet</string>
             <string name="infoTextSketchCommentMaxSingular">Sie könnnen maximal %1$d Einschätzung schreiben.</string>
             <string name="infoTextSketchCommentMaxPlural">Sie könnnen maximal %1$d Einschätzungen schreiben.</string>
@@ -272,8 +280,12 @@
             <string name="infoTextSketchCommentCountZero">Sie haben noch keine Einschätzung geschrieben.</string>
             <string name="infoTextSketchCommentCountSingular">Davon haben Sie bereits %1$d Einschätzung geschrieben.</string>
             <string name="infoTextSketchCommentCountPlural">Davon haben Sie bereits %1$d Einschätzungen geschrieben.</string>
-            <string name="infoTextSketchCommentMaxLetters">Ihre Einschätzung darf maximal %1$d Zeichen lang sein.</string>
-            <string name="ourArrangementAssessmentsString">Einschätzen</string>
+            <string name="infoTextSketchCommentMaxLetters">Ihre Einschätzung darf maximal %1$d Zeichen lang sein und</string>
+            <string name="ourArrangementAssessmentsString">Entwurf einschätzen</string>
+            <string name="infoTextNumberOfSketchCommentsPossiblePlural">(%1$d verbleiben)</string>
+            <string name="infoTextNumberOfSketchCommentsPossibleSingular">(%1$d verbleibt)</string>
+            <string name="infoTextNumberOfSketchCommentsPossibleNoMore">(Alle aufgebraucht)</string>
+            <string name="infoTextNumberOfSketchCommentsPossibleNoBorder">(Keine Begrenzung)</string>
             <string name="commentSketchHistoryIntroText">Alle bisherigen Einschätzungen zum Entwurf</string>
             <string name="commentSketchHistoryNoCommentIntroText">Bisher sind noch keine Einschätzungen zu Entwürfen vorhanden!</string>
             <string name="showSketchCommentIntroText">Die Einschätzungen zum Entwurf</string>
@@ -284,7 +296,39 @@
             <string name="evaluateSketchSuggestion_5">Keine</string>
             <string name="textSketchCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Entwurf abgegeben: %1$s</string>
             <string name="textSketchCommentNoActualResultStructQuestion">Mit der Einschätzung wurden keine Zustimmungswerte abgegeben.</string>
+            <string name="ourArrangementSketchCommentAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
+            <string name="lastActualSketchCommentText">Aktuellste Einschätzung zum Entwurf</string>
+            <string name="ourArrangementSketchCommentPersonalAuthorName">Ihnen</string>
+            <string name="ourArrangementSketchCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+            <string name="ourArrangementSketchCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
+            <string name="ourArrangementSketchCommentSendSuccsessfullInfo">Die Einschätzung wurde gesendet.</string>
+            <string name="ourArrangementSketchCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
+            <string name="ourArrangementSketchCommentLinkToShowAllCommentsSingular">%1$d weitere Einschätzungen vorhanden</string>
+            <string name="ourArrangementSketchCommentLinkToShowAllCommentsPlural">%1$d weitere Einschätzung vorhanden</string>
+            <string name="ourArrangementSketchCommentLinkToShowAllCommentsNotAvailable">Keine weiteren Einschätzungen vorhanden</string>
+            <string name="lastActualSketchCommentTextNoCommentAvailabel">Keine Einschätzung vorhanden</string>
+            <string name="lastActualSketchCommentTextNoCommentAvailabelFirstAuthor">Werden Sie erster Autor einer Einschätzung</string>
+            <string name="infoTextSketchCommentDelaytimeNoDelay">die Einschätzungen werden sofort zugestellt (wenn eine Internetverbindung besteht)</string>
+            <string name="infoTextSketchCommentDelaytimeSingular">die Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (wenn eine Internetverbindung besteht)</string>
+            <string name="infoTextSketchCommentDelaytimePlural">die Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
+            <string name="textOurArrangementSketchCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Absprachenentwurf abgegeben: &lt;b>%1$s&lt;/b></string>
         <!-- End fragment comment sketch arrangement -->
+
+        <!-- String Fragment show sketch comment -->
+            <string name="btnAbortShowSketchComment">Zurück zu den aktuellen Entwürfen</string>
+            <string name="showSketchCommentHeadlineWithNumber">Einschätzung</string>
+            <string name="showSketchCommentHeadlineWithNumberExtraNewest">(Aktuellste)</string>
+            <string name="ourArrangementBackLinkToSketchArrangementFromShowSketchComment">Zurück zu den aktuellen Entwürfen</string>
+            <string name="ourArrangementShowSketchCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+            <string name="ourArrangementShowSketchCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
+            <string name="ourArrangementShowSketchCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
+            <string name="ourArrangementShowSketchCommentSendSuccsessfullInfo">Die Einschätzung wurde gesendet.</string>
+            <string name="ourArrangementShowSketchCommentLinkToCommentAnArrangement">Entwurf %1$d einschätzen</string>
+            <string name="ourArrangementShowSketchCommentPersonalAuthorName">Ihnen</string>
+            <string name="textOurArrangementShowSketchCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Absprachenentwurf abgegeben: &lt;b>%1$s&lt;/b></string>
+        <!-- End String Fragment show sketch comment -->
+
+
 
         <!-- String Fragment sketch arrangement -->
             <string name="ourArrangementSketchArrangementNothingThere">Es sind keine Entwürfe für Absprachen vorhanden!</string>
@@ -293,6 +337,7 @@
             <string name="ourArrangementSketchIntroTextChangeTo">Ihre BeraterInnen haben am %1s die folgenden Entwürfe für Absprachen, vielleicht mit einigen Änderungen, als verbindliche Absprachen gespeichert.</string>
             <string name="showSketchArrangementNumberText">Entwurf Absprache</string>
             <string name="ourArrangementSketchAuthorNameText">Geschrieben von %1$s</string>
+            <string name="ourArrangementSketchAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
         <!-- End Fragment sketch arrangement -->
 
         <!-- our arrangement dialog settings -->
@@ -346,7 +391,13 @@
             <string name="textDialogOurArrangementArrangementChangeCloseButton">Schliessen</string>
             <string name="textDialogOurArrangementArrangementChangeHeadline">Änderung der Absprachen</string>
             <string name="textDialogOurArrangementArrangementChangeInfoText">Es stehen neue Absprachen zur Verfügung, die bereits geladen wurden.\nSobald Sie diesen Dialog beenden, sehen Sie die neuen Absprachen.\nEin eventuell gesendeter Kommentar wird bei den älteren Absprachen archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Beraterin.</string>
+            <string name="textDialogOurArrangementSketchArrangementChangeCloseButton">Schliessen</string>
+            <string name="textDialogOurArrangementSketchArrangementChangeHeadline">Änderung der Entwürfe von Absprachen</string>
+            <string name="textDialogOurArrangementCurrentSketchArrangementChangeHeadline">Änderung der Absprachen und der Entwürfe</string>
+            <string name="textDialogOurArrangementSketchArrangementChangeInfoText">Es stehen neue Entwürfe von Absprachen zur Verfügung, die bereits geladen wurden.\nSobald Sie diesen Dialog beenden, sehen Sie die neuen Entwürfe.\nEine eventuell gesendete Einschätzung wird bei den älteren Entwürfen archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Beraterin.</string>
+            <string name="textDialogOurArrangementSketchAndCurrentArrangementChangeInfoText">Es stehen neue Entwürfe von Absprachen und aktuelle Absprachen zur Verfügung, die bereits alle geladen wurden.\nSobald Sie diesen Dialog beenden, sehen Sie die neuen Entwürfe und neuen Absprachen.\nEventuell gesendete Einschätzungen oder Kommentare werden archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Beraterin.</string>
         <!-- End our arrangement dialog arrangement change -->
+
 
     <!-- Activity our arrangement End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->

@@ -638,6 +638,11 @@ public class EfbXmlParser {
                                 prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, tmpArrangementTime);
                                 // write block id of arrangements to prefs
                                 prefsEditor.putString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, tmpBlockId);
+                                // reset comment counter
+                                prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0);
+                                // signal now arragenemt is updated
+                                prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, true);
+
                                 prefsEditor.commit();
 
 
@@ -1087,6 +1092,11 @@ public class EfbXmlParser {
                                 prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, tmpSketchTime);
                                 // write block id of sketch arrangements to prefs
                                 prefsEditor.putString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, tmpBlockId);
+                                // reset sketch comment counter
+                                prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0);
+                                // signal sketch arragenemt is updated
+                                prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, true);
+
                                 prefsEditor.commit();
 
                                 // refresh activity ourarrangement and fragement sketch

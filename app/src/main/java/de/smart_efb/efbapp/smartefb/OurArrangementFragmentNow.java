@@ -39,6 +39,7 @@ public class OurArrangementFragmentNow extends Fragment {
 
     // shared prefs for the settings
     SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
     // the list view for the arrangements
     ListView listViewArrangements = null;
@@ -55,9 +56,8 @@ public class OurArrangementFragmentNow extends Fragment {
     //limitation in count comments true-> yes, there is a border; no, there is no border, wirte infitisly comments
     Boolean commentLimitationBorder;
 
-    // reference to dialog settings
-    AlertDialog alertDialogSettings;
-
+    // startpoint for evaluation period (set with systemtime when intent comes in-> look boradcast receiver)
+    Long startPointEvaluationPeriod = 0L;
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
@@ -104,9 +104,7 @@ public class OurArrangementFragmentNow extends Fragment {
 
         super.onPause();  // call the superclass method first
 
-
-        Log.d("OnPause Arrangement NOW","PAUSE!!!!!!!!!!!!!!!");
-    }
+   }
 
 
 
@@ -123,8 +121,6 @@ public class OurArrangementFragmentNow extends Fragment {
             // true-> update the list view with arrangements
             Boolean updateListView = false;
 
-            Log.d("REceiver Now","DRIN DRIN!!!!!");
-
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
@@ -140,8 +136,7 @@ public class OurArrangementFragmentNow extends Fragment {
                     //update current block id of arrangements
                     currentBlockIdOfArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0");
 
-                    // show dialog arrangement change
-                    ((ActivityOurArrangement) getActivity()).alertDialogArrangementChange();
+                    checkUpdateForShowDialog ();
 
                     updateListView = true;
 
@@ -153,30 +148,64 @@ public class OurArrangementFragmentNow extends Fragment {
                 } else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
 
                     updateListView = true;
+
+                    startPointEvaluationPeriod = System.currentTimeMillis();
+                }
+
+                // update the list view because data has change?
+                if (updateListView) {
+                    updateListView();
                 }
 
             }
 
 
 
-            Log.d("REceiver Now","Vor Listview update");
-
-            // update the list view with arrangements
-            if (updateListView && listViewArrangements != null) {
-
-                Log.d("REceiver Now","In Listview update");
-
-                listViewArrangements.destroyDrawingCache();
-                listViewArrangements.setVisibility(ListView.INVISIBLE);
-                listViewArrangements.setVisibility(ListView.VISIBLE);
-
-                displayActualArrangementSet ();
-            }
-
-            Log.d("REceiver Now","Nach Listview update");
-
         }
     };
+
+
+    // check prefs for update now and sketch arrangement or only now arrangements?
+    public void checkUpdateForShowDialog () {
+
+
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false) && prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false)) {
+
+            // set signal arrangements and sketch arrangements are update to false; because user is informed by dialog!
+            prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false);
+            prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false);
+            prefsEditor.commit();
+
+            // show dialog arrangement and sketch arrangement change
+            ((ActivityOurArrangement) getActivity()).alertDialogArrangementChange("currentSketch");
+
+        }
+        else if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false)) {
+            // set signal arrangements are update to false; because user is informed by dialog!
+            prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false);
+            prefsEditor.commit();
+
+            // show dialog arrangement change
+            ((ActivityOurArrangement) getActivity()).alertDialogArrangementChange("current");
+
+        }
+
+
+    }
+
+
+    // update the list view with arrangements
+    public void updateListView () {
+
+        if (listViewArrangements != null) {
+            listViewArrangements.destroyDrawingCache();
+            listViewArrangements.setVisibility(ListView.INVISIBLE);
+            listViewArrangements.setVisibility(ListView.VISIBLE);
+
+            displayActualArrangementSet ();
+        }
+    }
+
 
 
     // inits the fragment for use
@@ -187,6 +216,7 @@ public class OurArrangementFragmentNow extends Fragment {
 
         // init the prefs
         prefs = fragmentNowContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentNowContext.MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
@@ -196,6 +226,9 @@ public class OurArrangementFragmentNow extends Fragment {
 
         // ask methode isCommentLimitationBorderSet() in ActivityOurArrangement to limitation in comments? true-> yes, linitation; false-> no
         commentLimitationBorder = ((ActivityOurArrangement) getActivity()).isCommentLimitationBorderSet("current");
+
+        // first init of start point for evaluation
+        startPointEvaluationPeriod = System.currentTimeMillis();
 
         // find the listview for the arrangements
         listViewArrangements = (ListView) viewFragmentNow.findViewById(R.id.listOurArrangementNow);
@@ -224,7 +257,8 @@ public class OurArrangementFragmentNow extends Fragment {
             dataAdapterListViewOurArrangement = new OurArrangementNowCursorAdapter(
                     getActivity(),
                     cursor,
-                    0);
+                    0,
+                    startPointEvaluationPeriod);
 
             // Assign adapter to ListView
             listViewArrangements.setAdapter(dataAdapterListViewOurArrangement);
@@ -288,22 +322,6 @@ public class OurArrangementFragmentNow extends Fragment {
         }
 
     }
-
-
-
-    // geter for border for comments
-    public boolean isCommentLimitationBorderSet () {
-
-        // true-> comments are limited; false-> no limit
-        return  commentLimitationBorder;
-
-    }
-
-
-
-
-
-
 
 
 

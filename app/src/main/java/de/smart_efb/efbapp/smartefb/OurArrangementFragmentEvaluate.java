@@ -128,7 +128,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         TextView textCommentNumberIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.arrangementEvalauteIntroText);
         textCommentNumberIntro.setText(this.getResources().getString(R.string.showEvaluateArrangementIntroText) + " " + arrangementNumberInListView);
 
-
         // generate back link "zurueck zu allen Absprachen"
         Uri.Builder commentLinkBuilder = new Uri.Builder();
         commentLinkBuilder.scheme("smart.efb.deeplink")
@@ -138,15 +137,31 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 .appendQueryParameter("arr_num", "0")
                 .appendQueryParameter("com", "show_arrangement_now");
         TextView linkShowEvaluateBackLink = (TextView) viewFragmentEvaluate.findViewById(R.id.arrangementShowEvaluateBackLink);
-        linkShowEvaluateBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + fragmentEvaluateContext.getResources().getString(fragmentEvaluateContext.getResources().getIdentifier("ourArrangementBackLinkToArrangement", "string", fragmentEvaluateContext.getPackageName())) + "</a>"));
+        linkShowEvaluateBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + fragmentEvaluateContext.getResources().getString(fragmentEvaluateContext.getResources().getIdentifier("ourArrangementEvaluationBackLinkToArrangement", "string", fragmentEvaluateContext.getPackageName())) + "</a>"));
         linkShowEvaluateBackLink.setMovementMethod(LinkMovementMethod.getInstance());
 
+        // put author name of arrangement
+        TextView tmpTextViewAuthorNameText = (TextView) viewFragmentEvaluate.findViewById(R.id.textAuthorNameArrangement);
+        String tmpTextAuthorNameText = String.format(fragmentEvaluateContext.getResources().getString(R.string.ourArrangementEvaluationAuthorNameWithDateForArrangement), cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
+        tmpTextViewAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
 
         // textview for the arrangement
         TextView textViewArrangement = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateArrangement);
         String arrangement = cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(arrangement);
 
+        // set info text evaluation period
+        TextView textViewEvaluationPeriod = (TextView) viewFragmentEvaluate.findViewById(R.id.infoEvaluationTimePeriod);
+        // make time and date variables
+        String tmpBeginEvaluationDate = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy");
+        String tmpBeginEvaluatioTime = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), "HH:mm");
+        String tmpEndEvaluationDate = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy");
+        String tmpEndEvaluatioTime = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()), "HH:mm");
+        int tmpEvaluationPeriodActive = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 3600) / 3600; // make hours from seconds
+        int tmpEvaluationPeriodPassiv = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, 3600) / 3600; // make hours from seconds
+        String textEvaluationPeriod = String.format(fragmentEvaluateContext.getResources().getString(R.string.ourArrangementEvaluationInfoEvaluationPeriod), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive, tmpEvaluationPeriodPassiv );
+        String textEvaluationNoEvaluationPossibleWhenEvaluate = fragmentEvaluateContext.getResources().getString(R.string.ourArrangementEvaluationNoEvaluationPossibleWhenEvaluate);
+        textViewEvaluationPeriod.setText(textEvaluationPeriod + " " + textEvaluationNoEvaluationPossibleWhenEvaluate);
 
         // set textview for the next arrangement to evaluate
         TextView textViewNextArrangementEvaluateIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.arrangementNextToEvaluateIntroText);
@@ -191,13 +206,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         }
 
-        // view the intro text SaveAndBackButton
-        /*
-        TextView textSaveAndBackButtonIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateSaveAndBackButtonIntro);
-        String tmpSaveAndBackButtonIntroText = this.getResources().getString(R.string.evaluateSaveAndBackButtonIntroText);
-        textSaveAndBackButtonIntro.setText(tmpSaveAndBackButtonIntroText);
-        */
-
         // set onClickListener for radio button in radio group question 1-4
         String tmpRessourceName ="";
         RadioButton tmpRadioButtonQuestion;
@@ -210,7 +218,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
                     tmpRadioButtonQuestion = (RadioButton) viewFragmentEvaluate.findViewById(resourceId);
                     tmpRadioButtonQuestion.setOnClickListener(new evaluateRadioButtonListenerQuestion1(numberOfButtons,countQuestion));
-                    //tmpRadioButtonQuestion.setChecked(false);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -282,7 +289,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
                     // delete status evaluation possible for arrangement
                     myDb.changeStatusEvaluationPossibleOurArrangement(arrangementServerDbIdToEvaluate, "delete");
-
 
                     // When last evaluation show toast, because textView is not visible -> new fragment
                     if (nextArrangementServerDbIdToEvaluate == 0 ) {
@@ -371,7 +377,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         EditText tmpInputEvaluateResultComment = (EditText) viewFragmentEvaluate.findViewById(R.id.inputEvaluateResultComment);
         tmpInputEvaluateResultComment.setText("");
 
-
     }
 
     //
@@ -446,7 +451,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         }
 
     }
-
 
 
     // call getter Functions in ActivityOurArrangement for some data

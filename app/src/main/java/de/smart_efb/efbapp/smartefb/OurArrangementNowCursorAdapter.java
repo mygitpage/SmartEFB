@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.preference.Preference;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by ich on 30.05.16.
  */
@@ -34,6 +37,9 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
     //limitation in count comments true-> yes, there is a border; no, there is no border
     Boolean commentLimitationBorder;
 
+    // startpoint for evaluation period (set with systemtime when intent comes in-> look boradcast receiver)
+    Long startPointEvaluationPeriod = 0L;
+
     // for prefs
     SharedPreferences prefs;
 
@@ -42,7 +48,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
 
     // Default constructor
-    public OurArrangementNowCursorAdapter(Context context, Cursor cursor, int flags) {
+    public OurArrangementNowCursorAdapter(Context context, Cursor cursor, int flags, Long tmpStartPointEvaluationPeriod) {
 
         super(context, cursor, flags);
 
@@ -57,6 +63,8 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         //limitation in count comments true-> yes, there is a border; no, there is no border
         commentLimitationBorder = ((ActivityOurArrangement)context).isCommentLimitationBorderSet("current");
 
+        startPointEvaluationPeriod = tmpStartPointEvaluationPeriod;
+
         // open sharedPrefs
         prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
 
@@ -65,11 +73,6 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-
-
-
-
-
 
         // is cursor first?
         if (cursor.isFirst() ) {
@@ -80,20 +83,29 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
         // is cursor last?
         if (cursor.isLast() ) { // listview for last element -> set gap to bottom of display
-            TextView tmpGapToBottom = (TextView) view.findViewById(R.id.borderToBottomOfDisplayWhenNeeded);
-            tmpGapToBottom.setVisibility(View.VISIBLE);
+
+            if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false)) { // show info of evaluation period when activated
+                // set info text evaluation period
+                TextView textViewEvaluationPeriodGapToTop = (TextView) view.findViewById(R.id.borderBetweenLastElementAndEvaluationInfo);
+                textViewEvaluationPeriodGapToTop.setVisibility(View.VISIBLE);
+                TextView textViewEvaluationPeriod = (TextView) view.findViewById(R.id.infoEvaluationTimePeriod);
+                textViewEvaluationPeriod.setVisibility(View.VISIBLE);
+                // make time and date variables
+                String tmpBeginEvaluationDate = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy");
+                String tmpBeginEvaluatioTime = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), "HH:mm");
+                String tmpEndEvaluationDate = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy");
+                String tmpEndEvaluatioTime = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()), "HH:mm");
+                int tmpEvaluationPeriodActive = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 3600) / 3600; // make hours from seconds
+                int tmpEvaluationPeriodPassiv = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, 3600) / 3600; // make hours from seconds
+                String textEvaluationPeriod = String.format(context.getResources().getString(R.string.ourArrangementEvaluationInfoEvaluationPeriod), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive, tmpEvaluationPeriodPassiv );
+                textViewEvaluationPeriod.setText(textEvaluationPeriod);
+            }
+            else { // show gap to bottom of display
+                TextView tmpGapToBottom = (TextView) view.findViewById(R.id.borderToBottomOfDisplayWhenNeeded);
+                tmpGapToBottom.setVisibility(View.VISIBLE);
+            }
+
         }
-
-
-
-
-
-
-
-
-
-
-
 
     }
 
@@ -107,12 +119,9 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         Spanned showCommentsLinkTmp = null;
         // link to comment an arrangement
         Spanned showCommentArrangementLinkTmp = null;
-        // link to evaluate arrangement
-        Spanned showEvaluateCommentLinkTmp = null;
 
         // text for new comment entry
         String tmpTextNewEntryComment = "";
-
 
         if (cursor.isFirst() ) { // listview for first element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_now_first, parent, false);
@@ -120,9 +129,6 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         else { // listview for "normal" element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_now, parent, false);
         }
-
-
-
 
         // put arrangement number
         TextView numberOfArrangement = (TextView) inflatedView.findViewById(R.id.listArrangementNumberText);
@@ -148,70 +154,107 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         textViewArrangement.setText(title);
 
         // generate link for evaluate an arrangement
-        TextView linkEvaluateAnArrangement = (TextView) inflatedView.findViewById(R.id.linkToEvaluateAnArrangement);
-        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false)) {
+        final TextView linkEvaluateAnArrangement = (TextView) inflatedView.findViewById(R.id.linkToEvaluateAnArrangement);
 
-            // make link to evaluate arrangement, when evaluation is possible for this arrangement
-            if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE)) == 1) {
-                Uri.Builder evaluateLinkBuilder = new Uri.Builder();
-                evaluateLinkBuilder.scheme("smart.efb.deeplink")
-                        .authority("linkin")
-                        .path("ourarrangement")
-                        .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID))))
-                        .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition() + 1))
-                        .appendQueryParameter("com", "evaluate_an_arrangement");
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false)) { // evaluation on/off?
 
-                showEvaluateCommentLinkTmp = Html.fromHtml("<a href=\"" + evaluateLinkBuilder.build().toString() + "\">" + context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateString", "string", context.getPackageName())) + "</a>");
-            } else { // link is not possible, so do it with text
+            // evaluation timezone expired?
+            if (System.currentTimeMillis() < prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis())) {
 
-                showEvaluateCommentLinkTmp = Html.fromHtml("(" + context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateString", "string", context.getPackageName())) + ")");
-            }
+                // make link to evaluate arrangement, when evaluation is possible for this arrangement
+                if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE)) == 1) {
 
-            linkEvaluateAnArrangement.setText(showEvaluateCommentLinkTmp);
-            linkEvaluateAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
+                    final Uri.Builder evaluateLinkBuilder = new Uri.Builder();
+                    evaluateLinkBuilder.scheme("smart.efb.deeplink")
+                            .authority("linkin")
+                            .path("ourarrangement")
+                            .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID))))
+                            .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition() + 1))
+                            .appendQueryParameter("com", "evaluate_an_arrangement");
 
-            /*
-            // calculate run time for timer in MILLISECONDS!!!
-            Long nowTime = System.currentTimeMillis();
-            Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
-            Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from miutes
-            Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
-            // start the timer with the calculated milliseconds
-            if (runTimeForTimer > 0) {
-                new CountDownTimer(runTimeForTimer, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        // gernate count down timer
-                        String FORMAT = "%02d:%02d:%02d";
-                        String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendDelayInfo);
-                        String tmpTime = String.format(FORMAT,
-                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                        // put count down to string
-                        String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
-                        // and show
-                        tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
+                    final String tmpLinkTextForEvaluationActive = context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateStringNextPassivPeriod", "string", context.getPackageName()));
+                    final String tmpTextEvaluationModulSwitchOnOff = context.getResources().getString(R.string.ourArrangementEvaluateTextEvaluationModulSwitchOff);
+
+                    // show time until next evaluation period
+                    // calculate run time for timer in MILLISECONDS!!!
+                    Long nowTime = System.currentTimeMillis();
+                    Integer pausePeriod = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 0) * 1000; // make milliseconds from seconds
+                    Long runTimeForTimer = pausePeriod - (nowTime - startPointEvaluationPeriod);
+                    // start the timer with the calculated milliseconds
+                    if (runTimeForTimer > 0) {
+                        new CountDownTimer(runTimeForTimer, 1000) {
+                            public void onTick(long millisUntilFinished) {
+                                // gernate count down timer
+                                String FORMAT = "%02d:%02d:%02d";
+                                String tmpTime = String.format(FORMAT,
+                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                // put count down to string
+                                String tmpCountdownTimerString = String.format(tmpLinkTextForEvaluationActive, tmpTime);
+                                // generate link for output
+                                Spanned tmpCountdownTimerLink = Html.fromHtml("<a href=\"" + evaluateLinkBuilder.build().toString() + "\">" + tmpCountdownTimerString + "</a>");
+
+                                // and set to textview
+                                linkEvaluateAnArrangement.setText(tmpCountdownTimerLink);
+                                linkEvaluateAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
+
+                            }
+
+                            public void onFinish() {
+                                // change text to evaluation modul will switch off!
+                                linkEvaluateAnArrangement.setText(tmpTextEvaluationModulSwitchOnOff);
+                            }
+
+                        }.start();
+
                     }
 
-                    public void onFinish() {
-                        // count down is over -> show
-                        String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
-                        tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                } else { // link is not possible, pause period, so do it with text
+
+                    final String tmpTextNextEvaluationPeriod = context.getResources().getString(R.string.ourArrangementEvaluateStringNextActivePeriod);
+                    final String tmpTextEvaluationModulSwitchOnOff = context.getResources().getString(R.string.ourArrangementEvaluateTextEvaluationModulSwitchOn);
+
+                    // show time until next evaluation period
+                    // calculate run time for timer in MILLISECONDS!!!
+                    Long nowTime = System.currentTimeMillis();
+                    Integer pausePeriod = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 0) * 1000; // make milliseconds from seconds
+                    Long runTimeForTimer = pausePeriod - (nowTime - startPointEvaluationPeriod);
+                    // start the timer with the calculated milliseconds
+                    if (runTimeForTimer > 0) {
+                        new CountDownTimer(runTimeForTimer, 1000) {
+                            public void onTick(long millisUntilFinished) {
+                                // gernate count down timer
+                                String FORMAT = "%02d:%02d:%02d";
+                                String tmpTime = String.format(FORMAT,
+                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                // put count down to string
+                                Spanned tmpCountdownTimerString = Html.fromHtml(String.format(tmpTextNextEvaluationPeriod, tmpTime));
+
+                                // and set to textview
+                                linkEvaluateAnArrangement.setText(tmpCountdownTimerString);
+                                linkEvaluateAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
+
+                            }
+
+                            public void onFinish() {
+                                // change text to evaluation modul will switch on!
+                                linkEvaluateAnArrangement.setText(tmpTextEvaluationModulSwitchOnOff);
+                            }
+
+                        }.start();
+
                     }
-                }.start();
+
+                }
 
             }
-            else {
-                // no count down anymore -> show send successfull
-                String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
-                tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+            else { // evaluation time expired!
+                String tmpEvaluationPeriodExpired = context.getResources().getString(R.string.ourArrangementEvaluatePeriodExpired);
+                linkEvaluateAnArrangement.setText(tmpEvaluationPeriodExpired);
             }
-             */
-
-
-
-
-
         }
         else { // evaluation not possible/ deactivated
             linkEvaluateAnArrangement.setVisibility(View.GONE);
@@ -244,6 +287,25 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                 }
             }
 
+            // generate difference text for comment anymore
+            String tmpNumberCommentsPossible;
+            int tmpDifferenceComments = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0) - prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0);
+            if (commentLimitationBorder) {
+                if (tmpDifferenceComments > 0) {
+                    if (tmpDifferenceComments > 1) { //plural comments
+                        tmpNumberCommentsPossible = String.format(context.getString(R.string.infoTextNumberOfCommentsPossiblePlural), tmpDifferenceComments);
+                    } else { // singular comments
+                        tmpNumberCommentsPossible = String.format(context.getString(R.string.infoTextNumberOfCommentsPossibleSingular), tmpDifferenceComments);
+                    }
+                }
+                else {
+                    tmpNumberCommentsPossible = context.getString(R.string.infoTextNumberOfCommentsPossibleNoMore);
+                }
+            }
+            else {
+                tmpNumberCommentsPossible = context.getString(R.string.infoTextNumberOfCommentsPossibleNoBorder);
+            }
+
             // make link to comment arrangement
             Uri.Builder commentLinkBuilder = new Uri.Builder();
             commentLinkBuilder.scheme("smart.efb.deeplink")
@@ -264,10 +326,10 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
 
             if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0) < prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) || !commentLimitationBorder) {
-                showCommentArrangementLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+"</a>");
+                showCommentArrangementLinkTmp = Html.fromHtml(" <a href=\"" + commentLinkBuilder.build().toString() + "\">"+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName())) + " " + tmpNumberCommentsPossible + "</a>");
             }
             else {
-                showCommentArrangementLinkTmp = Html.fromHtml(" ("+context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+")");
+                showCommentArrangementLinkTmp = Html.fromHtml(context.getResources().getString(context.getResources().getIdentifier("ourArrangementCommentString", "string", context.getPackageName()))+ " " + tmpNumberCommentsPossible);
             }
             linkCommentAnArrangement.setText(showCommentArrangementLinkTmp);
             linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
@@ -284,38 +346,10 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
         }
         else { // comment and show comment are deactivated -> hide them
-
             linkCommentAnArrangement.setVisibility(View.GONE);
             linkShowCommentOfArrangement.setVisibility(View.GONE);
-
-
         }
 
-
-
-
-        /*
-
-        // show generate links for evaluate or/and comment
-        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false) || prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) ) {
-
-            // create the comment link
-            TextView linkCommentAnArrangement = (TextView) inflatedView.findViewById(R.id.linkCommentAnArrangement);
-
-            if (showEvaluateCommentLinkTmp != null && showCommentsLinkTmp != null && showCommentArrangementLinkTmp != null) {
-                linkCommentAnArrangement.setText(TextUtils.concat(showEvaluateCommentLinkTmp, showCommentsLinkTmp, showCommentArrangementLinkTmp));
-            }
-            else if (showEvaluateCommentLinkTmp == null && showCommentsLinkTmp != null && showCommentArrangementLinkTmp != null) {
-                linkCommentAnArrangement.setText(TextUtils.concat(showCommentsLinkTmp, showCommentArrangementLinkTmp));
-            }
-            else {
-                linkCommentAnArrangement.setText(showEvaluateCommentLinkTmp);
-            }
-
-            linkCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
-
-        }
-        */
 
 
         return inflatedView;

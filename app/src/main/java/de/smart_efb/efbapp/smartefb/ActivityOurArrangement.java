@@ -100,6 +100,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // reference to dialog settings and Arrangement change
     AlertDialog alertDialogSettings;
     AlertDialog alertDialogArrangementChange;
+    AlertDialog alertDialogSketchArrangementChange;
 
     // activ/inactiv sub-functions
     // our arrangements sub functions activ/ inactiv
@@ -241,6 +242,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             tmpNumberinListView = intentExtras.getInt("arr_num",0);
             tmpEvalNext = intentExtras.getBoolean("eval_next");
             // get command and execute it
+
+            Log.d("OUR ARRANGEMENT DISP", "New Intent:"+ intentExtras.getString("com"));
+
             executeIntentCommand (intentExtras.getString("com"), tmpServerDbId, tmpNumberinListView, tmpEvalNext);
         }
 
@@ -352,6 +356,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             arrangementSketchDbIdFromLink = tmpServerDbId;
             arrangementSketchNumberInListView = tmpNumberinListView;
 
+
+            Log.d("OUR ARRANGEMENT DISP", "Show SKetch Arrangements:"+command);
+
             //set fragment in tab one to show sketch arrangement
             OurArrangementViewPagerAdapter.setFragmentTabOne("show_sketch_arrangement");
 
@@ -369,6 +376,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             toolbar.setSubtitle(arraySubTitleText[1]);
 
         } else if (command.equals("show_comment_for_sketch_arrangement")) { // Show comments for sketch Arrangments -> TAB ONE
+
+
+            Log.d("OUR ARRANGEMENT DISP", "Show SKetch Ccomments");
 
             // set global varibales
             arrangementSketchDbIdFromLink = tmpServerDbId;
@@ -1050,10 +1060,13 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
 
-    public void alertDialogArrangementChange () {
+    public void alertDialogArrangementChange (String whatDialog) {
 
-        TextView tmpdialogTextView;
         LayoutInflater dialogInflater;
+
+        String tmpTextCloseDialog = "";
+        String tmpTextTitleDialog = "";
+        String infoTextForChange = "";
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ActivityOurArrangement.this);
 
@@ -1063,13 +1076,39 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // inflate and get the view
         View dialogSettings = dialogInflater.inflate(R.layout.dialog_info_arrangement_change, null);
 
+        // get textview for info-text from view
+        TextView textViewArrangement = (TextView) dialogSettings.findViewById(R.id.dialogOurArrangementArrangementChangeInfoText);
 
+        switch (whatDialog) {
 
+            case "current": // dialog for update now arrangement
+                // get string ressources
+                tmpTextCloseDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementArrangementChangeCloseButton);
+                tmpTextTitleDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementArrangementChangeHeadline);
+                // textview for the dialog text -> arrangement change!
+                infoTextForChange = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementArrangementChangeInfoText);
+                textViewArrangement.setText(infoTextForChange);
+                break;
 
+            case "sketch": // dialog for update sketch arrangement
+                // get string ressources
+                tmpTextCloseDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSketchArrangementChangeCloseButton);
+                tmpTextTitleDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSketchArrangementChangeHeadline);
+                // textview for the dialog text -> arrangement change!
+                infoTextForChange = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSketchArrangementChangeInfoText);
+                textViewArrangement.setText(infoTextForChange);
+                break;
 
-        // get string ressources
-        String tmpTextCloseDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementArrangementChangeCloseButton);
-        String tmpTextTitleDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementArrangementChangeHeadline);
+            case "currentSketch": // // dialog for update now and sketch arrangement
+                // get string ressources
+                tmpTextCloseDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSketchArrangementChangeCloseButton);
+                tmpTextTitleDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementCurrentSketchArrangementChangeHeadline);
+                // textview for the dialog text -> arrangement change!
+                infoTextForChange = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSketchAndCurrentArrangementChangeInfoText);
+                textViewArrangement.setText(infoTextForChange);
+                break;
+
+        }
 
         // build the dialog
         builder.setView(dialogSettings)
@@ -1091,10 +1130,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
         builder.show();
 
     }
-
-
-
-
 
 
 

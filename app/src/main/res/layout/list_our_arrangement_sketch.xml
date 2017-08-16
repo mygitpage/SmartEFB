@@ -74,18 +74,36 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="right">
 
         <TextView
-            android:id="@+id/linkCommentAnSketchArrangement"
-            android:layout_width="match_parent"
+            android:id="@+id/linkSketchCommentAnArrangement"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13dp"
+            android:textSize="14dp"
             android:textColor="@color/colorPrimaryDark"
             android:gravity="right"
-            android:paddingRight="5dp"
             android:textColorLink="@color/colorPrimary"/>
 
+        <TextView
+            android:id="@+id/linkToShowSketchCommentsOfArrangements"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="right"
+            android:layout_marginTop="10dp"/>
+
     </LinearLayout>
+
+    <!-- only show when needed -->
+    <TextView
+        android:id="@+id/borderToBottomOfDisplayWhenNeeded"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="40dp"
+        android:visibility="gone"/>
 
 </LinearLayout>

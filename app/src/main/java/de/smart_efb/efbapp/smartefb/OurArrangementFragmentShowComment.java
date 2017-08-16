@@ -91,6 +91,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
         // init the prefs
         prefs = fragmentShowCommentContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentShowCommentContext.MODE_PRIVATE);
+
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
 
@@ -133,9 +134,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
         Cursor cursorComments = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToShow);
 
         // get the data (the choosen arrangement) from the DB
-        String arrangement = "";
         Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToShow);
-        //arrangement = choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
 
         // find the listview
         ListView listView = (ListView) viewFragmentShowComment.findViewById(R.id.listOurArrangementShowComment);

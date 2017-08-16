@@ -41,6 +41,9 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
     // arrangement number in list view
     int sketchArrangementNumberInListView = 0;
 
+    // true-> comments are limited, false -> comments are not limited
+    Boolean commentLimitationBorder = false;
+
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
@@ -108,6 +111,9 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
             sketchArrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getSketchArrangementNumberInListview();
             if (sketchArrangementNumberInListView < 1) sketchArrangementNumberInListView = 1; // check borders
 
+            // call getter-methode isCommentLimitationBorderSet in ActivityOurArrangement to get true-> sketch comments are limited, false-> sketch comments are not limited
+            commentLimitationBorder = ((ActivityOurArrangement)getActivity()).isCommentLimitationBorderSet("sketch");
+
         }
 
     }
@@ -119,9 +125,7 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
         Cursor cursor = myDb.getAllRowsOurArrangementSketchComment(sketchArrangementServerDbIdToShow);
 
         // get the data (the choosen sketch arrangement) from the DB
-        String arrangement = "";
         Cursor choosenArrangement = myDb.getRowSketchOurArrangement(sketchArrangementServerDbIdToShow);
-        arrangement = choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
 
         // find the listview
         ListView listView = (ListView) viewFragmentShowSketchComment.findViewById(R.id.listOurArrangementShowSketchComment);
@@ -133,7 +137,8 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
                 0,
                 sketchArrangementServerDbIdToShow,
                 sketchArrangementNumberInListView,
-                arrangement);
+                commentLimitationBorder,
+                choosenArrangement);
 
         // Assign adapter to ListView
         listView.setAdapter(showSketchCommentCursorAdapter);

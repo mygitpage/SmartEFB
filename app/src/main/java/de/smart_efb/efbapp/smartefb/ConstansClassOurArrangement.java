@@ -80,6 +80,12 @@ public class ConstansClassOurArrangement {
     // prefs name for evaluation active time in seconds
     public static final String namePrefsEvaluateActiveTimeInSeconds = "evaluateActivTimeInSeconds";
 
+    // true -> Sketch arragement are updated; false -> no update
+    public static final String namePrefsSignalSketchArrangementUpdate = "signalSketchArrangementUpdated";
+
+    // true -> Now arragement are updated; false -> no update
+    public static final String namePrefsSignalNowArrangementUpdate = "signalNowArrangementUpdated";
+
     // default time for active and pause time in evaluation arrangement (time in seconds)
     public static final int defaultTimeForActiveAndPauseEvaluationArrangement = 43200; // this is 12 hours
 

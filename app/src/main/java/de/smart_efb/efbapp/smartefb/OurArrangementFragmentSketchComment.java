@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -25,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ich on 22.09.16.
@@ -138,16 +141,22 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         textCommentNumberIntro.setText(tmpCommentNumberIntro);
 
 
+        // textview for the author of sketch arrangement
+        TextView tmpTextViewAuthorNameText = (TextView) viewFragmentSketchComment.findViewById(R.id.textAuthorName);
+        String tmpTextAuthorNameText = String.format(fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentAuthorNameTextWithDate), cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
+        tmpTextViewAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
+
+
         // generate back link "zurueck zu allen Entwuerfen"
-        Uri.Builder commentLinkBuilder = new Uri.Builder();
-        commentLinkBuilder.scheme("smart.efb.deeplink")
+        Uri.Builder backLinkBuilder = new Uri.Builder();
+        backLinkBuilder.scheme("smart.efb.deeplink")
                 .authority("linkin")
                 .path("ourarrangement")
                 .appendQueryParameter("db_id", "0")
                 .appendQueryParameter("arr_num", "0")
                 .appendQueryParameter("com", "show_sketch_arrangement");
         TextView linkShowCommentBackLink = (TextView) viewFragmentSketchComment.findViewById(R.id.arrangementShowCommentBackLinkNow);
-        linkShowCommentBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+fragmentSketchCommentContext.getResources().getString(fragmentSketchCommentContext.getResources().getIdentifier("ourArrangementBackLinkToSketchArrangement", "string", fragmentSketchCommentContext.getPackageName()))+"</a>"));
+        linkShowCommentBackLink.setText(Html.fromHtml("<a href=\"" + backLinkBuilder.build().toString() + "\">"+fragmentSketchCommentContext.getResources().getString(fragmentSketchCommentContext.getResources().getIdentifier("ourArrangementBackLinkToSketchArrangement", "string", fragmentSketchCommentContext.getPackageName()))+"</a>"));
         linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
 
 
@@ -156,25 +165,154 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         String arrangement = cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(arrangement);
 
-        // textview intro for the history of comments
-        TextView textCommentSketchHistoryIntro = (TextView) viewFragmentSketchComment.findViewById(R.id.commentSketchHistoryIntro);
-        if (cursorSketchArrangementAllComments.getCount() > 0) { // show comments for arrangement when count comments > 0
-            // show intro for comments
-            textCommentSketchHistoryIntro.setText(this.getResources().getString(R.string.commentSketchHistoryIntroText)+ " " + sketchArrangementNumberInListView);
-            textCommentSketchHistoryIntro.setGravity(Gravity.LEFT);
-            // show comments
-            addActualCommentSetToView ();
+        // some comments for arrangement available?
+        if (cursorSketchArrangementAllComments.getCount() > 0) {
 
-        } else { // else show nothing
+            //textview for the last actual comment intro
+            TextView textLastActualSketchCommentIntro = (TextView) viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentInfoText);
+            textLastActualSketchCommentIntro.setText(this.getResources().getString(R.string.lastActualSketchCommentText));
 
-            // hide linear layout comment holder
-            LinearLayout comentHistoryLinearLayoutContainer = (LinearLayout) viewFragmentSketchComment.findViewById(R.id.commentSketchHolder);
-            comentHistoryLinearLayoutContainer.setVisibility(View.INVISIBLE);
+            // position one for comment cursor
+            cursorSketchArrangementAllComments.moveToFirst();
 
-            // show intro no comments available
-            textCommentSketchHistoryIntro.setText(this.getResources().getString(R.string.commentHistoryNoCommentIntroText));
-            textCommentSketchHistoryIntro.setGravity(Gravity.CENTER);
+            // check if comment entry new?
+            if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY)) == 1) {
+                TextView newEntryOfComment = (TextView) viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentNewInfoText);
+                String txtNewEntryOfComment = fragmentSketchCommentContext.getResources().getString(R.string.newEntryText);
+                newEntryOfComment.setText(txtNewEntryOfComment);
+                myDb.deleteStatusNewEntryOurArrangementSketchComment(cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
+            }
+
+            // textview for the author of last actual comment
+            TextView tmpTextViewAuthorNameLastActualSketchComment = (TextView) viewFragmentSketchComment.findViewById(R.id.textAuthorNameLastActualSketchComment);
+            String tmpAuthorName = cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME));
+
+            if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
+                tmpAuthorName = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentPersonalAuthorName);
+            }
+            String commentDate = EfbHelperClass.timestampToDateFormat(cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");;
+            String commentTime = EfbHelperClass.timestampToDateFormat(cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME)), "HH:mm");;
+            String tmpTextAuthorNameLastActualComment = String.format(fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
+            tmpTextViewAuthorNameLastActualSketchComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
+
+
+            // textview for status 0 of the last actual comment
+            final TextView tmpTextViewSendInfoLastActualSketchComment = (TextView) viewFragmentSketchComment.findViewById(R.id.textSendInfoLastActualSketchComment);
+            if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS)) == 0) {
+
+                String tmpTextSendInfoLastActualComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentSendInfo);
+                tmpTextViewSendInfoLastActualSketchComment.setVisibility(View.VISIBLE);
+                tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
+
+
+            } else if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS)) == 1) {
+                // textview for status 1 of the last actual comment
+
+                // set textview visible
+                tmpTextViewSendInfoLastActualSketchComment.setVisibility(View.VISIBLE);
+
+                // calculate run time for timer in MILLISECONDS!!!
+                Long nowTime = System.currentTimeMillis();
+                Long writeTimeComment = cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME));
+                Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime, 0) * 60000; // make milliseconds from miutes
+                Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
+                // start the timer with the calculated milliseconds
+                if (runTimeForTimer > 0) {
+                    new CountDownTimer(runTimeForTimer, 1000) {
+                        public void onTick(long millisUntilFinished) {
+                            // gernate count down timer
+                            String FORMAT = "%02d:%02d:%02d";
+                            String tmpTextSendInfoLastActualComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentSendDelayInfo);
+                            String tmpTime = String.format(FORMAT,
+                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                            // put count down to string
+                            String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                            // and show
+                            tmpTextViewSendInfoLastActualSketchComment.setText(tmpCountdownTimerString);
+                        }
+
+                        public void onFinish() {
+                            // count down is over -> show
+                            String tmpTextSendInfoLastActualComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentSendSuccsessfullInfo);
+                            tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
+                        }
+                    }.start();
+
+                }
+                else {
+                    // no count down anymore -> show send successfull
+                    String tmpTextSendInfoLastActualComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentSendSuccsessfullInfo);
+                    tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
+                }
+
+            }
+
+            // show actual result struct question
+            TextView textViewShowResultStructQuestion = (TextView) viewFragmentSketchComment.findViewById(R.id.assessementValueForSketchComment);
+            String actualResultStructQuestion = fragmentSketchCommentContext.getResources().getString(R.string.textOurArrangementSketchCommentActualResultStructQuestion);
+            actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateSketchCommentScalesLevel[cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1))-1]);
+            textViewShowResultStructQuestion.setText(Html.fromHtml(actualResultStructQuestion));
+
+            // textview for the comment text
+            TextView tmpTextViewCommentText = (TextView) viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentText);
+            String tmpCommentText = cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT));
+            tmpTextViewCommentText.setText(tmpCommentText);
+
+
+            // get textview for Link to Show all comments
+            TextView tmpTextViewLInkToShowAllSketchComment = (TextView) viewFragmentSketchComment.findViewById(R.id.commentLinkToShowAllSketchComments);
+
+            // more than one comment available?
+            if (cursorSketchArrangementAllComments.getCount() > 1) {
+
+                // generate link to show all comments
+                Uri.Builder sketchCommentLinkBuilder = new Uri.Builder();
+                sketchCommentLinkBuilder.scheme("smart.efb.deeplink")
+                        .authority("linkin")
+                        .path("ourarrangement")
+                        .appendQueryParameter("db_id", Integer.toString(sketchArrangementServerDbIdToComment))
+                        .appendQueryParameter("arr_num", Integer.toString(sketchArrangementNumberInListView))
+                        .appendQueryParameter("com", "show_comment_for_sketch_arrangement");
+
+                if (cursorSketchArrangementAllComments.getCount() == 2) {
+                    String tmpLinkStringShowAllSketchComments = String.format(fragmentSketchCommentContext.getResources().getString(fragmentSketchCommentContext.getResources().getIdentifier("ourArrangementSketchCommentLinkToShowAllCommentsSingular", "string", fragmentSketchCommentContext.getPackageName())),cursorSketchArrangementAllComments.getCount()-1);
+                    tmpTextViewLInkToShowAllSketchComment.setText(Html.fromHtml("<a href=\"" + sketchCommentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllSketchComments + "</a>"));
+                }
+                else {
+                    String tmpLinkStringShowAllSketchComments = String.format(fragmentSketchCommentContext.getResources().getString(fragmentSketchCommentContext.getResources().getIdentifier("ourArrangementSketchCommentLinkToShowAllCommentsPlural", "string", fragmentSketchCommentContext.getPackageName())),cursorSketchArrangementAllComments.getCount()-1);
+                    tmpTextViewLInkToShowAllSketchComment.setText(Html.fromHtml("<a href=\"" + sketchCommentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllSketchComments + "</a>"));
+                }
+                tmpTextViewLInkToShowAllSketchComment.setMovementMethod(LinkMovementMethod.getInstance());
+
+            }
+            else {
+                // no comment anymore
+                String tmpLinkStringShowAllSketchComments = fragmentSketchCommentContext.getResources().getString(fragmentSketchCommentContext.getResources().getIdentifier("ourArrangementSketchCommentLinkToShowAllCommentsNotAvailable", "string", fragmentSketchCommentContext.getPackageName()));
+                tmpTextViewLInkToShowAllSketchComment.setText(tmpLinkStringShowAllSketchComments);
+            }
+
         }
+        else { // no comments
+
+            //textview for the last actual comment intro
+            TextView textLastActualSketchCommentIntro = (TextView) viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentInfoText);
+            textLastActualSketchCommentIntro.setText(this.getResources().getString(R.string.lastActualSketchCommentTextNoCommentAvailabel));
+
+            // position one for comment cursor
+            cursorSketchArrangementAllComments.moveToFirst();
+
+            // textview for the author of last actual comment
+            TextView tmpTextViewAuthorNameLastActualSketchComment = (TextView) viewFragmentSketchComment.findViewById(R.id.textAuthorNameLastActualSketchComment);
+            tmpTextViewAuthorNameLastActualSketchComment.setText(this.getResources().getString(R.string.lastActualSketchCommentTextNoCommentAvailabelFirstAuthor));
+
+            // textview for the comment text
+            TextView tmpTextViewSketchCommentText = (TextView) viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentText);
+            tmpTextViewSketchCommentText.setVisibility(View.GONE);
+
+        }
+
 
         // set onClickListener for radio button in radio group question 1-4
         String tmpRessourceName ="";
@@ -220,13 +358,26 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         }
         tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0));
 
+        // build text element delay time
+        String tmpInfoTextDelaytimeSingluarPluaral = "";
+        if (prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime, 0) == 0) {
+            tmpInfoTextDelaytimeSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentDelaytimeNoDelay);
+        }
+        else if (prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime, 0) == 1) {
+            tmpInfoTextDelaytimeSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentDelaytimeSingular);
+        }
+        else {
+            tmpInfoTextDelaytimeSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentDelaytimePlural);
+            tmpInfoTextDelaytimeSingluarPluaral = String.format(tmpInfoTextDelaytimeSingluarPluaral, prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime, 0));
+
+        }
 
         // generate text comment max letters
         tmpInfoTextSketchCommentMaxLetters =  this.getResources().getString(R.string.infoTextSketchCommentMaxLetters);
         tmpInfoTextSketchCommentMaxLetters = String.format(tmpInfoTextSketchCommentMaxLetters, prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters, 0));
 
         // show info text
-        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextSketchCommentMaxLetters);
+        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextSketchCommentMaxLetters + " " + tmpInfoTextDelaytimeSingluarPluaral);
 
         // get max letters for edit text sketch comment
         final int tmpMaxLength = prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters, 10);
@@ -265,7 +416,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         // button send comment
         Button buttonSendSketchArrangementComment = (Button) viewFragmentSketchComment.findViewById(R.id.buttonSendSketchArrangementComment);
 
-        // onClick listener send arrangement comment
+        // onClick listener send sketch arrangement comment
         buttonSendSketchArrangementComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -365,6 +516,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
     public void addActualCommentSetToView () {
 
+        /*
         LinearLayout commentHolderLayout = (LinearLayout) viewFragmentSketchComment.findViewById(R.id.commentSketchHolder);
 
         cursorSketchArrangementAllComments.moveToFirst();
@@ -488,6 +640,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         // add back button to comment holder (linear layout in xml-file)
         commentHolderLayout.addView(btnBack_inner_layout);
 
+        */
     }
 
 

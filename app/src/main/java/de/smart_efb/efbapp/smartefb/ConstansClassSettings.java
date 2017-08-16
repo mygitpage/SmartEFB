@@ -52,7 +52,7 @@ public class ConstansClassSettings {
     //public static final String urlConnectionSendNewCommentArrangementToServer = "http://192.168.0.126/index.php?com=exchange&subcom=sendarrangementcomment";
 
 
-    // URL connection send comment now arrangement to server
+    // URL connection send comment sketch arrangement to server
     public static final String urlConnectionSendNewSketchCommentArrangementToServer = "http://192.168.1.119/index.php?com=exchange&subcom=sendsketcharrangementcomment";
     //public static final String urlConnectionSendNewSketchCommentArrangementToServer = "http://192.168.178.24/index.php?com=exchange&subcom=sendsketcharrangementcomment";
     //public static final String urlConnectionSendNewSketchCommentArrangementToServer = "http://192.168.0.126/index.php?com=exchange&subcom=sendsketcharrangementcomment";

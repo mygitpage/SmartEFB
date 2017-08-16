@@ -121,35 +121,35 @@
 
     <!-- Our Arrangement count comments -->
     <string-array name="ourArrangementCountComments">
-        <item>Keine Kommentare</item>
-        <item>1 Kommentar</item>
-        <item>2 Kommentare</item>
-        <item>3 Kommentare</item>
-        <item>4 Kommentare</item>
-        <item>5 Kommentare</item>
-        <item>6 Kommentare</item>
-        <item>7 Kommentare</item>
-        <item>8 Kommentare</item>
-        <item>9 Kommentare</item>
-        <item>10 Kommentare</item>
-        <item>10++ Kommentare</item>
+        <item>Keine Kommentare vorhanden</item>
+        <item>1 Kommentar vorhanden</item>
+        <item>2 Kommentare vorhanden</item>
+        <item>3 Kommentare vorhanden</item>
+        <item>4 Kommentare vorhanden</item>
+        <item>5 Kommentare vorhanden</item>
+        <item>6 Kommentare vorhanden</item>
+        <item>7 Kommentare vorhanden</item>
+        <item>8 Kommentare vorhanden</item>
+        <item>9 Kommentare vorhanden</item>
+        <item>10 Kommentare vorhanden</item>
+        <item>10++ Kommentare vorhanden</item>
     </string-array>
 
 
     <!-- Our Arrangement count comments -->
     <string-array name="ourArrangementCountAssessments">
-        <item>Keine Einschätzungen</item>
-        <item>1 Einschätzung</item>
-        <item>2 Einschätzungen</item>
-        <item>3 Einschätzungen</item>
-        <item>4 Einschätzungen</item>
-        <item>5 Einschätzungen</item>
-        <item>6 Einschätzungen</item>
-        <item>7 Einschätzungen</item>
-        <item>8 Einschätzungen</item>
-        <item>9 Einschätzungen</item>
-        <item>10 Einschätzungen</item>
-        <item>10++ Einschätzungen</item>
+        <item>Keine Einschätzungen vorhanden</item>
+        <item>1 Einschätzung vorhanden</item>
+        <item>2 Einschätzungen vorhanden</item>
+        <item>3 Einschätzungen vorhanden</item>
+        <item>4 Einschätzungen vorhanden</item>
+        <item>5 Einschätzungen vorhanden</item>
+        <item>6 Einschätzungen vorhanden</item>
+        <item>7 Einschätzungen vorhanden</item>
+        <item>8 Einschätzungen vorhanden</item>
+        <item>9 Einschätzungen vorhanden</item>
+        <item>10 Einschätzungen vorhanden</item>
+        <item>10++ Einschätzungen vorhanden</item>
     </string-array>
 
 

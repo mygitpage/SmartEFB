@@ -74,29 +74,8 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:gravity="right">
-
-        <TextView
-            android:id="@+id/linkToEvaluateAnArrangement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:layout_marginRight="10dp"
-            android:gravity="right"/>
-
-
-        <TextView
-            android:id="@+id/linkToShowCommentsOfArrangements"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:layout_marginRight="10dp"
-            android:gravity="right"/>
 
         <TextView
             android:id="@+id/linkCommentAnArrangement"
@@ -105,16 +84,59 @@
             android:textSize="14dp"
             android:textColor="@color/colorPrimaryDark"
             android:gravity="right"
-            android:paddingRight="5dp"
             android:textColorLink="@color/colorPrimary"/>
+
+        <TextView
+            android:id="@+id/linkToShowCommentsOfArrangements"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="right"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/linkToEvaluateAnArrangement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="right"
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 
+    <!-- only show when needed -->
     <TextView
         android:id="@+id/borderToBottomOfDisplayWhenNeeded"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginBottom="40dp"
+        android:visibility="gone"/>
+
+    <!-- only show when needed -->
+    <TextView
+        android:id="@+id/borderBetweenLastElementAndEvaluationInfo"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_color"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"/>
+
+    <!-- only show when needed -->
+    <TextView
+        android:id="@+id/infoEvaluationTimePeriod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:paddingBottom="35dp"
         android:visibility="gone"/>
 
 </LinearLayout>

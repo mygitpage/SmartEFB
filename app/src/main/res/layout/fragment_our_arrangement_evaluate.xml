@@ -15,8 +15,6 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
-
-
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,7 +39,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textAuthorName"
+                android:id="@+id/textAuthorNameArrangement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="13dp"
@@ -91,13 +89,6 @@
 
 
 
-
-
-
-
-
-
-
         <TextView
             android:id="@+id/evaluateThankAndNextEvaluation"
             android:layout_width="wrap_content"
@@ -107,7 +98,7 @@
             android:gravity="left"
             android:visibility="gone"
             android:text="@string/evaluateThankAndNextEvaluationText"
-            android:paddingTop="20dp"
+            android:paddingTop="5dp"
             android:paddingBottom="5dp"/>
 
         <TextView
@@ -119,7 +110,6 @@
             android:gravity="left"
             android:textStyle="bold"
             android:text="@string/questionOneEvaluateMySelf"
-            android:paddingTop="20dp"
             android:paddingBottom="5dp"/>
 
         <TextView
@@ -141,8 +131,6 @@
                 android:layout_gravity="center"
                 android:padding="5dp"
                 android:gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:background="@drawable/app_radiogroup_style">
 
                 <RadioButton android:id="@+id/questionOne_1"
@@ -244,8 +232,6 @@
             android:layout_gravity="center"
             android:padding="5dp"
             android:gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:background="@drawable/app_radiogroup_style">
 
             <RadioButton android:id="@+id/questionTwo_1"
@@ -348,8 +334,6 @@
             android:layout_gravity="center"
             android:padding="5dp"
             android:gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:background="@drawable/app_radiogroup_style">
 
             <RadioButton android:id="@+id/questionThree_1"
@@ -452,8 +436,6 @@
             android:layout_gravity="center"
             android:padding="5dp"
             android:gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:background="@drawable/app_radiogroup_style">
 
             <RadioButton android:id="@+id/questionFour_1"
@@ -530,7 +512,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
             android:text="@string/commentTextEvaluateResult"
@@ -542,17 +524,11 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:textColor="@color/colorPrimaryDark"
-            android:hint="@string/commentEvaluateResultTextFieldHintText"
             android:gravity="left|top"
             android:background="@drawable/app_edittext_style"
-            android:layout_margin="10dp"
-            android:textColorHint="@color/colorPrimaryDark"
             android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
             android:padding="5dp"
             android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
-
-
-            />
 
 
         <TextView
@@ -563,7 +539,7 @@
             android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
-            android:paddingBottom="5dp"/>
+            android:layout_marginTop="15dp"/>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
@@ -596,6 +572,15 @@
                 android:padding="10dp"/>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/infoEvaluationTimePeriod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:paddingBottom="35dp"/>
 
     </LinearLayout>
 

@@ -92,9 +92,6 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-
-
-
         // is cursor position first?
         if (cursor.isFirst()) {
 
@@ -224,7 +221,6 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
             countCommentHeadlineNumber++;
         }
 
-
         // set comment information to the view
         // set comment headline
         TextView textViewShowActualCommentHeadline = (TextView) inflatedView.findViewById(R.id.actualCommentInfoText);
@@ -233,8 +229,6 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
             actualCommentHeadline = actualCommentHeadline + " " + context.getResources().getString(R.string.showCommentHeadlineWithNumberExtraNewest);
         }
         textViewShowActualCommentHeadline.setText(actualCommentHeadline);
-
-
 
         // check if arrangement entry new?
         if (cursor.getInt(cursor.getColumnIndex(myDb.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
@@ -245,7 +239,6 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
             // delet status new entry in db
             myDb.deleteStatusNewEntryOurArrangementComment(cursor.getInt(cursor.getColumnIndex(myDb.KEY_ROWID)));
         }
-
 
         // textview for the author and date
         TextView tmpTextViewAuthorNameLastActualComment = (TextView) inflatedView.findViewById(R.id.textAuthorNameActualComment);
@@ -258,8 +251,6 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
         String tmpTextAuthorNameLastActualComment = String.format(context.getResources().getString(R.string.ourArrangementShowCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
         tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
-
-
         // textview for status 0 of the last actual comment
         final TextView tmpTextViewSendInfoLastActualComment = (TextView) inflatedView.findViewById(R.id.textSendInfoActualComment);
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 0) {
@@ -267,7 +258,6 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
             String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendInfo);
             tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
             tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
-
 
         } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 1) {
             // textview for status 1 of the last actual comment
@@ -313,27 +303,48 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
 
         }
 
-
         // show actual comment
         TextView textViewShowActualComment = (TextView) inflatedView.findViewById(R.id.listActualTextComment);
         String actualComment = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT));
         textViewShowActualComment.setText(actualComment);
 
+        // generate difference text for comment anymore
+        String tmpNumberCommentsPossible;
+        int tmpDifferenceComments = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0) - prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0);
+        if (commentLimitationBorder) {
+            if (tmpDifferenceComments > 0) {
+                if (tmpDifferenceComments > 1) { //plural comments
+                    tmpNumberCommentsPossible = String.format(context.getString(R.string.infoTextNumberOfCommentsPossiblePlural), tmpDifferenceComments);
+                } else { // singular comments
+                    tmpNumberCommentsPossible = String.format(context.getString(R.string.infoTextNumberOfCommentsPossibleSingular), tmpDifferenceComments);
+                }
+            }
+            else {
+                tmpNumberCommentsPossible = context.getString(R.string.infoTextNumberOfCommentsPossibleNoMore);
+            }
+        }
+        else {
+            tmpNumberCommentsPossible = context.getString(R.string.infoTextNumberOfCommentsPossibleNoBorder);
+        }
 
-        // make link to comment an arrangement
-        Uri.Builder commentLinkBuilder = new Uri.Builder();
-        commentLinkBuilder.scheme("smart.efb.deeplink")
-                .authority("linkin")
-                .path("ourarrangement")
-                .appendQueryParameter("db_id", Integer.toString(arrangementDbIdToShow))
-                .appendQueryParameter("arr_num", Integer.toString(arrangementNumberInListView))
-                .appendQueryParameter("com", "comment_an_arrangement");
+        // make link to comment an sketch arrangement only when comments possible
         TextView linkToCommentAnArrangement = (TextView) inflatedView.findViewById(R.id.linkToCommentAnArrangement);
-        String tmpLinkTextForCommentAnArrangement = String.format(context.getResources().getString(context.getResources().getIdentifier("ourArrangementShowCommentLinkToCommentAnArrangement", "string", context.getPackageName())), arrangementNumberInListView);
-        Spanned tmpBackLink = Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+ tmpLinkTextForCommentAnArrangement +"</a>");
-        linkToCommentAnArrangement.setText(tmpBackLink);
-        linkToCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
-
+        if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0) < prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) || !commentLimitationBorder) {
+            Uri.Builder commentLinkBuilder = new Uri.Builder();
+            commentLinkBuilder.scheme("smart.efb.deeplink")
+                    .authority("linkin")
+                    .path("ourarrangement")
+                    .appendQueryParameter("db_id", Integer.toString(arrangementDbIdToShow))
+                    .appendQueryParameter("arr_num", Integer.toString(arrangementNumberInListView))
+                    .appendQueryParameter("com", "comment_an_arrangement");
+                        String tmpLinkTextForCommentAnArrangement = String.format(context.getResources().getString(context.getResources().getIdentifier("ourArrangementShowCommentLinkToCommentAnArrangement", "string", context.getPackageName())), arrangementNumberInListView);
+            Spanned tmpBackLink = Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + tmpLinkTextForCommentAnArrangement + " " + tmpNumberCommentsPossible + "</a>");
+            linkToCommentAnArrangement.setText(tmpBackLink);
+            linkToCommentAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        else {
+            linkToCommentAnArrangement.setVisibility(View.GONE);
+        }
 
         return inflatedView;
 
