@@ -59,6 +59,9 @@ public class OurArrangementFragmentNow extends Fragment {
     // startpoint for evaluation period (set with systemtime when intent comes in-> look boradcast receiver)
     Long startPointEvaluationPeriod = 0L;
 
+    // true -> startPointEvaluationPeriod is init with system time in mills
+    Boolean firstInitStartPoint = false;
+
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
@@ -80,6 +83,12 @@ public class OurArrangementFragmentNow extends Fragment {
 
         fragmentNowContext = getActivity().getApplicationContext();
 
+        if (!firstInitStartPoint) {
+            // first init of start point for evaluation
+            firstInitStartPoint = true;
+            startPointEvaluationPeriod = System.currentTimeMillis();
+        }
+
         // init the fragment now
         initFragmentNow();
 
@@ -97,16 +106,6 @@ public class OurArrangementFragmentNow extends Fragment {
         getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentNowBrodcastReceiver);
 
     }
-
-
-    @Override
-    public void onPause() {
-
-        super.onPause();  // call the superclass method first
-
-   }
-
-
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeServiceEfb
@@ -149,8 +148,9 @@ public class OurArrangementFragmentNow extends Fragment {
 
                     updateListView = true;
 
+                    // set new start point for evaluation timer
                     startPointEvaluationPeriod = System.currentTimeMillis();
-                }
+               }
 
                 // update the list view because data has change?
                 if (updateListView) {
@@ -159,15 +159,12 @@ public class OurArrangementFragmentNow extends Fragment {
 
             }
 
-
-
         }
     };
 
 
     // check prefs for update now and sketch arrangement or only now arrangements?
     public void checkUpdateForShowDialog () {
-
 
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false) && prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false)) {
 
@@ -227,9 +224,6 @@ public class OurArrangementFragmentNow extends Fragment {
         // ask methode isCommentLimitationBorderSet() in ActivityOurArrangement to limitation in comments? true-> yes, linitation; false-> no
         commentLimitationBorder = ((ActivityOurArrangement) getActivity()).isCommentLimitationBorderSet("current");
 
-        // first init of start point for evaluation
-        startPointEvaluationPeriod = System.currentTimeMillis();
-
         // find the listview for the arrangements
         listViewArrangements = (ListView) viewFragmentNow.findViewById(R.id.listOurArrangementNow);
 
@@ -252,6 +246,8 @@ public class OurArrangementFragmentNow extends Fragment {
             // Set correct subtitle in Activity -> "Absprachen vom ..."
             String tmpSubtitle = getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", fragmentNowContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
             ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "now");
+
+            Log.d("++++++++POINT+++","Hier im LISTVIEW ------"+startPointEvaluationPeriod);
 
             // new dataadapter
             dataAdapterListViewOurArrangement = new OurArrangementNowCursorAdapter(
@@ -322,8 +318,5 @@ public class OurArrangementFragmentNow extends Fragment {
         }
 
     }
-
-
-
 
 }

@@ -362,6 +362,8 @@ import java.util.Map;
                             e.printStackTrace();
                         }
 
+                        Log.d("Comment Send", "Antwort:"+stringBuilder.toString().trim());
+
                         // call xml parser with input
                         EfbXmlParser xmlparser = new EfbXmlParser(context);
                         returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());

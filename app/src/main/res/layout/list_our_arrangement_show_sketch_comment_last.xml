@@ -99,6 +99,16 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/borderBetweenArrangement2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_color"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"/>
+
     <Button
         android:id="@+id/buttonAbortShowSketchComment"
         android:layout_width="wrap_content"
@@ -107,7 +117,6 @@
         android:textColor="@color/colorPrimaryDark"
         android:text="@string/btnAbortShowSketchComment"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
         android:padding="10dp"/>
 
     <TextView

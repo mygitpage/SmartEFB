@@ -312,6 +312,7 @@
             <string name="infoTextSketchCommentDelaytimeSingular">die Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (wenn eine Internetverbindung besteht)</string>
             <string name="infoTextSketchCommentDelaytimePlural">die Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
             <string name="textOurArrangementSketchCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Absprachenentwurf abgegeben: &lt;b>%1$s&lt;/b></string>
+            <string name="textOurArrangementSketchCommentActualResultStructQuestionFromCoach">Die Einschätzung wurde ohne Zustimmungswert von Ihrer Beraterin/ Ihrem Berater geschrieben</string>
         <!-- End fragment comment sketch arrangement -->
 
         <!-- String Fragment show sketch comment -->
@@ -326,6 +327,7 @@
             <string name="ourArrangementShowSketchCommentLinkToCommentAnArrangement">Entwurf %1$d einschätzen</string>
             <string name="ourArrangementShowSketchCommentPersonalAuthorName">Ihnen</string>
             <string name="textOurArrangementShowSketchCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Absprachenentwurf abgegeben: &lt;b>%1$s&lt;/b></string>
+            <string name="textOurArrangementShowSketchCommentActualResultStructQuestionFromCoach">Die Einschätzung wurde ohne Zustimmungswert von Ihrer Beraterin/ Ihrem Berater geschrieben</string>
         <!-- End String Fragment show sketch comment -->
 
 

@@ -249,11 +249,19 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
             }
 
-            // show actual result struct question
+
+
+            // show actual result struct question only when result > 0
             TextView textViewShowResultStructQuestion = (TextView) viewFragmentSketchComment.findViewById(R.id.assessementValueForSketchComment);
-            String actualResultStructQuestion = fragmentSketchCommentContext.getResources().getString(R.string.textOurArrangementSketchCommentActualResultStructQuestion);
-            actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateSketchCommentScalesLevel[cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1))-1]);
-            textViewShowResultStructQuestion.setText(Html.fromHtml(actualResultStructQuestion));
+            if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1)) > 0) {
+                String actualResultStructQuestion = fragmentSketchCommentContext.getResources().getString(R.string.textOurArrangementSketchCommentActualResultStructQuestion);
+                actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateSketchCommentScalesLevel[cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1)) - 1]);
+                textViewShowResultStructQuestion.setText(Html.fromHtml(actualResultStructQuestion));
+            } else { // result is =0; comes from server/ coach
+                String actualResultStructQuestionFromCoach = fragmentSketchCommentContext.getResources().getString(R.string.textOurArrangementSketchCommentActualResultStructQuestionFromCoach);
+                textViewShowResultStructQuestion.setText(actualResultStructQuestionFromCoach);
+            }
+
 
             // textview for the comment text
             TextView tmpTextViewCommentText = (TextView) viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentText);

@@ -307,11 +307,16 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
 
         }
 
-        // show actual result struct question
+        // show actual result struct question only when result > 0
         TextView textViewShowResultStructQuestion = (TextView) inflatedView.findViewById(R.id.assessementValueForSketchComment);
-        String actualResultStructQuestion = context.getResources().getString(R.string.textOurArrangementShowSketchCommentActualResultStructQuestion);
-        actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateSketchCommentScalesLevel[cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1))-1]);
-        textViewShowResultStructQuestion.setText(Html.fromHtml(actualResultStructQuestion));
+        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1)) > 0) {
+            String actualResultStructQuestion = context.getResources().getString(R.string.textOurArrangementShowSketchCommentActualResultStructQuestion);
+            actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateSketchCommentScalesLevel[cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1)) - 1]);
+            textViewShowResultStructQuestion.setText(Html.fromHtml(actualResultStructQuestion));
+        } else { // result is =0; comes from server/ coach
+            String actualResultStructQuestionFromCoach = context.getResources().getString(R.string.textOurArrangementShowSketchCommentActualResultStructQuestionFromCoach);
+            textViewShowResultStructQuestion.setText(actualResultStructQuestionFromCoach);
+        }
 
         // show actual sketch comment
         TextView textViewShowActualComment = (TextView) inflatedView.findViewById(R.id.listActualTextSketchComment);
@@ -356,21 +361,6 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
         else {
             linkToCommentAnArrangement.setVisibility(View.GONE);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         return inflatedView;
 
