@@ -56,11 +56,6 @@ public class OurArrangementFragmentNow extends Fragment {
     //limitation in count comments true-> yes, there is a border; no, there is no border, wirte infitisly comments
     Boolean commentLimitationBorder;
 
-    // startpoint for evaluation period (set with systemtime when intent comes in-> look boradcast receiver)
-    Long startPointEvaluationPeriod = 0L;
-
-    // true -> startPointEvaluationPeriod is init with system time in mills
-    Boolean firstInitStartPoint = false;
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
@@ -82,12 +77,6 @@ public class OurArrangementFragmentNow extends Fragment {
         super.onViewCreated(view, saveInstanceState);
 
         fragmentNowContext = getActivity().getApplicationContext();
-
-        if (!firstInitStartPoint) {
-            // first init of start point for evaluation
-            firstInitStartPoint = true;
-            startPointEvaluationPeriod = System.currentTimeMillis();
-        }
 
         // init the fragment now
         initFragmentNow();
@@ -148,8 +137,10 @@ public class OurArrangementFragmentNow extends Fragment {
 
                     updateListView = true;
 
-                    // set new start point for evaluation timer
-                    startPointEvaluationPeriod = System.currentTimeMillis();
+                    // set new start point for evaluation timer in view
+                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis());
+                    prefsEditor.commit();
+
                }
 
                 // update the list view because data has change?
@@ -247,14 +238,11 @@ public class OurArrangementFragmentNow extends Fragment {
             String tmpSubtitle = getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", fragmentNowContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
             ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "now");
 
-            Log.d("++++++++POINT+++","Hier im LISTVIEW ------"+startPointEvaluationPeriod);
-
             // new dataadapter
             dataAdapterListViewOurArrangement = new OurArrangementNowCursorAdapter(
                     getActivity(),
                     cursor,
-                    0,
-                    startPointEvaluationPeriod);
+                    0);
 
             // Assign adapter to ListView
             listViewArrangements.setAdapter(dataAdapterListViewOurArrangement);

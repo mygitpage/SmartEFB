@@ -106,7 +106,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
         currentDateOfSketchArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis());
 
         //get block id of sketch arrangement
-        currentBlockIdOfSketchArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0");;
+        currentBlockIdOfSketchArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0");
 
         // find the listview for sketch arrangement
         listViewSketchArrangement = (ListView) viewFragmentSketch.findViewById(R.id.listOurArrangementSketch);

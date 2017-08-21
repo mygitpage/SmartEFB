@@ -80,6 +80,9 @@ public class ConstansClassOurArrangement {
     // prefs name for evaluation active time in seconds
     public static final String namePrefsEvaluateActiveTimeInSeconds = "evaluateActivTimeInSeconds";
 
+    // prefs name for evaluation active time in seconds
+    public static final String namePrefsStartPointEvaluationPeriodInMills = "startPointEvaluationPeriodInMills";
+
     // true -> Sketch arragement are updated; false -> no update
     public static final String namePrefsSignalSketchArrangementUpdate = "signalSketchArrangementUpdated";
 

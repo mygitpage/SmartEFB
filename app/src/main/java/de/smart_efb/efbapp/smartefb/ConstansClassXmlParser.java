@@ -228,7 +228,46 @@ public class ConstansClassXmlParser {
         // xml name for element our arrangement evaluate turn on/off
         public static final String xmlNameForOurArrangement_Evaluate_TurnOnOff = "ourarrangement_evaluate_turnonoff";
 
-            // TODO: insert elements
+            // xml name for element our arrangement evaluate order
+            public static final String xmlNameForOurArrangement_Evaluate_Order = "ourarrangement_evaluate_order";
+
+            // xml name for element our arrangement evaluate remarks
+            public static final String xmlNameForOurArrangement_Evaluate_Remarks = "ourarrangement_evaluate_remarks";
+
+            // xml name for element our arrangement evaluate result question A
+            public static final String xmlNameForOurArrangement_Evaluate_ResultQuestionA = "ourarrangement_evaluate_resultquestion_a";
+
+            // xml name for element our arrangement evaluate result question B
+            public static final String xmlNameForOurArrangement_Evaluate_ResultQuestionB = "ourarrangement_evaluate_resultquestion_b";
+
+            // xml name for element our arrangement evaluate result question C
+            public static final String xmlNameForOurArrangement_Evaluate_ResultQuestionC = "ourarrangement_evaluate_resultquestion_c";
+
+            // xml name for element our arrangement evaluate result question D
+            public static final String xmlNameForOurArrangement_Evaluate_ResultQuestionD = "ourarrangement_evaluate_resultquestion_d";
+
+            // xml name for element our arrangement evalute result time
+            public static final String xmlNameForOurArrangement_Evaluate_ResultTime = "ourarrangement_evaluate_resulttime";
+
+            // xml name for element our arrangement evalute start time
+            public static final String xmlNameForOurArrangement_Evaluate_StartTime = "ourarrangement_evaluate_starttime";
+
+            // xml name for element our arrangement evalute end time
+            public static final String xmlNameForOurArrangement_Evaluate_EndTime = "ourarrangement_evaluate_endtime";
+
+            // xml name for element our arrangement evaluate author name
+            public static final String xmlNameForOurArrangement_Evaluate_AuthorName = "ourarrangement_evaluate_authorname";
+
+            // xml name for element our arrangement evaluate date of arrangement to evaluate
+            public static final String xmlNameForOurArrangement_Evaluate_DateOfArrangement = "ourarrangement_evaluate_dateofarrangement";
+
+            // xml name for element our arrangement evaluate server id arrangement
+            public static final String xmlNameForOurArrangement_Evaluate_ServerIdArrangement = "ourarrangement_evaluate_serverid";
+
+            // xml name for element our arrangement evaluate block number for arrangements
+            public static final String xmlNameForOurArrangement_Evaluate_BlockId = "ourarrangement_evaluate_blockid";
+
+
 
 
         // xml name for element our arrangement settings
@@ -661,13 +700,17 @@ public class ConstansClassXmlParser {
     // xml name for element order "receive ok and send"
     public static final String xmlNameForOrder_Receive_Ok_Send = "receive_ok_send";
 
+    // xml name for send ask new data from server
+    public static final String xmlNameForSendToServer_AskNewData = "asknewdata";
+
     // xml name for send now comment of arrangement to server
     public static final String xmlNameForSendToServer_CommentArrangement = "sendarrangementcomment";
 
     // xml name for send comment of sketch arrangement to server
     public static final String xmlNameForSendToServer_CommentSketchArrangement = "sendsketcharrangementcomment";
 
-
+    // xml name for send evaluationresult arrangement to server
+    public static final String xmlNameForSendToServer_EvaluationResultArrangement = "sendevaluationresultarrangement";
 
 
     // xml feature link for init xml serializer

@@ -37,9 +37,6 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
     //limitation in count comments true-> yes, there is a border; no, there is no border
     Boolean commentLimitationBorder;
 
-    // startpoint for evaluation period (set with systemtime when intent comes in-> look boradcast receiver)
-    Long startPointEvaluationPeriod = 0L;
-
     // for prefs
     SharedPreferences prefs;
 
@@ -48,7 +45,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
 
     // Default constructor
-    public OurArrangementNowCursorAdapter(Context context, Cursor cursor, int flags, Long tmpStartPointEvaluationPeriod) {
+    public OurArrangementNowCursorAdapter(Context context, Cursor cursor, int flags) {
 
         super(context, cursor, flags);
 
@@ -62,8 +59,6 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
         //limitation in count comments true-> yes, there is a border; no, there is no border
         commentLimitationBorder = ((ActivityOurArrangement)context).isCommentLimitationBorderSet("current");
-
-        startPointEvaluationPeriod = tmpStartPointEvaluationPeriod;
 
         // open sharedPrefs
         prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
@@ -179,7 +174,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                     // calculate run time for timer in MILLISECONDS!!!
                     Long nowTime = System.currentTimeMillis();
                     Integer pausePeriod = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 0) * 1000; // make milliseconds from seconds
-                    Long runTimeForTimer = pausePeriod - (nowTime - startPointEvaluationPeriod);
+                    Long runTimeForTimer = pausePeriod - (nowTime - prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis()));
                     // start the timer with the calculated milliseconds
                     if (runTimeForTimer > 0) {
                         new CountDownTimer(runTimeForTimer, 1000) {
@@ -219,7 +214,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                     // calculate run time for timer in MILLISECONDS!!!
                     Long nowTime = System.currentTimeMillis();
                     Integer pausePeriod = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 0) * 1000; // make milliseconds from seconds
-                    Long runTimeForTimer = pausePeriod - (nowTime - startPointEvaluationPeriod);
+                    Long runTimeForTimer = pausePeriod - (nowTime - prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis()));
                     // start the timer with the calculated milliseconds
                     if (runTimeForTimer > 0) {
                         new CountDownTimer(runTimeForTimer, 1000) {

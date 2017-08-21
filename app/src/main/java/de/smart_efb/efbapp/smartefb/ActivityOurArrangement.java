@@ -754,10 +754,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
         evaluatePauseTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, ConstansClassOurArrangement.defaultTimeForActiveAndPauseEvaluationArrangement); // default value 43200 is 12 hours
         evaluateActivTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, ConstansClassOurArrangement.defaultTimeForActiveAndPauseEvaluationArrangement); // default value 43200 is 12 hours
 
-
-        Log.d("Alarm Evaluation", "PAuse:"+evaluatePauseTime+"+++ Active:"+evaluateActivTime);
-
-
         // get start time and end time for evaluation
         Long startEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis());
         Long endEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis());
@@ -771,15 +767,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
 
         // set alarm manager when current time is between start date and end date and evaluation is enable
-
-
-        Log.d("Alarm Evaluation", "Start:"+startEvaluationDate);
-        Log.d("Alarm Evaluation", "End:"+endEvaluationDate);
-        Log.d("Alarm Evaluation", "Jetzt:"+System.currentTimeMillis());
-
-
-
-
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
 
             Log.d("Alarm Evaluation"," STARTEN ------- ");
@@ -808,6 +795,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // create call (pending intent) for alarm manager
             pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(ActivityOurArrangement.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // set new start point for evaluation timer in view fragment now for evaluation link
+
+
+            prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, (calendar.getTimeInMillis()-tmpEvalutePaAcTime));
+            prefsEditor.commit();
 
             // set alarm
             manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurArrangementEvaluate);
@@ -855,7 +848,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     private void lookNewEntryOnTabZero () {
 
         // look for new entrys in db on tab zero
-        if ((subfunction_arrangement_comment && myDb.getCountAllNewEntryOurArrangementComment(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis())) > 0) || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "current") > 0 ) {
+        if ((subfunction_arrangement_comment && myDb.getCountAllNewEntryOurArrangementComment(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0")) > 0) || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "current") > 0 ) {
             infoNewEntryOnTabZero = true;
             infoTextNewEntryPostFixTabZeroTitle = " " + this.getResources().getString(R.string.newEntryText);
         }
@@ -871,7 +864,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     private void lookNewEntryOnTabOne () {
 
         // look for new entrys in db on tab one
-        if ((subfunction_arrangement_sketchcomment && myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis())) > 0) || (subfunction_arrangement_sketch && myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "sketch") > 0)) {
+        if ((subfunction_arrangement_sketchcomment && myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0")) > 0) || (subfunction_arrangement_sketch && myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "sketch") > 0)) {
             infoNewEntryOnTabOne = true;
             infoTextNewEntryPostFixTabOneTitle = " "+ this.getResources().getString(R.string.newEntryText);
         }

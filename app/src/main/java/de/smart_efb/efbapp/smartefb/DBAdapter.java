@@ -38,7 +38,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 36;
+    public static final int DATABASE_VERSION = 37;
 
     // Common column names
     public static final String KEY_ROWID = "_id";
@@ -151,6 +151,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     // Our Arrangement Evaluate- column names and numbers
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME = "arrangement_time";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_SERVER_ID_ARRANGEMENT = "server_id";
+    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_BLOCKID = "block_id";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1 = "result_q_a";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2 = "result_q_b";
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3 = "result_q_c";
@@ -163,13 +164,14 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_ARRANGEMENT_EVALUATE_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
     // All keys from table app settings in a String
-    public static final String[] OUR_ARRANGEMENT_EVALUATE_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME, OUR_ARRANGEMENT_EVALUATE_KEY_STATUS, OUR_ARRANGEMENT_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME};
+    public static final String[] OUR_ARRANGEMENT_EVALUATE_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME, OUR_ARRANGEMENT_EVALUATE_KEY_STATUS, OUR_ARRANGEMENT_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_BLOCKID};
 
     // SQL String to create our arrangement evaluate table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_EVALUATE =
             "create table " + DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE + " (" + KEY_ROWID + " integer primary key autoincrement, "
                     + OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME + " INTEGER not null, "
                     + OUR_ARRANGEMENT_EVALUATE_KEY_SERVER_ID_ARRANGEMENT + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_BLOCKID + " STRING not null, "
                     + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1 + " INTEGER not null, "
                     + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2 + " INTEGER not null, "
                     + OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3 + " INTEGER not null, "
@@ -919,9 +921,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         ContentValues initialValues = new ContentValues();
 
-        Log.d("TIME","TIME IN DB:"+commentTime);
-
-
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, comment);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, authorName);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, commentTime);
@@ -968,13 +967,14 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // Get the number of new rows in all comment for all arrangement (new entrys) where date is current arrangement date -> no older one!
-    public int getCountAllNewEntryOurArrangementComment(long currentDateOfArrangement) {
+    // Get the number of new rows in all comment for all arrangement (new entrys) where block id are current arrangement block
+    public int getCountAllNewEntryOurArrangementComment(String blockIdOfArrangement) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         // new_entry = 1 (true)?
-        String where = OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME + "=" + currentDateOfArrangement;
+        String where = OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID + "=" + blockIdOfArrangement;
+
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
@@ -1053,9 +1053,30 @@ public class DBAdapter extends SQLiteOpenHelper {
         ContentValues newValues = new ContentValues();
         newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_STATUS, status);
 
+        Log.d("DB Change Stat Comment", "ROW ID:"+rowId);
+
         // Insert it into the database.
         return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null) != 0;
     }
+
+
+
+
+    // Get all comments with status = 0 (Ready to send) and block id of current arrangement
+    public Cursor getAllReadyToSendComments (String blockIdOfArrangement) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // status = 0 and block id = blockIdOfArrangement
+        String where = OUR_ARRANGEMENT_COMMENT_KEY_STATUS + "=0 AND " + OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID + "=" + blockIdOfArrangement;
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        // return cursor
+        return c;
+    }
+
 
 
 
@@ -1125,12 +1146,12 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get the number of new rows in all comment for all sketch arrangement (new entrys) where date is current sketch arrangement date -> no older one!
-    public int getCountAllNewEntryOurArrangementSketchComment(long currentDateOfArrangement) {
+    public int getCountAllNewEntryOurArrangementSketchComment(String blockIdOfSketchArrangement) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         // new_entry = 1 (true)?
-        String where = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME + "=" + currentDateOfArrangement;
+        String where = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID + "=" + blockIdOfSketchArrangement;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
@@ -1220,13 +1241,14 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Arrangement Evaluate ******************************************/
 
     // Add a new set of values to ourArrangementEvaluate .
-    public long insertRowOurArrangementEvaluate(int serverId, long currentDateOfArrangement, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName, int status, long startEvaluationTime, long endEvaluationTime) {
+    public long insertRowOurArrangementEvaluate(int serverId, long currentDateOfArrangement, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName, int status, long startEvaluationTime, long endEvaluationTime, String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues initialValues = new ContentValues();
 
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_SERVER_ID_ARRANGEMENT, serverId);
+        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_BLOCKID, blockId);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME, currentDateOfArrangement);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1, resultQuestion1);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2, resultQuestion2);
@@ -1241,7 +1263,49 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Insert it into the database.
         return db.insert(DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE, null, initialValues);
+
     }
+
+
+
+    public Cursor getOneRowEvaluationResultArrangement (Long dbId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // data filter
+        String where = KEY_ROWID + "=" + dbId;
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE, OUR_ARRANGEMENT_EVALUATE_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+
+    }
+
+
+
+
+    // update status evaluation in table ourArrangementEvaluate
+    // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Evaluation
+    public boolean updateStatusOurArrangementEvaluation (Long rowId, int status) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row status with status
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_STATUS, status);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE, newValues, where, null) != 0;
+    }
+
+
 
 
     /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Evaluate ***************************************/

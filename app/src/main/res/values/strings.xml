@@ -154,9 +154,9 @@
             <string name="ourArrangementBackLinkToArrangement">Zurück</string>
             <string name="newEntryText">(Neu)</string>
             <string name="toastMessageCommentSendSuccessfull">Der Kommentar wurde gesendet!</string>
-            <string name="toastMessageSketchCommentSendSuccessfull">Der Die Einschätzung wurde gesendet!</string>
+            <string name="toastMessageSketchCommentSendSuccessfull">Die Einschätzung wurde gesendet!</string>
             <string name="toastMessageCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
-
+            <string name="toastMessageEvaluationSendSuccessfull">Die Bewertung wurde zum Server gesendet!</string>
         <!-- End String Activity Our Arrangement -->
 
         <!-- fragment show old arrangements -->
