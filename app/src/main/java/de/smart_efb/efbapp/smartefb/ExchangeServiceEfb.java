@@ -230,17 +230,20 @@ import java.util.Map;
 
                         if (allCommentsReadyToSend != null) {
 
+                            Log.d("New Data SEnd", "Kommentare vorhanden ungleich NULL");
+
                             if (returnMap.get("SendSuccessfull").equals("1") && send_now_comment_info) {
 
+                                Log.d("New Data Send", "MAP Send Successfull");
 
+                                allCommentsReadyToSend.moveToFirst();
+                                do {
 
-                                while (allCommentsReadyToSend.moveToNext()) {
-
-
+                                    Log.d("New Data Send","Comment ID:" + allCommentsReadyToSend.getLong(allCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)));
 
                                     myDb.updateStatusOurArrangementComment (allCommentsReadyToSend.getLong(allCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
 
-                                }
+                                } while (allCommentsReadyToSend.moveToNext());
 
 
 
