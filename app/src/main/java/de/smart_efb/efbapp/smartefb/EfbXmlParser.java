@@ -64,6 +64,7 @@ public class EfbXmlParser {
         returnMap.put("ClientId", "");
         returnMap.put("ConnectionStatus", "0");
         returnMap.put("SendSuccessfull", "0");
+        returnMap.put("SendNotSuccessfull", "0");
 
         returnMap.put("ConnectBook", "0");
         returnMap.put("ConnectBookSettings", "0");
@@ -5124,12 +5125,14 @@ public class EfbXmlParser {
     private void setErrorMessageInPrefs (int position) {
 
         String tmpErrorText = "Es ist ein Kommunikationsfehler (XML) aufgetreten (Position:" + position + ")";
-        
+
+        returnMap.put("SendNotSuccessfull", "1");
+
         // write last error messages to prefs
         prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText);
         
         // set connection status to error
-        prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 1);
+        //prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 1);
         
         prefsEditor.commit();
         

@@ -154,8 +154,10 @@
             <string name="ourArrangementBackLinkToArrangement">Zurück</string>
             <string name="newEntryText">(Neu)</string>
             <string name="toastMessageCommentSendSuccessfull">Der Kommentar wurde gesendet!</string>
+            <string name="toastMessageCommentSendNotSuccessfull">Der Kommentar wurde noch nicht gesendet!</string>
             <string name="toastMessageSketchCommentSendSuccessfull">Die Einschätzung wurde gesendet!</string>
             <string name="toastMessageCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
+            <string name="toastMessageCommentNowNewComments">Es sind neue Kommentare eingetroffen!</string>
             <string name="toastMessageEvaluationSendSuccessfull">Die Bewertung wurde zum Server gesendet!</string>
         <!-- End String Activity Our Arrangement -->
 
@@ -234,7 +236,7 @@
 
         <!-- String Fragment evaluate arrangement -->
             <string name="showEvaluateArrangementIntroText">Bewerten Sie Absprache</string>
-            <string name="btnSendEvaluateResult">Speichern</string>
+            <string name="btnSendEvaluateResult">Bewertungen speichern</string>
             <string name="btnAbortEvaluate">Zurück</string>
             <string name="questionOneEvaluateMySelf">Wie haben Sie selbst die Absprache eingehalten?</string>
             <string name="questionTwoEvaluateMyEx">Wie hat Ihr Ex-Partner die Absprache aus Ihrer Sicht eingehalten?</string>

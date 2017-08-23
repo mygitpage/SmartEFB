@@ -116,24 +116,47 @@ public class OurArrangementFragmentNow extends Fragment {
 
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
                 String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
+                String tmpExtraOurArrangementNowComment = intentExtras.getString("OurArrangementNowComment","0");
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
+                String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpUpdateEvaluationLink = intentExtras.getString("UpdateEvaluationLink");
+                String tmpMessage = intentExtras.getString("Message");
+
+
+                Log.d("BROADCAST RECEIVER NOW", "In der Funktion -------");
 
                 if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
 
                     //update current block id of arrangements
                     currentBlockIdOfArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0");
 
-                    checkUpdateForShowDialog ();
+                    // check arrangement and skecth arrangement update and show dialog arrangement and sketch arrangement change
+                    ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("now");
 
+                    // update the view
                     updateListView = true;
 
                 }
-                else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1")) { // send successfull?
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNowComment != null && tmpExtraOurArrangementNowComment.equals("1")) {
+                    // update now comment view -> show toast and update view
+                    String updateMessageCommentNow = fragmentNowContext.getString(R.string.toastMessageCommentNowNewComments);
+                    Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
 
-                    Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
+                    // update the view
+                    updateListView = true;
 
-                } else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
+                }
+                else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send successfull?
+
+                    Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG).show();
+
+                }
+                else if (tmpSendNotSuccessefull != null && tmpSendNotSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send not successfull?
+
+                    Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG).show();
+
+                }
+                else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
 
                     updateListView = true;
 
@@ -154,32 +177,7 @@ public class OurArrangementFragmentNow extends Fragment {
     };
 
 
-    // check prefs for update now and sketch arrangement or only now arrangements?
-    public void checkUpdateForShowDialog () {
 
-        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false) && prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false)) {
-
-            // set signal arrangements and sketch arrangements are update to false; because user is informed by dialog!
-            prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false);
-            prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false);
-            prefsEditor.commit();
-
-            // show dialog arrangement and sketch arrangement change
-            ((ActivityOurArrangement) getActivity()).alertDialogArrangementChange("currentSketch");
-
-        }
-        else if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false)) {
-            // set signal arrangements are update to false; because user is informed by dialog!
-            prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false);
-            prefsEditor.commit();
-
-            // show dialog arrangement change
-            ((ActivityOurArrangement) getActivity()).alertDialogArrangementChange("current");
-
-        }
-
-
-    }
 
 
     // update the list view with arrangements

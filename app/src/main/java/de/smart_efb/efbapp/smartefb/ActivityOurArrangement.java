@@ -1050,6 +1050,42 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
 
+    // check prefs for update now and sketch arrangement or only now arrangements or only sketch?
+    public void checkUpdateForShowDialog (String fragmentName) {
+
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false) && prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false)) {
+
+            // set signal arrangements and sketch arrangements are update to false; because user is informed by dialog!
+            prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false);
+            prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false);
+            prefsEditor.commit();
+
+            // show dialog arrangement and sketch arrangement change
+            alertDialogArrangementChange("currentSketch");
+
+        }
+        else if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false) && fragmentName.equals("now")) {
+            // set signal arrangements are update to false; because user is informed by dialog!
+            prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false);
+            prefsEditor.commit();
+
+            // show dialog arrangement change
+            alertDialogArrangementChange("current");
+
+        } else if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false) && fragmentName.equals("sketch")) {
+            // set signal sketch arrangements are update to false; because user is informed by dialog!
+            prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false);
+            prefsEditor.commit();
+
+            // show dialog arrangement change
+            alertDialogArrangementChange("sketch");
+
+        }
+
+
+    }
+
+
 
 
 

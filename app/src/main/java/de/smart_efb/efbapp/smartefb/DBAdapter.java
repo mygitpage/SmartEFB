@@ -1232,6 +1232,20 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
+    // Get all sketch comments with status = 0 (Ready to send) and block id of sketch arrangement
+    public Cursor getAllReadyToSendSketchComments (String blockIdOfSketchArrangement) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // status = 0 and block id = blockIdOfSketchArrangement
+        String where = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS + "=0 AND " + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID + "=" + blockIdOfSketchArrangement;
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        // return cursor
+        return c;
+    }
 
 
     /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Sketch Comment ***************************************/

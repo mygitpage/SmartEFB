@@ -25,10 +25,10 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
     // calling context
     Context pagerAdapterContext = null;
 
-    // command to choose a fragment for zab zero in getItem
+    // command to choose a fragment for tab zero in getItem
     static int fragmentChooserTabZero;
 
-    // command to choose a fragment for zab one in getItem
+    // command to choose a fragment for tab one in getItem
     static int fragmentChooserTabOne;
 
 

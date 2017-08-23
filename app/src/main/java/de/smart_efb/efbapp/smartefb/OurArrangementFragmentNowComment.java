@@ -1,8 +1,10 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -43,6 +46,9 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
     // fragment context
     Context fragmentNowCommentContext = null;
+
+    // the fragment
+    Fragment fragmentNowCommentThisFragmentContext;
 
     // layout inflater for fragment
     LayoutInflater layoutInflaterForFragment;
@@ -80,6 +86,10 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
         viewFragmentNowComment = layoutInflater.inflate(R.layout.fragment_our_arrangement_now_comment, null);
 
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentNowCommentBrodcastReceiver, filter);
+
         return viewFragmentNowComment;
 
     }
@@ -93,15 +103,104 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
         fragmentNowCommentContext = getActivity().getApplicationContext();
 
+        fragmentNowCommentThisFragmentContext = this;
+
         // call getter function in ActivityOurArrangment
         callGetterFunctionInSuper();
 
         // init the fragment now only when an arrangement is choosen
         if (arrangementServerDbIdToComment != 0) {
             initFragmentNowComment();
+            buildFragmentNowCommentView();
         }
+
+
     }
 
+
+    // fragment is destroyed
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // de-register broadcast receiver
+        getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentNowCommentBrodcastReceiver);
+
+    }
+
+
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    private BroadcastReceiver ourArrangementFragmentNowCommentBrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // true-> update the list view with arrangements
+            Boolean updateListView = false;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                // check intent order
+
+                String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
+                String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
+                String tmpExtraOurArrangementNowComment = intentExtras.getString("OurArrangementNowComment","0");
+                String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
+                String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
+                String tmpMessage = intentExtras.getString("Message");
+
+                Log.d("BROA REC NOW COMMENT", "In der Funktion -------");
+
+                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNowComment != null && tmpExtraOurArrangementNowComment.equals("1")) {
+                    // update now comment view -> show toast and update view
+                    String updateMessageCommentNow = fragmentNowCommentContext.getString(R.string.toastMessageCommentNowNewComments);
+                    Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
+
+                    // refresh fragments view
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(fragmentNowCommentThisFragmentContext).attach(fragmentNowCommentThisFragmentContext).commit();
+
+
+
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
+                    // update now arrangement! -> go back to fragment now arrangement and show dialog
+
+                    // check arrangement and skecth arrangement update and show dialog arrangement and sketch arrangement change
+                    ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("sketch");
+
+                    // go back to fragment now arrangement -> this is my mother!
+                    Intent backIntent = new Intent(getActivity(), ActivityOurArrangement.class);
+                    backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    backIntent.putExtra("com","show_arrangement_now");
+                    getActivity().startActivity(backIntent);
+
+                }
+                else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send successfull?
+                    // send successefull -> show toast with message
+                    Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
+
+                }
+                else if (tmpSendNotSuccessefull != null && tmpSendNotSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send not successfull?
+                    // send not successefull -> show toast with message
+                    Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
+
+                }
+
+                /*
+                // update the list view because data has change?
+                if (updateListView) {
+                    updateListView();
+                }
+                */
+
+            }
+
+        }
+    };
 
     // inits the fragment for use
     private void initFragmentNowComment() {
@@ -123,7 +222,11 @@ public class OurArrangementFragmentNowComment extends Fragment {
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentNowCommentText", "string", fragmentNowCommentContext.getPackageName())) + " " + arrangementNumberInListView;
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "nowComment");
 
-        // build the view
+    }
+
+
+    // inits the fragment for use
+    private void buildFragmentNowCommentView () {
 
         //textview for the comment intro
         TextView textCommentNumberIntro = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementCommentNumberIntro);
@@ -306,7 +409,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         }
         else if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0) > 1 && commentLimitationBorder) {
             tmpInfoTextMaxSingluarPluaral = String.format(this.getResources().getString(R.string.infoTextNowCommentMaxPlural), prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0));
-         }
+        }
         else {
             tmpInfoTextMaxSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentUnlimitedText);
         }
@@ -432,6 +535,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         });
 
     }
+
 
 
     // call getter Functions in ActivityOurArrangement for some data

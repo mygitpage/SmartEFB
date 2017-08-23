@@ -9,9 +9,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 import android.util.Xml;
 
+import org.apache.http.conn.ConnectTimeoutException;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
 
@@ -23,6 +25,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -102,6 +105,7 @@ import java.util.Map;
             public void run() {
 
                 Boolean send_now_comment_info = false;
+                Boolean send_sketch_comment_info = false;
 
                 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -124,7 +128,8 @@ import java.util.Map;
                     // get all comments with status = 0 -> ready to send
                     Cursor allCommentsReadyToSend = myDb.getAllReadyToSendComments(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0"));
 
-
+                    // get all sketch comments with status = 0 -> ready to send
+                    Cursor allSketchCommentsReadyToSend = myDb.getAllReadyToSendSketchComments(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0"));
 
 
                     try {
@@ -165,6 +170,24 @@ import java.util.Map;
 
 
                         }
+
+                        Log.d("Exchange", "Anzahl Entwürfe Komm to send: "+allSketchCommentsReadyToSend.getCount());
+
+                        // build xml for all sketch comments
+                        if (allSketchCommentsReadyToSend != null) {
+
+                            while (allSketchCommentsReadyToSend.moveToNext()) {
+                                buildCommentSketchXmlTagWithData(xmlSerializer, allSketchCommentsReadyToSend);
+                                send_sketch_comment_info = true;
+                            }
+
+
+                        }
+
+
+
+
+
 
                         // end tag smartEfb
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
@@ -228,40 +251,40 @@ import java.util.Map;
                         EfbXmlParser xmlparser = new EfbXmlParser(context);
                         returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
 
+                        //++++++++++++++++ db status update section +++++++++++++++++++++++++++++++++
+
+                        // set status of now comment to 1 -> send successfull
                         if (allCommentsReadyToSend != null) {
-
-                            Log.d("New Data SEnd", "Kommentare vorhanden ungleich NULL");
-
                             if (returnMap.get("SendSuccessfull").equals("1") && send_now_comment_info) {
-
-                                Log.d("New Data Send", "MAP Send Successfull");
-
                                 allCommentsReadyToSend.moveToFirst();
                                 do {
-
-                                    Log.d("New Data Send","Comment ID:" + allCommentsReadyToSend.getLong(allCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)));
-
                                     myDb.updateStatusOurArrangementComment (allCommentsReadyToSend.getLong(allCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-
                                 } while (allCommentsReadyToSend.moveToNext());
-
-
-
-
                             }
                         }
+
+                        // set status of sketch comment to 1 -> send successfull
+                        if (allSketchCommentsReadyToSend != null) {
+                            if (returnMap.get("SendSuccessfull").equals("1") && send_sketch_comment_info) {
+                                allSketchCommentsReadyToSend.moveToFirst();
+                                do {
+                                    myDb.updateStatusOurArrangementSketchComment (allSketchCommentsReadyToSend.getLong(allSketchCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                } while (allSketchCommentsReadyToSend.moveToNext());
+                            }
+                        }
+
+                        //++++++++++++++++ end db status update section +++++++++++++++++++++++++++++++++
 
                         // close input stream and disconnect
                         answerInputStream.close();
                         connection.disconnect();
 
-                        /*
-                        // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
+
+                        // send intent to broadcast receiver -> the receiver looks for relevant data in intent
                         Intent tmpIntent = translateMapToIntent (returnMap);
-                        tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageCommentSendSuccessfull));
                         tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
                         context.sendBroadcast(tmpIntent);
-                        */
+
 
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
@@ -371,13 +394,8 @@ import java.util.Map;
                         // end tag main
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
-
-
                         // build xml tag for comment with data
                         buildCommentNowXmlTagWithData (xmlSerializer, commentData);
-
-
-
 
                         // end tag smartEfb
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
@@ -439,38 +457,44 @@ import java.util.Map;
                         EfbXmlParser xmlparser = new EfbXmlParser(context);
                         returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
 
-                        if (returnMap.get("SendSuccessfull").equals("1")) {
-                            myDb.updateStatusOurArrangementComment (dbId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                        }
-
                         // close input stream and disconnect
                         answerInputStream.close();
                         connection.disconnect();
 
-                        // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
-                        Intent tmpIntent = translateMapToIntent (returnMap);
-                        tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageCommentSendSuccessfull));
-                        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
-                        context.sendBroadcast(tmpIntent);
+
+                        if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
+                            myDb.updateStatusOurArrangementComment (dbId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                            // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
+                            Intent tmpIntent = translateMapToIntent (returnMap);
+                            tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageCommentSendSuccessfull));
+                            tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                            context.sendBroadcast(tmpIntent);
+                        }
+                        else { // send not successfull
+                            // send information broadcast to receiver that sending was not successefull
+                            String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                            sendIntentBroadcastSendingNotSuccessefull (message);
+                        }
 
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
+                        // send information broadcast to receiver that sending not successfull
+                        String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                        sendIntentBroadcastSendingNotSuccessefull (message);
                     } catch (IOException e) {
                         e.printStackTrace();
+                        // send information broadcast to receiver that sending not successfull
+                        String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                        sendIntentBroadcastSendingNotSuccessefull (message);
                     } catch (XmlPullParserException e) {
                         e.printStackTrace();
                     }
-
-
                 }
                 else { // no network enable -> try to send comment to server later
-
-                    // send intent to receiver in OurArrangementFragmentNow to show toast to user
-                    Intent tmpIntent = new Intent();
-                    tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
-                    tmpIntent.putExtra("SendSuccessfull","0");
-                    tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageCommentNotSendSuccessfullNoNetwork));
-                    context.sendBroadcast(tmpIntent);
+                    // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastMessageCommentNotSendSuccessfullNoNetwork);
+                    sendIntentBroadcastSendingNotSuccessefull (message);
                 }
 
                 // stop the task with service
@@ -565,61 +589,13 @@ import java.util.Map;
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
 
-                    // open comment sketch arrangement tag
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment);
 
-                    // start tag comment sketch arrangement order
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Order );
-                    xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_New);
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Order );
 
-                    // start tag comment text
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Comment);
-                    xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT)));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Comment);
+                    // build xml tag for sketch comment with data
+                    buildCommentSketchXmlTagWithData (xmlSerializer, commentData);
 
-                    // start tag author name text
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_AuthorName);
-                    xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME)));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_AuthorName);
 
-                    // start tag comment time
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentTime);
-                    xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentTime);
 
-                    // start tag sketch arrangement time
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_DateOfArrangement);
-                    xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME))/1000)); // convert millis to timestamp
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_DateOfArrangement);
-
-                    // start tag sketch comment result question A
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionA);
-                    xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1))));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionA);
-
-                    // start tag sketch comment result question B
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionB);
-                    xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2))));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionB);
-
-                    // start tag sketch comment result question C
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionC);
-                    xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3))));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionC);
-
-                   // start tag block number of sketch arrangement
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_BlockId);
-                    xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID)));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_BlockId);
-
-                    // start tag server id sketch arrangement
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ServerIdArrangement);
-                    xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT)));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ServerIdArrangement);
-
-                    // end tag comment now arrangement
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment);
 
                     // end tag smartEfb
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
@@ -680,41 +656,43 @@ import java.util.Map;
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
                     returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
 
-                    if (returnMap.get("SendSuccessfull").equals("1")) {
-                        myDb.updateStatusOurArrangementSketchComment (dbId, 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                    }
-
-
-
-
                     // close input stream and disconnect
                     answerInputStream.close();
                     connection.disconnect();
 
-                    // send intent to receiver in OurArrangementFragmentSketch to update listView OurArrangement (when active)
-                    Intent tmpIntent = translateMapToIntent (returnMap);
-                    tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageCommentSendSuccessfull));
-                    tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
-                    context.sendBroadcast(tmpIntent);
+                    if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
+                        myDb.updateStatusOurArrangementSketchComment (dbId, 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                        // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
+                        Intent tmpIntent = translateMapToIntent (returnMap);
+                        tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageCommentSendSuccessfull));
+                        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                        context.sendBroadcast(tmpIntent);
+                    }
+                    else { // send not successfull
+                        // send information broadcast to receiver that sending was not successefull
+                        String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                        sendIntentBroadcastSendingNotSuccessefull (message);
+                    }
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
+                    // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                    sendIntentBroadcastSendingNotSuccessefull (message);
                 } catch (IOException e) {
                     e.printStackTrace();
+                    // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                    sendIntentBroadcastSendingNotSuccessefull (message);
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
                 }
-
-
             }
             else { // no network enable -> try to send comment to server later
-
-                // send intent to receiver in OurArrangementFragmentSketch to show toast to user
-                Intent tmpIntent = new Intent();
-                tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
-                tmpIntent.putExtra("SendSuccessfull","0");
-                tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageCommentNotSendSuccessfullNoNetwork));
-                context.sendBroadcast(tmpIntent);
+                // send information broadcast to receiver that sending not successfull
+                String message = context.getResources().getString(R.string.toastMessageCommentNotSendSuccessfullNoNetwork);
+                sendIntentBroadcastSendingNotSuccessefull (message);
             }
 
             // stop the task with service
@@ -988,6 +966,23 @@ import java.util.Map;
 
 
 
+    // send message to activity that sending was not successfull
+    public void sendIntentBroadcastSendingNotSuccessefull (String message) {
+
+        Log.d("Exchange Service", "SENDE FEHLER BRAODCAST TO all Listener!!!");
+
+        SystemClock.sleep(2000); // wait a second because fragment change and with in the broadcast receiver
+
+        Log.d("Exchange Service", "SENDE FEHLER BRAODCAST TO all Listener 1s later!!!");
+
+        // send intent to receiver that sending not successfull
+        Intent tmpIntent = new Intent();
+        tmpIntent.putExtra("Message", message);
+        tmpIntent.putExtra("SendNotSuccessfull","1");
+        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+        context.sendBroadcast(tmpIntent);
+    }
+
 
 
     //++++++++++++++++++ END TASK AREA ++++++++++++++++++++++++++++++++++++++++++++++
@@ -1149,9 +1144,84 @@ import java.util.Map;
 
 
 
+    public void buildCommentSketchXmlTagWithData(XmlSerializer xmlSerializer, Cursor commentData) {
 
 
+        Log.d("Exchange Build Sketch", "Kommentartext: " + commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT));
 
+        try {
 
+            // open comment sketch arrangement tag
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment);
+
+            // start tag comment sketch arrangement order
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Order );
+            xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_New);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Order );
+
+            // start tag comment text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Comment);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Comment);
+
+            // start tag author name text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_AuthorName);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_AuthorName);
+
+            // start tag comment time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentTime);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentTime);
+
+            // start tag sketch arrangement time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_DateOfArrangement);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_DateOfArrangement);
+
+            // start tag sketch comment result question A
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionA);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1))));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionA);
+
+            // start tag sketch comment result question B
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionB);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2))));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionB);
+
+            // start tag sketch comment result question C
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionC);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3))));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionC);
+
+            // start tag block number of sketch arrangement
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_BlockId);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_BlockId);
+
+            // start tag server id sketch arrangement
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ServerIdArrangement);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ServerIdArrangement);
+
+            // end tag comment now arrangement
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment);
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
+
+
+
+
+
+
+
+
+
+
+
+}
