@@ -137,9 +137,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
             // Extras from intent that holds data
             Bundle intentExtras = null;
 
-            // true-> update the list view with arrangements
-            Boolean updateListView = false;
-
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
@@ -162,15 +159,12 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     // refresh fragments view
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.detach(fragmentNowCommentThisFragmentContext).attach(fragmentNowCommentThisFragmentContext).commit();
-
-
-
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
                     // update now arrangement! -> go back to fragment now arrangement and show dialog
 
-                    // check arrangement and skecth arrangement update and show dialog arrangement and sketch arrangement change
-                    ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("sketch");
+                    // check arrangement and now arrangement update and show dialog arrangement and now arrangement change
+                    ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("now");
 
                     // go back to fragment now arrangement -> this is my mother!
                     Intent backIntent = new Intent(getActivity(), ActivityOurArrangement.class);
@@ -189,18 +183,10 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
 
                 }
-
-                /*
-                // update the list view because data has change?
-                if (updateListView) {
-                    updateListView();
-                }
-                */
-
             }
-
         }
     };
+
 
     // inits the fragment for use
     private void initFragmentNowComment() {

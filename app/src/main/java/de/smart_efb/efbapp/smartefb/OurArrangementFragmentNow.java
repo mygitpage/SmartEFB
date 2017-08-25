@@ -117,6 +117,14 @@ public class OurArrangementFragmentNow extends Fragment {
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
                 String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
                 String tmpExtraOurArrangementNowComment = intentExtras.getString("OurArrangementNowComment","0");
+
+                String tmpExtraOurArrangementSettings = intentExtras.getString("OurArrangementSettings","0");
+
+                String tmpExtraOurArrangementCommentShare = intentExtras.getString("OurArrangementSettingsCommentShare","0");
+
+                String tmpExtraOurArrangementResetCommentCountComment = intentExtras.getString("OurArrangementSettingsCommentCountComment","0");
+
+
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpUpdateEvaluationLink = intentExtras.getString("UpdateEvaluationLink");
@@ -124,6 +132,15 @@ public class OurArrangementFragmentNow extends Fragment {
 
 
                 Log.d("BROADCAST RECEIVER NOW", "In der Funktion -------");
+
+                // returnMap.put("OurArrangementSettingsSketchCommentCountComment", "1");
+                // returnMap.put("OurArrangementSettingsSketchCommentShare","1");
+                // returnMap.put("OurArrangement","1");
+                // returnMap.put("OurArrangementSettings","1");
+                // returnMap.put("OurArrangementSettingsCommentCountComment", "1");
+                // returnMap.put("OurArrangementSettingsCommentShare","1");
+
+
 
                 if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
 
@@ -135,7 +152,6 @@ public class OurArrangementFragmentNow extends Fragment {
 
                     // update the view
                     updateListView = true;
-
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNowComment != null && tmpExtraOurArrangementNowComment.equals("1")) {
                     // update now comment view -> show toast and update view
@@ -144,17 +160,41 @@ public class OurArrangementFragmentNow extends Fragment {
 
                     // update the view
                     updateListView = true;
-
                 }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementResetCommentCountComment != null && tmpExtraOurArrangementResetCommentCountComment.equals("1")) {
+                    // reset now comment counter -> show toast and update view
+                    String updateMessageCommentNow = fragmentNowContext.getString(R.string.toastMessageArrangementResetCommentCountComment);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                   // update the view
+                    updateListView = true;
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementCommentShare  != null && tmpExtraOurArrangementCommentShare .equals("1")) {
+                    // reset now comment counter -> show toast and update view
+                    String updateMessageCommentNow = fragmentNowContext.getString(R.string.toastMessageArrangementCommentShare);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                    // update the view
+                    updateListView = true;
+                }
+
+
+
+
+
                 else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send successfull?
 
                     Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG).show();
-
                 }
                 else if (tmpSendNotSuccessefull != null && tmpSendNotSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send not successfull?
 
                     Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG).show();
-
                 }
                 else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
 
@@ -163,21 +203,15 @@ public class OurArrangementFragmentNow extends Fragment {
                     // set new start point for evaluation timer in view
                     prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis());
                     prefsEditor.commit();
-
                }
 
                 // update the list view because data has change?
                 if (updateListView) {
                     updateListView();
                 }
-
             }
-
         }
     };
-
-
-
 
 
     // update the list view with arrangements

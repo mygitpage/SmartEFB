@@ -158,7 +158,9 @@
             <string name="toastMessageSketchCommentSendSuccessfull">Die Einschätzung wurde gesendet!</string>
             <string name="toastMessageCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
             <string name="toastMessageCommentNowNewComments">Es sind neue Kommentare eingetroffen!</string>
+            <string name="toastMessageArrangementResetCommentCountComment">Der Kommentarzähler wurde von Ihrer Beraterin/ Ihrem Berater auf Null zurückgesetzt!</string>
             <string name="toastMessageEvaluationSendSuccessfull">Die Bewertung wurde zum Server gesendet!</string>
+            <string name="toastMessageArrangementCommentShare">Die Zustellung der Kommentare wurde von Ihrer Beraterin/ Ihrem Berater unterbrochen!</string>
         <!-- End String Activity Our Arrangement -->
 
         <!-- fragment show old arrangements -->
@@ -258,7 +260,7 @@
             <string name="evaluateThankAndNextEvaluationLastText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die letzte Absprache.</string>
             <string name="ourArrangementEvaluationBackLinkToArrangement">Zurück zu den aktuellen Absprachen</string>
             <string name="ourArrangementEvaluationAuthorNameWithDateForArrangement">Die Absprache wurde von &lt;u>%1$s&lt;/u> am %2$s geschrieben.</string>
-            <string name="ourArrangementEvaluationInfoEvaluationPeriod">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Für eine Bewertung stehen jeweils %5$d Stunden zur Verfügung. Die Pause beträgt %6$d Stunden.</string>
+            <string name="ourArrangementEvaluationInfoEvaluationPeriod">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Für eine Bewertung steht/en jeweils %5$d Stunde/n zur Verfügung. Die Pause beträgt %6$d Stunde/n.</string>
             <string name="ourArrangementEvaluationNoEvaluationPossibleWhenEvaluate">Wenn Sie eine Absprache bewertet haben, ist eine weitere Bewertung erst nach Ablauf der Pausenzeit möglich.</string>
             <string name="ourArrangementEvaluatePeriodExpired">Bewertungszeitraum abgelaufen</string>
             <string name="ourArrangementEvaluateTextEvaluationModulSwitchOn">Bewertungsmodul wird eingeschaltet</string>

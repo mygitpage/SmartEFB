@@ -1,13 +1,17 @@
 package de.smart_efb.efbapp.smartefb;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +30,9 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
     // fragment context
     Context fragmentShowCommentContext = null;
+
+    // the listview for the comments
+    ListView listViewShowComments = null;
 
     // reference to the DB
     DBAdapter myDb;
@@ -54,6 +61,10 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
         viewFragmentShowComment = layoutInflater.inflate(R.layout.fragment_our_arrangement_show_comment, null);
 
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentShowCommentBrodcastReceiver, filter);
+
         return viewFragmentShowComment;
 
     }
@@ -77,9 +88,16 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
             // show actual comment set for arrangement
             displayActualCommentSet();
-
         }
+    }
 
+
+    // fragment is destroyed
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // de-register broadcast receiver
+        getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentShowCommentBrodcastReceiver);
     }
 
 
@@ -99,6 +117,67 @@ public class OurArrangementFragmentShowComment extends Fragment {
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentShowCommentText", "string", fragmentShowCommentContext.getPackageName())) + " " + arrangementNumberInListView;
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "showComment");
 
+        // find the listview
+        listViewShowComments = (ListView) viewFragmentShowComment.findViewById(R.id.listOurArrangementShowComment);
+    }
+
+
+
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    private BroadcastReceiver ourArrangementFragmentShowCommentBrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                // check intent order
+
+                String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
+                String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
+                String tmpExtraOurArrangementNowComment = intentExtras.getString("OurArrangementNowComment","0");
+
+                Log.d("BROA REC show COMMENT", "In der Funktion -------");
+
+                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNowComment != null && tmpExtraOurArrangementNowComment.equals("1")) {
+                    // update now comment view -> show toast and update view
+                    String updateMessageCommentNow = fragmentShowCommentContext.getString(R.string.toastMessageCommentNowNewComments);
+                    Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
+
+                    // update the view
+                    updateListView ();
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
+                    // update now arrangement! -> go back to fragment now arrangement and show dialog
+
+                    // check arrangement and now arrangement update and show dialog arrangement and now arrangement change
+                    ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("now");
+
+                    // go back to fragment now arrangement -> this is my mother!
+                    Intent backIntent = new Intent(getActivity(), ActivityOurArrangement.class);
+                    backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    backIntent.putExtra("com","show_arrangement_now");
+                    getActivity().startActivity(backIntent);
+                }
+            }
+        }
+    };
+
+
+    // update the list view with now comments
+    public void updateListView () {
+
+        if (listViewShowComments != null) {
+            listViewShowComments.destroyDrawingCache();
+            listViewShowComments.setVisibility(ListView.INVISIBLE);
+            listViewShowComments.setVisibility(ListView.VISIBLE);
+
+            displayActualCommentSet ();
+        }
     }
 
 
@@ -119,15 +198,11 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
             // call getter-methode isCommentLimitationBorderSet in ActivityOurArrangement to get true-> comments are limited, false-> comments are not limited
             commentLimitationBorder = ((ActivityOurArrangement)getActivity()).isCommentLimitationBorderSet("current");
-
-
         }
-
     }
 
 
-
-
+    // buil the view for the comments
     public void displayActualCommentSet () {
 
         // get the data (all comments from an arrangement) from DB
@@ -136,24 +211,22 @@ public class OurArrangementFragmentShowComment extends Fragment {
         // get the data (the choosen arrangement) from the DB
         Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToShow);
 
-        // find the listview
-        ListView listView = (ListView) viewFragmentShowComment.findViewById(R.id.listOurArrangementShowComment);
+        if (cursorComments.getCount() > 0 && choosenArrangement.getCount() > 0 && listViewShowComments != null) {
 
-        // new dataadapter with custom constructor for show comments now
-        showCommentCursorAdapter = new OurArrangementShowCommentCursorAdapter(
-                getActivity(),
-                cursorComments,
-                0,
-                arrangementServerDbIdToShow,
-                arrangementNumberInListView,
-                commentLimitationBorder,
-                choosenArrangement);
+            // new dataadapter with custom constructor for show comments now
+            showCommentCursorAdapter = new OurArrangementShowCommentCursorAdapter(
+                    getActivity(),
+                    cursorComments,
+                    0,
+                    arrangementServerDbIdToShow,
+                    arrangementNumberInListView,
+                    commentLimitationBorder,
+                    choosenArrangement);
 
-        // Assign adapter to ListView
-        listView.setAdapter(showCommentCursorAdapter);
-
+            // Assign adapter to ListVie
+            listViewShowComments.setAdapter(showCommentCursorAdapter);
+        }
     }
-
 }
 
 

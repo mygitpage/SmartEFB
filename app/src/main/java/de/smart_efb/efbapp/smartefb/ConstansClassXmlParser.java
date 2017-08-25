@@ -306,6 +306,9 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement settings comment count comment since time
             public static final String xmlNameForOurArrangement_Settings_CommentCountCommentSinceTime = "ourarrangement_settings_commentcountcommentsincetime";
 
+            // xml name for element our arrangement settings comment share
+            public static final String xmlNameForOurArrangement_Settings_CommentShare = "ourarrangement_settings_commentshare";
+
             // xml name for element our arrangement settings sketch comment max comment
             public static final String xmlNameForOurArrangement_Settings_SketchCommentMaxComment = "ourarrangement_settings_sketchcommentmaxcomment"; //value > 1000 -> no limitations with comments
 
@@ -320,6 +323,9 @@ public class ConstansClassXmlParser {
 
             // xml name for element our arrangement settings sketch comment count comment since time
             public static final String xmlNameForOurArrangement_Settings_SketchCommentCountCommentSinceTime = "ourarrangement_settings_sketchcommentcountcommentsincetime";
+
+            // xml name for element our arrangement settings comment share
+            public static final String xmlNameForOurArrangement_Settings_SketchCommentShare = "ourarrangement_settings_sketchcommentshare";
 
             // xml name for element our arrangement settings sketch current date of sketch arrangement
             public static final String xmlNameForOurArrangement_Settings_SketchCurrentDateOfSketchArrangement = "ourarrangement_settings_sketchcurrentdateofsketcharrangement";

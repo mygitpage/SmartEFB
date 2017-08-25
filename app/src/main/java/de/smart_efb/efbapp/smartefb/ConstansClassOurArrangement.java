@@ -59,6 +59,9 @@ public class ConstansClassOurArrangement {
     // prefs name for time since comment start in mills
     public static final String namePrefsCommentTimeSinceCommentStartInMills = "commentOurArrangementTimeSinceInMills";
 
+    // prefs name for count comment
+    public static final String namePrefsCommentShare = "commentOurArrangementShare";
+
     // prefs name for count max sketch comment
     public static final String namePrefsMaxSketchComment = "commentSketchOurArrangementMaxComment";
 
@@ -73,6 +76,9 @@ public class ConstansClassOurArrangement {
 
     // prefs name for time since sketch comment start in mills
     public static final String namePrefsSketchCommentTimeSinceSketchCommentStartInMills = "sketchCommentOurArrangementTimeSinceInMills";
+
+    // prefs name for count comment
+    public static final String namePrefsSketchCommentShare = "sketchCommentOurArrangementShare";
 
     // prefs name for evaluation pause time in seconds
     public static final String namePrefsEvaluatePauseTimeInSeconds = "evaluatePauseTimeInSeconds";

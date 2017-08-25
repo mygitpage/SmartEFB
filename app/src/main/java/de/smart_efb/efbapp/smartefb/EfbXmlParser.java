@@ -78,9 +78,12 @@ public class EfbXmlParser {
         returnMap.put("OurArrangementSettings", "0");
         returnMap.put("OurArrangementSettingsEvaluationProcess", "0");
         returnMap.put("OurArrangementSettingsCommentProcess", "0");
+        returnMap.put("OurArrangementSettingsCommentShare","0");
+        returnMap.put("OurArrangementSettingsCommentCountComment", "0");
         returnMap.put("OurArrangementSettingsSketchCurrentDateOfSketchArrangement", "0");
-        returnMap.put("OurArrangementSettingsSketchArrangmentAuthorName", "0");
         returnMap.put("OurArrangementSettingsCurrentDateOfArrangement", "0");
+        returnMap.put("OurArrangementSettingsSketchCommentShare","0");
+        returnMap.put("OurArrangementSettingsSketchCommentCountComment", "0");
 
         returnMap.put("OurGoals", "0");
         returnMap.put("OurGoalsJointlyNow", "0");
@@ -641,6 +644,8 @@ public class EfbXmlParser {
                                 prefsEditor.putString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, tmpBlockId);
                                 // reset comment counter
                                 prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0);
+                                // reset time count comments since
+                                prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, System.currentTimeMillis());
                                 // signal now arragenemt is updated
                                 prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, true);
 
@@ -1109,6 +1114,8 @@ public class EfbXmlParser {
                                 prefsEditor.putString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, tmpBlockId);
                                 // reset sketch comment counter
                                 prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0);
+                                // reset time count comments since
+                                prefsEditor.putLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, System.currentTimeMillis());
                                 // signal sketch arragenemt is updated
                                 prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, true);
 
@@ -1542,15 +1549,15 @@ public class EfbXmlParser {
         int tmpCommentMaxComment = 0;
         int tmpCommentMaxLetters = 0;
         int tmpCommentDelaytime = 0;
-        int tmpCommentCountComment = 0;
         Long tmpCommentCountCommentSinceTime = 0L;
+        int tmpCommentShare = 0; //0-> not sharing; 1-> sharing
 
         // arragnement sketch comment settings
         int tmpSketchCommentMaxComment = 0;
         int tmpSketchCommentMaxLetters = 0;
         int tmpSketchCommentDelaytime = 0;
-        int tmpSketchCommentCountComment = 0;
         Long tmpSketchCommentCountCommentSinceTime = 0L;
+        int tmpSketchCommentShare = 0; //0-> not sharing; 1-> sharing
 
         // current date for sketch arrangement and now arrangement
         Long tmpSketchCurrentDateOfArrangement = 0L;
@@ -1727,10 +1734,6 @@ public class EfbXmlParser {
 
                             break;
 
-
-
-
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_EvaluatePauseTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get evaluate pause time
@@ -1872,34 +1875,11 @@ public class EfbXmlParser {
 
                             break;
 
-
-
-
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentCountComment:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get count comment
-                                if (xpp.getText().trim().length() >= 0) { // check if count comment from xml >= 0
-                                    tmpCommentCountComment = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Arrang_Settings","CommentCountComment"+tmpCommentCountComment);
-
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentCountCommentSinceTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get since time
                                 if (xpp.getText().trim().length() > 0) { // check if since time from xml > 0
-                                    tmpCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim());
+                                    tmpCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim()) * 1000; // make mills from seconds
 
                                     Log.d("Arrang_Settings","CommentCountCommentSinceTime"+tmpCommentCountCommentSinceTime);
 
@@ -1914,6 +1894,32 @@ public class EfbXmlParser {
                             }
 
                             break;
+
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentShare:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get share value; 0-> not sharing; 1-> sharing
+                                if (xpp.getText().trim().length() > 0) { // check if share value from xml > 0
+                                    tmpCommentShare = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Arrang_Settings","CommentShare"+tmpCommentShare);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+
+
+
+
 
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentMaxComment:
                             eventType = xpp.next();
@@ -1976,13 +1982,13 @@ public class EfbXmlParser {
 
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentCountComment:
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentCountCommentSinceTime:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get count comment sketch
-                                if (xpp.getText().trim().length() >= 0) { // check if count comment sketch from xml >= 0
-                                    tmpSketchCommentCountComment = Integer.valueOf(xpp.getText().trim());
+                            if (eventType == XmlPullParser.TEXT) { // get since time sketch
+                                if (xpp.getText().trim().length() > 0) { // check if since time sketch from xml > 0
+                                    tmpSketchCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim()) * 1000; // make mills from seconds
 
-                                    Log.d("Arrang_Settings","SketchCommentCountComment"+tmpSketchCommentCountComment);
+                                    Log.d("Arrang_Settings","SketchCommentCountCommentSinceTime"+tmpSketchCommentCountCommentSinceTime);
 
 
                                 }
@@ -1996,13 +2002,13 @@ public class EfbXmlParser {
 
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentCountCommentSinceTime:
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentShare:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get since time sketch
-                                if (xpp.getText().trim().length() > 0) { // check if since time sketch from xml > 0
-                                    tmpSketchCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim());
+                            if (eventType == XmlPullParser.TEXT) { // get share value; 0-> not sharing; 1-> sharing
+                                if (xpp.getText().trim().length() > 0) { // check if share value from xml > 0
+                                    tmpSketchCommentShare = Integer.valueOf(xpp.getText().trim());
 
-                                    Log.d("Arrang_Settings","SketchCommentCountCommentSinceTime"+tmpSketchCommentCountCommentSinceTime);
+                                    Log.d("Arrang_Sketch Settings","Comment Sketch Share"+tmpSketchCommentShare);
 
 
                                 }
@@ -2119,14 +2125,37 @@ public class EfbXmlParser {
                                 }
 
                                 // update comment max/count of arrangements?
-                                if (tmpArrangementCommentOnOff && tmpCommentMaxComment > 0 && tmpCommentMaxLetters > 0 && tmpCommentDelaytime > 0 && tmpCommentCountComment >= 0 && tmpCommentCountCommentSinceTime > 0) {
+                                if (tmpArrangementCommentOnOff && tmpCommentMaxComment > 0 && tmpCommentMaxLetters > 0 && tmpCommentDelaytime > 0 && tmpCommentCountCommentSinceTime > 0 && tmpCommentShare >= 0) {
+
+                                    // set new share value to prefs and set returnMap
+                                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentShare, 0) != tmpCommentShare ) {
+                                        prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCommentShare, tmpCommentShare); // write new share value to prefs
+
+                                        returnMap.put("OurArrangementSettingsCommentShare","1");
+                                    }
+
+
+                                    // check if new since time greater then old one, reset count comments and set new since time
+                                    if (tmpCommentCountCommentSinceTime > prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, 0)) {
+
+
+                                        Log.d("XML Parser --->","CommentCountSince time:"+tmpCommentCountCommentSinceTime);
+
+                                        prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, tmpCommentCountCommentSinceTime); // write new since time to prefs
+                                        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0); // reset count comments to 0
+
+                                        returnMap.put("OurArrangementSettingsCommentCountComment", "1");
+                                    }
+
+
+
+
                                     // write data to prefs
                                     prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, tmpArrangementCommentOnOff); // turn function on
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, tmpCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters, tmpCommentMaxLetters);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, tmpCommentDelaytime);
-                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentCountComment, tmpCommentCountComment);
-                                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, tmpCommentCountCommentSinceTime);
+                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentShare, tmpCommentShare); // 1-> sharing comments; 0-> not sharing
                                     prefsEditor.commit();
 
                                     // something change in arrangement comment process
@@ -2142,14 +2171,33 @@ public class EfbXmlParser {
                                 }
 
                                 // update sketch comment max/count of sketch arrangements?
-                                if (tmpArrangementSketchCommentOnOff && tmpSketchCommentMaxComment > 0 && tmpSketchCommentMaxLetters > 0 && tmpSketchCommentDelaytime > 0 && tmpSketchCommentCountComment >= 0 && tmpSketchCommentCountCommentSinceTime > 0) {
+                                if (tmpArrangementSketchCommentOnOff && tmpSketchCommentMaxComment > 0 && tmpSketchCommentMaxLetters > 0 && tmpSketchCommentDelaytime > 0 && tmpSketchCommentCountCommentSinceTime > 0 && tmpSketchCommentShare >= 0) {
                                     // write data to prefs
+
+
+                                    // set returnMap changes for Sharing of sketch comment
+                                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentShare, 0) != tmpSketchCommentShare ) {
+                                        // changes in sharing
+                                        returnMap.put("OurArrangementSettingsSketchCommentShare","1");
+                                    }
+
+
+                                    // check if new since time greater then old one, reset count comments and set new since time
+                                    if (tmpSketchCommentCountCommentSinceTime > prefs.getLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, 0)) {
+
+                                        Log.d("XML Parser --->","SketchCommentCountSince time:"+tmpSketchCommentCountCommentSinceTime);
+
+                                        prefsEditor.putLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, tmpSketchCommentCountCommentSinceTime); // write new since time to prefs
+                                        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0); // reset count comments to 0
+
+                                        returnMap.put("OurArrangementSettingsSketchCommentCountComment", "1");
+                                    }
+
                                     prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowLinkCommentSketchArrangement, tmpArrangementSketchCommentOnOff); // turn function on
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,tmpSketchCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime,tmpSketchCommentDelaytime);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters,tmpSketchCommentMaxLetters);
-                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, tmpSketchCommentCountComment);
-                                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, tmpSketchCommentCountCommentSinceTime);
+                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentShare, tmpSketchCommentShare); // 1-> sharing comments; 0-> not sharing
                                     prefsEditor.commit();
 
                                     // something change in sketch arragement comment process
@@ -2171,7 +2219,7 @@ public class EfbXmlParser {
                                     prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, tmpSketchCurrentDateOfArrangement);
                                     prefsEditor.commit();
 
-                                    // something change in sketch arrangement author name
+                                    // something change date of sketch arrangement
                                     returnMap.put("OurArrangementSettingsSketchCurrentDateOfSketchArrangement","1");
 
                                 }
@@ -2183,7 +2231,7 @@ public class EfbXmlParser {
                                     prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, tmpCurrentDateOfArrangement);
                                     prefsEditor.commit();
 
-                                    // something change in sketch arrangement author name
+                                    // something change date of current arrangement
                                     returnMap.put("OurArrangementSettingsCurrentDateOfArrangement","1");
 
                                 }
