@@ -122,6 +122,12 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
             TextView textViewShowChoosenArrangement = (TextView) view.findViewById(R.id.choosenArrangement);
             textViewShowChoosenArrangement.setText(choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT)));
 
+            // show hint sharing is disable
+            if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) == 0) {
+                TextView textCommentSharingIsDisable = (TextView) view.findViewById(R.id.commentSharingIsDisable);
+                textCommentSharingIsDisable.setVisibility (View.VISIBLE);
+            }
+
         }
 
 
@@ -262,42 +268,60 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
         } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 1) {
             // textview for status 1 of the last actual comment
 
-            // set textview visible
-            tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
 
-            // calculate run time for timer in MILLISECONDS!!!
-            Long nowTime = System.currentTimeMillis();
-            Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
-            Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from miutes
-            Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
-            // start the timer with the calculated milliseconds
-            if (runTimeForTimer > 0) {
-                new CountDownTimer(runTimeForTimer, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        // gernate count down timer
-                        String FORMAT = "%02d:%02d:%02d";
-                        String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendDelayInfo);
-                        String tmpTime = String.format(FORMAT,
-                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                        // put count down to string
-                        String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
-                        // and show
-                        tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
-                    }
+            // check, sharing of comments enable?
+            if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) == 1) {
 
-                    public void onFinish() {
-                        // count down is over -> show
-                        String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
-                        tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
-                    }
-                }.start();
+                // set textview visible
+                tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
 
+                // calculate run time for timer in MILLISECONDS!!!
+                Long nowTime = System.currentTimeMillis();
+                Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
+                Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from miutes
+                Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
+                // start the timer with the calculated milliseconds
+                if (runTimeForTimer > 0) {
+                    new CountDownTimer(runTimeForTimer, 1000) {
+                        public void onTick(long millisUntilFinished) {
+                            // gernate count down timer
+                            String FORMAT = "%02d:%02d:%02d";
+                            String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendDelayInfo);
+                            String tmpTime = String.format(FORMAT,
+                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                            // put count down to string
+                            String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                            // and show
+                            tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
+                        }
+
+                        public void onFinish() {
+                            // count down is over -> show
+                            String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+                            tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                        }
+                    }.start();
+
+                } else {
+                    // no count down anymore -> show send successfull
+                    String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+                    tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                }
             }
-            else {
-                // no count down anymore -> show send successfull
-                String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+            else { // sharing of comments is disable! -> show text
+
+                String tmpTextSendInfoLastActualComment = "";
+                tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
+                if (prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementCommentShareChangeTime, 0) < cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME))) {
+                    // show send successfull, but no sharing
+                    tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementCommentSendInfoSharingDisable);
+                }
+                else {
+                    // show send successfull
+                    tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+                }
                 tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
             }
 

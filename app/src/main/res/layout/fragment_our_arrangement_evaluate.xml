@@ -537,7 +537,7 @@
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:gravity="left"
+            android:gravity="center"
             android:textStyle="bold"
             android:layout_marginTop="15dp"/>
 

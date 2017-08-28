@@ -12,12 +12,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -132,6 +134,9 @@ public class OurArrangementFragmentShowComment extends Fragment {
             // Extras from intent that holds data
             Bundle intentExtras = null;
 
+            // true-> update the list view with arrangements
+            Boolean updateListView = false;
+
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
@@ -141,6 +146,11 @@ public class OurArrangementFragmentShowComment extends Fragment {
                 String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
                 String tmpExtraOurArrangementNowComment = intentExtras.getString("OurArrangementNowComment","0");
 
+                String tmpExtraOurArrangementSettings = intentExtras.getString("OurArrangementSettings","0");
+                String tmpExtraOurArrangementCommentShareEnable = intentExtras.getString("OurArrangementSettingsCommentShareEnable","0");
+                String tmpExtraOurArrangementCommentShareDisable = intentExtras.getString("OurArrangementSettingsCommentShareDisable","0");
+                String tmpExtraOurArrangementResetCommentCountComment = intentExtras.getString("OurArrangementSettingsCommentCountComment","0");
+
                 Log.d("BROA REC show COMMENT", "In der Funktion -------");
 
                 if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNowComment != null && tmpExtraOurArrangementNowComment.equals("1")) {
@@ -149,7 +159,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
 
                     // update the view
-                    updateListView ();
+                    updateListView = true;
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
                     // update now arrangement! -> go back to fragment now arrangement and show dialog
@@ -163,6 +173,45 @@ public class OurArrangementFragmentShowComment extends Fragment {
                     backIntent.putExtra("com","show_arrangement_now");
                     getActivity().startActivity(backIntent);
                 }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementResetCommentCountComment != null && tmpExtraOurArrangementResetCommentCountComment.equals("1")) {
+                    // reset now comment counter -> show toast and update view
+                    String updateMessageCommentNow = fragmentShowCommentContext.getString(R.string.toastMessageArrangementResetCommentCountComment);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                    // update the view
+                    updateListView = true;
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementCommentShareDisable  != null && tmpExtraOurArrangementCommentShareDisable .equals("1")) {
+                    // sharing is disable -> show toast and update view
+                    String updateMessageCommentNow = fragmentShowCommentContext.getString(R.string.toastMessageArrangementCommentShareDisable);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                    // update the view
+                    updateListView = true;
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementCommentShareEnable  != null && tmpExtraOurArrangementCommentShareEnable .equals("1")) {
+                    // sharing is enable -> show toast and update view
+                    String updateMessageCommentNow = fragmentShowCommentContext.getString(R.string.toastMessageArrangementCommentShareEnable);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                    // update the view
+                    updateListView = true;
+                }
+
+                // update the list view because data has change?
+                if (updateListView) {
+                    updateListView();
+                }
+
             }
         }
     };

@@ -81,6 +81,17 @@
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"/>
 
+    <TextView
+        android:id="@+id/commentSharingIsDisable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textOurArrangementCommentNoSharing"
+        android:textSize="14dp"
+        android:textColor="@color/text_accent_color"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"/>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -78,12 +78,16 @@ public class EfbXmlParser {
         returnMap.put("OurArrangementSettings", "0");
         returnMap.put("OurArrangementSettingsEvaluationProcess", "0");
         returnMap.put("OurArrangementSettingsCommentProcess", "0");
-        returnMap.put("OurArrangementSettingsCommentShare","0");
+        returnMap.put("OurArrangementSettingsCommentShareDisable","0");
+        returnMap.put("OurArrangementSettingsCommentShareEnable","0");
         returnMap.put("OurArrangementSettingsCommentCountComment", "0");
         returnMap.put("OurArrangementSettingsSketchCurrentDateOfSketchArrangement", "0");
         returnMap.put("OurArrangementSettingsCurrentDateOfArrangement", "0");
-        returnMap.put("OurArrangementSettingsSketchCommentShare","0");
+        returnMap.put("OurArrangementSettingsSketchCommentShareDisable","0");
+        returnMap.put("OurArrangementSettingsSketchCommentShareEnable","0");
         returnMap.put("OurArrangementSettingsSketchCommentCountComment", "0");
+
+
 
         returnMap.put("OurGoals", "0");
         returnMap.put("OurGoalsJointlyNow", "0");
@@ -2128,10 +2132,16 @@ public class EfbXmlParser {
                                 if (tmpArrangementCommentOnOff && tmpCommentMaxComment > 0 && tmpCommentMaxLetters > 0 && tmpCommentDelaytime > 0 && tmpCommentCountCommentSinceTime > 0 && tmpCommentShare >= 0) {
 
                                     // set new share value to prefs and set returnMap
-                                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentShare, 0) != tmpCommentShare ) {
-                                        prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCommentShare, tmpCommentShare); // write new share value to prefs
+                                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) != tmpCommentShare ) {
+                                        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, tmpCommentShare); // write new share value to prefs
+                                        prefsEditor.putLong(ConstansClassOurArrangement.namePrefsArrangementCommentShareChangeTime, System.currentTimeMillis());
 
-                                        returnMap.put("OurArrangementSettingsCommentShare","1");
+                                        if (tmpCommentShare == 1) { // sharing is enable; 1-> sharing comments; 0-> not sharing
+                                            returnMap.put("OurArrangementSettingsCommentShareEnable","1");
+                                        }
+                                        else {
+                                            returnMap.put("OurArrangementSettingsCommentShareDisable","1");
+                                        }
                                     }
 
 
@@ -2147,15 +2157,11 @@ public class EfbXmlParser {
                                         returnMap.put("OurArrangementSettingsCommentCountComment", "1");
                                     }
 
-
-
-
                                     // write data to prefs
                                     prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, tmpArrangementCommentOnOff); // turn function on
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, tmpCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters, tmpCommentMaxLetters);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, tmpCommentDelaytime);
-                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentShare, tmpCommentShare); // 1-> sharing comments; 0-> not sharing
                                     prefsEditor.commit();
 
                                     // something change in arrangement comment process
@@ -2174,12 +2180,19 @@ public class EfbXmlParser {
                                 if (tmpArrangementSketchCommentOnOff && tmpSketchCommentMaxComment > 0 && tmpSketchCommentMaxLetters > 0 && tmpSketchCommentDelaytime > 0 && tmpSketchCommentCountCommentSinceTime > 0 && tmpSketchCommentShare >= 0) {
                                     // write data to prefs
 
+                                    // set new share value for sketch comment to prefs and set returnMap
+                                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShare, 0) != tmpSketchCommentShare ) {
+                                        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShare, tmpSketchCommentShare); // write new share value to prefs
+                                        prefsEditor.putLong(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShareChangeTime, System.currentTimeMillis());
 
-                                    // set returnMap changes for Sharing of sketch comment
-                                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentShare, 0) != tmpSketchCommentShare ) {
-                                        // changes in sharing
-                                        returnMap.put("OurArrangementSettingsSketchCommentShare","1");
+                                        if (tmpCommentShare == 1) { // sharing is enable; 1-> sharing comments; 0-> not sharing
+                                            returnMap.put("OurArrangementSettingsSketchCommentShareEnable","1");
+                                        }
+                                        else {
+                                            returnMap.put("OurArrangementSettingsSketchCommentShareDisable","1");
+                                        }
                                     }
+
 
 
                                     // check if new since time greater then old one, reset count comments and set new since time
@@ -2197,7 +2210,6 @@ public class EfbXmlParser {
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,tmpSketchCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime,tmpSketchCommentDelaytime);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters,tmpSketchCommentMaxLetters);
-                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentShare, tmpSketchCommentShare); // 1-> sharing comments; 0-> not sharing
                                     prefsEditor.commit();
 
                                     // something change in sketch arragement comment process

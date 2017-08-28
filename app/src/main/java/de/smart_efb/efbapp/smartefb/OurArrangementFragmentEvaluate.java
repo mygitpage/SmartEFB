@@ -1,7 +1,9 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -9,9 +11,11 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +37,9 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
     // fragment context
     Context fragmentEvaluateContext = null;
+
+    // the fragment
+    Fragment fragmentEvaluateThisFragmentContext;
 
     // reference to the DB
     DBAdapter myDb;
@@ -78,6 +85,10 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         viewFragmentEvaluate = layoutInflater.inflate(R.layout.fragment_our_arrangement_evaluate, null);
 
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentEvaluateBrodcastReceiver, filter);
+
         return viewFragmentEvaluate;
 
     }
@@ -91,7 +102,9 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         fragmentEvaluateContext = getActivity().getApplicationContext();
 
-        // call getter function in ActivityOurArrangment
+        fragmentEvaluateThisFragmentContext = this;
+
+        // call getter function in ActivityOurArrangement
         callGetterFunctionInSuper();
 
         // init the fragment evaluate only when an arrangement is choosen
@@ -102,6 +115,88 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         }
 
     }
+
+
+    // fragment is destroyed
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // de-register broadcast receiver
+        getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentEvaluateBrodcastReceiver);
+
+    }
+
+
+
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    private BroadcastReceiver ourArrangementFragmentEvaluateBrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                // check intent order
+
+                String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
+                String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
+                String tmpExtraOurArrangementNowComment = intentExtras.getString("OurArrangementNowComment","0");
+                String tmpExtraOurArrangementSettings = intentExtras.getString("OurArrangementSettings","0");
+                String tmpExtraOurArrangementCommentShareEnable = intentExtras.getString("OurArrangementSettingsCommentShareEnable","0");
+                String tmpExtraOurArrangementCommentShareDisable = intentExtras.getString("OurArrangementSettingsCommentShareDisable","0");
+                String tmpExtraOurArrangementResetCommentCountComment = intentExtras.getString("OurArrangementSettingsCommentCountComment","0");
+
+                Log.d("BROA REC Evaluate", "In der Funktion -------");
+
+                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNowComment != null && tmpExtraOurArrangementNowComment.equals("1")) {
+                    // show toast new comments
+                    String updateMessageCommentNow = fragmentEvaluateContext.getString(R.string.toastMessageCommentNowNewComments);
+                    Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
+                    // update now arrangement! -> go back to fragment now arrangement and show dialog
+
+                    // check arrangement and now arrangement update and show dialog arrangement and now arrangement change
+                    ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("now");
+
+                    // go back to fragment now arrangement -> this is my mother!
+                    Intent backIntent = new Intent(getActivity(), ActivityOurArrangement.class);
+                    backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    backIntent.putExtra("com","show_arrangement_now");
+                    getActivity().startActivity(backIntent);
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementResetCommentCountComment != null && tmpExtraOurArrangementResetCommentCountComment.equals("1")) {
+                    // reset now comment counter -> show toast
+                    String updateMessageCommentNow = fragmentEvaluateContext.getString(R.string.toastMessageArrangementResetCommentCountComment);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementCommentShareDisable  != null && tmpExtraOurArrangementCommentShareDisable .equals("1")) {
+                    // sharing is disable -> show toast
+                    String updateMessageCommentNow = fragmentEvaluateContext.getString(R.string.toastMessageArrangementCommentShareDisable);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementCommentShareEnable  != null && tmpExtraOurArrangementCommentShareEnable .equals("1")) {
+                    // sharing is enable -> show toast
+                    String updateMessageCommentNow = fragmentEvaluateContext.getString(R.string.toastMessageArrangementCommentShareEnable);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                }
+            }
+        }
+    };
+
 
 
     // inits the fragment for use

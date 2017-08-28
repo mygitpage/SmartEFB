@@ -53,9 +53,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
     // layout inflater for fragment
     LayoutInflater layoutInflaterForFragment;
 
-    // dialog for information no more messages possible
-    AlertDialog alertDialogNoMoreMessages;
-
     // reference to the DB
     DBAdapter myDb;
 
@@ -142,12 +139,18 @@ public class OurArrangementFragmentNowComment extends Fragment {
             if (intentExtras != null) {
                 // check intent order
 
+                Boolean refreshView = false;
+
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
                 String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
                 String tmpExtraOurArrangementNowComment = intentExtras.getString("OurArrangementNowComment","0");
-                String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
-                String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
-                String tmpMessage = intentExtras.getString("Message");
+
+                String tmpExtraOurArrangementSettings = intentExtras.getString("OurArrangementSettings","0");
+                String tmpExtraOurArrangementCommentShareEnable = intentExtras.getString("OurArrangementSettingsCommentShareEnable","0");
+                String tmpExtraOurArrangementCommentShareDisable = intentExtras.getString("OurArrangementSettingsCommentShareDisable","0");
+                String tmpExtraOurArrangementResetCommentCountComment = intentExtras.getString("OurArrangementSettingsCommentCountComment","0");
+
+
 
                 Log.d("BROA REC NOW COMMENT", "In der Funktion -------");
 
@@ -157,8 +160,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
 
                     // refresh fragments view
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.detach(fragmentNowCommentThisFragmentContext).attach(fragmentNowCommentThisFragmentContext).commit();
+                    refreshView = true;
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
                     // update now arrangement! -> go back to fragment now arrangement and show dialog
@@ -171,18 +173,48 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     backIntent.putExtra("com","show_arrangement_now");
                     getActivity().startActivity(backIntent);
-
                 }
-                else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send successfull?
-                    // send successefull -> show toast with message
-                    Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementResetCommentCountComment != null && tmpExtraOurArrangementResetCommentCountComment.equals("1")) {
+                    // reset now comment counter -> show toast and update view
+                    String updateMessageCommentNow = fragmentNowCommentContext.getString(R.string.toastMessageArrangementResetCommentCountComment);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
 
+                    // refresh fragments view
+                    refreshView = true;
                 }
-                else if (tmpSendNotSuccessefull != null && tmpSendNotSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send not successfull?
-                    // send not successefull -> show toast with message
-                    Toast.makeText(context, intentExtras.getString("Message"), Toast.LENGTH_LONG).show();
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementCommentShareDisable  != null && tmpExtraOurArrangementCommentShareDisable .equals("1")) {
+                    // sharing is disable -> show toast and update view
+                    String updateMessageCommentNow = fragmentNowCommentContext.getString(R.string.toastMessageArrangementCommentShareDisable);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
 
+                    // refresh fragments view
+                    refreshView = true;
                 }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementCommentShareEnable  != null && tmpExtraOurArrangementCommentShareEnable .equals("1")) {
+                    // sharing is enable -> show toast and update view
+                    String updateMessageCommentNow = fragmentNowCommentContext.getString(R.string.toastMessageArrangementCommentShareEnable);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                    // refresh fragments view
+                    refreshView = true;
+                }
+
+                if (refreshView) {
+                    // refresh fragments view
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(fragmentNowCommentThisFragmentContext).attach(fragmentNowCommentThisFragmentContext).commit();
+                }
+
+
             }
         }
     };
@@ -241,6 +273,13 @@ public class OurArrangementFragmentNowComment extends Fragment {
         linkShowCommentBackLink.setText(Html.fromHtml("<a href=\"" + backArrangementLinkBuilder.build().toString() + "\">"+fragmentNowCommentContext.getResources().getString(fragmentNowCommentContext.getResources().getIdentifier("ourArrangementBackLinkToArrangementFromComment", "string", fragmentNowCommentContext.getPackageName()))+"</a>"));
         linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
 
+        // check, sharing comments enable?
+        if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) == 0) {
+            TextView textCommentSharingIsDisable = (TextView) viewFragmentNowComment.findViewById(R.id.commentSharingIsDisable);
+            textCommentSharingIsDisable.setVisibility (View.VISIBLE);
+        }
+
+
         // some comments for arrangement available?
         if (cursorArrangementAllComments.getCount() > 0) {
 
@@ -286,45 +325,60 @@ public class OurArrangementFragmentNowComment extends Fragment {
             } else if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 1) {
                 // textview for status 1 of the last actual comment
 
-                // set textview visible
-                tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
+                // check, sharing of comments enable?
+                if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) == 1) {
 
-                // calculate run time for timer in MILLISECONDS!!!
-                Long nowTime = System.currentTimeMillis();
-                Long writeTimeComment = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
-                Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from miutes
-                Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
-                // start the timer with the calculated milliseconds
-                if (runTimeForTimer > 0) {
-                    new CountDownTimer(runTimeForTimer, 1000) {
-                        public void onTick(long millisUntilFinished) {
-                            // gernate count down timer
-                            String FORMAT = "%02d:%02d:%02d";
-                            String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendDelayInfo);
-                            String tmpTime = String.format(FORMAT,
-                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                            // put count down to string
-                            String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
-                            // and show
-                            tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
-                        }
+                    // set textview visible
+                    tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
 
-                        public void onFinish() {
-                            // count down is over -> show
-                            String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
-                            tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
-                        }
-                    }.start();
+                    // calculate run time for timer in MILLISECONDS!!!
+                    Long nowTime = System.currentTimeMillis();
+                    Long writeTimeComment = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
+                    Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from miutes
+                    Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
+                    // start the timer with the calculated milliseconds
+                    if (runTimeForTimer > 0) {
+                        new CountDownTimer(runTimeForTimer, 1000) {
+                            public void onTick(long millisUntilFinished) {
+                                // gernate count down timer
+                                String FORMAT = "%02d:%02d:%02d";
+                                String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendDelayInfo);
+                                String tmpTime = String.format(FORMAT,
+                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                // put count down to string
+                                String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                                // and show
+                                tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
+                            }
 
+                            public void onFinish() {
+                                // count down is over -> show
+                                String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
+                                tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                            }
+                        }.start();
+
+                    } else {
+                        // no count down anymore -> show send successfull
+                        String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
+                        tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                    }
                 }
-                else {
-                    // no count down anymore -> show send successfull
-                    String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
+                else { // sharing of comments is disable! -> show text
+                    String tmpTextSendInfoLastActualComment = "";
+                    tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
+                    if (prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementCommentShareChangeTime, 0) < cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME))) {
+                        // show send successfull, but no sharing
+                        tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendInfoSharingDisable);
+                    }
+                    else {
+                        // show send successfull
+                        tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+                    }
                     tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
                 }
-
             }
 
             // textview for the comment text
