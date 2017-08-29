@@ -1,16 +1,23 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by ich on 06.10.16.
@@ -44,11 +51,18 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
     // true-> comments are limited, false -> comments are not limited
     Boolean commentLimitationBorder = false;
 
+    // the list view for sketch comments
+    ListView listViewShowSketchComment = null;
+
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
         viewFragmentShowSketchComment = layoutInflater.inflate(R.layout.fragment_our_arrangement_show_sketch_comment, null);
+
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentShowSketchCommentBrodcastReceiver, filter);
 
         return viewFragmentShowSketchComment;
 
@@ -75,6 +89,121 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
             displayActualCommentSet();
         }
 
+    }
+
+
+    // fragment is destroyed
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // de-register broadcast receiver
+        getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentShowSketchCommentBrodcastReceiver);
+
+    }
+
+
+
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    private BroadcastReceiver ourArrangementFragmentShowSketchCommentBrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // true-> update list view;
+            Boolean updateListView = false;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                // check intent order
+
+
+                String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
+                String tmpExtraOurArrangementSketch = intentExtras.getString("OurArrangementSketch","0");
+                String tmpExtraOurArrangementSketchComment = intentExtras.getString("OurArrangementSketchComment","0");
+                String tmpExtraOurArrangementSettings = intentExtras.getString("OurArrangementSettings","0");
+                String tmpExtraOurArrangementSketchCommentShareEnable = intentExtras.getString("OurArrangementSettingsSketchCommentShareEnable","0");
+                String tmpExtraOurArrangementSketchCommentShareDisable = intentExtras.getString("OurArrangementSettingsSketchCommentShareDisable","0");
+                String tmpExtraOurArrangementResetSketchCommentCountComment = intentExtras.getString("OurArrangementSettingsSketchCommentCountComment","0");
+
+                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketchComment != null && tmpExtraOurArrangementSketchComment.equals("1")) {
+                    // update show sketch comment view -> show toast and update view
+                    String updateMessageCommentNow = fragmentShowSketchCommentContext.getString(R.string.toastMessageCommentSketchNewComments);
+                    Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
+
+                    //update view
+                    updateListView = true;
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketch != null && tmpExtraOurArrangementSketch.equals("1")) {
+                    // update sketch arrangement! -> go back to fragment sketch arrangement and show dialog
+
+                    // check sketch arrangement and sketch arrangement update and show dialog skezch arrangement and sketch arrangement change
+                    ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("sketch");
+
+                    // go back to fragment sketch arrangement -> this is my mother!
+                    Intent backIntent = new Intent(getActivity(), ActivityOurArrangement.class);
+                    backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    backIntent.putExtra("com","show_sketch_arrangement");
+                    getActivity().startActivity(backIntent);
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementResetSketchCommentCountComment != null && tmpExtraOurArrangementResetSketchCommentCountComment.equals("1")) {
+                    // reset sketch comment counter -> show toast and update view
+                    String updateMessageCommentNow = fragmentShowSketchCommentContext.getString(R.string.toastMessageArrangementResetSketchCommentCountComment);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                    //update view
+                    updateListView = true;
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementSketchCommentShareDisable  != null && tmpExtraOurArrangementSketchCommentShareDisable.equals("1")) {
+                    // sharing is disable -> show toast and update view
+                    String updateMessageCommentSketch = fragmentShowSketchCommentContext.getString(R.string.toastMessageArrangementSketchCommentShareDisable);
+                    Toast toast = Toast.makeText(context, updateMessageCommentSketch, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                    //update view
+                    updateListView = true;
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementSketchCommentShareEnable  != null && tmpExtraOurArrangementSketchCommentShareEnable.equals("1")) {
+                    // sharing is enable -> show toast and update view
+                    String updateMessageCommentSketch = fragmentShowSketchCommentContext.getString(R.string.toastMessageArrangementSketchCommentShareEnable);
+                    Toast toast = Toast.makeText(context, updateMessageCommentSketch, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                    //update view
+                    updateListView = true;
+                }
+
+                // update the list view with sketch arrangements
+                if (updateListView) {
+                    updateListView();
+                }
+
+
+            }
+        }
+    };
+
+
+    // update the list view with sketch arrangements
+    public void updateListView () {
+
+        if (listViewShowSketchComment != null) {
+            listViewShowSketchComment.destroyDrawingCache();
+            listViewShowSketchComment.setVisibility(ListView.INVISIBLE);
+            listViewShowSketchComment.setVisibility(ListView.VISIBLE);
+
+            displayActualCommentSet ();
+        }
     }
 
 
@@ -128,7 +257,7 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
         Cursor choosenArrangement = myDb.getRowSketchOurArrangement(sketchArrangementServerDbIdToShow);
 
         // find the listview
-        ListView listView = (ListView) viewFragmentShowSketchComment.findViewById(R.id.listOurArrangementShowSketchComment);
+        listViewShowSketchComment = (ListView) viewFragmentShowSketchComment.findViewById(R.id.listOurArrangementShowSketchComment);
 
         // new dataadapter with custom constructor
         showSketchCommentCursorAdapter = new OurArrangementShowSketchCommentCursorAdapter(
@@ -141,7 +270,7 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
                 choosenArrangement);
 
         // Assign adapter to ListView
-        listView.setAdapter(showSketchCommentCursorAdapter);
+        listViewShowSketchComment.setAdapter(showSketchCommentCursorAdapter);
 
     }
 

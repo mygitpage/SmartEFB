@@ -1452,7 +1452,7 @@ public class EfbXmlParser {
 
                                 Log.d("SKETCH COMMENT","NEW AUSführen");
 
-                                // set upload time on smartphone for commeent; value from server is ot needed
+                                // set upload time on smartphone for commeent; value from server is not needed
                                 tmpUploadTime = System.currentTimeMillis();
 
                                 // insert new comment in DB
@@ -2185,7 +2185,7 @@ public class EfbXmlParser {
                                         prefsEditor.putInt(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShare, tmpSketchCommentShare); // write new share value to prefs
                                         prefsEditor.putLong(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShareChangeTime, System.currentTimeMillis());
 
-                                        if (tmpCommentShare == 1) { // sharing is enable; 1-> sharing comments; 0-> not sharing
+                                        if (tmpSketchCommentShare == 1) { // sharing is enable; 1-> sharing sketch comments; 0-> not sharing
                                             returnMap.put("OurArrangementSettingsSketchCommentShareEnable","1");
                                         }
                                         else {

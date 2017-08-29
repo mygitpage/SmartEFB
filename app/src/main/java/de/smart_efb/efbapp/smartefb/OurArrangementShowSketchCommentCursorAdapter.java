@@ -121,6 +121,12 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
             linkShowCommentBackLink.setText(tmpBackLink);
             linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
 
+            // check, sharing sketch comments enable?
+            if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShare, 0) == 0) {
+                TextView textSketchCommentSharingIsDisable = (TextView) view.findViewById(R.id.sketchCommentSharingIsDisable);
+                textSketchCommentSharingIsDisable.setVisibility (View.VISIBLE);
+            }
+
             // show choosen arrangement
             TextView textViewShowChoosenArrangement = (TextView) view.findViewById(R.id.choosenSketchArrangement);
             textViewShowChoosenArrangement.setText(choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT)));
@@ -266,45 +272,65 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
         } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS)) == 1) {
             // textview for status 1 of the last actual comment
 
-            // set textview visible
-            tmpTextViewSendInfoLastActualSketchComment.setVisibility(View.VISIBLE);
+            // check, sharing of sketch comments enable?
+            if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShare, 0) == 1) {
 
-            // calculate run time for timer in MILLISECONDS!!!
-            Long nowTime = System.currentTimeMillis();
-            Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME));
-            Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime, 0) * 60000; // make milliseconds from miutes
-            Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
-            // start the timer with the calculated milliseconds
-            if (runTimeForTimer > 0) {
-                new CountDownTimer(runTimeForTimer, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        // gernate count down timer
-                        String FORMAT = "%02d:%02d:%02d";
-                        String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowSketchCommentSendDelayInfo);
-                        String tmpTime = String.format(FORMAT,
-                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                        // put count down to string
-                        String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
-                        // and show
-                        tmpTextViewSendInfoLastActualSketchComment.setText(tmpCountdownTimerString);
-                    }
+                // set textview visible
+                tmpTextViewSendInfoLastActualSketchComment.setVisibility(View.VISIBLE);
 
-                    public void onFinish() {
-                        // count down is over -> show
-                        String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowSketchCommentSendSuccsessfullInfo);
-                        tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
-                    }
-                }.start();
+                // calculate run time for timer in MILLISECONDS!!!
+                Long nowTime = System.currentTimeMillis();
+                Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME));
+                Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime, 0) * 60000; // make milliseconds from miutes
+                Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
+                // start the timer with the calculated milliseconds
+                if (runTimeForTimer > 0) {
+                    new CountDownTimer(runTimeForTimer, 1000) {
+                        public void onTick(long millisUntilFinished) {
+                            // gernate count down timer
+                            String FORMAT = "%02d:%02d:%02d";
+                            String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowSketchCommentSendDelayInfo);
+                            String tmpTime = String.format(FORMAT,
+                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                            // put count down to string
+                            String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                            // and show
+                            tmpTextViewSendInfoLastActualSketchComment.setText(tmpCountdownTimerString);
+                        }
 
+                        public void onFinish() {
+                            // count down is over -> show
+                            String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowSketchCommentSendSuccsessfullInfo);
+                            tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
+                        }
+                    }.start();
+
+                } else {
+                    // no count down anymore -> show send successfull
+                    String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowSketchCommentSendSuccsessfullInfo);
+                    tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
+                }
             }
-            else {
-                // no count down anymore -> show send successfull
-                String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowSketchCommentSendSuccsessfullInfo);
-                tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
-            }
+            else { // sharing of sketch comments is disable! -> show text
+                String tmpTextSendInfoLastActualSketchComment = "";
+                tmpTextViewSendInfoLastActualSketchComment.setVisibility(View.VISIBLE);
 
+
+                Log.d ("+++++ Zeitenvergleich:", "Prefs:"+prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShareChangeTime, 0)+" < "+cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME)));
+
+
+                if (prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShareChangeTime, 0) < cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME))) {
+                    // show send successfull, but no sharing
+                    tmpTextSendInfoLastActualSketchComment = context.getResources().getString(R.string.ourArrangementCommentSendInfoSharingDisable);
+                }
+                else {
+                    // show send successfull
+                    tmpTextSendInfoLastActualSketchComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+                }
+                tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualSketchComment);
+            }
         }
 
         // show actual result struct question only when result > 0

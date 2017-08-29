@@ -588,14 +588,8 @@ import java.util.Map;
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
-
-
-
                     // build xml tag for sketch comment with data
                     buildCommentSketchXmlTagWithData (xmlSerializer, commentData);
-
-
-
 
                     // end tag smartEfb
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
@@ -606,7 +600,6 @@ import java.util.Map;
                 catch (IOException e) {
                     e.printStackTrace();
                 }
-
 
                 // and send xml text to server
                 try {
@@ -665,25 +658,25 @@ import java.util.Map;
 
                         // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
                         Intent tmpIntent = translateMapToIntent (returnMap);
-                        tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageCommentSendSuccessfull));
+                        tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageSketchCommentSendSuccessfull));
                         tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
                         context.sendBroadcast(tmpIntent);
                     }
                     else { // send not successfull
                         // send information broadcast to receiver that sending was not successefull
-                        String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                        String message = context.getResources().getString(R.string.toastMessageSketchCommentSendNotSuccessfull);
                         sendIntentBroadcastSendingNotSuccessefull (message);
                     }
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
-                    String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                    String message = context.getResources().getString(R.string.toastMessageSketchCommentSendNotSuccessfull);
                     sendIntentBroadcastSendingNotSuccessefull (message);
                 } catch (IOException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
-                    String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                    String message = context.getResources().getString(R.string.toastMessageSketchCommentSendNotSuccessfull);
                     sendIntentBroadcastSendingNotSuccessefull (message);
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();

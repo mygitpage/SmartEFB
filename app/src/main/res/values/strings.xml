@@ -156,12 +156,17 @@
             <string name="toastMessageCommentSendSuccessfull">Der Kommentar wurde gesendet!</string>
             <string name="toastMessageCommentSendNotSuccessfull">Der Kommentar wurde noch nicht gesendet!</string>
             <string name="toastMessageSketchCommentSendSuccessfull">Die Einschätzung wurde gesendet!</string>
+            <string name="toastMessageSketchCommentSendNotSuccessfull">Die Einschätzung wurde noch nicht gesendet!</string>
             <string name="toastMessageCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
             <string name="toastMessageCommentNowNewComments">Es sind neue Kommentare eingetroffen!</string>
             <string name="toastMessageArrangementResetCommentCountComment">Der Kommentarzähler wurde von Ihrer Beraterin/ Ihrem Berater auf Null zurückgesetzt!</string>
+            <string name="toastMessageArrangementResetSketchCommentCountComment">Der Einschätzungszähler wurde von Ihrer Beraterin/ Ihrem Berater auf Null zurückgesetzt!</string>
             <string name="toastMessageEvaluationSendSuccessfull">Die Bewertung wurde zum Server gesendet!</string>
             <string name="toastMessageArrangementCommentShareDisable">Die Zustellung der Kommentare wurde von Ihrer Beraterin/ Ihrem Berater unterbrochen!</string>
             <string name="toastMessageArrangementCommentShareEnable">Die Zustellung der Kommentare findet wieder statt!</string>
+            <string name="toastMessageArrangementSketchCommentShareDisable">Die Zustellung der Einschätzungen wurde von Ihrer Beraterin/ Ihrem Berater unterbrochen!</string>
+            <string name="toastMessageArrangementSketchCommentShareEnable">Die Zustellung der Einschätzungen findet wieder statt!</string>
+            <string name="toastMessageCommentSketchNewComments">Es sind neue Einschätzungen eingetroffen!</string>
 
         <!-- End String Activity Our Arrangement -->
 
@@ -321,6 +326,7 @@
             <string name="infoTextSketchCommentDelaytimePlural">die Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
             <string name="textOurArrangementSketchCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Absprachenentwurf abgegeben: &lt;b>%1$s&lt;/b></string>
             <string name="textOurArrangementSketchCommentActualResultStructQuestionFromCoach">Die Einschätzung wurde ohne Zustimmungswert von Ihrer Beraterin/ Ihrem Berater geschrieben</string>
+            <string name="textOurArrangementSketchCommentNoSharing">Die Einschätzungen werden im Moment nicht zugestellt!</string>
         <!-- End fragment comment sketch arrangement -->
 
         <!-- String Fragment show sketch comment -->
