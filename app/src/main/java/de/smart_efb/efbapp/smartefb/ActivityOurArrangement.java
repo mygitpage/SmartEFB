@@ -401,6 +401,34 @@ public class ActivityOurArrangement extends AppCompatActivity {
             toolbar.setSubtitle(arraySubTitleText[7]);
 
         }
+        else if (command.equals("show_arrangement_now_with_tab_change")) { // Change to Tab 0 and show arranement now
+
+
+            // set global varibales
+            arrangementServerDbIdFromLink = tmpServerDbId;
+            arrangementNumberInListView = tmpNumberinListView;
+            evaluateNextArrangement = tmpEvalNext;
+
+            // change to Tab 0!!!!
+            viewPagerOurArrangement.setCurrentItem(0);
+
+            //set fragment in tab zero to comment
+            OurArrangementViewPagerAdapter.setFragmentTabZero("show_arrangement_now");
+
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1", "string", getPackageName()));
+            setTabZeroTitleAndColor();
+
+            // set command show variable
+            showCommandFragmentTabZero = "show_arrangement_now";
+
+            // call notify data change
+            ourArrangementViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbar.setSubtitle(arraySubTitleText[0]);
+
+        }
         else { // Show fragment arrangement now -> Tab 0
 
             // set global varibales
@@ -425,12 +453,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
             toolbar.setSubtitle(arraySubTitleText[0]);
 
         }
-
     }
 
 
-
-
+/*
     @Override
     public void onPause() {
 
@@ -440,7 +466,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         Log.d("OnPause Our Arrangement","PAUSE!!!!!!!!!!!!!!!");
     }
 
-
+*/
 
 
 
@@ -605,6 +631,13 @@ public class ActivityOurArrangement extends AppCompatActivity {
                     tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2 + tmpTxtComment3 + tmpTxtComment4;
 
                     tmpdialogTextView.setText(tmpTxtCommentSum);
+
+                    // check comment sharing disable/ enable -> in case of disable -> show text
+                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) != 1) {
+                        TextView tmpdialogTextViewNoSharing = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementCommentSharingDisable);
+                        tmpdialogTextViewNoSharing.setVisibility(View.VISIBLE);
+                    }
+
                 }
                 else {
                     tmpTxtComment = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentDisable);
@@ -701,6 +734,13 @@ public class ActivityOurArrangement extends AppCompatActivity {
                         tmpTxtSketchArrangement5 = "";
                     }
                     tmpTxtSketchArrangementSum = tmpTxtSketchArrangement + " " + tmpTxtSketchArrangement1 + " " + tmpTxtSketchArrangement2 + " " + tmpTxtSketchArrangement3  + tmpTxtSketchArrangement4 + tmpTxtSketchArrangement5;
+
+                    // check sketch comment sharing disable/ enable -> in case of disable -> show text
+                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShare, 0) != 1) {
+                        TextView tmpdialogTextViewNoSharing = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSketchCommentSharingDisable);
+                        tmpdialogTextViewNoSharing.setVisibility(View.VISIBLE);
+
+                    }
 
                 }
                 else {

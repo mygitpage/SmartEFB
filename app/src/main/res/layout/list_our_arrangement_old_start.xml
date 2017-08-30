@@ -14,12 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16dp"
-        android:textColor="@color/text_color"
+        android:textColor="@color/colorPrimaryDark"
         android:gravity="left"
         android:textStyle="bold"
         android:padding="5dp"
-        android:background="@drawable/list_element_style"/>
-        <!-- android:background="?attr/colorPrimary" -->
+        android:background="@drawable/list_element_style"
+        android:layout_marginBottom="5dp"/>
 
     <TextView
         android:id="@+id/listOldArrangementNumberText"

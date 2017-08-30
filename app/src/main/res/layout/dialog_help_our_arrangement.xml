@@ -56,6 +56,18 @@
             android:paddingBottom="5dp"
             android:paddingTop="5dp"/>
 
+        <TextView
+            android:id="@+id/textViewDialogOurArrangementCommentSharingDisable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_accent_color"
+            android:text="@string/textOurArrangementCommentNoSharing"
+            android:gravity="left"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:visibility="gone"/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -91,6 +103,18 @@
             android:paddingLeft="5dp"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"/>
+
+        <TextView
+            android:id="@+id/textViewDialogOurArrangementSketchCommentSharingDisable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_accent_color"
+            android:text="@string/textOurArrangementSketchCommentNoSharing"
+            android:gravity="left"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

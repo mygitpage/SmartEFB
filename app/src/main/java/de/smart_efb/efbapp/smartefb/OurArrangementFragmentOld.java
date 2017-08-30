@@ -1,12 +1,16 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
@@ -15,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +33,9 @@ public class OurArrangementFragmentOld extends Fragment {
 
     // fragment context
     Context fragmentOldContext = null;
+
+    // the fragment
+    Fragment fragmentOldThisFragmentContext;
 
     // reference to the DB
     DBAdapter myDb;
@@ -50,6 +58,10 @@ public class OurArrangementFragmentOld extends Fragment {
 
         viewFragmentOld = layoutInflater.inflate(R.layout.fragment_our_arrangement_old, null);
 
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentOldBrodcastReceiver, filter);
+
         return viewFragmentOld;
 
     }
@@ -62,6 +74,8 @@ public class OurArrangementFragmentOld extends Fragment {
 
         fragmentOldContext = getActivity().getApplicationContext();
 
+        fragmentOldThisFragmentContext = this;
+
         // init the fragment now
         initFragmentOld();
 
@@ -70,6 +84,55 @@ public class OurArrangementFragmentOld extends Fragment {
 
 
     }
+
+
+    // fragment is destroyed
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // de-register broadcast receiver
+        getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentOldBrodcastReceiver);
+
+    }
+
+
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    private BroadcastReceiver ourArrangementFragmentOldBrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                // check intent order
+
+                Boolean refreshView = false;
+
+                String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
+                String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
+
+                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
+                    // update now arrangement! -> go back to fragment now arrangement and show dialog
+
+
+
+                    //check arrangement and now arrangement update and show dialog arrangement and now arrangement change
+                    ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("now");
+
+                    // go back to fragment now arrangement -> this is my mother!
+                    Intent backIntent = new Intent(getActivity(), ActivityOurArrangement.class);
+                    backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    backIntent.putExtra("com","show_arrangement_now_with_tab_change");
+                    getActivity().startActivity(backIntent);
+
+                }
+            }
+        }
+    };
 
 
     // inits the fragment for use
