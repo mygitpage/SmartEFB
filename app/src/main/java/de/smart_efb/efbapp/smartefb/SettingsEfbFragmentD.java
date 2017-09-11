@@ -827,7 +827,7 @@ public class SettingsEfbFragmentD extends Fragment {
             @Override
             public void onClick(View v) {
 
-                long newID = myDb.insertRowOurGoals(txtInputJointlyGoal.getText().toString(), "testuser", prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()), true, false, 0);
+                //long newID = myDb.insertRowOurGoals(txtInputJointlyGoal.getText().toString(), "testuser", prefs.getLong("currentDateOfJointlyGoals", System.currentTimeMillis()), true, false, 0);
 
                 txtInputJointlyGoal.setText("");
 
@@ -849,7 +849,7 @@ public class SettingsEfbFragmentD extends Fragment {
             @Override
             public void onClick(View v) {
 
-                long newID = myDb.insertRowOurGoals(txtInputDebetableGoal.getText().toString(), "testuser", prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis()), true, true, 0);
+                //long newID = myDb.insertRowOurGoals(txtInputDebetableGoal.getText().toString(), "testuser", prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis()), true, true, 0);
 
                 txtInputDebetableGoal.setText("");
 

@@ -97,10 +97,27 @@ public class EfbXmlParser {
         returnMap.put("OurGoalsSettings", "0");
         returnMap.put("OurGoalsSettingsEvaluationProcess", "0");
         returnMap.put("OurGoalsSettingsCommentProcess", "0");
+
+        returnMap.put("OurGoalsSettingsCommentShareDisable","0");
+        returnMap.put("OurGoalsSettingsCommentShareEnable","0");
+        returnMap.put("OurGoalsSettingsCommentCountComment", "0");
+
+
+
+
         returnMap.put("OurGoalsSettingsDebetableCommentProcess", "0");
         returnMap.put("OurGoalsSettingsDebetableGoalsAuthorName", "0");
         returnMap.put("OurGoalsSettingsDebetableCurrentDateOfDebetableGoals", "0");
         returnMap.put("OurGoalsSettingsJointlyCurrentDateOfJointlyGoals", "0");
+
+
+
+        returnMap.put("OurGoalsSettingsDebetableCommentShareDisable","0");
+        returnMap.put("OurGoalsSettingsDebetableCommentShareEnable","0");
+        returnMap.put("OurGoalsSettingsDebetableCommentCountComment", "0");
+
+
+
 
         returnMap.put("Meeting", "0");
         returnMap.put("MeetingSettings", "0");
@@ -669,7 +686,7 @@ public class EfbXmlParser {
                                 returnMap.put("OurArrangement", "1");
                                 returnMap.put("OurArrangementNow", "1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpServerId > 0 && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpArrangementTime > 0 && tmpChangeTo.length() > 0) { // our arrangement order -> update entry?
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpServerId > 0 && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpArrangementTime > 0 && tmpBlockId.length() > 0) { // our arrangement order -> update entry?
 
                                 // update arrangement in DB
                                 myDb.updateRowOurArrangement(tmpArrangementText, tmpAuthorName, tmpArrangementTime, true, tmpSketchCurrent, 0, 4, tmpServerId, tmpBlockId);
@@ -2363,7 +2380,10 @@ public class EfbXmlParser {
         Long tmpGoalTime = 0L;
         Boolean tmpJointlyDebetable = false;
         String tmpOrder = "";
-        String tmpOldMd5 = "";
+        String tmpChangeTo = "";
+        String tmpBlockId = "";
+        int tmpServerId = 0;
+
 
         try {
             int eventType = xpp.next();
@@ -2432,7 +2452,7 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get goalTime text
                                 if (xpp.getText().trim().length() > 0) { // check if goalTime from xml > 0
-                                    tmpGoalTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                    tmpGoalTime = Long.valueOf(xpp.getText().trim()) * 1000; // make milliseconds from seconds
                                 }
                                 else {
                                     error = true;
@@ -2461,20 +2481,60 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_OldMd5:
+
+
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_ChangeTo:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get oldMd5 text
-                                if (xpp.getText().trim().length() > 0) { // check if oldMd5 from xml > 0
-                                    tmpOldMd5 = xpp.getText().trim();
-                                }
-                                else {
+                            if (eventType == XmlPullParser.TEXT) { // get ChangeTo text
+                                if (xpp.getText().trim().length() > 0) { // check if ChangeTo from xml > 0
+                                    tmpChangeTo = xpp.getText().trim();
+
+                                    Log.d("Joy Goals", "ChangeTo:" + tmpChangeTo);
+                                } else {
                                     error = true;
                                 }
-                            }
-                            else {
+                            } else {
                                 error = true;
                             }
                             break;
+
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_BlockId:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get BlockId text
+                                if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
+                                    tmpBlockId = xpp.getText().trim();
+
+                                    Log.d("Joy Goals", "BlockID:" + tmpBlockId);
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_ServerId:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get server id text
+                                if (xpp.getText().trim().length() > 0) { // check if server id from xml > 0
+                                    tmpServerId = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+
+                                    Log.d("Joy Goals", "ServerID:" + tmpServerId);
+
+
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+
+                            break;
+
+
 
                     }
                 }
@@ -2495,31 +2555,55 @@ public class EfbXmlParser {
                             Log.d("JointlyNOW_DB","Te:"+tmpGoalText+" - Au:"+tmpAuthorName+" - ATi:"+tmpGoalTime+" - STi"+tmpJointlyDebetable);
 
                             // our goal order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpGoalText.length() > 0 && tmpAuthorName.length() > 0 && tmpGoalTime > 0) {
-                                // insert new jointly goal in DB
-                                myDb.insertRowOurGoals(tmpGoalText, tmpAuthorName, tmpGoalTime, true, tmpJointlyDebetable, 4);
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpGoalText.length() > 0 && tmpAuthorName.length() > 0 && tmpGoalTime > 0 && tmpServerId > 0 && tmpBlockId.length() > 0 && tmpChangeTo.length() > 0) {
 
-                                // refresh activity ourgoals and fragement jointly goal now
-                                returnMap.put ("OurGoals","1");
-                                returnMap.put ("OurGoalsJointlyNow","1");
+                                Log.d("Jointly Goal", "NEW Goal Entry!!!");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our goal order -> delete entry?
+                                // insert new jointly goals in DB
+                                myDb.insertRowOurGoals(tmpGoalText, tmpAuthorName, tmpGoalTime, true, tmpJointlyDebetable, 0, 4, tmpServerId, tmpBlockId, tmpChangeTo);
+
+                                // write current date of jointly goals to pref
+                                prefsEditor.putLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, tmpGoalTime);
+                                // write block id of jointly goals to prefs
+                                prefsEditor.putString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, tmpBlockId);
+                                // reset jointly comment counter
+                                prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0);
+                                // reset time count jointly comments since
+                                prefsEditor.putLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, System.currentTimeMillis());
+                                // signal jointly goals are updated
+                                prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalJointlyGoalsUpdate, true);
+
+                                prefsEditor.commit();
+
+                                // refresh activity ourgoals and fragement jointly goals
+                                returnMap.put("OurGoals", "1");
+                                returnMap.put("OurGoalsJointlyNow", "1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpServerId > 0) { // our goal order -> delete entry?
 
                                 // delete goal in DB
-                                myDb.deleteRowOurGoals(tmpOldMd5);
+                                myDb.deleteRowOurGoals(tmpServerId);
 
                                 // refresh activity ourgoals and fragement jointly goal now
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsJointlyNow","1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpGoalText.length() > 0 && tmpAuthorName.length() > 0 && tmpGoalTime > 0) { // our goal order -> update entry?
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpServerId > 0 && tmpGoalText.length() > 0 && tmpAuthorName.length() > 0 && tmpGoalTime > 0 && tmpBlockId.length() > 0) { // our goal order -> update entry?
 
                                 // update arrangement in DB
-                                myDb.updateRowOurGoals(tmpGoalText, tmpAuthorName, tmpGoalTime, true, tmpJointlyDebetable, 4, tmpOldMd5);
+                                myDb.updateRowOurGoals(tmpGoalText, tmpAuthorName, tmpGoalTime, true, tmpJointlyDebetable, 0, 4, tmpServerId, tmpBlockId);
 
                                 // refresh activity ourgoals and fragement jointly goal now
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsJointlyNow","1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
+
+                                Log.d("Jointly Goals", "Delete All!!!");
+
+                                // delete all jointly goals with the blockId
+                                myDb.deleteAllRowsOurGoals(tmpBlockId, false); // false -> all jointly goals; true -> all debetable goals
+
 
                             }
                         }
@@ -2670,20 +2754,18 @@ public class EfbXmlParser {
                             }
 
                             break;
-                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_OldMd5:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get oldMd5 text
-                                if (xpp.getText().trim().length() > 0) { // check if oldMd5 from xml > 0
-                                    tmpOldMd5 = xpp.getText().trim();
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-                            break;
+
+
+
+
+                        //
+                        // TODO: Fehlende Parameter abfragen und kontrollieren!!!!!!!!!!!!!!!!
+                        //
+
+
+
+
+
 
                     }
                 }
@@ -2708,15 +2790,6 @@ public class EfbXmlParser {
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpGoalId >= 0 && tmpGoalTime > 0) {
                                 // insert new comment in DB
                                 myDb.insertRowOurGoalJointlyGoalComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpGoalId, true, tmpGoalTime, 4);
-
-                                // refresh activity ourgoals and fragment jointly comment
-                                returnMap.put ("OurGoals","1");
-                                returnMap.put ("OurGoalsJointlyComment","1");
-
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our goals jointly comment order -> delete entry?
-
-                                // delete arrangement comment in DB
-                                myDb.deleteRowOurGoalJointlyGoalComment(tmpOldMd5);
 
                                 // refresh activity ourgoals and fragment jointly comment
                                 returnMap.put ("OurGoals","1");
@@ -2951,20 +3024,7 @@ public class EfbXmlParser {
                             }
 
                             break;
-                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_OldMd5:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get oldMd5 text
-                                if (xpp.getText().trim().length() > 0) { // check if oldMd5 from xml > 0
-                                    tmpOldMd5 = xpp.getText().trim();
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-                            break;
+
 
                     }
                 }
@@ -2994,19 +3054,12 @@ public class EfbXmlParser {
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsDebetableComment","1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our goals jointly comment order -> delete entry?
-
-                                // delete arrangement comment in DB
-                                myDb.deleteRowOurGoalsDebetableGoalsComment(tmpOldMd5);
-
-                                // refresh activity ourgoals and fragment debetable comment
-                                returnMap.put ("OurGoals","1");
-                                returnMap.put ("OurGoalsDebetableComment","1");
-
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpGoalId >= 0 && tmpGoalTime > 0) { // our goals jointly comment order -> update entry?
 
                                 // update jointly comment in DB
-                                myDb.updateRowOurGoalsDebetableGoalsComment(tmpCommentText, tmpREsultQuestionA, tmpREsultQuestionB, tmpREsultQuestionC, tmpAuthorName, tmpCommentTime, tmpGoalId, true,  tmpGoalTime, 4, tmpOldMd5);
+                                // TODO: siehe absprachen kommentare -> kein Update, sondern insert new
+
+                                //myDb.updateRowOurGoalsDebetableGoalsComment(tmpCommentText, tmpREsultQuestionA, tmpREsultQuestionB, tmpREsultQuestionC, tmpAuthorName, tmpCommentTime, tmpGoalId, true,  tmpGoalTime, 4, tmpOldMd5);
 
                                 // refresh activity ourgoals and fragment debetable comment
                                 returnMap.put ("OurGoals","1");
@@ -3049,7 +3102,11 @@ public class EfbXmlParser {
         Long tmpDebetableGoalTime = 0L;
         Boolean tmpJointlyDebetable = false;
         String tmpOrder = "";
-        String tmpOldMd5 = "";
+        String tmpChangeTo = "";
+        String tmpBlockId = "";
+        int tmpServerId = 0;
+
+
 
         try {
             int eventType = xpp.next();
@@ -3118,7 +3175,7 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get goalTime text
                                 if (xpp.getText().trim().length() > 0) { // check if goalTime from xml > 0
-                                    tmpDebetableGoalTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                    tmpDebetableGoalTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
                                 }
                                 else {
                                     error = true;
@@ -3147,20 +3204,53 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_OldMd5:
+
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_ChangeTo:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get oldMd5 text
-                                if (xpp.getText().trim().length() > 0) { // check if oldMd5 from xml > 0
-                                    tmpOldMd5 = xpp.getText().trim();
-                                }
-                                else {
+                            if (eventType == XmlPullParser.TEXT) { // get ChangeTo text
+                                if (xpp.getText().trim().length() > 0) { // check if ChangeTo from xml > 0
+                                    tmpChangeTo = xpp.getText().trim();
+
+                                    Log.d("Debetable Goals", "ChangeTo:" + tmpChangeTo);
+                                } else {
                                     error = true;
                                 }
-                            }
-                            else {
+                            } else {
                                 error = true;
                             }
                             break;
+
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_BlockId:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get BlockId text
+                                if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
+                                    tmpBlockId = xpp.getText().trim();
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_ServerId:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get server id text
+                                if (xpp.getText().trim().length() > 0) { // check if server id from xml > 0
+                                    tmpServerId = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+
+                            break;
+
+
+
 
                     }
                 }
@@ -3181,34 +3271,125 @@ public class EfbXmlParser {
 
                             Log.d("DebetableNOW_DB","Te:"+tmpDebetableGoalText+" - Au:"+tmpDebetableAuthorName+" - ATi:"+tmpDebetableGoalTime+" - STi"+tmpJointlyDebetable);
 
+
+
+
+                            /*
+
+                            // our arrangement sketch order -> new entry?
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpSketchTime > 0 && tmpServerId > 0 && tmpBlockId.length() > 0 && tmpChangeTo.length() > 0) {
+
+                                Log.d("Sketch Arr", "NEW Sketch Entry!!!");
+
+                                // insert new sketch arrangement in DB
+                                myDb.insertRowOurArrangement(tmpArrangementText, tmpAuthorName, 0, true, tmpSketchCurrent, tmpSketchTime, 4, tmpServerId, tmpBlockId, tmpChangeTo);
+
+                                // write current date of sketch arrangements to pref
+                                prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, tmpSketchTime);
+                                // write block id of sketch arrangements to prefs
+                                prefsEditor.putString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, tmpBlockId);
+                                // reset sketch comment counter
+                                prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0);
+                                // reset time count comments since
+                                prefsEditor.putLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, System.currentTimeMillis());
+                                // signal sketch arragenemt is updated
+                                prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, true);
+
+                                prefsEditor.commit();
+
+                                // refresh activity ourarrangement and fragement sketch
+                                returnMap.put("OurArrangement", "1");
+                                returnMap.put("OurArrangementSketch", "1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpServerId > 0) { // our arrangement order -> delete entry?
+
+                                // delete arrangement in DB
+                                myDb.deleteRowOurArrangement(tmpServerId);
+
+                                // refresh activity ourarrangement and fragement sketch
+                                returnMap.put("OurArrangement", "1");
+                                returnMap.put("OurArrangementSketch", "1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpServerId > 0 && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpSketchTime > 0 && tmpChangeTo.length() > 0) { // our arrangement order -> update entry?
+
+                                // update sketch arrangement with tmpServerId
+                                myDb.updateRowOurArrangement(tmpArrangementText, tmpAuthorName, 0, true, tmpSketchCurrent, tmpSketchTime, 4, tmpServerId, tmpBlockId);
+
+                                // refresh activity ourarrangement and fragement sketch
+                                returnMap.put("OurArrangement", "1");
+                                returnMap.put("OurArrangementSketch", "1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
+
+                                Log.d("Sketch Arr", "Delete All!!!");
+
+                                // delete all arrangements sketch with the blockId
+                                myDb.deleteAllRowsOurArrangement(tmpBlockId, true); // false -> all now arrangements; true -> all sketch arrangements
+
+
+                            }
+
+                             */
+
+
+
+
+
+
+
+
+
+
                             // our goal order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpDebetableGoalText.length() > 0 && tmpDebetableAuthorName.length() > 0 && tmpDebetableGoalTime > 0) {
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpDebetableGoalText.length() > 0 && tmpDebetableAuthorName.length() > 0 && tmpDebetableGoalTime > 0 && tmpServerId > 0 && tmpBlockId.length() > 0 && tmpChangeTo.length() > 0) {
                                 // insert new debetable goal in DB
-                                myDb.insertRowOurGoals(tmpDebetableGoalText, tmpDebetableAuthorName, tmpDebetableGoalTime, true, tmpJointlyDebetable, 4);
+                                myDb.insertRowOurGoals(tmpDebetableGoalText, tmpDebetableAuthorName, 0, true, tmpJointlyDebetable, tmpDebetableGoalTime, 4, tmpServerId, tmpBlockId, tmpChangeTo);
+
+                                // write current date of debetable goals to pref
+                                prefsEditor.putLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, tmpDebetableGoalTime);
+                                // write block id of debetable goals to prefs
+                                prefsEditor.putString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfDebetableGoals, tmpBlockId);
+                                // reset debetable comment counter
+                                prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, 0);
+                                // reset time count comments since
+                                prefsEditor.putLong(ConstansClassOurGoals.namePrefsDebetableCommentTimeSinceInMills, System.currentTimeMillis());
+                                // signal debetable goals are updated
+                                prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalDebetableGoalsUpdate, true);
+
+                                prefsEditor.commit();
 
                                 // refresh activity ourgoals and fragement debetable goal now
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsDebetableNow","1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMd5.length() > 1) { // our goal order -> delete entry?
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpServerId > 0) { // our goal order -> delete entry?
 
                                 // delete goal in DB
-                                myDb.deleteRowOurGoals(tmpOldMd5);
+                                myDb.deleteRowOurGoals(tmpServerId);
 
                                 // refresh activity ourgoals and fragement debetable goal now
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsDebetableNow","1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpDebetableGoalText.length() > 0 && tmpDebetableAuthorName.length() > 0 && tmpDebetableGoalTime > 0) { // our goal order -> update entry?
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpServerId > 0 && tmpBlockId.length() > 0 && tmpDebetableGoalText.length() > 0 && tmpDebetableAuthorName.length() > 0 && tmpDebetableGoalTime > 0) { // our goal order -> update entry?
 
                                 // update goal in DB
-                                myDb.updateRowOurGoals(tmpDebetableGoalText, tmpDebetableAuthorName, tmpDebetableGoalTime, true, tmpJointlyDebetable, 4, tmpOldMd5);
+                                myDb.updateRowOurGoals(tmpDebetableGoalText, tmpDebetableAuthorName, 0, true, tmpJointlyDebetable, tmpDebetableGoalTime, 4,  tmpServerId, tmpBlockId);
 
                                 // refresh activity ourgoals and fragement jointly goal now
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsDebetableNow","1");
 
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
+
+                                Log.d("Jointly Goals", "Delete All!!!");
+
+                                // delete all jointly goals with the blockId
+                                myDb.deleteAllRowsOurGoals(tmpBlockId, true); // false -> all jointly goals; true -> all debetable goals
+
+
                             }
+
                         }
 
                         parseAnymore = false;

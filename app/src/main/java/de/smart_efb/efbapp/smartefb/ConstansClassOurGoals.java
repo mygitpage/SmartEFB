@@ -19,6 +19,19 @@ public class ConstansClassOurGoals {
 
 
 
+
+
+    // prefs name for current block id of jointly goals
+    public static final String namePrefsCurrentBlockIdOfJointlyGoals = "currentBlockIdOfJointlyGoals";
+
+
+
+    // prefs name for current block id of debetable goals
+    public static final String namePrefsCurrentBlockIdOfDebetableGoals = "currentBlockIdOfDebetableGoals";
+
+
+
+
     // prefs name for show link for evaluate jointly goal
     public static final String namePrefsShowLinkEvaluateJointlyGoals = "showEvaluateLinkJointlyGoals";
 
@@ -92,6 +105,16 @@ public class ConstansClassOurGoals {
 
 
 
+    // true -> debetable goals are updated; false -> no update
+    public static final String namePrefsSignalDebetableGoalsUpdate = "signalDebetableGoalsUpdated";
+
+    // true -> jointly goals are updated; false -> no update
+    public static final String namePrefsSignalJointlyGoalsUpdate = "signalJointlyGoalsUpdated";
+
+
+
+
+
     // prefs name for start Date Evaluation in mills
     public static final String namePrefsStartDateJointlyGoalsEvaluationInMills = "startDataJointlyGoalsEvaluationInMills";
 
@@ -118,7 +141,14 @@ public class ConstansClassOurGoals {
 
 
 
+    // constans for normal goal in change to
+    public static final String jointlyGoalStatusNormal = "normal";
 
+    // constans for sketch goal in change to
+    public static final String jointlyGoalStatusSketch = "sketch";
+
+    // constans for nothing in change to
+    public static final String jointlyGoalStatusNothing = "nothing";
 
 
 

@@ -38,7 +38,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 37;
+    public static final int DATABASE_VERSION = 38;
 
     // Common column names
     public static final String KEY_ROWID = "_id";
@@ -222,11 +222,14 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY = "new_entry";
     public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE = "eval_possible";
     public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE = "jointlyDebetable";
-    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_MD5_HASH = "md5_hash";
+    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME = "debetable_time";
+    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID = "serverid";
+    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID = "blockid";
+    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_CHANGE_TO = "change_to";
     public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
-    // All keys from table app settings in a String
-    public static final String[] OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_MD5_HASH, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS };
+    // All keys in a String
+    public static final String[] OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_CHANGE_TO, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS};
 
     // SQL String to create our goals jointly goals now table
     private static final String DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_JOINTLY_GOALS_NOW =
@@ -237,7 +240,10 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY + " INTEGER DEFAULT 0, "
                     + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE + " INTEGER DEFAULT 0, "
                     + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + " INTEGER DEFAULT 0, "
-                    + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_MD5_HASH + " TEXT not null, "
+                    + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME + " INTEGER DEFAULT 0, "
+                    + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID + " INTEGER DEFAULT 0, "
+                    + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID + " TEXT not null, "
+                    + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_CHANGE_TO + " STRING not null, "
                     + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS + " INTEGER DEFAULT 0"
                     + ");";
 
@@ -247,57 +253,64 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT = "comment";
     public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME = "author_name";
     public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME = "comment_time";
-    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL = "id_goal";
+    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_UPLOAD_TIME = "upload_time";
+    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID = "blockid";
     public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY = "new_entry";
     public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME = "goal_time";
-    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH = "md5_hash";
+    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL = "server_id";
     public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
     // All keys from table app settings in a String
-    public static final String[] OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS };
+    public static final String[] OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_UPLOAD_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS };
 
-    // SQL String to create our arrangement comment table
+    // SQL String to create our goals jointly comment table
     private static final String DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_COMMENT =
             "create table " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT + " (" + KEY_ROWID + " integer primary key autoincrement, "
                     + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT + " TEXT not null, "
                     + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME + " STRING not null, "
                     + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " INTEGER not null, "
-                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_UPLOAD_TIME + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID + " TEXT not null, "
                     + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
                     + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME + " INTEGER not null, "
-                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH + " TEXT not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL + " INTEGER not null, "
                     + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS + " INTEGER DEFAULT 0"
                     + ");";
 
     /**********************************************************************************************/
     /**********************************************************************************************/
     // Our Goals Jointly Goals Evaluate- column names and numbers
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME = "jointly_goal_time";
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_ID = "jointly_goal_id";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME = "goal_time";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_SERVER_ID = "server_id";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_BLOCKID = "block_id";
     public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1 = "result_q_a";
     public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2 = "result_q_b";
     public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3 = "result_q_c";
     public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4 = "result_q_d";
     public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS = "result_remarks";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME = "start_block_time";
+    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME = "end_block_time";
     public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME = "result_time";
     public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME = "username";
     public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
-
     // All keys from table app settings in a String
-    public static final String[] OUR_GOALS_JOINTLY_GOALS_EVALUATE_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_ID, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_STATUS};
+    public static final String[] OUR_GOALS_JOINTLY_GOALS_EVALUATE_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_STATUS, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_SERVER_ID, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_BLOCKID};
 
     // SQL String to create our jointly goals evaluate table
     private static final String DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_EVALUATE =
             "create table " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE + " (" + KEY_ROWID + " integer primary key autoincrement, "
                     + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME + " INTEGER not null, "
-                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_ID + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_SERVER_ID + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_BLOCKID + " INTEGER not null, "
                     + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1 + " INTEGER not null, "
                     + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2 + " INTEGER not null, "
                     + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3 + " INTEGER not null, "
                     + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4 + " INTEGER not null, "
                     + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS + " TEXT not null, "
                     + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME + " INTEGER not null, "
+                    + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME + " INTEGER not null, "
                     + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME + " STRING not null, "
                     + OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_STATUS + " INTEGER DEFAULT 0"
                     + ");";
@@ -311,16 +324,17 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3 = "result_q_c";
     public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME = "author_name";
     public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME = "comment_time";
-    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL = "id_goal";
+    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_UPLOAD_TIME = "upload_time";
+    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID = "blockid";
+    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID = "server_id";
     public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY = "new_entry";
     public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME = "goal_time";
-    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_MD5_HASH = "md5_hash";
     public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
     // All keys from table app settings in a String
-    public static final String[] OUR_GOALS_DEBETABLE_GOALS_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_MD5_HASH, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS };
+    public static final String[] OUR_GOALS_DEBETABLE_GOALS_COMMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_UPLOAD_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS };
 
-    // SQL String to create our arrangement comment table
+    // SQL String to create our goals debetable comment table
     private static final String DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_GOALS_COMMENT =
             "create table " + DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT + " (" + KEY_ROWID + " integer primary key autoincrement, "
                     + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1 + " INTEGER not null, "
@@ -329,10 +343,11 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT + " TEXT not null, "
                     + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME + " STRING not null, "
                     + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " INTEGER not null, "
-                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL + " INTEGER not null, "
+                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_UPLOAD_TIME + " INTEGER not null, "
+                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID + " TEXT not null, "
+                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID + " INTEGER not null, "
                     + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
                     + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME + " INTEGER not null, "
-                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_MD5_HASH + " TEXT not null, "
                     + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS + " INTEGER DEFAULT 0"
                     + ");";
 
@@ -1339,10 +1354,14 @@ public class DBAdapter extends SQLiteOpenHelper {
         newEntry -> true, goal is new in database; false, it is old!
         eval_possible -> true, evaluation is possible; false -> not
         jointlyDebetable -> true, goal is a debetable; false, goal is an jointly goal
+        debetableTime -> date and time of debetable goal
+        serverId -> the id of goal on the server
+        blockId -> the id of a block of goal
+        changeTo -> needed when a goal is switch from jointly goal to debetable goal or visversa
         status -> the status of goal -> 0=ready to send, 1=message send, 4=external message
      */
 
-    public long insertRowOurGoals(String goal, String authorName, long goalTime, Boolean newEntry, Boolean jointlyDebetable, int status) {
+    public long insertRowOurGoals(String goal, String authorName, long goalTime, Boolean newEntry, Boolean jointlyDebetable, long debetableTime, int status, int serverId, String blockId, String changeTo) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1350,8 +1369,9 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL, goal);
         initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME, authorName);
-        initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, goalTime);
-        initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_MD5_HASH, EfbHelperClass.md5(goal)); // generate md5 hash from goal
+        initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID, serverId); // id of goal on the server -> unique identifier for goal
+        initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID, blockId); // id of the block of goals -> current block number is safe in prefs to find the block in db
+        initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_CHANGE_TO, changeTo); // possible values are "nothing", "jointly" and "debetable" (look for definitions in ConstansClassOurGoals)
         initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS, status);
 
         // is it a new entry?
@@ -1364,8 +1384,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         // is it a debetable goal? jointlyDebetable -> true!
         if (jointlyDebetable) {
             initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE, 1);
+            initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME, debetableTime);
+            initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, 0);
         } else {
             initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE, 0);
+            initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME, 0);
+            initialValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, goalTime);
         }
 
         // Insert it into the database.
@@ -1374,12 +1398,12 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    // Delete a row from the database, by oldMd5
-    public boolean deleteRowOurGoals(String oldMd5) {
+    // Delete a row from the database, by serverId
+    public boolean deleteRowOurGoals(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_MD5_HASH + "='" + oldMd5+"'";
+        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID + "=" + serverId;
         return db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, where, null) != 0;
     }
 
@@ -1387,11 +1411,11 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Change an existing row to be equal to oldMd5.
-    public boolean updateRowOurGoals(String goal, String authorName, long goalTime, Boolean newEntry, Boolean jointlyDebetable, int status, String oldMd5) {
+    public boolean updateRowOurGoals(String goal, String authorName, long goalTime, Boolean newEntry, Boolean jointlyDebetable, long debetableTime, int status, int serverId, String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_MD5_HASH + "='" + oldMd5+"'";
+        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID + "=" + serverId;
 
         // Create row's data:
         ContentValues newValues = new ContentValues();
@@ -1399,7 +1423,8 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL, goal);
         newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME, authorName);
         newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, goalTime);
-        newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_MD5_HASH, EfbHelperClass.md5(goal)); // generate md5 hash from goal
+        newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID, serverId); // id of goals on the server -> unique identifier for goal
+        newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID, blockId); // id of the block of goals -> current block number is safe in prefs to find the block in db
         newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS, status);
 
         // is it a new entry?
@@ -1412,9 +1437,14 @@ public class DBAdapter extends SQLiteOpenHelper {
         // is it a debetable goal? jointlyDebetable -> true!
         if (jointlyDebetable) {
             newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE, 1);
+            newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME, debetableTime);
+            newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, 0);
         } else {
             newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE, 0);
+            newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME, 0);
+            newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, goalTime);
         }
+
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null) != 0;
@@ -1617,6 +1647,32 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+
+
+    // Delete all goals with the same blockId
+    public boolean deleteAllRowsOurGoals(String blockId, Boolean jointlyDebetable) {
+
+        int tmpStatus;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        if (jointlyDebetable) {
+            tmpStatus = 1;
+        } else {
+            tmpStatus = 0;
+        }
+
+        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID + "='" + blockId + "' AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=" + tmpStatus ;
+
+        return db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, where, null) != 0;
+
+    }
+
+
+
+
+
+
     /********************************* End!! TABLES FOR FUNCTION: Our Debetable/Jointly Goals ******************************************/
     /***********************************************************************************************************************/
 
@@ -1630,12 +1686,17 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         ContentValues initialValues = new ContentValues();
 
+
+        // TODO: init werte für die datenbank anpassen
+
+
+
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, comment);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, authorName);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, commentTime);
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL, idGoal);
+        //initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL, idGoal);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME, currentDateOfGoal);
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from goal
+        //initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from goal
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS, status);
 
         // is it a new entry?
@@ -1655,17 +1716,20 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
+
+        // TODO: werte für die datenbank anpassen
+
+        //String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
 
         // Create row's data:
         ContentValues newValues = new ContentValues();
         newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, comment);
         newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, authorName);
         newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, commentTime);
-        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL, idGoal);
+        //newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL, idGoal);
         newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME, currentDateOfGoal);
         newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS, status);
-        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from comment
+        //newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from comment
 
         // is it a new entry?
         if (newEntry) {
@@ -1675,17 +1739,9 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null) != 0;
-    }
+        //return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null) != 0;
 
-
-    // Delete a row from the database, by oldMd5
-    public boolean deleteRowOurGoalJointlyGoalComment(String oldMd5) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
-        return db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, where, null) != 0;
+        return true; // Bitte löschen, wenn werte angepasst sind
     }
 
 
@@ -1696,8 +1752,12 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
+        // TODO: werte anpassen und return weert ändern!!!!!!!!!!!
+
         // data filter
-        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL + "=" + goalId;
+        //String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL + "=" + goalId;
+
+        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + "= 1"; // anpassen ist sonst falsch!!!!!!!!!!!!!
 
         // sort string
         String sort = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
@@ -1739,7 +1799,9 @@ public class DBAdapter extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // new_entry = 1 (true) and choosen arrangement like arrangementRowId?
-        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL + "=" + jointlyGoalRowId;
+
+        // TODO: Bitte anpassen, sonst FEHLER!!!!!!!!!!!!!!
+        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + "=1"; // AND " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL + "=" + jointlyGoalRowId;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
@@ -1782,7 +1844,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         ContentValues initialValues = new ContentValues();
 
-        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_ID, goalId);
+        //initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_ID, goalId);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME, currentDateOfGoal);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1, resultQuestion1);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2, resultQuestion2);
@@ -1820,9 +1882,9 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3, question_c);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME, authorName);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, commentTime);
-        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL, idGoal);
+        //initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL, idGoal);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME, currentDateOfDebetableGoal);
-        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from comment
+        //initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from comment
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS, status);
 
 
@@ -1839,46 +1901,6 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // Delete a row from the database, by oldMd5
-    public boolean deleteRowOurGoalsDebetableGoalsComment(String oldMd5) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
-        return db.delete(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, where, null) != 0;
-    }
-
-
-    // Change an existing row to be equal to oldMd5.
-    public boolean updateRowOurGoalsDebetableGoalsComment(String comment, int question_a, int question_b, int question_c, String authorName, long commentTime, int idGoal, Boolean newEntry, long currentDateOfGoal, int status, String oldMd5) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
-
-        // Create row's data:
-        ContentValues newValues = new ContentValues();
-        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT, comment);
-        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1, question_a);
-        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2, question_b);
-        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3, question_c);
-        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME, authorName);
-        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, commentTime);
-        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL, idGoal);
-        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME, currentDateOfGoal);
-        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS, status);
-        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from comment
-
-        // is it a new entry?
-        if (newEntry) {
-            newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, 1);
-        } else {
-            newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, 0);
-        }
-
-        // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null) != 0;
-    }
 
 
     // Return all comments from the database for debetable goal with goal_id = id (table ourGoalsDebetableGoalsComment)
@@ -1889,7 +1911,10 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
         // data filter
-        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL + "=" + goalId;
+
+        // TODO_ Anpasen, sonst Fehler, es war nicht server id sondern goal id als Konstante!!!!!!!!!!
+
+        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID + "=" + goalId;
 
         // sort string
         String sort = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
@@ -1930,6 +1955,10 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get the number of new rows in comment for choosen debetable goal, look goalRowId (new entrys)
+    /*
+
+    TODO: Bitte aktivieren, wenn es gebraucht wird!!!!!!!!!!!!!!!
+
     public int getCountNewEntryOurGoalsDebetableGoalsComment(int goalRowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1947,7 +1976,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         return c.getCount();
 
     }
-
+    */
 
     // delete status new entry in table ourGoalsDebetableGoalsComment.
     public boolean deleteStatusNewEntryOurGoalsDebetableGoalsComment (int rowId) {
