@@ -100,7 +100,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // reference to dialog settings and Arrangement change
     AlertDialog alertDialogSettings;
     AlertDialog alertDialogArrangementChange;
-    AlertDialog alertDialogSketchArrangementChange;
 
     // activ/inactiv sub-functions
     // our arrangements sub functions activ/ inactiv

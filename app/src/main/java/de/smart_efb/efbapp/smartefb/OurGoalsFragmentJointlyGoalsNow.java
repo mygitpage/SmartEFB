@@ -10,11 +10,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by ich on 16.10.2016.
@@ -33,9 +35,16 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
 
     // shared prefs for the settings
     SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
+
+    // the list view for the jointly goals
+    ListView listViewJointlyGoals = null;
 
     // the current date of jointly goals -> the other are old (look at tab old)
     long currentDateOfJointlyGoals;
+
+    // block id of current jointly goals
+    String currentBlockIdOfJointlyGoals = "";
 
     // reference cursorAdapter for the listview
     OurGoalsJointlyGoalsNowCursorAdapter dataAdapterListViewOurGoals = null;
@@ -49,8 +58,8 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
 
         viewFragmentJointlyGoalsNow = layoutInflater.inflate(R.layout.fragment_our_goals_jointly_goals_now, null);
 
-        // register broadcast receiver and intent filter for action GOALS_EVALUATE_STATUS_UPDATE
-        IntentFilter filter = new IntentFilter("GOALS_EVALUATE_STATUS_UPDATE");
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
         getActivity().getApplicationContext().registerReceiver(ourGoalsFragmentJointlyGoalsNowBrodcastReceiver, filter);
 
         return viewFragmentJointlyGoalsNow;
@@ -90,19 +99,118 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            // notify listView that data has changed (evaluate-link is activ or passiv)
-            if (dataAdapterListViewOurGoals != null) {
-                // get new data from db
-                Cursor cursor = myDb.getAllJointlyRowsOurGoals(currentDateOfJointlyGoals, "equal");
 
-                // and notify listView
-                dataAdapterListViewOurGoals.changeCursor(cursor);
-                dataAdapterListViewOurGoals.notifyDataSetChanged();
+            // TODO: text für die Toasts anpassen!!!!!!!!!!!!!!!!!
 
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // true-> update the list view with arrangements
+            Boolean updateListView = false;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                // check intent order
+
+                String tmpExtraOurGoals = intentExtras.getString("OurGoals","0");
+                String tmpExtraOurGoalsNow = intentExtras.getString("OurGoalsNow","0");
+                String tmpExtraOurGoalsNowComment = intentExtras.getString("OurGoalsNowComment","0");
+                String tmpExtraOurGoalsSettings = intentExtras.getString("OurGoalsSettings","0");
+                String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsCommentShareEnable","0");
+                String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsCommentShareDisable","0");
+                String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsCommentCountComment","0");
+                String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
+                String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
+                String tmpUpdateEvaluationLink = intentExtras.getString("UpdateEvaluationLink");
+                String tmpMessage = intentExtras.getString("Message");
+
+                if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNow != null && tmpExtraOurGoalsNow.equals("1")) {
+                    // new jointly goals on smartphone -> update now view
+
+                    //update current block id of jointly goals
+                    currentBlockIdOfJointlyGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0");
+
+                    // check jointly and debetable goals update and show dialog jointly and debetable goals change
+                    ((ActivityOurGoals) getActivity()).checkUpdateForShowDialog ("jointly");
+
+                    // update the view
+                    updateListView = true;
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNowComment != null && tmpExtraOurGoalsNowComment.equals("1")) {
+                    // new comments -> update now view -> show toast and update view
+                    String updateMessageCommentNow = fragmentJointlyGoalsNowContext.getString(R.string.toastMessageCommentNowNewComments);
+                    Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
+
+                    // update the view
+                    updateListView = true;
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsResetCommentCountComment != null && tmpExtraOurGoalsResetCommentCountComment.equals("1")) {
+                    // reset now comment counter -> show toast and update view
+                    String updateMessageCommentNow = fragmentJointlyGoalsNowContext.getString(R.string.toastMessageArrangementResetCommentCountComment);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                    // update the view
+                    updateListView = true;
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsCommentShareDisable  != null && tmpExtraOurGoalsCommentShareDisable .equals("1")) {
+                    // sharing is disable -> show toast and update view
+                    String updateMessageCommentNow = fragmentJointlyGoalsNowContext.getString(R.string.toastMessageArrangementCommentShareDisable);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsCommentShareEnable  != null && tmpExtraOurGoalsCommentShareEnable .equals("1")) {
+                    // sharing is enable -> show toast and update view
+                    String updateMessageCommentNow = fragmentJointlyGoalsNowContext.getString(R.string.toastMessageArrangementCommentShareEnable);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                }
+                else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send successfull?
+
+                    Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG).show();
+                }
+                else if (tmpSendNotSuccessefull != null && tmpSendNotSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send not successfull?
+
+                    Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG).show();
+                }
+                else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
+                    // evaluationperiod hass change -> update view
+
+                    updateListView = true;
+
+                    // set new start point for evaluation timer in view
+                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, System.currentTimeMillis());
+                    prefsEditor.commit();
+                }
+
+                // update the list view because data has change?
+                if (updateListView) {
+                    updateListView();
+                }
             }
-
         }
     };
+
+
+    // update the list view with arrangements
+    public void updateListView () {
+
+        if (listViewJointlyGoals != null) {
+            listViewJointlyGoals.destroyDrawingCache();
+            listViewJointlyGoals.setVisibility(ListView.INVISIBLE);
+            listViewJointlyGoals.setVisibility(ListView.VISIBLE);
+
+            displayActualJointlyGoalsSet ();
+        }
+    }
 
 
     // inits the fragment for use
@@ -113,25 +221,31 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
 
         // init the prefs
         prefs = fragmentJointlyGoalsNowContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentJointlyGoalsNowContext.MODE_PRIVATE);
-
+        prefsEditor = prefs.edit();
+        
         //get current date of jointly goals
         currentDateOfJointlyGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis());
+
+        //get current block id of jointly goals
+        currentBlockIdOfJointlyGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0");
 
         // ask methode isCommentLimitationBorderSet() in ActivityOurGoals to limitation in comments? true-> yes, linitation; false-> no
         commentLimitationBorder = ((ActivityOurGoals) getActivity()).isCommentLimitationBorderSet("current");
 
+        // find the listview for the jointly goals
+        listViewJointlyGoals = (ListView)  viewFragmentJointlyGoalsNow.findViewById(R.id.listOurGoalsJointlyGoalsNow);
+              
+        
+        
     }
 
 
     // show listView with current goals or info: mothing there
     public void displayActualJointlyGoalsSet () {
 
-        Cursor cursor = myDb.getAllJointlyRowsOurGoals(currentDateOfJointlyGoals, "equal");
+        Cursor cursor = myDb.getAllJointlyRowsOurGoals(currentBlockIdOfJointlyGoals, "equalBlockId");
 
-        // find the listview
-        ListView listView = (ListView) viewFragmentJointlyGoalsNow.findViewById(R.id.listOurGoalsJointlyGoalsNow);
-
-        if (cursor.getCount() > 0 && listView != null) {
+        if (cursor.getCount() > 0 && listViewJointlyGoals != null) {
 
             // set listView visible and textView hide
             setVisibilityListViewJointlyGoalsNow("show");
@@ -148,7 +262,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                     0);
 
             // Assign adapter to ListView
-            listView.setAdapter(dataAdapterListViewOurGoals);
+            listViewJointlyGoals.setAdapter(dataAdapterListViewOurGoals);
 
         }
         else {

@@ -1451,9 +1451,9 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // Return all data from the database (table ourGoals) (equal: write_time = currentDateOfGoals, smaller: write_time < currentDateOfGoals)
-    // the result is sorted by DESC
-    public Cursor getAllJointlyRowsOurGoals(long currentDateOfGoals, String equalGreater) {
+    // Return all data from the database (table ourGoals) where blockid is equal or not equal!
+    // the result is sorted by DESC from wirte_time
+    public Cursor getAllJointlyRowsOurGoals (String blockID, String order) {
 
         String where = "";
 
@@ -1462,16 +1462,17 @@ public class DBAdapter extends SQLiteOpenHelper {
         // get only arrangments and no sketches
         where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=0 AND ";
 
-        switch (equalGreater) {
+        switch (order) {
 
-            case "equal":
-                where += OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + "=" + currentDateOfGoals;
+            case "equalBlockId":
+                where += OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID + "='" + blockID + "'";
                 break;
-            case "smaller":
-                where += OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + "<" + currentDateOfGoals;
+
+            case "notEqualBlockId":
+                where += OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID + "!='" + blockID + "'";
                 break;
             default:
-                where += OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + "=" + currentDateOfGoals;
+                where += OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID + "='" + blockID + "'";
                 break;
         }
 
@@ -1486,6 +1487,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         return c;
+
     }
 
 

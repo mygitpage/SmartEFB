@@ -32,6 +32,9 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
     // the current date of jointly goals -> the other are old
     long currentDateOfJointlyGoal;
 
+    // block id of current jointly goals
+    String currentBlockIdOfJointlyGoals = "";
+
     // reference cursorAdapter for the listview
     OurGoalsJointlyOldCursorAdapter dataAdapter;
 
@@ -75,6 +78,9 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
         //get current date of jointly goals
         currentDateOfJointlyGoal = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis());
 
+        //get current block id of jointly goals
+        currentBlockIdOfJointlyGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0");
+
     }
 
 
@@ -89,7 +95,7 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
 
 
             // get all old jointly goals from DB
-            Cursor cursor = myDb.getAllJointlyRowsOurGoals(currentDateOfJointlyGoal,"smaller");
+            Cursor cursor = myDb.getAllJointlyRowsOurGoals(currentBlockIdOfJointlyGoals,"notEqualBlockId");
 
             if (cursor.getCount() > 0) {
 

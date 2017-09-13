@@ -89,6 +89,7 @@ public class ActivityOurGoals extends AppCompatActivity {
 
     // reference to dialog settings
     AlertDialog alertDialogSettings;
+    AlertDialog alertDialogGoalsChange;
 
     // evaluate next goal true -> yes, there is a next goal to evaluate; false -> there is nothing more
     Boolean evaluateNextJointlyGoal = false;
@@ -222,7 +223,6 @@ public class ActivityOurGoals extends AppCompatActivity {
 
         // call super
         super.onNewIntent(intent);
-
         // get the link data from URI and from the extra
         /*intentLinkData = intent.getData();*/
         intentExtras = intent.getExtras();
@@ -971,6 +971,116 @@ public class ActivityOurGoals extends AppCompatActivity {
     }
 
 
+
+
+    // check prefs for update jointly and debetable goals or only jointly goals or only debetable goals?
+    public void checkUpdateForShowDialog (String fragmentName) {
+
+        if (prefs.getBoolean(ConstansClassOurGoals.namePrefsSignalJointlyGoalsUpdate, false) && prefs.getBoolean(ConstansClassOurGoals.namePrefsSignalDebetableGoalsUpdate, false)) {
+
+            // set signal jointly goals and debetable goals are update to false; because user is informed by dialog!
+            prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalJointlyGoalsUpdate, false);
+            prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalDebetableGoalsUpdate, false);
+            prefsEditor.commit();
+
+            // show dialog jointly and debetable goals change
+            alertDialogGoalsChange("jointlyDebetable");
+
+        }
+        else if (prefs.getBoolean(ConstansClassOurGoals.namePrefsSignalJointlyGoalsUpdate, false) && fragmentName.equals("jointly")) {
+            // set signal goals are update to false; because user is informed by dialog!
+            prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalJointlyGoalsUpdate, false);
+            prefsEditor.commit();
+
+            // show dialog jointly and debetable goals change
+            alertDialogGoalsChange("jointly");
+
+        } else if (prefs.getBoolean(ConstansClassOurGoals.namePrefsSignalDebetableGoalsUpdate, false) && fragmentName.equals("debetable")) {
+            // set signal sketch goals are update to false; because user is informed by dialog!
+            prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalDebetableGoalsUpdate, false);
+            prefsEditor.commit();
+
+            // show dialog jointly and debetable goals change
+            alertDialogGoalsChange("debetable");
+        }
+    }
+
+
+    public void alertDialogGoalsChange (String whatDialog) {
+
+        LayoutInflater dialogInflater;
+
+        String tmpTextCloseDialog = "";
+        String tmpTextTitleDialog = "";
+        String infoTextForChange = "";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ActivityOurGoals.this);
+
+        // Get the layout inflater
+        dialogInflater = (LayoutInflater) ActivityOurGoals.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // inflate and get the view
+        View dialogSettings = dialogInflater.inflate(R.layout.dialog_info_goals_change, null);
+
+        // get textview for info-text from view
+        TextView textViewGoals = (TextView) dialogSettings.findViewById(R.id.dialogOurGoalsGoalsChangeInfoText);
+
+        switch (whatDialog) {
+
+            case "jointly": // dialog for update jointly goals
+                // get string ressources
+                tmpTextCloseDialog = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsGoalsChangeCloseButton);
+                tmpTextTitleDialog = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsGoalsChangeHeadline);
+                // textview for the dialog text -> goals change!
+                infoTextForChange = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsGoalsChangeInfoText);
+                textViewGoals.setText(infoTextForChange);
+                break;
+
+            case "debetable": // dialog for update debetable goals
+                // get string ressources
+                tmpTextCloseDialog = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsChangeCloseButton);
+                tmpTextTitleDialog = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsChangeHeadline);
+                // textview for the dialog text -> goals change!
+                infoTextForChange = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsChangeInfoText);
+                textViewGoals.setText(infoTextForChange);
+                break;
+
+            case "jointlyDebetable": // // dialog for update joontly and debetable goals
+                // get string ressources
+                tmpTextCloseDialog = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsChangeCloseButton);
+                tmpTextTitleDialog = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableJointlyGoalsChangeHeadline);
+                // textview for the dialog text -> goals change!
+                infoTextForChange = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableJointlyGoalsChangeInfoText);
+                textViewGoals.setText(infoTextForChange);
+                break;
+
+        }
+
+        // build the dialog
+        builder.setView(dialogSettings)
+
+                // Add close button
+                .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        alertDialogGoalsChange.cancel();
+                    }
+                })
+
+                // add title
+                .setTitle(tmpTextTitleDialog);
+
+        // and create
+        alertDialogGoalsChange = builder.create();
+
+        // and show the dialog
+        builder.show();
+
+    }
+    
+    
+    
+    
+    
 
 
 

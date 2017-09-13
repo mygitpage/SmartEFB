@@ -113,7 +113,7 @@ public class AlarmReceiverOurGoals extends BroadcastReceiver {
 
         }
         else { // delete alarm - it is out of time
-            // update table ourArrangement in db -> evaluation disable
+            // update table ourGoals in db -> evaluation disable
             myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()),"delete");
 
             // create pending intent
@@ -124,8 +124,12 @@ public class AlarmReceiverOurGoals extends BroadcastReceiver {
 
         // send intent to receiver in OurGoalsFragmentJointlyGoalsNow to update listView OurGoals (when active)
         Intent tmpIntent = new Intent();
-        tmpIntent.setAction("GOALS_EVALUATE_STATUS_UPDATE");
+        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+        // put extras to intent -> "UpdateJointlyEvaluationLink" for list views of fragments to update there view
+        tmpIntent.putExtra("UpdateJointlyEvaluationLink","1");
         context.sendBroadcast(tmpIntent);
+
+
 
     }
 }

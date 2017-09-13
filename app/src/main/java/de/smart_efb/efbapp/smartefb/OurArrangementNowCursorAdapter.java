@@ -173,7 +173,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                     // show time until next evaluation period
                     // calculate run time for timer in MILLISECONDS!!!
                     Long nowTime = System.currentTimeMillis();
-                    Integer pausePeriod = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 0) * 1000; // make milliseconds from seconds
+                    Integer pausePeriod = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, 0) * 1000; // make milliseconds from seconds
                     Long runTimeForTimer = pausePeriod - (nowTime - prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis()));
                     // start the timer with the calculated milliseconds
                     if (runTimeForTimer > 0) {

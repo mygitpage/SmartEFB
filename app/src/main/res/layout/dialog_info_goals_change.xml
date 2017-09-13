@@ -16,7 +16,7 @@
         android:paddingRight="10dp">
 
         <TextView
-            android:id="@+id/dialogOurArrangementArrangementChangeInfoText"
+            android:id="@+id/dialogOurGoalsGoalsChangeInfoText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14dp"
@@ -25,6 +25,8 @@
             android:textStyle="bold"
             android:paddingTop="5dp"
             android:paddingBottom="10dp"/>
+
+
 
     </LinearLayout>
 

@@ -44,6 +44,9 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
     // jointly goal number in list view
     int jointlyGoalNumberInListView = 0;
 
+    // block id of current jointly goals
+    String currentBlockIdOfJointlyGoals = "";
+
     // cursor for the choosen jointly goal
     Cursor cursorChoosenJointlyGoal;
     // cursor for all actual jointly goals to choose the next one to evaluate
@@ -111,11 +114,14 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         // init the prefs
         prefs = fragmentEvaluateJointlyGoalsContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentEvaluateJointlyGoalsContext.MODE_PRIVATE);
 
+        //get current block id of jointly goals
+        currentBlockIdOfJointlyGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0");
+
         // get choosen jointly goal
         cursorChoosenJointlyGoal = myDb.getJointlyRowOurGoals(jointlyGoalDbIdToEvaluate);
 
         // get all actual jointly goals
-        cursorNextJointlyGoalToEvaluate = myDb.getAllJointlyRowsOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "equal");
+        cursorNextJointlyGoalToEvaluate = myDb.getAllJointlyRowsOurGoals(currentBlockIdOfJointlyGoals, "equalBlockId");
 
         // Set correct subtitle in Activity -> "Ziel ... bewerten"
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleEvaluateJointlyGoal", "string", fragmentEvaluateJointlyGoalsContext.getPackageName()));

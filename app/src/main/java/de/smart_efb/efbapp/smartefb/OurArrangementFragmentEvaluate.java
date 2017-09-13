@@ -212,7 +212,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToEvaluate);
 
         // get all actual arrangements
-        cursorNextArrangementToEvaluate = myDb.getAllRowsCurrentOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0"),  "equalBlockId");
+        cursorNextArrangementToEvaluate = myDb.getAllRowsCurrentOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "equalBlockId"),  "equalBlockId");
 
         // Set correct subtitle in Activity -> "Bewerten Absprache ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentEvaluateArrangementText", "string", fragmentEvaluateContext.getPackageName())) + " " + arrangementNumberInListView;

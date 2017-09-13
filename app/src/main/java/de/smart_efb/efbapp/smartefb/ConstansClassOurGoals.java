@@ -127,6 +127,10 @@ public class ConstansClassOurGoals {
     // prefs name for evaluation jointly goal active time in seconds
     public static final String namePrefsEvaluateJointlyGoalsActiveTimeInSeconds = "evaluateJointlyGoalsActivTimeInSeconds";
 
+    // prefs name for jointly goals time start point evaluation in millis
+    public static final String namePrefsStartPointJointlyGoalsEvaluationPeriodInMills = "startPointJointlygoalsEvaluationPeriodInMills";
+
+
 
 
 

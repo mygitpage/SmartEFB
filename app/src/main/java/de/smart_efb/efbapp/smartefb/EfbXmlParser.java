@@ -399,7 +399,26 @@ public class EfbXmlParser {
         try {
             int eventType = xpp.next();
 
+
+
+
+
+
             while (parseAnymore) {
+
+
+
+                // look for end tag of ourarrangement
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurArrangement)) {
+
+                        Log.d("readOurArrangementTag", "End Tag ourarrangement gefunden!");
+                        parseAnymore = false;
+                    }
+                }
+
+
+
 
                 if (eventType == XmlPullParser.START_TAG) {
                     Log.d("readOurArrangementTag", "Start tag " + xpp.getName());
@@ -439,14 +458,7 @@ public class EfbXmlParser {
                     Log.d("readOurArrangementTag", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
-                // look for end tag of ourarrangement
-                if (eventType == XmlPullParser.END_TAG) {
-                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurArrangement)) {
 
-                        Log.d("readOurArrangementTag", "End Tag ourarrangement gefunden!");
-                        parseAnymore = false;
-                    }
-                }
             }
         } catch (XmlPullParserException e) {
             // set error
@@ -2307,6 +2319,19 @@ public class EfbXmlParser {
 
             while (parseAnymore) {
 
+
+                // look for end tag of ourgoals
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals)) {
+
+                        Log.d("readOurGoalsTag", "End Tag ourgoals gefunden!");
+                        parseAnymore = false;
+                    }
+                }
+
+
+
+
                 if (eventType == XmlPullParser.START_TAG) {
                     Log.d("readOurGoalsTag", "Start tag " + xpp.getName());
 
@@ -2344,14 +2369,7 @@ public class EfbXmlParser {
                     Log.d("readOurGoalsTag", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
-                // look for end tag of ourgoals
-                if (eventType == XmlPullParser.END_TAG) {
-                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals)) {
 
-                        Log.d("readOurGoalsTag", "End Tag ourgoals gefunden!");
-                        parseAnymore = false;
-                    }
-                }
             }
         }
         catch (XmlPullParserException e) {
@@ -2420,7 +2438,7 @@ public class EfbXmlParser {
                                 if (xpp.getText().trim().length() > 0) { // check if goalText from xml > 0
                                     tmpGoalText = xpp.getText().trim();
 
-                                    Log.d("JointlyNOW::MD5","MD5:"+EfbHelperClass.md5(tmpGoalText));
+                                    Log.d("Joy Goals", "Goal Text:" + tmpGoalText);
 
 
                                 }
@@ -2438,6 +2456,8 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get authorName text
                                 if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
                                     tmpAuthorName = xpp.getText().trim();
+
+                                    Log.d("Joy Goals", "Author Name:" + tmpAuthorName);
                                 }
                                 else {
                                     error = true;
@@ -2453,6 +2473,10 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get goalTime text
                                 if (xpp.getText().trim().length() > 0) { // check if goalTime from xml > 0
                                     tmpGoalTime = Long.valueOf(xpp.getText().trim()) * 1000; // make milliseconds from seconds
+
+
+                                    Log.d("Joy Goals", "Goal Time:" + tmpGoalTime);
+
                                 }
                                 else {
                                     error = true;
@@ -2467,8 +2491,12 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get jointlyDebetable text, only 0 is possible because 1 is debetable goal, look readOurGoalsTag_DebetableNow()
                                 if (xpp.getText().trim().length() > 0) { // check if jointlyDebetable from xml > 0
-                                    if (xpp.getText().trim().equals("0")) { // goal is a jointly goal?
+                                    if (xpp.getText().trim().equals("jointly")) { // goal is a jointly goal?
                                         tmpJointlyDebetable = false;
+
+
+
+
                                     } else {
                                         error = true;
                                     }
@@ -2548,6 +2576,8 @@ public class EfbXmlParser {
                 // look for end tag of ourgoals jointly now
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow)) {
+
+                        Log.d("Joy Goals", "End Tag gefunden - jetzt verarbeiten!");
 
                         // check all data for jointly goal now correct?
                         if (!error) {
