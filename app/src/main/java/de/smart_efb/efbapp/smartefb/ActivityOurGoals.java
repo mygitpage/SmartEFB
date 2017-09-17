@@ -69,8 +69,8 @@ public class ActivityOurGoals extends AppCompatActivity {
     String showCommandFragmentTabOne = "";
 
     // jointly and debetable goal db-id - for
-    int jointlyGoalDbIdFromLink = 0;
-    int debetableGoalDbIdFromLink = 0;
+    int jointlyGoalServerDbIdFromLink = 0;
+    int debetableGoalServerDbIdFromLink = 0;
 
     // jointly and debetable goal number in listview
     int jointlyGoalNumberInListView = 0;
@@ -217,7 +217,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         // Extras from intent that holds data
         Bundle intentExtras = null;
 
-        jointlyGoalDbIdFromLink = 0;
+        jointlyGoalServerDbIdFromLink = 0;
         jointlyGoalNumberInListView = 0;
         evaluateNextJointlyGoal = false;
 
@@ -253,7 +253,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         if (command.equals("show_comment_for_jointly_goal")) { // Show fragment all comments for jointly goal
 
             // set global varibales
-            jointlyGoalDbIdFromLink = tmpDbId;
+            jointlyGoalServerDbIdFromLink = tmpDbId;
             jointlyGoalNumberInListView = tmpNumberinListView;
             evaluateNextJointlyGoal = tmpEvalNext;
 
@@ -278,7 +278,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         } else if (command.equals("comment_an_jointly_goal")) { // Show fragment comment jointly goal
 
             // set global varibales
-            jointlyGoalDbIdFromLink = tmpDbId;
+            jointlyGoalServerDbIdFromLink = tmpDbId;
             jointlyGoalNumberInListView = tmpNumberinListView;
             evaluateNextJointlyGoal = tmpEvalNext;
 
@@ -301,7 +301,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         } else if (command.equals("evaluate_an_jointly_goal")) { // Show evaluate a goal
 
             // set global varibales
-            jointlyGoalDbIdFromLink = tmpDbId;
+            jointlyGoalServerDbIdFromLink = tmpDbId;
             jointlyGoalNumberInListView = tmpNumberinListView;
             evaluateNextJointlyGoal = tmpEvalNext;
 
@@ -325,7 +325,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         } else if (command.equals("comment_an_debetable_goal")) { // Comment debetable goal -> TAB ONE
 
             // set global varibales
-            debetableGoalDbIdFromLink = tmpDbId;
+            debetableGoalServerDbIdFromLink = tmpDbId;
             debetableGoalNumberInListView = tmpNumberinListView;
 
             //set fragment in tab one to comment an debetable goal
@@ -347,7 +347,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         } else if (command.equals("show_debetable_goals_now")) { // Show debetable goals -> TAB ONE
 
             // set global varibales
-            debetableGoalDbIdFromLink = tmpDbId;
+            debetableGoalServerDbIdFromLink = tmpDbId;
             debetableGoalNumberInListView = tmpNumberinListView;
 
             //set fragment in tab one to show debetable goals
@@ -369,7 +369,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         } else if (command.equals("show_comment_for_debetable_goal")) { // Show comments for debetable goals -> TAB ONE
 
             // set global varibales
-            debetableGoalDbIdFromLink = tmpDbId;
+            debetableGoalServerDbIdFromLink = tmpDbId;
             debetableGoalNumberInListView = tmpNumberinListView;
 
             //set fragment in tab one to show comment debetable goals
@@ -392,7 +392,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         else { // Show fragment jointly goals now -> Tab ZERO
 
             // set global varibales
-            jointlyGoalDbIdFromLink = tmpDbId;
+            jointlyGoalServerDbIdFromLink = tmpDbId;
             jointlyGoalNumberInListView = tmpNumberinListView;
             evaluateNextJointlyGoal = tmpEvalNext;
 
@@ -688,7 +688,7 @@ public class ActivityOurGoals extends AppCompatActivity {
     // getter for DB-Id of jointly goal
     public int getJointlyGoalDbIdFromLink () {
 
-        return jointlyGoalDbIdFromLink;
+        return jointlyGoalServerDbIdFromLink;
 
     }
 
@@ -697,7 +697,7 @@ public class ActivityOurGoals extends AppCompatActivity {
     // getter for DB-Id of debetable goal
     public int getDebetableGoalDbIdFromLink () {
 
-        return debetableGoalDbIdFromLink;
+        return debetableGoalServerDbIdFromLink;
 
     }
 

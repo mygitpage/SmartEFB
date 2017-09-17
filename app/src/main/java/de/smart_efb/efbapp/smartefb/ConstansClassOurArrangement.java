@@ -59,10 +59,10 @@ public class ConstansClassOurArrangement {
     // prefs name for time since comment start in mills
     public static final String namePrefsCommentTimeSinceCommentStartInMills = "commentOurArrangementTimeSinceInMills";
 
-    // prefs name for count comment
+    // prefs name for sharing comments
     public static final String namePrefsArrangementCommentShare = "commentOurArrangementShare";
 
-    // prefs name for store change time of arrangement comment counter
+    // prefs name for store change time of arrangement sharing switch
     public static final String namePrefsArrangementCommentShareChangeTime  = "commentOurArrangementShareChangeTime";
 
     // prefs name for count max sketch comment

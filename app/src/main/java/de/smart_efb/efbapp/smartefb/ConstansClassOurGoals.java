@@ -87,6 +87,21 @@ public class ConstansClassOurGoals {
     // prefs name for jointly comment since date in mills
     public static final String namePrefsJointlyCommentTimeSinceInMills = "jointlyGoalsCommentOurGoalsTimeSinceInMills";
 
+    // prefs name for jointly comment delaytime
+    public static final String namePrefsJointlyCommentDelaytime = "jointlyGoalsCommentDelaytime";
+
+
+
+
+    // prefs name for sharing jointly comments
+    public static final String namePrefsJointlyCommentShare = "jointlyCommentOurGoalsShare";
+
+    // prefs name for store change time of goals sharing switch
+    public static final String namePrefsJointlyCommentShareChangeTime  = "jointlyCommentOurGoalsShareChangeTime";
+
+
+
+
 
 
 

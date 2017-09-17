@@ -428,7 +428,16 @@
             <string name="btnAbortJointlyGoalComment">Zurück</string>
             <string name="showJointlyGoalTextNumber">Ziel</string>
             <string name="newEntryTextOurGoal">(Neu)</string>
-        <!-- End Strings for activity our goals -->
+
+
+    <string name="toastMessageCommentJointlyGoalsNewComments">Es sind neue Kommentare eingetroffen!</string>
+    <string name="toastMessageJointlyGoalsResetCommentCountComment">Der Kommentarzähler wurde von Ihrer Beraterin/ Ihrem Berater auf Null zurückgesetzt!</string>
+
+    <string name="toastMessageJointlyGoalsCommentShareDisable">Die Zustellung der Kommentare wurde von Ihrer Beraterin/ Ihrem Berater unterbrochen!</string>
+    <string name="toastMessageJointlyGoalsCommentShareEnable">Die Zustellung der Kommentare findet wieder statt!</string>
+
+
+    <!-- End Strings for activity our goals -->
 
         <!-- Strings for tab title in activity our goals -->
                 <string name="ourGoalsTabTitle_1">Gemeinsame Ziele</string>
@@ -491,6 +500,8 @@
     <string name="ourGoalsInfoTextNumberOfCommentsPossibleNoMore">(Alle aufgebraucht)</string>
     <string name="ourGoalsInfoTextNumberOfCommentsPossibleNoBorder">(Keine Begrenzung)</string>
 
+
+
         <!-- End show current jointly goals now -->
 
 
@@ -504,12 +515,47 @@
             <string name="infoTextJointlyGoalsCommentCountZero">Sie haben noch keinen Kommentar geschrieben.</string>
             <string name="infoTextJointlyGoalsCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
             <string name="infoTextJointlyGoalsCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
-            <string name="infoTextJointlyGoalsCommentCommentMaxLetters">Ihr Kommentar darf maximal %1$d Zeichen lang sein.</string>
+
+
+    <string name="infoTextJointlyGoalsCommentCommentMaxLettersAndDelaytime">Ihr Kommentar darf maximal %1$d Zeichen lang sein und </string>
             <string name="commentJointlyGoalSuccsesfulySend">Kommentar erfolgreich gesendet</string>
             <string name="btnSendJointlyGoalComment">Kommentar senden</string>
-            <string name ="commentJointlyGoalTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
+            <string name ="commentJointlyGoalTextFieldHintText"><b>Bitte kommentieren Sie das gemeinsame Ziel!</b></string>
             <string name="errorInputJointlyGoalComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz!</string>
-        <!-- End comment jointly goals -->
+
+
+    <string name="textOurGoalsJointlyCommentNoSharing">Die Kommentare werden im Moment nicht zugestellt!</string>
+
+    <string name="lastActualJointlyCommentText">Aktuellster Kommentar zur Absprache</string>
+    <string name="lastActualJointlyCommentTextNoCommentAvailabel">Keine Kommentare vorhanden</string>
+    <string name="lastActualJointlyCommentTextNoCommentAvailabelFirstAuthor">Werden Sie erster Autor eines Kommentares</string>
+
+    <string name="ourGoalsJointlyCommentPersonalAuthorName">Ihnen</string>
+
+    <string name="ourGoalsJointlyCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+
+    <string name="ourGoalsJointlyCommentSendInfo">Der Kommentar wurde noch nicht gesendet.</string>
+    <string name="ourGoalsJointlyCommentSendDelayInfo">Der Kommentar wurde gesendet und wird in %1$s zugestellt.</string>
+    <string name="ourGoalsJointlyCommentSendSuccsessfullInfo">Der Kommentar wurde gesendet.</string>
+
+    <string name="ourGoalsJointlyCommentSendInfoSharingDisable">Der Kommentar wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
+
+    <string name="ourGoalsJointlyCommentLinkToShowAllCommentsPlural">%1$d weitere Kommentare vorhanden</string>
+    <string name="ourGoalsJointlyCommentLinkToShowAllCommentsSingular">%1$d weiterer Kommentar vorhanden</string>
+    <string name="ourGoalsJointlyCommentLinkToShowAllCommentsNotAvailable">Keine weiteren Kommentare vorhanden</string>
+
+    <string name="infoTextJointlyCommentDelaytimeNoDelay">die Kommentare werden sofort zugestellt (wenn eine Internetverbindung besteht)</string>
+    <string name="infoTextJointlyCommentDelaytimeSingular">die Kommentare werden mit einer Verzögerungszeit von einer Minute zugestellt (wenn eine Internetverbindung besteht)</string>
+    <string name="infoTextJointlyCommentDelaytimePlural">die Kommentare werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
+
+
+
+
+
+
+
+
+    <!-- End comment jointly goals -->
 
         <!-- Fragment show comment jointly goals -->
             <string name="showCommentIntroTextForJointlyGoal">Die Kommentare zum gemeinsamen Ziel</string>

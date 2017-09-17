@@ -1680,25 +1680,20 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     /********************************* TABLES FOR FUNCTION: Our Goals Jointly Goals Comment ******************************************/
-
     // Add a new set of values to ourGoalsJointlyGoalsComment .
-    public long insertRowOurGoalJointlyGoalComment(String comment, String authorName, long commentTime, int idGoal, Boolean newEntry, long currentDateOfGoal, int status) {
+    public long insertRowOurGoalJointlyGoalComment(String comment, String authorName, long commentTime, long upload_time, String blockid, Boolean newEntry, long currentDateOfGoal, int status, int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues initialValues = new ContentValues();
 
-
-        // TODO: init werte für die datenbank anpassen
-
-
-
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, comment);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, authorName);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, commentTime);
-        //initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL, idGoal);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_UPLOAD_TIME, upload_time);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID, blockid);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME, currentDateOfGoal);
-        //initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from goal
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL, serverId);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS, status);
 
         // is it a new entry?
