@@ -126,9 +126,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            // TODO: Test Messages!!!!!!!!!!!!!!!!!1
-
-
             // Extras from intent that holds data
             Bundle intentExtras = null;
 
@@ -143,9 +140,9 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                 String tmpExtraOurGoalsNow = intentExtras.getString("OurGoalsJointlyNow","0");
                 String tmpExtraOurGoalsNowComment = intentExtras.getString("OurGoalsJointlyComment","0");
                 String tmpExtraOurGoalsSettings = intentExtras.getString("OurGoalsSettings","0");
-                String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsDebetableCommentShareEnable","0");
-                String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsDebetableCommentShareDisable","0");
-                String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsDebetableCommentCountComment","0");
+                String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsCommentShareDisable","0");
+                String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsCommentShareEnable","0");
+                String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsCommentCountComment","0");
 
                 if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNowComment != null && tmpExtraOurGoalsNowComment.equals("1")) {
                     // update now comment view -> show toast and update view
@@ -161,7 +158,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     // check goals and goals update and show dialog goals change
                     ((ActivityOurGoals) getActivity()).checkUpdateForShowDialog ("jointly");
 
-                    // go back to fragment now arrangement -> this is my mother!
+                    // go back to fragment jointly goals -> this is my mother!
                     Intent backIntent = new Intent(getActivity(), ActivityOurGoals.class);
                     backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     backIntent.putExtra("com","show_jointly_goals_now");
@@ -244,7 +241,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
         // textview for the author of goal
         TextView tmpTextViewAuthorNameText = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.textAuthorName);
-        String tmpTextAuthorNameText = String.format(viewFragmentCommentJointlyGoals.getResources().getString(R.string.ourGoalsAuthorNameTextWithDate), cursorChoosenGoal.getString(cursorChoosenGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "dd.MM.yyyy"));
+        String tmpTextAuthorNameText = String.format(fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsAuthorNameTextWithDate), cursorChoosenGoal.getString(cursorChoosenGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "dd.MM.yyyy"));
         tmpTextViewAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
 
         // textview for the goal
@@ -365,7 +362,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     }
                     else {
                         // show send successfull
-                        tmpTextSendInfoLastActualComment = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+                        tmpTextSendInfoLastActualComment = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentSendSuccsessfullInfo);
                     }
                     tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
                 }
@@ -386,7 +383,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                 Uri.Builder showCommentLinkBuilder = new Uri.Builder();
                 showCommentLinkBuilder.scheme("smart.efb.deeplink")
                         .authority("linkin")
-                        .path("ourarrangement")
+                        .path("ourgoals")
                         .appendQueryParameter("db_id", Integer.toString(goalServerDbIdToComment))
                         .appendQueryParameter("arr_num", Integer.toString(goalNumberInListView))
                         .appendQueryParameter("com", "show_comment_for_jointly_goal");
@@ -396,7 +393,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     tmpTextViewLInkToShowAllComment.setText(Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllComments + "</a>"));
                 }
                 else {
-                    String tmpLinkStringShowAllComments = String.format(fragmentCommentContextJointlyGoals.getResources().getString(fragmentCommentContextJointlyGoals.getResources().getIdentifier("ourArrangementCommentLinkToShowAllCommentsPlural", "string", fragmentCommentContextJointlyGoals.getPackageName())),cursorGoalAllComments.getCount()-1);
+                    String tmpLinkStringShowAllComments = String.format(fragmentCommentContextJointlyGoals.getResources().getString(fragmentCommentContextJointlyGoals.getResources().getIdentifier("ourGoalsJointlyCommentLinkToShowAllCommentsPlural", "string", fragmentCommentContextJointlyGoals.getPackageName())),cursorGoalAllComments.getCount()-1);
                     tmpTextViewLInkToShowAllComment.setText(Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllComments + "</a>"));
                 }
                 tmpTextViewLInkToShowAllComment.setMovementMethod(LinkMovementMethod.getInstance());
@@ -527,7 +524,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
                     // send intent to service to start the service and send comment to server!
                     Intent startServiceIntent = new Intent(fragmentCommentContextJointlyGoals, ExchangeServiceEfb.class);
-                    startServiceIntent.putExtra("com","send_now_comment_arrangement");
+                    startServiceIntent.putExtra("com","send_jointly_comment_goal");
                     startServiceIntent.putExtra("dbid",tmpDbId);
                     fragmentCommentContextJointlyGoals.startService(startServiceIntent);
 
@@ -547,9 +544,9 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         });
 
         // button abbort
-        Button buttonAbbortArrangementComment = (Button) viewFragmentCommentJointlyGoals.findViewById(R.id.buttonAbortComment);
+        Button buttonAbbortGoalComment = (Button) viewFragmentCommentJointlyGoals.findViewById(R.id.buttonAbortComment);
         // onClick listener button abbort
-        buttonAbbortArrangementComment.setOnClickListener(new View.OnClickListener() {
+        buttonAbbortGoalComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

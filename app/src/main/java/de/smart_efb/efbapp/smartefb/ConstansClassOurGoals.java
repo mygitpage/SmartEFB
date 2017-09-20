@@ -117,6 +117,22 @@ public class ConstansClassOurGoals {
     // prefs name for debetable comment since date in mills
     public static final String namePrefsDebetableCommentTimeSinceInMills = "debetableGoalsCommentOurGoalsTimeSinceInMills";
 
+    // prefs name for jointly comment delaytime
+    public static final String namePrefsDebetableCommentDelaytime = "debetableGoalsCommentDelaytime";
+
+
+
+
+    // prefs name for sharing jointly comments
+    public static final String namePrefsDebetableCommentShare = "debetableCommentOurGoalsShare";
+
+    // prefs name for store change time of goals sharing switch
+    public static final String namePrefsDebetableCommentShareChangeTime  = "debetableCommentOurGoalsShareChangeTime";
+
+
+
+
+
 
 
 
@@ -161,10 +177,10 @@ public class ConstansClassOurGoals {
 
 
     // constans for normal goal in change to
-    public static final String jointlyGoalStatusNormal = "normal";
+    public static final String jointlyGoalStatusJointly = "jointly";
 
-    // constans for sketch goal in change to
-    public static final String jointlyGoalStatusSketch = "sketch";
+    // constans for debetable goal in change to
+    public static final String jointlyGoalStatusDebetable = "debetable";
 
     // constans for nothing in change to
     public static final String jointlyGoalStatusNothing = "nothing";

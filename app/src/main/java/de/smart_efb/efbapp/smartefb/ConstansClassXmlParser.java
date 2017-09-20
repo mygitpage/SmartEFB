@@ -530,13 +530,13 @@ public class ConstansClassXmlParser {
             public static final String xmlNameForOurGoals_JointlyComment_UploadTime = "ourgoals_jointlycomment_uploadtime";
 
             // xml name for element our goals jointly comment id goal (on all smartphones must be the same!)
-            public static final String xmlNameForOurGoals_JointlyComment_GoalId = "ourgoals_jointlycomment_serverid";
+            public static final String xmlNameForOurGoals_JointlyComment_ServerGoalId = "ourgoals_jointlycomment_serverid";
 
             // xml name for element our goals jointly comment date of jointly goal to comment
             public static final String xmlNameForOurGoals_JointlyComment_DateOfJointlyGoal = "ourgoals_jointlycomment_dateofgoal";
 
             // xml name for element our goals jointly comment block number for goals
-            public static final String xmlNameForOurArrangement_JointlyComment_BlockId = "ourgoals_jointlycomment_blockid";
+            public static final String xmlNameForOurGoals_JointlyComment_BlockId = "ourgoals_jointlycomment_blockid";
 
 
 
@@ -637,9 +637,6 @@ public class ConstansClassXmlParser {
             // xml name for element our goals settings debetable comment count comment since time
             public static final String xmlNameForOurGoals_Settings_DebetableCommentCountCommentSinceTime = "ourgoals_settings_debetablecommentcountcommentsincetime";
 
-            // xml name for element our goals settings debetable goals author name
-            public static final String xmlNameForOurGoals_Settings_DebetableGoalsAuthorName = "ourgoals_settings_debetablegoalsauthorname";
-
             // xml name for element our goals settings debetable goals current date of debetable goals
             public static final String xmlNameForOurGoals_Settings_DebetableCurrentDateOfGoals = "ourgoals_settings_debetablecurrentdateofgoals";
 
@@ -652,7 +649,11 @@ public class ConstansClassXmlParser {
             // xml name for element our arrangement settings comment share
             public static final String xmlNameForOurGoals_Settings_JointlyCommentShare = "ourgoals_settings_commentshare";
 
+            // xml name for element our arrangement settings sketch comment delaytime
+            public static final String xmlNameForOurGoals_Settings_JointlyCommentDelaytime = "ourgoals_settings_commentdelaytime";
 
+            // xml name for element our arrangement settings comment delaytime
+            public static final String xmlNameForOurGoals_Settings_DebetableCommentDelaytime = "ourgoals_settings_debetablecommentdelaytime";
 
 
 
@@ -808,6 +809,13 @@ public class ConstansClassXmlParser {
 
     // xml name for send evaluationresult arrangement to server
     public static final String xmlNameForSendToServer_EvaluationResultArrangement = "sendevaluationresultarrangement";
+
+
+
+    // xml name for send comment of jointly goal to server
+    public static final String xmlNameForSendToServer_JointlyGoalsComment = "sendjointlygoalcomment";
+
+
 
 
     // xml feature link for init xml serializer

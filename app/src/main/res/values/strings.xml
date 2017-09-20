@@ -516,6 +516,9 @@
             <string name="infoTextJointlyGoalsCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
             <string name="infoTextJointlyGoalsCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
 
+    <string name="toastMessageJointlyGoalsCommentSendSuccessfull">Der Kommentar wurde gesendet!</string>
+    <string name="toastMessageJointlyGoalsCommentSendNotSuccessfull">Der Kommentar wurde noch nicht gesendet!</string>
+    <string name="toastMessageJointlyGoalsCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
 
     <string name="infoTextJointlyGoalsCommentCommentMaxLettersAndDelaytime">Ihr Kommentar darf maximal %1$d Zeichen lang sein und </string>
             <string name="commentJointlyGoalSuccsesfulySend">Kommentar erfolgreich gesendet</string>

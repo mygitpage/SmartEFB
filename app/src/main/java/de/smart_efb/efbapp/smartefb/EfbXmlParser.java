@@ -831,6 +831,8 @@ public class EfbXmlParser {
                             }
 
                             break;
+
+                        /* Kann gelöscht werden, da die Upload time eine lokale zeit ist, die nicht übertragen wird
                         case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_UploadTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get upload time text
@@ -844,6 +846,7 @@ public class EfbXmlParser {
                             }
 
                             break;
+                        */
 
                         case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_BlockId:
                             eventType = xpp.next();
@@ -1377,6 +1380,8 @@ public class EfbXmlParser {
                             }
 
                             break;
+
+                        /* Kann gelöscht werden, da die Upload time eine lokale zeit ist, die nicht übertragen wird
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_UploadTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get upload time text
@@ -1395,7 +1400,7 @@ public class EfbXmlParser {
                             }
 
                             break;
-
+                        */
 
 
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_BlockId:
@@ -1928,7 +1933,7 @@ public class EfbXmlParser {
 
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentShare:
+                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentShare:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get share value; 0-> not sharing; 1-> sharing
                                 if (xpp.getText().trim().length() > 0) { // check if share value from xml > 0
@@ -1947,12 +1952,6 @@ public class EfbXmlParser {
                             }
 
                             break;
-
-
-
-
-
-
 
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentMaxComment:
                             eventType = xpp.next();
@@ -2659,7 +2658,6 @@ public class EfbXmlParser {
     // read tag our goals jointly comment and push to database
     private void readOurGoalsTag_JointlyComment() {
 
-
         Log.d("read_Jointly COMMENT", "Zeile " + xpp.getLineNumber());
 
         Boolean parseAnymore = true;
@@ -2671,10 +2669,11 @@ public class EfbXmlParser {
         String tmpCommentText = "";
         String tmpAuthorName = "";
         Long tmpCommentTime = 0L;
-        int tmpGoalId = 0;
+        String tmpBlockId = "";
         Long tmpGoalTime = 0L;
+        Long tmpUploadTime = 0L;
         String tmpOrder = "";
-        String tmpOldMd5 = "";
+        int tmpServerIdGoal = 0;
 
         try {
             int eventType = xpp.next();
@@ -2690,7 +2689,7 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get order text
                                 if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
                                     tmpOrder = xpp.getText().trim();
-                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
                                         error = true;
                                         tmpOrder = "";
                                     }
@@ -2711,7 +2710,7 @@ public class EfbXmlParser {
                                 if (xpp.getText().trim().length() > 0) { // check if commentText from xml > 0
                                     tmpCommentText = xpp.getText().trim();
 
-                                    Log.d("Goals_JointlyComment","MD5:"+EfbHelperClass.md5(tmpCommentText));
+                                    Log.d("Goals_JointlyComment","Comment:"+tmpCommentText);
 
 
                                 }
@@ -2724,6 +2723,7 @@ public class EfbXmlParser {
                             }
 
                             break;
+
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_AuthorName:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get authorName text
@@ -2739,11 +2739,12 @@ public class EfbXmlParser {
                             }
 
                             break;
+
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_CommentTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get commentTime text
                                 if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
-                                    tmpCommentTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                    tmpCommentTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
                                 }
                                 else {
                                     error = true;
@@ -2754,21 +2755,7 @@ public class EfbXmlParser {
                             }
 
                             break;
-                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_GoalId:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get goalId text
-                                if (xpp.getText().trim().length() > 0) { // check if goalId from xml > 0
-                                    tmpGoalId = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
 
-                            break;
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_DateOfJointlyGoal:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get goalTime text
@@ -2785,18 +2772,37 @@ public class EfbXmlParser {
 
                             break;
 
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_BlockId:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get BlockId text
+                                if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
+                                    tmpBlockId = xpp.getText().trim();
+
+                                    Log.d("Jointly Comment", "BlockID:" + tmpBlockId);
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_ServerGoalId:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get server id goal text
+                                if (xpp.getText().trim().length() > 0) { // check if server id goal from xml > 0
+                                    tmpServerIdGoal = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Jointly Comment", "ServerID:" + tmpServerIdGoal);
 
 
-
-                        //
-                        // TODO: Fehlende Parameter abfragen und kontrollieren!!!!!!!!!!!!!!!!
-                        //
-
-
-
-
-
-
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
                     }
                 }
                 eventType = xpp.next();
@@ -2814,28 +2820,44 @@ public class EfbXmlParser {
                         // check all data for arrangement now correct?
                         if (!error) {
 
-                            Log.d("JointlyComment_DB","C:"+tmpCommentText+" - Au:"+tmpAuthorName+" - CTi:"+tmpCommentTime+" - AId"+tmpGoalId+" - CoA:"+tmpGoalTime);
-
                             // our goals jointly comment order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpGoalId >= 0 && tmpGoalTime > 0) {
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpServerIdGoal >= 0 && tmpGoalTime > 0 && tmpBlockId.length() > 0) {
+
+                                Log.d("Jointly Comment_DB", "C:" + tmpCommentText + " - Au:" + tmpAuthorName + " - CTi:" + tmpCommentTime + " - AId" + tmpServerIdGoal + " - CoA:" + tmpGoalTime);
+
+                                // set upload time on smartphone for commeent
+                                tmpUploadTime = System.currentTimeMillis();
+
                                 // insert new comment in DB
-                                myDb.insertRowOurGoalJointlyGoalComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpGoalId, true, tmpGoalTime, 4);
+                                myDb.insertRowOurGoalJointlyGoalComment (tmpCommentText, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpGoalTime, 4, tmpServerIdGoal);
 
                                 // refresh activity ourgoals and fragment jointly comment
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsJointlyComment","1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMd5.length() > 1 && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpGoalId >= 0 && tmpGoalTime > 0) { // our goals jointly comment order -> update entry?
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpServerIdGoal >= 0 && tmpGoalTime > 0 && tmpBlockId.length() > 0) { // our goals jointly comment order -> update entry?
 
-                                // update jointly comment in DB
-                                myDb.updateRowOurGoalJointlyGoalComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpGoalId, true,  tmpGoalTime, 4, tmpOldMd5);
+                                Log.d("Jointly Comment_DB", "C:" + tmpCommentText + " - Au:" + tmpAuthorName + " - CTi:" + tmpCommentTime + " - AId" + tmpServerIdGoal + " - CoA:" + tmpGoalTime);
+
+                                // set upload time on smartphone for commeent
+                                tmpUploadTime = System.currentTimeMillis();
+
+                                // insert new comment in DB
+                                myDb.insertRowOurGoalJointlyGoalComment (tmpCommentText, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpGoalTime, 4, tmpServerIdGoal);
 
                                 // refresh activity ourgoals and fragment jointly comment
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsJointlyComment","1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) { // delete all comments; needed by init process
+
+                                Log.d("Jointly Comment Goal", "Delete All!!!");
+
+                                // delete all comments for all current jointly goals with the blockId
+                                myDb.deleteAllRowsOurJointlyGoalsComment (tmpBlockId);
 
                             }
-                        }
+                       }
 
                         parseAnymore = false;
                     }
@@ -3301,75 +3323,6 @@ public class EfbXmlParser {
 
                             Log.d("DebetableNOW_DB","Te:"+tmpDebetableGoalText+" - Au:"+tmpDebetableAuthorName+" - ATi:"+tmpDebetableGoalTime+" - STi"+tmpJointlyDebetable);
 
-
-
-
-                            /*
-
-                            // our arrangement sketch order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpSketchTime > 0 && tmpServerId > 0 && tmpBlockId.length() > 0 && tmpChangeTo.length() > 0) {
-
-                                Log.d("Sketch Arr", "NEW Sketch Entry!!!");
-
-                                // insert new sketch arrangement in DB
-                                myDb.insertRowOurArrangement(tmpArrangementText, tmpAuthorName, 0, true, tmpSketchCurrent, tmpSketchTime, 4, tmpServerId, tmpBlockId, tmpChangeTo);
-
-                                // write current date of sketch arrangements to pref
-                                prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, tmpSketchTime);
-                                // write block id of sketch arrangements to prefs
-                                prefsEditor.putString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, tmpBlockId);
-                                // reset sketch comment counter
-                                prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0);
-                                // reset time count comments since
-                                prefsEditor.putLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, System.currentTimeMillis());
-                                // signal sketch arragenemt is updated
-                                prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, true);
-
-                                prefsEditor.commit();
-
-                                // refresh activity ourarrangement and fragement sketch
-                                returnMap.put("OurArrangement", "1");
-                                returnMap.put("OurArrangementSketch", "1");
-
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpServerId > 0) { // our arrangement order -> delete entry?
-
-                                // delete arrangement in DB
-                                myDb.deleteRowOurArrangement(tmpServerId);
-
-                                // refresh activity ourarrangement and fragement sketch
-                                returnMap.put("OurArrangement", "1");
-                                returnMap.put("OurArrangementSketch", "1");
-
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpServerId > 0 && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpSketchTime > 0 && tmpChangeTo.length() > 0) { // our arrangement order -> update entry?
-
-                                // update sketch arrangement with tmpServerId
-                                myDb.updateRowOurArrangement(tmpArrangementText, tmpAuthorName, 0, true, tmpSketchCurrent, tmpSketchTime, 4, tmpServerId, tmpBlockId);
-
-                                // refresh activity ourarrangement and fragement sketch
-                                returnMap.put("OurArrangement", "1");
-                                returnMap.put("OurArrangementSketch", "1");
-
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
-
-                                Log.d("Sketch Arr", "Delete All!!!");
-
-                                // delete all arrangements sketch with the blockId
-                                myDb.deleteAllRowsOurArrangement(tmpBlockId, true); // false -> all now arrangements; true -> all sketch arrangements
-
-
-                            }
-
-                             */
-
-
-
-
-
-
-
-
-
-
                             // our goal order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpDebetableGoalText.length() > 0 && tmpDebetableAuthorName.length() > 0 && tmpDebetableGoalTime > 0 && tmpServerId > 0 && tmpBlockId.length() > 0 && tmpChangeTo.length() > 0) {
                                 // insert new debetable goal in DB
@@ -3474,13 +3427,15 @@ public class EfbXmlParser {
         int tmpJointlyCommentMaxLetters = 0;
         int tmpJointlyCommentCountComment = 0;
         Long tmpJointlyCommentCountCommentSinceTime = 0L;
+        int tmpCommentShare = 0;
+        int tmpCommentDelaytime = 0;
 
         int tmpDebetableCommentMaxComment = 0;
         int tmpDebetableCommentMaxLetters = 0;
         int tmpDebetableCommentCountComment = 0;
         Long tmpDebetableCommentCountCommentSinceTime = 0L;
-
-        String tmpDebetableGoalsAuthorName = "";
+        int tmpDebetableCommentShare = 0;
+        int tmpDebetableCommentDelaytime = 0;
 
         Long tmpDebetableCurrentDateOfGoals = 0L;
         Long tmpJointlyCurrentDateOfGoals = 0L;
@@ -3779,31 +3734,11 @@ public class EfbXmlParser {
 
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_CommentCountComment:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get count comment
-                                if (xpp.getText().trim().length() >= 0) { // check if count comment from xml >= 0
-                                    tmpJointlyCommentCountComment = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Goals_Settings","JointlyCommentCountComment"+tmpJointlyCommentCountComment);
-
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_CommentCountCommentSinceTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get since time
                                 if (xpp.getText().trim().length() > 0) { // check if since time from xml > 0
-                                    tmpJointlyCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim());
+                                    tmpJointlyCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim()) * 1000; // make mills from seconds;
 
                                     Log.d("Goals_Settings","JointlyCommentCountCommentSinceTime"+tmpJointlyCommentCountCommentSinceTime);
 
@@ -3818,6 +3753,53 @@ public class EfbXmlParser {
                             }
 
                             break;
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_JointlyCommentDelaytime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get delaytime
+                                if (xpp.getText().trim().length() > 0) { // check if delaytime from xml > 0
+                                    tmpCommentDelaytime = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Jointly Goal_Settings","CommentDelaytime"+tmpCommentDelaytime);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_JointlyCommentShare:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get share value; 0-> not sharing; 1-> sharing
+                                if (xpp.getText().trim().length() > 0) { // check if share value from xml > 0
+                                    tmpCommentShare = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Jointly Goal_Settings","CommentShare"+tmpCommentShare);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+
+
+
+
 
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentMaxComment:
                             eventType = xpp.next();
@@ -3859,31 +3841,11 @@ public class EfbXmlParser {
 
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentCountComment:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get count comment debetable goals
-                                if (xpp.getText().trim().length() >= 0) { // check if count comment debetable from xml >= 0
-                                    tmpDebetableCommentCountComment = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Goals_Settings","DebetableCommentCountComment"+tmpDebetableCommentCountComment);
-
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentCountCommentSinceTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get since time sketch
                                 if (xpp.getText().trim().length() > 0) { // check if since time sketch from xml > 0
-                                    tmpDebetableCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim());
+                                    tmpDebetableCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim())* 1000; // make mills from seconds
 
                                     Log.d("Goals_Settings","DebetableCommentCountCommentSinceTime"+tmpDebetableCommentCountCommentSinceTime);
 
@@ -3899,13 +3861,15 @@ public class EfbXmlParser {
 
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableGoalsAuthorName:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get author name sketch
-                                if (xpp.getText().trim().length() > 0) { // check if author name sketch from xml > 0
-                                    tmpDebetableGoalsAuthorName = xpp.getText().trim();
 
-                                    Log.d("Goals_Settings","Debetable goals Author Name"+tmpDebetableGoalsAuthorName);
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentDelaytime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get delaytime
+                                if (xpp.getText().trim().length() > 0) { // check if delaytime from xml > 0
+                                    tmpDebetableCommentDelaytime = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Jointly Goal_Settings","CommentDelaytime"+tmpDebetableCommentDelaytime);
 
 
                                 }
@@ -3918,6 +3882,28 @@ public class EfbXmlParser {
                             }
 
                             break;
+
+
+                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentShare:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get share value; 0-> not sharing; 1-> sharing
+                                if (xpp.getText().trim().length() > 0) { // check if share value from xml > 0
+                                    tmpDebetableCommentShare = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Jointly Goal_Settings","CommentShare"+tmpDebetableCommentShare);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
 
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCurrentDateOfGoals:
                             eventType = xpp.next();
@@ -4018,15 +4004,43 @@ public class EfbXmlParser {
                                     returnMap.put ("OurGoalsSettingsEvaluationProcess","1");
                                 }
 
+
+
+
                                 // update comment max/count of jointly goals?
-                                if (tmpGoalsJointlyCommentOnOff && tmpJointlyCommentMaxComment > 0 && tmpJointlyCommentMaxLetters > 0 && tmpJointlyCommentCountComment >= 0 && tmpJointlyCommentCountCommentSinceTime > 0) {
+                                if (tmpGoalsJointlyCommentOnOff && tmpJointlyCommentMaxComment > 0 && tmpJointlyCommentMaxLetters > 0 && tmpCommentDelaytime > 0 && tmpJointlyCommentCountCommentSinceTime > 0 && tmpCommentShare >= 0) {
+
+                                    // set new share value to prefs and set returnMap
+                                    if (prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentShare, 0) != tmpCommentShare ) {
+                                        prefsEditor.putInt(ConstansClassOurGoals.namePrefsJointlyCommentShare, tmpCommentShare); // write new share value to prefs
+                                        prefsEditor.putLong(ConstansClassOurGoals.namePrefsJointlyCommentShareChangeTime, System.currentTimeMillis());
+
+                                        if (tmpCommentShare == 1) { // sharing is enable; 1-> sharing comments; 0-> not sharing
+                                            returnMap.put("OurGoalsSettingsCommentShareEnable","1");
+                                        }
+                                        else {
+                                            returnMap.put("OurGoalsSettingsCommentShareDisable","1");
+                                        }
+                                    }
+
+                                    // check if new since time greater then old one, reset count comments and set new since time
+                                    if (tmpJointlyCommentCountCommentSinceTime > prefs.getLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, 0)) {
+
+
+                                        Log.d("XML Parser --->","JointlyCommentCountSince time:"+tmpJointlyCommentCountCommentSinceTime);
+
+                                        prefsEditor.putLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, tmpJointlyCommentCountCommentSinceTime); // write new since time to prefs
+                                        prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0); // reset count comments to 0
+
+                                        returnMap.put("OurGoalsSettingsCommentCountComment", "1");
+
+                                    }
 
                                     // write data to prefs
                                     prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, tmpGoalsJointlyCommentOnOff); // turn function on
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, tmpJointlyCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyLetters, tmpJointlyCommentMaxLetters);
-                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, tmpJointlyCommentCountComment);
-                                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, tmpJointlyCommentCountCommentSinceTime);
+                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsJointlyCommentDelaytime, tmpCommentDelaytime);
                                     prefsEditor.commit();
                                     // something change in jointly goals comment process
                                     returnMap.put ("OurGoalsSettingsCommentProcess","1");
@@ -4039,15 +4053,42 @@ public class EfbXmlParser {
                                     returnMap.put ("OurGoalsSettingsCommentProcess","1");
                                 }
 
+
                                 // update debetable comment max/count of debetable goals?
-                                if (tmpGoalsDebetableCommentOnOff && tmpDebetableCommentMaxComment > 0 && tmpDebetableCommentMaxLetters > 0 && tmpDebetableCommentCountComment >= 0 && tmpDebetableCommentCountCommentSinceTime > 0) {
+                                if (tmpGoalsDebetableCommentOnOff && tmpDebetableCommentMaxComment > 0 && tmpDebetableCommentMaxLetters > 0 && tmpDebetableCommentDelaytime > 0 && tmpDebetableCommentCountCommentSinceTime > 0 && tmpDebetableCommentShare >= 0) {
+
+
+                                    // set new share value for debetable comment to prefs and set returnMap
+                                    if (prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentShare, 0) != tmpDebetableCommentShare ) {
+                                        prefsEditor.putInt(ConstansClassOurGoals.namePrefsDebetableCommentShare, tmpDebetableCommentShare); // write new share value to prefs
+                                        prefsEditor.putLong(ConstansClassOurGoals.namePrefsDebetableCommentShareChangeTime, System.currentTimeMillis());
+
+                                        if (tmpDebetableCommentShare == 1) { // sharing is enable; 1-> sharing debetable comments; 0-> not sharing
+                                            returnMap.put("OurGoalsSettingsDebetableCommentShareEnable","1");
+                                        }
+                                        else {
+                                            returnMap.put("OurGoalsSettingsDebetableCommentShareDisable","1");
+                                        }
+                                    }
+
+
+
+                                    // check if new since time greater then old one, reset count debetable comments and set new since time
+                                    if (tmpDebetableCommentCountCommentSinceTime > prefs.getLong(ConstansClassOurGoals.namePrefsDebetableCommentTimeSinceInMills, 0)) {
+
+                                        Log.d("XML Parser --->","SketchCommentCountSince time:"+tmpDebetableCommentCountCommentSinceTime);
+
+                                        prefsEditor.putLong(ConstansClassOurGoals.namePrefsDebetableCommentTimeSinceInMills, tmpDebetableCommentCountCommentSinceTime); // write new since time to prefs
+                                        prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, 0); // reset count comments to 0
+
+                                        returnMap.put("OurGoalsSettingsDebetableCommentCountComment", "1");
+                                    }
 
                                     // write data to prefs
                                     prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentDebetableGoals, tmpGoalsDebetableCommentOnOff); // turn function on
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment,tmpDebetableCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableLetters,tmpDebetableCommentMaxLetters);
-                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, tmpDebetableCommentCountComment);
-                                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsDebetableCommentTimeSinceInMills, tmpDebetableCommentCountCommentSinceTime);
+                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsDebetableCommentDelaytime,tmpDebetableCommentDelaytime);
                                     prefsEditor.commit();
                                     // something change in debetable goals comment process
                                     returnMap.put ("OurGoalsSettingsDebetableCommentProcess","1");
@@ -4058,16 +4099,6 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
                                     // something change in debetable goals comment process
                                     returnMap.put ("OurGoalsSettingsDebetableCommentProcess","1");
-                                }
-
-                                // update debetable goals author name?
-                                if (tmpDebetableGoalsAuthorName.length() > 0) {
-
-                                    // write data to prefs
-                                    prefsEditor.putString(ConstansClassOurGoals.namePrefsAuthorOfDebetableGoals, tmpDebetableGoalsAuthorName);
-                                    prefsEditor.commit();
-                                    // something change in debetable goals author name
-                                    returnMap.put ("OurGoalsSettingsDebetableGoalsAuthorName","1");
                                 }
 
                                 // update debetable current date of debetable goals?

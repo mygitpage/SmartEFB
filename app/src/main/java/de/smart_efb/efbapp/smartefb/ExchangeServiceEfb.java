@@ -978,6 +978,215 @@ import java.util.Map;
 
 
 
+
+
+    // +++++++++++++++++++++++++ task exchange goals +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+    // send jointly comment goals to server and get answer from server
+    public class ExchangeTaskSendJointlyCommentGoals implements Runnable {
+
+        // id of the data row in db
+        private Long dbId;
+
+        // reference to the DB
+        private DBAdapter myDb;
+
+        // context of task
+        Context context;
+
+        // shared prefs
+        SharedPreferences prefs;
+        SharedPreferences.Editor prefsEditor;
+
+        // return information for change
+        Map<String, String> returnMap;
+
+
+        // Constructor
+        public ExchangeTaskSendJointlyCommentGoals (Context context, Long dbid) {
+
+            // id of the data row in db
+            this.dbId = dbid;
+
+            // context of task
+            this.context = context;
+
+            // init the DB
+            myDb = new DBAdapter(context);
+
+            // init the prefs
+            prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
+            prefsEditor = prefs.edit();
+
+        }
+
+        // the task
+        public void run() {
+
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+            if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+
+                Log.d("Exchange Service", "Network on in send jointly com");
+
+                // get comment from db
+                Cursor commentData = myDb.getOneRowOurGoalsJointlyComment(dbId);
+
+                // get client id from prefs
+                String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
+
+                // generate xml output text
+                XmlSerializer xmlSerializer = Xml.newSerializer();
+                StringWriter writer = new StringWriter();
+                try {
+
+                    xmlSerializer.setOutput(writer);
+
+                    //Start Document
+                    xmlSerializer.startDocument("UTF-8", true);
+                    xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
+
+                    // Open Tag
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                    // start tag main order -> send comment and client id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+                    xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_JointlyGoalsComment);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+
+                    // start tag client id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.text(tmpClientId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+
+                    // end tag main
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                    // build xml tag for jointly comment with data
+                    buildJointlyCommentXmlTagWithData (xmlSerializer, commentData);
+
+                    // end tag smartEfb
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+
+                    xmlSerializer.endDocument();
+
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                // and send xml text to server
+                try {
+                    // prepair data to send
+                    String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
+
+                    Log.d("Send","XMLCODE="+textparam);
+
+                    // set url and parameters
+                    URL scripturl = new URL(ConstansClassSettings.urlConnectionSendNewCommentJointlyGoalsToServer);
+                    HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
+
+                    // set timeout for connection
+                    connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
+                    connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
+
+                    connection.setDoOutput(true);
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    connection.setRequestMethod("POST");
+                    connection.setFixedLengthStreamingMode(textparam.getBytes().length);
+
+                    // generate output stream and send
+                    OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
+                    contentWriter.write(textparam);
+                    contentWriter.flush();
+
+                    contentWriter.close();
+
+                    // get answer from input
+                    InputStream answerInputStream = connection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    // convert input stream to string
+                    String currentRow;
+                    try {
+                        while ((currentRow = reader.readLine()) != null) {
+                            stringBuilder.append(currentRow);
+                            stringBuilder.append("\n");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Log.d("Comment Send", "Antwort:"+stringBuilder.toString().trim());
+
+                    // call xml parser with input
+                    EfbXmlParser xmlparser = new EfbXmlParser(context);
+                    returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
+
+                    // close input stream and disconnect
+                    answerInputStream.close();
+                    connection.disconnect();
+
+
+                    if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
+                        myDb.updateStatusOurGoalsJointlyGoalsComment (dbId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                        // send intent to receiver in OurGoalsFragmentJointlyGoals to update listView OurGoals (when active)
+                        Intent tmpIntent = translateMapToIntent (returnMap);
+                        tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageJointlyGoalsCommentSendSuccessfull));
+                        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                        context.sendBroadcast(tmpIntent);
+                    }
+                    else { // send not successfull
+                        // send information broadcast to receiver that sending was not successefull
+                        String message = context.getResources().getString(R.string.toastMessageJointlyGoalsCommentSendNotSuccessfull);
+                        sendIntentBroadcastSendingNotSuccessefull (message);
+                    }
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastMessageJointlyGoalsCommentSendNotSuccessfull);
+                    sendIntentBroadcastSendingNotSuccessefull (message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastMessageJointlyGoalsCommentSendNotSuccessfull);
+                    sendIntentBroadcastSendingNotSuccessefull (message);
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            }
+            else { // no network enable -> try to send comment to server later
+                // send information broadcast to receiver that sending not successfull
+                String message = context.getResources().getString(R.string.toastMessageJointlyGoalsCommentNotSendSuccessfullNoNetwork);
+                sendIntentBroadcastSendingNotSuccessefull (message);
+            }
+
+            // stop the task with service
+            stopSelf();
+
+        }
+
+    }
+
+
+
+
+
+    // +++++++++++++++++++++++++ end task exchange goals +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
     //++++++++++++++++++ END TASK AREA ++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -1068,7 +1277,23 @@ import java.util.Map;
                     this.isRunning = true;
                     // start task
                     this.backgroundThread.start();
+
+                } else if (command.equals("send_jointly_comment_goal") && dbId > 0) { // send jointly goal comment to server
+
+                    Log.d("Excange Service", "Jointly comment !!!!!!!!");
+
+                    // generate new send task
+                    this.backgroundThread = new Thread(new ExchangeTaskSendJointlyCommentGoals (context, dbId));
+                    // task is running
+                    this.isRunning = true;
+                    // start task
+                    this.backgroundThread.start();
                 }
+
+
+
+
+
 
             }
 
@@ -1211,7 +1436,58 @@ import java.util.Map;
 
 
 
+    public void buildJointlyCommentXmlTagWithData (XmlSerializer xmlSerializer, Cursor commentData) {
 
+
+        Log.d("Exchange Build", "Kommentartext: " + commentData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT));
+
+        try {
+            // open comment jointly goals tag
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment);
+
+            // start tag comment jointly goals order
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_Order );
+            xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_New);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_Order );
+
+            // start tag comment text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_Comment);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_Comment);
+
+            // start tag author name text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_AuthorName);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_AuthorName);
+
+            // start tag comment time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_CommentTime);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_CommentTime);
+
+            // start tag goal time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_DateOfJointlyGoal);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_DateOfJointlyGoal);
+
+            // start tag block number
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_BlockId);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_BlockId);
+
+            // start tag server id goal
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_ServerGoalId);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_ServerGoalId);
+
+            // end tag comment jointly goal
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 

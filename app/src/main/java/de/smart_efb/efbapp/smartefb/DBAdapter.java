@@ -1516,12 +1516,12 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // Get a specific jointly row from the goals (by rowId)
-    public Cursor getJointlyRowOurGoals(int rowId) {
+    // Get a specific jointly row from the goals (by serverId)
+    public Cursor getJointlyRowOurGoals(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=0 AND " + KEY_ROWID + "=" + rowId;
+        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=0 AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID + "=" + serverId;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS,
                 where, null, null, null, null, null);
 
@@ -1708,41 +1708,6 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // Change an existing row to be equal to oldMd5.
-    public boolean updateRowOurGoalJointlyGoalComment(String comment, String authorName, long commentTime, int idGoal, Boolean newEntry, long currentDateOfGoal, int status, String oldMd5) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-
-        // TODO: werte für die datenbank anpassen
-
-        //String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH + "='" + oldMd5+"'";
-
-        // Create row's data:
-        ContentValues newValues = new ContentValues();
-        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, comment);
-        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, authorName);
-        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, commentTime);
-        //newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL, idGoal);
-        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME, currentDateOfGoal);
-        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS, status);
-        //newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from comment
-
-        // is it a new entry?
-        if (newEntry) {
-            newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, 1);
-        } else {
-            newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, 0);
-        }
-
-        // Insert it into the database.
-        //return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null) != 0;
-
-        return true; // Bitte löschen, wenn werte angepasst sind
-    }
-
-
-
     // Return all comments from the database for jointly goals with goal_id = id (table ourGoalsJointlyGoalsComment)
     // the result is sorted by DESC
     public Cursor getAllRowsOurGoalsJointlyGoalsComment(int goalId) {
@@ -1826,6 +1791,81 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Insert it into the database.
         return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null) != 0;
     }
+
+
+    // delete all comments with the same block id
+    public Boolean deleteAllRowsOurJointlyGoalsComment (String blockId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID + "='" + blockId + "'";
+
+        return db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, where, null) != 0;
+
+    }
+
+
+
+    // Return one jointly comment from the database for goals with row id = dbid (table ourGoalsJointlyGoalsComment)
+    public Cursor getOneRowOurGoalsJointlyComment(Long dbId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // data filter
+        String where = KEY_ROWID + "=" + dbId;
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+    }
+
+
+
+
+    // update status comment in table ourGoalsJointlyGoalsComment
+    // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Comment
+    public boolean updateStatusOurGoalsJointlyGoalsComment (Long rowId, int status) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row status with status
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS, status);
+
+        Log.d("DB Change Stat Comment", "ROW ID:"+rowId);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null) != 0;
+    }
+
+
+
+
+    // Get all comments with status = 0 (Ready to send) and block id of current jointly goals
+    public Cursor getAllReadyToSendJointlyGoalsComments (String blockIdOfGoals) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // status = 0 and block id = blockIdOfArrangement
+        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS + "=0 AND " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID + "=" + blockIdOfGoals;
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        // return cursor
+        return c;
+    }
+
+
+
+
 
 
     /********************************* End!! TABLES FOR FUNCTION: Our Goals Jointly Goals Comment ***************************************/
