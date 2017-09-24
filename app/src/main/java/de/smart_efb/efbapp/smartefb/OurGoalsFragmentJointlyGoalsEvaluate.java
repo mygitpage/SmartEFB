@@ -1,7 +1,9 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,6 +12,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +35,9 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
     // fragment context
     Context fragmentEvaluateJointlyGoalsContext = null;
+
+    // the fragment
+    Fragment fragmentEvaluateThisFragmentContext;
 
     // reference to the DB
     DBAdapter myDb;
@@ -79,6 +86,10 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
         viewFragmentJointlyGoalsEvaluate = layoutInflater.inflate(R.layout.fragment_our_goals_jointly_goals_evaluate, null);
 
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(ourGoalsFragmentEvaluateJointlyGoalsBrodcastReceiver, filter);
+
         return viewFragmentJointlyGoalsEvaluate;
 
     }
@@ -92,6 +103,8 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
         fragmentEvaluateJointlyGoalsContext = getActivity().getApplicationContext();
 
+        fragmentEvaluateThisFragmentContext = this;
+
         // call getter function in ActivityOurGoals
         callGetterFunctionInSuper();
 
@@ -103,6 +116,92 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         }
 
     }
+
+
+    // fragment is destroyed
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // de-register broadcast receiver
+        getActivity().getApplicationContext().unregisterReceiver(ourGoalsFragmentEvaluateJointlyGoalsBrodcastReceiver);
+
+    }
+
+
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    private BroadcastReceiver ourGoalsFragmentEvaluateJointlyGoalsBrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+
+                // check intent order
+                String tmpExtraOurGoals = intentExtras.getString("OurGoals","0");
+                String tmpExtraOurGoalsNow = intentExtras.getString("OurGoalsNow","0");
+                String tmpExtraOurGoalsNowComment = intentExtras.getString("OurGoalsNowComment","0");
+                String tmpExtraOurGoalsSettings = intentExtras.getString("OurGoalsSettings","0");
+                String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsCommentShareEnable","0");
+                String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsCommentShareDisable","0");
+                String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsCommentCountComment","0");
+
+
+
+
+                Log.d("BROA REC Evaluate", "In der Funktion -------");
+
+                if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNowComment != null && tmpExtraOurGoalsNowComment.equals("1")) {
+                    // new comments -> update now view -> show toast
+                    String updateMessageCommentNow = fragmentEvaluateThisFragmentContext.getString(R.string.toastMessageCommentJointlyGoalsNewComments);
+                    Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNow != null && tmpExtraOurGoalsNow.equals("1")) {
+                    // new jointly goals on smartphone -> update now view
+
+                    //update current block id of jointly goals
+                    currentBlockIdOfJointlyGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0");
+
+                    // check jointly and debetable goals update and show dialog jointly and debetable goals change
+                    ((ActivityOurGoals) getActivity()).checkUpdateForShowDialog ("jointly");
+
+                    // go back to fragment jointly goals -> this is my mother!
+                    Intent backIntent = new Intent(getActivity(), ActivityOurGoals.class);
+                    backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    backIntent.putExtra("com","show_jointly_goals_now");
+                    getActivity().startActivity(backIntent);
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsResetCommentCountComment != null && tmpExtraOurGoalsResetCommentCountComment.equals("1")) {
+                    // reset now comment counter -> show toast and update view
+                    String updateMessageCommentNow = fragmentEvaluateThisFragmentContext.getString(R.string.toastMessageJointlyGoalsResetCommentCountComment);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsCommentShareDisable  != null && tmpExtraOurGoalsCommentShareDisable.equals("1")) {
+                    // sharing is disable -> show toast and update view
+                    String updateMessageCommentNow = fragmentEvaluateThisFragmentContext.getString(R.string.toastMessageJointlyGoalsCommentShareDisable);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsCommentShareEnable  != null && tmpExtraOurGoalsCommentShareEnable.equals("1")) {
+                    // sharing is enable -> show toast and update view
+                    String updateMessageCommentNow = fragmentEvaluateThisFragmentContext.getString(R.string.toastMessageJointlyGoalsCommentShareEnable);
+                    Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                }
+            }
+        }
+    };
 
 
     // inits the fragment for use
@@ -129,12 +228,12 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyEvaluate");
 
         // build the view
-        //textview for the comment intro
+        //textview for the evaluation intro
         TextView textCommentNumberIntro = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.jointlyGoalEvaluateIntroText);
         textCommentNumberIntro.setText(this.getResources().getString(R.string.showEvaluateJointlyGoalIntroText) + " " + jointlyGoalNumberInListView);
 
 
-        // generate back link "zurueck zu allen Absprachen"
+        // generate back link "zurueck zu den gemeinsamen Zielen"
         Uri.Builder commentLinkBuilder = new Uri.Builder();
         commentLinkBuilder.scheme("smart.efb.deeplink")
                 .authority("linkin")
@@ -146,13 +245,29 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         linkShowEvaluateBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + fragmentEvaluateJointlyGoalsContext.getResources().getString(fragmentEvaluateJointlyGoalsContext.getResources().getIdentifier("ourGoalsBackLinkToJointlyGoals", "string", fragmentEvaluateJointlyGoalsContext.getPackageName())) + "</a>"));
         linkShowEvaluateBackLink.setMovementMethod(LinkMovementMethod.getInstance());
 
+        // put author name of goal
+        TextView tmpTextViewAuthorNameText = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.textAuthorNameGoal);
+        String tmpTextAuthorNameText = String.format(fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.ourGoalsEvaluationAuthorNameWithDateForGoal), cursorChoosenJointlyGoal.getString(cursorChoosenJointlyGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "dd.MM.yyyy"));
+        tmpTextViewAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
 
         // textview for the jointly goal
         TextView textViewJointlyGoal = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.evaluateJointlyGoal);
         String jointlyGoal = cursorChoosenJointlyGoal.getString(cursorChoosenJointlyGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL));
         textViewJointlyGoal.setText(jointlyGoal);
 
-
+        // set info text evaluation period
+        TextView textViewEvaluationPeriod = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.infoEvaluationTimePeriod);
+        // make time and date variables
+        String tmpBeginEvaluationDate = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy");
+        String tmpBeginEvaluatioTime = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), "HH:mm");
+        String tmpEndEvaluationDate = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy");
+        String tmpEndEvaluatioTime = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), "HH:mm");
+        int tmpEvaluationPeriodActive = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, 3600) / 3600; // make hours from seconds
+        int tmpEvaluationPeriodPassiv = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, 3600) / 3600; // make hours from seconds
+        String textEvaluationPeriod = String.format(fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.evaluateJointlyGoalInfoEvaluationPeriod), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive, tmpEvaluationPeriodPassiv );
+        String textEvaluationNoEvaluationPossibleWhenEvaluate = fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.ourGoalsEvaluationNoEvaluationPossibleWhenEvaluate);
+        textViewEvaluationPeriod.setText(textEvaluationPeriod + " " + textEvaluationNoEvaluationPossibleWhenEvaluate);
+        
         // set textview for the next jointly goal to evaluate
         TextView textViewNextJointlyGoalEvaluateIntro = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.jointlyGoalNextToEvaluateIntroText);
         TextView textViewThankAndEvaluateNext = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.evaluateThankAndNextEvaluation);
@@ -172,6 +287,16 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
         }
 
+
+
+
+
+
+
+
+
+
+
         // set textview textViewNextJointlyGoalEvaluateIntro
         if (nextJointlyGoalDbIdToEvaluate != 0) { // with text: next jointly goal to evaluate
 
@@ -187,20 +312,13 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
             textViewNextJointlyGoalEvaluateIntro.setText(this.getResources().getString(R.string.showNothingNextJointlyGoalToEvaluateText));
 
-            // Show text "Danke fuer Bewertung letzte Vereinbarung"
+            // Show text "Danke fuer Bewertung letztes Ziel"
             if (evaluateNextJointlyGoal) {
                 textViewThankAndEvaluateNext.setText(this.getResources().getString(R.string.evaluateThankAndNextEvaluationJointlyGoalLastText));
                 textViewThankAndEvaluateNext.setVisibility(View.VISIBLE);
             }
 
         }
-
-        // view the intro text SaveAndBackButton
-        /*
-        TextView textSaveAndBackButtonIntro = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.evaluateSaveAndBackButtonIntro);
-        String tmpSaveAndBackButtonIntroText = this.getResources().getString(R.string.evaluateSaveAndBackButtonIntroText);
-        textSaveAndBackButtonIntro.setText(tmpSaveAndBackButtonIntroText);
-        */
 
         // set onClickListener for radio button in radio group question 1-4
         String tmpRessourceName ="";
@@ -219,7 +337,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                     e.printStackTrace();
                 }
             }
-
         }
 
         // Button save evaluate result OR abort
@@ -229,7 +346,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         buttonSendEvaluateResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 Boolean evaluateNoError = true;
 
@@ -281,7 +397,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 if (evaluateNoError) {
 
                     // insert evaluation result in DB
-                    myDb.insertRowOurGoalsJointlyGoalEvaluate(jointlyGoalDbIdToEvaluate, prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "John Doe"), 0);
+                    Long tmpDbId = myDb.insertRowOurGoalsJointlyGoalEvaluate(jointlyGoalDbIdToEvaluate, prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), 0, prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), cursorChoosenJointlyGoal.getString(cursorChoosenJointlyGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID)));
 
                     // delete status evaluation possible for jointly goal
                     myDb.changeStatusEvaluationPossibleOurGoals(jointlyGoalDbIdToEvaluate, "delete");
@@ -294,6 +410,12 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
                     // reset evaluate results
                     resetEvaluateResult ();
+
+                    // send intent to service to start the service and send evaluation result to server!
+                    Intent startServiceIntent = new Intent(fragmentEvaluateJointlyGoalsContext, ExchangeServiceEfb.class);
+                    startServiceIntent.putExtra("com","send_evaluation_result_goal");
+                    startServiceIntent.putExtra("dbid",tmpDbId);
+                    fragmentEvaluateJointlyGoalsContext.startService(startServiceIntent);
 
                     // build and send intent to next evaluation jointly goal or back to OurGoalsJointlyGoalsNow
                     if (nextJointlyGoalDbIdToEvaluate != 0) { // is there another jointly goal to evaluate?
@@ -449,7 +571,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         }
 
     }
-
 
 
     // call getter Functions in ActivityOurGoals for some data

@@ -37,7 +37,7 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
     // for prefs
     SharedPreferences prefs;
 
-    // number for count comments for arrangement (12 numbers!)
+    // number for count comments for goal (12 numbers!)
     private String[] numberCountForComments = new String [12];
 
 
@@ -67,8 +67,8 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
         // is cursor first?
         if (cursor.isFirst() ) { // listview for first element
             TextView introTextfJointlyGoals = (TextView) view.findViewById(R.id.ourGoalsJointlyGoalsIntroText);
-            String txtArrangementNumber = context.getResources().getString(R.string.ourGoalsJointlyNowIntroText) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "dd.MM.yyyy");
-            introTextfJointlyGoals.setText(txtArrangementNumber);
+            String txtGoalNumber = context.getResources().getString(R.string.ourGoalsJointlyNowIntroText) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "dd.MM.yyyy");
+            introTextfJointlyGoals.setText(txtGoalNumber);
         }
 
         // is cursor last?
@@ -133,7 +133,7 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
             TextView newEntryOfGoals = (TextView) inflatedView.findViewById(R.id.listGoalsNewGoalsText);
             String txtNewEntryOfGoals = context.getResources().getString(R.string.newEntryText);
             newEntryOfGoals.setText(txtNewEntryOfGoals);
-            myDb.deleteStatusNewEntryOurArrangement(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
+            myDb.deleteStatusNewEntryOurGoalsJointlyGoalComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
         }
 
         // put goal text
@@ -242,7 +242,7 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
         }
 
 
-        // Show link for comment an arrangement and to show all comments for an arrangement
+        // Show link for comment a goal and to show all comments for a goal
         TextView linkCommentAGoal = (TextView) inflatedView.findViewById(R.id.linkCommentAGoal);
         TextView linkShowCommentOfGoal = (TextView) inflatedView.findViewById(R.id.linkToShowCommentsOfGoals);
 
@@ -251,7 +251,15 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
            
             // get from DB  all comments for choosen goal (getCount)
             Cursor cursorGoalAllComments = myDb.getAllRowsOurGoalsJointlyGoalsComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)));
-           
+
+
+
+            Log.d("+++ Now Jointly Goal", "Server ID Goal:" + cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)) );
+
+            Log.d("+++ Now Jointly Goal", "Anzahl Kommentare zum Goal:" + cursorGoalAllComments.getCount() );
+
+
+
             // generate the number of comments to show
             String tmpCountComments;
             int tmpIntCountComments = cursorGoalAllComments.getCount();

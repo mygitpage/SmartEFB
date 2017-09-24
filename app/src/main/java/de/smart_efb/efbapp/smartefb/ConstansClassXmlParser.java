@@ -813,7 +813,10 @@ public class ConstansClassXmlParser {
 
 
     // xml name for send comment of jointly goal to server
-    public static final String xmlNameForSendToServer_JointlyGoalsComment = "sendjointlygoalcomment";
+    public static final String xmlNameForSendToServer_JointlyGoalsComment = "sendjointlygoalscomment";
+
+    // xml name for send comment of jointly goal to server
+    public static final String xmlNameForSendToServer_JointlyGoalsEvaluationResult = "sendevaluationresultgoals";
 
 
 

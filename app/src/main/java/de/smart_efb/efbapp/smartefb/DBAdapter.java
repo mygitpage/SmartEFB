@@ -1337,6 +1337,28 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
+    // get all evaluation results in table ourArrangementEvaluate with status = 0
+    // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Evaluation
+    public Cursor getAllReadyToSendArrangementEvaluationResults () {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_ARRANGEMENT_EVALUATE_KEY_STATUS + "=0";
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE, OUR_ARRANGEMENT_EVALUATE_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+    }
+
+
+
+
+
     /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Evaluate ***************************************/
     /****************************************************************************************************************************/
 
@@ -1708,18 +1730,14 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // Return all comments from the database for jointly goals with goal_id = id (table ourGoalsJointlyGoalsComment)
+    // Return all comments from the database for jointly goals with serverGoalId = id (table ourGoalsJointlyGoalsComment)
     // the result is sorted by DESC
-    public Cursor getAllRowsOurGoalsJointlyGoalsComment(int goalId) {
+    public Cursor getAllRowsOurGoalsJointlyGoalsComment(int serverGoalId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // TODO: werte anpassen und return weert ändern!!!!!!!!!!!
-
         // data filter
-        //String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL + "=" + goalId;
-
-        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + "= 1"; // anpassen ist sonst falsch!!!!!!!!!!!!!
+        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL + "=" + serverGoalId;
 
         // sort string
         String sort = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
@@ -1756,14 +1774,11 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get the number of new rows in comment for choosen jointly goal, look jointlyGoalRowId (new entrys)
-    public int getCountNewEntryOurGoalsJointlyGoalComment(int jointlyGoalRowId) {
+    public int getCountNewEntryOurGoalsJointlyGoalComment(int  jointlyGoalServerId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // new_entry = 1 (true) and choosen arrangement like arrangementRowId?
-
-        // TODO: Bitte anpassen, sonst FEHLER!!!!!!!!!!!!!!
-        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + "=1"; // AND " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_ID_GOAL + "=" + jointlyGoalRowId;
+        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL + "=" + jointlyGoalServerId;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
@@ -1875,26 +1890,70 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Goals Jointly Goals Evaluate ******************************************/
 
     // Add a new set of values to ourGoalsJointlyGoalsEvaluate .
-    public long insertRowOurGoalsJointlyGoalEvaluate(int goalId, long currentDateOfGoal, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName, int status) {
+    public long insertRowOurGoalsJointlyGoalEvaluate(int serverGoalId, long currentDateOfGoal, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName, int status, long startEvaluationTime, long endEvaluationTime, String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues initialValues = new ContentValues();
 
-        //initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_ID, goalId);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_SERVER_ID, serverGoalId);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME, currentDateOfGoal);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_BLOCKID, blockId);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1, resultQuestion1);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2, resultQuestion2);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3, resultQuestion3);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4, resultQuestion4);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS, resultRemarks);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME, resultTime);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME, startEvaluationTime);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME, endEvaluationTime);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME, userName);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_STATUS, status);
 
         // Insert it into the database.
         return db.insert(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE, null, initialValues);
     }
+
+
+
+    public Cursor getOneRowEvaluationResultGoals (Long dbId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // data filter
+        String where = KEY_ROWID + "=" + dbId;
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE, OUR_GOALS_JOINTLY_GOALS_EVALUATE_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+
+    }
+
+
+
+    // update status evaluation in table jointly goals evaluation
+    // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Evaluation
+    public boolean updateStatusOurGoalsEvaluation (Long rowId, int status) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row status with status
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS, status);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE, newValues, where, null) != 0;
+    }
+
+
+
 
 
 
@@ -1912,6 +1971,10 @@ public class DBAdapter extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues initialValues = new ContentValues();
+
+
+        // TODO: werte anpassen, sonst fehler!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT, comment);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1, question_a);
@@ -1940,18 +2003,15 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    // Return all comments from the database for debetable goal with goal_id = id (table ourGoalsDebetableGoalsComment)
+    // Return all comments from the database for debetable goal with serverGoalId = id (table ourGoalsDebetableGoalsComment)
     // the result is sorted by DESC
-    public Cursor getAllRowsOurGoalsDebetableGoalsComment(int goalId) {
+    public Cursor getAllRowsOurGoalsDebetableGoalsComment(int serverGoalId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
 
         // data filter
-
-        // TODO_ Anpasen, sonst Fehler, es war nicht server id sondern goal id als Konstante!!!!!!!!!!
-
-        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID + "=" + goalId;
+        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID + "=" + serverGoalId;
 
         // sort string
         String sort = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";

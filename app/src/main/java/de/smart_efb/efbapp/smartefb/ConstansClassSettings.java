@@ -63,10 +63,14 @@ public class ConstansClassSettings {
 
     
     // URL connection send comment jointly goals to server
-    public static final String urlConnectionSendNewCommentJointlyGoalsToServer = "http://192.168.1.119/index.php?com=exchange&subcom=sendjointlygoalcomment";
+    public static final String urlConnectionSendNewCommentJointlyGoalsToServer = "http://192.168.1.119/index.php?com=exchange&subcom=sendjointlygoalscomment";
     //public static final String urlConnectionSendNewCommentJointlyGoalsToServer = "http://192.168.178.21/index.php?com=exchange&subcom=sendjointlygoalcomment";
     //public static final String urlConnectionSendNewCommentJointlyGoalsToServer = "http://192.168.0.126/index.php?com=exchange&subcom=sendjointlygoalcomment";
 
 
+    // URL connection send evaluation result jointly goals to server
+    public static final String urlConnectionSendEvaluationResultJointlyGoalsToServer = "http://192.168.1.119/index.php?com=exchange&subcom=sendevaluationresultgoals";
+    //public static final String urlConnectionSendEvaluationResultJointlyGoalsToServer = "http://192.168.178.21/index.php?com=exchange&subcom=sendevaluationresultgoals";
+    //public static final String urlConnectionSendEvaluationResultJointlyGoalsToServer = "http://192.168.0.126/index.php?com=exchange&subcom=sendevaluationresultgoals";
 
 }

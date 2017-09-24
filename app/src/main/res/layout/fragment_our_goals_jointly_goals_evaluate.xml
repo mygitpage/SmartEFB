@@ -18,29 +18,37 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp">
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style">
 
-
-            <TextView
-                android:id="@+id/jointlyGoalEvaluateIntroText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/text_color"
-                android:gravity="left"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/jointlyGoalsShowEvaluateBackLink"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
-                android:textColor="@color/text_color"
-                android:textColorLink="@color/colorPrimary"
-                android:gravity="right"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/jointlyGoalEvaluateIntroText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="3dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textAuthorNameGoal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
 
         </LinearLayout>
+
 
         <TextView
             android:id="@+id/evaluateJointlyGoal"
@@ -49,8 +57,37 @@
             android:textSize="16dp"
             android:textColor="@color/text_color"
             android:gravity="left"
-            android:paddingLeft="10dp"
-            android:paddingBottom="5dp"/>
+            android:paddingLeft="10dp"/>
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/jointlyGoalsShowEvaluateBackLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/text_color"
+                android:textColorLink="@color/colorPrimary"
+                android:gravity="right"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/borderBetweenGoal1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"/>
+
+
 
         <TextView
             android:id="@+id/evaluateThankAndNextEvaluation"
@@ -61,19 +98,18 @@
             android:gravity="left"
             android:visibility="gone"
             android:text="@string/evaluateThankAndNextJointlyGoalEvaluationText"
-            android:paddingTop="20dp"
+            android:paddingTop="5dp"
             android:paddingBottom="5dp"/>
 
         <TextView
-            android:id="@+id/questionOneJointlyGoalJointlyGoalEvaluate"
+            android:id="@+id/questionOneEvaluate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/questionOneJointlyGoalEvaluateMySelf"
-            android:paddingTop="20dp"
+            android:text="@string/questionOneEvaluateMySelf"
             android:paddingBottom="5dp"/>
 
         <TextView
@@ -84,7 +120,7 @@
             android:textColor="@color/text_accent_color"
             android:gravity="left"
             android:visibility="gone"
-            android:text="@string/evaluateErrorJointlyGoalTextByQuestion"
+            android:text="@string/evaluateErrorTextByQuestion"
             android:paddingBottom="5dp"/>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
@@ -95,15 +131,13 @@
             android:layout_gravity="center"
             android:padding="5dp"
             android:gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:background="@drawable/app_radiogroup_style">
 
             <RadioButton android:id="@+id/questionOneJointlyGoal_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_1"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateJointlyGoalSuggestion_1" 
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -113,8 +147,8 @@
             <RadioButton android:id="@+id/questionOneJointlyGoal_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_2"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_2"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -124,8 +158,8 @@
             <RadioButton android:id="@+id/questionOneJointlyGoal_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_3"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_3"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -135,8 +169,8 @@
             <RadioButton android:id="@+id/questionOneJointlyGoal_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_4"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_4"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -146,8 +180,8 @@
             <RadioButton android:id="@+id/questionOneJointlyGoal_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_5"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_5"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -157,8 +191,8 @@
             <RadioButton android:id="@+id/questionOneJointlyGoal_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_6"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_6"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -168,14 +202,14 @@
         </RadioGroup>
 
         <TextView
-            android:id="@+id/questionTwoJointlyGoalJointlyGoalEvaluate"
+            android:id="@+id/questionTwoEvaluate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/questionTwoJointlyGoalEvaluateMyEx"
+            android:text="@string/questionTwoEvaluateMyEx"
             android:paddingTop="20dp"
             android:paddingBottom="5dp"/>
 
@@ -187,7 +221,7 @@
             android:textColor="@color/text_accent_color"
             android:gravity="left"
             android:visibility="gone"
-            android:text="@string/evaluateErrorJointlyGoalTextByQuestion"
+            android:text="@string/evaluateErrorTextByQuestion"
             android:paddingBottom="5dp"/>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
@@ -198,70 +232,68 @@
             android:layout_gravity="center"
             android:padding="5dp"
             android:gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:background="@drawable/app_radiogroup_style">
 
-            <RadioButton android:id="@+id/questionTwoJointlyGoal_1"
+            <RadioButton android:id="@+id/questionTwo_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_1"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_1"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwoJointlyGoal_2"
+            <RadioButton android:id="@+id/questionTwo_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_2"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_2"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwoJointlyGoal_3"
+            <RadioButton android:id="@+id/questionTwo_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_3"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_3"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwoJointlyGoal_4"
+            <RadioButton android:id="@+id/questionTwo_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_4"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_4"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwoJointlyGoal_5"
+            <RadioButton android:id="@+id/questionTwo_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_5"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_5"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwoJointlyGoal_6"
+            <RadioButton android:id="@+id/questionTwo_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_6"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_6"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -272,14 +304,14 @@
         </RadioGroup>
 
         <TextView
-            android:id="@+id/questionThreeJointlyGoalJointlyGoalEvaluate"
+            android:id="@+id/questionThreeEvaluate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/questionThreeJointlyGoalEvaluateChildreen"
+            android:text="@string/questionThreeEvaluateChildreen"
             android:paddingTop="20dp"
             android:paddingBottom="5dp"/>
 
@@ -291,7 +323,7 @@
             android:textColor="@color/text_accent_color"
             android:gravity="left"
             android:visibility="gone"
-            android:text="@string/evaluateErrorJointlyGoalTextByQuestion"
+            android:text="@string/evaluateErrorTextByQuestion"
             android:paddingBottom="5dp"/>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
@@ -302,70 +334,68 @@
             android:layout_gravity="center"
             android:padding="5dp"
             android:gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:background="@drawable/app_radiogroup_style">
 
-            <RadioButton android:id="@+id/questionThreeJointlyGoal_1"
+            <RadioButton android:id="@+id/questionThree_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_1"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_1"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThreeJointlyGoal_2"
+            <RadioButton android:id="@+id/questionThree_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_2"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_2"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThreeJointlyGoal_3"
+            <RadioButton android:id="@+id/questionThree_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_3"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_3"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThreeJointlyGoal_4"
+            <RadioButton android:id="@+id/questionThree_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_4"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_4"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThreeJointlyGoal_5"
+            <RadioButton android:id="@+id/questionThree_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_5"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_5"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThreeJointlyGoal_6"
+            <RadioButton android:id="@+id/questionThree_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_6"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_6"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -376,14 +406,14 @@
         </RadioGroup>
 
         <TextView
-            android:id="@+id/questionFourJointlyGoalEvaluate"
+            android:id="@+id/questionFourEvaluate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/questionFourJointlyGoalEvaluateThirdPeople"
+            android:text="@string/questionFourEvaluateThirdPeople"
             android:paddingTop="20dp"
             android:paddingBottom="5dp"/>
 
@@ -395,7 +425,7 @@
             android:textColor="@color/text_accent_color"
             android:gravity="left"
             android:visibility="gone"
-            android:text="@string/evaluateErrorJointlyGoalTextByQuestion"
+            android:text="@string/evaluateErrorTextByQuestion"
             android:paddingBottom="5dp"/>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
@@ -406,70 +436,68 @@
             android:layout_gravity="center"
             android:padding="5dp"
             android:gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:background="@drawable/app_radiogroup_style">
 
-            <RadioButton android:id="@+id/questionFourJointlyGoal_1"
+            <RadioButton android:id="@+id/questionFour_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_1"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_1"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFourJointlyGoal_2"
+            <RadioButton android:id="@+id/questionFour_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_2"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_2"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFourJointlyGoal_3"
+            <RadioButton android:id="@+id/questionFour_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_3"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_3"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFourJointlyGoal_4"
+            <RadioButton android:id="@+id/questionFour_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_4"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_4"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFourJointlyGoal_5"
+            <RadioButton android:id="@+id/questionFour_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_5"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_5"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFourJointlyGoal_6"
+            <RadioButton android:id="@+id/questionFour_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/evaluateJointlyGoalSuggestion_6"
-                android:textColor="@color/text_color_white"
+                android:text="@string/evaluateArrangementSuggestion_6"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -480,11 +508,11 @@
         </RadioGroup>
 
         <TextView
-            android:id="@+id/commentTextJointlyGoalEvaluateResult"
+            android:id="@+id/commentEvaluateText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
             android:text="@string/commentTextJointlyGoalEvaluateResult"
@@ -495,14 +523,12 @@
             android:id="@+id/inputJointlyGoalEvaluateResultComment"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:textColor="@color/text_color_white"
-            android:hint="@string/commentEvaluateJointlyGoalResultTextFieldHintText"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left|top"
             android:background="@drawable/app_edittext_style"
-            android:layout_margin="10dp"
-            android:textColorHint="@color/text_color_white"
-            android:inputType="textNoSuggestions|text|textMultiLine"
-            android:padding="5dp"/>
+            android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
+            android:padding="5dp"
+            android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
 
 
         <TextView
@@ -510,10 +536,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
-            android:gravity="left"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
             android:textStyle="bold"
-            android:paddingBottom="5dp"/>
+            android:layout_marginTop="15dp"/>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
@@ -528,24 +554,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/app_button_style"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="@string/btnSendEvaluateJointlyGoalResult"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="5dp"
-                android:padding="10dp"/>
+                android:padding="5dp"/>
 
             <Button
                 android:id="@+id/buttonAbortEvaluateJointlyGoal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/app_button_style"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="@string/btnAbortEvaluateJointlyGoal"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="5dp"
                 android:padding="10dp"/>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/infoEvaluationTimePeriod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:paddingBottom="35dp"/>
 
     </LinearLayout>
 

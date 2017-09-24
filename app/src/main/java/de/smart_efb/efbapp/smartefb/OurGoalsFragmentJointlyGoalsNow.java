@@ -106,7 +106,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
             // Extras from intent that holds data
             Bundle intentExtras = null;
 
-            // true-> update the list view with arrangements
+            // true-> update the list view with goals
             Boolean updateListView = false;
 
             // check for intent extras
@@ -140,7 +140,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNowComment != null && tmpExtraOurGoalsNowComment.equals("1")) {
                     // new comments -> update now view -> show toast and update view
-                    String updateMessageCommentNow = fragmentJointlyGoalsNowContext.getString(R.string.toastMessageCommentNowNewComments);
+                    String updateMessageCommentNow = fragmentJointlyGoalsNowContext.getString(R.string.toastMessageCommentJointlyGoalsNewComments);
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
 
                     // update the view
@@ -148,7 +148,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsResetCommentCountComment != null && tmpExtraOurGoalsResetCommentCountComment.equals("1")) {
                     // reset now comment counter -> show toast and update view
-                    String updateMessageCommentNow = fragmentJointlyGoalsNowContext.getString(R.string.toastMessageArrangementResetCommentCountComment);
+                    String updateMessageCommentNow = fragmentJointlyGoalsNowContext.getString(R.string.toastMessageJointlyGoalsResetCommentCountComment);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
@@ -159,7 +159,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsCommentShareDisable  != null && tmpExtraOurGoalsCommentShareDisable .equals("1")) {
                     // sharing is disable -> show toast and update view
-                    String updateMessageCommentNow = fragmentJointlyGoalsNowContext.getString(R.string.toastMessageArrangementCommentShareDisable);
+                    String updateMessageCommentNow = fragmentJointlyGoalsNowContext.getString(R.string.toastMessageJointlyGoalsCommentShareDisable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
@@ -167,7 +167,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsCommentShareEnable  != null && tmpExtraOurGoalsCommentShareEnable .equals("1")) {
                     // sharing is enable -> show toast and update view
-                    String updateMessageCommentNow = fragmentJointlyGoalsNowContext.getString(R.string.toastMessageArrangementCommentShareEnable);
+                    String updateMessageCommentNow = fragmentJointlyGoalsNowContext.getString(R.string.toastMessageJointlyGoalsCommentShareEnable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
@@ -175,11 +175,19 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                 }
                 else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send successfull?
 
-                    Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
                 }
                 else if (tmpSendNotSuccessefull != null && tmpSendNotSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send not successfull?
 
-                    Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
                 }
                 else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
                     // evaluationperiod hass change -> update view
@@ -200,7 +208,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
     };
 
 
-    // update the list view with arrangements
+    // update the list view with goals
     public void updateListView () {
 
         if (listViewJointlyGoals != null) {

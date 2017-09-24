@@ -219,7 +219,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "evaluate");
 
         // build the view
-        //textview for the comment intro
+        //textview for the evaluation intro
         TextView textCommentNumberIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.arrangementEvalauteIntroText);
         textCommentNumberIntro.setText(this.getResources().getString(R.string.showEvaluateArrangementIntroText) + " " + arrangementNumberInListView);
 
