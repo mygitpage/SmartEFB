@@ -846,6 +846,10 @@ public class ActivityOurGoals extends AppCompatActivity {
             // create call (pending intent) for alarm manager
             pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(ActivityOurGoals.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+            // set new start point for evaluation timer in view fragment now for evaluation link
+            prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, (calendar.getTimeInMillis()-tmpEvalutePaAcTime));
+            prefsEditor.commit();
+
             // set alarm
             manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurGoalsEvaluate);
 

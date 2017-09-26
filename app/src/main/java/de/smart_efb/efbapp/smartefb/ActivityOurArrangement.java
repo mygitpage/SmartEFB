@@ -836,8 +836,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
             pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(ActivityOurArrangement.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             // set new start point for evaluation timer in view fragment now for evaluation link
-
-
             prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, (calendar.getTimeInMillis()-tmpEvalutePaAcTime));
             prefsEditor.commit();
 

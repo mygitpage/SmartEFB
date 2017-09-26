@@ -86,7 +86,7 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
                 String tmpEndEvaluationDate = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy");
                 String tmpEndEvaluatioTime = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), "HH:mm");
                 int tmpEvaluationPeriodActive = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, 3600) / 3600; // make hours from seconds
-                int tmpEvaluationPeriodPassiv = prefs.getInt(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, 3600) / 3600; // make hours from seconds
+                int tmpEvaluationPeriodPassiv = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, 3600) / 3600; // make hours from seconds
                 String textEvaluationPeriod = String.format(context.getResources().getString(R.string.evaluateJointlyGoalInfoEvaluationPeriod), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive, tmpEvaluationPeriodPassiv );
                 textViewEvaluationPeriod.setText(textEvaluationPeriod);
             }
@@ -133,7 +133,7 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
             TextView newEntryOfGoals = (TextView) inflatedView.findViewById(R.id.listGoalsNewGoalsText);
             String txtNewEntryOfGoals = context.getResources().getString(R.string.newEntryText);
             newEntryOfGoals.setText(txtNewEntryOfGoals);
-            myDb.deleteStatusNewEntryOurGoalsJointlyGoalComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
+            myDb.deleteStatusNewEntryOurGoals(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
         }
 
         // put goal text

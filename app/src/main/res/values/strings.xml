@@ -426,7 +426,7 @@
         <!-- Strings for activity our goals -->
             <string name="ourGoalsBackLinkToJointlyGoals">Zurück zu den gemeinsamen Zielen</string>
             <string name="btnAbortJointlyGoalComment">Zurück</string>
-            <string name="showJointlyGoalTextNumber">Ziel</string>
+            <string name="showJointlyGoalTextNumber">Gemeinsames Ziel</string>
             <string name="newEntryTextOurGoal">(Neu)</string>
             <string name="toastMessageCommentJointlyGoalsNewComments">Es sind neue Kommentare eingetroffen!</string>
             <string name="toastMessageJointlyGoalsResetCommentCountComment">Der Kommentarzähler wurde von Ihrer Beraterin/ Ihrem Berater auf Null zurückgesetzt!</string>
@@ -551,7 +551,7 @@
 
 
         <!-- Fragment evaluate jointly goals -->
-                <string name="showEvaluateJointlyGoalIntroText">Bewerten Sie Ziel</string>
+                <string name="showEvaluateJointlyGoalIntroText">Bewerten Sie das gemeinsame Ziel</string>
                 <string name="showNextJointlyGoalToEvaluateIntroText">Bitte klicken Sie auf Speichern und bewerten Sie als nächtes Ziel %1$d.</string>
                 <string name="showNothingNextJointlyGoalToEvaluateText">Bitte klicken Sie auf Speichern. Es sind keine weiteren Absprachen zu bewerten.</string>
                 <string name="evaluateThankAndNextEvaluationJointlyGoalLastText">Vielen Dank für die Bewertung des vorherrigen Ziels. Bitte bewerten Sie nun das letzte Ziel.</string>

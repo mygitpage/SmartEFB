@@ -109,7 +109,7 @@
             android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/questionOneEvaluateMySelf"
+            android:text="@string/questionOneJointlyGoalEvaluateMySelf"
             android:paddingBottom="5dp"/>
 
         <TextView
@@ -120,7 +120,7 @@
             android:textColor="@color/text_accent_color"
             android:gravity="left"
             android:visibility="gone"
-            android:text="@string/evaluateErrorTextByQuestion"
+            android:text="@string/evaluateErrorJointlyGoalTextByQuestion"
             android:paddingBottom="5dp"/>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
@@ -209,7 +209,7 @@
             android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/questionTwoEvaluateMyEx"
+            android:text="@string/questionTwoJointlyGoalEvaluateMyEx"
             android:paddingTop="20dp"
             android:paddingBottom="5dp"/>
 
@@ -221,7 +221,7 @@
             android:textColor="@color/text_accent_color"
             android:gravity="left"
             android:visibility="gone"
-            android:text="@string/evaluateErrorTextByQuestion"
+            android:text="@string/evaluateErrorJointlyGoalTextByQuestion"
             android:paddingBottom="5dp"/>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
@@ -311,7 +311,7 @@
             android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/questionThreeEvaluateChildreen"
+            android:text="@string/questionThreeJointlyGoalEvaluateChildreen"
             android:paddingTop="20dp"
             android:paddingBottom="5dp"/>
 
@@ -323,7 +323,7 @@
             android:textColor="@color/text_accent_color"
             android:gravity="left"
             android:visibility="gone"
-            android:text="@string/evaluateErrorTextByQuestion"
+            android:text="@string/evaluateErrorJointlyGoalTextByQuestion"
             android:paddingBottom="5dp"/>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
@@ -413,7 +413,7 @@
             android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/questionFourEvaluateThirdPeople"
+            android:text="@string/questionFourJointlyGoalEvaluateThirdPeople"
             android:paddingTop="20dp"
             android:paddingBottom="5dp"/>
 
@@ -425,7 +425,7 @@
             android:textColor="@color/text_accent_color"
             android:gravity="left"
             android:visibility="gone"
-            android:text="@string/evaluateErrorTextByQuestion"
+            android:text="@string/evaluateErrorJointlyGoalTextByQuestion"
             android:paddingBottom="5dp"/>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"

@@ -281,6 +281,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 if (cursorNextJointlyGoalToEvaluate.getInt(cursorNextJointlyGoalToEvaluate.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE)) == 1 && cursorNextJointlyGoalToEvaluate.getInt(cursorNextJointlyGoalToEvaluate.getColumnIndex(DBAdapter.KEY_ROWID)) != jointlyGoalDbIdToEvaluate) { // evaluation possible for jointly goal?
                     nextJointlyGoalDbIdToEvaluate = cursorNextJointlyGoalToEvaluate.getInt(cursorNextJointlyGoalToEvaluate.getColumnIndex(DBAdapter.KEY_ROWID));
                     nextJointlyGoalListPositionToEvaluate = cursorNextJointlyGoalToEvaluate.getPosition() + 1;
+                    cursorNextJointlyGoalToEvaluate.moveToLast();
                 }
 
             } while (cursorNextJointlyGoalToEvaluate.moveToNext());
