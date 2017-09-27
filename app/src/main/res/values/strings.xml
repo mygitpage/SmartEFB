@@ -567,7 +567,7 @@
                 <string name="questionThreeJointlyGoalEvaluateChildreen">Wie haben Ihre Kinder das gemeinsame Ziel aus Ihrer Sicht eingehalten?</string>
                 <string name="questionFourJointlyGoalEvaluateThirdPeople">Wie haben die weiteren beteiligten Personen das gemeinsame Ziel eingehalten?</string>
                 <string name="commentTextJointlyGoalEvaluateResult">Ihre Anmerkungen zu Ihrer Bewertung</string>
-                <string name="btnSendEvaluateJointlyGoalResult">Speichern</string>
+                <string name="btnSendEvaluateJointlyGoalResult">Bewertung Senden</string>
                 <string name="btnAbortEvaluateJointlyGoal">Zurück </string>
                 <string name="evaluateErrorJointlyGoalTextByQuestion">Bitte kontrollieren Sie diese Frage!</string>
                 <string name="commentEvaluateJointlyGoalResultTextFieldHintText">Bitte geben Sie Ihre Anmerkungen hier ein.</string>
@@ -584,6 +584,8 @@
     <string name="evaluateJointlyGoalEvaluatePeriodExpired">Bewertungszeitraum abgelaufen</string>
     <string name="evaluateJointlyGoalEvaluateTextEvaluationModulSwitchOn">Bewertungsmodul wird eingeschaltet</string>
     <string name="evaluateJointlyGoalEvaluateTextEvaluationModulSwitchOff">Bewertungsmodul wird ausgeschaltet</string>
+
+    <string name="evaluateJointlyGoalEvaluateTextGoalAlreadyEvaluated">Ziel bereits bewertet</string>
 
 
 

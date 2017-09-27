@@ -38,7 +38,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 38;
+    public static final int DATABASE_VERSION = 39;
 
     // Common column names
     public static final String KEY_ROWID = "_id";
@@ -58,10 +58,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_ARRANGEMENT_KEY_BLOCK_ID = "blockid";
     public static final String OUR_ARRANGEMENT_KEY_CHANGE_TO = "change_to";
     public static final String OUR_ARRANGEMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
-
+    public static final String OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME = "last_eval_time";
 
     // All keys from table app settings in a String
-    public static final String[] OUR_ARRANGEMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_KEY_ARRANGEMENT, OUR_ARRANGEMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE, OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT, OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME, OUR_ARRANGEMENT_KEY_SERVER_ID, OUR_ARRANGEMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_KEY_STATUS, OUR_ARRANGEMENT_KEY_CHANGE_TO };
+    public static final String[] OUR_ARRANGEMENT_ALL_KEYS = new String[] {KEY_ROWID, OUR_ARRANGEMENT_KEY_ARRANGEMENT, OUR_ARRANGEMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE, OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT, OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME, OUR_ARRANGEMENT_KEY_SERVER_ID, OUR_ARRANGEMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_KEY_STATUS, OUR_ARRANGEMENT_KEY_CHANGE_TO, OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME };
 
     // SQL String to create our arrangement table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT =
@@ -76,7 +76,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_ARRANGEMENT_KEY_SERVER_ID + " INTEGER DEFAULT 0, "
                     + OUR_ARRANGEMENT_KEY_BLOCK_ID + " TEXT not null, "
                     + OUR_ARRANGEMENT_KEY_STATUS + " INTEGER DEFAULT 0, "
-                    + OUR_ARRANGEMENT_KEY_CHANGE_TO + " STRING not null"
+                    + OUR_ARRANGEMENT_KEY_CHANGE_TO + " STRING not null, "
+                    + OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME + " INTEGER DEFAULT 0"
                     + ");";
 
     /**********************************************************************************************/
@@ -227,9 +228,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID = "blockid";
     public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_CHANGE_TO = "change_to";
     public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
+    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME = "last_eval_time";
 
     // All keys in a String
-    public static final String[] OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_CHANGE_TO, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS};
+    public static final String[] OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS = new String[] {KEY_ROWID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_CHANGE_TO, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME};
 
     // SQL String to create our goals jointly goals now table
     private static final String DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_JOINTLY_GOALS_NOW =
@@ -244,7 +246,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID + " INTEGER DEFAULT 0, "
                     + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID + " TEXT not null, "
                     + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_CHANGE_TO + " STRING not null, "
-                    + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS + " INTEGER DEFAULT 0"
+                    + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS + " INTEGER DEFAULT 0, "
+                    + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME + " INTEGER DEFAULT 0"
                     + ");";
 
     /************************ End Definitions Our Goals *********************************************************************/
@@ -864,7 +867,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    // change (delete/set) status evaluation poosible in table ourArrangement
+    // change (delete/set) status evaluation possible in table ourArrangement
     public boolean changeStatusEvaluationPossibleOurArrangement (int serverId, String state) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -893,12 +896,12 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // change (delete/set) status evaluation poosible in table ourArrangement for all arrangement with current arrangement time
-    public boolean changeStatusEvaluationPossibleAllOurArrangement (long arrangementTime, String state) {
+    // change (delete/set) status evaluation poosible in table ourArrangement for all arrangement with current block id
+    public boolean changeStatusEvaluationPossibleAllOurArrangement (String blockId, String state) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = OUR_ARRANGEMENT_KEY_WRITE_TIME + "=" + arrangementTime;
+        String where = OUR_ARRANGEMENT_KEY_BLOCK_ID + "=" + blockId;
 
         // Create row
         ContentValues newValues = new ContentValues();
@@ -1356,6 +1359,25 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+    // set last evaluation time in choosen (serverId) arrangement in table our arrangement
+    public boolean setEvaluationTimePointForArrangement (int serverId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_ARRANGEMENT_KEY_SERVER_ID + "=" + serverId;
+
+        // Create row's data:
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME, System.currentTimeMillis());
+
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null) != 0;
+
+    }
+
+
 
 
 
@@ -1614,11 +1636,12 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // change (delete/set) status evaluation poosible in table ourGoals for one goal (rowId)
-    public boolean changeStatusEvaluationPossibleOurGoals (int rowId, String state) {
+    public boolean changeStatusEvaluationPossibleOurGoals (int serverId, String state) {
+
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = KEY_ROWID + "=" + rowId;
+        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID + "=" + serverId;
 
         // Create row
         ContentValues newValues = new ContentValues();
@@ -1643,11 +1666,11 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // change (delete/set) status evaluation poosible in table ourGoals for all goals with current goal time
-    public boolean changeStatusEvaluationPossibleAllOurGoals (long goalTime, String state) {
+    public boolean changeStatusEvaluationPossibleAllOurGoals (String blockId, String state) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + "=" + goalTime;
+        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID + "=" + blockId;
 
         // Create row
         ContentValues newValues = new ContentValues();
@@ -1950,6 +1973,29 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE, newValues, where, null) != 0;
+    }
+
+
+    // set last evaluation time in choosen (serverId) goal in table jointly debetable goal
+    public boolean setEvaluationTimePointForGoal (int serverId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID + "=" + serverId;
+
+
+        Log.d("SetEvalTime-->","Where: "+where);
+
+
+        // Create row's data:
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME, System.currentTimeMillis());
+
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null) != 0;
+
     }
 
 

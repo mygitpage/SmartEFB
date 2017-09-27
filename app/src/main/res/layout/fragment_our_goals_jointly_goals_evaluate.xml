@@ -95,11 +95,21 @@
             android:layout_height="wrap_content"
             android:textSize="14dp"
             android:textColor="@color/text_accent_color"
-            android:gravity="left"
+            android:gravity="center"
             android:visibility="gone"
-            android:text="@string/evaluateThankAndNextJointlyGoalEvaluationText"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"/>
+            android:text="@string/evaluateThankAndNextJointlyGoalEvaluationText"/>
+
+
+        <TextView
+            android:id="@+id/borderBetweenEvaluation1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/questionOneEvaluate"
@@ -234,7 +244,7 @@
             android:gravity="center"
             android:background="@drawable/app_radiogroup_style">
 
-            <RadioButton android:id="@+id/questionTwo_1"
+            <RadioButton android:id="@+id/questionTwoJointlyGoal_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_1"
@@ -245,7 +255,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwo_2"
+            <RadioButton android:id="@+id/questionTwoJointlyGoal_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_2"
@@ -256,7 +266,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwo_3"
+            <RadioButton android:id="@+id/questionTwoJointlyGoal_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_3"
@@ -267,7 +277,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwo_4"
+            <RadioButton android:id="@+id/questionTwoJointlyGoal_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_4"
@@ -278,7 +288,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwo_5"
+            <RadioButton android:id="@+id/questionTwoJointlyGoal_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_5"
@@ -289,7 +299,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwo_6"
+            <RadioButton android:id="@+id/questionTwoJointlyGoal_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_6"
@@ -336,7 +346,7 @@
             android:gravity="center"
             android:background="@drawable/app_radiogroup_style">
 
-            <RadioButton android:id="@+id/questionThree_1"
+            <RadioButton android:id="@+id/questionThreeJointlyGoal_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_1"
@@ -347,7 +357,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThree_2"
+            <RadioButton android:id="@+id/questionThreeJointlyGoal_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_2"
@@ -358,7 +368,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThree_3"
+            <RadioButton android:id="@+id/questionThreeJointlyGoal_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_3"
@@ -369,7 +379,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThree_4"
+            <RadioButton android:id="@+id/questionThreeJointlyGoal_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_4"
@@ -380,7 +390,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThree_5"
+            <RadioButton android:id="@+id/questionThreeJointlyGoal_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_5"
@@ -391,7 +401,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThree_6"
+            <RadioButton android:id="@+id/questionThreeJointlyGoal_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_6"
@@ -438,7 +448,7 @@
             android:gravity="center"
             android:background="@drawable/app_radiogroup_style">
 
-            <RadioButton android:id="@+id/questionFour_1"
+            <RadioButton android:id="@+id/questionFourJointlyGoal_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_1"
@@ -449,7 +459,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFour_2"
+            <RadioButton android:id="@+id/questionFourJointlyGoal_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_2"
@@ -460,7 +470,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFour_3"
+            <RadioButton android:id="@+id/questionFourJointlyGoal_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_3"
@@ -471,7 +481,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFour_4"
+            <RadioButton android:id="@+id/questionFourJointlyGoal_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_4"
@@ -482,7 +492,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFour_5"
+            <RadioButton android:id="@+id/questionFourJointlyGoal_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_5"
@@ -493,7 +503,7 @@
                 android:theme="@style/radioButtonStyleEvaluateArrangement"
                 android:button="@null"
                 android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFour_6"
+            <RadioButton android:id="@+id/questionFourJointlyGoal_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateArrangementSuggestion_6"

@@ -261,6 +261,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         // set textview for the next arrangement to evaluate
         TextView textViewNextArrangementEvaluateIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.arrangementNextToEvaluateIntroText);
         TextView textViewThankAndEvaluateNext = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateThankAndNextEvaluation);
+        TextView textViewBorderBetweenThankAndEvaluateNext = (TextView) viewFragmentEvaluate.findViewById(R.id.borderBetweenEvaluation1); // Border between Text and evaluation
         nextArrangementServerDbIdToEvaluate = 0;
         nextArrangementListPositionToEvaluate = 0;
         if (cursorNextArrangementToEvaluate != null) { // is there another arrangement to evaluate?
@@ -271,6 +272,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 if (cursorNextArrangementToEvaluate.getInt(cursorNextArrangementToEvaluate.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE)) == 1 && cursorNextArrangementToEvaluate.getInt(cursorNextArrangementToEvaluate.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)) != arrangementServerDbIdToEvaluate) { // evaluation possible for arrangement?
                     nextArrangementServerDbIdToEvaluate = cursorNextArrangementToEvaluate.getInt(cursorNextArrangementToEvaluate.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID));
                     nextArrangementListPositionToEvaluate = cursorNextArrangementToEvaluate.getPosition() + 1;
+                    cursorNextArrangementToEvaluate.moveToLast();
                 }
 
             } while (cursorNextArrangementToEvaluate.moveToNext());
@@ -286,6 +288,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
             // Show text "Danke fuer Bewertung und naechste bewerten"
             if (evaluateNextArrangement) {
                 textViewThankAndEvaluateNext.setVisibility(View.VISIBLE);
+                textViewBorderBetweenThankAndEvaluateNext.setVisibility(View.VISIBLE);
             }
 
         }
@@ -297,6 +300,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
             if (evaluateNextArrangement) {
                 textViewThankAndEvaluateNext.setText(this.getResources().getString(R.string.evaluateThankAndNextEvaluationLastText));
                 textViewThankAndEvaluateNext.setVisibility(View.VISIBLE);
+                textViewBorderBetweenThankAndEvaluateNext.setVisibility(View.VISIBLE);
             }
 
         }
@@ -425,6 +429,8 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     if (evaluateNextArrangement) {
                         TextView textViewThankAndEvaluateNext = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateThankAndNextEvaluation);
                         textViewThankAndEvaluateNext.setVisibility(View.GONE);
+                        TextView textViewBorderBetweenThankAndEvaluateNext = (TextView) viewFragmentEvaluate.findViewById(R.id.borderBetweenEvaluation1); // Border between Text and evaluation
+                        textViewBorderBetweenThankAndEvaluateNext.setVisibility(View.GONE);
                     }
                     // Toast "Evaluate not completly"
                     Toast.makeText(fragmentEvaluateContext, fragmentEvaluateContext.getResources().getString(R.string.evaluateResultNotCompletely), Toast.LENGTH_SHORT).show();

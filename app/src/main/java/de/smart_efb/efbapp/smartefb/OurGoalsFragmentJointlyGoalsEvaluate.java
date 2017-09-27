@@ -46,7 +46,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
     SharedPreferences prefs;
 
     // DB-Id of jointly goal to evaluate
-    int jointlyGoalDbIdToEvaluate = 0;
+    int jointlyGoalServerDbIdToEvaluate = 0;
 
     // jointly goal number in list view
     int jointlyGoalNumberInListView = 0;
@@ -109,7 +109,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         callGetterFunctionInSuper();
 
         // init the fragment evaluate only when an jointly goal is choosen
-        if (jointlyGoalDbIdToEvaluate != 0) {
+        if (jointlyGoalServerDbIdToEvaluate != 0) {
 
             // init the fragment now
             initFragmentEvaluate();
@@ -143,8 +143,8 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
                 // check intent order
                 String tmpExtraOurGoals = intentExtras.getString("OurGoals","0");
-                String tmpExtraOurGoalsNow = intentExtras.getString("OurGoalsNow","0");
-                String tmpExtraOurGoalsNowComment = intentExtras.getString("OurGoalsNowComment","0");
+                String tmpExtraOurGoalsNow = intentExtras.getString("OurGoalsJointlyNow","0");
+                String tmpExtraOurGoalsNowComment = intentExtras.getString("OurGoalsJointlyComment","0");
                 String tmpExtraOurGoalsSettings = intentExtras.getString("OurGoalsSettings","0");
                 String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsCommentShareEnable","0");
                 String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsCommentShareDisable","0");
@@ -217,7 +217,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         currentBlockIdOfJointlyGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0");
 
         // get choosen jointly goal
-        cursorChoosenJointlyGoal = myDb.getJointlyRowOurGoals(jointlyGoalDbIdToEvaluate);
+        cursorChoosenJointlyGoal = myDb.getJointlyRowOurGoals(jointlyGoalServerDbIdToEvaluate);
 
         // get all actual jointly goals
         cursorNextJointlyGoalToEvaluate = myDb.getAllJointlyRowsOurGoals(currentBlockIdOfJointlyGoals, "equalBlockId");
@@ -271,6 +271,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         // set textview for the next jointly goal to evaluate
         TextView textViewNextJointlyGoalEvaluateIntro = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.jointlyGoalNextToEvaluateIntroText);
         TextView textViewThankAndEvaluateNext = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.evaluateThankAndNextEvaluation);
+        TextView textViewBorderBetweenThankAndEvaluateNext = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.borderBetweenEvaluation1); // Border between Text and evaluation
         nextJointlyGoalDbIdToEvaluate = 0;
         nextJointlyGoalListPositionToEvaluate = 0;
         if (cursorNextJointlyGoalToEvaluate != null) { // is there another jointly goal to evaluate?
@@ -278,8 +279,8 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
             cursorNextJointlyGoalToEvaluate.moveToFirst();
             do {
 
-                if (cursorNextJointlyGoalToEvaluate.getInt(cursorNextJointlyGoalToEvaluate.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE)) == 1 && cursorNextJointlyGoalToEvaluate.getInt(cursorNextJointlyGoalToEvaluate.getColumnIndex(DBAdapter.KEY_ROWID)) != jointlyGoalDbIdToEvaluate) { // evaluation possible for jointly goal?
-                    nextJointlyGoalDbIdToEvaluate = cursorNextJointlyGoalToEvaluate.getInt(cursorNextJointlyGoalToEvaluate.getColumnIndex(DBAdapter.KEY_ROWID));
+                if (cursorNextJointlyGoalToEvaluate.getInt(cursorNextJointlyGoalToEvaluate.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE)) == 1 && cursorNextJointlyGoalToEvaluate.getInt(cursorNextJointlyGoalToEvaluate.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)) != jointlyGoalServerDbIdToEvaluate) { // evaluation possible for jointly goal?
+                    nextJointlyGoalDbIdToEvaluate = cursorNextJointlyGoalToEvaluate.getInt(cursorNextJointlyGoalToEvaluate.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID));
                     nextJointlyGoalListPositionToEvaluate = cursorNextJointlyGoalToEvaluate.getPosition() + 1;
                     cursorNextJointlyGoalToEvaluate.moveToLast();
                 }
@@ -288,17 +289,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
         }
 
-
-
-
-
-
-
-
-
-
-
-        // set textview textViewNextJointlyGoalEvaluateIntro
+      // set textview textViewNextJointlyGoalEvaluateIntro
         if (nextJointlyGoalDbIdToEvaluate != 0) { // with text: next jointly goal to evaluate
 
             textViewNextJointlyGoalEvaluateIntro.setText(String.format(this.getResources().getString(R.string.showNextJointlyGoalToEvaluateIntroText), nextJointlyGoalListPositionToEvaluate));
@@ -306,6 +297,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
             // Show text "Danke fuer Bewertung und naechste bewerten"
             if (evaluateNextJointlyGoal) {
                 textViewThankAndEvaluateNext.setVisibility(View.VISIBLE);
+                textViewBorderBetweenThankAndEvaluateNext.setVisibility(View.VISIBLE);
             }
 
         }
@@ -317,6 +309,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
             if (evaluateNextJointlyGoal) {
                 textViewThankAndEvaluateNext.setText(this.getResources().getString(R.string.evaluateThankAndNextEvaluationJointlyGoalLastText));
                 textViewThankAndEvaluateNext.setVisibility(View.VISIBLE);
+                textViewBorderBetweenThankAndEvaluateNext.setVisibility(View.VISIBLE);
             }
 
         }
@@ -398,10 +391,13 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 if (evaluateNoError) {
 
                     // insert evaluation result in DB
-                    Long tmpDbId = myDb.insertRowOurGoalsJointlyGoalEvaluate(jointlyGoalDbIdToEvaluate, prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), 0, prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), cursorChoosenJointlyGoal.getString(cursorChoosenJointlyGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID)));
+                    Long tmpDbId = myDb.insertRowOurGoalsJointlyGoalEvaluate(jointlyGoalServerDbIdToEvaluate, prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), 0, prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), cursorChoosenJointlyGoal.getString(cursorChoosenJointlyGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID)));
 
                     // delete status evaluation possible for jointly goal
-                    myDb.changeStatusEvaluationPossibleOurGoals(jointlyGoalDbIdToEvaluate, "delete");
+                    myDb.changeStatusEvaluationPossibleOurGoals(jointlyGoalServerDbIdToEvaluate, "delete");
+
+                    // change last evaluation time point for choosen goal
+                    myDb.setEvaluationTimePointForGoal(jointlyGoalServerDbIdToEvaluate);
 
 
                     // When last evaluation show toast, because textView is not visible -> new fragment
@@ -445,6 +441,8 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                     if (evaluateNextJointlyGoal) {
                         TextView textViewThankAndEvaluateNext = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.evaluateThankAndNextEvaluation);
                         textViewThankAndEvaluateNext.setVisibility(View.GONE);
+                        TextView textViewBorderBetweenThankAndEvaluateNext = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.borderBetweenEvaluation1);
+                        textViewBorderBetweenThankAndEvaluateNext.setVisibility(View.GONE);
                     }
                     // Toast "Evaluate not completly"
                     Toast.makeText(fragmentEvaluateJointlyGoalsContext, fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.evaluateJointlyGoalResultNotCompletely), Toast.LENGTH_SHORT).show();
@@ -583,7 +581,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         tmpJointlyGoalDbIdToComment = ((ActivityOurGoals)getActivity()).getJointlyGoalDbIdFromLink();
 
         if (tmpJointlyGoalDbIdToComment > 0) {
-            jointlyGoalDbIdToEvaluate = tmpJointlyGoalDbIdToComment;
+            jointlyGoalServerDbIdToEvaluate = tmpJointlyGoalDbIdToComment;
 
             // call getter-methode getJointlyGoalNumberInListview() in ActivityOurGoals to get listView-number for the actuale jointly goal
             jointlyGoalNumberInListView = ((ActivityOurGoals) getActivity()).getJointlyGoalNumberInListview();

@@ -84,7 +84,7 @@ public class AlarmReceiverOurGoals extends BroadcastReceiver {
                     // set intent -> next state evaluate
                     evaluateAlarmIntent.putExtra("evaluateState","evaluate");
                     // update table ourGoalsJointlyGoals in db -> evaluation enable
-                    myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()),"set");
+                    myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""),"set");
 
                     break;
                 case "evaluate": // alarm comes out of evaluate
@@ -94,7 +94,7 @@ public class AlarmReceiverOurGoals extends BroadcastReceiver {
                     // set intent -> next state pause
                     evaluateAlarmIntent.putExtra("evaluateState","pause");
                     // update table ourGoalsJointlyGoals in db -> evaluation disable
-                    myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()),"delete");
+                    myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""),"delete");
 
                     break;
                 default:
@@ -114,7 +114,7 @@ public class AlarmReceiverOurGoals extends BroadcastReceiver {
         }
         else { // delete alarm - it is out of time
             // update table ourGoals in db -> evaluation disable
-            myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()),"delete");
+            myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""),"delete");
 
             // create pending intent
             pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);

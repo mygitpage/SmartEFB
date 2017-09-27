@@ -97,9 +97,18 @@
             android:textColor="@color/text_accent_color"
             android:gravity="left"
             android:visibility="gone"
-            android:text="@string/evaluateThankAndNextEvaluationText"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"/>
+            android:text="@string/evaluateThankAndNextEvaluationText"/>
+
+        <TextView
+            android:id="@+id/borderBetweenEvaluation1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/questionOneEvaluate"

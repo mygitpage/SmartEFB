@@ -145,7 +145,6 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
                 String tmpExtraOurGoals = intentExtras.getString("OurGoals","0");
                 String tmpExtraOurGoalsNow = intentExtras.getString("OurGoalsJointlyNow","0");
                 String tmpExtraOurGoalsJointlyComment = intentExtras.getString("OurGoalsJointlyComment","0");
-
                 String tmpExtraOurGoalsSettings = intentExtras.getString("OurGoalsSettings","0");
                 String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsCommentShareEnable","0");
                 String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsCommentShareDisable","0");

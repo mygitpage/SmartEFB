@@ -838,7 +838,7 @@ public class ActivityOurGoals extends AppCompatActivity {
             } while (calendar.getTimeInMillis() < tmpSystemTimeInMills);
 
             // update table ourGoals in db -> set or delete
-            myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()),tmpChangeDbEvaluationStatus);
+            //myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""),tmpChangeDbEvaluationStatus);
 
             // put extras to intent -> "evaluate" or "delete"
             evaluateAlarmIntent.putExtra("evaluateState",tmpIntentExtra);
@@ -857,7 +857,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         else { // delete alarm - it is out of time
 
             // update table ourGoals in db -> evaluation disable
-            myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()),"delete");
+            myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""),"delete");
             // crealte pending intent
             pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(ActivityOurGoals.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             // delete alarm

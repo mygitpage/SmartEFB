@@ -99,10 +99,6 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-
-            // TODO: text für die Toasts anpassen!!!!!!!!!!!!!!!!!
-
-
             // Extras from intent that holds data
             Bundle intentExtras = null;
 
@@ -115,15 +111,15 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                 // check intent order
 
                 String tmpExtraOurGoals = intentExtras.getString("OurGoals","0");
-                String tmpExtraOurGoalsNow = intentExtras.getString("OurGoalsNow","0");
-                String tmpExtraOurGoalsNowComment = intentExtras.getString("OurGoalsNowComment","0");
+                String tmpExtraOurGoalsNow = intentExtras.getString("OurGoalsJointlyNow","0");
+                String tmpExtraOurGoalsNowComment = intentExtras.getString("OurGoalsJointlyComment","0");
                 String tmpExtraOurGoalsSettings = intentExtras.getString("OurGoalsSettings","0");
                 String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsCommentShareEnable","0");
                 String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsCommentShareDisable","0");
                 String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsCommentCountComment","0");
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
-                String tmpUpdateEvaluationLink = intentExtras.getString("UpdateEvaluationLink");
+                String tmpUpdateEvaluationLink = intentExtras.getString("UpdateJointlyEvaluationLink");
                 String tmpMessage = intentExtras.getString("Message");
 
                 if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNow != null && tmpExtraOurGoalsNow.equals("1")) {
@@ -190,7 +186,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
 
                 }
                 else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
-                    // evaluationperiod hass change -> update view
+                    // evaluationperiod has change -> update view
 
                     updateListView = true;
 

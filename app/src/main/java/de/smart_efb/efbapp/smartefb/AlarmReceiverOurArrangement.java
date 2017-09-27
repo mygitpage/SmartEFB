@@ -85,7 +85,7 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
                     // set intent -> next state evaluate
                     evaluateAlarmIntent.putExtra("evaluateState","evaluate");
                     // update table ourArrangement in db -> evaluation enable
-                    myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()),"set");
+                    myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""),"set");
 
                     break;
                 case "evaluate": // alarm comes out of evaluate
@@ -95,7 +95,7 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
                     // set intent -> next state pause
                     evaluateAlarmIntent.putExtra("evaluateState","pause");
                     // update table ourArrangement in db -> evaluation disable
-                    myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()),"delete");
+                    myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""),"delete");
 
                     break;
                 default:
@@ -116,7 +116,7 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
         else { // delete alarm - it is out of time
 
             // update table ourArrangement in db -> evaluation disable
-            myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()),"delete");
+            myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""),"delete");
 
             // crealte pending intent
             pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);

@@ -827,7 +827,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
             } while (calendar.getTimeInMillis() < tmpSystemTimeInMills);
 
             // update table ourArrangement in db -> set or delete
-            myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()),tmpChangeDbEvaluationStatus);
+            myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""),tmpChangeDbEvaluationStatus);
 
             // put extras to intent -> "evaluate" or "delete"
             evaluateAlarmIntent.putExtra("evaluateState",tmpIntentExtra);
@@ -849,7 +849,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
             // update table ourArrangement in db -> evaluation disable
-            myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()),"delete");
+            myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""),"delete");
             // create pending intent
             pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(ActivityOurArrangement.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             // delete alarm
