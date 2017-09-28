@@ -292,17 +292,15 @@ public class OurArrangementFragmentSketch  extends Fragment {
     // set visibility of listViewOurArrangement
     private void setVisibilityListViewSketchArrangements (String visibility) {
 
-        ListView tmplistView = (ListView) viewFragmentSketch.findViewById(R.id.listOurArrangementSketch);
-
-        if (tmplistView != null) {
+        if (listViewSketchArrangement != null) {
 
             switch (visibility) {
 
                 case "show":
-                    tmplistView.setVisibility(View.VISIBLE);
+                    listViewSketchArrangement.setVisibility(View.VISIBLE);
                     break;
                 case "hide":
-                    tmplistView.setVisibility(View.GONE);
+                    listViewSketchArrangement.setVisibility(View.GONE);
                     break;
 
             }

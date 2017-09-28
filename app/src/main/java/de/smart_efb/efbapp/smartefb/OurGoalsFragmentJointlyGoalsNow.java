@@ -93,7 +93,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
     }
 
 
-    // Broadcast receiver for action GOALS_EVALUATE_STATUS_UPDATE -> comes from alarmmanager ourGoals
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
     private BroadcastReceiver ourGoalsFragmentJointlyGoalsNowBrodcastReceiver = new BroadcastReceiver() {
 
         @Override

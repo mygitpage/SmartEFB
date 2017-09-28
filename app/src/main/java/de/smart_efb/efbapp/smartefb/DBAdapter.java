@@ -1537,14 +1537,14 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return debetable goals from the database (table ourGoals)
     // the result is sorted by DESC
-    public Cursor getAllDebetableRowsOurGoals(long currentDateOfGoals) {
+    public Cursor getAllDebetableRowsOurGoals(String blockId) {
 
         String where = "";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         // get only debetable goals
-        where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=1 AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + "=" + currentDateOfGoals;;
+        where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=1 AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID + "=" + blockId;;
 
         // sort string
         String sort = KEY_ROWID + " DESC";

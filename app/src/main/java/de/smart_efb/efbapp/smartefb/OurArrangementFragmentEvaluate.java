@@ -388,6 +388,9 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     // delete status evaluation possible for arrangement
                     myDb.changeStatusEvaluationPossibleOurArrangement(arrangementServerDbIdToEvaluate, "delete");
 
+                    // change last evaluation time point for choosen goal
+                    myDb.setEvaluationTimePointForArrangement(arrangementServerDbIdToEvaluate);
+
                     // When last evaluation show toast, because textView is not visible -> new fragment
                     if (nextArrangementServerDbIdToEvaluate == 0 ) {
                         Toast.makeText(fragmentEvaluateContext, fragmentEvaluateContext.getResources().getString(R.string.evaluateResultSuccsesfulySend), Toast.LENGTH_SHORT).show();

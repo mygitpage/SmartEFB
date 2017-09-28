@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,6 +50,9 @@ public class ActivityOurGoals extends AppCompatActivity {
 
     // the current date of jointly goals -> the other are old (look at tab old)
     long currentDateOfJointlyGoals;
+
+    // block id of current jointly goals
+    String currentBlockIdOfJointlyGoals = "";
 
     // the current date of debetable goals
     long getCurrentDateOfDebetableGoals;
@@ -443,6 +447,8 @@ public class ActivityOurGoals extends AppCompatActivity {
         currentDateOfJointlyGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis());
         //get date of debetable goals
         getCurrentDateOfDebetableGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis());
+        // get current block id of jointly goals
+        currentBlockIdOfJointlyGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "");
 
         // init show on tab zero jointly goals now
         showCommandFragmentTabZero = "show_jointly_goals_now";
@@ -512,7 +518,7 @@ public class ActivityOurGoals extends AppCompatActivity {
 
                 // show the settings for comment (like on/off-status, count comment...)
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsJointlyGoalsSettingsComment);
-                String tmpTxtComment, tmpTxtComment1, tmpTxtComment2, tmpTxtComment3, tmpTxtCommentSum;
+                String tmpTxtComment, tmpTxtComment1, tmpTxtComment2, tmpTxtComment3, tmpTxtComment4, tmpTxtCommentSum;
 
                 if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, false)) {
 
@@ -553,16 +559,36 @@ public class ActivityOurGoals extends AppCompatActivity {
                         tmpTxtComment3 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentMaxLetters);
                         tmpTxtComment3 = String.format(tmpTxtComment3, prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyLetters,0));
 
-
+                        // show delaytime for comments
+                        switch (prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentDelaytime, 0)) {
+                            case 0:
+                                tmpTxtComment4 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimeNoDelay);
+                                break;
+                            case 1:
+                                tmpTxtComment4 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimeSingular);
+                                break;
+                            default:
+                                tmpTxtComment4 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimePlural);
+                                tmpTxtComment4 = String.format(tmpTxtComment4, prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentDelaytime,0));
+                                break;
+                        }
                     }
                     else {
                         tmpTxtComment2 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberOff);
+                        tmpTxtComment2 = String.format(tmpTxtComment2, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, System.currentTimeMillis()), "dd.MM.yyyy"));
                         tmpTxtComment3 = "";
+                        tmpTxtComment4 = "";
                     }
 
-                    tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2 + tmpTxtComment3;
+                    tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2 + tmpTxtComment3 + tmpTxtComment4;
 
                     tmpdialogTextView.setText(tmpTxtCommentSum);
+
+                    // check comment sharing disable/ enable -> in case of disable -> show text
+                    if (prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentShare, 0) != 1) {
+                        TextView tmpdialogTextViewNoSharing = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsCommentSharingDisable);
+                        tmpdialogTextViewNoSharing.setVisibility(View.VISIBLE);
+                    }
                 }
                 else {
                     tmpTxtComment = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsJointlyGoalsSettingsCommentDisable);
@@ -583,7 +609,7 @@ public class ActivityOurGoals extends AppCompatActivity {
 
                 // show the settings for debetable goals
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsDebetableGoalsSettings);
-                String tmpTxtDebetablGoalSum, tmpTxtDebetableGoal, tmpTxtDebetableGoal1, tmpTxtDebetableGoal2, tmpTxtDebetableGoal3, tmpTxtDebetableGoal4;
+                String tmpTxtDebetablGoalSum, tmpTxtDebetableGoal, tmpTxtDebetableGoal1, tmpTxtDebetableGoal2, tmpTxtDebetableGoal3, tmpTxtDebetableGoal4, tmpTxtDebetableGoal5;
                 if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false)) {
 
                     tmpTxtDebetableGoal = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsEnable);
@@ -593,9 +619,6 @@ public class ActivityOurGoals extends AppCompatActivity {
                     if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentDebetableGoals, false)) {
 
                         tmpTxtDebetableGoal1 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentEnable);
-
-
-
 
                         if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment,0) < ConstansClassOurGoals.commentLimitationBorder) { // write infinitely debetable goal comments?
 
@@ -633,10 +656,27 @@ public class ActivityOurGoals extends AppCompatActivity {
                             tmpTxtDebetableGoal4 = String.format(tmpTxtDebetableGoal4, prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableLetters,0));
 
 
+                            // show delaytime for comments
+                            switch (prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentDelaytime, 0)) {
+                                case 0:
+                                    tmpTxtDebetableGoal5 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimeNoDelay);
+                                    break;
+                                case 1:
+                                    tmpTxtDebetableGoal5 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimeSingular);
+                                    break;
+                                default:
+                                    tmpTxtDebetableGoal5 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimePlural);
+                                    tmpTxtDebetableGoal5 = String.format(tmpTxtDebetableGoal5, prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentDelaytime,0));
+                                    break;
+                            }
+
+
                         }
                         else {
                             tmpTxtDebetableGoal3 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentNumberOff);
+                            tmpTxtDebetableGoal3 = String.format(tmpTxtDebetableGoal3, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsDebetableCommentTimeSinceInMills, System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment,0));
                             tmpTxtDebetableGoal4 = "";
+                            tmpTxtDebetableGoal5 = "";
                         }
                     }
                     else {
@@ -644,9 +684,16 @@ public class ActivityOurGoals extends AppCompatActivity {
                         tmpTxtDebetableGoal2 = "";
                         tmpTxtDebetableGoal3 = "";
                         tmpTxtDebetableGoal4 = "";
+                        tmpTxtDebetableGoal5 = "";
                     }
-                    tmpTxtDebetablGoalSum = tmpTxtDebetableGoal + " " + tmpTxtDebetableGoal1 + " " + tmpTxtDebetableGoal2 + " " + tmpTxtDebetableGoal3 + tmpTxtDebetableGoal4;
+                    tmpTxtDebetablGoalSum = tmpTxtDebetableGoal + " " + tmpTxtDebetableGoal1 + " " + tmpTxtDebetableGoal2 + " " + tmpTxtDebetableGoal3 + tmpTxtDebetableGoal4 + tmpTxtDebetableGoal5;
 
+                    // check debetable comment sharing disable/ enable -> in case of disable -> show text
+                    if (prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentShare, 0) != 1) {
+                        TextView tmpdialogTextViewNoSharing = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsDebetableGoalsCommentSharingDisable);
+                        tmpdialogTextViewNoSharing.setVisibility(View.VISIBLE);
+
+                    }
                 }
                 else {
                     tmpTxtDebetableGoal = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsDisable);
@@ -797,73 +844,97 @@ public class ActivityOurGoals extends AppCompatActivity {
 
         PendingIntent pendingIntentOurGoalsEvaluate;
 
-        // get reference to alarm manager
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        // get all jointly goals with the same block id
+        Cursor cursor = myDb.getAllJointlyRowsOurGoals(currentBlockIdOfJointlyGoals, "equalBlockId");
 
-        // create intent for backcall to broadcast receiver
-        Intent evaluateAlarmIntent = new Intent(ActivityOurGoals.this, AlarmReceiverOurGoals.class);
+        if (cursor.getCount() > 0) {
 
-        // get start time and end time for evaluation
-        Long startEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
-        Long endEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
+            // get reference to alarm manager
+            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        // get evaluate pause time and active time in seconds
-        evaluatePauseTime = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, ConstansClassOurGoals.defaultTimeForActiveAndPauseEvaluationJointlyGoals); // default value 43200 is 12 hours
-        evaluateActivTime = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, ConstansClassOurGoals.defaultTimeForActiveAndPauseEvaluationJointlyGoals); // default value 43200 is 12 hours
+            // create intent for backcall to broadcast receiver
+            Intent evaluateAlarmIntent = new Intent(ActivityOurGoals.this, AlarmReceiverOurGoals.class);
 
-        Long tmpSystemTimeInMills = System.currentTimeMillis();
-        int tmpEvalutePaAcTime = evaluateActivTime * 1000;
-        String tmpIntentExtra = "evaluate";
-        String tmpChangeDbEvaluationStatus = "set";
+            // get start time and end time for evaluation
+            Long startEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
+            Long endEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
 
-        // get calendar and init
-        Calendar calendar = Calendar.getInstance();
+            // get evaluate pause time and active time in seconds
+            evaluatePauseTime = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, ConstansClassOurGoals.defaultTimeForActiveAndPauseEvaluationJointlyGoals); // default value 43200 is 12 hours
+            evaluateActivTime = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, ConstansClassOurGoals.defaultTimeForActiveAndPauseEvaluationJointlyGoals); // default value 43200 is 12 hours
 
-        // set alarm manager when current time is between start date and end date and evaluation is enable
-        if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
+            Long tmpSystemTimeInMills = System.currentTimeMillis();
+            int tmpEvalutePaAcTime = evaluateActivTime * 1000;
+            String tmpIntentExtra = "evaluate";
+            String tmpChangeDbEvaluationStatus = "set";
+            Long tmpStartPeriod = 0L;
 
-            calendar.setTimeInMillis(startEvaluationDate);
+            // get calendar and init
+            Calendar calendar = Calendar.getInstance();
 
-            do {
-                calendar.add(Calendar.SECOND, evaluateActivTime);
-                tmpIntentExtra = "evaluate";
-                tmpChangeDbEvaluationStatus = "set";
-                tmpEvalutePaAcTime = evaluateActivTime * 1000; // make mills-seconds
-                if (calendar.getTimeInMillis() < tmpSystemTimeInMills) {
-                    calendar.add(Calendar.SECOND, evaluatePauseTime);
-                    tmpIntentExtra = "pause";
-                    tmpChangeDbEvaluationStatus = "delete";
-                    tmpEvalutePaAcTime = evaluatePauseTime * 1000; // make mills-seconds
+            // set alarm manager when current time is between start date and end date and evaluation is enable
+            if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
+
+                calendar.setTimeInMillis(startEvaluationDate);
+
+                do {
+                    tmpStartPeriod = calendar.getTimeInMillis();
+                    calendar.add(Calendar.SECOND, evaluateActivTime);
+                    tmpIntentExtra = "evaluate";
+                    tmpChangeDbEvaluationStatus = "set";
+                    tmpEvalutePaAcTime = evaluateActivTime * 1000; // make mills-seconds
+                    if (calendar.getTimeInMillis() < tmpSystemTimeInMills) {
+                        tmpStartPeriod = calendar.getTimeInMillis();
+                        calendar.add(Calendar.SECOND, evaluatePauseTime);
+                        tmpIntentExtra = "pause";
+                        tmpChangeDbEvaluationStatus = "delete";
+                        tmpEvalutePaAcTime = evaluatePauseTime * 1000; // make mills-seconds
+                    }
+                } while (calendar.getTimeInMillis() < tmpSystemTimeInMills);
+
+                if (tmpChangeDbEvaluationStatus.equals("delete")) {
+                    // update table ourGoals in db -> delete evaluation possible
+                    myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""), "delete");
+                } else {
+
+                    if (cursor != null) {
+
+                        cursor.moveToFirst();
+
+                        do {
+
+                            if (tmpStartPeriod > cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME))) {
+                                myDb.changeStatusEvaluationPossibleOurGoals(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)), "set");
+                            } else {
+                                myDb.changeStatusEvaluationPossibleOurGoals(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)), "delete");
+                            }
+                        } while (cursor.moveToNext());
+                    }
                 }
-            } while (calendar.getTimeInMillis() < tmpSystemTimeInMills);
 
-            // update table ourGoals in db -> set or delete
-            //myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""),tmpChangeDbEvaluationStatus);
+                // put extras to intent -> "evaluate" or "delete"
+                evaluateAlarmIntent.putExtra("evaluateState", tmpIntentExtra);
 
-            // put extras to intent -> "evaluate" or "delete"
-            evaluateAlarmIntent.putExtra("evaluateState",tmpIntentExtra);
+                // create call (pending intent) for alarm manager
+                pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(ActivityOurGoals.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            // create call (pending intent) for alarm manager
-            pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(ActivityOurGoals.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                // set new start point for evaluation timer in view fragment now for evaluation link
+                prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, (calendar.getTimeInMillis() - tmpEvalutePaAcTime));
+                prefsEditor.commit();
 
-            // set new start point for evaluation timer in view fragment now for evaluation link
-            prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, (calendar.getTimeInMillis()-tmpEvalutePaAcTime));
-            prefsEditor.commit();
+                // set alarm
+                manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurGoalsEvaluate);
 
-            // set alarm
-            manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurGoalsEvaluate);
+            } else { // delete alarm - it is out of time
 
+                // update table ourGoals in db -> evaluation disable
+                myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""), "delete");
+                // crealte pending intent
+                pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(ActivityOurGoals.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                // delete alarm
+                manager.cancel(pendingIntentOurGoalsEvaluate);
+            }
         }
-        else { // delete alarm - it is out of time
-
-            // update table ourGoals in db -> evaluation disable
-            myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""),"delete");
-            // crealte pending intent
-            pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(ActivityOurGoals.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-            // delete alarm
-            manager.cancel(pendingIntentOurGoalsEvaluate);
-        }
-
     }
 
 
@@ -1049,7 +1120,7 @@ public class ActivityOurGoals extends AppCompatActivity {
                 textViewGoals.setText(infoTextForChange);
                 break;
 
-            case "jointlyDebetable": // // dialog for update joontly and debetable goals
+            case "jointlyDebetable": // // dialog for update jointly and debetable goals
                 // get string ressources
                 tmpTextCloseDialog = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsChangeCloseButton);
                 tmpTextTitleDialog = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableJointlyGoalsChangeHeadline);

@@ -429,9 +429,13 @@
             <string name="showJointlyGoalTextNumber">Gemeinsames Ziel</string>
             <string name="newEntryTextOurGoal">(Neu)</string>
             <string name="toastMessageCommentJointlyGoalsNewComments">Es sind neue Kommentare eingetroffen!</string>
+    <string name="toastMessageCommentDebetableGoalsNewComments">Es sind neue Einschätzungen eingetroffen!</string>
             <string name="toastMessageJointlyGoalsResetCommentCountComment">Der Kommentarzähler wurde von Ihrer Beraterin/ Ihrem Berater auf Null zurückgesetzt!</string>
+    <string name="toastMessageDebetableGoalsResetCommentCountComment">Der Einschätzungszähler wurde von Ihrer Beraterin/ Ihrem Berater auf Null zurückgesetzt!</string>
             <string name="toastMessageJointlyGoalsCommentShareDisable">Die Zustellung der Kommentare wurde von Ihrer Beraterin/ Ihrem Berater unterbrochen!</string>
+    <string name="toastMessageDebetableGoalsCommentShareDisable">Die Zustellung der Einschätzungen wurde von Ihrer Beraterin/ Ihrem Berater unterbrochen!</string>
             <string name="toastMessageJointlyGoalsCommentShareEnable">Die Zustellung der Kommentare findet wieder statt!</string>
+    <string name="toastMessageDebetableGoalsCommentShareEnable">Die Zustellung der Einschätzungen findet wieder statt!</string>
             <string name="toastMessageJointlyGoalsEvaluationSendSuccessfull">Die Bewertung wurde zum Server gesendet!</string>
 
 
@@ -464,7 +468,16 @@
             <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberPlural">Seit dem %1$s haben Sie %2$d Kommentare geschrieben.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Kommentare geschrieben.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsCommentMaxLetters">\nDer Kommentartext darf maximal %1$d Zeichen lang sein.</string>
-            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDisable">Sie können keine gemeinsamen Ziele kommentieren.</string>
+
+
+    <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimeNoDelay">\nDie Kommentare werden ohne Verzögerungszeit zugestellt (sofern eine Internetverbindung besteht).</string>
+    <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimeSingular">\nDie Kommentare werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
+    <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimePlural">\nDie Kommentare werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
+
+
+
+
+    <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDisable">Sie können keine gemeinsamen Ziele kommentieren.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsOldEnable">Ihnen stehen die älteren gemeinsamen Ziele zur Verfügung.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsOldDisable">Ihnen stehen die älteren gemeinsamen Ziele nicht zur Verfügung.</string>
             <string name="textDialogOurGoalsDebetableGoalsEnable">Ihnen steht die Ansicht der strittigen Ziele zur Verfügung.</string>
@@ -479,7 +492,13 @@
             <string name="textDialogOurGoalsDebetableGoalsSettingsCommentNumberNumberPlural">Seit dem %1$s haben Sie %2$d Einschätzungen geschrieben.</string>
             <string name="textDialogOurGoalsDebetableGoalsSettingsCommentNumberOff">Seit dem %1$s haben Sie alle möglichen Einschätzungen geschrieben.</string>
             <string name="textDialogOurGoalsDebetableGoalsSettingsCommentMaxLetters">\nDer Kommentartext darf maximal %1$d Zeichen lang sein.</string>
-        <!-- end our goals dialog settings -->
+
+    <string name="textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimeNoDelay">\nDie Einschätzungen werden ohne Verzögerungszeit zugestellt (sofern eine Internetverbindung besteht).</string>
+    <string name="textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimeSingular">\nDie Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
+    <string name="textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimePlural">\nDie Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
+
+
+    <!-- end our goals dialog settings -->
 
 
         <!-- fragment show current jointly goals now -->
@@ -627,6 +646,10 @@
             <string name="evaluateDebetableGoalSuggestion_4">Wenig</string>
             <string name="evaluateDebetableGoalSuggestion_5">Keine</string>
             <string name="textDebetableGoalCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum strittigen Ziel abgegeben: %1$s</string>
+
+    <string name="textOurGoalsDebetableGoalsCommentNoSharing">Die Einschätzungen werden im Moment nicht zugestellt!</string>
+
+
         <!-- End fragment debetable goals comment -->
 
 
