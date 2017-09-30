@@ -192,7 +192,7 @@
 
     <!-- Our Goals count comments -->
     <string-array name="ourGoalsDebetableGoalsCountAssessments">
-        <item>Keine Kommentare</item>
+        <item>Keine Kommentare vorhanden</item>
         <item>1 Einschätzung vorhanden</item>
         <item>2 Einschätzungen vorhanden</item>
         <item>3 Einschätzungen vorhanden</item>

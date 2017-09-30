@@ -36,7 +36,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
 
-    // the date of sketch arrangement
+    // the date of debetable goal
     long currentDateOfDebetableGoal;
 
     // block id of current debetable goals
@@ -291,7 +291,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
     }
 
 
-    // set visibility of listViewOurArrangement
+    // set visibility of listViewOurGoals
     private void setVisibilityListViewDebetableGoalsNow (String visibility) {
 
         if (listViewDebetableGoals != null) {

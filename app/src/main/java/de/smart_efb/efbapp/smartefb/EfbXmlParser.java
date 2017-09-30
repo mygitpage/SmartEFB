@@ -2416,7 +2416,7 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get order text
                                 if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
                                     tmpOrder = xpp.getText().trim();
-                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
                                         error = true;
                                         tmpOrder = "";
                                     }
@@ -2488,7 +2488,7 @@ public class EfbXmlParser {
                             break;
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_JointlyDebetable:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get jointlyDebetable text, only 0 is possible because 1 is debetable goal, look readOurGoalsTag_DebetableNow()
+                            if (eventType == XmlPullParser.TEXT) {
                                 if (xpp.getText().trim().length() > 0) { // check if jointlyDebetable from xml > 0
                                     if (xpp.getText().trim().equals("jointly")) { // goal is a jointly goal?
                                         tmpJointlyDebetable = false;
@@ -3174,7 +3174,7 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get order text
                                 if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
                                     tmpOrder = xpp.getText().trim();
-                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
                                         error = true;
                                         tmpOrder = "";
                                     }
@@ -3213,6 +3213,9 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get authorName text
                                 if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
                                     tmpDebetableAuthorName = xpp.getText().trim();
+
+                                    Log.d("Ddebetable Goals", "Goal Author Name:" + tmpDebetableAuthorName);
+
                                 }
                                 else {
                                     error = true;
@@ -3228,6 +3231,9 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get goalTime text
                                 if (xpp.getText().trim().length() > 0) { // check if goalTime from xml > 0
                                     tmpDebetableGoalTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("Ddebetable Goals", "Goal Time:" + tmpDebetableGoalTime);
+
                                 }
                                 else {
                                     error = true;
@@ -3240,10 +3246,20 @@ public class EfbXmlParser {
                             break;
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_JointlyDebetable:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get jointlyDebetable text, only 1 is possible because 0 is jointly goal, look readOurGoalsTag_DebetableNow()
+                            if (eventType == XmlPullParser.TEXT) {
                                 if (xpp.getText().trim().length() > 0) { // check if jointlyDebetable from xml > 0
-                                    if (xpp.getText().trim().equals("1")) { // goal is a debetable goal?
+                                    if (xpp.getText().trim().equals("debetable")) { // goal is a debetable goal?
                                         tmpJointlyDebetable = true;
+
+                                        if (tmpJointlyDebetable) {
+                                            Log.d("Ddebetable Goals", "Goal Debe/Joint?: Mit True");
+                                        }
+                                        else {
+                                            Log.d("Ddebetable Goals", "Goal Debe/Joint?: Mit Flase");
+                                        }
+
+
+
                                     } else {
                                         error = true;
                                     }
@@ -3279,6 +3295,10 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get BlockId text
                                 if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
                                     tmpBlockId = xpp.getText().trim();
+
+                                    Log.d("Debetable Goals", "Block ID:" + tmpBlockId);
+
+
                                 } else {
                                     error = true;
                                 }
@@ -3292,6 +3312,9 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get server id text
                                 if (xpp.getText().trim().length() > 0) { // check if server id from xml > 0
                                     tmpServerId = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
+
+                                    Log.d("Debetable Goals", "Server ID:" + tmpServerId);
+
                                 } else {
                                     error = true;
                                 }
@@ -3325,6 +3348,10 @@ public class EfbXmlParser {
 
                             // our goal order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpDebetableGoalText.length() > 0 && tmpDebetableAuthorName.length() > 0 && tmpDebetableGoalTime > 0 && tmpServerId > 0 && tmpBlockId.length() > 0 && tmpChangeTo.length() > 0) {
+
+
+                                Log.d("Debetable write new"," +++++ Es wird geschrieben!!!!!");
+
                                 // insert new debetable goal in DB
                                 myDb.insertRowOurGoals(tmpDebetableGoalText, tmpDebetableAuthorName, 0, true, tmpJointlyDebetable, tmpDebetableGoalTime, 4, tmpServerId, tmpBlockId, tmpChangeTo);
 
@@ -3356,6 +3383,10 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpServerId > 0 && tmpBlockId.length() > 0 && tmpDebetableGoalText.length() > 0 && tmpDebetableAuthorName.length() > 0 && tmpDebetableGoalTime > 0) { // our goal order -> update entry?
 
+
+                                Log.d("-- In write update"," +++++ Es wird updated!!!!!");
+
+
                                 // update goal in DB
                                 myDb.updateRowOurGoals(tmpDebetableGoalText, tmpDebetableAuthorName, 0, true, tmpJointlyDebetable, tmpDebetableGoalTime, 4,  tmpServerId, tmpBlockId);
 
@@ -3365,7 +3396,7 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
 
-                                Log.d("Jointly Goals", "Delete All!!!");
+                                Log.d("Debetable Goals", "Delete All!!!");
 
                                 // delete all jointly goals with the blockId
                                 myDb.deleteAllRowsOurGoals(tmpBlockId, true); // false -> all jointly goals; true -> all debetable goals

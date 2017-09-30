@@ -618,8 +618,20 @@
                 <string name="ourGoalsDebetableGoalsFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
                 <string name="ourGoalsDebetableGoalsIntroText">%1$s hat am %2$s folgende strittigen Ziele eingestellt.</string>
                 <string name="showDebetableGoalNumberText">Strittiges Ziel</string>
-                <string name="ourGoalsDebetableGoalsAssessmentsString">Kommentieren</string>
-        <!-- End Fragment debetable goals now -->
+                <string name="ourGoalsDebetableGoalsAssessmentsString">Strittiges Ziel einschätzen</string>
+
+    <string name="ourGoalsDebetableGoalsIntroTextPlural">Ihre BeraterInnen haben am %1$s folgende strittigen Ziele eingestellt.</string>
+
+    <string name="ourGoalsDebetableGoalsIntroTextChangeTo">Ihre BeraterInnen haben am %1s die folgenden strittigen Ziele, vielleicht mit einigen Änderungen, als gemeinsame Ziele gespeichert.</string>
+
+    <string name="ourGoalsDebetableGoalsAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
+
+    <string name="infoTextNumberOfDebetableCommentsPossiblePlural">(%1$d verbleiben)</string>
+    <string name="infoTextNumberOfDebetableCommentsPossibleSingular">(%1$d verbleibt)</string>
+    <string name="infoTextNumberOfDebetableCommentsPossibleNoMore">(Alle aufgebraucht)</string>
+    <string name="infoTextNumberOfDebetableCommentsPossibleNoBorder">(Keine Begrenzung)</string>
+
+    <!-- End Fragment debetable goals now -->
 
         <!-- fragment debetable goals comment-->
             <string name="showDebetableGoalsIntroText">Strittiges Ziel</string>

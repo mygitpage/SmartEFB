@@ -1547,7 +1547,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=1 AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID + "=" + blockId;;
 
         // sort string
-        String sort = KEY_ROWID + " DESC";
+        String sort = KEY_ROWID + " ASC";
 
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS,
                 where, null, null, null, sort, null);
@@ -1578,11 +1578,11 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get a specific debetable row from the goals (by rowId)
-    public Cursor getDebetableRowOurGoals(int rowId) {
+    public Cursor getDebetableRowOurGoals(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=1 AND " + KEY_ROWID + "=" + rowId;
+        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=1 AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID + "=" + serverId;
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS,
                 where, null, null, null, null, null);
 
@@ -2054,7 +2054,6 @@ public class DBAdapter extends SQLiteOpenHelper {
     public Cursor getAllRowsOurGoalsDebetableGoalsComment(int serverGoalId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-
 
         // data filter
         String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID + "=" + serverGoalId;
