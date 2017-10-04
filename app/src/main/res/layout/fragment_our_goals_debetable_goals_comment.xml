@@ -15,31 +15,41 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
+
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="5dp">
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style">
 
-            <TextView
-                android:id="@+id/debetableGoalCommentNumberIntro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/text_color"
-                android:gravity="left"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/debetableGoalShowCommentBackLinkNow"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
-                android:textColor="@color/text_color"
-                android:textColorLink="@color/colorPrimary"
-                android:gravity="right"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/debetableGoalCommentNumberIntro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="3dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textAuthorName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
 
         </LinearLayout>
+
 
         <TextView
             android:id="@+id/choosenDebetableGoal"
@@ -48,15 +58,159 @@
             android:textSize="16dp"
             android:textColor="@color/text_color"
             android:gravity="left"
-            android:paddingLeft="10dp"
-            android:paddingBottom="5dp"/>
+            android:paddingLeft="10dp"/>
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/debetableGoalShowCommentBackLinkNow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/text_color"
+                android:textColorLink="@color/colorPrimary"
+                android:gravity="right"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/borderBetweenGoal1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/commentSharingIsDisable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/textOurGoalsJointlyCommentNoSharing"
+            android:textSize="14dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/lastActualDebetableCommentInfoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="3dp"/>
+
+                <TextView
+                    android:id="@+id/lastActualDebetableCommentNewInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/text_accent_color"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textAuthorNameLastActualDebetableComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
+
+            <TextView
+                android:id="@+id/textSendInfoLastActualDebetableComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:paddingBottom="5dp"
+                android:layout_marginLeft="3dp"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/assessementValueForDebetablComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"/>
+
+        <TextView
+            android:id="@+id/lastActualDebetableCommentText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/text_color"
+            android:gravity="left"
+            android:paddingLeft="10dp"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/commentLinkToShowAllDebetableComments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/text_color"
+                android:textColorLink="@color/colorPrimary"
+                android:gravity="right"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/borderBetweenGoal2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"/>
+
+
+
+
+
 
         <TextView
             android:id="@+id/introStructQuestionForCommentDebetableGoal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
             android:text="@string/introStructQuestionForCommentDdebetableGoal"
@@ -73,24 +227,21 @@
             android:text="@string/errorStructQuestionForCommentDebetableGoal"
             android:paddingBottom="5dp"/>
 
-
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/radioGroupStructQuestionForCommentDebetableGoal"
+            android:id="@+id/radioGroupStructQuestionForCommenttDebetableGoal"
             android:layout_gravity="center"
             android:padding="5dp"
             android:gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:background="@drawable/app_radiogroup_style">
 
             <RadioButton android:id="@+id/structQuestionOne_Answer1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateDebetableGoalSuggestion_1"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -101,7 +252,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateDebetableGoalSuggestion_2"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -112,7 +263,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateDebetableGoalSuggestion_3"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -123,7 +274,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateDebetableGoalSuggestion_4"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -134,7 +285,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/evaluateDebetableGoalSuggestion_5"
-                android:textColor="@color/text_color_white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="12dp"
                 android:gravity="center"
                 android:drawableTop="?android:attr/listChoiceIndicatorSingle"
@@ -145,52 +296,39 @@
         </RadioGroup>
 
         <TextView
-            android:id="@+id/introFreeQuestionForCommentDebetableGoal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/text_color"
-            android:gravity="left"
-            android:textStyle="bold"
-            android:text="@string/introFreeQuestionForCommentDebetableGoal"
-            android:paddingTop="20dp"
-            android:paddingBottom="5dp"/>
-
-        <TextView
-            android:id="@+id/errorFreeQuestionForCommentDebetableGoal"
+            android:id="@+id/errorInputJointlyGoalComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/text_accent_color"
             android:gravity="left"
             android:visibility="gone"
-            android:text="@string/errorFreeQuestionForCommentDebetableGoal"
-            android:paddingBottom="5dp"/>
+            android:text="@string/errorInputJointlyGoalComment"
+            android:paddingTop="5dp"/>
 
-        <EditText
-            android:id="@+id/inputDebetableGoalComment"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:textColor="@color/text_color_white"
-            android:hint="@string/commentFreeQuestionDebetableGoalTextFieldHintText"
-            android:gravity="left|top"
-            android:background="@drawable/app_edittext_style"
-            android:layout_margin="10dp"
-            android:textColorHint="@color/text_color_white"
-            android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
-            android:paddingTop="5dp"
-            android:paddingRight="5dp"
-            android:paddingLeft="5dp"
-            android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
 
         <TextView
             android:id="@+id/countLettersCommentEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="10dp"
-            android:textColor="@color/text_color"
-            android:paddingRight="15dp"
-            android:gravity="right" />
+            android:textSize="13dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="right"
+            android:paddingTop="5dp"/>
+
+        <EditText
+            android:id="@+id/inputDebetableGoalComment"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left|top"
+            android:background="@drawable/app_edittext_style"
+            android:hint="@string/commentDebetableGoalTextFieldHintText"
+            android:layout_margin="5dp"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
+            android:padding="5dp"
+            android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
@@ -205,19 +343,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/app_button_style"
-                android:textColor="@color/white"
-                android:text="@string/buttonSendDebetableGoalComment"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/btnSendOurGoalsDebetableComment"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginRight="5dp"
                 android:padding="10dp"/>
 
             <Button
-                android:id="@+id/buttonAbortDebetableGoalComment"
+                android:id="@+id/buttonAbortDebetableComment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/app_button_style"
-                android:textColor="@color/white"
-                android:text="@string/btnAbortComment"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/btnAbortOurGoalsDebetableComment"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="5dp"
                 android:padding="10dp"/>
@@ -229,37 +367,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="center"
             android:paddingBottom="35dp"/>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="left"
-            android:layout_gravity="left"
-            android:id="@+id/commentDebetableGoalsHistoryContainer"
-            android:visibility="visible">
-
-            <TextView
-                android:id="@+id/commentDebetableGoalHistoryIntro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/text_color"
-                android:gravity="left"
-                android:textStyle="bold" />
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center_vertical|left"
-                android:id="@+id/commentDebetableGoalHolder"/>
-
-
-        </LinearLayout>
 
     </LinearLayout>
 

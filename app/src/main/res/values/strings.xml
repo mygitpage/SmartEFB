@@ -635,7 +635,7 @@
 
         <!-- fragment debetable goals comment-->
             <string name="showDebetableGoalsIntroText">Strittiges Ziel</string>
-            <string name="ourGoalsBackLinkToDebetableGoals">Zurück zu strittigen Zielen</string>
+            <string name="ourGoalsBackLinkToDebetableGoals">Zurück zu den strittigen Zielen</string>
             <string name="commentDebetableGoalHistoryIntroText">Alle bisherigen Einschätzungen zum strittigen Ziel</string>
             <string name="introStructQuestionForCommentDdebetableGoal">Wie schätzen Sie Ihre Zustimmung zu dem strittigen Ziel ein?</string>
             <string name="errorStructQuestionForCommentDebetableGoal">Bitte geben Sie den Grad Ihrer Zustimmung an!</string>
@@ -650,19 +650,57 @@
             <string name="infoTextDebetableGoalCommentCountZero">Sie haben noch keine Einschätzung geschrieben.</string>
             <string name="infoTextDebetableGoalCommentCountSingular">Davon haben Sie bereits %1$d Einschätzung geschrieben.</string>
             <string name="infoTextDebetableGoalCommentCountPlural">Davon haben Sie bereits %1$d Einschätzungen geschrieben.</string>
-            <string name="infoTextDebetableGoalCommentMaxLetters">Ihre Einschätzung darf maximal %1$d Zeichen lang sein.</string>
+            <string name="infoTextDebetableGoalCommentMaxLetters">Ihre Einschätzung darf maximal %1$d Zeichen lang sein und</string>
             <string name="showDebetableGoalCommentIntroText">Die Einschätzungen zum strittigen Ziel</string>
             <string name="evaluateDebetableGoalSuggestion_1">Sehr stark</string>
             <string name="evaluateDebetableGoalSuggestion_2">Stark</string>
             <string name="evaluateDebetableGoalSuggestion_3">Mittelmäßig</string>
             <string name="evaluateDebetableGoalSuggestion_4">Wenig</string>
             <string name="evaluateDebetableGoalSuggestion_5">Keine</string>
-            <string name="textDebetableGoalCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum strittigen Ziel abgegeben: %1$s</string>
+
+
+    <string name="btnAbortOurGoalsDebetableComment">Zurück</string>
+
+
+    <string name="textOurGoalsDebetableCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Absprachenentwurf abgegeben: &lt;b>%1$s&lt;/b></string>
+    <string name="textOurGoalsDebetableCommentActualResultStructQuestionFromCoach">Die Einschätzung wurde ohne Zustimmungswert von Ihrer Beraterin/ Ihrem Berater geschrieben</string>
+
+
 
     <string name="textOurGoalsDebetableGoalsCommentNoSharing">Die Einschätzungen werden im Moment nicht zugestellt!</string>
 
+    <string name="ourGoalsDebetableCommentPersonalAuthorName">Ihnen</string>
+    <string name="ourGoalsDebetableCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
 
-        <!-- End fragment debetable goals comment -->
+    <string name="ourGoalsDebetableCommentAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
+
+    <string name="ourGoalsDebetableCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
+
+    <string name="ourGoalsDebetableCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
+
+    <string name="ourGoalsDebetableCommentSendSuccsessfullInfo">Die Einschätzung wurde gesendet.</string>
+
+    <string name="ourGoalsDebetableCommentSendInfoSharingDisable">Die Einschätzung wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
+
+
+
+    <string name="ourGoalsDebetableCommentLinkToShowAllCommentsSingular">%1$d weitere Einschätzungen vorhanden</string>
+    <string name="ourGoalsDebetableCommentLinkToShowAllCommentsPlural">%1$d weitere Einschätzung vorhanden</string>
+    <string name="ourGoalsDebetableCommentLinkToShowAllCommentsNotAvailable">Keine weiteren Einschätzungen vorhanden</string>
+    <string name="ourGoalsDebetableCommentTextNoCommentAvailabel">Keine Einschätzung vorhanden</string>
+    <string name="ourGoalsDebetableCommentTextNoCommentAvailabelFirstAuthor">Werden Sie erster Autor einer Einschätzung</string>
+
+
+    <string name="infoTextDebetableCommentDelaytimeNoDelay">die Einschätzungen werden sofort zugestellt (wenn eine Internetverbindung besteht)</string>
+    <string name="infoTextDebetableCommentDelaytimeSingular">die Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (wenn eine Internetverbindung besteht)</string>
+    <string name="infoTextDebetableCommentDelaytimePlural">die Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
+
+
+    <string name="btnSendOurGoalsDebetableComment">Einschätzung senden</string>
+
+    <string name ="commentDebetableGoalTextFieldHintText"><b>Bitte kommentieren Sie das strittige Ziel!</b></string>
+
+    <!-- End fragment debetable goals comment -->
 
 
         <!-- Fragment show comment debetable goals -->

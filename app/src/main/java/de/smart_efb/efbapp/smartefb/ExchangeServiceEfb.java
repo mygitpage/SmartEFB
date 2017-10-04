@@ -1414,6 +1414,234 @@ import java.util.Map;
 
 
 
+
+
+
+
+
+    // send sketch comment arrangement to server and get answer from server
+    public class ExchangeTaskSendDebetableGoalCommentResult implements Runnable {
+
+
+
+        // TODO: ANPASSEN auf Debetabl goal!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+
+
+        // id of the data row in db
+        private Long dbId;
+
+        // reference to the DB
+        private DBAdapter myDb;
+
+        // context of task
+        Context context;
+
+        // shared prefs
+        SharedPreferences prefs;
+        SharedPreferences.Editor prefsEditor;
+
+        // return information for change
+        Map<String, String> returnMap;
+
+
+        // Constructor
+        public ExchangeTaskSendDebetableGoalCommentResult (Context context, Long dbid) {
+
+            // id of the data row in db
+            this.dbId = dbid;
+
+            // context of task
+            this.context = context;
+
+            // init the DB
+            myDb = new DBAdapter(context);
+
+            // init the prefs
+            prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
+            prefsEditor = prefs.edit();
+
+        }
+
+        // the task
+        public void run() {
+
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+            if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+
+                Log.d("Exchange Service Sketch", "Network on in send sketch");
+
+                // get comment from db
+                Cursor commentData = myDb.getOneRowOurArrangementSketchComment(dbId);
+
+                // get client id from prefs
+                String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
+
+                // generate xml output text
+                XmlSerializer xmlSerializer = Xml.newSerializer();
+                StringWriter writer = new StringWriter();
+                try {
+
+                    xmlSerializer.setOutput(writer);
+
+                    //Start Document
+                    xmlSerializer.startDocument("UTF-8", true);
+                    xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
+
+                    // Open Tag
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                    // start tag main order -> send sketch comment and client id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+                    xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_CommentSketchArrangement);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+
+                    // start tag client id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.text(tmpClientId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+
+                    // end tag main
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                    // build xml tag for sketch comment with data
+                    buildCommentSketchXmlTagWithData (xmlSerializer, commentData);
+
+                    // end tag smartEfb
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+
+                    xmlSerializer.endDocument();
+
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // and send xml text to server
+                try {
+                    // prepair data to send
+                    String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
+
+                    // set url and parameters
+                    URL scripturl = new URL(ConstansClassSettings.urlConnectionSendNewSketchCommentArrangementToServer);
+                    HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
+
+                    // set timeout for connection
+                    connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
+                    connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
+
+                    connection.setDoOutput(true);
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    connection.setRequestMethod("POST");
+                    connection.setFixedLengthStreamingMode(textparam.getBytes().length);
+
+                    // generate output stream and send
+                    OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
+                    contentWriter.write(textparam);
+                    contentWriter.flush();
+
+                    contentWriter.close();
+
+                    // get answer from input
+                    InputStream answerInputStream = connection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    // convert input stream to string
+                    String currentRow;
+                    try {
+                        while ((currentRow = reader.readLine()) != null) {
+                            stringBuilder.append(currentRow);
+                            stringBuilder.append("\n");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Log.d("Sketch Comment XML", "Content:"+stringBuilder.toString().trim());
+
+
+                    // call xml parser with input
+                    EfbXmlParser xmlparser = new EfbXmlParser(context);
+                    returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
+
+                    // close input stream and disconnect
+                    answerInputStream.close();
+                    connection.disconnect();
+
+                    if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
+                        myDb.updateStatusOurArrangementSketchComment (dbId, 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                        // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
+                        Intent tmpIntent = translateMapToIntent (returnMap);
+                        tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageSketchCommentSendSuccessfull));
+                        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                        context.sendBroadcast(tmpIntent);
+                    }
+                    else { // send not successfull
+                        // send information broadcast to receiver that sending was not successefull
+                        String message = context.getResources().getString(R.string.toastMessageSketchCommentSendNotSuccessfull);
+                        sendIntentBroadcastSendingNotSuccessefull (message);
+                    }
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastMessageSketchCommentSendNotSuccessfull);
+                    sendIntentBroadcastSendingNotSuccessefull (message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastMessageSketchCommentSendNotSuccessfull);
+                    sendIntentBroadcastSendingNotSuccessefull (message);
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            }
+            else { // no network enable -> try to send comment to server later
+                // send information broadcast to receiver that sending not successfull
+                String message = context.getResources().getString(R.string.toastMessageCommentNotSendSuccessfullNoNetwork);
+                sendIntentBroadcastSendingNotSuccessefull (message);
+            }
+
+            // stop the task with service
+            stopSelf();
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // +++++++++++++++++++++++++ end task exchange goals +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -1529,6 +1757,17 @@ import java.util.Map;
 
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendJointlyGoalsEvaluationResult (context, dbId));
+                    // task is running
+                    this.isRunning = true;
+                    // start task
+                    this.backgroundThread.start();
+
+                }  else if (command.equals("send_debetable_comment_goal") && dbId > 0) { // send debetable comment result to server
+
+                    Log.d("Excange Service", "Debetable Comment REsult !!!!!!!!");
+
+                    // generate new send task
+                    this.backgroundThread = new Thread(new ExchangeTaskSendDebetableGoalCommentResult (context, dbId));
                     // task is running
                     this.isRunning = true;
                     // start task

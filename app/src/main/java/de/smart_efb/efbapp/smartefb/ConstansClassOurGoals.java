@@ -123,7 +123,7 @@ public class ConstansClassOurGoals {
 
 
 
-    // prefs name for sharing jointly comments
+    // prefs name for sharing debetable comments
     public static final String namePrefsDebetableCommentShare = "debetableCommentOurGoalsShare";
 
     // prefs name for store change time of goals sharing switch

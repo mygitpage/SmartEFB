@@ -77,10 +77,7 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
                 tmpTextIntroText = String.format(context.getResources().getString(R.string.ourGoalsDebetableGoalsIntroTextChangeTo), EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME)), "dd.MM.yyyy"));
                 tmpTextViewDebetableIntroText.setText(tmpTextIntroText);
             }
-
         }
-
-
 
         // is cursor last?
         if (cursor.isLast() ) { // listview for last element -> set gap to bottom of display
@@ -88,13 +85,6 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
             TextView tmpGapToBottom = (TextView) view.findViewById(R.id.borderToBottomOfDisplayWhenNeeded);
             tmpGapToBottom.setVisibility(View.VISIBLE);
         }
-
-
-
-
-
-
-
     }
 
 
@@ -113,15 +103,10 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
 
         if (cursor.isFirst()) { // listview for first element
             inflatedView = cursorInflater.inflate(R.layout.list_our_goals_debetable_goals_now_first, parent, false);
-
-
         }
         else { // listview for next elements
             inflatedView = cursorInflater.inflate(R.layout.list_our_goals_debetable_goals_now, parent, false);
-
         }
-
-
 
         // put debetable goals number
         TextView tmpTextViewNumberOfGoals = (TextView) inflatedView.findViewById(R.id.listDebetableGoalNumberText);
@@ -133,8 +118,6 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
         String tmpTextAuthorNameText = String.format(context.getResources().getString(R.string.ourGoalsDebetableGoalsAuthorNameTextWithDate), cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis()), "dd.MM.yyyy"));
         tmpTextViewDebetableAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
 
-
-
         // check if debetable goal entry new?
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY)) == 1) {
             TextView newEntryOfDebetableGoal = (TextView) inflatedView.findViewById(R.id.listDebetableGoalNewText);
@@ -143,14 +126,10 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
             myDb.deleteStatusNewEntryOurGoals(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
         }
 
-
         // put debetable goal text
         TextView textViewDebetableGoal = (TextView) inflatedView.findViewById(R.id.listTextDebetableGoalNow);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL));
         textViewDebetableGoal.setText(title);
-
-
-
 
         // Show link for comment the debetable goal
         TextView linkDebetableCommentAGoal = (TextView) inflatedView.findViewById(R.id.linkDebetableCommentAGoal);
@@ -187,7 +166,6 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
                 tmpCountAssessments = numberCountForAssessments[cursorDebetableGoalsAllComments.getCount()];
             }
 
-
             // check comments for new entry, the cursor is sorted DESC, so first element is newest!!! new entry is markt by == 1
             if (cursorDebetableGoalsAllComments.getCount() > 0) {
                 cursorDebetableGoalsAllComments.moveToFirst();
@@ -195,9 +173,6 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
                     tmpTextNewEntryComment = "<font color='" + ContextCompat.getColor(context, R.color.text_accent_color) + "'>" + context.getResources().getString(R.string.newEntryText) + "</font>";
                 }
             }
-
-
-
 
             // make link to comment debetable goal
             Uri.Builder commentLinkBuilder = new Uri.Builder();
@@ -215,8 +190,7 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
                     .path("ourgoals")
                     .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID))))
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
-                    .appendQueryParameter("com", "show_comment_for_debetable_goal");;
-
+                    .appendQueryParameter("com", "show_comment_for_debetable_goal");
 
 
             if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment,0) < prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment,0) || !commentLimitationBorder) {
@@ -228,7 +202,6 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
             linkDebetableCommentAGoal.setText(showCommentDebetableGoalLinkTmp);
             linkDebetableCommentAGoal.setMovementMethod(LinkMovementMethod.getInstance());
 
-
             if (tmpIntCountComments == 0) {
                 showCommentsLinkTmp = Html.fromHtml(tmpCountAssessments);
             }
@@ -238,15 +211,10 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
             }
             linkShowDebetableCommentOfGoal.setText(showCommentsLinkTmp);
             linkShowDebetableCommentOfGoal.setMovementMethod(LinkMovementMethod.getInstance());
-
         }
 
-
         return inflatedView;
-
     }
-
-
 
     // Turn off view recycling in listview, because there are different views (first, normal, last)
     // getViewTypeCount(), getItemViewType
@@ -261,6 +229,4 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
 
         return position;
     }
-
-
 }

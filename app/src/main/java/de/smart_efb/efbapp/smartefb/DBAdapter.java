@@ -2012,15 +2012,11 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Goals Debetable Goals Comment ******************************************/
 
     // Add a new set of values to ourGoalsDebetableGoalsComment .
-    public long insertRowOurGoalsDebetableGoalsComment(String comment, int question_a, int question_b, int question_c, String authorName, long commentTime, int idGoal, Boolean newEntry, long currentDateOfDebetableGoal, int status) {
+    public long insertRowOurGoalsDebetableGoalsComment(String comment, int question_a, int question_b, int question_c, String authorName, long commentTime, long upload_time, String blockid, Boolean newEntry, long currentDateOfDebetableGoal, int status, int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues initialValues = new ContentValues();
-
-
-        // TODO: werte anpassen, sonst fehler!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT, comment);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1, question_a);
@@ -2028,11 +2024,11 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3, question_c);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME, authorName);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, commentTime);
-        //initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL, idGoal);
+        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_UPLOAD_TIME, upload_time);
+        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID, blockid);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME, currentDateOfDebetableGoal);
-        //initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_MD5_HASH, EfbHelperClass.md5(comment)); // generate md5 hash from comment
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS, status);
-
+        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID, serverId);
 
         // is it a new entry?
         if (newEntry) {
@@ -2135,6 +2131,20 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Insert it into the database.
         return db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null) != 0;
     }
+
+
+
+    // delete all comments for debetable goals with the same block id
+    public Boolean deleteAllRowsOurGoalsDebetableComment (String blockId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID + "='" + blockId + "'";
+
+        return db.delete(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, where, null) != 0;
+
+    }
+
 
 
     /********************************* End!! TABLES FOR FUNCTION: Our Goals Debetable Goals Comment ***************************************/

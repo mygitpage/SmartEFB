@@ -234,7 +234,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
         currentBlockIdOfJointlyGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0");
 
         // ask methode isCommentLimitationBorderSet() in ActivityOurGoals to limitation in comments? true-> yes, linitation; false-> no
-        commentLimitationBorder = ((ActivityOurGoals) getActivity()).isCommentLimitationBorderSet("current");
+        commentLimitationBorder = ((ActivityOurGoals) getActivity()).isCommentLimitationBorderSet("jointlyGoals");
 
         // find the listview for the jointly goals
         listViewJointlyGoals = (ListView)  viewFragmentJointlyGoalsNow.findViewById(R.id.listOurGoalsJointlyGoalsNow);

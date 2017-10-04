@@ -2,6 +2,7 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.Html;
@@ -37,14 +38,24 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
     // debetable goal number in list view of fragment show debetable goal
     int debetableGoalNumberInListView = 0;
 
-    String choosenDebetableGoal = "";
+    // true-> comments are limited, false -> comments are not limited
+    Boolean commentLimitationBorder = false;
+
+    // data for debetable goal
+    Cursor choosenDebetableGoal;
+
+    // shared prefs for the comment arrangement
+    SharedPreferences prefs;
 
     // reference to the DB
     private DBAdapter myDb;
 
+    // count headline number for debetable comments
+    int countCommentHeadlineNumber = 0;
+
 
     // own constructor!!!
-    public OurGoalShowDebetableGoalCommentCursorAdapter(Context context, Cursor cursor, int flags, int dbId, int numberInLIst, String debetableGoal) {
+    public OurGoalShowDebetableGoalCommentCursorAdapter(Context context, Cursor cursor, int flags, int dbId, int numberInLIst, Boolean commentsLimitation, Cursor currentGoal) {
 
         super(context, cursor, flags);
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -59,7 +70,7 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
         debetableGoalNumberInListView = numberInLIst;
 
         // set choosen debetable goal
-        choosenDebetableGoal = debetableGoal;
+        choosenDebetableGoal = currentGoal;
 
         // init the DB
         myDb = new DBAdapter(context);
@@ -67,12 +78,20 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
         // init array for text description of scales levels
         evaluateDebetableGoalCommentScalesLevel = context.getResources().getStringArray(R.array.debetableGoalsCommentScalesLevel);
 
+        // init the prefs
+        prefs = contextForActivity.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, contextForActivity.MODE_PRIVATE);
+
 
     }
 
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+
+
+
+        // TODO: Überarbeiten und Anpassen mit  OurArrangement show sketch comments!!!!!!!!!!!!!!!!!!!!!!!
+
 
 
         Log.d("CursorAdapter-Debetable","ID: "+cursor.getInt(cursor.getColumnIndex(myDb.KEY_ROWID)));
@@ -93,10 +112,12 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
         textViewShowActualComment.setText(actualComment);
 
         // show actual result struct question
-        TextView textViewShowResultStructQuestion = (TextView) view.findViewById(R.id.listActualResultStructQuestion);
-        String actualResultStructQuestion = context.getResources().getString(R.string.textDebetableGoalCommentActualResultStructQuestion);
-        actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateDebetableGoalCommentScalesLevel[cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1))-1]);
-        textViewShowResultStructQuestion.setText(actualResultStructQuestion);
+
+        // TODO: Verursachte einen Fehler und wurde daher auskommentiert. Er konnte die viewById nicht finden
+        //TextView textViewShowResultStructQuestion = (TextView) view.findViewById(R.id.listActualResultStructQuestion);
+        //String actualResultStructQuestion = context.getResources().getString(R.string.textDebetableGoalCommentActualResultStructQuestion);
+        //actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateDebetableGoalCommentScalesLevel[cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1))-1]);
+        //textViewShowResultStructQuestion.setText(actualResultStructQuestion);
 
         // show author and date
         TextView textViewShowActualAuthorAndDate = (TextView) view.findViewById(R.id.listActualDebetableGoalCommentAuthorAndDate);

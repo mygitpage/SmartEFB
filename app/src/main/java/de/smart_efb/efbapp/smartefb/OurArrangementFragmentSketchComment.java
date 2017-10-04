@@ -454,7 +454,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         }
 
 
-        // set onClickListener for radio button in radio group question 1-4
+        // set onClickListener for radio button in radio group question 1
         String tmpRessourceName ="";
         RadioButton tmpRadioButtonQuestion;
 
@@ -588,7 +588,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 if (sketchCommentNoError) {
 
                     // insert comment for sketch arrangement in DB
-                    Long tmpDbId = myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), System.currentTimeMillis(), 0, cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID)), true, prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), 0, cursorChoosenSketchArrangement.getInt(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
+                    Long tmpDbId = myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), System.currentTimeMillis(), 0, cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID)), true, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement , System.currentTimeMillis()), 0, cursorChoosenSketchArrangement.getInt(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
 
                     // increment sketch comment count
                     int countSketchCommentSum = prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0) + 1;
