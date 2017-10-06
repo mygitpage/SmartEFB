@@ -316,8 +316,8 @@
             <string name="ourArrangementSketchCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
             <string name="ourArrangementSketchCommentSendSuccsessfullInfo">Die Einschätzung wurde gesendet.</string>
             <string name="ourArrangementSketchCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
-            <string name="ourArrangementSketchCommentLinkToShowAllCommentsSingular">%1$d weitere Einschätzungen vorhanden</string>
-            <string name="ourArrangementSketchCommentLinkToShowAllCommentsPlural">%1$d weitere Einschätzung vorhanden</string>
+            <string name="ourArrangementSketchCommentLinkToShowAllCommentsSingular">%1$d weitere Einschätzung vorhanden</string>
+            <string name="ourArrangementSketchCommentLinkToShowAllCommentsPlural">%1$d weitere Einschätzungen vorhanden</string>
             <string name="ourArrangementSketchCommentLinkToShowAllCommentsNotAvailable">Keine weiteren Einschätzungen vorhanden</string>
             <string name="lastActualSketchCommentTextNoCommentAvailabel">Keine Einschätzung vorhanden</string>
             <string name="lastActualSketchCommentTextNoCommentAvailabelFirstAuthor">Werden Sie erster Autor einer Einschätzung</string>
@@ -429,13 +429,13 @@
             <string name="showJointlyGoalTextNumber">Gemeinsames Ziel</string>
             <string name="newEntryTextOurGoal">(Neu)</string>
             <string name="toastMessageCommentJointlyGoalsNewComments">Es sind neue Kommentare eingetroffen!</string>
-    <string name="toastMessageCommentDebetableGoalsNewComments">Es sind neue Einschätzungen eingetroffen!</string>
+            <string name="toastMessageCommentDebetableGoalsNewComments">Es sind neue Einschätzungen eingetroffen!</string>
             <string name="toastMessageJointlyGoalsResetCommentCountComment">Der Kommentarzähler wurde von Ihrer Beraterin/ Ihrem Berater auf Null zurückgesetzt!</string>
-    <string name="toastMessageDebetableGoalsResetCommentCountComment">Der Einschätzungszähler wurde von Ihrer Beraterin/ Ihrem Berater auf Null zurückgesetzt!</string>
+            <string name="toastMessageDebetableGoalsResetCommentCountComment">Der Einschätzungszähler wurde von Ihrer Beraterin/ Ihrem Berater auf Null zurückgesetzt!</string>
             <string name="toastMessageJointlyGoalsCommentShareDisable">Die Zustellung der Kommentare wurde von Ihrer Beraterin/ Ihrem Berater unterbrochen!</string>
-    <string name="toastMessageDebetableGoalsCommentShareDisable">Die Zustellung der Einschätzungen wurde von Ihrer Beraterin/ Ihrem Berater unterbrochen!</string>
+            <string name="toastMessageDebetableGoalsCommentShareDisable">Die Zustellung der Einschätzungen wurde von Ihrer Beraterin/ Ihrem Berater unterbrochen!</string>
             <string name="toastMessageJointlyGoalsCommentShareEnable">Die Zustellung der Kommentare findet wieder statt!</string>
-    <string name="toastMessageDebetableGoalsCommentShareEnable">Die Zustellung der Einschätzungen findet wieder statt!</string>
+            <string name="toastMessageDebetableGoalsCommentShareEnable">Die Zustellung der Einschätzungen findet wieder statt!</string>
             <string name="toastMessageJointlyGoalsEvaluationSendSuccessfull">Die Bewertung wurde zum Server gesendet!</string>
 
 
@@ -468,16 +468,10 @@
             <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberPlural">Seit dem %1$s haben Sie %2$d Kommentare geschrieben.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Kommentare geschrieben.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsCommentMaxLetters">\nDer Kommentartext darf maximal %1$d Zeichen lang sein.</string>
-
-
-    <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimeNoDelay">\nDie Kommentare werden ohne Verzögerungszeit zugestellt (sofern eine Internetverbindung besteht).</string>
-    <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimeSingular">\nDie Kommentare werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
-    <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimePlural">\nDie Kommentare werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
-
-
-
-
-    <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDisable">Sie können keine gemeinsamen Ziele kommentieren.</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimeNoDelay">\nDie Kommentare werden ohne Verzögerungszeit zugestellt (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimeSingular">\nDie Kommentare werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimePlural">\nDie Kommentare werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDisable">Sie können keine gemeinsamen Ziele kommentieren.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsOldEnable">Ihnen stehen die älteren gemeinsamen Ziele zur Verfügung.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsOldDisable">Ihnen stehen die älteren gemeinsamen Ziele nicht zur Verfügung.</string>
             <string name="textDialogOurGoalsDebetableGoalsEnable">Ihnen steht die Ansicht der strittigen Ziele zur Verfügung.</string>
@@ -492,13 +486,10 @@
             <string name="textDialogOurGoalsDebetableGoalsSettingsCommentNumberNumberPlural">Seit dem %1$s haben Sie %2$d Einschätzungen geschrieben.</string>
             <string name="textDialogOurGoalsDebetableGoalsSettingsCommentNumberOff">Seit dem %1$s haben Sie alle möglichen Einschätzungen geschrieben.</string>
             <string name="textDialogOurGoalsDebetableGoalsSettingsCommentMaxLetters">\nDer Kommentartext darf maximal %1$d Zeichen lang sein.</string>
-
-    <string name="textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimeNoDelay">\nDie Einschätzungen werden ohne Verzögerungszeit zugestellt (sofern eine Internetverbindung besteht).</string>
-    <string name="textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimeSingular">\nDie Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
-    <string name="textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimePlural">\nDie Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
-
-
-    <!-- end our goals dialog settings -->
+            <string name="textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimeNoDelay">\nDie Einschätzungen werden ohne Verzögerungszeit zugestellt (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimeSingular">\nDie Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimePlural">\nDie Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
+        <!-- end our goals dialog settings -->
 
 
         <!-- fragment show current jointly goals now -->
@@ -592,24 +583,13 @@
                 <string name="commentEvaluateJointlyGoalResultTextFieldHintText">Bitte geben Sie Ihre Anmerkungen hier ein.</string>
                 <string name="evaluateThankAndNextJointlyGoalEvaluationText">Vielen Dank für die Bewertung des vorherrigen Ziels. Bitte bewerten Sie nun das folgende Ziel.</string>
                 <string name="evaluateJointlyGoalResultNotCompletely">Ihre Bewertung ist nicht vollständig! Bitte kontrollieren Sie die markierten Fragen!</string>
-
-
-    <string name="ourGoalsEvaluationAuthorNameWithDateForGoal">Das Ziel wurde von &lt;u>%1$s&lt;/u> am %2$s geschrieben.</string>
-
-
-    <string name="evaluateJointlyGoalInfoEvaluationPeriod">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Für eine Bewertung steht/en jeweils %5$d Stunde/n zur Verfügung. Die Pause beträgt %6$d Stunde/n.</string>
-    <string name="ourGoalsEvaluationNoEvaluationPossibleWhenEvaluate">Wenn Sie ein Ziel bewertet haben, ist eine weitere Bewertung erst nach Ablauf der Pausenzeit möglich.</string>
-
-    <string name="evaluateJointlyGoalEvaluatePeriodExpired">Bewertungszeitraum abgelaufen</string>
-    <string name="evaluateJointlyGoalEvaluateTextEvaluationModulSwitchOn">Bewertungsmodul wird eingeschaltet</string>
-    <string name="evaluateJointlyGoalEvaluateTextEvaluationModulSwitchOff">Bewertungsmodul wird ausgeschaltet</string>
-
-    <string name="evaluateJointlyGoalEvaluateTextGoalAlreadyEvaluated">Ziel bereits bewertet</string>
-
-
-
-
-
+                <string name="ourGoalsEvaluationAuthorNameWithDateForGoal">Das Ziel wurde von &lt;u>%1$s&lt;/u> am %2$s geschrieben.</string>
+                <string name="evaluateJointlyGoalInfoEvaluationPeriod">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Für eine Bewertung steht/en jeweils %5$d Stunde/n zur Verfügung. Die Pause beträgt %6$d Stunde/n.</string>
+                <string name="ourGoalsEvaluationNoEvaluationPossibleWhenEvaluate">Wenn Sie ein Ziel bewertet haben, ist eine weitere Bewertung erst nach Ablauf der Pausenzeit möglich.</string>
+                <string name="evaluateJointlyGoalEvaluatePeriodExpired">Bewertungszeitraum abgelaufen</string>
+                <string name="evaluateJointlyGoalEvaluateTextEvaluationModulSwitchOn">Bewertungsmodul wird eingeschaltet</string>
+                <string name="evaluateJointlyGoalEvaluateTextEvaluationModulSwitchOff">Bewertungsmodul wird ausgeschaltet</string>
+                <string name="evaluateJointlyGoalEvaluateTextGoalAlreadyEvaluated">Ziel bereits bewertet</string>
         <!-- End evaluate jointly goals -->
 
 
@@ -619,19 +599,14 @@
                 <string name="ourGoalsDebetableGoalsIntroText">%1$s hat am %2$s folgende strittigen Ziele eingestellt.</string>
                 <string name="showDebetableGoalNumberText">Strittiges Ziel</string>
                 <string name="ourGoalsDebetableGoalsAssessmentsString">Strittiges Ziel einschätzen</string>
-
-    <string name="ourGoalsDebetableGoalsIntroTextPlural">Ihre BeraterInnen haben am %1$s folgende strittigen Ziele eingestellt.</string>
-
-    <string name="ourGoalsDebetableGoalsIntroTextChangeTo">Ihre BeraterInnen haben am %1s die folgenden strittigen Ziele, vielleicht mit einigen Änderungen, als gemeinsame Ziele gespeichert.</string>
-
-    <string name="ourGoalsDebetableGoalsAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
-
-    <string name="infoTextNumberOfDebetableCommentsPossiblePlural">(%1$d verbleiben)</string>
-    <string name="infoTextNumberOfDebetableCommentsPossibleSingular">(%1$d verbleibt)</string>
-    <string name="infoTextNumberOfDebetableCommentsPossibleNoMore">(Alle aufgebraucht)</string>
-    <string name="infoTextNumberOfDebetableCommentsPossibleNoBorder">(Keine Begrenzung)</string>
-
-    <!-- End Fragment debetable goals now -->
+                <string name="ourGoalsDebetableGoalsIntroTextPlural">Ihre BeraterInnen haben am %1$s folgende strittigen Ziele eingestellt.</string>
+                <string name="ourGoalsDebetableGoalsIntroTextChangeTo">Ihre BeraterInnen haben am %1s die folgenden strittigen Ziele, vielleicht mit einigen Änderungen, als gemeinsame Ziele gespeichert.</string>
+                <string name="ourGoalsDebetableGoalsAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
+                <string name="infoTextNumberOfDebetableCommentsPossiblePlural">(%1$d verbleiben)</string>
+                <string name="infoTextNumberOfDebetableCommentsPossibleSingular">(%1$d verbleibt)</string>
+                <string name="infoTextNumberOfDebetableCommentsPossibleNoMore">(Alle aufgebraucht)</string>
+                <string name="infoTextNumberOfDebetableCommentsPossibleNoBorder">(Keine Begrenzung)</string>
+        <!-- End Fragment debetable goals now -->
 
         <!-- fragment debetable goals comment-->
             <string name="showDebetableGoalsIntroText">Strittiges Ziel</string>
@@ -657,62 +632,57 @@
             <string name="evaluateDebetableGoalSuggestion_3">Mittelmäßig</string>
             <string name="evaluateDebetableGoalSuggestion_4">Wenig</string>
             <string name="evaluateDebetableGoalSuggestion_5">Keine</string>
-
-
-    <string name="btnAbortOurGoalsDebetableComment">Zurück</string>
-
-
-    <string name="textOurGoalsDebetableCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Absprachenentwurf abgegeben: &lt;b>%1$s&lt;/b></string>
-    <string name="textOurGoalsDebetableCommentActualResultStructQuestionFromCoach">Die Einschätzung wurde ohne Zustimmungswert von Ihrer Beraterin/ Ihrem Berater geschrieben</string>
-
-
-
-    <string name="textOurGoalsDebetableGoalsCommentNoSharing">Die Einschätzungen werden im Moment nicht zugestellt!</string>
-
-    <string name="ourGoalsDebetableCommentPersonalAuthorName">Ihnen</string>
-    <string name="ourGoalsDebetableCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
-
-    <string name="ourGoalsDebetableCommentAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
-
-    <string name="ourGoalsDebetableCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
-
-    <string name="ourGoalsDebetableCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
-
-    <string name="ourGoalsDebetableCommentSendSuccsessfullInfo">Die Einschätzung wurde gesendet.</string>
-
-    <string name="ourGoalsDebetableCommentSendInfoSharingDisable">Die Einschätzung wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
-
-
-
-    <string name="ourGoalsDebetableCommentLinkToShowAllCommentsSingular">%1$d weitere Einschätzungen vorhanden</string>
-    <string name="ourGoalsDebetableCommentLinkToShowAllCommentsPlural">%1$d weitere Einschätzung vorhanden</string>
-    <string name="ourGoalsDebetableCommentLinkToShowAllCommentsNotAvailable">Keine weiteren Einschätzungen vorhanden</string>
-    <string name="ourGoalsDebetableCommentTextNoCommentAvailabel">Keine Einschätzung vorhanden</string>
-    <string name="ourGoalsDebetableCommentTextNoCommentAvailabelFirstAuthor">Werden Sie erster Autor einer Einschätzung</string>
-
-
-    <string name="infoTextDebetableCommentDelaytimeNoDelay">die Einschätzungen werden sofort zugestellt (wenn eine Internetverbindung besteht)</string>
-    <string name="infoTextDebetableCommentDelaytimeSingular">die Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (wenn eine Internetverbindung besteht)</string>
-    <string name="infoTextDebetableCommentDelaytimePlural">die Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
-
-
-    <string name="btnSendOurGoalsDebetableComment">Einschätzung senden</string>
-
-    <string name ="commentDebetableGoalTextFieldHintText"><b>Bitte kommentieren Sie das strittige Ziel!</b></string>
-
-    <!-- End fragment debetable goals comment -->
+            <string name="btnAbortOurGoalsDebetableComment">Zurück</string>
+            <string name="textOurGoalsDebetableCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Absprachenentwurf abgegeben: &lt;b>%1$s&lt;/b></string>
+            <string name="textOurGoalsDebetableCommentActualResultStructQuestionFromCoach">Die Einschätzung wurde ohne Zustimmungswert von Ihrer Beraterin/ Ihrem Berater geschrieben</string>
+            <string name="textOurGoalsDebetableGoalsCommentNoSharing">Die Einschätzungen werden im Moment nicht zugestellt!</string>
+            <string name="ourGoalsDebetableCommentPersonalAuthorName">Ihnen</string>
+            <string name="ourGoalsDebetableCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+            <string name="ourGoalsDebetableCommentAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
+            <string name="ourGoalsDebetableCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
+            <string name="ourGoalsDebetableCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
+            <string name="ourGoalsDebetableCommentSendSuccsessfullInfo">Die Einschätzung wurde gesendet.</string>
+            <string name="ourGoalsDebetableCommentSendInfoSharingDisable">Die Einschätzung wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
+            <string name="ourGoalsDebetableCommentLinkToShowAllCommentsSingular">%1$d weitere Einschätzung vorhanden</string>
+            <string name="ourGoalsDebetableCommentLinkToShowAllCommentsPlural">%1$d weitere Einschätzungen vorhanden</string>
+            <string name="ourGoalsDebetableCommentLinkToShowAllCommentsNotAvailable">Keine weiteren Einschätzungen vorhanden</string>
+            <string name="ourGoalsDebetableCommentTextNoCommentAvailabel">Keine Einschätzung vorhanden</string>
+            <string name="ourGoalsDebetableCommentTextNoCommentAvailabelFirstAuthor">Werden Sie erster Autor einer Einschätzung</string>
+            <string name="infoTextDebetableCommentDelaytimeNoDelay">die Einschätzungen werden sofort zugestellt (wenn eine Internetverbindung besteht)</string>
+            <string name="infoTextDebetableCommentDelaytimeSingular">die Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (wenn eine Internetverbindung besteht)</string>
+            <string name="infoTextDebetableCommentDelaytimePlural">die Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
+            <string name="btnSendOurGoalsDebetableComment">Einschätzung senden</string>
+            <string name ="commentDebetableGoalTextFieldHintText"><b>Bitte kommentieren Sie das strittige Ziel!</b></string>
+            <string name="toastMessageDebetableCommentSendSuccessfull">Die Einschätzung wurde gesendet!</string>
+            <string name="toastMessageeDebetableCommentSendNotSuccessfull">Die Einschätzung wurde noch nicht gesendet!</string>
+            <string name="toastMessageeDebetableCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
+        <!-- End fragment debetable goals comment -->
 
 
         <!-- Fragment show comment debetable goals -->
-
-
+            <string name="showDebetableCommentHeadlineWithNumber">Einschätzung</string>
+            <string name="showDebetableCommentHeadlineWithNumberExtraNewest">(Aktuellste)</string>
+            <string name="ourGoalsShowDebetableCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+            <string name="ourGoalsShowDebetableCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
+            <string name="ourGoalsShowDebetableCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
+            <string name="ourGoalsShowDebetableCommentSendSuccsessfullInfo">Die Einschätzung wurde gesendet.</string>
+            <string name="ourGoalsShowDebetableCommentSendInfoSharingDisable">Die Einschätzung wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
+            <string name="textOurGoalsShowDebetableCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Absprachenentwurf abgegeben: &lt;b>%1$s&lt;/b></string>
+            <string name="textOurGoalsShowDebetableCommentActualResultStructQuestionFromCoach">Die Einschätzung wurde ohne Zustimmungswert von Ihrer Beraterin/ Ihrem Berater geschrieben</string>
+            <string name="infoTextNumberOfShowDebetableCommentsPossiblePlural">(%1$d verbleiben)</string>
+            <string name="infoTextNumberOfShowDebetableCommentsPossibleSingular">(%1$d verbleibt)</string>
+            <string name="infoTextNumberOfShowDebetableCommentsPossibleNoMore">(Alle aufgebraucht)</string>
+            <string name="infoTextNumberOfShowDebetableCommentsPossibleNoBorder">(Keine Begrenzung)</string>
+            <string name="ourGoalsShowDdebetableCommentLinkToCommentAGoal">Strittiges Ziel %1$d einschätzen</string>
+            <string name="btnAbortShowDebetableComment">Zurück zu den strittigen Zielen</string>
         <!-- End fragment show comment debetable goals -->
 
 
         <!-- fragment show old jointly goals -->
             <string name="ourGoalsOldJointlyGoalsFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
             <string name="ourGoalsOldJointlyGoalsNothingThere">Es sind keine älteren gemeinsamen Ziele vorhanden!</string>
-            <string name="ourGoalsOldJointlyGoalDateIntro">Gemeinsame Ziele vom</string>
+            <string name="ourGoalsOldJointlyGoalDateIntro">Ältere gemeinsame Ziele vom</string>
+            <string name="showOurGoalsOldJointlyGoalIntroText">Altes Ziel</string>
         <!-- End fragment show old jointly goals -->
 
 

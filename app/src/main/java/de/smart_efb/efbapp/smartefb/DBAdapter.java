@@ -1958,6 +1958,25 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+    // get all evaluation results in table ourGoalsEvaluate with status = 0
+    // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Evaluation
+    public Cursor getAllReadyToSendGoalsEvaluationResults () {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_STATUS + "=0";
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE, OUR_GOALS_JOINTLY_GOALS_EVALUATE_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+    }
+
+
 
     // update status evaluation in table jointly goals evaluation
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Evaluation
@@ -1983,24 +2002,14 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID + "=" + serverId;
 
-
-        Log.d("SetEvalTime-->","Where: "+where);
-
-
         // Create row's data:
         ContentValues newValues = new ContentValues();
 
         newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME, System.currentTimeMillis());
 
-
         // Insert it into the database.
         return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null) != 0;
-
     }
-
-
-
-
 
 
     /********************************* End!! TABLES FOR FUNCTION: Our Goals Jointly Goals Evaluate ***************************************/
@@ -2092,17 +2101,15 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    // Get the number of new rows in comment for choosen debetable goal, look goalRowId (new entrys)
-    /*
 
-    TODO: Bitte aktivieren, wenn es gebraucht wird!!!!!!!!!!!!!!!
-
-    public int getCountNewEntryOurGoalsDebetableGoalsComment(int goalRowId) {
+    // Return one comment from the database for debetable goals with row id = dbid (table DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT)
+    public Cursor getOneRowOurGoalsDebetableComment (Long dbId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // new_entry = 1 (true) and choosen arrangement like arrangementRowId?
-        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_ID_GOAL + "=" + goalRowId;
+        // data filter
+        String where = KEY_ROWID + "=" + dbId;
+
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, OUR_GOALS_DEBETABLE_GOALS_COMMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
@@ -2110,11 +2117,28 @@ public class DBAdapter extends SQLiteOpenHelper {
             c.moveToFirst();
         }
 
-        // return how many
-        return c.getCount();
-
+        return c;
     }
-    */
+
+
+
+    // update status comment in table DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT
+    // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Comment
+    public boolean updateStatusOurGoalsDebetableComment (Long rowId, int status) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row status with status
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS, status);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null) != 0;
+    }
+
+
 
     // delete status new entry in table ourGoalsDebetableGoalsComment.
     public boolean deleteStatusNewEntryOurGoalsDebetableGoalsComment (int rowId) {
@@ -2144,6 +2168,27 @@ public class DBAdapter extends SQLiteOpenHelper {
         return db.delete(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, where, null) != 0;
 
     }
+
+
+
+
+    // Get all debetable comments with status = 0 (Ready to send) and block id of current debetable goals
+    public Cursor getAllReadyToSendDebetableComments (String blockIdOfGoals) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // status = 0 and block id = blockIdOfDebetableGoals
+        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS + "=0 AND " + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID + "=" + blockIdOfGoals;
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, OUR_GOALS_DEBETABLE_GOALS_COMMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        // return cursor
+        return c;
+    }
+
+
+
 
 
 

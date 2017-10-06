@@ -1,6 +1,9 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -23,6 +26,9 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
     // fragment context
     Context fragmentJointlyOldContext = null;
 
+    // the fragment
+    Fragment fragmentOldThisFragmentContext;
+
     // reference to the DB
     DBAdapter myDb;
 
@@ -44,8 +50,11 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
 
         viewFragmentJointlyOld = layoutInflater.inflate(R.layout.fragment_our_goals_jointly_old, null);
 
-        return viewFragmentJointlyOld;
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(ourGoalsFragmentOldBrodcastReceiver, filter);
 
+        return viewFragmentJointlyOld;
     }
 
 
@@ -56,14 +65,60 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
 
         fragmentJointlyOldContext = getActivity().getApplicationContext();
 
+        fragmentOldThisFragmentContext = this;
+
         // init the fragment now
         initFragmentJointlyOld();
 
         // show actual old jointly goal set
         displayOldJointlyGoalSet();
-
-
     }
+
+
+    // fragment is destroyed
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // de-register broadcast receiver
+        getActivity().getApplicationContext().unregisterReceiver(ourGoalsFragmentOldBrodcastReceiver);
+    }
+
+
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    private BroadcastReceiver ourGoalsFragmentOldBrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                // check intent order
+
+                String tmpExtraOurGoals = intentExtras.getString("OurGoals","0");
+                String tmpExtraOurGoalsNow = intentExtras.getString("OurGoalsJointlyNow","0");
+
+                if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNow != null && tmpExtraOurGoalsNow.equals("1")) {
+
+                    //update current block id of jointly goals
+                    currentBlockIdOfJointlyGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0");
+
+                    // check jointly and debetable goals update and show dialog jointly and debetable goals change
+                    ((ActivityOurGoals) getActivity()).checkUpdateForShowDialog ("jointly");
+
+                    // go back to fragment jointly goals -> this is my mother!
+                    Intent backIntent = new Intent(getActivity(), ActivityOurGoals.class);
+                    backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    backIntent.putExtra("com","show_jointly_goals_now");
+                    getActivity().startActivity(backIntent);
+
+                }
+            }
+        }
+    };
 
 
     // inits the fragment for use
@@ -80,7 +135,6 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
 
         //get current block id of jointly goals
         currentBlockIdOfJointlyGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0");
-
     }
 
 
@@ -93,7 +147,6 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
 
         if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkOldGoals, false) && listView != null) { // Function showOldJointlyGoals is available!!!!
 
-
             // get all old jointly goals from DB
             Cursor cursor = myDb.getAllJointlyRowsOurGoals(currentBlockIdOfJointlyGoals,"notEqualBlockId");
 
@@ -104,7 +157,7 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                 setVisibilityTextViewNothingThere ("hide");
                 setVisibilityTextViewFunctionNotAvailable ("hide");
 
-                // Set correct subtitle in Activity -> "aelter als..."
+                // Set correct subtitle in Activity -> "ziele aelter als..."
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleOldJointlyGoals", "string", fragmentJointlyOldContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfJointlyGoal, "dd.MM.yyyy");
                 ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyOld");
 
@@ -116,7 +169,6 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
 
                 // Assign adapter to ListView
                 listView.setAdapter(dataAdapter);
-
             }
             else {
 
@@ -129,7 +181,6 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleGoalsNothingThere", "string", fragmentJointlyOldContext.getPackageName()));
                 ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyOld");
             }
-
         }
         else { // Function showOldJointlyGoals is not available
 
@@ -143,7 +194,6 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
             ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyOld");
 
         }
-
     }
 
 
@@ -164,9 +214,7 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                     break;
 
             }
-
         }
-
     }
 
 
@@ -187,9 +235,7 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                     break;
 
             }
-
         }
-
     }
 
 
@@ -209,9 +255,7 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                     break;
 
             }
-
         }
-
     }
 
 

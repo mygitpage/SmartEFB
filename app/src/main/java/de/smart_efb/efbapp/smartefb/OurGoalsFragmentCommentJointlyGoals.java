@@ -83,7 +83,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         getActivity().getApplicationContext().registerReceiver(ourGoalsFragmentCommentJointlyGoalsBrodcastReceiver, filter);
         
         return viewFragmentCommentJointlyGoals;
-
     }
 
 
@@ -113,11 +112,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourGoalsFragmentCommentJointlyGoalsBrodcastReceiver);
-
     }
-
-
-
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
@@ -228,7 +223,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleJointlyGoalsComment", "string", fragmentCommentContextJointlyGoals.getPackageName()));
         tmpSubtitle = String.format(tmpSubtitle, goalNumberInListView);
         ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyNowComment");
-
     }
 
     // build the view for the fragment
@@ -292,7 +286,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
             if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
                 tmpAuthorName = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentPersonalAuthorName);
             }
-
 
             String commentDate = EfbHelperClass.timestampToDateFormat(cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");;
             String commentTime = EfbHelperClass.timestampToDateFormat(cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME)), "HH:mm");;
@@ -559,11 +552,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         });
 
         // End build the view
-
     }
-
-
-
 
 
     // call getter Functions in ActivityOurGoals for some data
@@ -584,7 +573,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
             // check for comment limitations
             commentLimitationBorder = ((ActivityOurGoals)getActivity()).isCommentLimitationBorderSet("jointlyGoals");
         }
-
     }
 
 

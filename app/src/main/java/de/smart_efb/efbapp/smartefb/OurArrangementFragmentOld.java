@@ -63,7 +63,6 @@ public class OurArrangementFragmentOld extends Fragment {
         getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentOldBrodcastReceiver, filter);
 
         return viewFragmentOld;
-
     }
 
 
@@ -81,8 +80,6 @@ public class OurArrangementFragmentOld extends Fragment {
 
         // show actual arrangement set
         displayOldArrangementSet();
-
-
     }
 
 
@@ -110,15 +107,11 @@ public class OurArrangementFragmentOld extends Fragment {
             if (intentExtras != null) {
                 // check intent order
 
-                Boolean refreshView = false;
-
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
                 String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
 
                 if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
                     // update now arrangement! -> go back to fragment now arrangement and show dialog
-
-
 
                     //check arrangement and now arrangement update and show dialog arrangement and now arrangement change
                     ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("now");
@@ -149,8 +142,6 @@ public class OurArrangementFragmentOld extends Fragment {
 
         //get current block id of arrangements
         currentBlockIdOfArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0");
-
-
     }
 
 
@@ -201,7 +192,6 @@ public class OurArrangementFragmentOld extends Fragment {
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNothingThere", "string", fragmentOldContext.getPackageName()));
                 ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "old");
             }
-
         }
         else { // Function showOldArrangement is not available
 
@@ -215,7 +205,6 @@ public class OurArrangementFragmentOld extends Fragment {
             ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "old");
 
         }
-
     }
 
 
@@ -236,9 +225,7 @@ public class OurArrangementFragmentOld extends Fragment {
                     break;
 
             }
-
         }
-
     }
 
 
@@ -259,9 +246,7 @@ public class OurArrangementFragmentOld extends Fragment {
                     break;
 
             }
-
         }
-
     }
 
 
@@ -281,12 +266,8 @@ public class OurArrangementFragmentOld extends Fragment {
                     break;
 
             }
-
         }
-
     }
-
-
 
 
 }

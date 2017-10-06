@@ -26,6 +26,9 @@ public class OurGoalsJointlyOldCursorAdapter extends CursorAdapter {
     // old jointly goal change true -> change, false -> no change, same Date!
     Boolean oldJointlyGoalsDateChange = false;
 
+    // count old jointly goals for view
+    int countOldJointlyGoalsForView = 1;
+
 
     // Default constructor
     public OurGoalsJointlyOldCursorAdapter (Context context, Cursor cursor, int flags) {
@@ -36,14 +39,11 @@ public class OurGoalsJointlyOldCursorAdapter extends CursorAdapter {
 
         // init the DB
         myDb = new DBAdapter(context);
-
-
     }
 
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-
 
         if (oldJointlyGoalsDateChange) { // listview for first element or date change
             TextView tmpOldJointlyGoalDate = (TextView) view.findViewById(R.id.listOldJointlyGoalDate);
@@ -51,7 +51,6 @@ public class OurGoalsJointlyOldCursorAdapter extends CursorAdapter {
             tmpOldJointlyGoalDate.setText(txtJointlyGoalNumber);
             oldJointlyGoalsDateChange = false;
         }
-
 
         // set old jointly goal text
         TextView textViewJointlyGoal = (TextView) view.findViewById(R.id.listOldTextJointlyGoal);
@@ -71,12 +70,24 @@ public class OurGoalsJointlyOldCursorAdapter extends CursorAdapter {
             inflatedView = cursorInflater.inflate(R.layout.list_our_goals_old_jointly_goal_start, parent, false);
             actualJointlyGoalsDate = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME));
             oldJointlyGoalsDateChange = true;
+
+            countOldJointlyGoalsForView = 1;
+
+            TextView numberOfOldJointlyGoal = (TextView) inflatedView.findViewById(R.id.listOldJointlyGoalNumberText);
+            String txtOldGoalNumber = context.getResources().getString(R.string.showOurGoalsOldJointlyGoalIntroText)+ " " + countOldJointlyGoalsForView;
+            numberOfOldJointlyGoal.setText(txtOldGoalNumber);
         }
         else { // listview for "normal" element
             inflatedView = cursorInflater.inflate(R.layout.list_our_goals_old_jointly_goal, parent, false);
             oldJointlyGoalsDateChange = false;
-        }
 
+            countOldJointlyGoalsForView++;
+
+            TextView numberOfOldJointlyGoal = (TextView) inflatedView.findViewById(R.id.listOldJointlyGoalNumberText);
+            String txtOldGoalNumber = context.getResources().getString(R.string.showOurGoalsOldJointlyGoalIntroText)+ " " + countOldJointlyGoalsForView;
+            numberOfOldJointlyGoal.setText(txtOldGoalNumber);
+        }
+        
         return inflatedView;
 
     }

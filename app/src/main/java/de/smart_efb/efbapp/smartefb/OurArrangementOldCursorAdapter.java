@@ -30,8 +30,6 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
     // count old arrangement for view
     int countOldArrangementForView = 1;
 
-
-
     // Default constructor
     public OurArrangementOldCursorAdapter (Context context, Cursor cursor, int flags) {
 
@@ -41,14 +39,11 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
 
         // init the DB
         myDb = new DBAdapter(context);
-
-
     }
 
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-
 
         if (oldArrangementDateChange) { // listview for first element or date change
             TextView tmpOldArrangementDate = (TextView) view.findViewById(R.id.listOldArrangementDate);
@@ -61,7 +56,6 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
         TextView textViewArrangement = (TextView) view.findViewById(R.id.listOldTextArrangement);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(title);
-
     }
 
 
@@ -81,7 +75,6 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
             TextView numberOfOldArrangement = (TextView) inflatedView.findViewById(R.id.listOldArrangementNumberText);
             String txtOldArrangementNumber = context.getResources().getString(R.string.showOldArrangementIntroText)+ " " + countOldArrangementForView;
             numberOfOldArrangement.setText(txtOldArrangementNumber);
-
         }
         else { // listview for "normal" element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_old, parent, false);
@@ -92,13 +85,10 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
             TextView numberOfOldArrangement = (TextView) inflatedView.findViewById(R.id.listOldArrangementNumberText);
             String txtOldArrangementNumber = context.getResources().getString(R.string.showOldArrangementIntroText)+ " " + countOldArrangementForView;
             numberOfOldArrangement.setText(txtOldArrangementNumber);
-
         }
 
         return inflatedView;
-
     }
-
 
 
     // Turn off view recycling in listview, because there are different views (first, normal, last)
@@ -108,6 +98,7 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
 
         return getCount();
     }
+
 
     @Override
     public int getItemViewType (int position) {

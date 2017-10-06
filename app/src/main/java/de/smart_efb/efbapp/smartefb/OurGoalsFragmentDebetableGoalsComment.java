@@ -528,7 +528,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         tmpInfoTextCommentMaxLetters = String.format(tmpInfoTextCommentMaxLetters, prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableLetters, 0));
 
         // show info text
-        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextCommentMaxLetters);
+        textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextCommentMaxLetters + " " +tmpInfoTextDelaytimeSingluarPluaral);
 
         // get max letters for edit text comment
         final int tmpMaxLength = prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableLetters, 10);

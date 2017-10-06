@@ -105,6 +105,8 @@ import java.util.Map;
                 Boolean send_sketch_comment_info = false;
                 Boolean send_jointly_goals_comment_info = false;
                 Boolean send_arrangement_evaluation_result_info = false;
+                Boolean send_goals_evaluation_result_info = false;
+                Boolean send_debetable_goals_comment_info = false;
 
                 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -136,6 +138,13 @@ import java.util.Map;
                     Cursor allJointlyGoalsCommentsReadyToSend = myDb.getAllReadyToSendJointlyGoalsComments(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0"));
 
 
+                    // get all jointly goals evaluation results with status = 0 -> ready to send
+                    Cursor allGoalsEvaluationResultsReadyToSend = myDb.getAllReadyToSendGoalsEvaluationResults();
+
+
+                    // get all debetable comments with status = 0 -> ready to send
+                    Cursor allDebetableCommentsReadyToSend = myDb.getAllReadyToSendDebetableComments(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfDebetableGoals, "0"));
+
 
 
 
@@ -165,7 +174,7 @@ import java.util.Map;
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
 
-                        Log.d("Exchange", "Anzahl Kommentare to send: "+allCommentsReadyToSend.getCount());
+                        Log.d("Exchange Arr Comment", "Anzahl Kommentare to send: "+allCommentsReadyToSend.getCount());
 
                         // build xml for all now comments
                         if (allCommentsReadyToSend != null) {
@@ -204,6 +213,30 @@ import java.util.Map;
                                 send_jointly_goals_comment_info = true;
                             }
                         }
+
+
+
+                        // build xml for all arrangement evaluation result
+                        if (allGoalsEvaluationResultsReadyToSend != null) {
+
+                            while (allGoalsEvaluationResultsReadyToSend.moveToNext()) {
+                                buildJointlyGoalsEvaluationResultXmlTagWithData(xmlSerializer, allGoalsEvaluationResultsReadyToSend);
+                                send_goals_evaluation_result_info = true;
+                            }
+                        }
+
+
+
+                        // build xml for all debetable goals comments
+                        if (allDebetableCommentsReadyToSend != null) {
+
+                            while (allDebetableCommentsReadyToSend.moveToNext()) {
+                                buildCommentDebetableXmlTagWithData(xmlSerializer, allDebetableCommentsReadyToSend);
+                                send_debetable_goals_comment_info = true;
+                            }
+                        }
+
+
 
 
                         // end tag smartEfb
@@ -303,6 +336,20 @@ import java.util.Map;
 
 
 
+
+                        // set status of evaluation jointly goal to 1 -> send successfull
+                        if (allGoalsEvaluationResultsReadyToSend != null) {
+                            if (returnMap.get("SendSuccessfull").equals("1") && send_goals_evaluation_result_info) {
+                                allGoalsEvaluationResultsReadyToSend.moveToFirst();
+                                do {
+                                    myDb.updateStatusOurGoalsEvaluation (allGoalsEvaluationResultsReadyToSend.getLong(allGoalsEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of evaluation result to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                } while (allGoalsEvaluationResultsReadyToSend.moveToNext());
+                            }
+                        }
+
+
+
+
                         // set status of jointly goal comment to 1 -> send successfull
                         if (allJointlyGoalsCommentsReadyToSend != null) {
                             if (returnMap.get("SendSuccessfull").equals("1") && send_jointly_goals_comment_info) {
@@ -314,6 +361,15 @@ import java.util.Map;
                         }
 
 
+                        // set status of debetable goal comment to 1 -> send successfull
+                        if (allDebetableCommentsReadyToSend != null) {
+                            if (returnMap.get("SendSuccessfull").equals("1") && send_debetable_goals_comment_info) {
+                                allDebetableCommentsReadyToSend.moveToFirst();
+                                do {
+                                    myDb.updateStatusOurGoalsDebetableComment (allDebetableCommentsReadyToSend.getLong(allDebetableCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of debetable comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                } while (allDebetableCommentsReadyToSend.moveToNext());
+                            }
+                        }
 
 
 
@@ -1242,77 +1298,8 @@ import java.util.Map;
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
-
-                    // open evaluation result jointly goals tag
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate);
-
-                    // start tag evaluate jointly goals order
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_Order);
-                    xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_New);
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_Order);
-
-                    // start tag evalute remarks
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_Remarks);
-                    xmlSerializer.text(evaluationResultData.getString(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS)));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_Remarks);
-
-                    // start tag evaluate author name text
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_AuthorName);
-                    xmlSerializer.text(evaluationResultData.getString(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME)));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_AuthorName);
-
-                    // start tag evaluate result time
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultTime);
-                    xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME))/1000)); // convert millis to timestamp
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultTime);
-
-                    // start tag evaluate arrangement time
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_DateOfGoal);
-                    xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME))/1000)); // convert millis to timestamp
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_DateOfGoal);
-
-                    // start tag evaluate result question A
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionA);
-                    xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1))));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionA);
-
-                    // start tag evaluate result question B
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionB);
-                    xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2))));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionB);
-
-                    // start tag evaluate result question C
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionC);
-                    xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3))));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionC);
-
-                    // start tag evaluate result question D
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionD);
-                    xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4))));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionD);
-
-                    // start tag evaluate start time
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_StartTime);
-                    xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME))/1000)); // convert millis to timestamp
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_StartTime);
-
-                    // start tag evaluate end time
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_EndTime);
-                    xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME))/1000)); // convert millis to timestamp
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_EndTime);
-
-                    // start tag server id arrangement
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ServerIdGoal);
-                    xmlSerializer.text(evaluationResultData.getString(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_SERVER_ID)));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ServerIdGoal);
-
-                    // start tag block id of arrangements
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_BlockId);
-                    xmlSerializer.text(evaluationResultData.getString(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_BLOCKID)));
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_BlockId);
-
-                    // end tag evaluation result arrangement
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate);
+                    // build xml tag for jointly evaluation with data
+                    buildJointlyGoalsEvaluationResultXmlTagWithData (xmlSerializer, evaluationResultData);
 
                     // end tag smartEfb
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
@@ -1419,13 +1406,8 @@ import java.util.Map;
 
 
 
-    // send sketch comment arrangement to server and get answer from server
+    // send debetable comment goal to server and get answer from server
     public class ExchangeTaskSendDebetableGoalCommentResult implements Runnable {
-
-
-
-        // TODO: ANPASSEN auf Debetabl goal!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-
 
         // id of the data row in db
         private Long dbId;
@@ -1470,10 +1452,10 @@ import java.util.Map;
 
             if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
 
-                Log.d("Exchange Service Sketch", "Network on in send sketch");
+                Log.d("Ex Service Debetable", "Network on in send sketch");
 
                 // get comment from db
-                Cursor commentData = myDb.getOneRowOurArrangementSketchComment(dbId);
+                Cursor commentData = myDb.getOneRowOurGoalsDebetableComment (dbId);
 
                 // get client id from prefs
                 String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
@@ -1495,7 +1477,7 @@ import java.util.Map;
 
                     // start tag main order -> send sketch comment and client id
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
-                    xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_CommentSketchArrangement);
+                    xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_DebetableGoalsComment);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
 
                     // start tag client id
@@ -1507,7 +1489,7 @@ import java.util.Map;
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
                     // build xml tag for sketch comment with data
-                    buildCommentSketchXmlTagWithData (xmlSerializer, commentData);
+                    buildCommentDebetableXmlTagWithData (xmlSerializer, commentData);
 
                     // end tag smartEfb
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
@@ -1525,7 +1507,7 @@ import java.util.Map;
                     String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
 
                     // set url and parameters
-                    URL scripturl = new URL(ConstansClassSettings.urlConnectionSendNewSketchCommentArrangementToServer);
+                    URL scripturl = new URL(ConstansClassSettings.urlConnectionSendNewCommentDebetableGoalsToServer);
                     HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
 
                     // set timeout for connection
@@ -1560,7 +1542,7 @@ import java.util.Map;
                         e.printStackTrace();
                     }
 
-                    Log.d("Sketch Comment XML", "Content:"+stringBuilder.toString().trim());
+                    Log.d("Debetable Comment XML", "Content:"+stringBuilder.toString().trim());
 
 
                     // call xml parser with input
@@ -1572,29 +1554,29 @@ import java.util.Map;
                     connection.disconnect();
 
                     if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
-                        myDb.updateStatusOurArrangementSketchComment (dbId, 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                        myDb.updateStatusOurGoalsDebetableComment (dbId, 1); // set status of debetable comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
 
-                        // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
+                        // send intent to receiver in OurGoalsFragmentDebetableComment to update listView OurGoals (when active)
                         Intent tmpIntent = translateMapToIntent (returnMap);
-                        tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageSketchCommentSendSuccessfull));
+                        tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageDebetableCommentSendSuccessfull));
                         tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
                         context.sendBroadcast(tmpIntent);
                     }
                     else { // send not successfull
                         // send information broadcast to receiver that sending was not successefull
-                        String message = context.getResources().getString(R.string.toastMessageSketchCommentSendNotSuccessfull);
+                        String message = context.getResources().getString(R.string.toastMessageeDebetableCommentSendNotSuccessfull);
                         sendIntentBroadcastSendingNotSuccessefull (message);
                     }
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
-                    String message = context.getResources().getString(R.string.toastMessageSketchCommentSendNotSuccessfull);
+                    String message = context.getResources().getString(R.string.toastMessageeDebetableCommentSendNotSuccessfull);
                     sendIntentBroadcastSendingNotSuccessefull (message);
                 } catch (IOException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
-                    String message = context.getResources().getString(R.string.toastMessageSketchCommentSendNotSuccessfull);
+                    String message = context.getResources().getString(R.string.toastMessageeDebetableCommentSendNotSuccessfull);
                     sendIntentBroadcastSendingNotSuccessefull (message);
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
@@ -1602,15 +1584,13 @@ import java.util.Map;
             }
             else { // no network enable -> try to send comment to server later
                 // send information broadcast to receiver that sending not successfull
-                String message = context.getResources().getString(R.string.toastMessageCommentNotSendSuccessfullNoNetwork);
+                String message = context.getResources().getString(R.string.toastMessageeDebetableCommentNotSendSuccessfullNoNetwork);
                 sendIntentBroadcastSendingNotSuccessefull (message);
             }
 
             // stop the task with service
             stopSelf();
-
         }
-
     }
 
 
@@ -2018,6 +1998,99 @@ import java.util.Map;
 
 
 
+    public void buildJointlyGoalsEvaluationResultXmlTagWithData (XmlSerializer xmlSerializer, Cursor evaluationResultData) {
+
+
+        //Log.d("Ex Build EVAL GOALS", "Kommentartext: " + commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT));
+
+        try {
+
+
+            // open evaluation result jointly goals tag
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate);
+
+            // start tag evaluate jointly goals order
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_Order);
+            xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_New);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_Order);
+
+            // start tag evalute remarks
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_Remarks);
+            xmlSerializer.text(evaluationResultData.getString(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_Remarks);
+
+            // start tag evaluate author name text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_AuthorName);
+            xmlSerializer.text(evaluationResultData.getString(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_AuthorName);
+
+            // start tag evaluate result time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultTime);
+            xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultTime);
+
+            // start tag evaluate arrangement time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_DateOfGoal);
+            xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_DateOfGoal);
+
+            // start tag evaluate result question A
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionA);
+            xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1))));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionA);
+
+            // start tag evaluate result question B
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionB);
+            xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2))));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionB);
+
+            // start tag evaluate result question C
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionC);
+            xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3))));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionC);
+
+            // start tag evaluate result question D
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionD);
+            xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4))));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultQuestionD);
+
+            // start tag evaluate start time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_StartTime);
+            xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_StartTime);
+
+            // start tag evaluate end time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_EndTime);
+            xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_EndTime);
+
+            // start tag server id arrangement
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ServerIdGoal);
+            xmlSerializer.text(evaluationResultData.getString(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_SERVER_ID)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ServerIdGoal);
+
+            // start tag block id of arrangements
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_BlockId);
+            xmlSerializer.text(evaluationResultData.getString(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_BLOCKID)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_BlockId);
+
+            // end tag evaluation result arrangement
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate);
+
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+
     public void buildJointlyCommentXmlTagWithData (XmlSerializer xmlSerializer, Cursor commentData) {
 
 
@@ -2069,6 +2142,80 @@ import java.util.Map;
             e.printStackTrace();
         }
 
+    }
+
+
+
+
+
+
+    public void buildCommentDebetableXmlTagWithData (XmlSerializer xmlSerializer, Cursor commentData) {
+
+
+        Log.d("Ex Build Debetable", "Kommentartext: " + commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT));
+
+        try {
+
+            // open comment debetable comment tag
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment);
+
+            // start tag comment debetable goal order
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_Order);
+            xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_New);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_Order);
+
+            // start tag comment text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_Comment);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_Comment);
+
+            // start tag author name text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_AuthorName);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_AuthorName);
+
+            // start tag comment time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_CommentTime);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_CommentTime);
+
+            // start tag debetable goal time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_DateOfDebetableGoal);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_DateOfDebetableGoal);
+
+            // start tag debetable comment result question A
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ResultQuestionA);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1))));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ResultQuestionA);
+
+            // start tag debetable comment result question B
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ResultQuestionB);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2))));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ResultQuestionB);
+
+            // start tag debetable comment result question C
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ResultQuestionC);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3))));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ResultQuestionC);
+
+            // start tag block number of debetable comment
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_BlockId);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_BlockId);
+
+            // start tag server id debetable goal
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ServerIdGoal);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ServerIdGoal);
+
+            // end tag comment now arrangement
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment);
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -574,12 +574,6 @@ public class ConstansClassXmlParser {
             // xml name for element our goals debetable comment time
             public static final String xmlNameForOurGoals_DebetableComment_CommentTime = "ourgoals_debetablecomment_commenttime";
 
-            // xml name for element our goals debetable comment upload time of comment
-            public static final String xmlNameForOurGoals_DebetableComment_UploadTime = "ourgoals_debetablecomment_uploadtime";
-
-            // xml name for element our goals debetable comment id goal (on all smartphones must be the same!)
-            public static final String xmlNameForOurGoals_DebetableComment_GoalId = "ourgoals_debetablecomment_goalid";
-
             // xml name for element our goals debetable comment date of debetable goal to comment
             public static final String xmlNameForOurGoals_DebetableComment_DateOfDebetableGoal = "ourgoals_debetablecomment_dateofgoal";
 
@@ -817,6 +811,9 @@ public class ConstansClassXmlParser {
 
     // xml name for send comment of jointly goal to server
     public static final String xmlNameForSendToServer_JointlyGoalsEvaluationResult = "sendevaluationresultgoals";
+
+    // xml name for send comment of debetable goal to server
+    public static final String xmlNameForSendToServer_DebetableGoalsComment = "senddebetablegoalscomment";
 
 
 

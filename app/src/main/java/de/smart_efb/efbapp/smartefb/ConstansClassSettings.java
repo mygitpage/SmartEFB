@@ -64,8 +64,8 @@ public class ConstansClassSettings {
     
     // URL connection send comment jointly goals to server
     //public static final String urlConnectionSendNewCommentJointlyGoalsToServer = "http://192.168.1.119/index.php?com=exchange&subcom=sendjointlygoalscomment";
-    public static final String urlConnectionSendNewCommentJointlyGoalsToServer = "http://192.168.2.106/index.php?com=exchange&subcom=sendjointlygoalcomment";
-    //public static final String urlConnectionSendNewCommentJointlyGoalsToServer = "http://192.168.0.126/index.php?com=exchange&subcom=sendjointlygoalcomment";
+    public static final String urlConnectionSendNewCommentJointlyGoalsToServer = "http://192.168.2.106/index.php?com=exchange&subcom=sendjointlygoalscomment";
+    //public static final String urlConnectionSendNewCommentJointlyGoalsToServer = "http://192.168.0.126/index.php?com=exchange&subcom=sendjointlygoalscomment";
 
 
     // URL connection send evaluation result jointly goals to server
@@ -73,4 +73,10 @@ public class ConstansClassSettings {
     public static final String urlConnectionSendEvaluationResultJointlyGoalsToServer = "http://192.168.2.106/index.php?com=exchange&subcom=sendevaluationresultgoals";
     //public static final String urlConnectionSendEvaluationResultJointlyGoalsToServer = "http://192.168.0.126/index.php?com=exchange&subcom=sendevaluationresultgoals";
 
+
+    // URL connection send comment debetable goals to server
+    //public static final String urlConnectionSendNewCommentDebetableGoalsToServer = "http://192.168.1.119/index.php?com=exchange&subcom=senddebetablegoalscomment";
+    public static final String urlConnectionSendNewCommentDebetableGoalsToServer = "http://192.168.2.106/index.php?com=exchange&subcom=senddebetablegoalscomment";
+    //public static final String urlConnectionSendNewCommentDebetableGoalsToServer = "http://192.168.0.126/index.php?com=exchange&subcom=senddebetablegoalscomment";
+    
 }
