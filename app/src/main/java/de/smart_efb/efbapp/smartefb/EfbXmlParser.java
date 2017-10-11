@@ -832,22 +832,6 @@ public class EfbXmlParser {
 
                             break;
 
-                        /* Kann gelöscht werden, da die Upload time eine lokale zeit ist, die nicht übertragen wird
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_UploadTime:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get upload time text
-                                if (xpp.getText().trim().length() > 0) { // check if uploadTime from xml > 0
-                                    tmpUploadTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-                                } else {
-                                    error = true;
-                                }
-                            } else {
-                                error = true;
-                            }
-
-                            break;
-                        */
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_BlockId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get BlockId text
@@ -867,7 +851,7 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get arrangementTime text
                                 if (xpp.getText().trim().length() > 0) { // check if arrangementTime from xml > 0
-                                    tmpArrangementTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                    tmpArrangementTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
                                 } else {
                                     error = true;
                                 }
@@ -1381,28 +1365,6 @@ public class EfbXmlParser {
 
                             break;
 
-                        /* Kann gelöscht werden, da die Upload time eine lokale zeit ist, die nicht übertragen wird
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_UploadTime:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get upload time text
-                                if (xpp.getText().trim().length() > 0) { // check if upload time from xml > 0
-                                    tmpUploadTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!;
-
-                                    Log.d("readOur_SKETCH_COMMENT", "Upload time: " + tmpUploadTime);
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-                        */
-
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_BlockId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get BlockId text
@@ -1427,7 +1389,7 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get arrangementTime text
                                 if (xpp.getText().trim().length() > 0) { // check if arrangementTime from xml > 0
-                                    tmpArrangementTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                    tmpArrangementTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
 
 
                                     Log.d("readOur_SKETCH_COMMENT", "Arrangement Date: " + tmpArrangementTime);
@@ -1557,6 +1519,12 @@ public class EfbXmlParser {
 
     }
 
+
+
+
+
+
+
     private void readOurArrangementTag_Settings() {
         Log.d("read_SETTINGS", "Zeile " + xpp.getLineNumber());
 
@@ -1596,10 +1564,6 @@ public class EfbXmlParser {
         int tmpSketchCommentDelaytime = 0;
         Long tmpSketchCommentCountCommentSinceTime = 0L;
         int tmpSketchCommentShare = 0; //0-> not sharing; 1-> sharing
-
-        // current date for sketch arrangement and now arrangement
-        Long tmpSketchCurrentDateOfArrangement = 0L;
-        Long tmpCurrentDateOfArrangement = 0L;
 
 
         try {
@@ -2054,45 +2018,7 @@ public class EfbXmlParser {
 
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCurrentDateOfSketchArrangement:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get sketch current date of arragement
-                                if (xpp.getText().trim().length() > 0) { // check if sketch date of arrangement from xml > 0
-                                    tmpSketchCurrentDateOfArrangement = Long.valueOf(xpp.getText().trim());
 
-                                    Log.d("Arrang_Settings","SketchCurrentDateOfArrangement"+tmpSketchCurrentDateOfArrangement);
-
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CurrentDateOfArrangement:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get current date of arrangement
-                                if (xpp.getText().trim().length() > 0) { // check if date of arrangement from xml > 0
-                                    tmpCurrentDateOfArrangement = Long.valueOf(xpp.getText().trim());
-
-                                    Log.d("Arrang_Settings","CurrentDateOfArrangement"+tmpCurrentDateOfArrangement);
-
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
                     }
                 }
                 eventType = xpp.next();
@@ -2252,29 +2178,8 @@ public class EfbXmlParser {
                                     Log.d("Arrang sketch comment","ausschalten");
                                 }
 
-                                // update sketch current date of sketch arrangement?
-                                if (tmpSketchCurrentDateOfArrangement > 0) {
 
-                                    // write data to prefs
-                                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, tmpSketchCurrentDateOfArrangement);
-                                    prefsEditor.commit();
 
-                                    // something change date of sketch arrangement
-                                    returnMap.put("OurArrangementSettingsSketchCurrentDateOfSketchArrangement","1");
-
-                                }
-
-                                // update current date of arrangement?
-                                if (tmpCurrentDateOfArrangement > 0) {
-
-                                    // write data to prefs
-                                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, tmpCurrentDateOfArrangement);
-                                    prefsEditor.commit();
-
-                                    // something change date of current arrangement
-                                    returnMap.put("OurArrangementSettingsCurrentDateOfArrangement","1");
-
-                                }
 
                                 // refresh activity ourarrangement because settings have change
                                 returnMap.put("OurArrangement","1");
@@ -2760,7 +2665,7 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get goalTime text
                                 if (xpp.getText().trim().length() > 0) { // check if goalTime from xml > 0
-                                    tmpGoalTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                    tmpGoalTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
                                 }
                                 else {
                                     error = true;
@@ -2923,299 +2828,6 @@ public class EfbXmlParser {
                     Log.d("TagNOW_DebetableCOMMENT", "Start tag " + xpp.getName());
 
 
-
-                    /*
-                    switch (xpp.getName().trim()) {
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Order:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get order text
-                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
-                                    tmpOrder = xpp.getText().trim();
-                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New)  && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update)  && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
-                                        error = true;
-                                        tmpOrder = "";
-                                    }
-
-                                    Log.d("SKETCH COMMENT","ORDER: "+tmpOrder);
-
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Comment:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get comment text
-                                if (xpp.getText().trim().length() > 0) { // check if commentText from xml > 0
-                                    tmpCommentText = xpp.getText().trim();
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionA:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get result question A text
-                                if (xpp.getText().trim().length() > 0) { // check if result question A from xml > 0
-                                    tmpResultQuestionA = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
-
-                                    Log.d("readOur_SKETCH_COMMENT", "Question A: " + tmpResultQuestionA);
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionB:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get result question B text
-                                if (xpp.getText().trim().length() > 0) { // check if result question B from xml > 0
-                                    tmpResultQuestionB = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
-
-                                    Log.d("readOur_SKETCH_COMMENT", "Question B: " + tmpResultQuestionB);
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionC:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get result question C text
-                                if (xpp.getText().trim().length() > 0) { // check if result question C from xml > 0
-                                    tmpResultQuestionC = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
-
-                                    Log.d("readOur_SKETCH_COMMENT", "Question C: " + tmpResultQuestionC);
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_AuthorName:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get authorName text
-                                if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
-                                    tmpAuthorName = xpp.getText().trim();
-
-                                    Log.d("readOur_SKETCH_COMMENT", "Author Name: " + tmpAuthorName);
-
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentTime:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get commentTime text
-                                if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
-                                    tmpCommentTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
-
-
-                                    Log.d("readOur_SKETCH_COMMENT", "Comment Time: " + tmpCommentTime);
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
-                        /* Kann gelöscht werden, da die Upload time eine lokale zeit ist, die nicht übertragen wird
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_UploadTime:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get upload time text
-                                if (xpp.getText().trim().length() > 0) { // check if upload time from xml > 0
-                                    tmpUploadTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!;
-
-                                    Log.d("readOur_SKETCH_COMMENT", "Upload time: " + tmpUploadTime);
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
-
-
-                    case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_BlockId:
-                        eventType = xpp.next();
-                        if (eventType == XmlPullParser.TEXT) { // get BlockId text
-                            if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
-                                tmpBlockId = xpp.getText().trim();
-
-                                Log.d("Sketch Arr", "BlockID:"+tmpBlockId);
-                            }
-                            else {
-                                error = true;
-                            }
-                        }
-                        else {
-                            error = true;
-                        }
-                        break;
-
-
-
-
-                    case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_DateOfArrangement:
-                        eventType = xpp.next();
-                        if (eventType == XmlPullParser.TEXT) { // get arrangementTime text
-                            if (xpp.getText().trim().length() > 0) { // check if arrangementTime from xml > 0
-                                tmpArrangementTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
-
-
-                                Log.d("readOur_SKETCH_COMMENT", "Arrangement Date: " + tmpArrangementTime);
-
-                            }
-                            else {
-                                error = true;
-                            }
-                        }
-                        else {
-                            error = true;
-                        }
-
-                        break;
-
-                    case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ServerIdArrangement:
-                        eventType = xpp.next();
-                        if (eventType == XmlPullParser.TEXT) { // get server id arrangement text
-                            if (xpp.getText().trim().length() > 0) { // check if server id arrangement from xml > 0
-                                tmpServerIdArrangement = Integer.valueOf(xpp.getText().trim());
-
-                                Log.d("Sketch Comment","ServerID:"+tmpServerIdArrangement);
-
-
-                            }
-                            else {
-                                error = true;
-                            }
-                        }
-                        else {
-                            error = true;
-                        }
-                        break;
-
-                }
-
-            }
-            eventType = xpp.next();
-
-            // Safety abbort end document
-            if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
-                Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
-            }
-
-            // look for end tag of ourarrangement sketch comment
-            if (eventType == XmlPullParser.END_TAG) {
-                if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment)) {
-
-                    // check all data for sketch arrangement comment correct?
-                    if (!error) {
-
-                        Log.d("SketchComment_DB","C:"+tmpCommentText+" - Au:"+tmpAuthorName+" - CTi:"+tmpCommentTime+" - AId"+tmpServerIdArrangement+" - CoA:"+tmpArrangementTime);
-
-                        // our arrangement sketch comment order -> new entry?
-                        if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpBlockId.length() > 0) {
-
-                            Log.d("SKETCH COMMENT","NEW AUSführen");
-
-                            // set upload time on smartphone for commeent; value from server is not needed
-                            tmpUploadTime = System.currentTimeMillis();
-
-                            // insert new comment in DB
-                            myDb.insertRowOurArrangementSketchComment(tmpCommentText, tmpResultQuestionA, tmpResultQuestionB, tmpResultQuestionC, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpArrangementTime, 4, tmpServerIdArrangement);
-
-                            // refresh activity ourarrangement and fragment sketch comment
-                            returnMap.put("OurArrangement","1");
-                            returnMap.put("OurArrangementSketchComment","1");
-
-                        }
-                        else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpBlockId.length() > 0) {
-                            // our arrangement sketch comment order -> update?
-
-                            Log.d("SKETCH COMMENT","Update AUSführen");
-
-                            // set upload time on smartphone for comment; value from server is not needed
-                            tmpUploadTime = System.currentTimeMillis();
-
-                            // insert new comment in DB
-                            myDb.insertRowOurArrangementSketchComment(tmpCommentText, tmpResultQuestionA, tmpResultQuestionB, tmpResultQuestionC, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpArrangementTime, 4, tmpServerIdArrangement);
-
-                            // refresh activity ourarrangement and fragment sketch comment
-                            returnMap.put("OurArrangement","1");
-                            returnMap.put("OurArrangementSketchComment","1");
-
-                        } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) { // delete all comments for sketch arrangements; needed by init process
-
-                            Log.d("Sketch Comment Arr", "Delete All!!!");
-
-                            // delete all comments for all current sketch arrangements with the blockId
-                            myDb.deleteAllRowsOurArrangementSketchComment (tmpBlockId);
-
-                        }
-
-                    }
-
-                    parseAnymore = false;
-                     */
-
-
-
-
-
-
-
-
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_Order:
                             eventType = xpp.next();
@@ -3243,7 +2855,7 @@ public class EfbXmlParser {
                                 if (xpp.getText().trim().length() > 0) { // check if commentText from xml > 0
                                     tmpCommentText = xpp.getText().trim();
 
-                                    Log.d("Goals_DebetableComment","MD5:"+EfbHelperClass.md5(tmpCommentText));
+                                    Log.d("++Goals_DebetComment","Comment:"+tmpCommentText);
 
 
                                 }
@@ -3319,6 +2931,10 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get authorName text
                                 if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
                                     tmpAuthorName = xpp.getText().trim();
+
+                                    Log.d("++Goals_DebetComment","Author:"+tmpAuthorName);
+
+
                                 }
                                 else {
                                     error = true;
@@ -3333,7 +2949,10 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get commentTime text
                                 if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
-                                    tmpCommentTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                    tmpCommentTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("++Goals_DebetComment","Commenttime:"+tmpCommentTime);
+
                                 }
                                 else {
                                     error = true;
@@ -3349,7 +2968,11 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get goalTime text
                                 if (xpp.getText().trim().length() > 0) { // check if goalTime from xml > 0
-                                    tmpGoalTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                                    tmpGoalTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+
+
+                                    Log.d("++Goals_DebetComment","Goal time:"+tmpGoalTime);
+
                                 }
                                 else {
                                     error = true;
@@ -3361,7 +2984,7 @@ public class EfbXmlParser {
 
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_BlockId:
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_BlockId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get BlockId text
                                 if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
@@ -3425,7 +3048,7 @@ public class EfbXmlParser {
                                 tmpUploadTime = System.currentTimeMillis();
 
                                  // insert new comment in DB
-                                myDb.insertRowOurGoalsDebetableGoalsComment(tmpCommentText, tmpResultQuestionA, tmpResultQuestionB, tmpResultQuestionC, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpGoalTime, 0, tmpServerIdGoal);
+                                myDb.insertRowOurGoalsDebetableGoalsComment(tmpCommentText, tmpResultQuestionA, tmpResultQuestionB, tmpResultQuestionC, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpGoalTime, 4, tmpServerIdGoal);
 
                                 // refresh activity ourgoals and fragment debetable comment
                                 returnMap.put ("OurGoals","1");
@@ -3439,7 +3062,7 @@ public class EfbXmlParser {
                                 tmpUploadTime = System.currentTimeMillis();
 
                                 // insert new comment in DB
-                                myDb.insertRowOurGoalsDebetableGoalsComment(tmpCommentText, tmpResultQuestionA, tmpResultQuestionB, tmpResultQuestionC, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpGoalTime, 0, tmpServerIdGoal);
+                                myDb.insertRowOurGoalsDebetableGoalsComment(tmpCommentText, tmpResultQuestionA, tmpResultQuestionB, tmpResultQuestionC, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpGoalTime, 4, tmpServerIdGoal);
 
                                 // refresh activity ourgoals and fragment debetable comment
                                 returnMap.put ("OurGoals","1");
@@ -3531,7 +3154,7 @@ public class EfbXmlParser {
                                 if (xpp.getText().trim().length() > 0) { // check if goalText from xml > 0
                                     tmpDebetableGoalText = xpp.getText().trim();
 
-                                    Log.d("DebetableNOW::MD5","MD5:"+EfbHelperClass.md5(tmpDebetableGoalText));
+                                    Log.d("DebetableNOW","Debet Text:"+tmpDebetableGoalText);
 
 
                                 }
@@ -3792,20 +3415,15 @@ public class EfbXmlParser {
 
         int tmpJointlyCommentMaxComment = 0;
         int tmpJointlyCommentMaxLetters = 0;
-        int tmpJointlyCommentCountComment = 0;
         Long tmpJointlyCommentCountCommentSinceTime = 0L;
         int tmpCommentShare = 0;
         int tmpCommentDelaytime = 0;
 
         int tmpDebetableCommentMaxComment = 0;
         int tmpDebetableCommentMaxLetters = 0;
-        int tmpDebetableCommentCountComment = 0;
         Long tmpDebetableCommentCountCommentSinceTime = 0L;
         int tmpDebetableCommentShare = 0;
         int tmpDebetableCommentDelaytime = 0;
-
-        Long tmpDebetableCurrentDateOfGoals = 0L;
-        Long tmpJointlyCurrentDateOfGoals = 0L;
 
 
         try {
@@ -4163,11 +3781,6 @@ public class EfbXmlParser {
                             break;
 
 
-
-
-
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentMaxComment:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get max comment debetable goals
@@ -4272,45 +3885,7 @@ public class EfbXmlParser {
                             break;
 
 
-                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCurrentDateOfGoals:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get sketch current date of arragement
-                                if (xpp.getText().trim().length() > 0) { // check if sketch date of arrangement from xml > 0
-                                    tmpDebetableCurrentDateOfGoals = Long.valueOf(xpp.getText().trim());
 
-                                    Log.d("Goals_Settings","DebetableCurrentDateOfGoals"+tmpDebetableCurrentDateOfGoals);
-
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
-                        case ConstansClassXmlParser.xmlNameForOurGoals_Settings_JointlyCurrentDateOfGoals:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get current date of arrangement
-                                if (xpp.getText().trim().length() > 0) { // check if date of arrangement from xml > 0
-                                    tmpJointlyCurrentDateOfGoals = Long.valueOf(xpp.getText().trim());
-
-                                    Log.d("Goals_Settings","JointlyCurrentDateOfGoals"+tmpJointlyCurrentDateOfGoals);
-
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
                     }
                 }
                 eventType = xpp.next();
@@ -4466,29 +4041,6 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
                                     // something change in debetable goals comment process
                                     returnMap.put ("OurGoalsSettingsDebetableCommentProcess","1");
-                                }
-
-                                // update debetable current date of debetable goals?
-                                if (tmpDebetableCurrentDateOfGoals > 0) {
-
-                                    Log.d ("Set Debet date","Set: "+tmpDebetableCurrentDateOfGoals);
-                                    Log.d ("Set Debet Systime","SystemTime: "+System.currentTimeMillis());
-
-                                    // write data to prefs
-                                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, tmpDebetableCurrentDateOfGoals);
-                                    prefsEditor.commit();
-                                    // something change in current date of debetable goals
-                                    returnMap.put ("OurGoalsSettingsDebetableCurrentDateOfDebetableGoals","1");
-                                }
-
-                                // update current date of jointly goals?
-                                if (tmpJointlyCurrentDateOfGoals > 0) {
-
-                                    // write data to prefs
-                                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, tmpJointlyCurrentDateOfGoals);
-                                    prefsEditor.commit();
-                                    // something change in current date of jointly goals
-                                    returnMap.put ("OurGoalsSettingsJointlyCurrentDateOfJointlyGoals","1");
                                 }
 
                                 // refresh activity ourarrangement because settings have change

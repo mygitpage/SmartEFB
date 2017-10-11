@@ -124,8 +124,8 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
                 String tmpExtraOurGoalsDebetableNow = intentExtras.getString("OurGoalsDebetableNow","0");
                 String tmpExtraOurGoalsDebetableNowComment = intentExtras.getString("OurGoalsDebetableComment","0");
                 String tmpExtraOurGoalsSettings = intentExtras.getString("OurGoalsSettings","0");
-                String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsDebetableCommentShareDisable","0");
-                String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsDebetableCommentShareEnable","0");
+                String tmpExtraOurGoalsCommentShareDisable= intentExtras.getString("OurGoalsSettingsDebetableCommentShareDisable","0");
+                String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsDebetableCommentShareEnable","0");
                 String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsDebetableCommentCountComment","0");
 
                 if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsDebetableNowComment != null && tmpExtraOurGoalsDebetableNowComment.equals("1")) {

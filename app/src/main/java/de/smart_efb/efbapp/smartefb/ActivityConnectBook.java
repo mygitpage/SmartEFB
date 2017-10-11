@@ -1,7 +1,10 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -14,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +44,9 @@ public class ActivityConnectBook extends AppCompatActivity {
     Toolbar toolbar;
     ActionBar actionBar;
 
+    // listview for connect book
+    ListView listViewConnectBook;
+
     // variables for the connect book
     int roleConnectBook; // the role 0=mother; 1=father; 2=third
     String userNameConnectBook; // the users name
@@ -52,6 +59,14 @@ public class ActivityConnectBook extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_efb_connect_book);
+
+
+
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        this.registerReceiver(connectBookBrodcastReceiver, filter);
+        
+        
 
         // init the connect book
         initConnectBook();
@@ -125,8 +140,7 @@ public class ActivityConnectBook extends AppCompatActivity {
                     // refresh display
                     displayMessageSet();
 
-                    // show succsesfull message
-                    displayToast();
+                    
 
                 }
                 else {
@@ -164,7 +178,7 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         // init the connect book variables
         roleConnectBook = prefs.getInt(ConstansClassConnectBook.namePrefsConnectBookRole, 0);
-        userNameConnectBook = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Jon Dow");
+        userNameConnectBook = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
 
         // create help dialog in Connect Book
         createHelpDialog();
@@ -176,33 +190,99 @@ public class ActivityConnectBook extends AppCompatActivity {
     }
 
 
-    // show toast message succesfull insert in db
-    private void displayToast() {
-        Toast.makeText(this," Nachricht eingetragen ", Toast.LENGTH_SHORT).show();
-    }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
+        // de-register broadcast receiver
+        this.unregisterReceiver(connectBookBrodcastReceiver);
+
     }
 
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    private BroadcastReceiver connectBookBrodcastReceiver = new BroadcastReceiver() {
 
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // true-> update the list view with arrangements
+            Boolean updateListView = false;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                // check intent order
+                String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
+                String tmpExtraOurArrangementSketch = intentExtras.getString("OurArrangementSketch","0");
+                String tmpExtraOurArrangementSketchComment = intentExtras.getString("OurArrangementSketchComment","0");
+                String tmpExtraOurArrangementSettings = intentExtras.getString("OurArrangementSettings","0");
+                String tmpExtraOurArrangementSketchCommentShareEnable = intentExtras.getString("OurArrangementSettingsSketchCommentShareEnable","0");
+                String tmpExtraOurArrangementSketchCommentShareDisable = intentExtras.getString("OurArrangementSettingsSketchCommentShareDisable","0");
+                String tmpExtraOurArrangementResetSketchCommentCountComment = intentExtras.getString("OurArrangementSettingsSketchCommentCountComment","0");
+                String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
+                String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
+                String tmpMessage = intentExtras.getString("Message");
+
+                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketch != null && tmpExtraOurArrangementSketch.equals("1")) {
+
+                    updateListView = true;
+
+                } else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send successfull?
+                    // show message send successefull; position center
+                    Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                }
+                else if (tmpSendNotSuccessefull != null && tmpSendNotSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send not successfull?
+                    // show message send not successefull; position center
+                    Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                }
+            }
+
+            // update the list view with sketch arrangements
+            if (updateListView) {
+                updateListView();
+            }
+
         }
+    };
 
+
+
+
+    // update the list view connect book
+    public void updateListView () {
+
+        if (listViewConnectBook != null) {
+            listViewConnectBook.destroyDrawingCache();
+            listViewConnectBook.setVisibility(ListView.INVISIBLE);
+            listViewConnectBook.setVisibility(ListView.VISIBLE);
+
+            displayMessageSet ();
+        }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
 
 
     // display connect book messages in listview
@@ -211,9 +291,9 @@ public class ActivityConnectBook extends AppCompatActivity {
         Cursor cursor = myDb.getAllRowsChatMessage();
 
         // find the listview
-        ListView listView = (ListView) findViewById(R.id.list_view_messages);
+        listViewConnectBook = (ListView) findViewById(R.id.list_view_messages);
 
-        if (cursor.getCount() > 0 && listView != null) {
+        if (cursor.getCount() > 0 && listViewConnectBook != null) {
 
             // new dataadapter
             dataAdapter = new ConnectBookCursorAdapter(
@@ -222,13 +302,23 @@ public class ActivityConnectBook extends AppCompatActivity {
                     0);
 
             // Assign adapter to ListView
-            listView.setAdapter(dataAdapter);
+            listViewConnectBook.setAdapter(dataAdapter);
 
         }
 
 
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     // help dialog
     void createHelpDialog () {
@@ -369,6 +459,20 @@ public class ActivityConnectBook extends AppCompatActivity {
 
 
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
 
 
 

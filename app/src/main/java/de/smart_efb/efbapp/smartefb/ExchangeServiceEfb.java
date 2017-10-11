@@ -196,6 +196,9 @@ import java.util.Map;
                             }
                         }
 
+
+                        Log.d ("EXCHANGE --->", "Anzahl Arrangement Evaluation: "+allArrangementEvaluationResultsReadyToSend.getCount());
+
                         // build xml for all arrangement evaluation result
                         if (allArrangementEvaluationResultsReadyToSend != null) {
 
@@ -215,6 +218,8 @@ import java.util.Map;
                         }
 
 
+
+                        Log.d ("EXCHANGE --->", "Anzahl Goals Evaluation: "+allGoalsEvaluationResultsReadyToSend.getCount());
 
                         // build xml for all arrangement evaluation result
                         if (allGoalsEvaluationResultsReadyToSend != null) {

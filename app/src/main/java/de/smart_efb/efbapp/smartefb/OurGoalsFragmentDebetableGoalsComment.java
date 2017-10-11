@@ -154,8 +154,8 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                 String tmpExtraOurGoalsDebetableNow = intentExtras.getString("OurGoalsDebetableNow","0");
                 String tmpExtraOurGoalsDebetableNowComment = intentExtras.getString("OurGoalsDebetableComment","0");
                 String tmpExtraOurGoalsSettings = intentExtras.getString("OurGoalsSettings","0");
-                String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsDebetableCommentShareDisable","0");
-                String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsDebetableCommentShareEnable","0");
+                String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsDebetableCommentShareDisable","0");
+                String tmpExtraOurGoalsCommentShareEnable= intentExtras.getString("OurGoalsSettingsDebetableCommentShareEnable","0");
                 String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsDebetableCommentCountComment","0");
 
                 if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsDebetableNowComment != null && tmpExtraOurGoalsDebetableNowComment.equals("1")) {
@@ -263,8 +263,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         String tmpTextAuthorNameText = String.format(fragmentDebetableGoalsContext.getResources().getString(R.string.ourGoalsDebetableCommentAuthorNameTextWithDate), cursorChoosenDebetableGoals.getString(cursorChoosenDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis()), "dd.MM.yyyy"));
         tmpTextViewAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
 
-
-
         // generate back link "zurueck zu den strittigen Zielen"
         Uri.Builder commentLinkBuilder = new Uri.Builder();
         commentLinkBuilder.scheme("smart.efb.deeplink")
@@ -277,14 +275,11 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         linkShowCommentBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+fragmentDebetableGoalsContext.getResources().getString(fragmentDebetableGoalsContext.getResources().getIdentifier("ourGoalsBackLinkToDebetableGoals", "string", fragmentDebetableGoalsContext.getPackageName()))+"</a>"));
         linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
 
-
-
         // check, sharing debetable comments enable?
         if (prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentShare, 0) == 0) {
             TextView textDebetableCommentSharingIsDisable = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.commentSharingIsDisable);
             textDebetableCommentSharingIsDisable.setVisibility (View.VISIBLE);
         }
-
 
         // textview for the debetable goal
         TextView textViewGoal = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.choosenDebetableGoal);
@@ -597,9 +592,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
 
                     // insert comment in DB
                     Long tmpDbId = myDb.insertRowOurGoalsDebetableGoalsComment(txtInputDebetableCommentComment.getText().toString(), structQuestionResultDebetableGoalComment, 0, 0, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), System.currentTimeMillis(), 0, cursorChoosenDebetableGoals.getString(cursorChoosenDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID)), true, prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis()), 0, cursorChoosenDebetableGoals.getInt(cursorChoosenDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)));
-
-                    // Toast "Comment sucsessfull send"
-                    Toast.makeText(fragmentDebetableGoalsContext, fragmentDebetableGoalsContext.getResources().getString(R.string.debetableGoalCommentSuccsesfulySend), Toast.LENGTH_SHORT).show();
 
                     // increment debetable goal comment count
                     int countDebetableGoalsCommentSum = prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment,0) + 1;

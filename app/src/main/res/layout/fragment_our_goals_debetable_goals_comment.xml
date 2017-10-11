@@ -92,7 +92,7 @@
             android:id="@+id/commentSharingIsDisable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/textOurGoalsJointlyCommentNoSharing"
+            android:text="@string/textOurGoalsDebetableGoalsCommentNoSharing"
             android:textSize="14dp"
             android:textColor="@color/text_accent_color"
             android:gravity="center"
@@ -199,11 +199,6 @@
             android:layout_marginRight="40dp"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"/>
-
-
-
-
-
 
         <TextView
             android:id="@+id/introStructQuestionForCommentDebetableGoal"
