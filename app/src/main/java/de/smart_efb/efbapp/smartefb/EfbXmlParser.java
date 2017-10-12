@@ -69,6 +69,8 @@ public class EfbXmlParser {
         returnMap.put("ConnectBook", "0");
         returnMap.put("ConnectBookSettings", "0");
         returnMap.put("ConnectBookSettingsClientName", "0");
+        returnMap.put("ConnectBookSettingsNewMessage", "0");
+
 
         returnMap.put("OurArrangement", "0");
         returnMap.put("OurArrangementNow", "0");
@@ -97,21 +99,13 @@ public class EfbXmlParser {
         returnMap.put("OurGoalsSettings", "0");
         returnMap.put("OurGoalsSettingsEvaluationProcess", "0");
         returnMap.put("OurGoalsSettingsCommentProcess", "0");
-
         returnMap.put("OurGoalsSettingsCommentShareDisable","0");
         returnMap.put("OurGoalsSettingsCommentShareEnable","0");
         returnMap.put("OurGoalsSettingsCommentCountComment", "0");
-
-
-
-
         returnMap.put("OurGoalsSettingsDebetableCommentProcess", "0");
         returnMap.put("OurGoalsSettingsDebetableGoalsAuthorName", "0");
         returnMap.put("OurGoalsSettingsDebetableCurrentDateOfDebetableGoals", "0");
         returnMap.put("OurGoalsSettingsJointlyCurrentDateOfJointlyGoals", "0");
-
-
-
         returnMap.put("OurGoalsSettingsDebetableCommentShareDisable","0");
         returnMap.put("OurGoalsSettingsDebetableCommentShareEnable","0");
         returnMap.put("OurGoalsSettingsDebetableCommentCountComment", "0");
@@ -4711,6 +4705,161 @@ public class EfbXmlParser {
     // read element connect book messages
     private void readConnectBookTag_Messages() {
 
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml connect book tag
+        Boolean error = false;
+
+        // tmp data for database insert
+        String tmpMessage = "";
+        String tmpAuthorName = "";
+        Long tmpMessageTime = 0L;
+        String tmpOrder = "";
+        Long tmpUploadTime = 0L;
+
+
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    Log.d("read connect book --", "Start tag " + xpp.getName());
+
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForConnectBook_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New)  && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForConnectBook_Message:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get message text text
+                                if (xpp.getText().trim().length() > 0) { // check if message text from xml > 0
+                                    tmpMessage = xpp.getText().trim();
+
+                                    Log.d("ConnectBook","Message Text:"+tmpMessage);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForConnectBook_AuthorName:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get authorName text
+                                if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
+                                    tmpAuthorName = xpp.getText().trim();
+
+                                    Log.d("ConnectBook","Author Name:" + tmpAuthorName);
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForConnectBook_MessageTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get message time text
+                                if (xpp.getText().trim().length() > 0) { // check if message time from xml > 0
+                                    tmpMessageTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("ConnectBook","Message Time:" + tmpMessageTime);
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        
+
+
+                        
+                        
+
+
+
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
+                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of connectbook
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForConnectBook)) {
+
+                        // check all data for connect book correct?
+                        if (!error) {
+
+
+                            // our goal order -> new entry?
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageTime > 0) {
+
+
+                                
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
+
+                                
+
+
+                            }
+
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs(15);
+            e.printStackTrace();
+        } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs(16);
+            e.printStackTrace();
+        }
+        
 
     }
 

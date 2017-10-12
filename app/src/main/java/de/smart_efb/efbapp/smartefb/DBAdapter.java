@@ -38,7 +38,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 39;
+    public static final int DATABASE_VERSION = 40;
 
     // Common column names
     public static final String KEY_ROWID = "_id";
@@ -188,17 +188,17 @@ public class DBAdapter extends SQLiteOpenHelper {
     /**********************************************************************************************/
     /**********************************************************************************************/
     // Chat Messages - column names and numbers
-    public static final String CHAT_MESSAGE_KEY_WRITE_TIME = "write_time";
+    public static final String CHAT_MESSAGE_KEY_WRITE_TIME = "message_time";
     public static final String CHAT_MESSAGE_KEY_AUTHOR_NAME = "author_name";
     public static final String CHAT_MESSAGE_KEY_MESSAGE = "message";
-    public static final String CHAT_MESSAGE_KEY_ROLE = "role";
-    public static final String CHAT_MESSAGE_KEY_TX_TIME = "tx_time";
+    public static final String CHAT_MESSAGE_KEY_ROLE = "role_status";
+    public static final String CHAT_MESSAGE_KEY_UPLOAD_TIME = "upload_time";
     public static final String CHAT_MESSAGE_KEY_STATUS = "status";
     public static final String CHAT_MESSAGE_KEY_NEW_ENTRY = "new_entry";
-    public static final String CHAT_MESSAGE_KEY_MD5_HASH = "md5_hash";
+
 
     // All keys from table chat messages in a String
-    public static final String[] CHAT_MESSAGE_ALL_KEYS = new String[] {KEY_ROWID, CHAT_MESSAGE_KEY_WRITE_TIME, CHAT_MESSAGE_KEY_AUTHOR_NAME, CHAT_MESSAGE_KEY_MESSAGE, CHAT_MESSAGE_KEY_ROLE, CHAT_MESSAGE_KEY_TX_TIME, CHAT_MESSAGE_KEY_STATUS, CHAT_MESSAGE_KEY_NEW_ENTRY, CHAT_MESSAGE_KEY_MD5_HASH };
+    public static final String[] CHAT_MESSAGE_ALL_KEYS = new String[] {KEY_ROWID, CHAT_MESSAGE_KEY_WRITE_TIME, CHAT_MESSAGE_KEY_AUTHOR_NAME, CHAT_MESSAGE_KEY_MESSAGE, CHAT_MESSAGE_KEY_ROLE, CHAT_MESSAGE_KEY_UPLOAD_TIME, CHAT_MESSAGE_KEY_STATUS, CHAT_MESSAGE_KEY_NEW_ENTRY };
 
     // SQL String to create chat-message-table
     private static final String DATABASE_CREATE_SQL_CHAT_MESSAGE =
@@ -207,10 +207,9 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + CHAT_MESSAGE_KEY_AUTHOR_NAME + " STRING not null, "
                     + CHAT_MESSAGE_KEY_MESSAGE + " TEXT not null, "
                     + CHAT_MESSAGE_KEY_ROLE + " INTEGER not null, "
-                    + CHAT_MESSAGE_KEY_TX_TIME + " INTEGER, "
+                    + CHAT_MESSAGE_KEY_UPLOAD_TIME + " INTEGER, "
                     + CHAT_MESSAGE_KEY_STATUS + " INTEGER not null, "
-                    + CHAT_MESSAGE_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
-                    + CHAT_MESSAGE_KEY_MD5_HASH + " TEXT not null"
+                    + CHAT_MESSAGE_KEY_NEW_ENTRY + " INTEGER DEFAULT 0"
                     + ");";
 
     /*************************************************************************************************************************/
@@ -477,7 +476,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Chat Message  ******************************************/
 
     // Add a new set of values to the database.
-    public long insertRowChatMessage(String author_name, long writeTime, String message, int role, int status, Boolean newEntry) {
+    public long insertRowChatMessage(String author_name, long writeTime, String message, int role, int status, Boolean newEntry, long upload_time) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -488,7 +487,8 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(CHAT_MESSAGE_KEY_MESSAGE, message);
         initialValues.put(CHAT_MESSAGE_KEY_ROLE, role);
         initialValues.put(CHAT_MESSAGE_KEY_STATUS, status);
-        initialValues.put(CHAT_MESSAGE_KEY_MD5_HASH, EfbHelperClass.md5(message)); // generate md5 hash from message
+        initialValues.put(CHAT_MESSAGE_KEY_UPLOAD_TIME, upload_time);
+
 
         // is it a new entry?
         if (newEntry) {
@@ -526,6 +526,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         c.close();
     }
 
+
     // Return all data in the database. chat messages sorted by write time ASC
     public Cursor getAllRowsChatMessage() {
 
@@ -560,32 +561,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         return c;
     }
 
-    // Change an existing row to be equal to new data.
-    public boolean updateRowChatMessage(long rowId, int write_time, String author_name, String message, int role, int tx_time, int status, Boolean newEntry) {
 
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String where = KEY_ROWID + "=" + rowId;
-
-		// Create row's data:
-        ContentValues newValues = new ContentValues();
-        newValues.put(CHAT_MESSAGE_KEY_WRITE_TIME, write_time);
-        newValues.put(CHAT_MESSAGE_KEY_AUTHOR_NAME, author_name);
-        newValues.put(CHAT_MESSAGE_KEY_MESSAGE, message);
-        newValues.put(CHAT_MESSAGE_KEY_ROLE, role);
-        newValues.put(CHAT_MESSAGE_KEY_TX_TIME, tx_time);
-        newValues.put(CHAT_MESSAGE_KEY_STATUS, tx_time);
-
-        // is it a new entry?
-        if (newEntry) {
-            newValues.put(CHAT_MESSAGE_KEY_NEW_ENTRY, 1);
-        } else {
-            newValues.put(CHAT_MESSAGE_KEY_NEW_ENTRY, 0);
-        }
-
-        // Insert it into the database.
-        return db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null) != 0;
-    }
 
 
     /********************************* End!! TABLES FOR FUNCTION: Chat Message ******************************************/

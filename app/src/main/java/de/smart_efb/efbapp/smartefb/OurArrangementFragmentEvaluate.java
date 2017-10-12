@@ -393,7 +393,11 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
                     // When last evaluation show toast, because textView is not visible -> new fragment
                     if (nextArrangementServerDbIdToEvaluate == 0 ) {
-                        Toast.makeText(fragmentEvaluateContext, fragmentEvaluateContext.getResources().getString(R.string.evaluateResultSuccsesfulySend), Toast.LENGTH_SHORT).show();
+                        String messageThankYouForEvaluation = fragmentEvaluateContext.getResources().getString(R.string.evaluateResultSuccsesfulySend);
+                        Toast toast = Toast.makeText(fragmentEvaluateContext, messageThankYouForEvaluation, Toast.LENGTH_LONG);
+                        TextView vt = (TextView) toast.getView().findViewById(android.R.id.message);
+                        if( vt != null) vt.setGravity(Gravity.CENTER);
+                        toast.show();
                     }
 
                     // reset evaluate results
@@ -411,8 +415,8 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                         Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.putExtra("com","evaluate_an_arrangement");
-                        intent.putExtra("db_id", (int) nextArrangementServerDbIdToEvaluate);
-                        intent.putExtra("arr_num", (int) nextArrangementListPositionToEvaluate);
+                        intent.putExtra("db_id", nextArrangementServerDbIdToEvaluate);
+                        intent.putExtra("arr_num", nextArrangementListPositionToEvaluate);
                         intent.putExtra("eval_next", true );
 
                         getActivity().startActivity(intent);

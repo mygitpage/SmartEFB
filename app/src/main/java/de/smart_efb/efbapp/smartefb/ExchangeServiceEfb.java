@@ -177,68 +177,68 @@ import java.util.Map;
                         Log.d("Exchange Arr Comment", "Anzahl Kommentare to send: "+allCommentsReadyToSend.getCount());
 
                         // build xml for all now comments
-                        if (allCommentsReadyToSend != null) {
+                        if (allCommentsReadyToSend != null && allCommentsReadyToSend.getCount() > 0) {
 
-                            while (allCommentsReadyToSend.moveToNext()) {
+                            do {
                                 buildCommentNowXmlTagWithData(xmlSerializer, allCommentsReadyToSend);
                                 send_now_comment_info = true;
-                            }
+                            } while (allCommentsReadyToSend.moveToNext());
                         }
 
                         Log.d("Exchange", "Anzahl Entwürfe Komm to send: "+allSketchCommentsReadyToSend.getCount());
 
                         // build xml for all sketch comments
-                        if (allSketchCommentsReadyToSend != null) {
+                        if (allSketchCommentsReadyToSend != null && allSketchCommentsReadyToSend.getCount() > 0) {
 
-                            while (allSketchCommentsReadyToSend.moveToNext()) {
+                            do {
                                 buildCommentSketchXmlTagWithData(xmlSerializer, allSketchCommentsReadyToSend);
                                 send_sketch_comment_info = true;
-                            }
+                            } while (allSketchCommentsReadyToSend.moveToNext());
                         }
 
 
                         Log.d ("EXCHANGE --->", "Anzahl Arrangement Evaluation: "+allArrangementEvaluationResultsReadyToSend.getCount());
 
                         // build xml for all arrangement evaluation result
-                        if (allArrangementEvaluationResultsReadyToSend != null) {
+                        if (allArrangementEvaluationResultsReadyToSend != null && allArrangementEvaluationResultsReadyToSend.getCount() > 0) {
 
-                            while (allArrangementEvaluationResultsReadyToSend.moveToNext()) {
+                            do {
                                 buildArrangementEvaluationResultXmlTagWithData(xmlSerializer, allArrangementEvaluationResultsReadyToSend);
                                 send_arrangement_evaluation_result_info = true;
-                            }
+                            } while (allArrangementEvaluationResultsReadyToSend.moveToNext());
                         }
 
                         // build xml for all jointly goals comments
-                        if (allJointlyGoalsCommentsReadyToSend != null) {
+                        if (allJointlyGoalsCommentsReadyToSend != null && allJointlyGoalsCommentsReadyToSend.getCount() > 0) {
 
-                            while (allJointlyGoalsCommentsReadyToSend.moveToNext()) {
+                            do {
                                 buildJointlyCommentXmlTagWithData(xmlSerializer, allJointlyGoalsCommentsReadyToSend);
                                 send_jointly_goals_comment_info = true;
-                            }
+                            } while (allJointlyGoalsCommentsReadyToSend.moveToNext());
                         }
 
 
 
                         Log.d ("EXCHANGE --->", "Anzahl Goals Evaluation: "+allGoalsEvaluationResultsReadyToSend.getCount());
 
-                        // build xml for all arrangement evaluation result
-                        if (allGoalsEvaluationResultsReadyToSend != null) {
+                        // build xml for all goals evaluation result
+                        if (allGoalsEvaluationResultsReadyToSend != null && allGoalsEvaluationResultsReadyToSend.getCount() > 0) {
 
-                            while (allGoalsEvaluationResultsReadyToSend.moveToNext()) {
+                            do {
                                 buildJointlyGoalsEvaluationResultXmlTagWithData(xmlSerializer, allGoalsEvaluationResultsReadyToSend);
                                 send_goals_evaluation_result_info = true;
-                            }
+                            } while (allGoalsEvaluationResultsReadyToSend.moveToNext());
                         }
 
 
 
                         // build xml for all debetable goals comments
-                        if (allDebetableCommentsReadyToSend != null) {
+                        if (allDebetableCommentsReadyToSend != null && allDebetableCommentsReadyToSend.getCount() > 0) {
 
-                            while (allDebetableCommentsReadyToSend.moveToNext()) {
+                            do {
                                 buildCommentDebetableXmlTagWithData(xmlSerializer, allDebetableCommentsReadyToSend);
                                 send_debetable_goals_comment_info = true;
-                            }
+                            } while (allDebetableCommentsReadyToSend.moveToNext());
                         }
 
 
@@ -962,11 +962,13 @@ import java.util.Map;
                     answerInputStream.close();
                     connection.disconnect();
 
-                    // send intent to receiver in OurArrangementNowFragment and Fragment Evaluation to inform user (when active)
+                    // send intent to receiver in OurArrangementNowFragment to inform user (when active)
+                    /* Bei erfolgreichem Senden der Evaluationsergebnisse wird keine Nachricht ausgegeben!!!!!!
                     Intent tmpIntent = translateMapToIntent (returnMap);
                     tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageEvaluationSendSuccessfull));
                     tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
                     context.sendBroadcast(tmpIntent);
+                    */
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -1374,10 +1376,12 @@ import java.util.Map;
                     connection.disconnect();
 
                     // send intent to receiver in OurGoalsFragmentJointlyGoalsNow and Fragment Evaluation to inform user (when active)
+                    /* Keine Nachricht bei erfolgrechem Senden der Evaluationsergebnisse
                     Intent tmpIntent = translateMapToIntent (returnMap);
                     tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageJointlyGoalsEvaluationSendSuccessfull));
                     tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
                     context.sendBroadcast(tmpIntent);
+                    */
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();

@@ -54,7 +54,7 @@ public class ConstansClassXmlParser {
     public static final String xmlNameForConnectBook_Order = "connectbook_order";
 
     // xml name for element connect book author name
-    public static final String xmlNameForConnectBook_ClientName = "connectbook_clientrname";
+    public static final String xmlNameForConnectBook_ClientName = "connectbook_clientname";
 
     // xml name for element connect book send delay time
     public static final String xmlNameForConnectBook_DelayTime = "connectbook_settings_delaytime";
@@ -64,6 +64,15 @@ public class ConstansClassXmlParser {
 
     // xml name for element connect book max letters
     public static final String xmlNameForConnectBook_MaxLetters = "connectbook_settings_maxletters";
+
+    // xml name for element connect book message
+    public static final String xmlNameForConnectBook_Message = "connectbook_message";
+
+    // xml name for element connect book message author name
+    public static final String xmlNameForConnectBook_AuthorName = "connectbook_authorname";
+
+    // xml name for element connect book message time
+    public static final String xmlNameForConnectBook_MessageTime = "connectbook_messagetime";
 
     //
     // ++++++++++++++++++++++ End Connect Book ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

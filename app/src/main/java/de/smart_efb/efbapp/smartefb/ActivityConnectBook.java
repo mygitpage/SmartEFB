@@ -57,21 +57,57 @@ public class ActivityConnectBook extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_efb_connect_book);
-
-
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
         this.registerReceiver(connectBookBrodcastReceiver, filter);
-        
-        
 
         // init the connect book
         initConnectBook();
 
-       // get max letters for message
+        // init the view of activity
+        initViewConnectBook();
+    }
+
+
+    // init activity
+    private void initConnectBook() {
+
+        // init the toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbarConnectBook);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        //toolbar.setSubtitle("Untertitel");
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        // init the DB
+        myDb = new DBAdapter(getApplicationContext());
+
+        // init the prefs
+        prefs = this.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
+        prefsEditor = prefs.edit();
+
+        // init the connect book variables
+        roleConnectBook = prefs.getInt(ConstansClassConnectBook.namePrefsConnectBookRole, 0);
+        userNameConnectBook = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+
+        // create help dialog in Connect Book
+        createHelpDialog();
+
+        // init the ui
+        displayMessageSet();
+    }
+
+
+    // init view of activity
+    private void initViewConnectBook() {
+
+        // get max letters for message
         final int tmpMaxLength = prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxLetters, 10);
 
         // get textView to count input letters and init it
@@ -127,7 +163,7 @@ public class ActivityConnectBook extends AppCompatActivity {
                 // check number of send messages in 24h
                 if (tmpCountCurrentMessages < tmpMaxMessages) {
 
-                    long newID = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), txtInputMsg.getText().toString(), roleConnectBook, 2, false);
+                    long newID = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), txtInputMsg.getText().toString(), roleConnectBook, 2, false, System.currentTimeMillis());
 
                     // add current number of send messages and write to prefs
                     tmpCountCurrentMessages++;
@@ -139,9 +175,6 @@ public class ActivityConnectBook extends AppCompatActivity {
 
                     // refresh display
                     displayMessageSet();
-
-                    
-
                 }
                 else {
 
@@ -150,46 +183,11 @@ public class ActivityConnectBook extends AppCompatActivity {
 
                     // show dialog no more messages
                     createInfoDialogNoMoreMessages();
-
                 }
-
             }
         });
     }
-
-
-    // init activity
-    private void initConnectBook() {
-
-        // init the toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbarConnectBook);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
-        //toolbar.setSubtitle("Untertitel");
-        actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        // init the DB
-        myDb = new DBAdapter(getApplicationContext());
-
-        // init the prefs
-        prefs = this.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
-        prefsEditor = prefs.edit();
-
-        // init the connect book variables
-        roleConnectBook = prefs.getInt(ConstansClassConnectBook.namePrefsConnectBookRole, 0);
-        userNameConnectBook = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
-
-        // create help dialog in Connect Book
-        createHelpDialog();
-
-        // init the ui
-        displayMessageSet();
-
-
-    }
-
-
+ 
 
     @Override
     protected void onDestroy() {
@@ -197,9 +195,7 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         // de-register broadcast receiver
         this.unregisterReceiver(connectBookBrodcastReceiver);
-
     }
-
 
 
 
@@ -219,35 +215,32 @@ public class ActivityConnectBook extends AppCompatActivity {
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
                 // check intent order
-                String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
-                String tmpExtraOurArrangementSketch = intentExtras.getString("OurArrangementSketch","0");
-                String tmpExtraOurArrangementSketchComment = intentExtras.getString("OurArrangementSketchComment","0");
-                String tmpExtraOurArrangementSettings = intentExtras.getString("OurArrangementSettings","0");
-                String tmpExtraOurArrangementSketchCommentShareEnable = intentExtras.getString("OurArrangementSettingsSketchCommentShareEnable","0");
-                String tmpExtraOurArrangementSketchCommentShareDisable = intentExtras.getString("OurArrangementSettingsSketchCommentShareDisable","0");
-                String tmpExtraOurArrangementResetSketchCommentCountComment = intentExtras.getString("OurArrangementSettingsSketchCommentCountComment","0");
-                String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
-                String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
-                String tmpMessage = intentExtras.getString("Message");
+                String tmpExtraConnectBook = intentExtras.getString("ConnectBook","0");
+                String tmpExtraConnectBookSettings = intentExtras.getString("ConnectBookSettings","0");
+                String tmpExtraConnectBookSettingsClientName = intentExtras.getString("ConnectBookSettingsClientName","0");
 
-                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketch != null && tmpExtraOurArrangementSketch.equals("1")) {
+                String tmpExtraConnectBookNewMessage = intentExtras.getString("ConnectBookSettingsNewMessage","0");
 
+
+
+                if (tmpExtraConnectBook != null && tmpExtraConnectBook.equals("1") && tmpExtraConnectBookSettings != null && tmpExtraConnectBookSettings.equals("1")) {
+
+                    // connect book settings has changed (linke letters, max comments or delaytime)
                     updateListView = true;
 
-                } else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send successfull?
-                    // show message send successefull; position center
-                    Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
-                    toast.show();
+                } else if (tmpExtraConnectBook != null && tmpExtraConnectBook.equals("1") && tmpExtraConnectBookSettings != null && tmpExtraConnectBookSettings.equals("1") && tmpExtraConnectBookSettingsClientName != null && tmpExtraConnectBookSettingsClientName.equals("1")) {
+
+                    // client name of connect book has changed
+                    updateListView = true;
+
+                } else if (tmpExtraConnectBook != null && tmpExtraConnectBook.equals("1") && tmpExtraConnectBookNewMessage != null && tmpExtraConnectBookNewMessage.equals("1")) {
+
+                    // new message received
+                    updateListView = true;
+
                 }
-                else if (tmpSendNotSuccessefull != null && tmpSendNotSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send not successfull?
-                    // show message send not successefull; position center
-                    Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
-                    toast.show();
-                }
+
+
             }
 
             // update the list view with sketch arrangements
