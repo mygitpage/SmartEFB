@@ -213,11 +213,11 @@
 
         <TextView
             android:id="@+id/errorStructQuestionForCommentDebetableGoal"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
+            android:textSize="14dp"
             android:textColor="@color/text_accent_color"
-            android:gravity="left"
+            android:gravity="center"
             android:visibility="gone"
             android:text="@string/errorStructQuestionForCommentDebetableGoal"
             android:paddingBottom="5dp"/>
@@ -291,15 +291,15 @@
         </RadioGroup>
 
         <TextView
-            android:id="@+id/errorInputJointlyGoalComment"
-            android:layout_width="wrap_content"
+            android:id="@+id/errorInputDebeableGoalComment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
+            android:textSize="14dp"
             android:textColor="@color/text_accent_color"
-            android:gravity="left"
+            android:gravity="center"
             android:visibility="gone"
-            android:text="@string/errorInputJointlyGoalComment"
-            android:paddingTop="5dp"/>
+            android:text="@string/errorFreeQuestionForCommentDebetableGoal"
+            android:paddingTop="15dp"/>
 
 
         <TextView

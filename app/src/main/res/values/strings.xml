@@ -253,7 +253,7 @@
             <string name="questionTwoEvaluateMyEx">Wie hat Ihr Ex-Partner die Absprache aus Ihrer Sicht eingehalten?</string>
             <string name="questionThreeEvaluateChildreen">Wie haben Ihre Kinder die Absprache aus Ihrer Sicht eingehalten?</string>
             <string name="questionFourEvaluateThirdPeople">Wie haben die weiteren beteiligten Personen diese Absprache eingehalten?</string>
-            <string name="commentTextEvaluateResult">Ihre Anmerkungen zu Ihrer Bewertung</string>
+            <string name="commentTextEvaluateResult">Anmerkungen zur Bewertung (optional)</string>
             <string name="evaluateArrangementSuggestion_1">Immer\n</string>
             <string name="evaluateArrangementSuggestion_2">Fast\nimmer</string>
             <string name="evaluateArrangementSuggestion_3">50/50\n</string>
@@ -274,15 +274,16 @@
             <string name="ourArrangementEvaluatePeriodExpired">Bewertungszeitraum abgelaufen</string>
             <string name="ourArrangementEvaluateTextEvaluationModulSwitchOn">Bewertungsmodul wird eingeschaltet</string>
             <string name="ourArrangementEvaluateTextEvaluationModulSwitchOff">Bewertungsmodul wird ausgeschaltet</string>
+            <string name="ourArrangementEvaluateTextArrangementAlreadyEvaluated">Absprache bereits bewertet</string>
         <!-- End Fragment evaluate arrangement -->
 
         <!-- fragment comment sketch arrangement -->
             <string name="showSketchArrangementIntroText">Absprache Entwurf</string>
             <string name="commentSketchArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
             <string name="introStructQuestionForCommentSketchArrangement">Wie schätzen Sie Ihre Zustimmung zu dem Entwurf ein?</string>
-            <string name="errorStructQuestionForCommentSketchArrangement">Bitte wählen Sie eine Einschätzung!</string>
+            <string name="errorStructQuestionForCommentSketchArrangement">Bitte wählen Sie Ihre Zustimmung!</string>
             <string name="introFreeQuestionForCommentSketchArrangementHint"><b>Bitte erläutern Sie Ihre obige Einschätzung</b></string>
-            <string name="errorFreeQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihren Text zur obigen Einschätzung! Er ist zu kurz!</string>
+            <string name="errorFreeQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihre Erläuterungen zum obigen Zustimmungswert! Sie sind zu kurz!</string>
             <string name="commentFreeQuestionSketchArrangementTextFieldHintText">Bitte erläutern Sie hier Ihre Einschätzung.</string>
             <string name="buttonSendSketchArrangementComment">Einschätzung senden</string>
             <string name="ourArrangementBackLinkToSketchArrangement">Zurück zu den Entwürfen</string>
@@ -576,7 +577,7 @@
                 <string name="questionTwoJointlyGoalEvaluateMyEx">Wie hat Ihr Ex-Partner das gemeinsame Ziel aus Ihrer Sicht eingehalten?</string>
                 <string name="questionThreeJointlyGoalEvaluateChildreen">Wie haben Ihre Kinder das gemeinsame Ziel aus Ihrer Sicht eingehalten?</string>
                 <string name="questionFourJointlyGoalEvaluateThirdPeople">Wie haben die weiteren beteiligten Personen das gemeinsame Ziel eingehalten?</string>
-                <string name="commentTextJointlyGoalEvaluateResult">Ihre Anmerkungen zu Ihrer Bewertung</string>
+                <string name="commentTextJointlyGoalEvaluateResult">Anmerkungen zur Bewertung (optional)</string>
                 <string name="btnSendEvaluateJointlyGoalResult">Bewertung Senden</string>
                 <string name="btnAbortEvaluateJointlyGoal">Zurück </string>
                 <string name="evaluateErrorJointlyGoalTextByQuestion">Bitte kontrollieren Sie diese Frage!</string>
@@ -613,9 +614,9 @@
             <string name="ourGoalsBackLinkToDebetableGoals">Zurück zu den strittigen Zielen</string>
             <string name="commentDebetableGoalHistoryIntroText">Alle bisherigen Einschätzungen zum strittigen Ziel</string>
             <string name="introStructQuestionForCommentDdebetableGoal">Wie schätzen Sie Ihre Zustimmung zu dem strittigen Ziel ein?</string>
-            <string name="errorStructQuestionForCommentDebetableGoal">Bitte geben Sie den Grad Ihrer Zustimmung an!</string>
+            <string name="errorStructQuestionForCommentDebetableGoal">Bitte wählen Sie Ihre Zustimmung!</string>
             <string name="introFreeQuestionForCommentDebetableGoal">Bitte erläutern Sie Ihre obige Auswahl</string>
-            <string name="errorFreeQuestionForCommentDebetableGoal">Bitte kontrollieren Sie Ihren Text zur obigen Auswahl! Er ist zu kurz!</string>
+            <string name="errorFreeQuestionForCommentDebetableGoal">Bitte kontrollieren Sie Ihre Erläuterungen zur obigen Auswahl! Sie sind zu kurz!</string>
             <string name="commentFreeQuestionDebetableGoalTextFieldHintText">Bitte erläutern Sie hier Ihre Auswahl.</string>
             <string name="buttonSendDebetableGoalComment">Einschätzung senden</string>
             <string name="debetableGoalCommentSuccsesfulySend">Einschätzung erfolgreich gesendet</string>
@@ -652,7 +653,7 @@
             <string name="infoTextDebetableCommentDelaytimeSingular">die Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (wenn eine Internetverbindung besteht)</string>
             <string name="infoTextDebetableCommentDelaytimePlural">die Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
             <string name="btnSendOurGoalsDebetableComment">Einschätzung senden</string>
-            <string name ="commentDebetableGoalTextFieldHintText"><b>Bitte kommentieren Sie das strittige Ziel!</b></string>
+            <string name ="commentDebetableGoalTextFieldHintText"><b>Bitte erläutern Sie Ihre obige Einschätzung!</b></string>
             <string name="toastMessageDebetableCommentSendSuccessfull">Die Einschätzung wurde gesendet!</string>
             <string name="toastMessageeDebetableCommentSendNotSuccessfull">Die Einschätzung wurde noch nicht gesendet!</string>
             <string name="toastMessageeDebetableCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>

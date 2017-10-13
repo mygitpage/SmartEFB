@@ -580,7 +580,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                 }
 
                 // comment textfield -> insert new comment
-                tmpErrorTextView = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.errorStructQuestionForCommentDebetableGoal);
+                tmpErrorTextView = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.errorInputDebeableGoalComment);
                 if (txtInputDebetableCommentComment.getText().toString().length() < 3 && tmpErrorTextView != null) {
                     debetableGoalCommentNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);

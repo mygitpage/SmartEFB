@@ -96,12 +96,12 @@ public class SettingsEfbFragmentD extends Fragment {
 
 
 
-        prefsEditor.putInt("evaluatePauseTimeInSeconds", 30);
-        prefsEditor.putInt("evaluateActivTimeInSeconds", 30);
+        //prefsEditor.putInt("connectBookMaxMessages", 30);
+        //prefsEditor.putInt("evaluateActivTimeInSeconds", 30);
 
 
-        prefsEditor.putLong("startDataEvaluationInMills", System.currentTimeMillis());
-        prefsEditor.putLong("endDataEvaluationInMills", System.currentTimeMillis()+350000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //prefsEditor.putLong("startDataEvaluationInMills", System.currentTimeMillis());
+        //prefsEditor.putLong("endDataEvaluationInMills", System.currentTimeMillis()+350000); // for testing!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 /*
 
@@ -262,6 +262,11 @@ public class SettingsEfbFragmentD extends Fragment {
 
 
         //prefsEditor.putInt("connectingStatus",0);
+
+
+
+        prefsEditor.putInt("connectBookMaxMessages", 300);
+
         prefsEditor.commit();
 
         int meetingStatus = prefs.getInt("meetingStatus", 0);

@@ -529,6 +529,14 @@
             android:paddingTop="20dp"
             android:paddingBottom="5dp"/>
 
+        <TextView
+            android:id="@+id/countLettersEvaluationCommentResultText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="right" />
+
         <EditText
             android:id="@+id/inputJointlyGoalEvaluateResultComment"
             android:layout_width="match_parent"

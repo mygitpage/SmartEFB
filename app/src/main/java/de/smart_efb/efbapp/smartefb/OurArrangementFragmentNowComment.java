@@ -299,12 +299,10 @@ public class OurArrangementFragmentNowComment extends Fragment {
                 tmpAuthorName = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentPersonalAuthorName);
             }
 
-
             String commentDate = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");;
             String commentTime = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "HH:mm");;
             String tmpTextAuthorNameLastActualComment = String.format(fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
             tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
-
 
             // textview for status 0 of the last actual comment
             final TextView tmpTextViewSendInfoLastActualComment = (TextView) viewFragmentNowComment.findViewById(R.id.textSendInfoLastActualComment);
@@ -313,7 +311,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
                 String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendInfo);
                 tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
                 tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
-
 
             } else if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 1) {
                 // textview for status 1 of the last actual comment
@@ -379,7 +376,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
             String tmpCommentText = cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT));
             tmpTextViewCommentText.setText(tmpCommentText);
 
-
             // get textview for Link to Show all comments
             TextView tmpTextViewLInkToShowAllComment = (TextView) viewFragmentNowComment.findViewById(R.id.commentLInkToShowAllComments);
 
@@ -404,14 +400,12 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     tmpTextViewLInkToShowAllComment.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllComments + "</a>"));
                 }
                 tmpTextViewLInkToShowAllComment.setMovementMethod(LinkMovementMethod.getInstance());
-
             }
             else {
                 // no comment anymore
                 String tmpLinkStringShowAllComments = fragmentNowCommentContext.getResources().getString(fragmentNowCommentContext.getResources().getIdentifier("ourArrangementCommentLinkToShowAllCommentsNotAvailable", "string", fragmentNowCommentContext.getPackageName()));
                 tmpTextViewLInkToShowAllComment.setText(tmpLinkStringShowAllComments);
             }
-
         }
         else { // no comments
 
@@ -429,9 +423,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
             // textview for the comment text
             TextView tmpTextViewCommentText = (TextView) viewFragmentNowComment.findViewById(R.id.lastActualCommentText);
             tmpTextViewCommentText.setVisibility(View.GONE);
-
         }
-
 
         // textview for max comments, count comments and max letters
         TextView textViewMaxAndCount = (TextView) viewFragmentNowComment.findViewById(R.id.infoNowCommentMaxAndCount);

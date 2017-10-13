@@ -174,7 +174,7 @@ public class ActivityConnectBook extends AppCompatActivity {
                     txtInputMsg.setText("");
 
                     // refresh display
-                    displayMessageSet();
+                    updateListView ();
                 }
                 else {
 

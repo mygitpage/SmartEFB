@@ -10,7 +10,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
@@ -80,6 +83,9 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
     int evaluateResultQuestion3 = 0;
     int evaluateResultQuestion4 = 0;
 
+    // set max letters for evaluation result comment
+    final int maxLengthForEvaluationResultComment = 600;
+
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
@@ -114,7 +120,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
             // init the fragment now
             initFragmentEvaluate();
         }
-
     }
 
 
@@ -149,9 +154,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsCommentShareEnable","0");
                 String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsCommentShareDisable","0");
                 String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsCommentCountComment","0");
-
-
-
 
                 Log.d("BROA REC Evaluate", "In der Funktion -------");
 
@@ -231,7 +233,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         //textview for the evaluation intro
         TextView textCommentNumberIntro = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.jointlyGoalEvaluateIntroText);
         textCommentNumberIntro.setText(this.getResources().getString(R.string.showEvaluateJointlyGoalIntroText) + " " + jointlyGoalNumberInListView);
-
 
         // generate back link "zurueck zu den gemeinsamen Zielen"
         Uri.Builder commentLinkBuilder = new Uri.Builder();
@@ -333,6 +334,35 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
             }
         }
 
+        // get textView to count input letters and init it
+        final TextView textViewCountLettersCommentEditText = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.countLettersEvaluationCommentResultText);
+        String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
+        tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", maxLengthForEvaluationResultComment);
+        textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
+
+        // comment result textfield
+        final EditText inputEvaluateResultComment = (EditText) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.inputJointlyGoalEvaluateResultComment);
+
+        // set text watcher to count letters in comment result field
+        final TextWatcher inputEvaluateResultCommentTextWatcher = new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //
+                String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
+                tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, String.valueOf(s.length()), maxLengthForEvaluationResultComment);
+                textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
+            }
+            public void afterTextChanged(Editable s) {
+            }
+        };
+
+        // set text watcher to count input letters
+        inputEvaluateResultComment.addTextChangedListener(inputEvaluateResultCommentTextWatcher);
+
+        // set input filter max length for comment field
+        inputEvaluateResultComment.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLengthForEvaluationResultComment)});
+
         // Button save evaluate result OR abort
         // button send evaluate result
         Button buttonSendEvaluateResult = (Button) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.buttonSendEvaluateJointlyGoalResult);
@@ -382,10 +412,9 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 }
 
                 // get evaluate result comment
-                EditText tmpInputEvaluateResultComment = (EditText) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.inputJointlyGoalEvaluateResultComment);
                 String txtInputEvaluateResultComment = "";
-                if (tmpInputEvaluateResultComment != null) {
-                    txtInputEvaluateResultComment = tmpInputEvaluateResultComment.getText().toString();
+                if (inputEvaluateResultComment != null) {
+                    txtInputEvaluateResultComment = inputEvaluateResultComment.getText().toString();
                 }
 
                 if (evaluateNoError) {
@@ -399,10 +428,13 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                     // change last evaluation time point for choosen goal
                     myDb.setEvaluationTimePointForGoal(jointlyGoalServerDbIdToEvaluate);
 
-
                     // When last evaluation show toast, because textView is not visible -> new fragment
                     if (nextJointlyGoalDbIdToEvaluate == 0 ) {
-                        Toast.makeText(fragmentEvaluateJointlyGoalsContext, fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.evaluateResultJointlyGoalSuccsesfulySend), Toast.LENGTH_SHORT).show();
+                       String tmpEvaluationResultsSendSuccsessfull = fragmentEvaluateJointlyGoalsContext.getString(R.string.evaluateResultJointlyGoalSuccsesfulySend);
+                        Toast toast = Toast.makeText(fragmentEvaluateJointlyGoalsContext, tmpEvaluationResultsSendSuccsessfull, Toast.LENGTH_LONG);
+                        TextView viewToast = (TextView) toast.getView().findViewById(android.R.id.message);
+                        if( v != null) viewToast.setGravity(Gravity.CENTER);
+                        toast.show();
                     }
 
                     // reset evaluate results

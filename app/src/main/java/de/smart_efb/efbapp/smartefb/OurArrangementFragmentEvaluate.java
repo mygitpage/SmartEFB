@@ -12,7 +12,10 @@ import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
@@ -78,6 +81,9 @@ public class OurArrangementFragmentEvaluate extends Fragment {
     int evaluateResultQuestion2 = 0;
     int evaluateResultQuestion3 = 0;
     int evaluateResultQuestion4 = 0;
+
+    // set max letters for evaluation result comment
+    final int maxLengthForEvaluationResultComment = 600;
 
 
     @Override
@@ -325,6 +331,35 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         }
 
+        // get textView to count input letters and init it
+        final TextView textViewCountLettersCommentEditText = (TextView) viewFragmentEvaluate.findViewById(R.id.countLettersEvaluationCommentResultText);
+        String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
+        tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", maxLengthForEvaluationResultComment);
+        textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
+
+        // comment result textfield
+        final EditText inputEvaluateResultComment = (EditText) viewFragmentEvaluate.findViewById(R.id.inputEvaluateResultComment);
+
+        // set text watcher to count letters in comment result field
+        final TextWatcher inputEvaluateResultCommentTextWatcher = new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //
+                String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
+                tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, String.valueOf(s.length()), maxLengthForEvaluationResultComment);
+                textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
+            }
+            public void afterTextChanged(Editable s) {
+            }
+        };
+
+        // set text watcher to count input letters
+        inputEvaluateResultComment.addTextChangedListener(inputEvaluateResultCommentTextWatcher);
+
+        // set input filter max length for comment field
+        inputEvaluateResultComment.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLengthForEvaluationResultComment)});
+
         // Button save evaluate result OR abort
         // button send evaluate result
         Button buttonSendEvaluateResult = (Button) viewFragmentEvaluate.findViewById(R.id.buttonSendEvaluateResult);
@@ -374,10 +409,9 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 }
 
                 // get evaluate result comment
-                EditText tmpInputEvaluateResultComment = (EditText) viewFragmentEvaluate.findViewById(R.id.inputEvaluateResultComment);
                 String txtInputEvaluateResultComment = "";
-                if (tmpInputEvaluateResultComment != null) {
-                    txtInputEvaluateResultComment = tmpInputEvaluateResultComment.getText().toString();
+                if (inputEvaluateResultComment != null) {
+                    txtInputEvaluateResultComment = inputEvaluateResultComment.getText().toString();
                 }
 
                 if (evaluateNoError) {

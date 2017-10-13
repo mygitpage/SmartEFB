@@ -207,21 +207,8 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
                     Long nowTime = System.currentTimeMillis();
                     Integer pausePeriod = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, 0) * 1000; // make milliseconds from seconds
                     Long runTimeForTimer = pausePeriod - (nowTime - prefs.getLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, System.currentTimeMillis()));
-
-
                     Long endPointEval = runTimeForTimer + nowTime;
                     Long startPointEval = endPointEval - pausePeriod;
-
-
-                    Log.d("Timer:-->","nowTime: "+nowTime);
-                    Log.d("Timer:-->","pausePeriod: "+pausePeriod);
-                    Log.d("Timer:-->","runTimeForTimer: "+runTimeForTimer);
-                    Log.d("Timer:-->","StartPoint: "+prefs.getLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, System.currentTimeMillis()));
-                    Log.d("Timer:-->","endPointEval: "+endPointEval);
-                    Log.d("Timer:-->","startPointEval: "+startPointEval);
-                    Log.d("Timer:-->","Last Eval: "+cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME)));
-                    Log.d("Timer:-->","Server ID: "+cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)));
-
 
                     if (cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME)) < startPointEval) {
 
