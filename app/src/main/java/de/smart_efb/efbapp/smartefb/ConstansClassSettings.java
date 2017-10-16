@@ -78,5 +78,16 @@ public class ConstansClassSettings {
     //public static final String urlConnectionSendNewCommentDebetableGoalsToServer = "http://192.168.1.119/index.php?com=exchange&subcom=senddebetablegoalscomment";
     //public static final String urlConnectionSendNewCommentDebetableGoalsToServer = "http://192.168.2.106/index.php?com=exchange&subcom=senddebetablegoalscomment";
     public static final String urlConnectionSendNewCommentDebetableGoalsToServer = "http://192.168.1.119/index.php?com=exchange&subcom=senddebetablegoalscomment";
-    
+
+
+    // URL connection send connect book message to server
+    //public static final String urlConnectionSendConnectBookMessageToServer = "http://192.168.1.119/index.php?com=exchange&subcom=sendconnectbookmessage";
+    //public static final String urlConnectionSendConnectBookMessageToServer = "http://192.168.2.106/index.php?com=exchange&subcom=sendconnectbookmessage";
+    public static final String urlConnectionSendConnectBookMessageToServer = "http://192.168.1.119/index.php?com=exchange&subcom=sendconnectbookmessage";
+
+
+
+
+
+
 }

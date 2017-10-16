@@ -1606,35 +1606,214 @@ import java.util.Map;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // +++++++++++++++++++++++++ end task exchange goals +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
+    // +++++++++++++++++++++++++ task exchange connect book +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+    // send connect book message to server and get answer from server
+    public class ExchangeTaskSendConnectBookMessage implements Runnable {
+
+        // id of the data row in db
+        private Long dbId;
+
+        // reference to the DB
+        private DBAdapter myDb;
+
+        // context of task
+        Context context;
+
+        // shared prefs
+        SharedPreferences prefs;
+        SharedPreferences.Editor prefsEditor;
+
+        // return information for change
+        Map<String, String> returnMap;
+
+
+        // Constructor
+        public ExchangeTaskSendConnectBookMessage (Context context, Long dbid) {
+
+            // id of the data row in db
+            this.dbId = dbid;
+
+            // context of task
+            this.context = context;
+
+            // init the DB
+            myDb = new DBAdapter(context);
+
+            // init the prefs
+            prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
+            prefsEditor = prefs.edit();
+
+        }
+
+        // the task
+        public void run() {
+
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+            if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+
+                Log.d("Ex Service Connect Book", "Network on in send message!");
+
+                // get comment from db
+                Cursor messageData = myDb.getOneRowChatMessage (dbId);
+
+                // get client id from prefs
+                String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
+
+                // generate xml output text
+                XmlSerializer xmlSerializer = Xml.newSerializer();
+                StringWriter writer = new StringWriter();
+                try {
+
+                    xmlSerializer.setOutput(writer);
+
+                    //Start Document
+                    xmlSerializer.startDocument("UTF-8", true);
+                    xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
+
+                    // Open Tag
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                    // start tag main order -> send connect book message and client id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+                    xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_ConnectBookMessage);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+
+                    // start tag client id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.text(tmpClientId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+
+                    // end tag main
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                    // build xml tag for connect book message with data
+                    buildConnectBookMessageXmlTagWithData (xmlSerializer, messageData);
+
+                    // end tag smartEfb
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+
+                    xmlSerializer.endDocument();
+
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // and send xml text to server
+                try {
+                    // prepair data to send
+                    String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
+
+                    // set url and parameters
+                    URL scripturl = new URL(ConstansClassSettings.urlConnectionSendConnectBookMessageToServer);
+                    HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
+
+                    // set timeout for connection
+                    connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
+                    connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
+
+                    connection.setDoOutput(true);
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    connection.setRequestMethod("POST");
+                    connection.setFixedLengthStreamingMode(textparam.getBytes().length);
+
+                    // generate output stream and send
+                    OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
+                    contentWriter.write(textparam);
+                    contentWriter.flush();
+
+                    contentWriter.close();
+
+                    // get answer from input
+                    InputStream answerInputStream = connection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    // convert input stream to string
+                    String currentRow;
+                    try {
+                        while ((currentRow = reader.readLine()) != null) {
+                            stringBuilder.append(currentRow);
+                            stringBuilder.append("\n");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Log.d("Connect Book XML", "Content:"+stringBuilder.toString().trim());
+
+
+                    // call xml parser with input
+                    EfbXmlParser xmlparser = new EfbXmlParser(context);
+                    returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
+
+                    // close input stream and disconnect
+                    answerInputStream.close();
+                    connection.disconnect();
+
+                    if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
+
+
+                        // TODO: DB Funkion schreiben zum setzen des Statuses auf 1!!!!!!!!!!!!!
+
+                        //myDb.updateStatusOurGoalsDebetableComment (dbId, 1); // set status of debetable comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+
+
+
+
+                    }
+
+
+
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // send information broadcast to receiver that sending not successfull
+
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            // stop the task with service
+            stopSelf();
+        }
+    }
+    
+    
+
+
+    
+
+
+
+
+
+
+
+    // +++++++++++++++++++++++++ end task exchange connect book +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    
+    
+    
+    
+    
 
 
 
@@ -1761,8 +1940,23 @@ import java.util.Map;
                     this.isRunning = true;
                     // start task
                     this.backgroundThread.start();
-                }
+                
+                } else if (command.equals("send_connectbook_message") && dbId > 0) { // send connect book message to server
 
+                    Log.d("Excange Service", "Connect Book message !!!!!!!!");
+
+                    // generate new send task
+                    this.backgroundThread = new Thread(new ExchangeTaskSendConnectBookMessage (context, dbId));
+                    // task is running
+                    this.isRunning = true;
+                    // start task
+                    this.backgroundThread.start();
+                } 
+
+
+
+
+                
 
 
 
@@ -2227,6 +2421,58 @@ import java.util.Map;
         }
     }
 
+
+
+
+
+
+
+    public void buildConnectBookMessageXmlTagWithData (XmlSerializer xmlSerializer, Cursor commentData) {
+
+
+        Log.d("Ex Build Connect Book", "Message: " + commentData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_MESSAGE));
+
+        try {
+
+            // open connect book message tag
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForConnectBook_Messages);
+
+
+
+
+            // start tag connect book message order
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForConnectBook_Order);
+            xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_New);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_Order);
+
+            // start tag message text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForConnectBook_Message);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_MESSAGE)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_Message);
+
+            // start tag author name text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForConnectBook_AuthorName);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_AuthorName);
+
+            // start tag comment time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForConnectBook_MessageTime);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_MessageTime);
+
+
+
+
+
+
+            // end tag connect book message
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_Messages);
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

@@ -29,6 +29,8 @@ import android.widget.Toast;
 
 public class ActivityConnectBook extends AppCompatActivity {
 
+    // context of activity
+    Context contextOfConnectBook;
 
     // reference to the DB
     DBAdapter myDb;
@@ -62,15 +64,25 @@ public class ActivityConnectBook extends AppCompatActivity {
         
         setContentView(R.layout.activity_efb_connect_book);
 
+        contextOfConnectBook = this;
+
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
         this.registerReceiver(connectBookBrodcastReceiver, filter);
+
+
 
         // init the connect book
         initConnectBook();
 
         // init the view of activity
         initViewConnectBook();
+
+        // create help dialog in Connect Book
+        createHelpDialog();
+
+        // init the ui
+        displayMessageSet();
     }
 
 
@@ -96,11 +108,8 @@ public class ActivityConnectBook extends AppCompatActivity {
         roleConnectBook = prefs.getInt(ConstansClassConnectBook.namePrefsConnectBookRole, 0);
         userNameConnectBook = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
 
-        // create help dialog in Connect Book
-        createHelpDialog();
 
-        // init the ui
-        displayMessageSet();
+
     }
 
 
@@ -108,12 +117,20 @@ public class ActivityConnectBook extends AppCompatActivity {
     private void initViewConnectBook() {
 
         // get max letters for message
-        final int tmpMaxLength = prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxLetters, 10);
+        final int maxLettersMessage = prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxLetters, 10);
+
+        // check, sharing messages enable?
+        if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectMessageShare, 0) == 0) {
+            TextView textMessageSharingIsDisable = (TextView) findViewById(R.id.messageSharingIsDisable);
+            textMessageSharingIsDisable.setVisibility (View.VISIBLE);
+        }
 
         // get textView to count input letters and init it
         final TextView textViewCountLettersMessageEditText = (TextView) findViewById(R.id.countLettersAndMessagesInfoText);
         String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
-        tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", tmpMaxLength);
+        tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", maxLettersMessage);
+
+
 
         // get current number of send messages and max numbers
         final int tmpMaxMessages = prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxMessages, 1);
@@ -137,7 +154,7 @@ public class ActivityConnectBook extends AppCompatActivity {
                 tmpInfoTextCountCurrentMessages = String.format(tmpInfoTextCountCurrentMessages, tmpCountCurrentMessages, tmpMaxMessages);
                 // set count letters
                 String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
-                tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, String.valueOf(s.length()), tmpMaxLength);
+                tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, String.valueOf(s.length()), maxLettersMessage);
                 textViewCountLettersMessageEditText.setText(tmpInfoTextCountLetters + " - " + tmpInfoTextCountCurrentMessages);
             }
             public void afterTextChanged(Editable s) {
@@ -148,7 +165,7 @@ public class ActivityConnectBook extends AppCompatActivity {
         txtInputMsg.addTextChangedListener(txtInputArrangementCommentTextWatcher);
 
         // set input filter max length for message field
-        txtInputMsg.setFilters(new InputFilter[] {new InputFilter.LengthFilter(tmpMaxLength)});
+        txtInputMsg.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLettersMessage)});
 
         // send button init
         Button buttonSendConnectBook = (Button) findViewById(R.id.buttonSendMessage);
@@ -163,12 +180,19 @@ public class ActivityConnectBook extends AppCompatActivity {
                 // check number of send messages in 24h
                 if (tmpCountCurrentMessages < tmpMaxMessages) {
 
-                    long newID = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), txtInputMsg.getText().toString(), roleConnectBook, 2, false, System.currentTimeMillis());
+                    // put message into db
+                    long tmpDbId = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), txtInputMsg.getText().toString(), roleConnectBook, 0, false, System.currentTimeMillis());
 
                     // add current number of send messages and write to prefs
                     tmpCountCurrentMessages++;
                     prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, tmpCountCurrentMessages);
                     prefsEditor.commit();
+
+                    // send intent to service to start the service and send message to server!
+                    Intent startServiceIntent = new Intent(contextOfConnectBook, ExchangeServiceEfb.class);
+                    startServiceIntent.putExtra("com","send_connectbook_message");
+                    startServiceIntent.putExtra("dbid",tmpDbId);
+                    contextOfConnectBook.startService(startServiceIntent);
 
                     // delete text in edittextfield
                     txtInputMsg.setText("");
@@ -221,6 +245,11 @@ public class ActivityConnectBook extends AppCompatActivity {
 
                 String tmpExtraConnectBookNewMessage = intentExtras.getString("ConnectBookSettingsNewMessage","0");
 
+                // TODO: Abfrage einbauen und behandeln!!!!!!!!!!!!!!!!!!
+                String tmpExtraConnectBookMessageSharingEnable = intentExtras.getString ("ConnectBookSettingsMessageShareEnable","0");
+                String tmpExtraConnectBookMessageSharingDisable = intentExtras.getString ("ConnectBookSettingsMessageShareDisable","0");
+
+
 
 
                 if (tmpExtraConnectBook != null && tmpExtraConnectBook.equals("1") && tmpExtraConnectBookSettings != null && tmpExtraConnectBookSettings.equals("1")) {
@@ -262,6 +291,10 @@ public class ActivityConnectBook extends AppCompatActivity {
             listViewConnectBook.setVisibility(ListView.INVISIBLE);
             listViewConnectBook.setVisibility(ListView.VISIBLE);
 
+            // init the view of activity
+            initViewConnectBook();
+
+            // init listview for messages
             displayMessageSet ();
         }
     }

@@ -55,20 +55,30 @@
 
 
             <TextView
-                    android:id="@+id/lblMsgFrom"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/lblFromName"
-                    android:textSize="12dp"
-                    android:textStyle="italic"
-                    android:gravity="right"/>
+                android:id="@+id/lblMsgFrom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="13dp"
+                android:textStyle="italic"
+                android:gravity="right"/>
+
+            <TextView
+                android:id="@+id/textSendInfoActualMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="right"
+                android:paddingTop="5dp"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/txtMsg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxEms="15"
-                android:textSize="14dp"
+                android:textSize="15dp"
                 android:gravity="right"
                 android:textColor="@color/black"/>
 

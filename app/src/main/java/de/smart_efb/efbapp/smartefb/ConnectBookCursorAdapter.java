@@ -1,7 +1,9 @@
 package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,7 +15,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -34,6 +36,10 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
     // show message group date at end -> true
     Boolean showMessageGroupLastDateChange = false;
 
+    // shared prefs for the settings
+    SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
+
 
     // Default constructor
     public ConnectBookCursorAdapter(Context context, Cursor cursor, int flags) {
@@ -43,6 +49,10 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
         connectBookCursorAdapterContext = context;
 
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // init the prefs
+        prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
     }
 
@@ -104,8 +114,17 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
 
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+    public View newView(Context mContext, Cursor cursor, ViewGroup parent) {
 
+        // inflate view
+        View inflatedView;
+
+        // context for cursor adapter
+        final Context context = mContext;
+        
+        // rightViewCurrent: true -> current right view is new View; false-> other view ist new View
+        Boolean rightViewCurrent = false;
+        
         // role and write time of current element of cursor
         int role = cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_ROLE));
         long writeTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME));
@@ -113,6 +132,7 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
         // role and write time of previous element of cursor
         int rolePrevoius = -1;
         long writeTimePrevoius = 0;
+
 
         // go to previous element only when it is not first
         if (!cursor.isFirst()) {
@@ -131,77 +151,173 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
             showMessageGroupLastDateChange = false;
 
             if (!previousDateString.equals(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"))) {
-
                 showMessageGroupFirstDateChange = true;
-
             }
 
             switch (role) {
                 case 0:
                     if (role == rolePrevoius) {
-                        return cursorInflater.inflate(R.layout.list_item_message_nextleft, parent, false);
+                         inflatedView = cursorInflater.inflate(R.layout.list_item_message_nextleft, parent, false);
                     }
                     else {
-                        return cursorInflater.inflate(R.layout.list_item_message_left, parent, false);
+                         inflatedView = cursorInflater.inflate(R.layout.list_item_message_left, parent, false);
                     }
-
+                    break;
                 case 1:
                     if (role == rolePrevoius) {
-                        return cursorInflater.inflate(R.layout.list_item_message_nextright, parent, false);
+                        inflatedView = cursorInflater.inflate(R.layout.list_item_message_nextright, parent, false);
                     }
                     else {
-                        return cursorInflater.inflate(R.layout.list_item_message_right, parent, false);
+                         inflatedView = cursorInflater.inflate(R.layout.list_item_message_right, parent, false);
                     }
+                    rightViewCurrent = true;
+                    break;
+                default:
+                    // set default view
+                    inflatedView = cursorInflater.inflate(R.layout.list_item_message_center, parent, false);
+                    break;
             }
 
-            return cursorInflater.inflate(R.layout.list_item_message_center, parent, false);
+        } else { // cursor is not last! -> the other elements of cursor
 
-        }
+            switch (role) {
+                case 0:
+                    if (role == rolePrevoius) {
 
-        // the other elements of cursor
-        switch (role) {
-            case 0:
-                if (role == rolePrevoius) {
+                        if (previousDateString.equals(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"))) {
+                            inflatedView = cursorInflater.inflate(R.layout.list_item_message_nextleft, parent, false);
+                        } else {
+                            showMessageGroupFirstDateChange = true;
+                            inflatedView = cursorInflater.inflate(R.layout.list_item_message_left, parent, false);
+                        }
+                    } else {
+                        if (!previousDateString.equals(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"))) {
+                            showMessageGroupFirstDateChange = true;
+                        }
+                        inflatedView = cursorInflater.inflate(R.layout.list_item_message_left, parent, false);
+                    }
+                    break;
+                case 1:
+                    if (role == rolePrevoius) {
 
-                    if (previousDateString.equals(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"))) {
-                        return cursorInflater.inflate(R.layout.list_item_message_nextleft, parent, false);
+                        if (previousDateString.equals(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"))) {
+                            inflatedView = cursorInflater.inflate(R.layout.list_item_message_nextright, parent, false);
+                        } else {
+                            showMessageGroupFirstDateChange = true;
+                            inflatedView = cursorInflater.inflate(R.layout.list_item_message_right, parent, false);
+                        }
+                    } else {
+                        if (!previousDateString.equals(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"))) {
+                            showMessageGroupFirstDateChange = true;
+                        }
+                        inflatedView = cursorInflater.inflate(R.layout.list_item_message_right, parent, false);
                     }
-                    else {
-                        showMessageGroupFirstDateChange = true;
-                        return cursorInflater.inflate(R.layout.list_item_message_left, parent, false);
-                    }
-                }
-                else {
-                    if (!previousDateString.equals(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"))) {
-                        showMessageGroupFirstDateChange = true;
-                    }
-                    return cursorInflater.inflate(R.layout.list_item_message_left, parent, false);
-                }
-
-            case 1:
-                if (role == rolePrevoius) {
-
-                    if (previousDateString.equals(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"))) {
-                        return cursorInflater.inflate(R.layout.list_item_message_nextright, parent, false);
-                    }
-                    else {
-                        showMessageGroupFirstDateChange = true;
-                        return cursorInflater.inflate(R.layout.list_item_message_right, parent, false);
-                    }
-                }
-                else {
-                    if (!previousDateString.equals(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"))) {
-                        showMessageGroupFirstDateChange = true;
-                    }
-                    return cursorInflater.inflate(R.layout.list_item_message_right, parent, false);
-                }
+                    rightViewCurrent = true;
+                    break;
+                default:
+                    // set default view
+                    inflatedView = cursorInflater.inflate(R.layout.list_item_message_center, parent, false);
+                    break;
+            }
         }
 
         // default Role -> center
         if (!previousDateString.equals(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"))) {
             showMessageGroupFirstDateChange = true;
         }
-        return cursorInflater.inflate(R.layout.list_item_message_center, parent, false);
+
+
+        // set timer only, when right view is current view
+        if (rightViewCurrent ) {
+
+
+            Log.d("ConnectBook -->", "In Right Current!");
+
+
+            // textview for status 0 of the last actual message -> message not send yet!
+            final TextView tmpTextViewSendInfoLastActualMessage = (TextView) inflatedView.findViewById(R.id.textSendInfoActualMessage);
+            if (cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_STATUS)) == 0) {
+
+                Log.d("ConnectBook -->", "Message Status 000");
+
+
+                String tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageNotSendYet);
+                tmpTextViewSendInfoLastActualMessage.setVisibility(View.VISIBLE);
+                tmpTextViewSendInfoLastActualMessage.setText(tmpTextSendInfoLastActualMessage);
+
+            } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_STATUS)) == 1) {
+                // textview for status 1 of the last actual message -> message send to server 
+
+
+                Log.d("ConnectBook -->", "Message Status 1111");
+
+
+                // check, sharing of messages enable?
+                if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectMessageShare, 0) == 1) {
+
+
+                    Log.d("ConnectBook -->", "Message Share Enable");
+
+
+                    // set textview visible
+                    tmpTextViewSendInfoLastActualMessage.setVisibility(View.VISIBLE);
+
+                    // calculate run time for timer in MILLISECONDS!!!
+                    Long nowTime = System.currentTimeMillis();
+                    
+                    Integer delayTime = prefs.getInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, 0) * 60000; // make milliseconds from miutes
+                    Long runTimeForTimer = delayTime - (nowTime - writeTime);
+                    // start the timer with the calculated milliseconds
+                    if (runTimeForTimer > 0) {
+                        new CountDownTimer(runTimeForTimer, 1000) {
+                            public void onTick(long millisUntilFinished) {
+                                // generate count down timer
+                                String FORMAT = "%02d:%02d:%02d";
+                                String tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageSendDelayInfo);
+                                String tmpTime = String.format(FORMAT,
+                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                // put count down to string
+                                String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualMessage, tmpTime);
+                                // and show
+                                tmpTextViewSendInfoLastActualMessage.setText(tmpCountdownTimerString);
+                            }
+
+                            public void onFinish() {
+                                // count down is over -> show
+                                String tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageSendSuccsessfullInfo);
+                                tmpTextViewSendInfoLastActualMessage.setText(tmpTextSendInfoLastActualMessage);
+                            }
+                        }.start();
+
+                    } else {
+                        // no count down anymore -> show send successfull
+                        String tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageSendSuccsessfullInfo);
+                        tmpTextViewSendInfoLastActualMessage.setText(tmpTextSendInfoLastActualMessage);
+                    }
+                } else { // sharing of debetable comments is disable! -> show text
+                    String tmpTextSendInfoLastActualMessage = "";
+                    tmpTextViewSendInfoLastActualMessage.setVisibility(View.VISIBLE);
+
+                    if (prefs.getLong(ConstansClassConnectBook.namePrefsConnectMessageShareChangeTime, 0) < writeTime) {
+                        // show send successfull, but no sharing
+                        tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageSendInfoSharingDisable);
+                    } else {
+                        // show send successfull
+                        tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageSendSuccsessfullInfo);
+                    }
+                    tmpTextViewSendInfoLastActualMessage.setText(tmpTextSendInfoLastActualMessage);
+                }
+            }
+
+        }
+
+
+        return inflatedView;
+
+
+
     }
 
     // Turn off view recycling in listview, because there are different views (first, normal)

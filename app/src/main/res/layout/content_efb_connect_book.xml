@@ -20,6 +20,17 @@
 
 
     <TextView
+        android:id="@+id/messageSharingIsDisable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textConnectBookMessageNoSharing"
+        android:textSize="14dp"
+        android:textColor="@color/text_accent_color"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"/>
+
+    <TextView
         android:id="@+id/countLettersAndMessagesInfoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

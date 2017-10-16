@@ -70,6 +70,8 @@ public class EfbXmlParser {
         returnMap.put("ConnectBookSettings", "0");
         returnMap.put("ConnectBookSettingsClientName", "0");
         returnMap.put("ConnectBookSettingsNewMessage", "0");
+        returnMap.put("ConnectBookSettingsMessageShareEnable","1");
+        returnMap.put("ConnectBookSettingsMessageShareDisable","1");
 
 
         returnMap.put("OurArrangement", "0");
@@ -3940,12 +3942,8 @@ public class EfbXmlParser {
                                     returnMap.put ("OurGoalsSettingsEvaluationProcess","1");
                                 }
 
-
-
-
                                 // update comment max/count of jointly goals?
                                 if (tmpGoalsJointlyCommentOnOff && tmpJointlyCommentMaxComment > 0 && tmpJointlyCommentMaxLetters > 0 && tmpCommentDelaytime > 0 && tmpJointlyCommentCountCommentSinceTime > 0 && tmpCommentShare >= 0) {
-
                                     // set new share value to prefs and set returnMap
                                     if (prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentShare, 0) != tmpCommentShare ) {
                                         prefsEditor.putInt(ConstansClassOurGoals.namePrefsJointlyCommentShare, tmpCommentShare); // write new share value to prefs
@@ -4885,6 +4883,7 @@ public class EfbXmlParser {
         int tmpMaxLetters = -1;
         int tmpMaxMessages = -1;
         int tmpDelayTime = -1;
+        int tmpMessageShare = -1;
 
         try {
             int eventType = xpp.next();
@@ -5023,6 +5022,29 @@ public class EfbXmlParser {
 
                             break;
 
+
+                        case ConstansClassXmlParser.xmlNameForConnectBook_MessageShare:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get share value; 0-> not sharing; 1-> sharing
+                                if (xpp.getText().trim().length() > 0) { // check if share value from xml > 0
+                                    tmpMessageShare = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Connect Book Settings","Message Share"+tmpMessageShare);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+
                     }
                 }
                 eventType = xpp.next();
@@ -5056,7 +5078,7 @@ public class EfbXmlParser {
                                 prefsEditor.commit();
 
                                 // write send delay time, max letters and max messages to prefs when all set
-                                if (tmpDelayTime >=0 && tmpMaxLetters>=0 && tmpMaxMessages>=0) {
+                                if (tmpConnectBookOnOff && tmpDelayTime >=0 && tmpMaxLetters>=0 && tmpMaxMessages>=0) {
                                     prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, tmpDelayTime);
                                     prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectMaxLetters, tmpMaxLetters);
                                     prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectMaxMessages, tmpMaxMessages);
@@ -5064,7 +5086,7 @@ public class EfbXmlParser {
                                 }
 
                                 // update client name?
-                                if (tmpClientName.length() > 0) {
+                                if (tmpConnectBookOnOff && tmpClientName.length() > 0) {
 
                                     Log.d ("Connect Book Settings--","Nmae:"+tmpClientName);
 
@@ -5076,6 +5098,74 @@ public class EfbXmlParser {
                                     returnMap.put ("ConnectBookSettingsClientName","1");
 
                                 }
+
+                                // set new share value to prefs and set returnMap
+                                if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectMessageShare, 0) != tmpMessageShare) {
+                                    prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectMessageShare, tmpMessageShare); // write new share value to prefs
+                                    prefsEditor.putLong(ConstansClassConnectBook.namePrefsConnectMessageShareChangeTime, System.currentTimeMillis());
+
+                                    if (tmpMessageShare == 1) { // sharing is enable; 1-> sharing messages; 0-> not sharing
+                                        returnMap.put("ConnectBookSettingsMessageShareEnable","1");
+                                    }
+                                    else {
+                                        returnMap.put("ConnectBookSettingsMessageShareDisable","1");
+                                    }
+                                }
+
+
+
+                                /* +++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                                // update comment max/count of jointly goals?
+                                if (tmpGoalsJointlyCommentOnOff && tmpJointlyCommentMaxComment > 0 && tmpJointlyCommentMaxLetters > 0 && tmpCommentDelaytime > 0 && tmpJointlyCommentCountCommentSinceTime > 0 && tmpCommentShare >= 0) {
+
+
+
+
+
+
+
+
+
+
+                                // check if new since time greater then old one, reset count comments and set new since time
+                                if (tmpJointlyCommentCountCommentSinceTime > prefs.getLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, 0)) {
+
+
+                                    Log.d("XML Parser --->","JointlyCommentCountSince time:"+tmpJointlyCommentCountCommentSinceTime);
+
+                                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, tmpJointlyCommentCountCommentSinceTime); // write new since time to prefs
+                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0); // reset count comments to 0
+
+                                    returnMap.put("OurGoalsSettingsCommentCountComment", "1");
+
+                                }
+
+                                // write data to prefs
+                                prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, tmpGoalsJointlyCommentOnOff); // turn function on
+                                prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, tmpJointlyCommentMaxComment);
+                                prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyLetters, tmpJointlyCommentMaxLetters);
+                                prefsEditor.putInt(ConstansClassOurGoals.namePrefsJointlyCommentDelaytime, tmpCommentDelaytime);
+                                prefsEditor.commit();
+                                // something change in jointly goals comment process
+                                returnMap.put ("OurGoalsSettingsCommentProcess","1");
+                            }
+                            else { // turn function our goals jointly comment off
+                                // write data to prefs
+                                prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, tmpGoalsJointlyCommentOnOff); // turn function off
+                                prefsEditor.commit();
+                                // something change in jointly goals comment process
+                                returnMap.put ("OurGoalsSettingsCommentProcess","1");
+                            }
+
+
+
+                                 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+
+
+
+
 
                                 // refresh activity connect book because settings have change
                                 returnMap.put ("ConnectBook","1");

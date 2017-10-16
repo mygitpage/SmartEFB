@@ -23,6 +23,12 @@ public class ConstansClassConnectBook {
     // prefs name for connect book send delay time
     public static final String namePrefsConnectSendDelayTime = "connectBookDelayTime";
 
+    // prefs name for connect book enable/ disable message sharing
+    public static final String namePrefsConnectMessageShare = "connectBookMessageShare";
+
+    // prefs name for connect book message share change time
+    public static final String namePrefsConnectMessageShareChangeTime = "connectBookMessageShareChangeTime";
+
 
 
 

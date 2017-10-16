@@ -65,6 +65,9 @@ public class ConstansClassXmlParser {
     // xml name for element connect book max letters
     public static final String xmlNameForConnectBook_MaxLetters = "connectbook_settings_maxletters";
 
+    // xml name for element connect book message sharing
+    public static final String xmlNameForConnectBook_MessageShare = "connectbook_settings_messageshare";
+
     // xml name for element connect book message
     public static final String xmlNameForConnectBook_Message = "connectbook_message";
 
@@ -823,6 +826,13 @@ public class ConstansClassXmlParser {
 
     // xml name for send comment of debetable goal to server
     public static final String xmlNameForSendToServer_DebetableGoalsComment = "senddebetablegoalscomment";
+
+
+
+
+    // xml name for send connect book message to server
+    public static final String xmlNameForSendToServer_ConnectBookMessage = "sendconnectbookmessage";
+
 
 
 

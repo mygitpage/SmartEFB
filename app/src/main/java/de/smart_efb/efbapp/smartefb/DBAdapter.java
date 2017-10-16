@@ -546,11 +546,12 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
     // Get a specific row (by rowId)
-    public Cursor getRowChatMessage(long rowId) {
+    public Cursor getOneRowChatMessage(long rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = KEY_ROWID + "=" + rowId;
+
         Cursor c = 	db.query(true, DATABASE_TABLE_CHAT_MESSAGE, CHAT_MESSAGE_ALL_KEYS,
                 where, null, null, null, null, null);
 

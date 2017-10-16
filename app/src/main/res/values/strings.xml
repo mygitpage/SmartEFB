@@ -9,6 +9,16 @@
         <string name="buttonSendMessage">SENDEN</string>
         <string name="infoTextCountCurrentMessages">%1$s von %2$d Nachrichten in 24 Stunden</string>
 
+
+        <string name="textConnectBookMessageNoSharing">Die Nachrichten werden im Moment nicht zugestellt!</string>
+
+    <string name="textConnectBookMessageNotSendYet">Die Nachricht wurde noch nicht gesendet.</string>
+    <string name="textConnectBookMessageSendDelayInfo">Die Nachricht wurde gesendet und wird in %1$s zugestellt.</string>
+    <string name="textConnectBookMessageSendSuccsessfullInfo">Die Nachricht wurde gesendet.</string>
+    <string name="textConnectBookMessageSendInfoSharingDisable">Die Nachricht wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
+
+
+
     <!-- End String Activity Connect Book -->
 
     <!-- connect book dialog settings -->
