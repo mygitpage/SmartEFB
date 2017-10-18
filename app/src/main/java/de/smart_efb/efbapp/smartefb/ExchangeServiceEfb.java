@@ -1765,15 +1765,7 @@ import java.util.Map;
 
                     if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
 
-
-                        // TODO: DB Funkion schreiben zum setzen des Statuses auf 1!!!!!!!!!!!!!
-
-                        //myDb.updateStatusOurGoalsDebetableComment (dbId, 1); // set status of debetable comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-
-
-
-
-
+                        myDb.updateStatusConnectBookMessage (dbId, 1); // set status of message to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
                     }
 
 
@@ -2437,9 +2429,6 @@ import java.util.Map;
             // open connect book message tag
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForConnectBook_Messages);
 
-
-
-
             // start tag connect book message order
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForConnectBook_Order);
             xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_New);
@@ -2459,11 +2448,6 @@ import java.util.Map;
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForConnectBook_MessageTime);
             xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_MessageTime);
-
-
-
-
-
 
             // end tag connect book message
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_Messages);

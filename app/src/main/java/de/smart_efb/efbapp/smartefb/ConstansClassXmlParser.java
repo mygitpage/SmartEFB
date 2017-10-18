@@ -77,6 +77,9 @@ public class ConstansClassXmlParser {
     // xml name for element connect book message time
     public static final String xmlNameForConnectBook_MessageTime = "connectbook_messagetime";
 
+    // xml name for element connect book message role
+    public static final String xmlNameForConnectBook_MessageRole = "connectbook_messagerole";
+
     //
     // ++++++++++++++++++++++ End Connect Book ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //

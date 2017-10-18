@@ -485,7 +485,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(CHAT_MESSAGE_KEY_AUTHOR_NAME, author_name);
         initialValues.put(CHAT_MESSAGE_KEY_WRITE_TIME, writeTime);
         initialValues.put(CHAT_MESSAGE_KEY_MESSAGE, message);
-        initialValues.put(CHAT_MESSAGE_KEY_ROLE, role);
+        initialValues.put(CHAT_MESSAGE_KEY_ROLE, role); //(role: 0= left; 1= right; 2= center;)
         initialValues.put(CHAT_MESSAGE_KEY_STATUS, status);
         initialValues.put(CHAT_MESSAGE_KEY_UPLOAD_TIME, upload_time);
 
@@ -561,6 +561,30 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         return c;
     }
+
+
+
+
+    // update status message in table connectBookMessage
+    // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external message
+    public boolean updateStatusConnectBookMessage (Long rowId, int status) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row status with status
+        ContentValues newValues = new ContentValues();
+        newValues.put(CHAT_MESSAGE_KEY_STATUS, status);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null) != 0;
+    }
+
+
+
+
+
 
 
 

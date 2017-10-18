@@ -4715,7 +4715,7 @@ public class EfbXmlParser {
         Long tmpMessageTime = 0L;
         String tmpOrder = "";
         Long tmpUploadTime = 0L;
-
+        int tmpMessageRole = -1;
 
 
         try {
@@ -4791,6 +4791,25 @@ public class EfbXmlParser {
                                     tmpMessageTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
 
                                     Log.d("ConnectBook","Message Time:" + tmpMessageTime);
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForConnectBook_MessageRole:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get message role text
+                                if (xpp.getText().trim().length() >= 0) { // check if message role from xml >= 0
+                                    tmpMessageRole = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("ConnectBook","Message Role:" + tmpMessageRole);
 
                                 }
                                 else {

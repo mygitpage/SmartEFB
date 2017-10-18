@@ -180,7 +180,7 @@ public class ActivityConnectBook extends AppCompatActivity {
                 // check number of send messages in 24h
                 if (tmpCountCurrentMessages < tmpMaxMessages) {
 
-                    // put message into db
+                    // put message into db (role: 0= left; 1= right; 2= center)
                     long tmpDbId = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), txtInputMsg.getText().toString(), roleConnectBook, 0, false, System.currentTimeMillis());
 
                     // add current number of send messages and write to prefs
