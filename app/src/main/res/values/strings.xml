@@ -13,10 +13,18 @@
         <string name="textConnectBookMessageNoSharing">Die Nachrichten werden im Moment nicht zugestellt!</string>
 
     <string name="textConnectBookMessageNotSendYet">Die Nachricht wurde noch nicht gesendet.</string>
-    <string name="textConnectBookMessageSendDelayInfo">Die Nachricht wurde gesendet und wird in %1$s zugestellt.</string>
+    <string name="textConnectBookMessageSendDelayInfo">Die Nachricht wurde gesendet und \nwird in %1$s zugestellt.</string>
     <string name="textConnectBookMessageSendSuccsessfullInfo">Die Nachricht wurde gesendet.</string>
     <string name="textConnectBookMessageSendInfoSharingDisable">Die Nachricht wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
 
+    <string name="toastConnectBookMessageSendSuccessfull">Nachricht gesendet!</string>
+    <string name="toastConnectBookMessageSendNotSuccessfull">Nachricht senden wird verschoben!</string>
+
+    <string name="toastConnectBookMessageSettingsChangeMessageAndDelay">Die Nachrichten- und Verzögerungseinstellungen wurden durch Ihre Berater/In verändert!</string>
+
+    <string name="toastConnectBookMessageSettingsSharingEnable">Die Nachrichten werden wieder zugestellt!</string>
+
+    <string name="toastConnectBookMessageSettingsSharingDisable">Die Nachrichten werden im Momentan nicht mehr zugestellt!</string>
 
 
     <!-- End String Activity Connect Book -->

@@ -69,9 +69,10 @@ public class EfbXmlParser {
         returnMap.put("ConnectBook", "0");
         returnMap.put("ConnectBookSettings", "0");
         returnMap.put("ConnectBookSettingsClientName", "0");
-        returnMap.put("ConnectBookSettingsNewMessage", "0");
-        returnMap.put("ConnectBookSettingsMessageShareEnable","1");
-        returnMap.put("ConnectBookSettingsMessageShareDisable","1");
+        returnMap.put("ConnectBookNewMessage", "0");
+        returnMap.put("ConnectBookSettingsMessageAndDelay", "0");
+        returnMap.put("ConnectBookSettingsMessageShareEnable","0");
+        returnMap.put("ConnectBookSettingsMessageShareDisable","0");
 
 
         returnMap.put("OurArrangement", "0");
@@ -790,7 +791,7 @@ public class EfbXmlParser {
                                 if (xpp.getText().trim().length() > 0) { // check if commentText from xml > 0
                                     tmpCommentText = xpp.getText().trim();
 
-                                    Log.d("Arrangement_NOWComment", "MD5:" + EfbHelperClass.md5(tmpCommentText));
+
 
 
                                 } else {
@@ -1000,7 +1001,7 @@ public class EfbXmlParser {
                                     tmpArrangementText = xpp.getText().trim();
 
 
-                                    Log.d("Arrangement_SKETCH::MD5", "MD5:" + EfbHelperClass.md5(tmpArrangementText));
+
 
                                 } else {
                                     error = true;
@@ -4656,6 +4657,15 @@ public class EfbXmlParser {
 
             while (parseAnymore) {
 
+                // look for end tag of connect book
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForConnectBook)) {
+
+                        Log.d("readConnect Book Tag", "End Tag connect book gefunden!");
+                        parseAnymore = false;
+                    }
+                }
+
                 if (eventType == XmlPullParser.START_TAG) {
                     Log.d("readConnectBTag", "Start tag " + xpp.getName());
 
@@ -4675,15 +4685,6 @@ public class EfbXmlParser {
                 if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
                     Log.d("readConnectBookTag", "ABBRUCH DURCH END DOCUMENT!");
                 }
-
-                // look for end tag of connect book
-                if (eventType == XmlPullParser.END_TAG) {
-                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForConnectBook)) {
-
-                        Log.d("readConnect Book Tag", "End Tag connect book gefunden!");
-                        parseAnymore = false;
-                    }
-                }
             }
         }
         catch (XmlPullParserException e) {
@@ -4698,11 +4699,8 @@ public class EfbXmlParser {
     }
 
 
-
-
     // read element connect book messages
     private void readConnectBookTag_Messages() {
-
 
         Boolean parseAnymore = true;
 
@@ -4732,7 +4730,7 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get order text
                                 if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
                                     tmpOrder = xpp.getText().trim();
-                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New)  && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update)  && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New)  && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
                                         error = true;
                                         tmpOrder = "";
                                     }
@@ -4821,13 +4819,6 @@ public class EfbXmlParser {
                             }
 
                             break;
-                        
-
-
-                        
-                        
-
-
 
                     }
                 }
@@ -4846,22 +4837,46 @@ public class EfbXmlParser {
                         // check all data for connect book correct?
                         if (!error) {
 
+                            // connect book message order -> new entry?
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageTime > 0 && tmpMessageRole >= 0) {
 
-                            // our goal order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageTime > 0) {
+                                Log.d("Connect Book Message","New AUSführen");
+
+                                // set upload time on smartphone for message; value from server is not needed
+                                tmpUploadTime = System.currentTimeMillis();
+
+                                // put message into db (role: 0= left; 1= right; 2= center)
+                                myDb.insertRowChatMessage(tmpAuthorName, tmpMessageTime, tmpMessage, tmpMessageRole, 4, false, tmpUploadTime);
+
+                                // refresh activity connect book
+                                returnMap.put ("ConnectBook","1");
+                                returnMap.put("ConnectBookNewMessage", "1");
 
 
-                                
+                            } if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageTime > 0 && tmpMessageRole >= 0) {
+
+                                Log.d("Connect Book Message","Update AUSführen");
+
+                                // set upload time on smartphone for message; value from server is not needed
+                                tmpUploadTime = System.currentTimeMillis();
+
+                                // put message into db (role: 0= left; 1= right; 2= center)
+                                myDb.insertRowChatMessage(tmpAuthorName, tmpMessageTime, tmpMessage, tmpMessageRole, 4, false, tmpUploadTime);
+
+                                // refresh activity connect book
+                                returnMap.put ("ConnectBook","1");
+                                returnMap.put("ConnectBookNewMessage", "1");
+
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
 
-                                
+                                Log.d("Connect Book Messages", "Delete All!!!");
 
+                                // delete all messages in connect book
+                                myDb.deleteAllChatMessage ();
 
                             }
-
                         }
-
                         parseAnymore = false;
                     }
                 }
@@ -4876,13 +4891,7 @@ public class EfbXmlParser {
             setErrorMessageInPrefs(16);
             e.printStackTrace();
         }
-        
-
     }
-
-
-
-
 
 
     // read element connect book settings
@@ -5101,7 +5110,18 @@ public class EfbXmlParser {
                                     prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, tmpDelayTime);
                                     prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectMaxLetters, tmpMaxLetters);
                                     prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectMaxMessages, tmpMaxMessages);
+
+
+                                    // reset message counter and start time message counter
+                                    prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0);
+
+                                    // get normal timestamp with day, month and year (hour, minute, seconds and millseconds are zero)
+                                    Long startTimestamp = EfbHelperClass.timestampToNormalDayMonthYearDate(System.currentTimeMillis());
+                                    prefsEditor.putLong(ConstansClassConnectBook.namePrefsConnectCountMessagesResetTime, startTimestamp);
                                     prefsEditor.commit();
+
+                                    // something change in message and delay settings
+                                    returnMap.put("ConnectBookSettingsMessageAndDelay", "1");
                                 }
 
                                 // update client name?
@@ -5130,59 +5150,6 @@ public class EfbXmlParser {
                                         returnMap.put("ConnectBookSettingsMessageShareDisable","1");
                                     }
                                 }
-
-
-
-                                /* +++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-                                // update comment max/count of jointly goals?
-                                if (tmpGoalsJointlyCommentOnOff && tmpJointlyCommentMaxComment > 0 && tmpJointlyCommentMaxLetters > 0 && tmpCommentDelaytime > 0 && tmpJointlyCommentCountCommentSinceTime > 0 && tmpCommentShare >= 0) {
-
-
-
-
-
-
-
-
-
-
-                                // check if new since time greater then old one, reset count comments and set new since time
-                                if (tmpJointlyCommentCountCommentSinceTime > prefs.getLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, 0)) {
-
-
-                                    Log.d("XML Parser --->","JointlyCommentCountSince time:"+tmpJointlyCommentCountCommentSinceTime);
-
-                                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, tmpJointlyCommentCountCommentSinceTime); // write new since time to prefs
-                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0); // reset count comments to 0
-
-                                    returnMap.put("OurGoalsSettingsCommentCountComment", "1");
-
-                                }
-
-                                // write data to prefs
-                                prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, tmpGoalsJointlyCommentOnOff); // turn function on
-                                prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, tmpJointlyCommentMaxComment);
-                                prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyLetters, tmpJointlyCommentMaxLetters);
-                                prefsEditor.putInt(ConstansClassOurGoals.namePrefsJointlyCommentDelaytime, tmpCommentDelaytime);
-                                prefsEditor.commit();
-                                // something change in jointly goals comment process
-                                returnMap.put ("OurGoalsSettingsCommentProcess","1");
-                            }
-                            else { // turn function our goals jointly comment off
-                                // write data to prefs
-                                prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, tmpGoalsJointlyCommentOnOff); // turn function off
-                                prefsEditor.commit();
-                                // something change in jointly goals comment process
-                                returnMap.put ("OurGoalsSettingsCommentProcess","1");
-                            }
-
-
-
-                                 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
-
-
-
 
 
 

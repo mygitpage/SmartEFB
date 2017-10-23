@@ -48,7 +48,6 @@ public class EfbHelperClass {
             Calendar calendar = Calendar.getInstance();
             TimeZone tz = TimeZone.getTimeZone("Europe/Berlin");
 
-            //getDefault();
             calendar.setTimeInMillis(timestamp);
             calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
             SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -73,27 +72,31 @@ public class EfbHelperClass {
     }
 
 
-    // make md5 from String
-    public static String md5 (String text) {
-        try {
-            // Create MD5 Hash
-            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-            digest.update(text.getBytes());
-            byte messageDigest[] = digest.digest();
 
-            // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            for (int i=0; i<messageDigest.length; i++)
-                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
-            return hexString.toString();
+    // return a timestamp with hour, minute, seconds and milliseconds to zero
+    public static Long timestampToNormalDayMonthYearDate(Long startTimestamp)
+    {
 
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        try{
+
+            TimeZone tz = TimeZone.getTimeZone("Europe/Berlin");
+            Calendar calendar = Calendar.getInstance(tz);
+
+            calendar.setTimeInMillis(startTimestamp);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+
+            return calendar.getTimeInMillis();
+
         }
-        return "";
+        catch (Exception e) {
+
+        }
+
+        return 0L;
     }
-
-
 
 
 }

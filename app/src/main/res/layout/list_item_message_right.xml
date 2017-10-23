@@ -54,6 +54,7 @@
                 android:id="@+id/lblMsgFrom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxEms="20"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="13dp"
                 android:textStyle="italic"
@@ -63,10 +64,10 @@
                 android:id="@+id/textSendInfoActualMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxEms="20"
                 android:textSize="13dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:gravity="right"
-                android:paddingTop="5dp"
                 android:visibility="gone"/>
 
             <TextView
@@ -74,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxEms="15"
-                android:textSize="15dp"
+                android:textSize="16dp"
                 android:gravity="right"
                 android:textColor="@color/black"/>
 

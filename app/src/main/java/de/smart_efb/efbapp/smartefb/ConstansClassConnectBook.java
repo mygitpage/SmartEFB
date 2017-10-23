@@ -5,9 +5,6 @@ package de.smart_efb.efbapp.smartefb;
  */
 public class ConstansClassConnectBook {
 
-    // prefs name for the role in connect book
-    public static final String namePrefsConnectBookRole = "connectBookRole";
-
     // prefs name for the user name in connect book
     public static final String namePrefsConnectBookUserName = "userName";
 
@@ -28,6 +25,11 @@ public class ConstansClassConnectBook {
 
     // prefs name for connect book message share change time
     public static final String namePrefsConnectMessageShareChangeTime = "connectBookMessageShareChangeTime";
+
+    // prefs name for connect book message counter reset time
+    public static final String namePrefsConnectCountMessagesResetTime = "connectBookMessageCounterResetTime";
+
+
 
 
 

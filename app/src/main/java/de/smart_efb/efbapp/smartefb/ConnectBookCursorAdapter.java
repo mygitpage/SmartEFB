@@ -230,17 +230,9 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
         // set timer only, when right view is current view
         if (rightViewCurrent ) {
 
-
-            Log.d("ConnectBook -->", "In Right Current!");
-
-
             // textview for status 0 of the last actual message -> message not send yet!
             final TextView tmpTextViewSendInfoLastActualMessage = (TextView) inflatedView.findViewById(R.id.textSendInfoActualMessage);
             if (cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_STATUS)) == 0) {
-
-                Log.d("ConnectBook -->", "Message Status 000");
-
-
                 String tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageNotSendYet);
                 tmpTextViewSendInfoLastActualMessage.setVisibility(View.VISIBLE);
                 tmpTextViewSendInfoLastActualMessage.setText(tmpTextSendInfoLastActualMessage);
@@ -248,16 +240,8 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
             } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_STATUS)) == 1) {
                 // textview for status 1 of the last actual message -> message send to server 
 
-
-                Log.d("ConnectBook -->", "Message Status 1111");
-
-
                 // check, sharing of messages enable?
                 if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectMessageShare, 0) == 1) {
-
-
-                    Log.d("ConnectBook -->", "Message Share Enable");
-
 
                     // set textview visible
                     tmpTextViewSendInfoLastActualMessage.setVisibility(View.VISIBLE);
@@ -265,7 +249,7 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
                     // calculate run time for timer in MILLISECONDS!!!
                     Long nowTime = System.currentTimeMillis();
                     
-                    Integer delayTime = prefs.getInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, 0) * 60000; // make milliseconds from miutes
+                    Integer delayTime = prefs.getInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, 0) * 60000; // make milliseconds from minutes
                     Long runTimeForTimer = delayTime - (nowTime - writeTime);
                     // start the timer with the calculated milliseconds
                     if (runTimeForTimer > 0) {
@@ -296,7 +280,7 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
                         String tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageSendSuccsessfullInfo);
                         tmpTextViewSendInfoLastActualMessage.setText(tmpTextSendInfoLastActualMessage);
                     }
-                } else { // sharing of debetable comments is disable! -> show text
+                } else { // sharing of messages is disable! -> show text
                     String tmpTextSendInfoLastActualMessage = "";
                     tmpTextViewSendInfoLastActualMessage.setVisibility(View.VISIBLE);
 

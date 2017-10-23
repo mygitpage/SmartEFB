@@ -1764,12 +1764,19 @@ import java.util.Map;
                     connection.disconnect();
 
                     if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
-
                         myDb.updateStatusConnectBookMessage (dbId, 1); // set status of message to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                        // send intent to receiver in OurGoalsFragmentDebetableComment to update listView OurGoals (when active)
+                        Intent tmpIntent = translateMapToIntent (returnMap);
+                        tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastConnectBookMessageSendSuccessfull));
+                        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                        context.sendBroadcast(tmpIntent);
                     }
-
-
-
+                    else { // send not successfull
+                        // send information broadcast to receiver that sending was not successefull
+                        String message = context.getResources().getString(R.string.toastConnectBookMessageSendNotSuccessfull);
+                        sendIntentBroadcastSendingNotSuccessefull (message);
+                    }
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();

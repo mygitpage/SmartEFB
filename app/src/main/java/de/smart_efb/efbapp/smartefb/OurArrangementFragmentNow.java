@@ -175,11 +175,17 @@ public class OurArrangementFragmentNow extends Fragment {
                 }
                 else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send successfull?
 
-                    Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG).show();
-                }
+                    Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                 }
                 else if (tmpSendNotSuccessefull != null && tmpSendNotSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send not successfull?
 
-                    Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
                 }
                 else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
                     // evaluationperiod hass change -> update view
