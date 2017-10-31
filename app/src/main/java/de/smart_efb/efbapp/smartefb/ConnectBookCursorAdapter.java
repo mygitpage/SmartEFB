@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.CountDownTimer;
+import android.text.Html;
+import android.text.Spannable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -40,6 +42,9 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
 
+    // reference to the DB
+    private DBAdapter myDb;
+
 
     // Default constructor
     public ConnectBookCursorAdapter(Context context, Cursor cursor, int flags) {
@@ -53,6 +58,9 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
         // init the prefs
         prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
         prefsEditor = prefs.edit();
+
+        // init the DB
+        myDb = new DBAdapter(context);
 
     }
 
@@ -100,15 +108,7 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
 
         }
 
-        // show message text
-        TextView textViewMessage = (TextView) view.findViewById(R.id.txtMsg);
-        String title = cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_MESSAGE));
-        textViewMessage.setText(title);
 
-        // show message author and date
-        TextView textViewAuthor = (TextView) view.findViewById(R.id.lblMsgFrom);
-        String author = cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME)) + " - " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy,HH:mm");
-        textViewAuthor.setText(author);
 
     }
 
@@ -296,6 +296,24 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
             }
 
         }
+
+
+        // show message text
+        TextView textViewMessage = (TextView) inflatedView.findViewById(R.id.txtMsg);
+        String title = cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_MESSAGE));
+        textViewMessage.setText(title);
+
+        // show message author and date with new message
+        TextView textViewAuthor = (TextView) inflatedView.findViewById(R.id.lblMsgFrom);
+        String tmpNewMessage = "";
+        // check if message entry new?
+        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_NEW_ENTRY)) == 1) {
+            tmpNewMessage = context.getResources().getString(R.string.newEntryText);
+            myDb.deleteStatusNewEntryConnectBookMessage(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
+        }
+        String tmpAuthorandDate = context.getResources().getString(R.string.textConnectBookMessageAuthorAndDate);
+        tmpAuthorandDate = String.format(tmpAuthorandDate, cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy,HH:mm"), tmpNewMessage);
+        textViewAuthor.setText(Html.fromHtml(tmpAuthorandDate));
 
 
         return inflatedView;

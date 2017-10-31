@@ -107,6 +107,7 @@ import java.util.Map;
                 Boolean send_arrangement_evaluation_result_info = false;
                 Boolean send_goals_evaluation_result_info = false;
                 Boolean send_debetable_goals_comment_info = false;
+                Boolean send_connect_book_messages_result_info = false;
 
                 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -144,6 +145,9 @@ import java.util.Map;
 
                     // get all debetable comments with status = 0 -> ready to send
                     Cursor allDebetableCommentsReadyToSend = myDb.getAllReadyToSendDebetableComments(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfDebetableGoals, "0"));
+
+                    // get all connect book messages with status = 0 and role = 1 (own messages) -> ready to send
+                    Cursor allConnectBookMessagesReadyToSend = myDb.getAllReadyToSendConnectBookMessages();
 
 
 
@@ -239,6 +243,21 @@ import java.util.Map;
                                 buildCommentDebetableXmlTagWithData(xmlSerializer, allDebetableCommentsReadyToSend);
                                 send_debetable_goals_comment_info = true;
                             } while (allDebetableCommentsReadyToSend.moveToNext());
+                        }
+
+
+
+
+
+                        Log.d ("EXCHANGE --->", "Anzahl ConnectBook Messages: "+allConnectBookMessagesReadyToSend.getCount());
+
+                        // build xml for all connect book messages result
+                        if (allConnectBookMessagesReadyToSend != null && allConnectBookMessagesReadyToSend.getCount() > 0) {
+
+                            do {
+                                buildConnectBookMessageXmlTagWithData(xmlSerializer, allConnectBookMessagesReadyToSend);
+                                send_connect_book_messages_result_info = true;
+                            } while (allConnectBookMessagesReadyToSend.moveToNext());
                         }
 
 
@@ -375,6 +394,27 @@ import java.util.Map;
                                 } while (allDebetableCommentsReadyToSend.moveToNext());
                             }
                         }
+
+                        // set status of connect book messages to 1 -> send successfull
+                        if (allConnectBookMessagesReadyToSend != null) {
+                            if (returnMap.get("SendSuccessfull").equals("1") && send_connect_book_messages_result_info) {
+                                allConnectBookMessagesReadyToSend.moveToFirst();
+                                do {
+                                    myDb.updateStatusConnectBookMessage (allConnectBookMessagesReadyToSend.getLong(allConnectBookMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of message to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                } while (allConnectBookMessagesReadyToSend.moveToNext());
+
+                                // send intent to connect book activity -> refresh list view
+                                Intent tmpIntent = new Intent();
+                                tmpIntent.putExtra("ConnectBookMessageNewOrSend","1"); // refresh list view in connect book messages
+                                tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                                context.sendBroadcast(tmpIntent);
+                            }
+                        }
+
+
+
+
+
 
 
 
@@ -1780,14 +1820,25 @@ import java.util.Map;
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
+                    // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastConnectBookMessageSendNotSuccessfull);
+                    sendIntentBroadcastSendingNotSuccessefull (message);
 
                 } catch (IOException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastConnectBookMessageSendNotSuccessfull);
+                    sendIntentBroadcastSendingNotSuccessefull (message);
 
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
+
                 }
+            }
+            else { // no network enable -> try to send comment to server later
+                // send information broadcast to receiver that sending not successfull
+                String message = context.getResources().getString(R.string.toastConnectBookMessageSendNoNetwork);
+                sendIntentBroadcastSendingNotSuccessefull (message);
             }
 
 
@@ -2426,10 +2477,10 @@ import java.util.Map;
 
 
 
-    public void buildConnectBookMessageXmlTagWithData (XmlSerializer xmlSerializer, Cursor commentData) {
+    public void buildConnectBookMessageXmlTagWithData (XmlSerializer xmlSerializer, Cursor messageData) {
 
 
-        Log.d("Ex Build Connect Book", "Message: " + commentData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_MESSAGE));
+        Log.d("Ex Build Connect Book", "Message: " + messageData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_MESSAGE));
 
         try {
 
@@ -2443,17 +2494,17 @@ import java.util.Map;
 
             // start tag message text
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForConnectBook_Message);
-            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_MESSAGE)));
+            xmlSerializer.text(messageData.getString(messageData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_MESSAGE)));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_Message);
 
             // start tag author name text
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForConnectBook_AuthorName);
-            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME)));
+            xmlSerializer.text(messageData.getString(messageData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME)));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_AuthorName);
 
             // start tag comment time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForConnectBook_MessageTime);
-            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.text(String.valueOf(messageData.getLong(messageData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_MessageTime);
 
             // end tag connect book message
@@ -2463,6 +2514,9 @@ import java.util.Map;
         catch (IOException e) {
             e.printStackTrace();
         }
+        //catch (IndexOutOfBoundsException e) {
+        //    e.printStackTrace();
+        //}
     }
 
 

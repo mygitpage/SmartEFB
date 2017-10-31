@@ -69,10 +69,12 @@ public class EfbXmlParser {
         returnMap.put("ConnectBook", "0");
         returnMap.put("ConnectBookSettings", "0");
         returnMap.put("ConnectBookSettingsClientName", "0");
-        returnMap.put("ConnectBookNewMessage", "0");
+        returnMap.put("ConnectBookMessageNewOrSend", "0");
         returnMap.put("ConnectBookSettingsMessageAndDelay", "0");
         returnMap.put("ConnectBookSettingsMessageShareEnable","0");
         returnMap.put("ConnectBookSettingsMessageShareDisable","0");
+        returnMap.put("ConnectBookMessageNewOrSend","0"); // only set in ExchangeService to refresh connect book view
+
 
 
         returnMap.put("OurArrangement", "0");
@@ -91,6 +93,14 @@ public class EfbXmlParser {
         returnMap.put("OurArrangementSettingsSketchCommentShareDisable","0");
         returnMap.put("OurArrangementSettingsSketchCommentShareEnable","0");
         returnMap.put("OurArrangementSettingsSketchCommentCountComment", "0");
+
+
+        // check!!!!!!!!!!!!!!
+        returnMap.put("OurArrangementNewOrSend","0"); // only set in ExchangeService to refresh OurArrangement view
+        returnMap.put("OurArrangementCommentNewOrSend","0"); // only set in ExchangeService to refresh OurArrangement Comment view
+        returnMap.put("OurArrangementShowCommentNewOrSend","0"); // only set in ExchangeService to refresh OurArrangement Show Comment view
+
+
 
 
 
@@ -4832,7 +4842,12 @@ public class EfbXmlParser {
 
                 // look for end tag of connectbook
                 if (eventType == XmlPullParser.END_TAG) {
-                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForConnectBook)) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForConnectBook_Messages)) {
+
+
+                        Log.d("ConnectBook","ORDER ------->:" + tmpOrder);
+
+
 
                         // check all data for connect book correct?
                         if (!error) {
@@ -4846,11 +4861,11 @@ public class EfbXmlParser {
                                 tmpUploadTime = System.currentTimeMillis();
 
                                 // put message into db (role: 0= left; 1= right; 2= center)
-                                myDb.insertRowChatMessage(tmpAuthorName, tmpMessageTime, tmpMessage, tmpMessageRole, 4, false, tmpUploadTime);
+                                myDb.insertRowChatMessage(tmpAuthorName, tmpMessageTime, tmpMessage, tmpMessageRole, 4, true, tmpUploadTime);
 
                                 // refresh activity connect book
                                 returnMap.put ("ConnectBook","1");
-                                returnMap.put("ConnectBookNewMessage", "1");
+                                returnMap.put("ConnectBookMessageNewOrSend", "1");
 
 
                             } if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageTime > 0 && tmpMessageRole >= 0) {
@@ -4861,11 +4876,11 @@ public class EfbXmlParser {
                                 tmpUploadTime = System.currentTimeMillis();
 
                                 // put message into db (role: 0= left; 1= right; 2= center)
-                                myDb.insertRowChatMessage(tmpAuthorName, tmpMessageTime, tmpMessage, tmpMessageRole, 4, false, tmpUploadTime);
+                                myDb.insertRowChatMessage(tmpAuthorName, tmpMessageTime, tmpMessage, tmpMessageRole, 4, true, tmpUploadTime);
 
                                 // refresh activity connect book
                                 returnMap.put ("ConnectBook","1");
-                                returnMap.put("ConnectBookNewMessage", "1");
+                                returnMap.put("ConnectBookMessageNewOrSend", "1");
 
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
@@ -5078,7 +5093,8 @@ public class EfbXmlParser {
                 eventType = xpp.next();
 
                 // Safety abbort end document
-                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
                     Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 

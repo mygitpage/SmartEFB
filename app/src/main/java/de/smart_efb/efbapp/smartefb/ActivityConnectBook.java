@@ -76,8 +76,6 @@ public class ActivityConnectBook extends AppCompatActivity {
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
         this.registerReceiver(connectBookBrodcastReceiver, filter);
 
-
-
         // init the connect book
         initConnectBook();
 
@@ -113,23 +111,11 @@ public class ActivityConnectBook extends AppCompatActivity {
         // init the connect book variables
         userNameConnectBook = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
 
-
-
-
-
-
         // find the listview
         listViewConnectBook = (ListView) findViewById(R.id.list_view_messages);
 
-
-
         // check -> 24 h over? -> reset message counter
         Long startPointResetTimeMessageCounter = prefs.getLong(ConstansClassConnectBook.namePrefsConnectCountMessagesResetTime, 0);
-
-        Log.d("Connect Book -->", "Start Time Counter:"+startPointResetTimeMessageCounter);
-        Log.d("Connect Book -->", "Start Time + One DAy:"+startPointResetTimeMessageCounter + oneDayInMills);
-        Log.d("Connect Book -->", "Current Time:"+System.currentTimeMillis());
-
         if (System.currentTimeMillis() > startPointResetTimeMessageCounter + oneDayInMills) {
 
             // set message counter to zero
@@ -137,12 +123,7 @@ public class ActivityConnectBook extends AppCompatActivity {
             // set new start time for message count
             prefsEditor.putLong(ConstansClassConnectBook.namePrefsConnectCountMessagesResetTime, (startPointResetTimeMessageCounter + oneDayInMills));
             prefsEditor.commit();
-
-            Log.d ("Connect Book -->", "Counter RESET and new Time");
         }
-
-
-
     }
 
 
@@ -272,7 +253,7 @@ public class ActivityConnectBook extends AppCompatActivity {
                 // check intent order
                 String tmpExtraConnectBook = intentExtras.getString("ConnectBook","0");
                 String tmpExtraConnectBookSettings = intentExtras.getString("ConnectBookSettings","0");
-                String tmpExtraConnectBookNewMessage = intentExtras.getString("ConnectBookNewMessage","0");
+                String tmpExtraConnectBookMessageNewOrSend = intentExtras.getString("ConnectBookMessageNewOrSend","0");
                 String tmpExtraConnectBookMessageSharingEnable = intentExtras.getString ("ConnectBookSettingsMessageShareEnable","0");
                 String tmpExtraConnectBookMessageSharingDisable = intentExtras.getString ("ConnectBookSettingsMessageShareDisable","0");
                 String tmpExtraConnectBookMessageAndDelay = intentExtras.getString ("ConnectBookSettingsMessageAndDelay","0");
@@ -313,9 +294,9 @@ public class ActivityConnectBook extends AppCompatActivity {
                     // connect book settings have change -> refresh activity view
                     updateActivityView = true;
 
-                } else if (tmpExtraConnectBook != null && tmpExtraConnectBook.equals("1") && tmpExtraConnectBookNewMessage != null && tmpExtraConnectBookNewMessage.equals("1")) {
+                } else if (tmpExtraConnectBookMessageNewOrSend != null && tmpExtraConnectBookMessageNewOrSend.equals("1")) {
 
-                    // new message received
+                    // new message received or messages send
                     updateListView = true;
 
                 } else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send successfull?

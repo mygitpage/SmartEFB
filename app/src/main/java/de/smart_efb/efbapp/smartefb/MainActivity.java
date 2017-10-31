@@ -2,8 +2,10 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -86,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_efb_main);
+
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        this.registerReceiver(mainActivityBrodcastReceiver, filter);
 
         // init the elements arrays (title, color, colorLight, backgroundImage)
         initMainMenueElementsArrays();
@@ -193,6 +199,66 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // de-register broadcast receiver
+        this.unregisterReceiver(mainActivityBrodcastReceiver);
+    }
+
+
+
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    private BroadcastReceiver mainActivityBrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // true-> update the main view
+            Boolean updateMainView = false;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                // check intent order
+
+                String tmpExtraConnectBookMessageNewOrSend = intentExtras.getString("ConnectBookMessageNewOrSend","0");
+
+
+                if (tmpExtraConnectBookMessageNewOrSend != null && tmpExtraConnectBookMessageNewOrSend.equals("1")) {
+
+                    // new message received
+                    updateMainView = true;
+
+                }
+            }
+
+
+            // update the main view
+            if (updateMainView) {
+                updateMainView();
+            }
+
+        }
+    };
+
+
+
+    public void updateMainView () {
+
+        Intent intent = getIntent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        startActivity(intent);
+
+    }
+
+
+
     // init the elements arrays (title, color, colorLight, backgroundImage)
     private void initMainMenueElementsArrays() {
 
@@ -270,7 +336,19 @@ public class MainActivity extends AppCompatActivity {
             switch (countElements) {
 
                 case 0: // menue item "Uebergabe"
-                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+
+                    if (showMainMenueElement[countElements]) { // is element aktiv?
+                        if (myDb.getCountNewEntryConnectBookMessage() > 0) {
+                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
+                        } else {
+                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                        }
+                        tmpNew = true;
+                    }
+                    else { // element is inaktiv
+                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesInactiv[countElements];
+                        tmpNew = true;
+                    }
                     break;
 
                 case 1: // menue item "Absprachen"
@@ -457,13 +535,6 @@ public class MainActivity extends AppCompatActivity {
             return grid;
         }
     }
-
-
-
-
-
-
-
 
 }
 

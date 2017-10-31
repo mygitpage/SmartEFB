@@ -583,6 +583,64 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
+    // Get all connect book messages with status = 0 (Ready to send) and role = 1 (own messages)
+    public Cursor getAllReadyToSendConnectBookMessages () {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // status = 0 and role = 1
+        String where = CHAT_MESSAGE_KEY_STATUS + "=0 AND " + CHAT_MESSAGE_KEY_ROLE + "=1";
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_CHAT_MESSAGE, CHAT_MESSAGE_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        // return cursor
+        return c;
+    }
+
+
+
+
+    // Get the number of new rows in connect book message
+    public int getCountNewEntryConnectBookMessage() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = CHAT_MESSAGE_KEY_NEW_ENTRY + "=1";
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_CHAT_MESSAGE, CHAT_MESSAGE_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        // return how many
+        return c.getCount();
+    }
+
+
+    // delete status new entry in table connect book for message rowId.
+    public boolean deleteStatusNewEntryConnectBookMessage (int rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row new_entry = 0 (not new!)
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(CHAT_MESSAGE_KEY_NEW_ENTRY, 0);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null) != 0;
+    }
+
+
 
 
 
@@ -1092,6 +1150,10 @@ public class DBAdapter extends SQLiteOpenHelper {
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
+        if (c != null) {
+            c.moveToFirst();
+        }
+
         // return cursor
         return c;
     }
@@ -1261,6 +1323,10 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS,
                 where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
 
         // return cursor
         return c;
@@ -1898,6 +1964,10 @@ public class DBAdapter extends SQLiteOpenHelper {
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
                 where, null, null, null, null, null);
 
+        if (c != null) {
+            c.moveToFirst();
+        }
+
         // return cursor
         return c;
     }
@@ -2183,6 +2253,10 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         Cursor c = 	db.query(true, DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, OUR_GOALS_DEBETABLE_GOALS_COMMENT_ALL_KEYS,
                 where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
 
         // return cursor
         return c;
