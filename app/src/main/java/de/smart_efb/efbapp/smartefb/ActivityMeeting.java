@@ -6,10 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -18,12 +16,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 /**
@@ -53,7 +49,7 @@ public class ActivityMeeting extends AppCompatActivity {
     MeetingFragmentMeetingChange referenceFragmentMeetingChange;
 
     // boolean status array checkbox
-    Boolean [] makeMeetingCheckBoxListenerArray = new Boolean[ConstantsClassMeeting.countNumberTimezones];
+    Boolean [] makeMeetingCheckBoxListenerArray = new Boolean[ConstansClassMeeting.countNumberTimezones];
 
     // meeting status
     int meetingStatus = 0;
@@ -68,13 +64,13 @@ public class ActivityMeeting extends AppCompatActivity {
     String meetingSuggestionsAuthor = "";
 
     // meeting place
-    int [] meetingPlace = new int[ConstantsClassMeeting.numberSimultaneousMeetings];
+    int [] meetingPlace = new int[ConstansClassMeeting.numberSimultaneousMeetings];
 
     // the current meeting date and time
-    long [] currentMeetingDateAndTime = new long [ConstantsClassMeeting.numberSimultaneousMeetings];
+    long [] currentMeetingDateAndTime = new long [ConstansClassMeeting.numberSimultaneousMeetings];
 
     // info new meeting date and time
-    Boolean [] meetingNewDateAndTime = new Boolean[ConstantsClassMeeting.numberSimultaneousMeetings];
+    Boolean [] meetingNewDateAndTime = new Boolean[ConstansClassMeeting.numberSimultaneousMeetings];
 
     // deadline for responding of meeting suggestions
     long meetingSuggestionsResponeseDeadline = 0;
@@ -120,23 +116,23 @@ public class ActivityMeeting extends AppCompatActivity {
         prefsEditor = prefs.edit();
 
         // get meeting status
-        meetingStatus = prefs.getInt(ConstantsClassMeeting.namePrefsMeetingStatus, 0);
+        meetingStatus = prefs.getInt(ConstansClassMeeting.namePrefsMeetingStatus, 0);
 
         // get meeting problem
-        meetingProblem = prefs.getString(ConstantsClassMeeting.namePrefsMeetingProblem, "");
+        meetingProblem = prefs.getString(ConstansClassMeeting.namePrefsMeetingProblem, "");
 
         // get author meeting suggestions
-        meetingSuggestionsAuthor = prefs.getString(ConstantsClassMeeting.namePrefsAuthorMeetingSuggestion, "Herr Terminmann");
+        meetingSuggestionsAuthor = prefs.getString(ConstansClassMeeting.namePrefsAuthorMeetingSuggestion, "Herr Terminmann");
 
         // get response deadline for meeting suggestions
-        meetingSuggestionsResponeseDeadline = prefs.getLong(ConstantsClassMeeting.namePrefsMeetingSuggestionsResponseDeadline, 0);
+        meetingSuggestionsResponeseDeadline = prefs.getLong(ConstansClassMeeting.namePrefsMeetingSuggestionsResponseDeadline, 0);
 
         // get from prefs meeting date and time and place
         getDateAndTimeFromPrefs ();
 
         //load timezone array for meeting
-        for (int i=0; i<ConstantsClassMeeting.countNumberTimezones; i++) {
-            makeMeetingCheckBoxListenerArray[i] = prefs.getBoolean(ConstantsClassMeeting.namePrefsArrayMeetingTimezoneArray+i, false);
+        for (int i = 0; i< ConstansClassMeeting.countNumberTimezones; i++) {
+            makeMeetingCheckBoxListenerArray[i] = prefs.getBoolean(ConstansClassMeeting.namePrefsArrayMeetingTimezoneArray+i, false);
         }
 
         // init array for places name
@@ -174,18 +170,18 @@ public class ActivityMeeting extends AppCompatActivity {
     // get from prefs meeting date and time and place
     private void getDateAndTimeFromPrefs () {
 
-        for (int t=0; t < ConstantsClassMeeting.numberSimultaneousMeetings; t++) {
+        for (int t = 0; t < ConstansClassMeeting.numberSimultaneousMeetings; t++) {
 
             // get the current meeting date and time
-            currentMeetingDateAndTime[t] = prefs.getLong(ConstantsClassMeeting.namePrefsMeetingTimeAndDate + ConstantsClassMeeting.prefsPraefixMeetings[t], 0);
+            currentMeetingDateAndTime[t] = prefs.getLong(ConstansClassMeeting.namePrefsMeetingTimeAndDate + ConstansClassMeeting.prefsPraefixMeetings[t], 0);
 
             if (currentMeetingDateAndTime[t] > System.currentTimeMillis()) { // is meeting timestamp > current time?
 
                 // get meeting place
-                meetingPlace[t] = prefs.getInt(ConstantsClassMeeting.namePrefsMeetingPlace + ConstantsClassMeeting.prefsPraefixMeetings[t], 0);
+                meetingPlace[t] = prefs.getInt(ConstansClassMeeting.namePrefsMeetingPlace + ConstansClassMeeting.prefsPraefixMeetings[t], 0);
 
                 // get info new meeting date and time from prefs
-                meetingNewDateAndTime[t] = prefs.getBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime  + ConstantsClassMeeting.prefsPraefixMeetings[t], false);
+                meetingNewDateAndTime[t] = prefs.getBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime  + ConstansClassMeeting.prefsPraefixMeetings[t], false);
 
             }
             else { // no -> init with zero
@@ -408,11 +404,11 @@ public class ActivityMeeting extends AppCompatActivity {
     public void deleteMeetingTimestampAndPlace (int index) {
 
         // Delete timestamp from meeting _A or _B (look index)
-        prefsEditor.putLong(ConstantsClassMeeting.namePrefsMeetingTimeAndDate + ConstantsClassMeeting.prefsPraefixMeetings[index], 0);
+        prefsEditor.putLong(ConstansClassMeeting.namePrefsMeetingTimeAndDate + ConstansClassMeeting.prefsPraefixMeetings[index], 0);
         // Delete meeting place
-        prefsEditor.putInt(ConstantsClassMeeting.namePrefsMeetingPlace + ConstantsClassMeeting.prefsPraefixMeetings[index], 0);
+        prefsEditor.putInt(ConstansClassMeeting.namePrefsMeetingPlace + ConstansClassMeeting.prefsPraefixMeetings[index], 0);
         // Delete new info for meeting
-        prefsEditor.putBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime + ConstantsClassMeeting.prefsPraefixMeetings[index], false);
+        prefsEditor.putBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime + ConstansClassMeeting.prefsPraefixMeetings[index], false);
 
         prefsEditor.commit();
 
@@ -434,8 +430,8 @@ public class ActivityMeeting extends AppCompatActivity {
     public void setMeetingTimezoneSuggestions (Boolean [] tmpTimezoneSuggestion) {
 
         // store timezone suggestions result in prefs
-        for (int i=0; i<ConstantsClassMeeting.countNumberTimezones; i++) {
-            prefsEditor.putBoolean(ConstantsClassMeeting.namePrefsArrayMeetingTimezoneArray+i,tmpTimezoneSuggestion[i]);
+        for (int i = 0; i< ConstansClassMeeting.countNumberTimezones; i++) {
+            prefsEditor.putBoolean(ConstansClassMeeting.namePrefsArrayMeetingTimezoneArray+i,tmpTimezoneSuggestion[i]);
             makeMeetingCheckBoxListenerArray[i] = tmpTimezoneSuggestion[i];
         }
 
@@ -457,7 +453,7 @@ public class ActivityMeeting extends AppCompatActivity {
 
         meetingStatus = tmpMeetingStatus;
 
-        prefsEditor.putInt(ConstantsClassMeeting.namePrefsMeetingStatus,tmpMeetingStatus);
+        prefsEditor.putInt(ConstansClassMeeting.namePrefsMeetingStatus,tmpMeetingStatus);
 
         prefsEditor.commit();
 
@@ -485,7 +481,7 @@ public class ActivityMeeting extends AppCompatActivity {
 
         meetingPlace[placeIndex] = tmpMeetingPlace;
 
-        prefsEditor.putInt(ConstantsClassMeeting.namePrefsMeetingPlace + ConstantsClassMeeting.prefsPraefixMeetings[placeIndex],tmpMeetingPlace);
+        prefsEditor.putInt(ConstansClassMeeting.namePrefsMeetingPlace + ConstansClassMeeting.prefsPraefixMeetings[placeIndex],tmpMeetingPlace);
 
         prefsEditor.commit();
 
@@ -507,7 +503,7 @@ public class ActivityMeeting extends AppCompatActivity {
 
         meetingProblem = tmpMeetingProblem;
 
-        prefsEditor.putString(ConstantsClassMeeting.namePrefsMeetingProblem,tmpMeetingProblem);
+        prefsEditor.putString(ConstansClassMeeting.namePrefsMeetingProblem,tmpMeetingProblem);
 
         prefsEditor.commit();
 
@@ -532,8 +528,8 @@ public class ActivityMeeting extends AppCompatActivity {
     // unset new status meetings (both new status for meeting is unset)
     public void unsetNewStatusMeeting () {
 
-        prefsEditor.putBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime + ConstantsClassMeeting.prefsPraefixMeetings[0],false);
-        prefsEditor.putBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime + ConstantsClassMeeting.prefsPraefixMeetings[1],false);
+        prefsEditor.putBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime + ConstansClassMeeting.prefsPraefixMeetings[0],false);
+        prefsEditor.putBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime + ConstansClassMeeting.prefsPraefixMeetings[1],false);
 
         prefsEditor.commit();
 

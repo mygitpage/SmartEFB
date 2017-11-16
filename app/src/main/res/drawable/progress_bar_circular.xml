@@ -10,7 +10,7 @@
         android:useLevel="false" >
         <gradient
             android:centerY="0.5"
-            android:endColor="@color/colorPrimary"
+            android:endColor="@color/listview_elements_background"
             android:startColor="@color/white"
             android:type="sweep"
             android:useLevel="false" />

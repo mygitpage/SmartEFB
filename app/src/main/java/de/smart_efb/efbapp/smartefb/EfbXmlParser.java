@@ -133,7 +133,7 @@ public class EfbXmlParser {
         returnMap.put("MeetingSettingsUpdateDateA", "0");
 
         returnMap.put("TimeTable", "0");
-        returnMap.put("TimeTableValue", "0");
+        returnMap.put("TimeTableNewValue", "0");
 
         returnMap.put("Settings", "0");
 
@@ -2230,7 +2230,6 @@ public class EfbXmlParser {
 
             while (parseAnymore) {
 
-
                 // look for end tag of ourgoals
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals)) {
@@ -2239,9 +2238,6 @@ public class EfbXmlParser {
                         parseAnymore = false;
                     }
                 }
-
-
-
 
                 if (eventType == XmlPullParser.START_TAG) {
                     Log.d("readOurGoalsTag", "Start tag " + xpp.getName());
@@ -4092,6 +4088,15 @@ public class EfbXmlParser {
 
             while (parseAnymore) {
 
+                // look for end tag of meeting
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMeeting)) {
+
+                        Log.d("readMeetingTag", "End Tag meeting gefunden!");
+                        parseAnymore = false;
+                    }
+                }
+
                 if (eventType == XmlPullParser.START_TAG) {
                     Log.d("readMeetingTag", "Start tag " + xpp.getName());
 
@@ -4100,8 +4105,8 @@ public class EfbXmlParser {
                             readMeetingTag_Settings();
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestions:
-                            readMeetingTag_Suggestions();
+                        case ConstansClassXmlParser.xmlNameForMeeting_And_Suggestions:
+                            readMeetingTag_MeetingAndSuggestions();
                             break;
                     }
                 }
@@ -4110,15 +4115,6 @@ public class EfbXmlParser {
                 // Safety abbort end document
                 if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
                     Log.d("readMeetingTag", "ABBRUCH DURCH END DOCUMENT!");
-                }
-
-                // look for end tag of meeting
-                if (eventType == XmlPullParser.END_TAG) {
-                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMeeting)) {
-
-                        Log.d("readMeetingTag", "End Tag meeting gefunden!");
-                        parseAnymore = false;
-                    }
                 }
             }
         }
@@ -4147,12 +4143,11 @@ public class EfbXmlParser {
 
         // tmp data for prefs
         Boolean tmpMeetingOnOff = false;
+        Boolean tmpMeetingClientMakeSuggestionOnOff = false;
+        Boolean tmpMeetingClientCanceleMeetingOnOff = false;
+        Boolean tmpMeetingClientCommentSuggestionOnOff = false;
+
         String tmpOrder = "";
-        Long tmpMeetingDateA = 0L;
-        Long tmpMeetingDateB = 0L;
-        int tmpMeetingPlaceA = 0;
-        int tmpMeetingPlaceB = 0;
-        int tmpMeetingStatus = -1;
 
         try {
             int eventType = xpp.next();
@@ -4210,8 +4205,228 @@ public class EfbXmlParser {
 
                             break;
 
+                        case ConstansClassXmlParser.xmlNameForMeeting_ClientCancelMeeting_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch client cancele meeting turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpMeetingClientCanceleMeetingOnOff = true;}
+                                    else {tmpMeetingClientCanceleMeetingOnOff = false;}
 
-                        case ConstansClassXmlParser.xmlNameForMeeting_Settings_MeetingDateA:
+                                    Log.d("Meeting_Settings","Client cancel meeting On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_ClientMakeSuggestion_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch client make suggestion turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpMeetingClientMakeSuggestionOnOff = true;}
+                                    else {tmpMeetingClientMakeSuggestionOnOff = false;}
+
+                                    Log.d("Meeting_Settings","Client make suggestion On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_ClientMakeSuggestionComment_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch client make suggestion turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {tmpMeetingClientCommentSuggestionOnOff = true;}
+                                    else {tmpMeetingClientCommentSuggestionOnOff = false;}
+
+                                    Log.d("Meeting_Settings","Client make comment suggest On/Off"+tmpSwitchValue);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+
+
+
+
+
+
+
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
+                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                }
+
+                // look for end tag of meeting settings
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMeeting_Settings)) {
+
+                        // check all data for meeting settings correct?
+                        if (!error) {
+
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) ) { // meting settings order -> delete?
+
+                                Log.d("meeting Settings","DELETE AUSführen");
+
+                                // refresh activity meeting because settings have change
+                                returnMap.put ("Meeting","1");
+                                returnMap.put ("MeetingSettings","1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) ) { // meeting settings order -> delete all?
+
+                                // delete all meeting suggestions in DB
+                                myDb.deleteAllRowsMeetingDateAndTime();
+
+                                // refresh activity meeting because settings have change
+                                returnMap.put ("Meeting","1");
+                                returnMap.put ("MeetingSettings","1");
+
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // meeting settings order -> update?
+
+                                Log.d("meeting Settings","UPDATE AUSführen");
+
+                                // write data meeting on off to prefs
+                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, tmpMeetingOnOff);
+
+                                // write data meeting client suggestion on off to prefs
+                                prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientSuggestion_OnOff, tmpMeetingClientMakeSuggestionOnOff);
+
+                                // write data meeting client cancele meeting on off to prefs
+                                prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCanceleMeeting_OnOff, tmpMeetingClientCanceleMeetingOnOff);
+
+
+                                // write data meeting client comment suggestion on off to prefs
+                                prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, tmpMeetingClientCommentSuggestionOnOff);
+
+
+                                prefsEditor.commit();
+
+
+
+
+                                /*
+                                // update meeting date a and place a?
+                                if (tmpMeetingDateA > 0 && tmpMeetingPlaceA > 0 ) {
+
+                                    Log.d ("Meetings Settings--","Date A:"+tmpMeetingDateA+" PLace A:"+tmpMeetingPlaceA);
+
+                                    // write data to prefs (A is index zero, B is index 1)
+                                    prefsEditor.putInt(ConstansClassMeeting.namePrefsMeetingPlace + ConstansClassMeeting.prefsPraefixMeetings[0], tmpMeetingPlaceA);
+                                    prefsEditor.putLong(ConstansClassMeeting.namePrefsMeetingTimeAndDate + ConstansClassMeeting.prefsPraefixMeetings[0], tmpMeetingDateA);
+                                    // Sign new meeting date a
+                                    prefsEditor.putBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime + ConstansClassMeeting.prefsPraefixMeetings[0], true);
+                                    prefsEditor.commit();
+
+                                    // something change in evaluation process
+                                    returnMap.put ("MeetingSettingsUpdateDateA","1");
+
+                                }
+
+                                // update meeting date b and place b?
+                                if (tmpMeetingDateB > 0 && tmpMeetingPlaceB > 0 ) {
+
+                                    Log.d ("Meetings Settings--","Date B:"+tmpMeetingDateB+" PLace A:"+tmpMeetingPlaceB);
+
+                                    // write data to prefs (A is index zero, B is index 1)
+                                    prefsEditor.putInt(ConstansClassMeeting.namePrefsMeetingPlace + ConstansClassMeeting.prefsPraefixMeetings[1], tmpMeetingPlaceB);
+                                    prefsEditor.putLong(ConstansClassMeeting.namePrefsMeetingTimeAndDate + ConstansClassMeeting.prefsPraefixMeetings[1], tmpMeetingDateB);
+                                    // Sign new meeting date b
+                                    prefsEditor.putBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime + ConstansClassMeeting.prefsPraefixMeetings[1], true);
+                                    prefsEditor.commit();
+
+                                    // something change in evaluation process
+                                    returnMap.put ("MeetingSettingsUpdateDateB","1");
+
+                                }
+
+                                // update meeting status?
+                                if (tmpMeetingStatus >= 0) {
+
+                                    Log.d ("Meetings Settings--","Status:"+tmpMeetingStatus);
+
+                                    // write data to prefs
+                                    prefsEditor.putInt(ConstansClassMeeting.namePrefsMeetingStatus, tmpMeetingStatus);
+                                    prefsEditor.commit();
+
+                                    // something change in meeting status
+                                    returnMap.put ("MeetingSettingsUpdateStatus","1");
+
+                                }
+
+
+                                */
+
+                                // refresh activity meeting because settings have change
+                                returnMap.put ("Meeting","1");
+                                returnMap.put ("MeetingSettings","1");
+
+                            }
+
+
+
+
+                        }
+
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs(21);
+            e.printStackTrace();
+        } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs(22);
+            e.printStackTrace();
+        }
+
+    }
+
+
+    // read tag meeting or suggestions and push to database
+    private void readMeetingTag_MeetingAndSuggestions() {
+
+
+        /* Quelltext kommt aus Funktion settings meeting!!!!!!!!!!!
+
+        case ConstansClassXmlParser.xmlNameForMeeting_Settings_MeetingDateA:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { //  get meeting date B
                                 if (xpp.getText().trim().length() > 0) { // check if meeting date B from xml > 0
@@ -4310,126 +4525,7 @@ public class EfbXmlParser {
                             }
 
                             break;
-
-
-                    }
-                }
-                eventType = xpp.next();
-
-                // Safety abbort end document
-                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
-                }
-
-                // look for end tag of meeting settings
-                if (eventType == XmlPullParser.END_TAG) {
-                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMeeting_Settings)) {
-
-                        // check all data for meeting settings correct?
-                        if (!error) {
-
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) ) { // meting settings order -> delete?
-
-                                Log.d("meeting Settings","DELETE AUSführen");
-
-                                // refresh activity meeting because settings have change
-                                returnMap.put ("Meeting","1");
-                                returnMap.put ("MeetingSettings","1");
-
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) ) { // meeting settings order -> delete all?
-
-                                // delete all meeting suggestions in DB
-                                myDb.deleteAllRowsMeetingDateAndTime();
-
-                                // refresh activity meeting because settings have change
-                                returnMap.put ("Meeting","1");
-                                returnMap.put ("MeetingSettings","1");
-
-
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // meeting settings order -> update?
-
-                                Log.d("meeting Settings","UPDATE AUSführen");
-
-                                // in every case -> write data meeting on off to prefs
-                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, tmpMeetingOnOff);
-                                prefsEditor.commit();
-
-
-                                // update meeting date a and place a?
-                                if (tmpMeetingDateA > 0 && tmpMeetingPlaceA > 0 ) {
-
-                                    Log.d ("Meetings Settings--","Date A:"+tmpMeetingDateA+" PLace A:"+tmpMeetingPlaceA);
-
-                                    // write data to prefs (A is index zero, B is index 1)
-                                    prefsEditor.putInt(ConstantsClassMeeting.namePrefsMeetingPlace + ConstantsClassMeeting.prefsPraefixMeetings[0], tmpMeetingPlaceA);
-                                    prefsEditor.putLong(ConstantsClassMeeting.namePrefsMeetingTimeAndDate + ConstantsClassMeeting.prefsPraefixMeetings[0], tmpMeetingDateA);
-                                    // Sign new meeting date a
-                                    prefsEditor.putBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime + ConstantsClassMeeting.prefsPraefixMeetings[0], true);
-                                    prefsEditor.commit();
-
-                                    // something change in evaluation process
-                                    returnMap.put ("MeetingSettingsUpdateDateA","1");
-
-                                }
-
-                                // update meeting date b and place b?
-                                if (tmpMeetingDateB > 0 && tmpMeetingPlaceB > 0 ) {
-
-                                    Log.d ("Meetings Settings--","Date B:"+tmpMeetingDateB+" PLace A:"+tmpMeetingPlaceB);
-
-                                    // write data to prefs (A is index zero, B is index 1)
-                                    prefsEditor.putInt(ConstantsClassMeeting.namePrefsMeetingPlace + ConstantsClassMeeting.prefsPraefixMeetings[1], tmpMeetingPlaceB);
-                                    prefsEditor.putLong(ConstantsClassMeeting.namePrefsMeetingTimeAndDate + ConstantsClassMeeting.prefsPraefixMeetings[1], tmpMeetingDateB);
-                                    // Sign new meeting date b
-                                    prefsEditor.putBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime + ConstantsClassMeeting.prefsPraefixMeetings[1], true);
-                                    prefsEditor.commit();
-
-                                    // something change in evaluation process
-                                    returnMap.put ("MeetingSettingsUpdateDateB","1");
-
-                                }
-
-                                // update meeting status?
-                                if (tmpMeetingStatus >= 0) {
-
-                                    Log.d ("Meetings Settings--","Status:"+tmpMeetingStatus);
-
-                                    // write data to prefs
-                                    prefsEditor.putInt(ConstantsClassMeeting.namePrefsMeetingStatus, tmpMeetingStatus);
-                                    prefsEditor.commit();
-
-                                    // something change in meeting status
-                                    returnMap.put ("MeetingSettingsUpdateStatus","1");
-
-                                }
-
-                                // refresh activity meeting because settings have change
-                                returnMap.put ("Meeting","1");
-                                returnMap.put ("MeetingSettings","1");
-
-                            }
-                        }
-
-                        parseAnymore = false;
-                    }
-                }
-            }
-        }
-        catch (XmlPullParserException e) {
-            // set error
-            setErrorMessageInPrefs(21);
-            e.printStackTrace();
-        } catch (IOException e) {
-            // set error
-            setErrorMessageInPrefs(22);
-            e.printStackTrace();
-        }
-
-    }
-
-
-    // read tag our meeting suggestions and push to database
-    private void readMeetingTag_Suggestions() {
+         */
 
 
         Boolean parseAnymore = true;
@@ -4571,7 +4667,10 @@ public class EfbXmlParser {
                         // check all data for meeting suggestions correct?
                         if (!error) {
 
-                            Log.d("MeetingSuggestion","Time:"+tmpMeetingSuggestionTime+" - Place:"+tmpMeetingSuggestionPlace);
+                            Log.d("MeetingAndSuggestion","Keine Fehler da!");
+
+
+                            /* Muss komplett überarbeitet werden, da sich das Datenbankmodell geändert hat!!!!!!!!!!!
 
                             // meeting suggestion -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpMeetingSuggestionTime > 0 && tmpMeetingSuggestionPlace.length() > 0) {
@@ -4607,7 +4706,7 @@ public class EfbXmlParser {
                                 Log.d("Meetings Suggestions--", "Author NAme:" + tmpAuthorSuggestions);
 
                                 // write new author name of suggestions to prefs
-                                prefsEditor.putString(ConstantsClassMeeting.namePrefsAuthorMeetingSuggestion, tmpAuthorSuggestions);
+                                prefsEditor.putString(ConstansClassMeeting.namePrefsAuthorMeetingSuggestion, tmpAuthorSuggestions);
                                 prefsEditor.commit();
 
                                 // refresh activity meeting
@@ -4620,14 +4719,20 @@ public class EfbXmlParser {
                                 Log.d("Meetings Suggestions--", "Response Deadline:" + tmpResponseDeadline);
 
                                 // write new author name of suggestions to prefs
-                                prefsEditor.putLong(ConstantsClassMeeting.namePrefsMeetingSuggestionsResponseDeadline, tmpResponseDeadline);
+                                prefsEditor.putLong(ConstansClassMeeting.namePrefsMeetingSuggestionsResponseDeadline, tmpResponseDeadline);
                                 prefsEditor.commit();
 
                                 // refresh activity meeting
                                 returnMap.put ("Meeting","1");
                                 returnMap.put ("MeetingResponseDeadline","1");
                             }
+
+                        */
+
                         }
+
+
+
 
                         parseAnymore = false;
                     }
@@ -5431,13 +5536,11 @@ public class EfbXmlParser {
         Boolean error = false;
 
         // tmp data for prefs and database insert
+        String tmpOrder = "";
         Boolean tmpTimeTableOnOff = false; // switch for functions
         int tmpTimeTableValue = -1;
-
-        // time table order
-        String tmpOrder = "";
-
-
+        Long tmpChangeTime = 0L;
+        String tmpAuthorName = "";
 
 
         try {
@@ -5515,6 +5618,43 @@ public class EfbXmlParser {
 
                             break;
 
+                        case ConstansClassXmlParser.xmlNameForTimeTable_Modified_Author:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get authorName text
+                                if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
+                                    tmpAuthorName = xpp.getText().trim();
+
+                                    Log.d("TimeTable -->","Author Name:" + tmpAuthorName);
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+                        case ConstansClassXmlParser.xmlNameForTimeTable_Modified_Date:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get change time text
+                                if (xpp.getText().trim().length() > 0) { // check if change time from xml > 0
+                                    tmpChangeTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("TimeTable","Change Time:" + tmpChangeTime);
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
 
 
                     }
@@ -5534,24 +5674,24 @@ public class EfbXmlParser {
                         // check all data for time table correct?
                         if (!error) {
 
-
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) ) { // settings order -> delete?
-
-                                Log.d("TimeTable","DELETE AUSführen");
-
-
-                                // refresh activity time table because settings have change
-                                returnMap.put("TimeTable","1");
-
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // settings order -> update?
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // settings order -> update?
 
                                 Log.d("TimeTable","UPDATE AUSführen");
 
+                                // set time table on/off
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_TimeTable, tmpTimeTableOnOff); // turn function time table on/off
 
-                                if (tmpTimeTableValue >= 0) { // change time table value?
+                                if (tmpTimeTableOnOff && tmpTimeTableValue >= 0 && tmpAuthorName.length() > 0 && tmpChangeTime > 0) { // change time table value?
                                     prefsEditor.putInt(ConstansClassTimeTable.namePrefsTimeTableValue, tmpTimeTableValue); // set value for time table
-                                    returnMap.put("TimeTableValue","1");
+                                    prefsEditor.putString(ConstansClassTimeTable.namePrefsTimeTableModifiedAuthor, tmpAuthorName); // set author name for time table
+                                    prefsEditor.putLong(ConstansClassTimeTable.namePrefsTimeTableModifiedDate, tmpChangeTime); // set change date for time table
+                                    prefsEditor.putBoolean(ConstansClassTimeTable.namePrefsTimeTableNewValue, true); // set new value for time table to true
+                                    returnMap.put("TimeTableNewValue","1");
+                                }
+                                else { // time table is off -> set value to default
+                                    prefsEditor.putInt(ConstansClassTimeTable.namePrefsTimeTableValue, 0); // set value for time table
+                                    prefsEditor.putString(ConstansClassTimeTable.namePrefsTimeTableModifiedAuthor, ""); // set author name for time table
+                                    prefsEditor.putLong(ConstansClassTimeTable.namePrefsTimeTableModifiedDate, 0); // set change date for time table
                                 }
 
                                 prefsEditor.commit();

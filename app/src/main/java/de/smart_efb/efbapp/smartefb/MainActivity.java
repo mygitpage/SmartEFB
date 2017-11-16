@@ -8,30 +8,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
 import java.util.Calendar;
 
 
@@ -51,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private int[] mainMenueElementBackgroundRessources = new int[ConstansClassMain.mainMenueNumberOfElements];
     // background ressource of new entry elements (image icon)
     private int[] mainMenueElementBackgroundRessourcesNewEntry = new int[ConstansClassMain.mainMenueNumberOfElements];
-    // background ressource of inactiv elements (image icon)
-    private int[] mainMenueElementBackgroundRessourcesInactiv = new int[ConstansClassMain.mainMenueNumberOfElements];
     // background ressource of elemts to show!
     private int[] mainMenueShowElementBackgroundRessources = new int[ConstansClassMain.mainMenueNumberOfElements];
 
@@ -224,14 +211,23 @@ public class MainActivity extends AppCompatActivity {
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
-                // check intent order
 
+                // check intent order
+                // new connect book message
                 String tmpExtraConnectBookMessageNewOrSend = intentExtras.getString("ConnectBookMessageNewOrSend","0");
+                // new time table value
+                String tmpExtraTimeTable = intentExtras.getString("TimeTable","0");
+                String tmpExtraTimeTableNewValue = intentExtras.getString("TimeTableNewValue","0");
 
 
                 if (tmpExtraConnectBookMessageNewOrSend != null && tmpExtraConnectBookMessageNewOrSend.equals("1")) {
 
                     // new message received
+                    updateMainView = true;
+
+                } else if (tmpExtraTimeTable != null && tmpExtraTimeTable.equals("1") && tmpExtraTimeTableNewValue != null && tmpExtraTimeTableNewValue.equals("1")) {
+
+                    // time table has change -> refresh activity view
                     updateMainView = true;
 
                 }
@@ -253,7 +249,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         finish();
+        overridePendingTransition(0, 0);
         startActivity(intent);
+        overridePendingTransition(0, 0);
 
     }
 
@@ -284,12 +282,11 @@ public class MainActivity extends AppCompatActivity {
 
         tmpBackgroundRessources = getResources().getStringArray(R.array.mainMenueElementImage);
         tmpBackgroundRessourcesNewEntry = getResources().getStringArray(R.array.mainMenueElementImageNewEntry);
-        tmpBackgroundRessourcesInactiv =  getResources().getStringArray(R.array.mainMenueElementImageInactiv);
+
 
         for (int i=0; i<ConstansClassMain.mainMenueNumberOfElements; i++) {
             mainMenueElementBackgroundRessources[i] = getResources().getIdentifier(tmpBackgroundRessources[i], "drawable", "de.smart_efb.efbapp.smartefb");
             mainMenueElementBackgroundRessourcesNewEntry[i] = getResources().getIdentifier(tmpBackgroundRessourcesNewEntry[i], "drawable", "de.smart_efb.efbapp.smartefb");
-            mainMenueElementBackgroundRessourcesInactiv[i] = getResources().getIdentifier(tmpBackgroundRessourcesInactiv[i], "drawable", "de.smart_efb.efbapp.smartefb");
         }
 
         // init array show elements and activ/inactiv sub-functions
@@ -345,10 +342,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                         tmpNew = true;
                     }
-                    else { // element is inaktiv
-                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesInactiv[countElements];
-                        tmpNew = true;
-                    }
                     break;
 
                 case 1: // menue item "Absprachen"
@@ -358,10 +351,6 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                         }
-                        tmpNew = true;
-                    }
-                    else { // element is inaktiv
-                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesInactiv[countElements];
                         tmpNew = true;
                     }
                     break;
@@ -375,14 +364,18 @@ public class MainActivity extends AppCompatActivity {
                         }
                         tmpNew = true;
                     }
-                    else { // element is inaktiv
-                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesInactiv[countElements];
-                        tmpNew = true;
-                    }
                     break;
 
                 case 3: // menue item "Zeitplan"
-                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    if (showMainMenueElement[countElements]) { // is element aktiv?
+                        if (prefs.getBoolean(ConstansClassTimeTable.namePrefsTimeTableNewValue, false)) {
+                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
+                        } else {
+                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                        }
+                        tmpNew = true;
+                    }
+
                     break;
 
                 case 4: // menue item "Praevention"
@@ -394,7 +387,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case 6: // menue item "Termine"
-                    if ( prefs.getBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime  + ConstantsClassMeeting.prefsPraefixMeetings[0], false) || prefs.getBoolean(ConstantsClassMeeting.namePrefsNewMeetingDateAndTime  + ConstantsClassMeeting.prefsPraefixMeetings[1], false)) {
+                    if ( prefs.getBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime  + ConstansClassMeeting.prefsPraefixMeetings[0], false) || prefs.getBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime  + ConstansClassMeeting.prefsPraefixMeetings[1], false)) {
                         // meeting A or meeting B new!
                         mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                     } else {

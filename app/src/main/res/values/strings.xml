@@ -951,8 +951,16 @@
     <!-- timetable -->
 
 
-        <string name="timeTableIntroText">Ihr gemeinsamer Beratungsstand:</string>
-        <string name="timeTableIntroTextComputeValueExplain">Wie entsteht dieser Wert?</string>
+        <string name="timeTableIntroText">Gemeinsamer Beratungsstand</string>
+        <string name="timeTableIntroTextComputeValueExplain">Wie entsteht dieser Wert und was sagt er aus?</string>
+        <string name="timeTableChangeAuthorNameWithDate">Der Beratungsstand wurde von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr verändert.</string>
+        <string name="timeTableIntroTextComputeValueExplainPoint1">Ihre Beraterin/ Ihr Berater legt nach Rücksprache mit Ihnen den Beratungsstand fest.</string>
+        <string name="timeTableIntroTextComputeValueExplainPoint2">Als Orientierungskriterien dienen dabei die Einhaltung von getroffenen Absprachen durch alle Beteiligten, die Erreichung von vereinbarten Zielen, eine lösungsorientierte Kommunikation und die Einhaltung von Terminen.</string>
+        <string name="timeTableIntroTextComputeValueExplainPoint3">Die wahrgenommenen Fortschritte in der Beratung sollten Sie mit Ihrer Beraterin/ Ihrem Berater diskutieren.</string>
+        <string name="timeTableIntroTextComputeValueExplainPoint4">Eine Angabe der Anzahl an Beratungsterminen kann Ihnen Ihre Beraterin/ Ihr Berater leider nicht nennen, da die Fortschritte in den einzelnen Beratungstreffen sehr unterschiedlich sein können. Daher wird der Fortschritt in Prozent angegeben.</string>
+        <string name="timeTableIntroTextComputeValueExplainPoint5">Bei Fragen sprechen Sie bitte Ihre Beraterin/ Ihren Berater an. Vielen Dank.</string>
+
+
 
     <!-- end timetable -->
 

@@ -61,30 +61,13 @@
         <item>main_pic_connectbook_new_entry</item><!--Uebergabe-->
         <item>main_pic_arrangement_new_entry</item><!--Absprachen-->
         <item>main_pic_goal_new_entry</item><!--Ziele-->
-        <item>main_pic_timetable_new_entry</item><!--Zeitplan-->
+        <item>main_pic_timetable_normal</item><!--Zeitplan - bitte ein Bild herstellen!!!!!!!!!!!! -->
         <item>main_pic_prevention_new_entry</item><!--Praevention-->
         <item>main_pic_faq_new_entry</item><!--FAQ-->
         <item>main_pic_event_new_entry</item><!--Termine-->
         <item>main_pic_emergencyhelp_normal</item><!--Hilfe - there is no need for new entry-->
         <item>main_pic_setting_normal</item><!--Einstellungen - there is no need for new entry-->
     </string-array>
-
-
-    <!-- drawable for grid in maim menue for inactiv show-->
-    <string-array name="mainMenueElementImageInactiv">
-        <item>main_pic_connectbook_inactiv</item><!--Uebergabe-->
-        <item>main_pic_arrangement_inactiv</item><!--Absprachen-->
-        <item>main_pic_goal_inactiv</item><!--Ziele-->
-        <item>main_pic_setting_normal</item><!--Zeitplan-->
-        <item>main_pic_prevetion_inactiv</item><!--Praevention-->
-        <item>main_pic_faq_inactiv</item><!--FAQ-->
-        <item>main_pic_event_inactiv</item><!--Termine-->
-        <item>main_pic_emergencyhelp_inactiv</item><!--Hilfe-->
-        <item>main_pic_setting_inactiv</item><!--Einstellungen-->
-    </string-array>
-
-
-
 
 
     <!-- tab titles for Activity Settings (these are links, original in strings.xml) -->

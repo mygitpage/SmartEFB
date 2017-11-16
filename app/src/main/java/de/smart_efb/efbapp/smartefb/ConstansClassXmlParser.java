@@ -502,27 +502,6 @@ public class ConstansClassXmlParser {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // xml name for element our goals jointly comment
         public static final String xmlNameForOurGoals_JointlyComment = "ourgoals_jointlycomment";
 
@@ -552,14 +531,6 @@ public class ConstansClassXmlParser {
 
             // xml name for element our goals jointly comment block number for goals
             public static final String xmlNameForOurGoals_JointlyComment_BlockId = "ourgoals_jointlycomment_blockid";
-
-
-
-
-
-
-
-
 
 
         // xml name for element our goals debetable comment
@@ -683,14 +654,48 @@ public class ConstansClassXmlParser {
     // ++++++++++++++++++++++ Meeting ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //
     // xml name for element meeting
+
+
+
+   /*
+   if (!defined('XML_NAME_FOR_MEETINGS_CLIENT_COMMNET_SUGGESTION_ONOFF'))  define("XML_NAME_FOR_MEETINGS_CLIENT_COMMNET_SUGGESTION_ONOFF", "client_comment_suggestion_turnonoff");
+
+    */
+
+
+
+
     public static final String xmlNameForMeeting = "meeting";
     // xml name for element meeting settings
     public static final String xmlNameForMeeting_Settings = "meeting_settings";
 
+    // xml name for element meeting and suggestions
+    public static final String xmlNameForMeeting_And_Suggestions = "meeting_suggestions";
+
+
+
     // xml name for element meeting turn on/off
     public static final String xmlNameForMeeting_TurnOnOff = "meeting_turnonoff";
 
-        // xml name for element meeting settings order
+
+    // xml name for element meeting client cancele meeting turn on/off
+    public static final String xmlNameForMeeting_ClientCancelMeeting_TurnOnOff = "client_cancele_meeting_turnonoff";
+
+    // xml name for element meeting client make suggestions turn on/off
+    public static final String xmlNameForMeeting_ClientMakeSuggestion_TurnOnOff = "client_suggestion_possible_turnonoff";
+
+    // xml name for element meeting client make meeting comment turn on/off
+    public static final String xmlNameForMeeting_ClientMakeSuggestionComment_TurnOnOff = "client_comment_suggestion_turnonoff";
+
+
+
+
+
+
+
+
+
+    // xml name for element meeting settings order
         public static final String xmlNameForMeeting_Settings_Order = "meeting_settings_order";
         // xml name for element meeting settings date A
         public static final String xmlNameForMeeting_Settings_MeetingDateA = "meeting_settings_date_a";
@@ -768,6 +773,12 @@ public class ConstansClassXmlParser {
 
     // xml name for element time table value
     public static final String xmlNameForTimeTable_Value = "timetable_value";
+
+    // xml name for element time table modified date
+    public static final String xmlNameForTimeTable_Modified_Date = "timetable_modified_date";
+
+    // xml name for element time table modified author
+    public static final String xmlNameForTimeTable_Modified_Author = "timetable_modified_author";
 
     //
     // ++++++++++++++++++++++ End Time Table ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

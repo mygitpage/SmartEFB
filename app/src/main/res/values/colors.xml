@@ -40,14 +40,7 @@
     <color name="all_tabs_unselected_color">#150656</color>
 
 
-
-
     <!-- Colors for Connect Book -->
-
-
-
-
-
     <color name="title_gray">#434343</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
@@ -61,17 +54,13 @@
     <color name="bg_msg_input">#d6d6d6</color>
     <color name="text_msg_input">#626262</color>
     <color name="lblFromName">#150656</color>
-
     <!-- End Colors for Connect Book-->
 
 
     <!-- Colors for Main Menue -->
-
     <color name="bg_btn_main_menue">#1e6258</color>
     <color name="txt_btn_main_menue">#ffffff</color>
 
     <!-- End Colors for Main Menue -->
-
-
 
 </resources>

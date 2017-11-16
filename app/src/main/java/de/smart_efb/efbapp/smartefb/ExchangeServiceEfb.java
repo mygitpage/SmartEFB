@@ -412,20 +412,11 @@ import java.util.Map;
                         }
 
 
-
-
-
-
-
-
-
-
                         //++++++++++++++++ end db status update section +++++++++++++++++++++++++++++++++
 
                         // close input stream and disconnect
                         answerInputStream.close();
                         connection.disconnect();
-
 
                         // send intent to broadcast receiver -> the receiver looks for relevant data in intent
                         Intent tmpIntent = translateMapToIntent (returnMap);
@@ -440,16 +431,11 @@ import java.util.Map;
                     } catch (XmlPullParserException e) {
                         e.printStackTrace();
                     }
-
-
                 }
-
 
                 // stop the task with service
                 stopSelf();
-
             }
-
         }
 
 

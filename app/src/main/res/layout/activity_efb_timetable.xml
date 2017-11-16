@@ -30,15 +30,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
-
-
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/containerShowEmergencyHelpInformation"
@@ -52,20 +48,25 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
 
-
-
-            <TextView
+                <TextView
                     android:id="@+id/introTextTimeTable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
-                    android:textColor="@color/text_color"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold"
                     android:text="@string/timeTableIntroText"
                     android:gravity="left"
-                    android:paddingBottom="15dp"/>
+                    android:layout_marginLeft="3dp"/>
 
-
+                <TextView
+                    android:id="@+id/textAuthorNameAndDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:layout_marginLeft="3dp"/>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -93,23 +94,78 @@
                     android:layout_alignBottom="@+id/progressBar"
                     android:layout_centerInParent="true"
                     android:textSize="20dp"
-                    android:textColor="@color/text_color"
-                    android:textStyle="bold"/>
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:gravity="center"/>
                 <!-- android:textAppearance="?android:attr/textAppearanceSmall"  -->
 
             </RelativeLayout>
-
 
             <TextView
                 android:id="@+id/introTextComputeValueExplain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
-                android:textColor="@color/text_color"
+                android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
                 android:text="@string/timeTableIntroTextComputeValueExplain"
                 android:gravity="left"
                 android:paddingBottom="15dp"/>
+
+            <TextView
+                android:id="@+id/timeTableIntroTextComputeValueExplainPoint_One"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/timeTableIntroTextComputeValueExplainPoint1"
+                android:gravity="left"
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/timeTableIntroTextComputeValueExplainPoint_Two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/timeTableIntroTextComputeValueExplainPoint2"
+                android:gravity="left"
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/timeTableIntroTextComputeValueExplainPoint_Three"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/timeTableIntroTextComputeValueExplainPoint3"
+                android:gravity="left"
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/timeTableIntroTextComputeValueExplainPoint_Four"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/timeTableIntroTextComputeValueExplainPoint4"
+                android:gravity="left"
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"/>
+
+            <TextView
+                android:id="@+id/timeTableIntroTextComputeValueExplainPoint_Five"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/timeTableIntroTextComputeValueExplainPoint5"
+                android:gravity="left"
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"/>
 
         </LinearLayout>
 

@@ -3,13 +3,45 @@ package de.smart_efb.efbapp.smartefb;
 /**
  * Created by ich on 06.02.2017.
  */
-public class ConstantsClassMeeting {
+public class ConstansClassMeeting {
 
     // number of checkboxes for choosing timezones
     public static final int countNumberTimezones = 15;
 
     // number of simultaneous meetings
     public static final int numberSimultaneousMeetings = 2;
+
+
+
+
+
+
+    // meeting client suggestion on off to prefs
+    public static final String namePrefsMeeting_ClientSuggestion_OnOff ="meetingClientSuggestionOnOff";
+
+    // meeting client cancele meeting on off to prefs
+    public static final String namePrefsMeeting_ClientCanceleMeeting_OnOff ="meetingClientCanceleMeetingOnOff";
+
+    // meeting client comment suggestion on off to prefs
+    public static final String namePrefsMeeting_ClientCommentSuggestion_OnOff ="meetingClientCommentSuggestionOnOff";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // prefs name for meeting status
     public static final String namePrefsMeetingStatus = "meetingStatus";
