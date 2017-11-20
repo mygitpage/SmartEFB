@@ -34,7 +34,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT = "ourGoalsJointlyGoalsComment";
     public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE = "ourGoalsJointlyGoalsEvaluate";
     public static final String DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT = "ourGoalsDebetableGoalsComment";
-    public static final String DATABASE_TABLE_MEETING_FIND_MEETING = "meetingFindMeeting";
+    public static final String DATABASE_TABLE_MEETING_SUGGESTION = "meetingSuggestion";
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
@@ -357,26 +357,89 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     /**********************************************************************************************/
     /**********************************************************************************************/
-    // Meeting - column names and numbers
-    public static final String MEETING_FIND_MEETING_KEY_MEETING_PLACE = "place";
-    public static final String MEETING_FIND_MEETING_KEY_NEW_ENTRY = "new_entry";
-    public static final String MEETING_FIND_MEETING_KEY_DATE_TIME = "date_time";
-    public static final String MEETING_FIND_MEETING_KEY_APPROVAL = "approval";
-    public static final String MEETING_FIND_MEETING_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
+    // Meeting And Suggestion - column names and numbers
+
+    public static final String MEETING_SUGGESTION_KEY_DATE1 = "date1";
+    public static final String MEETING_SUGGESTION_KEY_DATE2 = "date2";
+    public static final String MEETING_SUGGESTION_KEY_DATE3 = "date3";
+    public static final String MEETING_SUGGESTION_KEY_DATE4 = "date4";
+    public static final String MEETING_SUGGESTION_KEY_DATE5 = "date5";
+    public static final String MEETING_SUGGESTION_KEY_DATE6 = "date6";
+    public static final String MEETING_SUGGESTION_KEY_PLACE1 = "place1";
+    public static final String MEETING_SUGGESTION_KEY_PLACE2 = "place2";
+    public static final String MEETING_SUGGESTION_KEY_PLACE3 = "place3";
+    public static final String MEETING_SUGGESTION_KEY_PLACE4 = "place4";
+    public static final String MEETING_SUGGESTION_KEY_PLACE5 = "place5";
+    public static final String MEETING_SUGGESTION_KEY_PLACE6 = "place6";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CANCELED = "meeting_canceled"; // 0=not canceled; 1= meeting canceled
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR = "meeting_canceled_author";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME= "meeting_canceled_time";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED = "meeting_client_canceled"; // 0=not canceled; 1= meeting canceled by client
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR = "meeting_client_canceled_author";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME= "meeting_client_canceled_time";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT = "meeting_client_suggestion"; // 0=not canceled; 1= meeting canceled by client
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR = "meeting_client_canceled_author";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME= "meeting_client_canceled_time";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME = "meeting_response_time";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT = "meeting_coach_hint";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR = "meeting_client_comment_author";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE = "meeting_client_comment_date";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT = "meeting_client_comment_text";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_SERVER_ID = "meeting_server_id";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME = "meeting_upload_time";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_KATEGORIE = "meeting_kategorie"; // 0 = nothing; 1 = dates are meeting dates; 2 = dates are meeting suggestions; 3 = responses from client for coach suggestion; 4 = suggestion from client; 5 = client comment suggestion
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME = "meeting_creation_time";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR = "meeting_creation_author";
+    public static final String MEETING_SUGGESTION_MEETING_KEY_STATUS = "status"; // 0=ready to send, 1=meeting/suggestion send, 4=external message
+    public static final String MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST = "new_mett_suggest"; // 1=new meeting/ suggestion
 
     // All keys from table in a String
-    public static final String[] MEETING_FIND_MEETING_ALL_KEYS = new String[] {KEY_ROWID, MEETING_FIND_MEETING_KEY_MEETING_PLACE, MEETING_FIND_MEETING_KEY_NEW_ENTRY, MEETING_FIND_MEETING_KEY_APPROVAL, MEETING_FIND_MEETING_KEY_DATE_TIME, MEETING_FIND_MEETING_KEY_STATUS};
+    public static final String[] MEETING_SUGGESTION_MEETING_ALL_KEYS = new String[] {KEY_ROWID, MEETING_SUGGESTION_KEY_DATE1, MEETING_SUGGESTION_KEY_DATE2, MEETING_SUGGESTION_KEY_DATE3, MEETING_SUGGESTION_KEY_DATE4, MEETING_SUGGESTION_KEY_DATE5, MEETING_SUGGESTION_KEY_DATE6,
+    MEETING_SUGGESTION_KEY_PLACE1, MEETING_SUGGESTION_KEY_PLACE2, MEETING_SUGGESTION_KEY_PLACE3, MEETING_SUGGESTION_KEY_PLACE4, MEETING_SUGGESTION_KEY_PLACE5, MEETING_SUGGESTION_KEY_PLACE6,
+    MEETING_SUGGESTION_KEY_MEETING_CANCELED, MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR, MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME, MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED,
+    MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR, MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME, MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT, MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR,
+    MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME, MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME, MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT, MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR, MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE,
+    MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT, MEETING_SUGGESTION_KEY_MEETING_SERVER_ID, MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME, MEETING_SUGGESTION_KEY_MEETING_KATEGORIE, MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME,
+    MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR, MEETING_SUGGESTION_MEETING_KEY_STATUS, MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST};
+
 
     // SQL String to create find meeting table
-    private static final String DATABASE_CREATE_SQL_MEETING_FIND_MEETING =
-            "create table " + DATABASE_TABLE_MEETING_FIND_MEETING + " (" + KEY_ROWID + " integer primary key autoincrement, "
-                    + MEETING_FIND_MEETING_KEY_MEETING_PLACE + " STRING not null, "
-                    + MEETING_FIND_MEETING_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
-                    + MEETING_FIND_MEETING_KEY_APPROVAL + " INTEGER DEFAULT 0, "
-                    + MEETING_FIND_MEETING_KEY_DATE_TIME + " INTEGER not null, "
-                    + MEETING_FIND_MEETING_KEY_STATUS + " INTEGER DEFAULT 0"
+    private static final String DATABASE_CREATE_SQL_MEETING_SUGGESTION =
+            "create table " + DATABASE_TABLE_MEETING_SUGGESTION + " (" + KEY_ROWID + " integer primary key autoincrement, "
+                    + MEETING_SUGGESTION_KEY_DATE1 + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_DATE2 + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_DATE3 + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_DATE4 + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_DATE5 + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_DATE6 + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_PLACE1 + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_PLACE2 + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_PLACE3 + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_PLACE4 + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_PLACE5 + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_PLACE6 + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR + " STRING not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR + " STRING not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT + " STRING not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR + " STRING not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT + " STRING not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR + " STRING not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT + " STRING not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR + " STRING not null, "
+                    + MEETING_SUGGESTION_MEETING_KEY_STATUS + " INTEGER DEFAULT 0, "
+                    + MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST + " INTEGER DEFAULT 0 "
                     + ");";
-
 
 
     /**********************************************************************************************/
@@ -425,7 +488,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
 
         // Create table Meeting Find Meeting
-        _db.execSQL(DATABASE_CREATE_SQL_MEETING_FIND_MEETING);
+        _db.execSQL(DATABASE_CREATE_SQL_MEETING_SUGGESTION);
 
 
     }
@@ -462,8 +525,8 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Destroy table Our Goals Jointly Goals Evaluate
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
 
-        // Destroy table Meeting Find Meeting
-        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_MEETING_FIND_MEETING);
+        // Destroy table Meeting and Suggestion
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_MEETING_SUGGESTION);
 
 
 
@@ -2262,11 +2325,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         return c;
     }
 
-
-
-
-
-
     /********************************* End!! TABLES FOR FUNCTION: Our Goals Debetable Goals Comment ***************************************/
     /****************************************************************************************************************************/
 
@@ -2276,27 +2334,119 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     /********************************* TABLES FOR FUNCTION: Meeting ******************************************/
 
-    // Add a new meeting date and time suggestion
-    public long insertNewMeetingDateAndTime (long meetingDateAndTime, String meetingPlace, Boolean newEntry, int status) {
+
+    /*
+     public static final String MEETING_SUGGESTION_KEY_DATE1 = "date1";
+    public static final String MEETING_SUGGESTION_KEY_DATE2 = "date2";
+    public static final String MEETING_SUGGESTION_KEY_DATE3 = "date3";
+    public static final String MEETING_SUGGESTION_KEY_DATE4 = "date4";
+    public static final String MEETING_SUGGESTION_KEY_DATE5 = "date5";
+    public static final String MEETING_SUGGESTION_KEY_DATE6 = "date6";
+    public static final String MEETING_SUGGESTION_KEY_PLACE1 = "place1";
+    public static final String MEETING_SUGGESTION_KEY_PLACE2 = "place2";
+    public static final String MEETING_SUGGESTION_KEY_PLACE3 = "place3";
+    public static final String MEETING_SUGGESTION_KEY_PLACE4 = "place4";
+    public static final String MEETING_SUGGESTION_KEY_PLACE5 = "place5";
+    public static final String MEETING_SUGGESTION_KEY_PLACE6 = "place6";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CANCELED = "meeting_canceled"; // 0=not canceled; 1= meeting canceled
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR = "meeting_canceled_author";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME= "meeting_canceled_time";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED = "meeting_client_canceled"; // 0=not canceled; 1= meeting canceled by client
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR = "meeting_client_canceled_author";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME= "meeting_client_canceled_time";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT = "meeting_client_suggestion_text"; 
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR = "meeting_client_suggestion_author";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME= "meeting_client_suggestion_time";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME = "meeting_response_time";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT = "meeting_coach_hint";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR = "meeting_client_comment_author";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE = "meeting_client_comment_date";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT = "meeting_client_comment_text";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_SERVER_ID = "meeting_server_id";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME = "meeting_upload_time";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_KATEGORIE = "meeting_kategorie"; // 0 = nothing; 1 = dates are meeting dates; 2 = dates are meeting suggestions; 3 = responses from client for coach suggestion; 4 = suggestion from client; 5 = client comment suggestion
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME = "meeting_creation_time";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR = "meeting_creation_author";
+    public static final String MEETING_SUGGESTION_MEETING_KEY_STATUS = "status"; // 0=ready to send, 1=meeting/suggestion send, 4=external message
+    public static final String MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST = "new_mett_suggest"; // 1=new meeting/ suggestion
+
+    // All keys from table in a String
+    public static final String[] MEETING_SUGGESTION_MEETING_ALL_KEYS = new String[] {KEY_ROWID, MEETING_SUGGESTION_KEY_DATE1, MEETING_SUGGESTION_KEY_DATE2, MEETING_SUGGESTION_KEY_DATE3, MEETING_SUGGESTION_KEY_DATE4, MEETING_SUGGESTION_KEY_DATE5, MEETING_SUGGESTION_KEY_DATE6,
+    MEETING_SUGGESTION_KEY_PLACE1, MEETING_SUGGESTION_KEY_PLACE2, MEETING_SUGGESTION_KEY_PLACE3, MEETING_SUGGESTION_KEY_PLACE4, MEETING_SUGGESTION_KEY_PLACE5, MEETING_SUGGESTION_KEY_PLACE6,
+    MEETING_SUGGESTION_KEY_MEETING_CANCELED, MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR, MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME, MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED,
+    MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR, MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME, MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT, MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR,
+    MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME, MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME, MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT, MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR, MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE,
+    MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT, MEETING_SUGGESTION_KEY_MEETING_SERVER_ID, MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME, MEETING_SUGGESTION_KEY_MEETING_KATEGORIE, MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME,
+    MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR, MEETING_SUGGESTION_MEETING_KEY_STATUS};
+
+
+    // SQL String to create find meeting table
+    private static final String DATABASE_CREATE_SQL_MEETING_SUGGESTION =
+            "create table " + DATABASE_TABLE_MEETING_SUGGESTION + " (" + KEY_ROWID + " integer primary key autoincrement, "
+
+                    +
+                    +  + " INTEGER not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR + " STRING not null, "
+                    + MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME + " INTEGER not null, "
+                    +
+                    +
+                    +
+                    +
+                    +
+     */
+
+
+
+
+
+
+
+
+    // Add a new meeting or suggestion date in db
+    public Long insertNewMeetingOrSuggestionDate (Long [] array_meetingTime, int [] array_meetingPlace, Long tmpMeetingSuggestionCreationTime, String tmpMeetingSuggestionAuthorName, int tmpMeetingSuggestionKategorie, Long tmpMeetingSuggestionResponseTime, String tmpMeetingSuggestionCoachHintText, int tmpMeetingSuggestionCoachCancele, Long tmpMeetingSuggestionCoachCanceleTime, String tmpMeetingSuggestionCoachCanceleAuthor, int tmpMeetingSuggestionDataServerId, String tmpClientSuggestionText, String tmpClientSuggestionAuthor, Long tmpClientSuggestionTime, String tmpClientCommentText, String tmpClientCommentAuthor, Long tmpClientCommentTime, int tmpMeetingSuggestionClientCancele, Long tmpMeetingSuggestionClientCanceleTime, String tmpMeetingSuggestionCclientCanceleAuthor, int meetingStatus, Long tmpUploadTime, int newMeeting) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues initialValues = new ContentValues();
 
-        initialValues.put(MEETING_FIND_MEETING_KEY_MEETING_PLACE, meetingPlace);
-        initialValues.put(MEETING_FIND_MEETING_KEY_DATE_TIME, meetingDateAndTime);
-        initialValues.put(MEETING_FIND_MEETING_KEY_APPROVAL,0); // --> no approval so far
-        initialValues.put(MEETING_FIND_MEETING_KEY_STATUS, status);
 
-        // is it a new entry?
-        if (newEntry) {
-            initialValues.put(MEETING_FIND_MEETING_KEY_NEW_ENTRY, 1);
-        } else {
-            initialValues.put(MEETING_FIND_MEETING_KEY_NEW_ENTRY, 0);
-        }
+        initialValues.put(MEETING_SUGGESTION_KEY_DATE1, array_meetingTime[0]);
+        initialValues.put(MEETING_SUGGESTION_KEY_DATE2, array_meetingTime[1]);
+        initialValues.put(MEETING_SUGGESTION_KEY_DATE3, array_meetingTime[2]);
+        initialValues.put(MEETING_SUGGESTION_KEY_DATE4, array_meetingTime[3]);
+        initialValues.put(MEETING_SUGGESTION_KEY_DATE5, array_meetingTime[4]);
+        initialValues.put(MEETING_SUGGESTION_KEY_DATE6, array_meetingTime[5]);
+        initialValues.put(MEETING_SUGGESTION_KEY_PLACE1, array_meetingPlace[0]);
+        initialValues.put(MEETING_SUGGESTION_KEY_PLACE2, array_meetingPlace[1]);
+        initialValues.put(MEETING_SUGGESTION_KEY_PLACE3, array_meetingPlace[2]);
+        initialValues.put(MEETING_SUGGESTION_KEY_PLACE4, array_meetingPlace[3]);
+        initialValues.put(MEETING_SUGGESTION_KEY_PLACE5, array_meetingPlace[4]);
+        initialValues.put(MEETING_SUGGESTION_KEY_PLACE6, array_meetingPlace[5]);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME, tmpMeetingSuggestionCreationTime);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR, tmpMeetingSuggestionAuthorName);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_KATEGORIE, tmpMeetingSuggestionKategorie);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME, tmpMeetingSuggestionResponseTime);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT,  tmpMeetingSuggestionCoachHintText);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME,  tmpMeetingSuggestionCoachCanceleTime);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR,  tmpMeetingSuggestionCoachCanceleAuthor);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_CANCELED,  tmpMeetingSuggestionCoachCancele);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT,  tmpClientSuggestionText);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR,  tmpClientSuggestionAuthor);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME,  tmpClientSuggestionTime);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT,  tmpClientCommentText);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR,  tmpClientCommentAuthor);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE,  tmpClientCommentTime);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED,  tmpMeetingSuggestionClientCancele);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR,  tmpMeetingSuggestionCclientCanceleAuthor);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME,  tmpMeetingSuggestionClientCanceleTime);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_SERVER_ID,  tmpMeetingSuggestionDataServerId);
+        initialValues.put(MEETING_SUGGESTION_MEETING_KEY_STATUS,  meetingStatus);
+        initialValues.put(MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME,  tmpUploadTime);
+        initialValues.put(MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST,  newMeeting);
+
 
         // Insert it into the database.
-        return db.insert(DATABASE_TABLE_MEETING_FIND_MEETING, null, initialValues);
+        return db.insert(DATABASE_TABLE_MEETING_SUGGESTION, null, initialValues);
 
     }
 

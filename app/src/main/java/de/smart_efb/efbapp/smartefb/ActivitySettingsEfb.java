@@ -541,7 +541,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            myDb.insertNewMeetingDateAndTime(date.getTime(),"Werder (Havel)", true, 0);
+            //myDb.insertNewMeetingDateAndTime(date.getTime(),"Werder (Havel)", true, 0);
 
             Toast.makeText(ActivitySettingsEfb.this, "Terminvorschlag Timestamp " + date.getTime(), Toast.LENGTH_SHORT).show();
 

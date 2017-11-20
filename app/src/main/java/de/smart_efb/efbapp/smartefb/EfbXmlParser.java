@@ -4423,123 +4423,41 @@ public class EfbXmlParser {
     // read tag meeting or suggestions and push to database
     private void readMeetingTag_MeetingAndSuggestions() {
 
-
-        /* Quelltext kommt aus Funktion settings meeting!!!!!!!!!!!
-
-        case ConstansClassXmlParser.xmlNameForMeeting_Settings_MeetingDateA:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { //  get meeting date B
-                                if (xpp.getText().trim().length() > 0) { // check if meeting date B from xml > 0
-                                    tmpMeetingDateA = Long.valueOf(xpp.getText().trim());
-
-                                    Log.d("Meeting_Settings","Date A"+tmpMeetingDateA);
-
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
-                        case ConstansClassXmlParser.xmlNameForMeeting_Settings_MeetingDateB:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get meeting date B
-                                if (xpp.getText().trim().length() > 0) { // check if meeting date B from xml > 0
-                                    tmpMeetingDateB = Long.valueOf(xpp.getText().trim());
-
-                                    Log.d("Meeting_Settings","Date B"+tmpMeetingDateB);
-
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
-                        case ConstansClassXmlParser.xmlNameForMeeting_Settings_MeetingPlaceA:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get meeting place a
-                                if (xpp.getText().trim().length() > 0) { // check if meeting place a from xml > 0
-                                    tmpMeetingPlaceA = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Meetings_Settings","Place A"+tmpMeetingPlaceA);
-
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
-                        case ConstansClassXmlParser.xmlNameForMeeting_Settings_MeetingPlaceB:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get meeting place b
-                                if (xpp.getText().trim().length() > 0) { // check if meeting place b from xml > 0
-                                    tmpMeetingPlaceB = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Meetings_Settings","Place B"+tmpMeetingPlaceB);
-
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-
-                        case ConstansClassXmlParser.xmlNameForMeeting_MeetingStatus:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get meeting status
-                                if (xpp.getText().trim().length() > 0) { // check if meeting status from xml > 0
-                                    tmpMeetingStatus = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("meeting_Settings","Meeting status"+tmpMeetingStatus);
-
-
-                                }
-                                else {
-                                    error = true;
-                                }
-                            }
-                            else {
-                                error = true;
-                            }
-
-                            break;
-         */
-
-
         Boolean parseAnymore = true;
 
-        // true -> error occuret while parsing xml meeting suggestions tag
+        // true -> error occuret while parsing xml meeting and suggestions tag
         Boolean error = false;
 
         // tmp data for database insert
-        Long tmpMeetingSuggestionTime = 0L;
-        Long tmpResponseDeadline = 0L;
-        String tmpMeetingSuggestionPlace = "";
         String tmpOrder = "";
-        String tmpAuthorSuggestions = "";
-        Long tmpOldMeetingSuggestionTime = 0L;
+
+        Long tmpMeetingSuggestionDate1 = 0L;
+        Long tmpMeetingSuggestionDate2 = 0L;
+        Long tmpMeetingSuggestionDate3 = 0L;
+        Long tmpMeetingSuggestionDate4 = 0L;
+        Long tmpMeetingSuggestionDate5 = 0L;
+        Long tmpMeetingSuggestionDate6 = 0L;
+
+        int tmpMeetingPlace1 = 0;
+        int tmpMeetingPlace2 = 0;
+        int tmpMeetingPlace3 = 0;
+        int tmpMeetingPlace4 = 0;
+        int tmpMeetingPlace5 = 0;
+        int tmpMeetingPlace6 = 0;
+
+        String tmpMeetingSuggestionAuthorName = "";
+        Long tmpMeetingSuggestionCreationTime = 0L;
+        Long tmpMeetingSuggestionResponseTime = 0L;
+        int tmpMeetingSuggestionKategorie = 0;
+        String tmpMeetingSuggestionCoachHintText = "";
+        int tmpMeetingSuggestionDataServerId = 0;
+        Long tmpMeetingSuggestionCoachCanceleTime = 0L;
+        String tmpMeetingSuggestionCoachCanceleAuthor = "";
+
+
+        Long [] array_meetingTime = {0L,0L,0L,0L,0L,0L}; // array store meeting time -> parse to db
+        int [] array_meetingPlace = {0,0,0,0,0,0}; // array store meeting place -> parse to db
+
 
         try {
             int eventType = xpp.next();
@@ -4550,12 +4468,12 @@ public class EfbXmlParser {
                     Log.d("MeetingTag_Suggestions", "Start tag " + xpp.getName());
 
                     switch (xpp.getName().trim()) {
-                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestions_Order:
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_Order:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get order text
                                 if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
                                     tmpOrder = xpp.getText().trim();
-                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) {
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update)) {
                                         error = true;
                                         tmpOrder = "";
                                     }
@@ -4570,11 +4488,15 @@ public class EfbXmlParser {
 
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestions_DateTime:
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate1:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get meeting Time text
-                                if (xpp.getText().trim().length() > 0) { // check if meeting Time from xml > 0
-                                    tmpMeetingSuggestionTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                            if (eventType == XmlPullParser.TEXT) { // get meeting/ suggestion date 1 text
+                                if (xpp.getText().trim().length() > 0) { // check if meeting/ suggestion date 1 from xml > 0
+                                    tmpMeetingSuggestionDate1 = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("Meeting", "Date 1:"+tmpMeetingSuggestionDate1);
+
                                 }
                                 else {
                                     error = true;
@@ -4586,11 +4508,13 @@ public class EfbXmlParser {
 
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestions_Place:
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate2:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get meeting Place text
-                                if (xpp.getText().trim().length() > 0) { // check if meeting Place length from xml > 0
-                                    tmpMeetingSuggestionPlace = xpp.getText().trim();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting/ suggestion date 2 text
+                                if (xpp.getText().trim().length() > 0) { // check if meeting/ suggestion date 2 from xml > 0
+                                    tmpMeetingSuggestionDate2 = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("Meeting", "Date 2:"+tmpMeetingSuggestionDate2);
                                 }
                                 else {
                                     error = true;
@@ -4602,11 +4526,14 @@ public class EfbXmlParser {
 
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestions_AuthorName:
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate3:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get authorName text
-                                if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
-                                    tmpAuthorSuggestions = xpp.getText().trim();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting/ suggestion date 3 text
+                                if (xpp.getText().trim().length() > 0) { // check if meeting/ suggestion date 3 from xml > 0
+                                    tmpMeetingSuggestionDate3 = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("Meeting", "Date 3:"+tmpMeetingSuggestionDate3);
+
                                 }
                                 else {
                                     error = true;
@@ -4618,11 +4545,15 @@ public class EfbXmlParser {
 
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestions_ResponseDeadline:
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate4:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get meeting response deadline text
-                                if (xpp.getText().trim().length() > 0) { // check if meeting response deadline from xml > 0
-                                    tmpResponseDeadline = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                            if (eventType == XmlPullParser.TEXT) { // get meeting/ suggestion date 4 text
+                                if (xpp.getText().trim().length() > 0) { // check if meeting/ suggestion date 4 from xml > 0
+                                    tmpMeetingSuggestionDate4 = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("Meeting", "Date 4:"+tmpMeetingSuggestionDate4);
+
                                 }
                                 else {
                                     error = true;
@@ -4634,11 +4565,16 @@ public class EfbXmlParser {
 
                             break;
 
-                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestions_OldMeetingTime:
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate5:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get meeting old time text
-                                if (xpp.getText().trim().length() > 0) { // check if meeting old time from xml > 0
-                                    tmpOldMeetingSuggestionTime = Long.valueOf(xpp.getText().trim()); // make Long from xml-text
+                            if (eventType == XmlPullParser.TEXT) { // get meeting/ suggestion date 5 text
+                                if (xpp.getText().trim().length() > 0) { // check if meeting/ suggestion date 5 from xml > 0
+                                    tmpMeetingSuggestionDate5 = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("Meeting", "Date 5:"+tmpMeetingSuggestionDate5);
+
+
                                 }
                                 else {
                                     error = true;
@@ -4649,6 +4585,323 @@ public class EfbXmlParser {
                             }
 
                             break;
+
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate6:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting/ suggestion date 6 text
+                                if (xpp.getText().trim().length() > 0) { // check if meeting/ suggestion date 6 from xml > 0
+                                    tmpMeetingSuggestionDate6 = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+
+
+                                    Log.d("Meeting", "Date 6:"+tmpMeetingSuggestionDate6);
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace1:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting place 1
+                                if (xpp.getText().trim().length() > 0) { // check if meeting place 1 from xml > 0
+                                    tmpMeetingPlace1 = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Meetings_Suggestion","Place 1"+tmpMeetingPlace1);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace2:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting place 2
+                                if (xpp.getText().trim().length() > 0) { // check if meeting place 2 from xml > 0
+                                    tmpMeetingPlace2 = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Meetings_Suggestion","Place 2"+tmpMeetingPlace2);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace3:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting place 3
+                                if (xpp.getText().trim().length() > 0) { // check if meeting place 3 from xml > 0
+                                    tmpMeetingPlace3 = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Meetings_Suggestion","Place 3"+tmpMeetingPlace3);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace4:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting place 4
+                                if (xpp.getText().trim().length() > 0) { // check if meeting place 4 from xml > 0
+                                    tmpMeetingPlace4 = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Meetings_Suggestion","Place 4"+tmpMeetingPlace4);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace5:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting place 5
+                                if (xpp.getText().trim().length() > 0) { // check if meeting place 5 from xml > 0
+                                    tmpMeetingPlace5 = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Meetings_Suggestion","Place 5"+tmpMeetingPlace5);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace6:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting place 6
+                                if (xpp.getText().trim().length() > 0) { // check if meeting place 6 from xml > 0
+                                    tmpMeetingPlace6 = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Meetings_Suggestion","Place 6"+tmpMeetingPlace6);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_AuthorName:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting suggestion author name
+                                if (xpp.getText().trim().length() > 0) { // check if meeting suggestion author name from xml > 0
+                                    tmpMeetingSuggestionAuthorName = xpp.getText().trim();
+
+                                    Log.d("Meetings_Suggestion","Author NAme"+tmpMeetingSuggestionAuthorName);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CreationTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting suggestion creation time
+                                if (xpp.getText().trim().length() > 0) { // check if meeting suggestion creation time from xml > 0
+                                    tmpMeetingSuggestionCreationTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("Meetings_Suggestion","Creation Time"+tmpMeetingSuggestionCreationTime);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ResponseTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting suggestion creation time
+                                if (xpp.getText().trim().length() > 0) { // check if meeting suggestion creation time from xml > 0
+                                    tmpMeetingSuggestionResponseTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("Meetings_Suggestion","Response Time"+tmpMeetingSuggestionResponseTime);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_Kategorie:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting suggestion kategorie
+                                if (xpp.getText().trim().length() > 0) { // check if meeting suggestion kategorie time from xml > 0
+                                    tmpMeetingSuggestionKategorie = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Meetings_Suggestion","Kategorie"+tmpMeetingSuggestionKategorie);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CoachHintText:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting suggestion coach hint text
+                                if (xpp.getText().trim().length() > 0) { // check if meeting suggestion coach hint text from xml > 0
+                                    tmpMeetingSuggestionCoachHintText = xpp.getText().trim();
+
+                                    Log.d("Meetings_Suggestion","Hint Text Coach"+tmpMeetingSuggestionCoachHintText);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+
+
+
+
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_DataServerId:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting suggestion coach hint text
+                                if (xpp.getText().trim().length() > 0) { // check if meeting suggestion coach hint text from xml > 0
+                                    tmpMeetingSuggestionDataServerId = Integer.valueOf(xpp.getText().trim());
+
+                                    Log.d("Meetings_Suggestion","Server Id"+tmpMeetingSuggestionDataServerId);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CoachCanceleTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting suggestion coach cancele time
+                                if (xpp.getText().trim().length() > 0) { // check if meeting suggestion coach cancele time from xml > 0
+                                    tmpMeetingSuggestionCoachCanceleTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("Meetings_Suggestion","Cancele Time"+tmpMeetingSuggestionCoachCanceleTime);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CoachCanceleAuthor:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting suggestion coach cancele author text
+                                if (xpp.getText().trim().length() > 0) { // check if meeting suggestion coach cancele author from xml > 0
+                                    tmpMeetingSuggestionCoachCanceleAuthor = xpp.getText().trim();
+
+                                    Log.d("Meetings_Suggestion","Coach Cancele Author"+tmpMeetingSuggestionCoachCanceleAuthor);
+
+
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+
+                            break;
+
 
                     }
                 }
@@ -4662,12 +4915,84 @@ public class EfbXmlParser {
 
                 // look for end tag of meeting suggestions
                 if (eventType == XmlPullParser.END_TAG) {
-                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMeeting_Suggestions)) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMeeting_And_Suggestions)) {
 
                         // check all data for meeting suggestions correct?
                         if (!error) {
 
                             Log.d("MeetingAndSuggestion","Keine Fehler da!");
+
+
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpMeetingSuggestionKategorie > 0 && tmpMeetingSuggestionCoachCanceleTime == 0 && tmpMeetingSuggestionCoachCanceleAuthor.length() == 0) {
+                                // new meeting or suggestion, not canceled
+
+                                switch (tmpMeetingSuggestionKategorie) { // check for meeting or suggestion
+
+                                    case 1: // meeting dates
+
+                                        if (tmpMeetingSuggestionDate1 > 0 && tmpMeetingPlace1 > 0 && tmpMeetingSuggestionAuthorName.length() > 0 && tmpMeetingSuggestionCreationTime > 0 && tmpMeetingSuggestionAuthorName.length() > 0) {
+
+                                            Long tmpUploadTime = System.currentTimeMillis();
+
+                                            array_meetingTime[0] = tmpMeetingSuggestionDate1;
+                                            array_meetingPlace[0] = tmpMeetingPlace1;
+
+                                            tmpMeetingSuggestionResponseTime = 0L; // not needed -> its a meeting
+                                            tmpMeetingSuggestionCoachCanceleTime = 0L;
+                                            tmpMeetingSuggestionCoachCanceleAuthor = "";
+                                            int tmpMeetingSuggestionCoachCancele = 0; // 0=not canceled; 1 = canceled
+
+                                            String tmpClientSuggestionText = "";
+                                            String tmpClientSuggestionAuthor = "";
+                                            Long tmpClientSuggestionTime = 0L;
+
+
+                                            Long tmpMeetingSuggestionClientCanceleTime = 0L;
+                                            String tmpMeetingSuggestionCclientCanceleAuthor = "";
+                                            int tmpMeetingSuggestionClientCancele = 0; // 0=not canceled; 1 = canceled
+
+
+                                            String tmpClientCommentText = "";
+                                            String tmpClientCommentAuthor = "";
+                                            Long tmpClientCommentTime = 0L;
+
+                                            int meetingStatus = 4; // 0=ready to send, 1=meeting/suggestion send, 4=external message
+
+                                            int newMeeting = 1; // 1 = new meeting or suggestion
+
+
+
+
+                                            // insert new data into db
+                                            myDb.insertNewMeetingOrSuggestionDate (array_meetingTime, array_meetingPlace, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionCclientCanceleAuthor, meetingStatus, tmpUploadTime, newMeeting);
+
+
+                                        }
+
+
+
+                                        break;
+                                    case 2: // meeting suggestions
+                                        break;
+
+
+
+
+
+                                }
+
+
+
+
+
+
+                            }
+
+
+
+
+
+
 
 
                             /* Muss komplett überarbeitet werden, da sich das Datenbankmodell geändert hat!!!!!!!!!!!
@@ -4750,6 +5075,19 @@ public class EfbXmlParser {
         }
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //
     // End read meeting -----------------------------------------------------------------------------------

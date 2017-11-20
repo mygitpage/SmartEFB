@@ -689,14 +689,76 @@ public class ConstansClassXmlParser {
 
 
 
-
-
-
-
-
-
     // xml name for element meeting settings order
-        public static final String xmlNameForMeeting_Settings_Order = "meeting_settings_order";
+    public static final String xmlNameForMeeting_Settings_Order = "meeting_settings_order";
+
+    // xml name for element meeting suggestion order
+    public static final String xmlNameForMeeting_Suggestion_Order = "meeting_suggestions_order";
+
+
+    // xml name for element meeting suggestion date 1-6
+    public static final String xmlNameForMeeting_Suggestion_MettingDate1 = "meeting_date_1";
+    public static final String xmlNameForMeeting_Suggestion_MettingDate2 = "meeting_date_2";
+    public static final String xmlNameForMeeting_Suggestion_MettingDate3 = "meeting_date_3";
+    public static final String xmlNameForMeeting_Suggestion_MettingDate4 = "meeting_date_4";
+    public static final String xmlNameForMeeting_Suggestion_MettingDate5 = "meeting_date_5";
+    public static final String xmlNameForMeeting_Suggestion_MettingDate6 = "meeting_date_6";
+
+    // xml name for element meeting suggestion place 1-6
+    public static final String xmlNameForMeeting_Suggestion_MettingPlace1 = "meeting_place_1";
+    public static final String xmlNameForMeeting_Suggestion_MettingPlace2 = "meeting_place_2";
+    public static final String xmlNameForMeeting_Suggestion_MettingPlace3 = "meeting_place_3";
+    public static final String xmlNameForMeeting_Suggestion_MettingPlace4 = "meeting_place_4";
+    public static final String xmlNameForMeeting_Suggestion_MettingPlace5 = "meeting_place_5";
+    public static final String xmlNameForMeeting_Suggestion_MettingPlace6 = "meeting_place_6";
+
+
+
+    public static final String xmlNameForMeeting_Suggestion_AuthorName = "meeting_authorname";
+
+
+    public static final String xmlNameForMeeting_Suggestion_CreationTime = "meeting_creation_time";
+
+    public static final String xmlNameForMeeting_Suggestion_Kategorie = "meeting_kategorie";
+
+
+    public static final String xmlNameForMeeting_Suggestion_ResponseTime = "meeting_responsetime";
+
+    public static final String xmlNameForMeeting_Suggestion_CoachHintText = "meeting_coach_hint_text";
+
+    public static final String xmlNameForMeeting_Suggestion_DataServerId = "meeting_client_server_id";
+
+
+    public static final String xmlNameForMeeting_Suggestion_CoachCanceleTime = "meeting_coach_canceled_time";
+
+    public static final String xmlNameForMeeting_Suggestion_CoachCanceleAuthor = "meeting_coach_canceled_author";
+
+
+
+
+    public static final String xmlNameForMeeting_Suggestion_ClientCommentAuthorName = "meeting_client_comment_authorname";
+    public static final String xmlNameForMeeting_Suggestion_ClientCommentTime = "meeting_client_comment_time";
+    public static final String xmlNameForMeeting_Suggestion_ClientCommentText = "meeting_client_comment_text";
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+
+if (!defined('XML_NAME_FOR_MEETINGS_COACH_MEETING_CANCELED_TIME'))  define("XML_NAME_FOR_MEETINGS_COACH_MEETING_CANCELED_TIME", "meeting_coach_canceled_time");
+if (!defined('XML_NAME_FOR_MEETINGS_COACH_MEETING_CANCELED_AUTHOR'))  define("XML_NAME_FOR_MEETINGS_COACH_MEETING_CANCELED_AUTHOR", "meeting_coach_canceled_author");
+
+ */
+
         // xml name for element meeting settings date A
         public static final String xmlNameForMeeting_Settings_MeetingDateA = "meeting_settings_date_a";
         // xml name for element meeting settings date B
