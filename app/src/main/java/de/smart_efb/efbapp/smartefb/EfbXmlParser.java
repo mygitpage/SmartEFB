@@ -4309,7 +4309,7 @@ public class EfbXmlParser {
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) ) { // meeting settings order -> delete all?
 
                                 // delete all meeting suggestions in DB
-                                myDb.deleteAllRowsMeetingDateAndTime();
+                                myDb.deleteAllRowsMeetingAndSuggestion();
 
                                 // refresh activity meeting because settings have change
                                 returnMap.put ("Meeting","1");

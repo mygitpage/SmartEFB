@@ -8,17 +8,22 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -27,6 +32,16 @@ import android.widget.TextView;
  */
 public class ActivityMeeting extends AppCompatActivity {
 
+
+    // Set subtitle first time
+    Boolean setSubtitleFirstTime = false;
+
+    // viewpager and tablayout for the view
+    ViewPager viewPagerMeeting;
+    TabLayout tabLayoutMeeting;
+
+    // viewpager adapter
+    MeetingViewPagerAdapter meetingViewPagerAdapter;
 
 
     // reference for the toolbar
@@ -38,6 +53,36 @@ public class ActivityMeeting extends AppCompatActivity {
 
     // shared prefs for storing
     SharedPreferences.Editor prefsEditor;
+
+    // reference to the DB
+    DBAdapter myDb;
+
+
+
+
+    // what to show in tab zero
+    String showCommandFragmentTabZero = "";
+
+    // what to show in tab one (
+    String showCommandFragmentTabOne = "";
+
+    // Strings for subtitle ( )
+    String [] arraySubTitleText = new String[ConstansClassMeeting.numberOfDifferentSubtitle];
+
+
+    // info new entry on tab zero
+    Boolean infoNewEntryOnTabZero = false;
+    Boolean infoNewEntryOnTabOne = false;
+    String infoTextNewEntryPostFixTabZeroTitle = "";
+    String infoTextNewEntryPostFixTabOneTitle = "";
+    String tabTitleTextTabZero = "";
+    String tabTitleTextTabOne = "";
+
+
+
+
+
+
 
     // reference to fragement manager
     FragmentManager fragmentManagerActivityMeeting;
@@ -96,9 +141,107 @@ public class ActivityMeeting extends AppCompatActivity {
         // init meeting
         initMeeting();
 
+        // init view tabs
+        initMeetingTabs();
+
+
     }
 
 
+    private void initMeetingTabs () {
+
+        // find viewpager in view
+        viewPagerMeeting = (ViewPager) findViewById(R.id.viewPagerMeeting);
+
+        // new pager adapter for OurArrangement
+        meetingViewPagerAdapter = new MeetingViewPagerAdapter(getSupportFragmentManager(), this);
+
+        // set pagerAdapter to viewpager
+        viewPagerMeeting.setAdapter(meetingViewPagerAdapter);
+
+        //find tablayout and set gravity
+        tabLayoutMeeting = (TabLayout) findViewById(R.id.tabLayoutMeeting);
+        tabLayoutMeeting.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        // and set tablayout with viewpager
+        tabLayoutMeeting.setupWithViewPager(viewPagerMeeting);
+
+        // set correct tab zero and one title with information new entry and color change -> FIRST TIME
+        setTabZeroTitleAndColor();
+        setTabOneTitleAndColor();
+
+        // init listener for tab selected
+        tabLayoutMeeting.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                String tmpSubtitleText = "";
+
+
+                Log.d("Meeting", "Tab Listener mit Position: "+ tab.getPosition());
+
+                // Change the subtitle of the activity
+                switch (tab.getPosition()) {
+                    case 0: // title for tab zero
+                        switch (showCommandFragmentTabZero) {
+                            case "meeting_overview":
+                                tmpSubtitleText = arraySubTitleText[0];
+                                break;
+                            case "comment_from_client":
+                                tmpSubtitleText = arraySubTitleText[1];
+                                break;
+
+                        }
+
+                        // set correct tab zero title with information new entry and color change
+                        setTabZeroTitleAndColor();
+                        break;
+
+                    case 1: // title for tab one
+                        switch (showCommandFragmentTabOne) {
+                            case "suggestion_overview":
+                                tmpSubtitleText = arraySubTitleText[2];
+                                break;
+                            case "suggestion_from_client":
+                                tmpSubtitleText = arraySubTitleText[3];
+                                break;
+                        }
+
+                        // set correct tab one title with information new entry and color change
+                        setTabOneTitleAndColor();
+                        break;
+
+                    case 2: // title for tab one
+                        tmpSubtitleText = arraySubTitleText[4];
+                        break;
+
+                    default:
+                        tmpSubtitleText = arraySubTitleText[0];
+                        break;
+                }
+
+                // set toolbar text
+                toolbarMeeting.setSubtitle(tmpSubtitleText);
+
+                // call viewpager
+                viewPagerMeeting.setCurrentItem(tab.getPosition());
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+
+        });
+
+    }
+    
+    
+    
     private void initMeeting() {
 
         // init the toolbarMeeting
@@ -114,6 +257,46 @@ public class ActivityMeeting extends AppCompatActivity {
 
         // init prefs editor
         prefsEditor = prefs.edit();
+
+
+        for (int t=0; t<ConstansClassMeeting.numberOfDifferentSubtitle; t++) {
+            arraySubTitleText[t] = "";
+        }
+
+        // enable setting subtitle for the first time
+        setSubtitleFirstTime = true;
+
+
+        // init show on tab zero meeting overview
+        showCommandFragmentTabZero = "meeting_overview";
+        // init show on tab one suggestion overview
+        showCommandFragmentTabOne = "suggestion_overview";
+
+
+        for (int t=0; t<ConstansClassOurArrangement.numberOfDifferentSubtitle; t++) {
+            arraySubTitleText[t] = "";
+        }
+
+        // enable setting subtitle for the first time
+        setSubtitleFirstTime = true;
+
+        //set tab title string
+        tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("meetingTabTitle_1", "string", getPackageName()));
+        tabTitleTextTabOne = getResources().getString(getResources().getIdentifier("meetingTabTitle_2", "string", getPackageName()));
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
 
         // get meeting status
         meetingStatus = prefs.getInt(ConstansClassMeeting.namePrefsMeetingStatus, 0);
@@ -161,11 +344,142 @@ public class ActivityMeeting extends AppCompatActivity {
 
         }
 
+        */
+
+
         // create help dialog in Meeting
         createHelpDialog();
 
     }
 
+
+
+
+
+
+    // Look for new intents (with data from URI or putExtra)
+    @Override
+    protected void onNewIntent(Intent intent) {
+
+        // Extras from intent that holds data
+        Bundle intentExtras = null;
+
+        // call super
+        super.onNewIntent(intent);
+
+        // get the link data from URI and from the extra
+        intentExtras = intent.getExtras();
+
+        if (intentExtras != null) {
+            // get command and execute it
+            executeIntentCommand (intentExtras.getString("com"));
+        }
+
+    }
+
+
+
+    // execute the commands that comes from link or intend
+    public void executeIntentCommand (String command) {
+
+        String tmpTabTitle = "";
+
+        if (command.equals("comment_from_client")) { // Show fragment client comment a meeting suggestion
+
+              //set fragment in tab zero to comment
+            meetingViewPagerAdapter.setFragmentTabZero("comment_from_client");
+
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("meetingTabTitle_1a", "string", getPackageName()));
+            setTabZeroTitleAndColor();
+
+            // set command show variable
+            showCommandFragmentTabZero = "comment_from_client";
+
+            // call notify data change
+            meetingViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbarMeeting.setSubtitle(arraySubTitleText[1]);
+
+
+        } else if (command.equals("suggestion_overview")) { // Show fragment overview of suggestions
+
+            //set fragment in tab one to comment suggestions
+            meetingViewPagerAdapter.setFragmentTabOne("suggestion_overview");
+
+            // set correct tab one title with information new entry and color change
+            tabTitleTextTabOne = getResources().getString(getResources().getIdentifier("meetingTabTitle_2", "string", getPackageName()));
+            setTabOneTitleAndColor();
+
+            // set command show variable
+            showCommandFragmentTabOne = "suggestion_overview";
+
+            // call notify data change
+            meetingViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbarMeeting.setSubtitle(arraySubTitleText[2]);
+
+        } else if (command.equals("suggestion_from_client")) { // Show evaluate a arrangement
+
+            //set fragment in tab one to suggestion from client
+            meetingViewPagerAdapter.setFragmentTabOne("suggestion_from_client");
+
+            // set correct tab one title with information new entry and color change
+            tabTitleTextTabOne = getResources().getString(getResources().getIdentifier("meetingTabTitle_2a", "string", getPackageName()));
+            setTabOneTitleAndColor();
+
+            // set command show variable
+            showCommandFragmentTabOne = "suggestion_from_client";
+
+            // call notify data change
+            meetingViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbarMeeting.setSubtitle(arraySubTitleText[3]);
+
+
+        } else { // Show fragment meeting overview on tab zero
+
+            //set fragment in tab zero to meeting overview
+            OurArrangementViewPagerAdapter.setFragmentTabZero("meeting_overview");
+
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("meetingTabTitle_1", "string", getPackageName()));
+            setTabZeroTitleAndColor();
+
+            // set command show variable
+            showCommandFragmentTabZero = "meeting_overview";
+
+            // call notify data change
+            meetingViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbarMeeting.setSubtitle(arraySubTitleText[0]);
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
 
     // get from prefs meeting date and time and place
     private void getDateAndTimeFromPrefs () {
@@ -239,6 +553,8 @@ public class ActivityMeeting extends AppCompatActivity {
 
     // execute the commands that comes from link or intend
     public void executeIntentCommand (String command, Boolean tmpPopBackStack, int tmpMeetingStatus, int tmpMeetingIndexToChange, String tmpMeetingBackToFragment, Boolean tmpUpdateFragement) {
+
+
 
         if (command.equals("change_meeting")) { // Show fragment for changing meeting date and time
 
@@ -328,7 +644,17 @@ public class ActivityMeeting extends AppCompatActivity {
 
         }
 
+
     }
+
+*/
+
+
+
+
+
+
+
 
 
     // help dialog
@@ -384,6 +710,10 @@ public class ActivityMeeting extends AppCompatActivity {
 
     }
 
+
+
+
+/*
 
     // setter for subtitle in ActivityMeeting toolbar
     public void setMeetingToolbarSubtitle (String subtitleText) {
@@ -574,7 +904,7 @@ public class ActivityMeeting extends AppCompatActivity {
     }
 
 
-
+    */
 
 
 
@@ -583,28 +913,214 @@ public class ActivityMeeting extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
-
             case android.R.id.home:
-
-                int count = fragmentManagerActivityMeeting.getBackStackEntryCount();
-
-                if (count == 0) {
-                    super.onBackPressed();
-                    return true;
-                    //additional code
-                } else {
-                    fragmentManagerActivityMeeting.popBackStack();
-                }
-
-
-
-                //onBackPressed();
-
+                onBackPressed();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
     }
+
+
+
+
+
+
+
+    // set correct tab zero title with information new entry and color change
+    private void setTabZeroTitleAndColor () {
+
+        ActivityMeeting.this.lookNewEntryOnTabZero();
+
+        tabLayoutMeeting.getTabAt(0).setText(tabTitleTextTabZero + infoTextNewEntryPostFixTabZeroTitle);
+        ActivityMeeting.this.setUnsetTextColorSignalNewTabZero(infoNewEntryOnTabZero);
+
+    }
+
+
+
+    // set correct tab one title with information new entry and color change
+    private void setTabOneTitleAndColor () {
+
+        ActivityMeeting.this.lookNewEntryOnTabOne();
+
+        tabLayoutMeeting.getTabAt(1).setText(tabTitleTextTabOne + infoTextNewEntryPostFixTabOneTitle);
+        ActivityMeeting.this.setUnsetTextColorSignalNewTabOne(infoNewEntryOnTabOne);
+
+    }
+
+
+
+
+    // look for new entry on tab zero
+    private void lookNewEntryOnTabZero () {
+
+        /*
+        // look for new entrys in db on tab zero
+        if ((subfunction_arrangement_comment && myDb.getCountAllNewEntryOurArrangementComment(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0")) > 0) || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "current") > 0 ) {
+            infoNewEntryOnTabZero = true;
+            infoTextNewEntryPostFixTabZeroTitle = " " + this.getResources().getString(R.string.newEntryText);
+        }
+        else {
+            infoNewEntryOnTabZero = false;
+            infoTextNewEntryPostFixTabZeroTitle = "";
+        }
+        */
+
+        // TODO: check code!!!!!!!!!!!!!!!
+
+        infoNewEntryOnTabZero = false;
+        infoTextNewEntryPostFixTabZeroTitle = "";
+
+
+    }
+
+
+
+    // look for new entry on tab one
+    private void lookNewEntryOnTabOne () {
+
+        /*
+        // look for new entrys in db on tab one
+        if ((subfunction_arrangement_sketchcomment && myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0")) > 0) || (subfunction_arrangement_sketch && myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "sketch") > 0)) {
+            infoNewEntryOnTabOne = true;
+            infoTextNewEntryPostFixTabOneTitle = " "+ this.getResources().getString(R.string.newEntryText);
+        }
+        else {
+            infoNewEntryOnTabOne = false;
+            infoTextNewEntryPostFixTabOneTitle = "";
+        }
+        */
+
+        // TODO: check code!!!!!!!!!!!!!!!
+
+        infoNewEntryOnTabOne = false;
+        infoTextNewEntryPostFixTabOneTitle = "";
+
+
+
+
+    }
+
+
+
+
+
+
+    // set/ unset textcolor for tab title on tab zero
+    private void setUnsetTextColorSignalNewTabZero (Boolean colorSet) {
+
+        int tmpTextColor;
+
+        if (colorSet) {
+            tmpTextColor = ContextCompat.getColor(ActivityMeeting.this, R.color.text_accent_color);
+        }
+        else {
+            tmpTextColor = ContextCompat.getColor(ActivityMeeting.this, R.color.colorAccent);
+        }
+
+        // Change tab text color on tab zero
+        ViewGroup vg = (ViewGroup) tabLayoutMeeting.getChildAt(0);
+        ViewGroup vgTab = (ViewGroup) vg.getChildAt(0); //Tab Zero
+        int tabChildsCount = vgTab.getChildCount();
+        for (int i=0; i<tabChildsCount; i++) {
+            View tabViewCild = vgTab.getChildAt(i);
+            if (tabViewCild instanceof TextView) {
+                ((TextView) tabViewCild).setTextColor(tmpTextColor);
+            }
+        }
+
+    }
+
+
+
+    // set/ unset textcolor for tab title on tab one
+    private void setUnsetTextColorSignalNewTabOne (Boolean colorSet) {
+
+        int tmpTextColor;
+
+        if (colorSet) {
+            tmpTextColor = ContextCompat.getColor(ActivityMeeting.this, R.color.text_accent_color);
+        }
+        else {
+            tmpTextColor = ContextCompat.getColor(ActivityMeeting.this, R.color.colorAccent);
+        }
+
+        // Change tab text color on tab zero
+        ViewGroup vg = (ViewGroup) tabLayoutMeeting.getChildAt(0);
+        ViewGroup vgTab = (ViewGroup) vg.getChildAt(1); //Tab One
+        int tabChildsCount = vgTab.getChildCount();
+        for (int i=0; i<tabChildsCount; i++) {
+            View tabViewCild = vgTab.getChildAt(i);
+            if (tabViewCild instanceof TextView) {
+                ((TextView) tabViewCild).setTextColor(tmpTextColor);
+            }
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+    // setter for subtitle in meeting toolbar
+    public void setMeetingToolbarSubtitle (String subtitleText, String subtitleChoose) {
+
+        switch (subtitleChoose) {
+
+            case "meeting_overview":
+                arraySubTitleText[0] = subtitleText;
+                break;
+            case "comment_from_client":
+                arraySubTitleText[1] = subtitleText;
+                break;
+            case "suggestion_overview":
+                arraySubTitleText[2] = subtitleText;
+                break;
+            case "suggestion_from_client":
+                arraySubTitleText[3] = subtitleText;
+                break;
+            case "meeting_suggestion_old":
+                arraySubTitleText[4] = subtitleText;
+                break;
+        }
+
+        // first time -> set initial subtitle
+        if (setSubtitleFirstTime && subtitleChoose.equals("meeting_overview")) {
+            toolbarMeeting.setSubtitle(subtitleText);
+            setSubtitleFirstTime = false;
+        }
+
+
+        Log.d ("Meeting", "Aufruf Update SupTitle mit "+subtitleText);
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

@@ -123,7 +123,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // init alarm manager
         setAlarmManagerOurArrangement ();
 
-         // find viewpager in view
+        // find viewpager in view
         viewPagerOurArrangement = (ViewPager) findViewById(R.id.viewPagerOurArrangement);
         // new pager adapter for OurArrangement
         ourArrangementViewPagerAdapter = new OurArrangementViewPagerAdapter(getSupportFragmentManager(), this);
@@ -806,9 +806,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // set alarm manager when current time is between start date and end date and evaluation is enable
             if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
 
-                Log.d("Alarm Evaluation", " STARTEN ------- ");
-
-
                 calendar.setTimeInMillis(startEvaluationDate);
 
                 do {
@@ -860,10 +857,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 // set alarm
                 manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurArrangementEvaluate);
             } else { // delete alarm - it is out of time
-
-
-                Log.d("Alarm Evaluation", " BEENDEN   +++------- ");
-
 
                 // update table ourArrangement in db -> evaluation disable
                 myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""), "delete");
@@ -937,7 +930,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         if (colorSet) {
             tmpTextColor = ContextCompat.getColor(ActivityOurArrangement.this, R.color.text_accent_color);
-                    //parseColor("#F330F0");
         }
         else {
             tmpTextColor = ContextCompat.getColor(ActivityOurArrangement.this, R.color.colorAccent);
@@ -963,7 +955,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         if (colorSet) {
             tmpTextColor = ContextCompat.getColor(ActivityOurArrangement.this, R.color.text_accent_color);
-            //parseColor("#F330F0");
         }
         else {
             tmpTextColor = ContextCompat.getColor(ActivityOurArrangement.this, R.color.colorAccent);

@@ -66,14 +66,16 @@ public class MeetingFragmentMeetingMake extends Fragment {
         fragmentMeetingMakeContext = getActivity().getApplicationContext();
 
         // init the fragment meeting now
-        initFragmentMeetingNow();
+        //initFragmentMeetingNow();
 
         // show actual meeting informations
-        displayActualMeetingInformation();
+        //displayActualMeetingInformation();
 
     }
 
 
+
+    /*
     // init fragment
     private void initFragmentMeetingNow () {
 
@@ -118,6 +120,8 @@ public class MeetingFragmentMeetingMake extends Fragment {
 
     // show fragment ressources
     private void displayActualMeetingInformation () {
+
+
 
         // Set correct subtitle in Activity Meeting Fragment make first meeting
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMakeFirstMeeting", "string", fragmentMeetingMakeContext.getPackageName()));
@@ -309,5 +313,6 @@ public class MeetingFragmentMeetingMake extends Fragment {
         }
 
     }
+    */
 
 }

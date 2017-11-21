@@ -140,7 +140,7 @@ public class MeetingWaitingForRequestCursorAdapter extends CursorAdapter {
 
         }
 
-
+        /*
         // put date text
         TextView tmpDateMeetingSuggestion = (TextView) view.findViewById(R.id.listActualDateMeetingSuggestion);
         String tmpTextMeetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_FIND_MEETING_KEY_DATE_TIME)), "dd.MM.yyyy");
@@ -156,7 +156,7 @@ public class MeetingWaitingForRequestCursorAdapter extends CursorAdapter {
         TextView tmpPlaceMeetingSuggestion = (TextView) view.findViewById(R.id.listActualPlaceMeetingSuggestion);
         String tmpTextMeetingPlace = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_FIND_MEETING_KEY_MEETING_PLACE));
         tmpPlaceMeetingSuggestion.setText(tmpTextMeetingPlace);
-
+        */
 
         if (cursor.isLast() ) { // last element -> set separate line gone
 

@@ -5,6 +5,15 @@ package de.smart_efb.efbapp.smartefb;
  */
 public class ConstansClassMeeting {
 
+
+
+    // Number of different subtitles
+    public static final int numberOfDifferentSubtitle = 8;
+
+
+
+
+
     // number of checkboxes for choosing timezones
     public static final int countNumberTimezones = 15;
 

@@ -119,7 +119,7 @@
     </string-array>
 
 
-    <!-- Our Arrangement count comments -->
+    <!-- Our Arrangement count assessments -->
     <string-array name="ourArrangementCountAssessments">
         <item>Keine Einschätzungen vorhanden</item>
         <item>1 Einschätzung vorhanden</item>
@@ -205,6 +205,14 @@
         <item>@string/firstMeetingPlaceNoPlaceText</item>
         <item>@string/firstMeetingPlaceWerderText</item>
         <item>@string/firstMeetingPlaceBadBelzigText</item>
+    </string-array>
+
+
+    <!-- tab titles for Activity Meeting (these are links, original in strings.xml) -->
+    <string-array name="meetingTabTitle">
+        <item>@string/meetingTabTitle_1</item>
+        <item>@string/meetingTabTitle_2</item>
+        <item>@string/meetingTabTitle_3</item>
     </string-array>
 
 

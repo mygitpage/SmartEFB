@@ -790,6 +790,27 @@
 
 
 
+        <!-- Strings for tab title in activity meting -->
+            <string name="meetingTabTitle_1">Termine</string>
+            <string name="meetingTabTitle_1a">Ihr Kommentar</string>
+            <string name="meetingTabTitle_2">Terminvorschläge</string>
+            <string name="meetingTabTitle_2a">Ihre Terminvorschläge</string>
+            <string name="meetingTabTitle_3">Alte Termine und Vorschläge</string>
+        <!-- End tab title -->
+    
+    
+
+
+
+
+
+
+
+
+
+    
+
+
         <!-- fragment now meeting -->
             <string name="btnMakeFirstMeetingText">Ersttermin vereinbaren</string>
             <string name="btnFindMeetingDateText">Gemeinsamen Termin finden</string>
@@ -888,8 +909,15 @@
             <string name="meetingSubtitleFirstMeetingConfirmed">Terminvorschlag</string>
             <string name="meetingSubtitleFirstMeetingDeleted">Terminvorschlag abgesagt</string>
             <string name="meetingSubtitleFirstMeetingNotPossible">Zeitbereiche sind nicht möglich</string>
-            <string name="meetingSubtitleFindFirstMeeting">Terminvorschläge wählen</string>
-            <string name="meetingSubtitleFindFirstMeetingNoSuggestions">Keine Terminvorschläge vorhanden</string>
+
+
+
+    <string name="meetingSubtitleMeetingOverview">Aktuelle Termin</string>
+    <string name="meetingSubtitleMeetingOverviewNoMeetings">Keine Termine vorhanden</string>
+
+    <string name="meetingSubtitleSuggestionOverview">Aktuelle Terminvorschläge</string>
+    <string name="meetingSubtitleSuggestionOverviewNoSuggestion">Keine Vorschläge vorhanden</string>
+
             <string name="meetingSubtitleFindFirstWaitingRequest">Terminbestätigung steht aus</string>
             <string name="meetingSubtitleFindFirstMeetingShowDateAndTimeSingular">Ihr nächster Termin</string>
             <string name="meetingSubtitleFindFirstMeetingShowDateAndTimePlural">Ihre nächsten Termine</string>

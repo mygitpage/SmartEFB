@@ -72,14 +72,15 @@ public class MeetingFragmentMeetingChange extends Fragment {
         fragmentMeetingChangeContext = getActivity().getApplicationContext();
 
         // init the fragment meeting now
-        initFragmentMeetingNow();
+        //initFragmentMeetingNow();
 
         // show actual meeting informations
-        displayActualMeetingInformation();
+        //displayActualMeetingInformation();
 
     }
 
 
+    /*
 
     private void initFragmentMeetingNow () {
 
@@ -283,6 +284,8 @@ public class MeetingFragmentMeetingChange extends Fragment {
         
 
     }
+
+    */
 
 
 }

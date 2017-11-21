@@ -38,7 +38,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 40;
+    public static final int DATABASE_VERSION = 41;
 
     // Common column names
     public static final String KEY_ROWID = "_id";
@@ -378,8 +378,8 @@ public class DBAdapter extends SQLiteOpenHelper {
     public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR = "meeting_client_canceled_author";
     public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME= "meeting_client_canceled_time";
     public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT = "meeting_client_suggestion"; // 0=not canceled; 1= meeting canceled by client
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR = "meeting_client_canceled_author";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME= "meeting_client_canceled_time";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR = "meeting_client_suggestion_author";
+    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME= "meeting_client_suggestion_time";
     public static final String MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME = "meeting_response_time";
     public static final String MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT = "meeting_coach_hint";
     public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR = "meeting_client_comment_author";
@@ -461,31 +461,31 @@ public class DBAdapter extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase _db) {
 
         // Create table OurArrangementComment
-        _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_COMMENT);
+        //_db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_COMMENT);
 
         // Create table OurArrangementSketchComment
-        _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_SKETCH_COMMENT);
+        //_db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_SKETCH_COMMENT);
 
         // Create table OurArrangement
-        _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT);
+        //_db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT);
 
         // Create table OurArrangementEvaluate
-        _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_EVALUATE);
+        //_db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_EVALUATE);
 
         // Create table ChatMessage
-        _db.execSQL(DATABASE_CREATE_SQL_CHAT_MESSAGE);
+        //_db.execSQL(DATABASE_CREATE_SQL_CHAT_MESSAGE);
 
         // Create table Our Goals Debetable/Jointly Goals Now
-        _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_JOINTLY_GOALS_NOW);
+        //_db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_JOINTLY_GOALS_NOW);
 
         // Create table Our Goals Jointly Goals Comment
-        _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_COMMENT);
+        //_db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_COMMENT);
 
         // Create table Our Goals Jointly Goals Evaluate
-        _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_EVALUATE);
+        //_db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_EVALUATE);
 
         // Create table Our Goals Debetable Goals Comment
-        _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
+        //_db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
 
         // Create table Meeting Find Meeting
         _db.execSQL(DATABASE_CREATE_SQL_MEETING_SUGGESTION);
@@ -499,31 +499,31 @@ public class DBAdapter extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase _db, int oldVersion, int newVersion) {
 
         // Destroy table OurArrangementComment
-        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT);
+        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT);
 
         // Destroy table OurArrangementSketchComment
-        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT);
+        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT);
 
         // Destroy table OurArrangement
-        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT);
+        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT);
 
         // Destroy table OurArrangementEvaluate
-        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE);
+        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE);
 
         // Destroy table ChatMessage
-        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_CHAT_MESSAGE);
+        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_CHAT_MESSAGE);
 
         // Destroy table Our Goals Debetable/Jointly Goals Now
-        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW);
+        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW);
 
         // Destroy table Our Goals Jointly Goals Comment
-        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT);
+        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT);
 
         // Destroy table Our Goals Jointly Goals Evaluate
-        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE);
+        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE);
 
         // Destroy table Our Goals Jointly Goals Evaluate
-        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
+        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
 
         // Destroy table Meeting and Suggestion
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_MEETING_SUGGESTION);
@@ -2384,15 +2384,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     private static final String DATABASE_CREATE_SQL_MEETING_SUGGESTION =
             "create table " + DATABASE_TABLE_MEETING_SUGGESTION + " (" + KEY_ROWID + " integer primary key autoincrement, "
 
-                    +
-                    +  + " INTEGER not null, "
-                    + MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR + " STRING not null, "
-                    + MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME + " INTEGER not null, "
-                    +
-                    +
-                    +
-                    +
-                    +
+
      */
 
 
@@ -2451,6 +2443,15 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+
+
+
+
+
+
+
+
+    /*
     // Change an existing row to be equal to oldMeetingTime.
     public boolean updateMeetingDateAndTime(long meetingDateAndTime, String meetingPlace, long oldMeetingTime, Boolean newEntry, int status) {
 
@@ -2486,27 +2487,70 @@ public class DBAdapter extends SQLiteOpenHelper {
         return db.delete(DATABASE_TABLE_MEETING_FIND_MEETING, where, null) != 0;
     }
 
-
-    // Delete all rows (suggestions) from the database
-    public boolean deleteAllRowsMeetingDateAndTime() {
+    */
+    // Delete all rows meeting and suggestions from the database
+    public boolean deleteAllRowsMeetingAndSuggestion() {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        return db.delete(DATABASE_TABLE_MEETING_FIND_MEETING, null, null) != 0;
+        return db.delete(DATABASE_TABLE_MEETING_SUGGESTION, null, null) != 0;
     }
 
 
 
-    // Return all meetings from the database
-    // the result is sorted by DESC
-    public Cursor getAllRowsSuggesteMeetings() {
+
+
+
+    // Get the number of new rows in meeting/ suggestion
+    public int getCountNewEntryMeetingAndSuggestion () {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // new_entry = 1 (true)?
+        String where = MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST + "=1";
+
+
+        Cursor c = 	db.query(true, DATABASE_TABLE_MEETING_SUGGESTION, MEETING_SUGGESTION_MEETING_ALL_KEYS,
+                where, null, null, null, null, null);
+
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        // return how many
+        return c.getCount();
+
+    }
+
+
+    // delete status new entry for meeting/ suggestion with rowId
+    public boolean deleteStatusNewEntryMeetingAndSuggestion (int rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row new_entry = 0 (not new!)
+        ContentValues newValues = new ContentValues();
+        newValues.put(MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST, 0);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+    }
+
+
+
+
+    // Return all meeting/ suggestion from the database
+    public Cursor getAllRowsMeetingsAndSuggestion() {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         // sort string
-        String sort = MEETING_FIND_MEETING_KEY_DATE_TIME + " DESC";
+        String sort = MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST + " DESC";
 
-        Cursor c = 	db.query(true, DATABASE_TABLE_MEETING_FIND_MEETING, MEETING_FIND_MEETING_ALL_KEYS,
+        Cursor c = 	db.query(true, DATABASE_TABLE_MEETING_SUGGESTION, MEETING_SUGGESTION_MEETING_ALL_KEYS,
                 null, null, null, null, sort, null);
 
         if (c != null) {
@@ -2518,6 +2562,21 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
     // Return all choosen meetings from the database
     // the result is sorted by DESC
     public Cursor getRowsChoosenSuggesteMeetings() {
@@ -2541,46 +2600,11 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     }
 
-
-    // Get the number of new rows in meeting
-    public int getCountNewEntryMeetingFindMeeting () {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        // new_entry = 1 (true)?
-        String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY + "=1";
-        Cursor c = 	db.query(true, DATABASE_TABLE_MEETING_FIND_MEETING, MEETING_FIND_MEETING_ALL_KEYS,
-                where, null, null, null, null, null);
-
-        if (c != null) {
-            c.moveToFirst();
-        }
-
-        // return how many
-        return c.getCount();
-
-    }
-
-
-    // delete status new entry for meeting with rowId
-    public boolean deleteStatusNewEntryMeetingFindMeeting (int rowId) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String where = KEY_ROWID + "=" + rowId;
-
-        // Create row new_entry = 0 (not new!)
-        ContentValues newValues = new ContentValues();
-
-        newValues.put(MEETING_FIND_MEETING_KEY_NEW_ENTRY, 0);
-
-        // Insert it into the database.
-        return db.update(DATABASE_TABLE_MEETING_FIND_MEETING, newValues, where, null) != 0;
-    }
-
-
+*/
     // set/unset approval for meeting with rowId
     public boolean setUnsetStatusApprovalMeetingFindMeeting (int rowId, Boolean setUnset) {
+
+        /*
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2598,11 +2622,18 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_MEETING_FIND_MEETING, newValues, where, null) != 0;
+
+        */
+
+        return true;
+
     }
 
     // unset all approval meeting in table
     public boolean unsetAllStatusApprovalMeetingFindMeeting () {
 
+
+        /*
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Create row new_entry = 0 (not new!)
@@ -2613,6 +2644,11 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_MEETING_FIND_MEETING, newValues, null, null) != 0;
+        */
+
+        return true;
+
+
     }
 
     /********************************* End!! TABLES FOR FUNCTION: Meeting ***************************************/

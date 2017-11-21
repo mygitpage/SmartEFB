@@ -72,10 +72,10 @@ public class MeetingFragmentMeetingNow extends Fragment {
         fragmentMeetingNowContext = getActivity().getApplicationContext();
 
         // init the fragment meeting now
-        initFragmentMeetingNow();
+        //initFragmentMeetingNow();
 
         // show actual meeting informations
-        displayActualMeetingInformation();
+        //displayActualMeetingInformation();
 
     }
 
@@ -83,6 +83,7 @@ public class MeetingFragmentMeetingNow extends Fragment {
 
     private void initFragmentMeetingNow () {
 
+        /*
         // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get current time and date array (2 simultaneous meetings are possible)
         currentMeetingDateAndTime = ((ActivityMeeting)getActivity()).getMeetingTimeAndDate();
 
@@ -99,13 +100,14 @@ public class MeetingFragmentMeetingNow extends Fragment {
 
         // call getter-methode getMeetingPlace in ActivityMeeting to get current place
         makeMeetingTimezoneSuggestionsArray = ((ActivityMeeting)getActivity()).getMeetingTimezoneSuggestions();
-
+        */
     }
 
 
     // show actual process data of make meeting
     private void displayActualMeetingInformation () {
 
+        /*
         String txtNextMeetingIntro = "";
         String tmpSubtitle = "";
 
@@ -375,8 +377,9 @@ public class MeetingFragmentMeetingNow extends Fragment {
                 }
             });
         }
-
+        */
 
     }
+
 
 }

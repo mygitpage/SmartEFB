@@ -162,6 +162,7 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
         }
 
 
+        /*
         // put date text
         TextView tmpDateMeetingSuggestion = (TextView) view.findViewById(R.id.listActualDateMeetingSuggestion);
         String tmpTextMeetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_FIND_MEETING_KEY_DATE_TIME)), "dd.MM.yyyy");
@@ -181,6 +182,12 @@ public class MeetingMakeMeetingAndShowMeetingCursorAdapter extends CursorAdapter
 
         CheckBox tmpMeetingCheckBox = (CheckBox) view.findViewById(R.id.meetingCheck);
         tmpMeetingCheckBox.setOnClickListener(new onClickListenerMeetingSuggestion(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)), cursor.getPosition()));
+
+        */
+
+
+
+
 
         if (cursor.isLast() ) { // listview for last element
 

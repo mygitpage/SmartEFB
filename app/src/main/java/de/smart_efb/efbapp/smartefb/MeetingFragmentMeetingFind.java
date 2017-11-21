@@ -98,15 +98,15 @@ public class MeetingFragmentMeetingFind extends Fragment {
         fragmentMeetingFindContext = getActivity().getApplicationContext();
 
         // init the fragment meeting now
-        initFragmentMeetingFind();
+        //initFragmentMeetingFind();
 
         // show actual meeting informations
-        displayActualMeetingInformation();
+        //displayActualMeetingInformation();
 
     }
 
 
-
+    /*
     private void initFragmentMeetingFind () {
 
         // init the DB
@@ -150,7 +150,7 @@ public class MeetingFragmentMeetingFind extends Fragment {
             myDb.unsetAllStatusApprovalMeetingFindMeeting();
 
             // get all suggeste meetings from database
-            Cursor cursor = myDb.getAllRowsSuggesteMeetings();
+            Cursor cursor = null; //myDb.getAllRowsSuggesteMeetings();
 
             // find the listview for diesplaying suggestinons
             ListView listView = (ListView) viewFragmentMeetingFind.findViewById(R.id.listDateAndTimeSuggestions);
@@ -205,7 +205,7 @@ public class MeetingFragmentMeetingFind extends Fragment {
             }
 
             // get all choosen suggeste meetings from database
-            Cursor cursor = myDb.getRowsChoosenSuggesteMeetings();
+            Cursor cursor = null; //myDb.getRowsChoosenSuggesteMeetings();
 
             // find the listview for diesplaying suggestinons
             ListView listView = (ListView) viewFragmentMeetingFind.findViewById(R.id.listDateAndTimeSuggestions);
@@ -468,7 +468,7 @@ public class MeetingFragmentMeetingFind extends Fragment {
             myDb.unsetAllStatusApprovalMeetingFindMeeting();
 
             // get all suggeste meetings from database
-            Cursor cursor = myDb.getAllRowsSuggesteMeetings();
+            Cursor cursor = null; //myDb.getAllRowsSuggesteMeetings();
 
             // find the listview for diesplaying suggestinons
             ListView listView = (ListView) viewFragmentMeetingFind.findViewById(R.id.listDateAndTimeSuggestions);
@@ -516,5 +516,7 @@ public class MeetingFragmentMeetingFind extends Fragment {
         }
 
     }
+
+    */
 
 }
