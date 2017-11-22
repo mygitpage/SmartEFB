@@ -1096,12 +1096,6 @@ public class ActivityMeeting extends AppCompatActivity {
             toolbarMeeting.setSubtitle(subtitleText);
             setSubtitleFirstTime = false;
         }
-
-
-        Log.d ("Meeting", "Aufruf Update SupTitle mit "+subtitleText);
-
-
-
     }
 
 

@@ -45,7 +45,7 @@ public class MeetingFragmentMeetingOverview extends Fragment {
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
-        viewFragmentMeeting = layoutInflater.inflate(R.layout.fragment_meeting_meeting_find, null);
+        viewFragmentMeeting = layoutInflater.inflate(R.layout.fragment_meeting_overview, null);
 
         return viewFragmentMeeting;
 
@@ -78,7 +78,7 @@ public class MeetingFragmentMeetingOverview extends Fragment {
 
 
         // find the listview for display meetings and suggestion, etc.
-        listViewMeetingSuggestion = (ListView) viewFragmentMeeting.findViewById(R.id.listDateAndTimeSuggestions);
+        listViewMeetingSuggestion = (ListView) viewFragmentMeeting.findViewById(R.id.listViewMeetingDates);
 
 
 
@@ -97,8 +97,9 @@ public class MeetingFragmentMeetingOverview extends Fragment {
         String tmpSubtitle = "";
 
 
-        // get all meetings and suggestion from database in correct order
-        Cursor cursorMeetingSuggestion = myDb.getAllRowsMeetingsAndSuggestion();
+        // get all meetings from database in correct order
+        Long nowTime = System.currentTimeMillis();
+        Cursor cursorMeetingSuggestion = myDb.getAllRowsMeetingsAndSuggestion("future_meeting", nowTime);
 
 
 
@@ -109,7 +110,7 @@ public class MeetingFragmentMeetingOverview extends Fragment {
             ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, "meeting_overview");
 
             // set no suggestions text visibility gone
-            TextView tmpNoSuggestionsText = (TextView) viewFragmentMeeting.findViewById(R.id.meetingFindMeetingNoDateAndTimeSuggestions);
+            TextView tmpNoSuggestionsText = (TextView) viewFragmentMeeting.findViewById(R.id.meetingOverviewNoMeetingAvailable);
             tmpNoSuggestionsText.setVisibility(View.GONE);
 
             // set listview visible
@@ -132,7 +133,7 @@ public class MeetingFragmentMeetingOverview extends Fragment {
             ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, "meeting_overview");
 
             // set no suggestions text visibility gone
-            TextView tmpNoSuggestionsText = (TextView) viewFragmentMeeting.findViewById(R.id.meetingFindMeetingNoDateAndTimeSuggestions);
+            TextView tmpNoSuggestionsText = (TextView) viewFragmentMeeting.findViewById(R.id.meetingOverviewNoMeetingAvailable);
             tmpNoSuggestionsText.setVisibility(View.VISIBLE);
 
         }

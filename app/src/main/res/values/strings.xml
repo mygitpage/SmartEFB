@@ -868,11 +868,45 @@
         <!-- end fragment make meeting -->
 
 
-        <!-- fragment find meeting -->
+        <!-- fragment meeting overview -->
             <string name="findMeetingIntroTextNoMeetingSoFar">Termin wählen</string>
             <string name="findMeetingExplainTextNoMeetingSoFar">Bitte wählen Sie mindestens einen Terminvorschlag aus, an dem Sie können. Klicken Sie dann am Ende der Liste auf Verbindlich Senden. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
             <string name="findMeetingAuthorSuggestionMeeting">Die Vorschläge wurden von %s eingestellt.</string>
-            <string name="meetingFindMeetingNoDateAndTimeSuggestionsText">Zurzeit liegen keine Terminvorschläge vor.</string>
+
+
+
+        <!-- fragment meeting overview -->
+
+
+    <string name="meetingOverviewNoMeetingAvailableText">Es sind keine aktuellen Termine vorhanden.</string>
+
+        <!-- end fragment meeting overview -->
+
+
+
+
+        <!-- fragment suggestion overview -->
+
+    <string name="meetingOverviewNoSuggestionAvailableText">Es sind keine Terminvorschläge vorhanden.</string>
+
+
+        <!-- end fragment suggestion overview -->
+
+
+
+
+        <!-- fragment meeting suggestion old overview -->
+
+    <string name="meetingSuggestionOverviewOldNothingAvailableText">Es sind keine älteren Termine oder Terminvorschläge vorhanden.</string>
+
+
+        <!-- end fragment meeting suggestion old overview -->
+
+
+
+
+
+
             <string name="btnTextSendSuggestionToCoach">Verbindlich Senden</string>
             <string name="errorCountTooLittleCheckBoexesCheckedText">Bitte wählen Sie mindestens einen Terminvorschlag aus.</string>
             <string name="textMeetingFindMeetingSuggestionSuccesfullSend">Vielen Dank. Ihre Daten wurden gesendet!</string>
@@ -917,6 +951,17 @@
 
     <string name="meetingSubtitleSuggestionOverview">Aktuelle Terminvorschläge</string>
     <string name="meetingSubtitleSuggestionOverviewNoSuggestion">Keine Vorschläge vorhanden</string>
+
+
+    <string name="meetingSubtitleMeetingSuggestionOverviewOld">Alte Termine und Vorschläge</string>
+    <string name="meetingSubtitleMeetingSuggestionOverviewOldNotAvailable">Keine alten Termine und Vorschläge</string>
+
+
+
+
+
+
+
 
             <string name="meetingSubtitleFindFirstWaitingRequest">Terminbestätigung steht aus</string>
             <string name="meetingSubtitleFindFirstMeetingShowDateAndTimeSingular">Ihr nächster Termin</string>

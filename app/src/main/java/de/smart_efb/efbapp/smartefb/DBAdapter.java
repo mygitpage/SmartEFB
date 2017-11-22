@@ -2543,15 +2543,38 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return all meeting/ suggestion from the database
-    public Cursor getAllRowsMeetingsAndSuggestion() {
+    public Cursor getAllRowsMeetingsAndSuggestion(String suggestionOrMeetingData, Long nowTime) {
+
+        String where = "";
+        String sort = "";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // sort string
-        String sort = MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST + " DESC";
+
+        switch (suggestionOrMeetingData) {
+
+            case "future_meeting":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE+"=1 AND "+MEETING_SUGGESTION_KEY_DATE1+">="+nowTime;
+                sort = MEETING_SUGGESTION_KEY_MEETING_CANCELED+" DESC, "+MEETING_SUGGESTION_KEY_DATE1 + " DESC";
+                break;
+            case "future_suggestion":
+               where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE+"=2 AND "+MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME+">="+nowTime;
+                sort = MEETING_SUGGESTION_KEY_MEETING_CANCELED+" DESC, "+MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + " DESC";
+                break;
+            case "old_meeting_suggestion":
+                where = "("+MEETING_SUGGESTION_KEY_MEETING_KATEGORIE+"=2 AND "+MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME+"<"+nowTime+") OR ("+MEETING_SUGGESTION_KEY_MEETING_KATEGORIE+"=1 AND "+MEETING_SUGGESTION_KEY_DATE1+"<"+nowTime+")";
+                sort = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + " DESC";
+                break;
+            default:
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE+"=1 AND "+MEETING_SUGGESTION_KEY_DATE1+">="+nowTime;
+                sort = MEETING_SUGGESTION_KEY_MEETING_CANCELED+" DESC, "+MEETING_SUGGESTION_KEY_DATE1 + " DESC";
+                break;
+
+        }
+
 
         Cursor c = 	db.query(true, DATABASE_TABLE_MEETING_SUGGESTION, MEETING_SUGGESTION_MEETING_ALL_KEYS,
-                null, null, null, null, sort, null);
+                where, null, null, null, sort, null);
 
         if (c != null) {
             c.moveToFirst();

@@ -1,23 +1,12 @@
 package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayout;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Created by ich on 04.01.2017.
@@ -83,7 +72,7 @@ public class MeetingFragmentMeetingFind extends Fragment {
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
-        viewFragmentMeetingFind = layoutInflater.inflate(R.layout.fragment_meeting_meeting_find, null);
+        viewFragmentMeetingFind = layoutInflater.inflate(R.layout.fragment_meeting_overview, null);
 
         return viewFragmentMeetingFind;
 

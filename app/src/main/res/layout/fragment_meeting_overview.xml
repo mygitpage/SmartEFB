@@ -17,7 +17,7 @@
         android:paddingRight="10dp">
 
         <TextView
-            android:id="@+id/meetingFindMeetingNoDateAndTimeSuggestions"
+            android:id="@+id/meetingOverviewNoMeetingAvailable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
@@ -25,7 +25,7 @@
             android:gravity="left"
             android:textStyle="bold"
             android:visibility="gone"
-            android:text="@string/meetingFindMeetingNoDateAndTimeSuggestionsText"
+            android:text="@string/meetingOverviewNoMeetingAvailableText"
             android:paddingTop="15dp"
             android:paddingLeft="15dp"/>
 
@@ -197,7 +197,7 @@
 
 
         <ListView
-            android:id="@+id/listDateAndTimeSuggestions"
+            android:id="@+id/listViewMeetingDates"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:transcriptMode="normal"
