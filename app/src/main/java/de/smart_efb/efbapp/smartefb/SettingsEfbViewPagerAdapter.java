@@ -20,7 +20,7 @@ public class SettingsEfbViewPagerAdapter extends FragmentPagerAdapter {
 
 
     // number of tabs
-    final static int settingsEfbTabCount = 4;
+    final static int settingsEfbTabCount = 3;
 
     // array of tab title
     String settingsEfbTabTitleNames[] = new String[settingsEfbTabCount];
@@ -28,13 +28,6 @@ public class SettingsEfbViewPagerAdapter extends FragmentPagerAdapter {
 
     // calling context
     Context pagerAdapterContext = null;
-
-    //{"Verbinden", "Über", "Hilfe", "Einstellungen"};
-
-
-
-
-
 
 
     public SettingsEfbViewPagerAdapter (FragmentManager settingsEfbFragmentManager, Context context) {

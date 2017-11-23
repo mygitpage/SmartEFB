@@ -879,8 +879,11 @@
 
 
     <string name="meetingOverviewNoMeetingAvailableText">Es sind keine aktuellen Termine vorhanden.</string>
+    <string name="meetingOverviewMeetingTitleAndNumberText">Termin</string>
+    <string name="meetingOverviewCreateMeetingAuthorAndDate">Der Termin wurde von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt.</string>
 
-        <!-- end fragment meeting overview -->
+
+    <!-- end fragment meeting overview -->
 
 
 

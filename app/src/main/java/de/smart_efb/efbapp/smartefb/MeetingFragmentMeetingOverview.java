@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,6 +102,9 @@ public class MeetingFragmentMeetingOverview extends Fragment {
         Long nowTime = System.currentTimeMillis();
         Cursor cursorMeetingSuggestion = myDb.getAllRowsMeetingsAndSuggestion("future_meeting", nowTime);
 
+
+
+        Log.d("Meeting","Anzahl Elemente: "+cursorMeetingSuggestion.getCount());
 
 
         if (cursorMeetingSuggestion.getCount() > 0 && listViewMeetingSuggestion != null) {
