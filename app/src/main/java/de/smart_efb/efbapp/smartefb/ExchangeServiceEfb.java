@@ -1845,11 +1845,240 @@ import java.util.Map;
 
 
     // +++++++++++++++++++++++++ end task exchange connect book +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+    // +++++++++++++++++++++++++ task exchange meeting +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+    // send complete meeting data set to server and get answer from server
+    public class ExchangeTaskSendMeetingData implements Runnable {
+
+        // id of the data row in db
+        private Long dbId;
+
+        // reference to the DB
+        private DBAdapter myDb;
+
+        // context of task
+        Context context;
+
+        // shared prefs
+        SharedPreferences prefs;
+        SharedPreferences.Editor prefsEditor;
+
+        // return information for change
+        Map<String, String> returnMap;
+
+
+        // Constructor
+        public ExchangeTaskSendMeetingData (Context context, Long dbid) {
+
+            // id of the data row in db
+            this.dbId = dbid;
+
+            // context of task
+            this.context = context;
+
+            // init the DB
+            myDb = new DBAdapter(context);
+
+            // init the prefs
+            prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
+            prefsEditor = prefs.edit();
+
+        }
+
+        // the task
+        public void run() {
+
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+            if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+
+                Log.d("Exchange Service", "Network on in meeting");
+
+                // get comment from db
+                Cursor meetingData = myDb.getOneRowMeetingsOrSuggestion(dbId);
+
+                // get client id from prefs
+                String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
+
+                // generate xml output text
+                XmlSerializer xmlSerializer = Xml.newSerializer();
+                StringWriter writer = new StringWriter();
+                try {
+
+                    xmlSerializer.setOutput(writer);
+
+                    //Start Document
+                    xmlSerializer.startDocument("UTF-8", true);
+                    xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
+
+                    // Open Tag
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                    // start tag main order -> send meeting data and client id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+                    xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_MeetingData);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+
+                    // start tag client id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.text(tmpClientId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+
+                    // end tag main
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                    // build xml tag for meeting with data
+                    buildMeetingDataXmlTagWithData (xmlSerializer, meetingData);
+
+                    // end tag smartEfb
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+
+                    xmlSerializer.endDocument();
+
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                // and send xml text to server
+                try {
+                    // prepair data to send
+                    String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
+
+                    Log.d("Send","XMLCODE="+textparam);
+
+                    // set url and parameters
+                    URL scripturl = new URL(ConstansClassSettings.urlConnectionSendMeetingDataToServer);
+                    HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
+
+                    // set timeout for connection
+                    connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
+                    connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
+
+                    connection.setDoOutput(true);
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    connection.setRequestMethod("POST");
+                    connection.setFixedLengthStreamingMode(textparam.getBytes().length);
+
+                    // generate output stream and send
+                    OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
+                    contentWriter.write(textparam);
+                    contentWriter.flush();
+
+                    contentWriter.close();
+
+                    // get answer from input
+                    InputStream answerInputStream = connection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    // convert input stream to string
+                    String currentRow;
+                    try {
+                        while ((currentRow = reader.readLine()) != null) {
+                            stringBuilder.append(currentRow);
+                            stringBuilder.append("\n");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Log.d("Meeting Send", "Antwort:"+stringBuilder.toString().trim());
+
+                    // call xml parser with input
+                    EfbXmlParser xmlparser = new EfbXmlParser(context);
+                    returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
+
+                    // close input stream and disconnect
+                    answerInputStream.close();
+                    connection.disconnect();
+
+
+                    if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
+
+                        myDb.updateStatusMeetingAndSuggestion (dbId, 1); // set status of meeting to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                        // send intent to receiver in Meeting to update listView Meeting (when active)
+                        Intent tmpIntent = translateMapToIntent (returnMap);
+                        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                        context.sendBroadcast(tmpIntent);
+                    }
+                    else { // send not successfull
+                        // send information broadcast to receiver that sending was not successefull
+                        String message = context.getResources().getString(R.string.toastMessageMeetingDataNotSuccessfull);
+                        sendIntentBroadcastSendingNotSuccessefull (message);
+                    }
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastMessageMeetingDataNotSuccessfull);
+                    sendIntentBroadcastSendingNotSuccessefull (message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastMessageMeetingDataNotSuccessfull);
+                    sendIntentBroadcastSendingNotSuccessefull (message);
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            }
+            else { // no network enable -> try to send meeting data to server later
+                // send information broadcast to receiver that sending not successfull
+                String message = context.getResources().getString(R.string.toastMessageMeetingDataNotSendSuccessfullNoNetwork);
+                sendIntentBroadcastSendingNotSuccessefull (message);
+            }
+
+            // stop the task with service
+            stopSelf();
+
+        }
+
+    }
+
+
+
+
+
+
+    // +++++++++++++++++++++++++ end task exchange meeting +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1987,7 +2216,25 @@ import java.util.Map;
                     this.isRunning = true;
                     // start task
                     this.backgroundThread.start();
-                } 
+
+                } else if (command.equals("send_meeting_data") && dbId > 0) { // send meeting data to server
+
+                    Log.d("Excange Service", "MEETING DATA !!!!!!!!");
+
+                    // generate new send task
+                    this.backgroundThread = new Thread(new ExchangeTaskSendMeetingData (context, dbId));
+                    // task is running
+                    this.isRunning = true;
+                    // start task
+                    this.backgroundThread.start();
+                }
+
+
+
+
+
+
+
 
 
 
@@ -2504,6 +2751,169 @@ import java.util.Map;
         //    e.printStackTrace();
         //}
     }
+
+
+
+
+
+    public void buildMeetingDataXmlTagWithData(XmlSerializer xmlSerializer, Cursor meetingData) {
+
+
+        try {
+            // open meeting data tag
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_And_Suggestions);
+
+            // start tag comment now arrangement order
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_Order);
+            xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_Update);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_Order);
+
+            // start tag meeting/suggestion timestamp 1
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate1);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate1);
+
+            // start tag meeting/suggestion timestamp 2
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate2);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE2)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate2);
+
+            // start tag meeting/suggestion timestamp 3
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate3);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE3)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate3);
+
+            // start tag meeting/suggestion timestamp 4
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate4);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE4)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate4);
+
+            // start tag meeting/suggestion timestamp 5
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate5);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE5)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate5);
+
+            // start tag meeting/suggestion timestamp 6
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate6);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE6)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate6);
+
+
+
+
+            // start tag meeting/suggestion place 1
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace1);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE1)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace1);
+
+
+            // start tag meeting/suggestion place 2
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace2);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE2)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace2);
+
+            // start tag meeting/suggestion place 3
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace3);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE3)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace3);
+
+            // start tag meeting/suggestion place 4
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace4);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE4)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace4);
+
+            // start tag meeting/suggestion place 5
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace5);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE5)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace5);
+
+            // start tag meeting/suggestion place 6
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace6);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE6)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace6);
+
+
+
+            // start tag meeting/suggestion creation time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CreationTime);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CreationTime);
+
+            // start tag meeting/suggestion kategorie
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_Kategorie);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_KATEGORIE)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_Kategorie);
+
+
+            // start tag meeting/suggestion client suggestion text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionText);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionText);
+
+            // start tag meeting/suggestion client suggestion time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionTime);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionTime);
+
+            // start tag meeting/suggestion client suggestion author
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionAuthor);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionAuthor);
+
+
+            // start tag meeting/suggestion client comment author
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentAuthorName);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentAuthorName);
+
+            // start tag meeting/suggestion client comment time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentTime);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentTime);
+
+            // start tag meeting/suggestion client comment text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentText);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentText);
+
+
+            // start tag meeting/suggestion client canceled time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCanceledTime);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCanceledTime);
+
+            // start tag meeting/suggestion client canceled author name
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCanceledAuthorName);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCanceledAuthorName);
+
+            // start tag meeting/suggestion client canceled text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCanceledText);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TEXT)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCanceledText);
+
+            // start tag meeting/suggestion server id
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_DataServerId);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_SERVER_ID)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_DataServerId);
+
+
+            // end tag comment now arrangement
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_And_Suggestions);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
+
+
+
+
 
 
 

@@ -29,7 +29,7 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
     static int fragmentChooserTabOne;
 
     // the fragments for all tabs
-    Fragment fragMeeting, fragSuggestion, fragSuggestionFromClient, fragMeetingCommentFromClient, fragMeetingSuggestionOld;
+    Fragment fragMeeting, fragSuggestion, fragSuggestionFromClient, fragMeetingCommentFromClient, fragMeetingSuggestionOld, fragmentMeetingCanceledFromClient;
 
     // Reference to fragment manager
     FragmentManager meetingFragmentManager;
@@ -54,7 +54,7 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
         fragSuggestionFromClient = new MeetingFragmentSuggestionFromClient();
         fragMeetingCommentFromClient = new MeetingFragmentMeetingCommentFromClient();
         fragMeetingSuggestionOld = new MeetingFragmentMeetingSuggestionOld();
-
+        fragmentMeetingCanceledFromClient = new MeetingFragmentMeetingClientCanceled();
     }
 
 
@@ -71,6 +71,9 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
 
                     case 1:
                         return fragMeetingCommentFromClient;
+
+                    case 2:
+                        return fragmentMeetingCanceledFromClient;
 
                 }
 
@@ -130,6 +133,10 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
             case "meeting_comment_from_client": // set fragment on tab zero to MeetingCommentFromClient
                 fragmentChooserTabZero = 1;
                 break;
+
+            case "meeting_client_canceled": // set fragment on tab zero to MeetingClientCanceled
+                fragmentChooserTabZero = 2;
+                break;
         }
 
     }
@@ -142,11 +149,11 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
         switch (subFragmentCommand) {
 
             case "suggestion_overview": // set fragment on tab one to SuggestionOverview
-                fragmentChooserTabZero = 0;
+                fragmentChooserTabOne = 0;
                 break;
 
             case "suggestion_from_client": // set fragment on tab zero to SuggestionFromClient
-                fragmentChooserTabZero = 1;
+                fragmentChooserTabOne = 1;
                 break;
         }
 

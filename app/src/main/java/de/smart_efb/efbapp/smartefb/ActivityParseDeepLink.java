@@ -16,6 +16,7 @@ public class ActivityParseDeepLink extends Activity {
 
     public static final String OUR_ARRANGEMENT = "/ourarrangement";
     public static final String OUR_GOALS = "/ourgoals";
+    public static final String MEETING = "/meeting";
     public static final String SETTINGS = "/settings";
     public static final String FAQ = "/faq";
 
@@ -79,6 +80,17 @@ public class ActivityParseDeepLink extends Activity {
             intent.putExtra("eval_next",tmpEvalNext);
             startActivity(intent);
 
+        } else if (MEETING.equals(path)) {
+
+            Long tmpMeetingId = Long.parseLong(deepLink.getQueryParameter("meeting_id"));
+
+            // Launch settings
+            Intent intent = new Intent(this, ActivityMeeting.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra("meeting_id",tmpMeetingId);
+            intent.putExtra("com",tmpCommand);
+            startActivity(intent);
+
         } else if (SETTINGS.equals(path)) {
 
             // Launch settings
@@ -87,7 +99,7 @@ public class ActivityParseDeepLink extends Activity {
             intent.putExtra("com",tmpCommand);
             startActivity(intent);
 
-        }else if (FAQ.equals(path)) {
+        } else if (FAQ.equals(path)) {
             // Launch settings
             Intent intent = new Intent(this, ActivityFaq.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);

@@ -5000,7 +5000,8 @@ public class EfbXmlParser {
 
 
                                             Long tmpMeetingSuggestionClientCanceleTime = 0L;
-                                            String tmpMeetingSuggestionCclientCanceleAuthor = "";
+                                            String tmpMeetingSuggestionClientCanceleAuthor = "";
+                                            String tmpMeetingSuggestionClientCanceleText = "";
                                             int tmpMeetingSuggestionClientCancele = 0; // 0=not canceled; 1 = canceled
 
 
@@ -5016,7 +5017,7 @@ public class EfbXmlParser {
 
 
                                             // insert new data into db
-                                            myDb.insertNewMeetingOrSuggestionDate (array_meetingTime, array_meetingPlace, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionCclientCanceleAuthor, meetingStatus, tmpUploadTime, newMeeting);
+                                            myDb.insertNewMeetingOrSuggestionDate (array_meetingTime, array_meetingPlace, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting);
 
 
                                         }

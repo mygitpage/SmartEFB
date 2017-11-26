@@ -1,8 +1,12 @@
 package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.text.Html;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +40,8 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
     // array of meeting places names (only 3 possible-> 0=nothing; 1=Werder(Havel); 2=Bad Belzig)
     String  meetingPlaceNames[] = new String[3];
 
+    // for prefs
+    SharedPreferences prefs;
 
 
     // Own constructor
@@ -48,9 +54,14 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
         // init the DB
         myDb = new DBAdapter(context);
 
+        // open sharedPrefs
+        prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
+
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         meetingPlaceNames = context.getResources().getStringArray(R.array.placesNameForMeetingArray);
+
+
 
     }
 
@@ -121,7 +132,23 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
         String meetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "dd.MM.yyyy");;
         String meetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "HH:mm");;
         String tmpTextAuthorNameMeeting = String.format(context.getResources().getString(R.string.meetingOverviewCreateMeetingAuthorAndDate), tmpAuthorName, meetingDate, meetingTime);
-        tmpTextViewAuthorNameForMeeting.setText(Html.fromHtml(tmpTextAuthorNameMeeting));
+
+        // check if meeting is canceled by client
+        String tmpTextClientCanceledMeeting = "";
+        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED)) == 1) {
+            String tmpClientCanceledDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME)), "dd.MM.yyyy");
+            String tmpClientCanceledTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME)), "HH:mm");
+            tmpTextClientCanceledMeeting = String.format(context.getResources().getString(R.string.meetingOverviewClientCanceledMeetingAuthorAndDate), tmpClientCanceledDate, tmpClientCanceledTime);
+
+            if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_MEETING_KEY_STATUS)) == 0) {
+                String tmpNotSendToServer = context.getResources().getString(R.string.meetingOverviewClientCanceledNotSendToServer);
+                tmpTextClientCanceledMeeting = tmpTextClientCanceledMeeting + " " + tmpNotSendToServer;
+            }
+
+
+
+        }
+        tmpTextViewAuthorNameForMeeting.setText(Html.fromHtml(tmpTextAuthorNameMeeting+ " " + tmpTextClientCanceledMeeting));
 
 
 
@@ -141,16 +168,55 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
         String tmpMeetingPlace = meetingPlaceNames[cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE1))];
         tmpTextViewMeetingPlace.setText(tmpMeetingPlace);
 
-
-        Log.d("Meeting Cursor Adapter", "place1: " + cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE1))+", "+tmpMeetingPlace);
-
-
-
-
+        // textview for meeting hint text
+        TextView tmpTextViewMeetingHintText = (TextView) inflatedView.findViewById(R.id.meetingHintText);
+        String tmpMeetingHintText = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT));
+        tmpTextViewMeetingHintText.setText(tmpMeetingHintText);
 
 
 
-        return inflatedView;
+        if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCanceleMeeting_OnOff, false) && cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED)) == 0) { // show cancele link for meeting
+
+            TextView tmpTextViewClientCanceledLink = (TextView) inflatedView.findViewById(R.id.meetingCanceleLink);
+
+            final Uri.Builder meetingClientCanceleLinkBuilder = new Uri.Builder();
+            meetingClientCanceleLinkBuilder.scheme("smart.efb.deeplink")
+                    .authority("linkin")
+                    .path("meeting")
+                    .appendQueryParameter("meeting_id", Long.toString(cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
+                    .appendQueryParameter("com", "meeting_client_canceled");
+
+            String tmpLinkClientCanceledMeeting = context.getResources().getString(context.getResources().getIdentifier("meetingOverviewClientCanceledLinkText", "string", context.getPackageName()));
+
+            // generate link for output
+            Spanned tmpMeetingCanceledLink = Html.fromHtml("<a href=\"" + meetingClientCanceleLinkBuilder.build().toString() + "\">" + tmpLinkClientCanceledMeeting + "</a>");
+
+            // and set to textview
+            tmpTextViewClientCanceledLink.setVisibility(View.VISIBLE);
+            tmpTextViewClientCanceledLink.setText(tmpMeetingCanceledLink);
+            tmpTextViewClientCanceledLink.setMovementMethod(LinkMovementMethod.getInstance());
+
+        }
+
+
+        // meeting is canceled by client -> show hint
+        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED)) == 1) {
+            TextView tmpTextViewHintMeetingIsCanceled = (TextView) inflatedView.findViewById(R.id.meetingCanceleByClientHint);
+            tmpTextViewHintMeetingIsCanceled.setVisibility(View.VISIBLE);
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+            return inflatedView;
 
     }
 

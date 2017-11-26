@@ -79,7 +79,8 @@ public class ActivityMeeting extends AppCompatActivity {
     String tabTitleTextTabOne = "";
 
 
-
+    // actual db id of meeting (for canceled, comment, etc.)
+    Long actualDbIdOfMeeting = 0L;
 
 
 
@@ -189,6 +190,9 @@ public class ActivityMeeting extends AppCompatActivity {
                                 break;
                             case "comment_from_client":
                                 tmpSubtitleText = arraySubTitleText[1];
+                                break;
+                            case "meeting_client_canceled":
+                                tmpSubtitleText = arraySubTitleText[5];
                                 break;
 
                         }
@@ -361,8 +365,14 @@ public class ActivityMeeting extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
 
+        // set actual meeting db id
+        actualDbIdOfMeeting = 0L;
+
         // Extras from intent that holds data
         Bundle intentExtras = null;
+
+        // meeting id for cancele meeting
+        Long tmpMeetingId = 0L;
 
         // call super
         super.onNewIntent(intent);
@@ -371,8 +381,12 @@ public class ActivityMeeting extends AppCompatActivity {
         intentExtras = intent.getExtras();
 
         if (intentExtras != null) {
+
+            // get meeting id from external
+            tmpMeetingId = intentExtras.getLong("meeting_id",0);
+
             // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"));
+            executeIntentCommand (intentExtras.getString("com"), tmpMeetingId);
         }
 
     }
@@ -380,13 +394,13 @@ public class ActivityMeeting extends AppCompatActivity {
 
 
     // execute the commands that comes from link or intend
-    public void executeIntentCommand (String command) {
+    public void executeIntentCommand (String command, Long meetingId) {
 
         String tmpTabTitle = "";
 
-        if (command.equals("comment_from_client")) { // Show fragment client comment a meeting suggestion
+        if (command.equals("comment_from_client")) { // Show fragment client comment a meeting
 
-              //set fragment in tab zero to comment
+            //set fragment in tab zero to comment
             meetingViewPagerAdapter.setFragmentTabZero("comment_from_client");
 
             // set correct tab zero title with information new entry and color change
@@ -421,7 +435,7 @@ public class ActivityMeeting extends AppCompatActivity {
             // set correct subtitle in toolbar in tab zero
             toolbarMeeting.setSubtitle(arraySubTitleText[2]);
 
-        } else if (command.equals("suggestion_from_client")) { // Show evaluate a arrangement
+        } else if (command.equals("suggestion_from_client")) { // Show suggestion from client
 
             //set fragment in tab one to suggestion from client
             meetingViewPagerAdapter.setFragmentTabOne("suggestion_from_client");
@@ -440,10 +454,32 @@ public class ActivityMeeting extends AppCompatActivity {
             toolbarMeeting.setSubtitle(arraySubTitleText[3]);
 
 
+        } else if (command.equals("meeting_client_canceled")) { // Show meeting canceled from client
+
+            // set actual meeting db id
+            actualDbIdOfMeeting = meetingId;
+
+            //set fragment in tab zero to meeting canceled from client
+            meetingViewPagerAdapter.setFragmentTabZero("meeting_client_canceled");
+
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("meetingTabTitle_1b", "string", getPackageName()));
+            setTabZeroTitleAndColor();
+
+            // set command show variable
+            showCommandFragmentTabZero = "meeting_client_canceled";
+
+            // call notify data change
+            meetingViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbarMeeting.setSubtitle(arraySubTitleText[5]);
+
+
         } else { // Show fragment meeting overview on tab zero
 
             //set fragment in tab zero to meeting overview
-            OurArrangementViewPagerAdapter.setFragmentTabZero("meeting_overview");
+            meetingViewPagerAdapter.setFragmentTabZero("meeting_overview");
 
             // set correct tab zero title with information new entry and color change
             tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("meetingTabTitle_1", "string", getPackageName()));
@@ -908,6 +944,16 @@ public class ActivityMeeting extends AppCompatActivity {
 
 
 
+    // getter for actual db id of meeting (for canceled, comment, etc.)
+    public Long getActualMeetingDbId () {
+
+        return actualDbIdOfMeeting;
+
+    }
+
+
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -1088,6 +1134,9 @@ public class ActivityMeeting extends AppCompatActivity {
                 break;
             case "meeting_suggestion_old":
                 arraySubTitleText[4] = subtitleText;
+                break;
+            case "meeting_client_canceled":
+                arraySubTitleText[5] = subtitleText;
                 break;
         }
 

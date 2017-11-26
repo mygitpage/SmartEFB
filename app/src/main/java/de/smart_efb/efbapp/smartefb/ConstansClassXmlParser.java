@@ -730,7 +730,6 @@ public class ConstansClassXmlParser {
 
 
     public static final String xmlNameForMeeting_Suggestion_CoachCanceleTime = "meeting_coach_canceled_time";
-
     public static final String xmlNameForMeeting_Suggestion_CoachCanceleAuthor = "meeting_coach_canceled_author";
 
 
@@ -741,10 +740,14 @@ public class ConstansClassXmlParser {
     public static final String xmlNameForMeeting_Suggestion_ClientCommentText = "meeting_client_comment_text";
 
 
+    public static final String xmlNameForMeeting_ClientSuggestionAuthor = "meeting_client_suggestion_authorname";
+    public static final String xmlNameForMeeting_ClientSuggestionTime = "meeting_client_suggestion_time";
+    public static final String xmlNameForMeeting_ClientSuggestionText = "meeting_client_suggestion_text";
 
 
-
-
+    public static final String xmlNameForMeeting_Suggestion_ClientCanceledAuthorName = "meeting_client_canceled_authorrname";
+    public static final String xmlNameForMeeting_Suggestion_ClientCanceledTime = "meeting_client_canceled_time";
+    public static final String xmlNameForMeeting_Suggestion_ClientCanceledText = "meeting_client_canceled_text";
 
 
 
@@ -911,6 +914,8 @@ if (!defined('XML_NAME_FOR_MEETINGS_COACH_MEETING_CANCELED_AUTHOR'))  define("XM
 
 
 
+    // xml name for send meeting data to server
+    public static final String xmlNameForSendToServer_MeetingData = "sendmeetingdata";
 
 
     // xml feature link for init xml serializer

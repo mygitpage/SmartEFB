@@ -52,11 +52,6 @@
 
     </LinearLayout>
 
-
-
-
-
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/containerShowMeeting"
         android:layout_width="match_parent"
@@ -68,10 +63,6 @@
         android:paddingTop="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
-
-
-
-
 
         <TextView
             android:id="@+id/meetingDate"
@@ -103,21 +94,19 @@
             android:gravity="center_horizontal"
             android:paddingBottom="15dp"/>
 
-
+        <TextView
+            android:id="@+id/meetingHintText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"/>
 
     </LinearLayout>
 
-
     <!-- End meeting date, time and place first meeting-->
-
-
-
-
-
-
-
-
-
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -131,8 +120,18 @@
             android:layout_height="wrap_content"
             android:textSize="14dp"
             android:textColor="@color/text_color"
-            android:textColorLink="@color/colorPrimary"
+            android:textColorLink="@color/colorPrimaryDark"
             android:gravity="right"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/meetingCanceleByClientHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_accent_color"
+            android:text="@string/meetingCanceledByClientHintText"
+            android:gravity="center"
             android:visibility="gone"/>
 
     </LinearLayout>

@@ -35,6 +35,8 @@ public class ConstansClassMeeting {
     public static final String namePrefsMeeting_ClientCommentSuggestion_OnOff ="meetingClientCommentSuggestionOnOff";
 
 
+    // meeting number of letters for canceled meeting reason
+    public static final int namePrefsMaxLettersCanceledMeetingReason = 600;
 
 
 

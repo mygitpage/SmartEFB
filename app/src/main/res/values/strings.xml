@@ -793,17 +793,19 @@
         <!-- Strings for tab title in activity meting -->
             <string name="meetingTabTitle_1">Termine</string>
             <string name="meetingTabTitle_1a">Ihr Kommentar</string>
+            <string name="meetingTabTitle_1b">Terminabsage</string>
             <string name="meetingTabTitle_2">Terminvorschläge</string>
             <string name="meetingTabTitle_2a">Ihre Terminvorschläge</string>
             <string name="meetingTabTitle_3">Alte Termine und Vorschläge</string>
         <!-- End tab title -->
-    
-    
 
 
 
 
 
+
+    <string name="toastMessageMeetingDataNotSuccessfull">Die Termindaten wurden nicht gesendet!</string>
+    <string name="toastMessageMeetingDataNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
 
 
 
@@ -879,11 +881,45 @@
 
 
     <string name="meetingOverviewNoMeetingAvailableText">Es sind keine aktuellen Termine vorhanden.</string>
-    <string name="meetingOverviewMeetingTitleAndNumberText">Termin</string>
+    <string name="meetingOverviewMeetingTitleAndNumberText">Nächster Termin</string>
     <string name="meetingOverviewCreateMeetingAuthorAndDate">Der Termin wurde von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt.</string>
+
+    <string name="meetingOverviewClientCanceledMeetingAuthorAndDate">Von Ihnen wurde der Termin am %1$s um %2$s Uhr abgesagt.</string>
+
+    <string name="meetingOverviewClientCanceledNotSendToServer">Ihre Absage wurde noch nicht zum Server gesendet.</string>
+
+    <string name="meetingOverviewClientCanceledLinkText">Diesen Termin absagen</string>
+
 
 
     <!-- end fragment meeting overview -->
+
+
+
+        <!-- fragment meeting canceled by client -->
+
+
+    <string name="meetingClientCanceledIntroText">Sind Sie sicher, dass Sie den Termin vom %1$s um %2$s in %3$s absagen möchten?</string>
+    <string name="meetingReasonHintText">Bitte begründen Sie Ihre Absage</string>
+    <string name="errorInputMeetingCanceled">Bitte kontrollieren Sie Ihre Begründung. Sie ist zu kurz!</string>
+    <string name="infoProcedureCanceledMeeting">Sie teilen Ihre Terminabsage nur Ihrer Beraterin/ Ihrem Berater mit. Andere Beteiligte können Ihre Absage nicht lesen. Nur Ihre Beraterin/ Ihr Berater kann dann den Termin offiziel absagen!</string>
+
+    <string name="meetingBackLinkToMeetingOverview">Zurück zu den Terminen</string>
+
+    <string name="meetingCanceledByClientHintText">Der Termin wurde von Ihnen abgesagt!</string>
+
+
+
+    <string name="btnSendCanceledReason">Termin absagen</string>
+    <string name="btnAbortCanceledMeeting">Abbrechen</string>
+
+
+
+
+
+
+        <!-- end fragment meeting canceled by client -->
+
 
 
 
@@ -940,16 +976,10 @@
         <!-- end fragment change meeting -->
 
         <!-- Subtitle under Title Meeting -->
-            <string name="meetingSubtitleNoFirstMeeting">Keinen Termin vereinbart</string>
-            <string name="meetingSubtitleMakeFirstMeeting">Ersttermin vereinbaren</string>
-            <string name="meetingSubtitleFirstMeetingRequested">Erstterminanfrage läuft</string>
-            <string name="meetingSubtitleFirstMeetingConfirmed">Terminvorschlag</string>
-            <string name="meetingSubtitleFirstMeetingDeleted">Terminvorschlag abgesagt</string>
-            <string name="meetingSubtitleFirstMeetingNotPossible">Zeitbereiche sind nicht möglich</string>
 
 
 
-    <string name="meetingSubtitleMeetingOverview">Aktuelle Termin</string>
+    <string name="meetingSubtitleMeetingOverview">Aktuelle Termine</string>
     <string name="meetingSubtitleMeetingOverviewNoMeetings">Keine Termine vorhanden</string>
 
     <string name="meetingSubtitleSuggestionOverview">Aktuelle Terminvorschläge</string>
@@ -959,19 +989,9 @@
     <string name="meetingSubtitleMeetingSuggestionOverviewOld">Alte Termine und Vorschläge</string>
     <string name="meetingSubtitleMeetingSuggestionOverviewOldNotAvailable">Keine alten Termine und Vorschläge</string>
 
+    <string name="meetingSubtitleClientCanceledMeeting">Terminabsage bestätigen</string>
 
 
-
-
-
-
-
-            <string name="meetingSubtitleFindFirstWaitingRequest">Terminbestätigung steht aus</string>
-            <string name="meetingSubtitleFindFirstMeetingShowDateAndTimeSingular">Ihr nächster Termin</string>
-            <string name="meetingSubtitleFindFirstMeetingShowDateAndTimePlural">Ihre nächsten Termine</string>
-            <string name="meetingSubtitleMakeMeetingAndShowMeeting">Termin + Neue Vorschläge</string>
-            <string name="meetingSubtitleFindMeetingNoMoreMeetingSet">Keine aktuellen Termine mehr</string>
-            <string name="meetingSubtitleChangeMeeting">Termin absagen/verschieben</string>
 
 
 

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="left"
+        android:background="@color/body_background"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/meetingCanceledInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:paddingLeft="10dp"
+            android:textStyle="bold"/>
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/meetingBackLinkToOverview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/text_color"
+                android:textColorLink="@color/colorPrimary"
+                android:gravity="right"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/borderBetweenMeeting1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/errorInputMeetingCanceled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_accent_color"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/errorInputMeetingCanceled"
+            android:paddingBottom="5dp"/>
+
+
+        <TextView
+            android:id="@+id/countLettersCanceledEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="right" />
+
+        <EditText
+            android:id="@+id/inputCanceledReason"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left|top"
+            android:background="@drawable/app_edittext_style"
+            android:hint="@string/meetingReasonHintText"
+            android:layout_margin="5dp"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
+            android:padding="5dp"
+            android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
+
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/buttonSendCanceledReason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/app_button_style"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/btnSendCanceledReason"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="5dp"
+                android:padding="10dp"/>
+
+            <Button
+                android:id="@+id/buttonAbortCanceled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/app_button_style"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/btnAbortCanceledMeeting"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="5dp"
+                android:padding="10dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/infoProcedureCanceledMeeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:text="@string/infoProcedureCanceledMeeting"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:paddingBottom="35dp"/>
+
+
+    </LinearLayout>
+
+</ScrollView>

@@ -73,6 +73,10 @@ public class MeetingFragmentMeetingOverview extends Fragment {
 
     private void initFragmentMeeting () {
 
+
+        Log.d("Meeting Overview", "In INIT!!!! OVERVIEW");
+
+
         // init the DB
         myDb = new DBAdapter(fragmentMeetingContext);
 
@@ -96,6 +100,14 @@ public class MeetingFragmentMeetingOverview extends Fragment {
     private void displayActualMeetingSuggestionInformation () {
 
         String tmpSubtitle = "";
+
+
+        Log.d("Meeting Overview", "In Display!!! OVERVIEW");
+
+
+
+
+
 
 
         // get all meetings from database in correct order
