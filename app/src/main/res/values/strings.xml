@@ -907,6 +907,7 @@
     <string name="meetingBackLinkToMeetingOverview">Zurück zu den Terminen</string>
 
     <string name="meetingCanceledByClientHintText">Der Termin wurde von Ihnen abgesagt!</string>
+    <string name="meetingCanceledByClientHintText1">Diese Absage sehen nur Ihre Beraterin/ Ihr Berater. Ausschließlich diese können den Termin offiziel absagen!</string>
 
 
 

@@ -655,16 +655,6 @@ public class ConstansClassXmlParser {
     //
     // xml name for element meeting
 
-
-
-   /*
-   if (!defined('XML_NAME_FOR_MEETINGS_CLIENT_COMMNET_SUGGESTION_ONOFF'))  define("XML_NAME_FOR_MEETINGS_CLIENT_COMMNET_SUGGESTION_ONOFF", "client_comment_suggestion_turnonoff");
-
-    */
-
-
-
-
     public static final String xmlNameForMeeting = "meeting";
     // xml name for element meeting settings
     public static final String xmlNameForMeeting_Settings = "meeting_settings";
@@ -712,55 +702,35 @@ public class ConstansClassXmlParser {
     public static final String xmlNameForMeeting_Suggestion_MettingPlace5 = "meeting_place_5";
     public static final String xmlNameForMeeting_Suggestion_MettingPlace6 = "meeting_place_6";
 
-
+    // xml name for element meeting suggestion votes 1-6
+    public static final String xmlNameForMeeting_Suggestion_MettingVote1 = "meeting_vote_1";
+    public static final String xmlNameForMeeting_Suggestion_MettingVote2 = "meeting_vote_2";
+    public static final String xmlNameForMeeting_Suggestion_MettingVote3 = "meeting_vote_3";
+    public static final String xmlNameForMeeting_Suggestion_MettingVote4 = "meeting_vote_4";
+    public static final String xmlNameForMeeting_Suggestion_MettingVote5 = "meeting_vote_5";
+    public static final String xmlNameForMeeting_Suggestion_MettingVote6 = "meeting_vote_6";
 
     public static final String xmlNameForMeeting_Suggestion_AuthorName = "meeting_authorname";
-
-
     public static final String xmlNameForMeeting_Suggestion_CreationTime = "meeting_creation_time";
-
     public static final String xmlNameForMeeting_Suggestion_Kategorie = "meeting_kategorie";
-
-
     public static final String xmlNameForMeeting_Suggestion_ResponseTime = "meeting_responsetime";
-
     public static final String xmlNameForMeeting_Suggestion_CoachHintText = "meeting_coach_hint_text";
-
     public static final String xmlNameForMeeting_Suggestion_DataServerId = "meeting_client_server_id";
-
-
     public static final String xmlNameForMeeting_Suggestion_CoachCanceleTime = "meeting_coach_canceled_time";
     public static final String xmlNameForMeeting_Suggestion_CoachCanceleAuthor = "meeting_coach_canceled_author";
-
-
-
-
     public static final String xmlNameForMeeting_Suggestion_ClientCommentAuthorName = "meeting_client_comment_authorname";
     public static final String xmlNameForMeeting_Suggestion_ClientCommentTime = "meeting_client_comment_time";
     public static final String xmlNameForMeeting_Suggestion_ClientCommentText = "meeting_client_comment_text";
-
-
     public static final String xmlNameForMeeting_ClientSuggestionAuthor = "meeting_client_suggestion_authorname";
     public static final String xmlNameForMeeting_ClientSuggestionTime = "meeting_client_suggestion_time";
     public static final String xmlNameForMeeting_ClientSuggestionText = "meeting_client_suggestion_text";
-
-
+    public static final String xmlNameForMeeting_ClientSuggestionStartDate = "meeting_client_suggestion_startdate";
+    public static final String xmlNameForMeeting_ClientSuggestionEndDate = "meeting_client_suggestion_enddate";
     public static final String xmlNameForMeeting_Suggestion_ClientCanceledAuthorName = "meeting_client_canceled_authorrname";
     public static final String xmlNameForMeeting_Suggestion_ClientCanceledTime = "meeting_client_canceled_time";
     public static final String xmlNameForMeeting_Suggestion_ClientCanceledText = "meeting_client_canceled_text";
 
 
-
-
-
-/*
-
-
-
-if (!defined('XML_NAME_FOR_MEETINGS_COACH_MEETING_CANCELED_TIME'))  define("XML_NAME_FOR_MEETINGS_COACH_MEETING_CANCELED_TIME", "meeting_coach_canceled_time");
-if (!defined('XML_NAME_FOR_MEETINGS_COACH_MEETING_CANCELED_AUTHOR'))  define("XML_NAME_FOR_MEETINGS_COACH_MEETING_CANCELED_AUTHOR", "meeting_coach_canceled_author");
-
- */
 
         // xml name for element meeting settings date A
         public static final String xmlNameForMeeting_Settings_MeetingDateA = "meeting_settings_date_a";

@@ -4454,10 +4454,13 @@ public class EfbXmlParser {
         Long tmpMeetingSuggestionCoachCanceleTime = 0L;
         String tmpMeetingSuggestionCoachCanceleAuthor = "";
 
+        Long tmpClientSuggestionStartDate = 0L;
+        Long tmpClientSuggestionEndDate = 0L;
+
 
         Long [] array_meetingTime = {0L,0L,0L,0L,0L,0L}; // array store meeting time -> parse to db
         int [] array_meetingPlace = {0,0,0,0,0,0}; // array store meeting place -> parse to db
-
+        int [] array_meetingVote = {0,0,0,0,0,0}; // array store vote results -> parse to db, only needed for db -> comes not from server!!!!!!!!!!
 
         try {
             int eventType = xpp.next();
@@ -4946,6 +4949,52 @@ public class EfbXmlParser {
                             break;
 
 
+                        case ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionStartDate:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting suggestion start date for client suggestion
+                                if (xpp.getText().trim().length() >= 0) { // check if meeting suggestion start date for client suggestion from xml > 0
+                                    tmpClientSuggestionStartDate = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("Meetings_Suggestion","Start Date Client Suggestion"+tmpClientSuggestionStartDate);
+
+
+                                }
+                                else {
+                                    error = true;
+                                    Log.d("ERROR MEETING", "39");
+                                }
+                            }
+                            else {
+                                error = true;
+                                Log.d("ERROR MEETING", "40");
+                            }
+
+
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionEndDate:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get meeting suggestion end date for client suggestion
+                                if (xpp.getText().trim().length() >= 0) { // check if meeting suggestion end date for client suggestion from xml > 0
+                                    tmpClientSuggestionEndDate = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+
+                                    Log.d("Meetings_Suggestion","End Date Client Suggestion"+tmpClientSuggestionEndDate);
+
+
+                                }
+                                else {
+                                    error = true;
+                                    Log.d("ERROR MEETING", "39");
+                                }
+                            }
+                            else {
+                                error = true;
+                                Log.d("ERROR MEETING", "40");
+                            }
+
+
+                            break;
+
                     }
                 }
                 eventType = xpp.next();
@@ -4989,6 +5038,7 @@ public class EfbXmlParser {
                                             array_meetingTime[0] = tmpMeetingSuggestionDate1;
                                             array_meetingPlace[0] = tmpMeetingPlace1;
 
+
                                             tmpMeetingSuggestionResponseTime = 0L; // not needed -> its a meeting
                                             tmpMeetingSuggestionCoachCanceleTime = 0L;
                                             tmpMeetingSuggestionCoachCanceleAuthor = "";
@@ -5017,7 +5067,7 @@ public class EfbXmlParser {
 
 
                                             // insert new data into db
-                                            myDb.insertNewMeetingOrSuggestionDate (array_meetingTime, array_meetingPlace, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting);
+                                            myDb.insertNewMeetingOrSuggestionDate (array_meetingTime, array_meetingPlace, array_meetingVote, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientSuggestionStartDate, tmpClientSuggestionEndDate, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting);
 
 
                                         }

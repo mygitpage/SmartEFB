@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -32,10 +33,6 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
 
     // reference to the DB
     DBAdapter myDb;
-
-    // count headline number for meetings
-    int countMeetingHeadlineNumber = 0;
-
 
     // array of meeting places names (only 3 possible-> 0=nothing; 1=Werder(Havel); 2=Bad Belzig)
     String  meetingPlaceNames[] = new String[3];
@@ -88,24 +85,20 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
         final Context context = mContext;
 
         if (cursor.isFirst() && cursor.getCount() > 1) { // listview for first element, when cursor has more then one element
-            Log.d("Meeting Cursor Adapter", "In der 1");
             inflatedView = cursorInflater.inflate(R.layout.list_meeting_overview_first, parent, false);
-            countMeetingHeadlineNumber = 1;
+
         }
         else if (cursor.isFirst() && cursor.getCount() == 1) { // listview for first element, when cursor has only one element
             inflatedView = cursorInflater.inflate(R.layout.list_meeting_overview_firstandlast, parent, false);
-            countMeetingHeadlineNumber++;
-            Log.d("Meeting Cursor Adapter", "In der 2");
+
         }
         else if (cursor.isLast()) { // listview for last element
             inflatedView = cursorInflater.inflate(R.layout.list_meeting_overview_last, parent, false);
-            countMeetingHeadlineNumber++;
-            Log.d("Meeting Cursor Adapter", "In der 3");
+
         }
         else { // listview for "normal" element
             inflatedView = cursorInflater.inflate(R.layout.list_meeting_overview_normal, parent, false);
-            countMeetingHeadlineNumber++;
-            Log.d("Meeting Cursor Adapter", "In der 4");
+
         }
 
 
@@ -113,7 +106,7 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
 
 
         TextView textViewMeetingTitleAndNumber = (TextView) inflatedView.findViewById(R.id.meetingTitleAndNumber);
-        String actualMeetingHeadline = context.getResources().getString(R.string.meetingOverviewMeetingTitleAndNumberText) + " " + countMeetingHeadlineNumber;
+        String actualMeetingHeadline = context.getResources().getString(R.string.meetingOverviewMeetingTitleAndNumberText);
         textViewMeetingTitleAndNumber.setText(actualMeetingHeadline);
 
         // check if meeting entry new?
@@ -175,7 +168,7 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
 
 
 
-        if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCanceleMeeting_OnOff, false) && cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED)) == 0) { // show cancele link for meeting
+        if (1==1 || prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCanceleMeeting_OnOff, false) && cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED)) == 0) { // show cancele link for meeting
 
             TextView tmpTextViewClientCanceledLink = (TextView) inflatedView.findViewById(R.id.meetingCanceleLink);
 
@@ -201,9 +194,8 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
 
         // meeting is canceled by client -> show hint
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED)) == 1) {
-            TextView tmpTextViewHintMeetingIsCanceled = (TextView) inflatedView.findViewById(R.id.meetingCanceleByClientHint);
-            tmpTextViewHintMeetingIsCanceled.setVisibility(View.VISIBLE);
-
+            LinearLayout tmpLinearLayoutHintMeetingIsCanceled = (LinearLayout) inflatedView.findViewById(R.id.meetingCanceleByClientHint);
+            tmpLinearLayoutHintMeetingIsCanceled.setVisibility(View.VISIBLE);
         }
 
 

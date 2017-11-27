@@ -2754,8 +2754,6 @@ import java.util.Map;
 
 
 
-
-
     public void buildMeetingDataXmlTagWithData(XmlSerializer xmlSerializer, Cursor meetingData) {
 
 
@@ -2770,42 +2768,38 @@ import java.util.Map;
 
             // start tag meeting/suggestion timestamp 1
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate1);
-            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)));
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1))/1000)); // convert millis to timestamp
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate1);
 
             // start tag meeting/suggestion timestamp 2
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate2);
-            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE2)));
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE2))/1000)); // convert millis to times
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate2);
 
             // start tag meeting/suggestion timestamp 3
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate3);
-            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE3)));
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE3))/1000)); // convert millis to times
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate3);
 
             // start tag meeting/suggestion timestamp 4
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate4);
-            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE4)));
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE4))/1000)); // convert millis to times
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate4);
 
             // start tag meeting/suggestion timestamp 5
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate5);
-            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE5)));
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE5))/1000)); // convert millis to times
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate5);
 
             // start tag meeting/suggestion timestamp 6
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate6);
-            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE6)));
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE6))/1000)); // convert millis to times
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate6);
-
-
-
 
             // start tag meeting/suggestion place 1
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace1);
             xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE1)));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace1);
-
 
             // start tag meeting/suggestion place 2
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace2);
@@ -2832,11 +2826,40 @@ import java.util.Map;
             xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE6)));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace6);
 
+            // start tag meeting/suggestion vote 1
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingVote1);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTE1)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingVote1);
 
 
+            // start tag meeting/suggestion vote 2
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingVote2);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTE2)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingVote2);
+
+            // start tag meeting/suggestion vote 3
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingVote3);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTE3)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingVote3);
+
+            // start tag meeting/suggestion vote 4
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingVote4);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTE4)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingVote4);
+
+            // start tag meeting/suggestion vote 5
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingVote5);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTE5)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingVote5);
+
+            // start tag meeting/suggestion vote 6
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingVote6);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTE6)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingVote6);
+            
             // start tag meeting/suggestion creation time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CreationTime);
-            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)));
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME))/1000)); // convert millis to times
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CreationTime);
 
             // start tag meeting/suggestion kategorie
@@ -2852,7 +2875,7 @@ import java.util.Map;
 
             // start tag meeting/suggestion client suggestion time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionTime);
-            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME)));
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME))/1000)); // convert millis to times
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionTime);
 
             // start tag meeting/suggestion client suggestion author
@@ -2868,7 +2891,7 @@ import java.util.Map;
 
             // start tag meeting/suggestion client comment time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentTime);
-            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE)));
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE))/1000)); // convert millis to times
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentTime);
 
             // start tag meeting/suggestion client comment text
@@ -2879,7 +2902,7 @@ import java.util.Map;
 
             // start tag meeting/suggestion client canceled time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCanceledTime);
-            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME)));
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME))/1000)); // convert millis to times
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCanceledTime);
 
             // start tag meeting/suggestion client canceled author name

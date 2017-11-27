@@ -111,7 +111,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingTop="10dp">
 
         <TextView
@@ -124,15 +124,32 @@
             android:gravity="right"
             android:visibility="gone"/>
 
-        <TextView
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/meetingCanceleByClientHint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="@color/text_accent_color"
-            android:text="@string/meetingCanceledByClientHintText"
-            android:gravity="center"
-            android:visibility="gone"/>
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/text_accent_color"
+                android:text="@string/meetingCanceledByClientHintText"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/meetingCanceledByClientHintText1"
+                android:gravity="center"/>
+
+
+        </LinearLayout>
 
     </LinearLayout>
 
