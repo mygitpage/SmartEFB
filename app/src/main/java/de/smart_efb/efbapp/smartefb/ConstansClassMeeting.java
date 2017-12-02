@@ -22,6 +22,12 @@ public class ConstansClassMeeting {
 
 
 
+    // show max numbers of suggestions
+    public static final int maxNumbersOfSuggestion = 6;
+
+
+    // show time for canceled meetings [in milliseconds]
+    public static final Long showDifferentTimeForCanceledMeeting = 1209600000L; // (two weeks)
 
 
 

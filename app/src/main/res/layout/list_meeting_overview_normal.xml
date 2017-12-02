@@ -75,6 +75,18 @@
         android:paddingRight="10dp">
 
         <TextView
+            android:id="@+id/meetingCanceledByCoachTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/text_accent_color"
+            android:textStyle="bold"
+            android:text="@string/meetingOverviewmeetingCanceledByCoachText"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"
+            android:visibility="gone"/>
+
+        <TextView
             android:id="@+id/meetingDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -121,8 +133,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="10dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/meetingCanceleLink"
@@ -132,14 +143,25 @@
             android:textColor="@color/text_color"
             android:textColorLink="@color/colorPrimaryDark"
             android:gravity="right"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:paddingBottom="15dp"/>
+
+        <TextView
+            android:id="@+id/meetingDeleteCanceledMetingLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimaryDark"
+            android:gravity="right"
+            android:visibility="gone"
+            android:paddingBottom="15dp"/>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/meetingCanceleByClientHint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="10dp"
             android:visibility="gone">
 
             <TextView

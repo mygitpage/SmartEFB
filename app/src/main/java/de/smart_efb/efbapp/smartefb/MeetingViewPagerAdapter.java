@@ -70,9 +70,6 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
                         return fragMeeting;
 
                     case 1:
-                        return fragMeetingCommentFromClient;
-
-                    case 2:
                         return fragmentMeetingCanceledFromClient;
 
                 }
@@ -85,6 +82,9 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
 
                     case 1:
                         return fragSuggestionFromClient;
+
+                    case 2:
+                        return fragMeetingCommentFromClient;
 
                 }
 
@@ -130,12 +130,8 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
                 fragmentChooserTabZero = 0;
                 break;
 
-            case "meeting_comment_from_client": // set fragment on tab zero to MeetingCommentFromClient
-                fragmentChooserTabZero = 1;
-                break;
-
             case "meeting_client_canceled": // set fragment on tab zero to MeetingClientCanceled
-                fragmentChooserTabZero = 2;
+                fragmentChooserTabZero = 1;
                 break;
         }
 
@@ -152,8 +148,12 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
                 fragmentChooserTabOne = 0;
                 break;
 
-            case "suggestion_from_client": // set fragment on tab zero to SuggestionFromClient
+            case "suggestion_from_client": // set fragment on tab one to SuggestionFromClient
                 fragmentChooserTabOne = 1;
+                break;
+
+            case "meeting_comment_from_client": // set fragment on tab one to MeetingCommentFromClient
+                fragmentChooserTabOne = 2;
                 break;
         }
 

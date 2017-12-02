@@ -1,7 +1,9 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,6 +17,7 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.concurrent.TimeUnit;
 
@@ -68,8 +72,8 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
         viewFragmentClientCanceledMeeting = layoutInflater.inflate(R.layout.fragment_meeting_client_canceled, null);
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
-        //IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
-        //getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentNowCommentBrodcastReceiver, filter);
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(meetingFragmentMeetingClientCanceledBrodcastReceiver, filter);
 
         return viewFragmentClientCanceledMeeting;
 
@@ -78,7 +82,6 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
 
     @Override
     public void onViewCreated (View view, @Nullable Bundle saveInstanceState) {
-
 
         super.onViewCreated(view, saveInstanceState);
 
@@ -119,11 +122,7 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
         // set correct subtitle
         tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleClientCanceledMeeting", "string", fragmentClientCanceledMeetingContext.getPackageName()));
         ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, "meeting_client_canceled");
-
-
     }
-
-
 
 
     // call getter Functions in ActivityMeeting for some data
@@ -136,42 +135,107 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
     }
 
 
+    // fragment is destroyed
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // de-register broadcast receiver
+        getActivity().getApplicationContext().unregisterReceiver(meetingFragmentMeetingClientCanceledBrodcastReceiver);
+
+    }
 
 
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeServiceEfb
+    private BroadcastReceiver meetingFragmentMeetingClientCanceledBrodcastReceiver = new BroadcastReceiver() {
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                // check intent order
+
+                String tmpExtraMeeting = intentExtras.getString("Meeting","0");
+                String tmpExtraMeetingNewMeeting = intentExtras.getString("MeetingNewMeeting","0");
+                String tmpExtraMeetingCanceledMeetingByCoach = intentExtras.getString("MeetingCanceledMeetingByCoach","0");
+                String tmpCommand = intentExtras.getString("Command");
+                String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
+                String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
+                String tmpMessage = intentExtras.getString("Message");
+
+                if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingNewMeeting != null && tmpExtraMeetingNewMeeting.equals("1")) {
+                    // new meeting on smartphone -> show toast
+                    String updateNewMeeting = fragmentClientCanceledMeetingContext.getString(R.string.toastMessageMeetingNewMeeting);
+                    Toast toast = Toast.makeText(context, updateNewMeeting, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingCanceledMeetingByCoach != null && tmpExtraMeetingCanceledMeetingByCoach.equals("1")) {
+                    // meeting canceled by coach -> show toast
+                    String updateNewMeeting = fragmentClientCanceledMeetingContext.getString(R.string.toastMessageMeetingCanceledMeetingByCoach);
+                    Toast toast = Toast.makeText(context, updateNewMeeting, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                }
+                else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpCommand != null && tmpCommand.length() > 0) { // send successfull?
+
+                    if (tmpCommand.equals("ask_parent_activity")) {
+
+                        // get successfull message from parent
+                        String successfullMessage = ((ActivityMeeting) getActivity()).getSuccessefullMessageForSending ();
+                        if (successfullMessage.length() > 0) {
+                            Toast toast = Toast.makeText(context, successfullMessage, Toast.LENGTH_LONG);
+                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                            if (v != null) v.setGravity(Gravity.CENTER);
+                            toast.show();
+                        }
+                    }
+                }
+                else if (tmpSendNotSuccessefull != null && tmpSendNotSuccessefull.equals("1") && tmpCommand != null && tmpCommand.length() > 0) { // send not successfull?
+
+                    if (tmpCommand.equals("ask_parent_activity")) {
+
+                        // get not successfull message from parent
+                        String notSuccessfullMessage = ((ActivityMeeting) getActivity()).getNotSuccessefullMessageForSending ();
+                        if (notSuccessfullMessage.length() > 0) {
+                            Toast toast = Toast.makeText(context, notSuccessfullMessage, Toast.LENGTH_LONG);
+                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                            if (v != null) v.setGravity(Gravity.CENTER);
+                            toast.show();
+                        }
+                    }
+                    else if (tmpCommand.equals("look_message") && tmpMessage != null && tmpMessage.length() > 0) {
+
+                        Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
+                        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                        if( v != null) v.setGravity(Gravity.CENTER);
+                        toast.show();
+                    }
+
+                }
+            }
+        }
+    };
 
 
     // build the view for the fragment
     private void buildFragmentClientCanceledMeetingView () {
 
-
-
-
-
         if (cursorCanceledMeeting != null && cursorCanceledMeeting.getCount() > 0) {
-
-            Log.d("MeetingClientCanceled", "In Build VIEW!");
 
             // textview for the intro text, like meeting
             TextView textViewInfoCanceledMeeting = (TextView) viewFragmentClientCanceledMeeting.findViewById(R.id.meetingCanceledInfoText);
-
-            String meetingCreationDate = EfbHelperClass.timestampToDateFormat(cursorCanceledMeeting.getLong(cursorCanceledMeeting.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "dd.MM.yyyy");
-            String meetingCreationTime = EfbHelperClass.timestampToDateFormat(cursorCanceledMeeting.getLong(cursorCanceledMeeting.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "HH:mm");
-
-
-
             String meetingDate = EfbHelperClass.timestampToDateFormat(cursorCanceledMeeting.getLong(cursorCanceledMeeting.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "dd.MM.yyyy");
             String meetingTime = EfbHelperClass.timestampToDateFormat(cursorCanceledMeeting.getLong(cursorCanceledMeeting.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "HH:mm");
             String meetingPLace = meetingPlaceNames[cursorCanceledMeeting.getInt(cursorCanceledMeeting.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE1))];
-
-
             String tmpInfoCanceledMeetingText = String.format(fragmentClientCanceledMeetingContext.getResources().getString(R.string.meetingClientCanceledIntroText), meetingDate, meetingTime, meetingPLace );
-
-
-            //String tmpCanceledIntroText = String.format(fragmentClientCanceledMeetingContext.getResources().getString(R.string.meetingClientCanceledIntroText), tmpAuthorName, commentDate, commentTime);
-
             textViewInfoCanceledMeeting.setText(tmpInfoCanceledMeetingText);
-
 
             // generate back link "zurueck zu den Terminen"
             Uri.Builder backMeetingLinkBuilder = new Uri.Builder();
@@ -180,16 +244,9 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
                     .path("meeting")
                     .appendQueryParameter("meeting_id", "0")
                     .appendQueryParameter("com", "meeting_overview");
-
-
             TextView backLinkToMeetingOverview = (TextView) viewFragmentClientCanceledMeeting.findViewById(R.id.meetingBackLinkToOverview);
             backLinkToMeetingOverview.setText(Html.fromHtml("<a href=\"" + backMeetingLinkBuilder.build().toString() + "\">" + fragmentClientCanceledMeetingContext.getResources().getString(fragmentClientCanceledMeetingContext.getResources().getIdentifier("meetingBackLinkToMeetingOverview", "string", fragmentClientCanceledMeetingContext.getPackageName())) + "</a>"));
             backLinkToMeetingOverview.setMovementMethod(LinkMovementMethod.getInstance());
-
-
-
-
-
 
             // get max letters for edit text comment
             final int tmpMaxLength = ConstansClassMeeting.namePrefsMaxLettersCanceledMeetingReason;
@@ -223,11 +280,6 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
             // set input filter max length for canceled reason field
             txtInputCanceledReason.setFilters(new InputFilter[] {new InputFilter.LengthFilter(tmpMaxLength)});
 
-
-
-
-
-
             // get button send comment
             Button buttonSendCanceledReason = (Button) viewFragmentClientCanceledMeeting.findViewById(R.id.buttonSendCanceledReason);
 
@@ -247,13 +299,19 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
                         // insert  in DB
                         myDb.updateMeetingCanceledByClient(clientCanceledMeetingId, tmpCanceledTime, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), txtInputCanceledReason.getText().toString(), tmpStatus);
 
+                        // set successfull message in parent activity
+                        String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
+                        ((ActivityMeeting) getActivity()).setSuccessefullMessageForSending (tmpSuccessfullMessage);
+
+                        // set not successfull message in parent activity
+                        String tmpNotSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientNotSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
+                        ((ActivityMeeting) getActivity()).setNotSuccessefullMessageForSending (tmpNotSuccessfullMessage);
 
                         // send intent to service to start the service and send canceled meeting to server!
                         Intent startServiceIntent = new Intent(fragmentClientCanceledMeetingContext, ExchangeServiceEfb.class);
                         startServiceIntent.putExtra("com","send_meeting_data");
                         startServiceIntent.putExtra("dbid",clientCanceledMeetingId);
                         fragmentClientCanceledMeetingContext.startService(startServiceIntent);
-
 
                         // build intent to go back to meetingOverview
                         Intent intent = new Intent(getActivity(), ActivityMeeting.class);

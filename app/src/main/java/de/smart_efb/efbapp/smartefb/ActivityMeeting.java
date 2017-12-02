@@ -57,9 +57,6 @@ public class ActivityMeeting extends AppCompatActivity {
     // reference to the DB
     DBAdapter myDb;
 
-
-
-
     // what to show in tab zero
     String showCommandFragmentTabZero = "";
 
@@ -78,54 +75,12 @@ public class ActivityMeeting extends AppCompatActivity {
     String tabTitleTextTabZero = "";
     String tabTitleTextTabOne = "";
 
-
     // actual db id of meeting (for canceled, comment, etc.)
     Long actualDbIdOfMeeting = 0L;
 
-
-
-
-    // reference to fragement manager
-    FragmentManager fragmentManagerActivityMeeting;
-
-    // reference to meeting fragments
-    MeetingFragmentMeetingNow referenceFragmentMeetingNow;
-    MeetingFragmentMeetingMake referenceFragmentMeetingMake;
-    MeetingFragmentMeetingFind referenceFragmentMeetingFind;
-    MeetingFragmentMeetingChange referenceFragmentMeetingChange;
-
-    // boolean status array checkbox
-    Boolean [] makeMeetingCheckBoxListenerArray = new Boolean[ConstansClassMeeting.countNumberTimezones];
-
-    // meeting status
-    int meetingStatus = 0;
-
-    // name for places array (2 places)
-    private String[] placesNameForMeetingArray = new String [4];
-
-    // meeting problem
-    String meetingProblem = "";
-
-    // author meeting suggestions
-    String meetingSuggestionsAuthor = "";
-
-    // meeting place
-    int [] meetingPlace = new int[ConstansClassMeeting.numberSimultaneousMeetings];
-
-    // the current meeting date and time
-    long [] currentMeetingDateAndTime = new long [ConstansClassMeeting.numberSimultaneousMeetings];
-
-    // info new meeting date and time
-    Boolean [] meetingNewDateAndTime = new Boolean[ConstansClassMeeting.numberSimultaneousMeetings];
-
-    // deadline for responding of meeting suggestions
-    long meetingSuggestionsResponeseDeadline = 0;
-
-    // index number for meeting to change
-    int indexNumberForMeetingToChange = 0;
-
-    // String info back to fragment when back from change meeting
-    String meetingBackToFragment = "";
+    // message for successfull and not successfull sending (set and read by fragment)
+    String notSuccessefullForSendingMessageString = "";
+    String successefullForSendingMessageString = "";
 
     // reference to dialog settings
     AlertDialog alertDialogSettings;
@@ -138,6 +93,8 @@ public class ActivityMeeting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_efb_meeting);
+
+
 
         // init meeting
         initMeeting();
@@ -256,6 +213,9 @@ public class ActivityMeeting extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        // init DB
+        myDb = new DBAdapter(getApplicationContext());
+
         // init the prefs
         prefs = getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
 
@@ -273,6 +233,7 @@ public class ActivityMeeting extends AppCompatActivity {
 
         // init show on tab zero meeting overview
         showCommandFragmentTabZero = "meeting_overview";
+
         // init show on tab one suggestion overview
         showCommandFragmentTabOne = "suggestion_overview";
 
@@ -287,69 +248,6 @@ public class ActivityMeeting extends AppCompatActivity {
         //set tab title string
         tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("meetingTabTitle_1", "string", getPackageName()));
         tabTitleTextTabOne = getResources().getString(getResources().getIdentifier("meetingTabTitle_2", "string", getPackageName()));
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
-
-        // get meeting status
-        meetingStatus = prefs.getInt(ConstansClassMeeting.namePrefsMeetingStatus, 0);
-
-        // get meeting problem
-        meetingProblem = prefs.getString(ConstansClassMeeting.namePrefsMeetingProblem, "");
-
-        // get author meeting suggestions
-        meetingSuggestionsAuthor = prefs.getString(ConstansClassMeeting.namePrefsAuthorMeetingSuggestion, "Herr Terminmann");
-
-        // get response deadline for meeting suggestions
-        meetingSuggestionsResponeseDeadline = prefs.getLong(ConstansClassMeeting.namePrefsMeetingSuggestionsResponseDeadline, 0);
-
-        // get from prefs meeting date and time and place
-        getDateAndTimeFromPrefs ();
-
-        //load timezone array for meeting
-        for (int i = 0; i< ConstansClassMeeting.countNumberTimezones; i++) {
-            makeMeetingCheckBoxListenerArray[i] = prefs.getBoolean(ConstansClassMeeting.namePrefsArrayMeetingTimezoneArray+i, false);
-        }
-
-        // init array for places name
-        placesNameForMeetingArray = getResources().getStringArray(R.array.placesNameForMeetingArray);
-
-        // init reference fragment manager
-        fragmentManagerActivityMeeting = getSupportFragmentManager();
-
-        // init reference fragments
-        referenceFragmentMeetingNow = new MeetingFragmentMeetingNow();
-        referenceFragmentMeetingMake = new MeetingFragmentMeetingMake();
-        referenceFragmentMeetingFind = new MeetingFragmentMeetingFind();
-        referenceFragmentMeetingChange = new MeetingFragmentMeetingChange();
-
-        if (meetingStatus >= 0 && meetingStatus <= 3) { // init start fragment MeetingFragmentMeetingNow
-
-            FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
-            fragmentTransaction.add(R.id.fragment_container, referenceFragmentMeetingNow, "now_meeting");
-            fragmentTransaction.commit();
-        }
-        else {// init start fragment MeetingFragmentFindMeeting
-
-            FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
-            fragmentTransaction.add(R.id.fragment_container, referenceFragmentMeetingFind, "find_meeting");
-            fragmentTransaction.commit();
-
-        }
-
-        */
-
 
         // create help dialog in Meeting
         createHelpDialog();
@@ -475,6 +373,27 @@ public class ActivityMeeting extends AppCompatActivity {
             // set correct subtitle in toolbar in tab zero
             toolbarMeeting.setSubtitle(arraySubTitleText[5]);
 
+
+        } else if (command.equals("delete_canceled_meeting_by_client")) { // delete canceled meeting, clicked by client
+
+            // delete selected meeting from db
+            myDb.deleteSelectedMeetingOrSuggestionFromDb(meetingId);
+
+            //set fragment in tab zero to meeting overview
+            meetingViewPagerAdapter.setFragmentTabZero("meeting_overview");
+
+            // set correct tab zero title with information new entry and color change
+            tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("meetingTabTitle_1", "string", getPackageName()));
+            setTabZeroTitleAndColor();
+
+            // set command show variable
+            showCommandFragmentTabZero = "meeting_overview";
+
+            // call notify data change
+            meetingViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbarMeeting.setSubtitle(arraySubTitleText[0]);
 
         } else { // Show fragment meeting overview on tab zero
 
@@ -749,200 +668,6 @@ public class ActivityMeeting extends AppCompatActivity {
 
 
 
-/*
-
-    // setter for subtitle in ActivityMeeting toolbar
-    public void setMeetingToolbarSubtitle (String subtitleText) {
-
-       toolbarMeeting.setSubtitle(subtitleText);
-
-    }
-
-
-    // getter for actual meeting timestamp (max 2 meetings)
-    public  long[] getMeetingTimeAndDate () {
-
-        return currentMeetingDateAndTime;
-    }
-
-
-    // delete meeting timestamp and place with index
-    public void deleteMeetingTimestampAndPlace (int index) {
-
-        // Delete timestamp from meeting _A or _B (look index)
-        prefsEditor.putLong(ConstansClassMeeting.namePrefsMeetingTimeAndDate + ConstansClassMeeting.prefsPraefixMeetings[index], 0);
-        // Delete meeting place
-        prefsEditor.putInt(ConstansClassMeeting.namePrefsMeetingPlace + ConstansClassMeeting.prefsPraefixMeetings[index], 0);
-        // Delete new info for meeting
-        prefsEditor.putBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime + ConstansClassMeeting.prefsPraefixMeetings[index], false);
-
-        prefsEditor.commit();
-
-        // refresh from prefs meeting date and time and place
-        getDateAndTimeFromPrefs ();
-
-
-    }
-
-
-    // getter for timezone suggestions array
-    public Boolean[] getMeetingTimezoneSuggestions () {
-
-        return makeMeetingCheckBoxListenerArray;
-    }
-
-
-    // setter for timezone suggestions array
-    public void setMeetingTimezoneSuggestions (Boolean [] tmpTimezoneSuggestion) {
-
-        // store timezone suggestions result in prefs
-        for (int i = 0; i< ConstansClassMeeting.countNumberTimezones; i++) {
-            prefsEditor.putBoolean(ConstansClassMeeting.namePrefsArrayMeetingTimezoneArray+i,tmpTimezoneSuggestion[i]);
-            makeMeetingCheckBoxListenerArray[i] = tmpTimezoneSuggestion[i];
-        }
-
-        prefsEditor.commit();
-
-    }
-
-
-    // getter for meeting status
-    public int getMeetingStatus () {
-
-        return meetingStatus;
-
-    }
-
-
-    // setter for meeting status
-    public void setMeetingStatus (int tmpMeetingStatus) {
-
-        meetingStatus = tmpMeetingStatus;
-
-        prefsEditor.putInt(ConstansClassMeeting.namePrefsMeetingStatus,tmpMeetingStatus);
-
-        prefsEditor.commit();
-
-    }
-
-
-    // getter for meeting place (max 2 places for meetings)
-    public int[] getMeetingPlace () {
-
-        return meetingPlace;
-
-    }
-
-
-    // getter for meeting place name
-    public String getMeetingPlaceName (int tmpMeetingPlace) {
-
-        return placesNameForMeetingArray[tmpMeetingPlace];
-
-    }
-
-
-    // setter for meeting place
-    public void setMeetingPlace (int tmpMeetingPlace, int placeIndex) {
-
-        meetingPlace[placeIndex] = tmpMeetingPlace;
-
-        prefsEditor.putInt(ConstansClassMeeting.namePrefsMeetingPlace + ConstansClassMeeting.prefsPraefixMeetings[placeIndex],tmpMeetingPlace);
-
-        prefsEditor.commit();
-
-    }
-
-
-
-
-    // getter for meeting problem
-    public String getMeetingProblem () {
-
-        return meetingProblem;
-
-    }
-
-
-    // setter for meeting problem
-    public void setMeetingProblem (String tmpMeetingProblem) {
-
-        meetingProblem = tmpMeetingProblem;
-
-        prefsEditor.putString(ConstansClassMeeting.namePrefsMeetingProblem,tmpMeetingProblem);
-
-        prefsEditor.commit();
-
-    }
-
-
-    // getter for author meeting suggestion
-    public String getAuthorMeetingSuggestion () {
-
-        return meetingSuggestionsAuthor;
-
-    }
-
-
-    // getter for info new meeting date and time
-    public Boolean[] getInfoNewMeetingDateAndTime () {
-
-        return meetingNewDateAndTime;
-
-    }
-
-    // unset new status meetings (both new status for meeting is unset)
-    public void unsetNewStatusMeeting () {
-
-        prefsEditor.putBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime + ConstansClassMeeting.prefsPraefixMeetings[0],false);
-        prefsEditor.putBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime + ConstansClassMeeting.prefsPraefixMeetings[1],false);
-
-        prefsEditor.commit();
-
-    }
-
-
-    // getter for deadline for suggestion response
-    public long getSuggestionsResponeseDeadline () {
-
-        return meetingSuggestionsResponeseDeadline;
-
-    }
-
-
-    // setter for index to change/delete an meeting
-    public void setMeetingIndexToChange (int tmpMeetingIndexToChange) {
-
-        indexNumberForMeetingToChange = tmpMeetingIndexToChange;
-
-    }
-
-    // getter for index to change/delete an meeting
-    public int getMeetingIndexToChange () {
-
-        return indexNumberForMeetingToChange;
-
-    }
-
-    // setter for info back to fragment
-    public void setMeetingBackToFragment (String tmpMeetingBackToFragment) {
-
-        meetingBackToFragment = tmpMeetingBackToFragment;
-
-    }
-
-
-    // getter for info back to fragment
-    public String getMeetingBackToFragment () {
-
-        return meetingBackToFragment;
-
-    }
-
-
-    */
-
-
 
     // getter for actual db id of meeting (for canceled, comment, etc.)
     public Long getActualMeetingDbId () {
@@ -950,6 +675,42 @@ public class ActivityMeeting extends AppCompatActivity {
         return actualDbIdOfMeeting;
 
     }
+
+
+    // return a message that ist set by a fragment, when sending is successefull
+    public String getSuccessefullMessageForSending() {
+
+        return successefullForSendingMessageString;
+
+    }
+
+
+    // set message by a fragment, for returning, when sending is successefull
+    public void setSuccessefullMessageForSending(String succssefullString) {
+
+        successefullForSendingMessageString = succssefullString;
+
+    }
+
+
+
+    // return a message that ist set by a fragment, when sending is not successefull
+    public String getNotSuccessefullMessageForSending() {
+
+        return notSuccessefullForSendingMessageString;
+
+    }
+
+
+    // set message by a fragment, for returning, when sending is not successefull
+    public void setNotSuccessefullMessageForSending(String notSuccssefullString) {
+
+        notSuccessefullForSendingMessageString = notSuccssefullString;
+
+    }
+
+
+
 
 
 
@@ -1002,9 +763,8 @@ public class ActivityMeeting extends AppCompatActivity {
     // look for new entry on tab zero
     private void lookNewEntryOnTabZero () {
 
-        /*
         // look for new entrys in db on tab zero
-        if ((subfunction_arrangement_comment && myDb.getCountAllNewEntryOurArrangementComment(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0")) > 0) || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "current") > 0 ) {
+        if (myDb.getCountNewEntryMeetingAndSuggestion("meeting") > 0) {
             infoNewEntryOnTabZero = true;
             infoTextNewEntryPostFixTabZeroTitle = " " + this.getResources().getString(R.string.newEntryText);
         }
@@ -1012,14 +772,6 @@ public class ActivityMeeting extends AppCompatActivity {
             infoNewEntryOnTabZero = false;
             infoTextNewEntryPostFixTabZeroTitle = "";
         }
-        */
-
-        // TODO: check code!!!!!!!!!!!!!!!
-
-        infoNewEntryOnTabZero = false;
-        infoTextNewEntryPostFixTabZeroTitle = "";
-
-
     }
 
 
@@ -1027,9 +779,8 @@ public class ActivityMeeting extends AppCompatActivity {
     // look for new entry on tab one
     private void lookNewEntryOnTabOne () {
 
-        /*
         // look for new entrys in db on tab one
-        if ((subfunction_arrangement_sketchcomment && myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0")) > 0) || (subfunction_arrangement_sketch && myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "sketch") > 0)) {
+        if (myDb.getCountNewEntryMeetingAndSuggestion("suggestion") > 0) {
             infoNewEntryOnTabOne = true;
             infoTextNewEntryPostFixTabOneTitle = " "+ this.getResources().getString(R.string.newEntryText);
         }
@@ -1037,21 +788,7 @@ public class ActivityMeeting extends AppCompatActivity {
             infoNewEntryOnTabOne = false;
             infoTextNewEntryPostFixTabOneTitle = "";
         }
-        */
-
-        // TODO: check code!!!!!!!!!!!!!!!
-
-        infoNewEntryOnTabOne = false;
-        infoTextNewEntryPostFixTabOneTitle = "";
-
-
-
-
     }
-
-
-
-
 
 
     // set/ unset textcolor for tab title on tab zero
@@ -1093,7 +830,7 @@ public class ActivityMeeting extends AppCompatActivity {
             tmpTextColor = ContextCompat.getColor(ActivityMeeting.this, R.color.colorAccent);
         }
 
-        // Change tab text color on tab zero
+        // Change tab text color on tab one
         ViewGroup vg = (ViewGroup) tabLayoutMeeting.getChildAt(0);
         ViewGroup vgTab = (ViewGroup) vg.getChildAt(1); //Tab One
         int tabChildsCount = vgTab.getChildCount();

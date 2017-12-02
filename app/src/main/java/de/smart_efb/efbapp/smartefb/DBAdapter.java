@@ -2417,7 +2417,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Add a new meeting or suggestion date in db
-    public Long insertNewMeetingOrSuggestionDate (Long [] array_meetingTime, int [] array_meetingPlace, int [] array_meetingVote, Long tmpMeetingSuggestionCreationTime, String tmpMeetingSuggestionAuthorName, int tmpMeetingSuggestionKategorie, Long tmpMeetingSuggestionResponseTime, String tmpMeetingSuggestionCoachHintText, int tmpMeetingSuggestionCoachCancele, Long tmpMeetingSuggestionCoachCanceleTime, String tmpMeetingSuggestionCoachCanceleAuthor, int tmpMeetingSuggestionDataServerId, String tmpClientSuggestionText, String tmpClientSuggestionAuthor, Long tmpClientSuggestionTime, Long tmpClientSuggestionStartDate, Long tmpClientSuggestionEndDate, String tmpClientCommentText, String tmpClientCommentAuthor, Long tmpClientCommentTime, int tmpMeetingSuggestionClientCancele, Long tmpMeetingSuggestionClientCanceleTime, String tmpMeetingSuggestionClientCanceleAuthor, String tmpMeetingSuggestionClientCanceleText, int meetingStatus, Long tmpUploadTime, int newMeeting) {
+    public Long insertNewMeetingOrSuggestionDate (Long [] array_meetingTime, int [] array_meetingPlace, int [] array_meetingVote, Long tmpMeetingSuggestionCreationTime, String tmpMeetingSuggestionAuthorName, int tmpMeetingSuggestionKategorie, Long tmpMeetingSuggestionResponseTime, String tmpMeetingSuggestionCoachHintText, int tmpMeetingSuggestionCoachCancele, Long tmpMeetingSuggestionCoachCanceleTime, String tmpMeetingSuggestionCoachCanceleAuthor, Long tmpMeetingSuggestionDataServerId, String tmpClientSuggestionText, String tmpClientSuggestionAuthor, Long tmpClientSuggestionTime, Long tmpClientSuggestionStartDate, Long tmpClientSuggestionEndDate, String tmpClientCommentText, String tmpClientCommentAuthor, Long tmpClientCommentTime, int tmpMeetingSuggestionClientCancele, Long tmpMeetingSuggestionClientCanceleTime, String tmpMeetingSuggestionClientCanceleAuthor, String tmpMeetingSuggestionClientCanceleText, int meetingStatus, Long tmpUploadTime, int newMeeting) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2470,15 +2470,26 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Insert it into the database.
         return db.insert(DATABASE_TABLE_MEETING_SUGGESTION, null, initialValues);
-
     }
 
+    // Change an existing meeting to canceled by coach
+    public boolean updateMeetingCanceledByCoach(Long meeting_server_id, long canceledTime, String canceledAuthor, int newMeeting, int status) {
 
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        String where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_server_id;
 
+        // Create rows data:
+        ContentValues newValues = new ContentValues();
+        newValues.put(MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME, canceledTime);
+        newValues.put(MEETING_SUGGESTION_KEY_MEETING_CANCELED, 1);
+        newValues.put(MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR, canceledAuthor);
+        newValues.put(MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST, newMeeting);
+        newValues.put(MEETING_SUGGESTION_MEETING_KEY_STATUS, status);
 
-
-
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+    }
 
 
     // Change an existing meeting to canceled by client
@@ -2500,11 +2511,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
     }
 
-
-
-
-
-
     // Delete all rows meeting and suggestions from the database
     public boolean deleteAllRowsMeetingAndSuggestion() {
 
@@ -2514,18 +2520,38 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-
-
-
-
-    // Get the number of new rows in meeting/ suggestion
-    public int getCountNewEntryMeetingAndSuggestion () {
+    // Delete selected meeting or suggestion from db
+    public boolean deleteSelectedMeetingOrSuggestionFromDb(Long meeting_id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // new_entry = 1 (true)?
-        String where = MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST + "=1";
+        String where = KEY_ROWID+"="+meeting_id;
 
+        return db.delete(DATABASE_TABLE_MEETING_SUGGESTION, where, null) != 0;
+    }
+
+
+    // Get the number of new rows in meeting/ suggestion
+    public int getCountNewEntryMeetingAndSuggestion (String meetingOrSuggestion) {
+
+        String where = ""; //new_entry = 1 (true)?
+
+        switch (meetingOrSuggestion) {
+            case "meeting":
+                where = MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST + "=1 AND "+MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1"; // kategorie =1 -> normal meeting
+                break;
+            case "suggestion":
+                where = MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST + "=1 AND "+MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2"; // kategorie =2 -> suggestion
+                break;
+            case "all":
+                where = MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST + "=1";
+                break;
+            default:
+                where = MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST + "=1 AND "+MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1"; // kategorie =1 -> normal meeting
+                break;
+        }
+
+        SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor c = 	db.query(true, DATABASE_TABLE_MEETING_SUGGESTION, MEETING_SUGGESTION_MEETING_ALL_KEYS,
                 where, null, null, null, null, null);
@@ -2542,7 +2568,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry for meeting/ suggestion with rowId
-    public boolean deleteStatusNewEntryMeetingAndSuggestion (int rowId) {
+    public boolean deleteStatusNewEntryMeetingAndSuggestion (Long rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2557,8 +2583,6 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-
-
     // Return all meeting/ suggestion from the database
     public Cursor getAllRowsMeetingsAndSuggestion(String suggestionOrMeetingData, Long nowTime) {
 
@@ -2571,15 +2595,20 @@ public class DBAdapter extends SQLiteOpenHelper {
         switch (suggestionOrMeetingData) {
 
             case "future_meeting":
-                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE+"=1 AND "+MEETING_SUGGESTION_KEY_DATE1+">="+nowTime;
-                sort = MEETING_SUGGESTION_KEY_MEETING_CANCELED+" DESC, "+MEETING_SUGGESTION_KEY_DATE1 + " DESC";
+                Long canceledMeetingTimeBorder = nowTime - ConstansClassMeeting.showDifferentTimeForCanceledMeeting;
+                where = "("+MEETING_SUGGESTION_KEY_MEETING_KATEGORIE+"=1 AND "+MEETING_SUGGESTION_KEY_DATE1+">="+nowTime+" AND "+MEETING_SUGGESTION_KEY_MEETING_CANCELED+"=0) OR ("+MEETING_SUGGESTION_KEY_MEETING_KATEGORIE+"=1 AND "+MEETING_SUGGESTION_KEY_DATE1+">="+nowTime+" AND "+MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME+">"+canceledMeetingTimeBorder+" AND "+MEETING_SUGGESTION_KEY_MEETING_CANCELED+"=1)";
+                sort = MEETING_SUGGESTION_KEY_MEETING_CANCELED+" DESC, "+MEETING_SUGGESTION_KEY_DATE1 + " ASC";
                 break;
             case "future_suggestion":
                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE+"=2 AND "+MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME+">="+nowTime;
-                sort = MEETING_SUGGESTION_KEY_MEETING_CANCELED+" DESC, "+MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + " DESC";
+                sort = MEETING_SUGGESTION_KEY_MEETING_CANCELED+" DESC, "+MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + " ASC";
                 break;
             case "old_meeting_suggestion":
                 where = "("+MEETING_SUGGESTION_KEY_MEETING_KATEGORIE+"=2 AND "+MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME+"<"+nowTime+") OR ("+MEETING_SUGGESTION_KEY_MEETING_KATEGORIE+"=1 AND "+MEETING_SUGGESTION_KEY_DATE1+"<"+nowTime+")";
+                sort = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + " DESC";
+                break;
+            case "ready_to_send":
+                where = MEETING_SUGGESTION_MEETING_KEY_STATUS+"=0";
                 sort = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + " DESC";
                 break;
             default:

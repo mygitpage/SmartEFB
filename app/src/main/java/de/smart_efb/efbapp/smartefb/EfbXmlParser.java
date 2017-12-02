@@ -128,9 +128,13 @@ public class EfbXmlParser {
 
         returnMap.put("Meeting", "0");
         returnMap.put("MeetingSettings", "0");
-        returnMap.put("MeetingSettingsUpdateStatus", "0");
-        returnMap.put("MeetingSettingsUpdateDateB", "0");
-        returnMap.put("MeetingSettingsUpdateDateA", "0");
+        returnMap.put("MeetingNewMeeting", "0");
+        returnMap.put("MeetingCanceledMeetingByCoach", "0");
+        returnMap.put("MeetingNewSuggestion", "0");
+        returnMap.put("MeetingCanceledSuggestionByCoach", "0");
+        returnMap.put("MeetingNewInvitationSuggestion", "0");
+
+
 
         returnMap.put("TimeTable", "0");
         returnMap.put("TimeTableNewValue", "0");
@@ -4274,14 +4278,6 @@ public class EfbXmlParser {
 
                             break;
 
-
-
-
-
-
-
-
-
                     }
                 }
                 eventType = xpp.next();
@@ -4450,7 +4446,7 @@ public class EfbXmlParser {
         Long tmpMeetingSuggestionResponseTime = 0L;
         int tmpMeetingSuggestionKategorie = 0;
         String tmpMeetingSuggestionCoachHintText = "";
-        int tmpMeetingSuggestionDataServerId = 0;
+        Long tmpMeetingSuggestionDataServerId = 0L;
         Long tmpMeetingSuggestionCoachCanceleTime = 0L;
         String tmpMeetingSuggestionCoachCanceleAuthor = "";
 
@@ -4888,7 +4884,7 @@ public class EfbXmlParser {
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting suggestion coach hint text
                                 if (xpp.getText().trim().length() > 0) { // check if meeting suggestion coach hint text from xml > 0
-                                    tmpMeetingSuggestionDataServerId = Integer.valueOf(xpp.getText().trim());
+                                    tmpMeetingSuggestionDataServerId = Long.valueOf(xpp.getText().trim());
 
                                     Log.d("Meetings_Suggestion","Server Id"+tmpMeetingSuggestionDataServerId);
 
@@ -5014,32 +5010,224 @@ public class EfbXmlParser {
                         // check all data for meeting suggestions correct?
                         if (!error) {
 
-                            Log.d("MeetingAndSuggestion","Keine Fehler da!");
+                            Log.d("XML Suggestion", "Keine Fehler vorhanden");
 
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpMeetingSuggestionKategorie > 0) {
+                                // meeting or suggestion
 
-
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpMeetingSuggestionKategorie > 0 && tmpMeetingSuggestionCoachCanceleTime == 0 && tmpMeetingSuggestionCoachCanceleAuthor.length() == 0) {
-                                // new meeting or suggestion, not canceled
+                                Log.d("XML Suggestion", "Switch ERREICHT!");
 
                                 switch (tmpMeetingSuggestionKategorie) { // check for meeting or suggestion
 
                                     case 1: // meeting dates
+                                        if (tmpMeetingSuggestionDate1 > 0 && tmpMeetingPlace1 > 0 && tmpMeetingSuggestionAuthorName.length() > 0 && tmpMeetingSuggestionCreationTime > 0 && tmpMeetingSuggestionDataServerId > 0) {
+                                            // check if meeting data is canceled or new meeting
+                                            if (tmpMeetingSuggestionCoachCanceleTime > 0 && tmpMeetingSuggestionCoachCanceleAuthor.length() > 0) {
 
-                                        Log.d("XML Meeting", "Vor Meeting to db schreiben");
-                                        if (tmpMeetingSuggestionDate1 > 0 && tmpMeetingPlace1 > 0 && tmpMeetingSuggestionAuthorName.length() > 0 && tmpMeetingSuggestionCreationTime > 0 && tmpMeetingSuggestionAuthorName.length() > 0) {
+                                                int meetingStatus = 4; // comes from external
+                                                int newMeeting = 1; // 1 = new meeting or suggestion
+
+                                                // update row in db table
+                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus);
+
+                                                returnMap.put("MeetingCanceledMeetingByCoach", "1");
+                                                returnMap.put("Meeting", "1");
+                                            } else {
+
+                                                Log.d("XML Meeting", "Schreibe Meeting to db");
+
+                                                // init meeting parameters
+                                                Long tmpUploadTime = System.currentTimeMillis();
+
+                                                array_meetingTime[0] = tmpMeetingSuggestionDate1;
+                                                array_meetingPlace[0] = tmpMeetingPlace1;
+
+                                                array_meetingTime[1] = 0L;
+                                                array_meetingTime[2] = 0L;
+                                                array_meetingTime[3] = 0L;
+                                                array_meetingTime[4] = 0L;
+                                                array_meetingTime[5] = 0L;
+
+                                                array_meetingPlace[1] = 0;
+                                                array_meetingPlace[2] = 0;
+                                                array_meetingPlace[3] = 0;
+                                                array_meetingPlace[4] = 0;
+                                                array_meetingPlace[5] = 0;
+
+                                                array_meetingVote[0] = 0;
+                                                array_meetingVote[1] = 0;
+                                                array_meetingVote[2] = 0;
+                                                array_meetingVote[3] = 0;
+                                                array_meetingVote[4] = 0;
+                                                array_meetingVote[5] = 0;
+
+                                                tmpMeetingSuggestionResponseTime = 0L; // not needed -> its a meeting
+                                                tmpMeetingSuggestionCoachCanceleTime = 0L;
+                                                tmpMeetingSuggestionCoachCanceleAuthor = "";
+                                                int tmpMeetingSuggestionCoachCancele = 0; // 0=not canceled; 1 = canceled
+                                                String tmpClientSuggestionText = "";
+                                                String tmpClientSuggestionAuthor = "";
+                                                Long tmpClientSuggestionTime = 0L;
+                                                Long tmpMeetingSuggestionClientCanceleTime = 0L;
+                                                String tmpMeetingSuggestionClientCanceleAuthor = "";
+                                                String tmpMeetingSuggestionClientCanceleText = "";
+                                                int tmpMeetingSuggestionClientCancele = 0; // 0=not canceled; 1 = canceled
+                                                String tmpClientCommentText = "";
+                                                String tmpClientCommentAuthor = "";
+                                                Long tmpClientCommentTime = 0L;
+                                                int meetingStatus = 4; // 0=ready to send, 1=meeting/suggestion send, 4=external message
+                                                int newMeeting = 1; // 1 = new meeting or suggestion
+
+                                                // insert new data into db
+                                                myDb.insertNewMeetingOrSuggestionDate(array_meetingTime, array_meetingPlace, array_meetingVote, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientSuggestionStartDate, tmpClientSuggestionEndDate, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting);
+
+                                                returnMap.put("MeetingNewMeeting", "1");
+                                                returnMap.put("Meeting", "1");
+                                            }
+                                        }
+                                        break;
+                                    case 2: // meeting suggestions
+
+                                        Log.d("XML Suggestion", "Suggestion CASE 2");
+
+                                        if (tmpMeetingSuggestionCreationTime > 0 && tmpMeetingSuggestionAuthorName.length() > 0 && tmpMeetingSuggestionDataServerId > 0) {
+
+                                            Log.d("XML Suggestion", "Erster if uebersprungen");
+
+                                            // check if suggestion data is canceled, new suggestion or suggestion from client
+                                            if (tmpMeetingSuggestionCoachCanceleTime > 0 && tmpMeetingSuggestionCoachCanceleAuthor.length() > 0) {
+
+                                                Log.d("XML Suggestion", "Canceled Suggestion");
+
+                                                int meetingStatus = 4; // comes from external
+                                                int newMeeting = 1; // 1 = new meeting or suggestion
+
+                                                // update row in db table
+                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus);
+
+                                                returnMap.put("MeetingCanceledSuggestionByCoach", "1");
+                                                returnMap.put("Meeting", "1");
+                                            } else {
+
+                                                // check suggestion need a response time
+                                                if (tmpMeetingSuggestionResponseTime > 0) {
+
+                                                    Log.d("XML Suggestion", "Schreibe Suggestion to db");
+
+                                                    // init suggestion parameters
+                                                    Long tmpUploadTime = System.currentTimeMillis();
+
+                                                    if (tmpMeetingSuggestionDate1 > 0) {
+                                                        array_meetingTime[0] = tmpMeetingSuggestionDate1;
+                                                    }
+                                                    if (tmpMeetingSuggestionDate2 > 0) {
+                                                        array_meetingTime[1] = tmpMeetingSuggestionDate2;
+                                                    }
+                                                    if (tmpMeetingSuggestionDate3 > 0) {
+                                                        array_meetingTime[2] = tmpMeetingSuggestionDate3;
+                                                    }
+                                                    if (tmpMeetingSuggestionDate4 > 0) {
+                                                        array_meetingTime[3] = tmpMeetingSuggestionDate4;
+                                                    }
+                                                    if (tmpMeetingSuggestionDate5 > 0) {
+                                                        array_meetingTime[4] = tmpMeetingSuggestionDate5;
+                                                    }
+                                                    if (tmpMeetingSuggestionDate6 > 0) {
+                                                        array_meetingTime[5] = tmpMeetingSuggestionDate6;
+                                                    }
+
+                                                    if (tmpMeetingPlace1 > 0) {
+                                                        array_meetingPlace[0] = tmpMeetingPlace1;
+                                                    }
+                                                    if (tmpMeetingPlace2 > 0) {
+                                                        array_meetingPlace[1] = tmpMeetingPlace2;
+                                                    }
+                                                    if (tmpMeetingPlace3 > 0) {
+                                                        array_meetingPlace[2] = tmpMeetingPlace3;
+                                                    }
+                                                    if (tmpMeetingPlace4 > 0) {
+                                                        array_meetingPlace[3] = tmpMeetingPlace4;
+                                                    }
+                                                    if (tmpMeetingPlace5 > 0) {
+                                                        array_meetingPlace[4] = tmpMeetingPlace5;
+                                                    }
+                                                    if (tmpMeetingPlace6 > 0) {
+                                                        array_meetingPlace[5] = tmpMeetingPlace6;
+                                                    }
+
+                                                    array_meetingVote[0] = 0;
+                                                    array_meetingVote[1] = 0;
+                                                    array_meetingVote[2] = 0;
+                                                    array_meetingVote[3] = 0;
+                                                    array_meetingVote[4] = 0;
+                                                    array_meetingVote[5] = 0;
+
+                                                    tmpMeetingSuggestionCoachCanceleTime = 0L;
+                                                    tmpMeetingSuggestionCoachCanceleAuthor = "";
+                                                    int tmpMeetingSuggestionCoachCancele = 0; // 0=not canceled; 1 = canceled
+
+                                                    String tmpClientSuggestionText = "";
+                                                    String tmpClientSuggestionAuthor = "";
+                                                    Long tmpClientSuggestionTime = 0L;
+                                                    tmpClientSuggestionStartDate = 0L;
+                                                    tmpClientSuggestionEndDate = 0L;
+
+                                                    Long tmpMeetingSuggestionClientCanceleTime = 0L;
+                                                    String tmpMeetingSuggestionClientCanceleAuthor = "";
+                                                    String tmpMeetingSuggestionClientCanceleText = "";
+
+                                                    int tmpMeetingSuggestionClientCancele = 0; // 0=not canceled; 1 = canceled
+
+                                                    String tmpClientCommentText = "";
+                                                    String tmpClientCommentAuthor = "";
+                                                    Long tmpClientCommentTime = 0L;
+
+                                                    int meetingStatus = 4; // 0=ready to send, 1=meeting/suggestion send, 4=external message
+                                                    int newMeeting = 1; // 1 = new meeting or suggestion
+
+                                                    // insert new data into db
+                                                    myDb.insertNewMeetingOrSuggestionDate(array_meetingTime, array_meetingPlace, array_meetingVote, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientSuggestionStartDate, tmpClientSuggestionEndDate, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting);
+
+                                                    returnMap.put("MeetingNewSuggestion", "1");
+                                                    returnMap.put("Meeting", "1");
+                                                }
+                                            }
+                                        }
 
 
+                                        break;
 
-                                            Log.d("XML Meeting", "Schreibe Meeting to db");
+                                    case 3: // empty, not needed anymore
+                                        break;
 
+                                    case 4: // suggestion from client -> invitation from coach
+                                        if (tmpClientSuggestionStartDate > 0 && tmpClientSuggestionEndDate > 0 && tmpMeetingSuggestionCreationTime > 0 && tmpMeetingSuggestionAuthorName.length() > 0 && tmpMeetingSuggestionDataServerId > 0) {
+
+                                            Log.d("XML Suggestion", "Schreibe Invitation Suggestion to db");
 
                                             Long tmpUploadTime = System.currentTimeMillis();
 
-                                            array_meetingTime[0] = tmpMeetingSuggestionDate1;
-                                            array_meetingPlace[0] = tmpMeetingPlace1;
+                                            array_meetingTime[0] = 0L;
+                                            array_meetingTime[1] = 0L;
+                                            array_meetingTime[2] = 0L;
+                                            array_meetingTime[3] = 0L;
+                                            array_meetingTime[4] = 0L;
+                                            array_meetingTime[5] = 0L;
 
+                                            array_meetingPlace[0] = 0;
+                                            array_meetingPlace[1] = 0;
+                                            array_meetingPlace[2] = 0;
+                                            array_meetingPlace[3] = 0;
+                                            array_meetingPlace[4] = 0;
+                                            array_meetingPlace[5] = 0;
 
-                                            tmpMeetingSuggestionResponseTime = 0L; // not needed -> its a meeting
+                                            array_meetingVote[0] = 0;
+                                            array_meetingVote[1] = 0;
+                                            array_meetingVote[2] = 0;
+                                            array_meetingVote[3] = 0;
+                                            array_meetingVote[4] = 0;
+                                            array_meetingVote[5] = 0;
+
                                             tmpMeetingSuggestionCoachCanceleTime = 0L;
                                             tmpMeetingSuggestionCoachCanceleAuthor = "";
                                             int tmpMeetingSuggestionCoachCancele = 0; // 0=not canceled; 1 = canceled
@@ -5048,39 +5236,26 @@ public class EfbXmlParser {
                                             String tmpClientSuggestionAuthor = "";
                                             Long tmpClientSuggestionTime = 0L;
 
-
                                             Long tmpMeetingSuggestionClientCanceleTime = 0L;
                                             String tmpMeetingSuggestionClientCanceleAuthor = "";
                                             String tmpMeetingSuggestionClientCanceleText = "";
                                             int tmpMeetingSuggestionClientCancele = 0; // 0=not canceled; 1 = canceled
-
 
                                             String tmpClientCommentText = "";
                                             String tmpClientCommentAuthor = "";
                                             Long tmpClientCommentTime = 0L;
 
                                             int meetingStatus = 4; // 0=ready to send, 1=meeting/suggestion send, 4=external message
-
                                             int newMeeting = 1; // 1 = new meeting or suggestion
 
-
-
-
                                             // insert new data into db
-                                            myDb.insertNewMeetingOrSuggestionDate (array_meetingTime, array_meetingPlace, array_meetingVote, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientSuggestionStartDate, tmpClientSuggestionEndDate, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting);
+                                            myDb.insertNewMeetingOrSuggestionDate(array_meetingTime, array_meetingPlace, array_meetingVote, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientSuggestionStartDate, tmpClientSuggestionEndDate, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting);
 
+                                            returnMap.put("MeetingNewInvitationSuggestion", "1");
+                                            returnMap.put("Meeting", "1");
 
                                         }
-
-
-
                                         break;
-                                    case 2: // meeting suggestions
-                                        break;
-
-
-
-
 
                                 }
 
@@ -5096,7 +5271,14 @@ public class EfbXmlParser {
 
 
 
-
+                            /*
+                            returnMap.put("Meeting", "0");
+        returnMap.put("MeetingSettings", "0");
+        returnMap.put("MeetingNewMeeting", "0");
+        returnMap.put("MeetingCanceledMeetingByCoach", "0");
+        returnMap.put("MeetingNewSuggestion", "0");
+        returnMap.put("MeetingCanceledSuggestionByCoach", "0");
+                             */
 
                             /* Muss komplett überarbeitet werden, da sich das Datenbankmodell geändert hat!!!!!!!!!!!
 

@@ -1,16 +1,21 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by ich on 21.11.2017.
@@ -19,10 +24,6 @@ import android.widget.TextView;
 
 
 public class MeetingFragmentMeetingOverview extends Fragment {
-
-
-
-
 
     // fragment view
     View viewFragmentMeeting;
@@ -48,6 +49,10 @@ public class MeetingFragmentMeetingOverview extends Fragment {
 
         viewFragmentMeeting = layoutInflater.inflate(R.layout.fragment_meeting_overview, null);
 
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(meetingFragmentMeetingOverviewBrodcastReceiver, filter);
+
         return viewFragmentMeeting;
 
     }
@@ -69,29 +74,133 @@ public class MeetingFragmentMeetingOverview extends Fragment {
     }
 
 
-
-
     private void initFragmentMeeting () {
-
-
-        Log.d("Meeting Overview", "In INIT!!!! OVERVIEW");
-
 
         // init the DB
         myDb = new DBAdapter(fragmentMeetingContext);
 
-
-
         // find the listview for display meetings and suggestion, etc.
         listViewMeetingSuggestion = (ListView) viewFragmentMeeting.findViewById(R.id.listViewMeetingDates);
+    }
 
 
+    // fragment is destroyed
+    public void onDestroyView() {
+        super.onDestroyView();
 
-
+        // de-register broadcast receiver
+        getActivity().getApplicationContext().unregisterReceiver(meetingFragmentMeetingOverviewBrodcastReceiver);
     }
 
 
 
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeServiceEfb
+    private BroadcastReceiver meetingFragmentMeetingOverviewBrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // true-> update the list view with arrangements
+            Boolean updateListView = false;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                // check intent order
+
+                String tmpExtraMeeting = intentExtras.getString("Meeting","0");
+                String tmpExtraMeetingNewMeeting = intentExtras.getString("MeetingNewMeeting","0");
+                String tmpExtraMeetingCanceledMeetingByCoach = intentExtras.getString("MeetingCanceledMeetingByCoach","0");
+                String tmpCommand = intentExtras.getString("Command");
+                String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
+                String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
+                String tmpMessage = intentExtras.getString("Message");
+
+                if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingNewMeeting != null && tmpExtraMeetingNewMeeting.equals("1")) {
+                    // new meeting on smartphone -> update meeting view and show toast
+                    String updateNewMeeting = fragmentMeetingContext.getString(R.string.toastMessageMeetingNewMeeting);
+                    Toast toast = Toast.makeText(context, updateNewMeeting, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                    // update the view
+                    updateListView = true;
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingCanceledMeetingByCoach != null && tmpExtraMeetingCanceledMeetingByCoach.equals("1")) {
+                    // meeting canceled by coach -> update meeting view -> show toast and update view
+                    String updateNewMeeting = fragmentMeetingContext.getString(R.string.toastMessageMeetingCanceledMeetingByCoach);
+                    Toast toast = Toast.makeText(context, updateNewMeeting, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                    // update the view
+                    updateListView = true;
+                }
+                else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpCommand != null && tmpCommand.length() > 0) { // send successfull?
+
+                    if (tmpCommand.equals("ask_parent_activity")) {
+
+                        // get successfull message from parent
+                        String successfullMessage = ((ActivityMeeting) getActivity()).getSuccessefullMessageForSending ();
+                        if (successfullMessage.length() > 0) {
+                            Toast toast = Toast.makeText(context, successfullMessage, Toast.LENGTH_LONG);
+                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                            if (v != null) v.setGravity(Gravity.CENTER);
+                            toast.show();
+                        }
+
+                        // update the view
+                        updateListView = true;
+                    }
+                }
+                else if (tmpSendNotSuccessefull != null && tmpSendNotSuccessefull.equals("1") && tmpCommand != null && tmpCommand.length() > 0) { // send not successfull?
+
+                    if (tmpCommand.equals("ask_parent_activity")) {
+
+                        // get not successfull message from parent
+                        String notSuccessfullMessage = ((ActivityMeeting) getActivity()).getNotSuccessefullMessageForSending ();
+                        if (notSuccessfullMessage.length() > 0) {
+                            Toast toast = Toast.makeText(context, notSuccessfullMessage, Toast.LENGTH_LONG);
+                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                            if (v != null) v.setGravity(Gravity.CENTER);
+                            toast.show();
+                        }
+                    }
+                    else if (tmpCommand.equals("look_message") && tmpMessage != null && tmpMessage.length() > 0) {
+
+                        Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
+                        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                        if( v != null) v.setGravity(Gravity.CENTER);
+                        toast.show();
+                    }
+
+                }
+
+                // update the list view because data has change?
+                if (updateListView) {
+                    updateListView();
+                }
+            }
+        }
+    };
+
+
+    // update the list view with meetings
+    public void updateListView () {
+
+        if (listViewMeetingSuggestion != null) {
+            listViewMeetingSuggestion.destroyDrawingCache();
+            listViewMeetingSuggestion.setVisibility(ListView.INVISIBLE);
+            listViewMeetingSuggestion.setVisibility(ListView.VISIBLE);
+
+            displayActualMeetingSuggestionInformation ();
+        }
+    }
 
 
 
@@ -101,23 +210,9 @@ public class MeetingFragmentMeetingOverview extends Fragment {
 
         String tmpSubtitle = "";
 
-
-        Log.d("Meeting Overview", "In Display!!! OVERVIEW");
-
-
-
-
-
-
-
         // get all meetings from database in correct order
         Long nowTime = System.currentTimeMillis();
         Cursor cursorMeetingSuggestion = myDb.getAllRowsMeetingsAndSuggestion("future_meeting", nowTime);
-
-
-
-        Log.d("Meeting","Anzahl Elemente: "+cursorMeetingSuggestion.getCount());
-
 
         if (cursorMeetingSuggestion.getCount() > 0 && listViewMeetingSuggestion != null) {
 
@@ -153,11 +248,6 @@ public class MeetingFragmentMeetingOverview extends Fragment {
             tmpNoSuggestionsText.setVisibility(View.VISIBLE);
 
         }
-
-
-
-
-
     }
 
 

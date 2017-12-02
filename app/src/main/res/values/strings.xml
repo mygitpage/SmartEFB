@@ -7,7 +7,7 @@
     <!-- String Activity Connect Book -->
 
         <string name="buttonSendMessage">SENDEN</string>
-        <string name="infoTextCountCurrentMessages">%1$s von %2$d Nachrichten in 24 Stunden</string>
+        <string name="infoTextCountCurrentMessages">%1$d von %2$d Nachrichten in 24 Stunden</string>
         <string name="textConnectBookMessageAuthorAndDate">%1$s - %2$s &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
         <string name="textConnectBookMessageNoSharing">Die Nachrichten werden im Moment nicht zugestellt!</string>
         <string name="textConnectBookMessageNotSendYet">Die Nachricht wurde noch nicht gesendet.</string>
@@ -882,13 +882,25 @@
 
     <string name="meetingOverviewNoMeetingAvailableText">Es sind keine aktuellen Termine vorhanden.</string>
     <string name="meetingOverviewMeetingTitleAndNumberText">Nächster Termin</string>
+    <string name="meetingOverviewMeetingCanceledTitleAndNumberText">Abgesagter Termin</string>
     <string name="meetingOverviewCreateMeetingAuthorAndDate">Der Termin wurde von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt.</string>
+    <string name="meetingOverviewCreateMeetingAuthorAndDateWithCancele">Der Termin wurde von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt und von &lt;u>%4$s&lt;/u> am %5$s um %6$s Uhr abgesagt.</string>
 
     <string name="meetingOverviewClientCanceledMeetingAuthorAndDate">Von Ihnen wurde der Termin am %1$s um %2$s Uhr abgesagt.</string>
 
     <string name="meetingOverviewClientCanceledNotSendToServer">Ihre Absage wurde noch nicht zum Server gesendet.</string>
 
     <string name="meetingOverviewClientCanceledLinkText">Diesen Termin absagen</string>
+
+    <string name="meetingOverviewmeetingCanceledByCoachText">Abgesagt!</string>
+    <string name="meetingOverviewDeleteCanceledMeetingLinkText">Diesen abgesagten Termin löschen</string>
+
+
+    <string name="toastMessageMeetingNewMeeting">Es sind neue Termine eingetroffen!</string>
+    <string name="toastMessageMeetingCanceledMeetingByCoach">Es wurden Termine durch Ihre Beraterin/ Ihren Berater abgesagt!</string>
+
+    <string name="toastMessageMeetingCanceledMeetingByClientSuccessfullSend">Ihr Terminabsagewunsch wurde erfolgreich gesendet!</string>
+    <string name="toastMessageMeetingCanceledMeetingByClientNotSuccessfullSend">Ihr Terminabsagewunsch konnte nicht gesendet werden!</string>
 
 
 
@@ -926,11 +938,26 @@
 
 
         <!-- fragment suggestion overview -->
-
+    <string name="suggestionOverviewCanceledSuggestionTitle">Verworfene Terminvorschläge</string>
+    <string name="suggestionOverviewActualSuggestionTitle">Aktuelle Terminvorschläge</string>
     <string name="meetingOverviewNoSuggestionAvailableText">Es sind keine Terminvorschläge vorhanden.</string>
 
+    <string name="meetingOverviewSuggestionSelectSuggestFromListIntro">Bitte wählen Sie aus den Terminvorschlägen die für Sie passenden aus.</string>
 
-        <!-- end fragment suggestion overview -->
+    <string name="meetingOverviewSuggestionAuthorAndDateWithCancele">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt und von &lt;u>%4$s&lt;/u> am %5$s um %6$s Uhr verworfen.</string>
+
+    <string name="meetingOverviewSuggestionAuthorAndDate">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt.</string>
+
+
+    <string name="meetingOverviewSuggestiondateAndTimeText">%1$s - %2$s Uhr</string>
+
+
+    <string name="btnTextSendSuggestionToCoach">Auswahl Senden</string>
+
+    <string name="meetingOverviewSuggestionErrorToFewSugestionChoosen">Sie haben zu wenige Terminvorschläge ausgewählt. Es muss mindestens einer sein!</string>
+
+
+    <!-- end fragment suggestion overview -->
 
 
 
@@ -947,7 +974,7 @@
 
 
 
-            <string name="btnTextSendSuggestionToCoach">Verbindlich Senden</string>
+
             <string name="errorCountTooLittleCheckBoexesCheckedText">Bitte wählen Sie mindestens einen Terminvorschlag aus.</string>
             <string name="textMeetingFindMeetingSuggestionSuccesfullSend">Vielen Dank. Ihre Daten wurden gesendet!</string>
             <string name="textExplainTextForWaitingForRequest">Ihre bestätigten Terminvorschläge wurden erfolgreich gesendet. Sie erhalten in den nächsten Tagen eine Terminbestätigung. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>

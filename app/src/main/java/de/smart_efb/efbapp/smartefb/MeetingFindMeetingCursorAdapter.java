@@ -2,22 +2,14 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
-import android.support.v4.content.ContextCompat;
-import android.text.Html;
-import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -221,14 +213,14 @@ public class MeetingFindMeetingCursorAdapter extends CursorAdapter {
 
         if (cursor.isLast() ) { // listview for last element
 
-            inflatedView = cursorInflater.inflate(R.layout.list_find_meeting_last_suggestion, parent, false);
+            inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_overview_last, parent, false);
         }
         else if (cursor.isFirst() ) { // listview for first element
 
-            inflatedView = cursorInflater.inflate(R.layout.list_find_meeting_first_suggestion, parent, false);
+            inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_overview_first, parent, false);
         }
         else { // listview for normal element
-            inflatedView = cursorInflater.inflate(R.layout.list_find_meeting_suggestion, parent, false);
+            inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_overview_normal, parent, false);
         }
 
         return inflatedView;

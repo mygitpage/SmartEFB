@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="left"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <TextView
+        android:id="@+id/meetingCanceledInfoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="left"
+        android:paddingLeft="10dp"
+        android:paddingBottom="20dp"
+        android:textStyle="bold"
+        android:text="@string/meetingOverviewSuggestionSelectSuggestFromListIntro"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/list_element_style">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/suggestionTitleAndNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:layout_marginLeft="3dp"/>
+
+            <TextView
+                android:id="@+id/meetingNewSuggestionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/text_accent_color"
+                android:gravity="left"
+                android:paddingLeft="10dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/suggestionAuthorAndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:layout_marginLeft="3dp"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/suggestionErrorToFewSuggestionsChoosen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:textColor="@color/text_accent_color"
+        android:gravity="left"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:visibility="gone"
+        android:text="@string/meetingOverviewSuggestionErrorToFewSugestionChoosen"/>
+
+
+
+    <!-- Line 1 of suggestion -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/listSuggestionLine1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left"
+        android:visibility="gone"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp">
+
+        <CheckBox android:id="@+id/suggestionCheck1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:theme="@style/chooseMeetingSuggestionsCheckboxes"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="left">
+
+
+
+            <TextView
+                android:id="@+id/listActualDateAndTimeSuggestion1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"/>
+
+
+
+            <TextView
+                android:id="@+id/listActualPlaceSuggestion1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <!-- Line 2 of suggestion -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/listSuggestionLine2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:visibility="gone">
+
+        <CheckBox android:id="@+id/suggestionCheck2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:theme="@style/chooseMeetingSuggestionsCheckboxes"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="left">
+
+            <TextView
+                android:id="@+id/listActualDateAndTimeSuggestion2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"/>
+
+            <TextView
+                android:id="@+id/listActualPlaceSuggestion2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Line 3 of suggestion -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/listSuggestionLine3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:visibility="gone">
+
+        <CheckBox android:id="@+id/suggestionCheck3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:theme="@style/chooseMeetingSuggestionsCheckboxes"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="left">
+
+            <TextView
+                android:id="@+id/listActualDateAndTimeSuggestion3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"/>
+
+            <TextView
+                android:id="@+id/listActualPlaceSuggestion3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <!-- Line 4 of suggestion -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/listSuggestionLine4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:visibility="gone">
+
+        <CheckBox android:id="@+id/suggestionCheck4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:theme="@style/chooseMeetingSuggestionsCheckboxes"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="left">
+
+            <TextView
+                android:id="@+id/listActualDateAndTimeSuggestion4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"/>
+
+            <TextView
+                android:id="@+id/listActualPlaceSuggestion4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <!-- Line 5 of suggestion -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/listSuggestionLine5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:visibility="gone">
+
+        <CheckBox android:id="@+id/suggestionCheck5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:theme="@style/chooseMeetingSuggestionsCheckboxes"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="left">
+
+            <TextView
+                android:id="@+id/listActualDateAndTimeSuggestion5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"/>
+
+            <TextView
+                android:id="@+id/listActualPlaceSuggestion5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <!-- Line 6 of suggestion -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/listSuggestionLine6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:visibility="gone">
+
+        <CheckBox android:id="@+id/suggestionCheck6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:theme="@style/chooseMeetingSuggestionsCheckboxes"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="left">
+
+            <TextView
+                android:id="@+id/listActualDateAndTimeSuggestion6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"/>
+
+            <TextView
+                android:id="@+id/listActualPlaceSuggestion6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textColor="@color/text_color"
+                android:gravity="left"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/suggestionHintText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="left"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
+
+    <Button
+        android:id="@+id/buttonSendSuggestionToCoach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/app_button_style"
+        android:textColor="@color/text_color_white"
+        android:text="@string/btnTextSendSuggestionToCoach"
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"/>
+
+
+</LinearLayout>

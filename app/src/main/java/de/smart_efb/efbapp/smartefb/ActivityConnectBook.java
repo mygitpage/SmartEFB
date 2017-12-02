@@ -364,13 +364,6 @@ public class ActivityConnectBook extends AppCompatActivity {
 
     }
     
-    
-    
-    
-    
-
-    
-
 
     // display connect book messages in listview
     public void displayMessageSet () {
@@ -393,16 +386,6 @@ public class ActivityConnectBook extends AppCompatActivity {
 
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     // help dialog
     void createHelpDialog () {
@@ -499,8 +482,6 @@ public class ActivityConnectBook extends AppCompatActivity {
         });
 
     }
-
-
 
 
     // Dialog for info no more messages possible

@@ -292,7 +292,6 @@ public class MainActivity extends AppCompatActivity {
         // init array show elements and activ/inactiv sub-functions
         initShowElementArray();
 
-
     }
 
     // init array show elements

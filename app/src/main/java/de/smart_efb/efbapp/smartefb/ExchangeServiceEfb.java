@@ -108,6 +108,7 @@ import java.util.Map;
                 Boolean send_goals_evaluation_result_info = false;
                 Boolean send_debetable_goals_comment_info = false;
                 Boolean send_connect_book_messages_result_info = false;
+                Boolean send_meeting_data_result_info = false;
 
                 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -149,7 +150,8 @@ import java.util.Map;
                     // get all connect book messages with status = 0 and role = 1 (own messages) -> ready to send
                     Cursor allConnectBookMessagesReadyToSend = myDb.getAllReadyToSendConnectBookMessages();
 
-
+                    // get all meetings data (meetings, suggestions from client, answers, comments, etc.) with status = 0 -> ready to send
+                    Cursor allMeetingsReadyToSend = myDb.getAllRowsMeetingsAndSuggestion("ready_to_send", 0L); // time is not needed for db-question, so set to zero
 
 
                     try {
@@ -258,6 +260,21 @@ import java.util.Map;
                                 buildConnectBookMessageXmlTagWithData(xmlSerializer, allConnectBookMessagesReadyToSend);
                                 send_connect_book_messages_result_info = true;
                             } while (allConnectBookMessagesReadyToSend.moveToNext());
+                        }
+
+
+
+
+
+                        Log.d ("EXCHANGE --->", "Anzahl Meetings Data Set: "+allMeetingsReadyToSend.getCount());
+
+                        // build xml for all meetings data set result
+                        if (allMeetingsReadyToSend != null && allMeetingsReadyToSend.getCount() > 0) {
+
+                            do {
+                                buildMeetingDataXmlTagWithData(xmlSerializer, allMeetingsReadyToSend);
+                                send_meeting_data_result_info = true;
+                            } while (allMeetingsReadyToSend.moveToNext());
                         }
 
 
@@ -411,6 +428,17 @@ import java.util.Map;
                             }
                         }
 
+
+
+                        // set status of meeting data to 1 -> send successfull
+                        if (allMeetingsReadyToSend != null) {
+                            if (returnMap.get("SendSuccessfull").equals("1") && send_meeting_data_result_info) {
+                                allMeetingsReadyToSend.moveToFirst();
+                                do {
+                                    myDb.updateStatusMeetingAndSuggestion (allMeetingsReadyToSend.getLong(allMeetingsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of meeting data to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                } while (allMeetingsReadyToSend.moveToNext());
+                            }
+                        }
 
                         //++++++++++++++++ end db status update section +++++++++++++++++++++++++++++++++
 
@@ -607,19 +635,22 @@ import java.util.Map;
                         else { // send not successfull
                             // send information broadcast to receiver that sending was not successefull
                             String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
-                            sendIntentBroadcastSendingNotSuccessefull (message);
+                            String command = "";
+                            sendIntentBroadcastSendingNotSuccessefull (message, command);
                         }
 
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                         // send information broadcast to receiver that sending not successfull
                         String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
-                        sendIntentBroadcastSendingNotSuccessefull (message);
+                        String command = "";
+                        sendIntentBroadcastSendingNotSuccessefull (message, command);
                     } catch (IOException e) {
                         e.printStackTrace();
                         // send information broadcast to receiver that sending not successfull
                         String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
-                        sendIntentBroadcastSendingNotSuccessefull (message);
+                        String command = "";
+                        sendIntentBroadcastSendingNotSuccessefull (message, command);
                     } catch (XmlPullParserException e) {
                         e.printStackTrace();
                     }
@@ -627,7 +658,8 @@ import java.util.Map;
                 else { // no network enable -> try to send comment to server later
                     // send information broadcast to receiver that sending not successfull
                     String message = context.getResources().getString(R.string.toastMessageCommentNotSendSuccessfullNoNetwork);
-                    sendIntentBroadcastSendingNotSuccessefull (message);
+                    String command = "";
+                    sendIntentBroadcastSendingNotSuccessefull (message, command);
                 }
 
                 // stop the task with service
@@ -798,19 +830,22 @@ import java.util.Map;
                     else { // send not successfull
                         // send information broadcast to receiver that sending was not successefull
                         String message = context.getResources().getString(R.string.toastMessageSketchCommentSendNotSuccessfull);
-                        sendIntentBroadcastSendingNotSuccessefull (message);
+                        String command = "";
+                        sendIntentBroadcastSendingNotSuccessefull (message, command);
                     }
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
                     String message = context.getResources().getString(R.string.toastMessageSketchCommentSendNotSuccessfull);
-                    sendIntentBroadcastSendingNotSuccessefull (message);
+                    String command = "";
+                    sendIntentBroadcastSendingNotSuccessefull (message, command);
                 } catch (IOException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
                     String message = context.getResources().getString(R.string.toastMessageSketchCommentSendNotSuccessfull);
-                    sendIntentBroadcastSendingNotSuccessefull (message);
+                    String command = "";
+                    sendIntentBroadcastSendingNotSuccessefull (message, command);
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
                 }
@@ -818,7 +853,8 @@ import java.util.Map;
             else { // no network enable -> try to send comment to server later
                 // send information broadcast to receiver that sending not successfull
                 String message = context.getResources().getString(R.string.toastMessageCommentNotSendSuccessfullNoNetwork);
-                sendIntentBroadcastSendingNotSuccessefull (message);
+                String command = "";
+                sendIntentBroadcastSendingNotSuccessefull (message, command);
             }
 
             // stop the task with service
@@ -1026,7 +1062,7 @@ import java.util.Map;
 
 
     // send message to activity that sending was not successfull
-    public void sendIntentBroadcastSendingNotSuccessefull (String message) {
+    public void sendIntentBroadcastSendingNotSuccessefull (String message, String command) {
 
         Log.d("Exchange Service", "SENDE FEHLER BRAODCAST TO all Listener!!!");
 
@@ -1037,6 +1073,7 @@ import java.util.Map;
         // send intent to receiver that sending not successfull
         Intent tmpIntent = new Intent();
         tmpIntent.putExtra("Message", message);
+        tmpIntent.putExtra("Command", command);
         tmpIntent.putExtra("SendNotSuccessfull","1");
         tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
         context.sendBroadcast(tmpIntent);
@@ -1212,19 +1249,22 @@ import java.util.Map;
                     else { // send not successfull
                         // send information broadcast to receiver that sending was not successefull
                         String message = context.getResources().getString(R.string.toastMessageJointlyGoalsCommentSendNotSuccessfull);
-                        sendIntentBroadcastSendingNotSuccessefull (message);
+                        String command = "";
+                        sendIntentBroadcastSendingNotSuccessefull (message, command);
                     }
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
                     String message = context.getResources().getString(R.string.toastMessageJointlyGoalsCommentSendNotSuccessfull);
-                    sendIntentBroadcastSendingNotSuccessefull (message);
+                    String command = "";
+                    sendIntentBroadcastSendingNotSuccessefull (message, command);
                 } catch (IOException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
                     String message = context.getResources().getString(R.string.toastMessageJointlyGoalsCommentSendNotSuccessfull);
-                    sendIntentBroadcastSendingNotSuccessefull (message);
+                    String command = "";
+                    sendIntentBroadcastSendingNotSuccessefull (message, command);
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
                 }
@@ -1232,7 +1272,8 @@ import java.util.Map;
             else { // no network enable -> try to send comment to server later
                 // send information broadcast to receiver that sending not successfull
                 String message = context.getResources().getString(R.string.toastMessageJointlyGoalsCommentNotSendSuccessfullNoNetwork);
-                sendIntentBroadcastSendingNotSuccessefull (message);
+                String command = "";
+                sendIntentBroadcastSendingNotSuccessefull (message, command);
             }
 
             // stop the task with service
@@ -1600,19 +1641,22 @@ import java.util.Map;
                     else { // send not successfull
                         // send information broadcast to receiver that sending was not successefull
                         String message = context.getResources().getString(R.string.toastMessageeDebetableCommentSendNotSuccessfull);
-                        sendIntentBroadcastSendingNotSuccessefull (message);
+                        String command = "";
+                        sendIntentBroadcastSendingNotSuccessefull (message, command);
                     }
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
                     String message = context.getResources().getString(R.string.toastMessageeDebetableCommentSendNotSuccessfull);
-                    sendIntentBroadcastSendingNotSuccessefull (message);
+                    String command = "";
+                    sendIntentBroadcastSendingNotSuccessefull (message, command);
                 } catch (IOException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
                     String message = context.getResources().getString(R.string.toastMessageeDebetableCommentSendNotSuccessfull);
-                    sendIntentBroadcastSendingNotSuccessefull (message);
+                    String command = "";
+                    sendIntentBroadcastSendingNotSuccessefull (message, command);
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
                 }
@@ -1620,7 +1664,8 @@ import java.util.Map;
             else { // no network enable -> try to send comment to server later
                 // send information broadcast to receiver that sending not successfull
                 String message = context.getResources().getString(R.string.toastMessageeDebetableCommentNotSendSuccessfullNoNetwork);
-                sendIntentBroadcastSendingNotSuccessefull (message);
+                String command = "";
+                sendIntentBroadcastSendingNotSuccessefull (message, command);
             }
 
             // stop the task with service
@@ -1801,20 +1846,23 @@ import java.util.Map;
                     else { // send not successfull
                         // send information broadcast to receiver that sending was not successefull
                         String message = context.getResources().getString(R.string.toastConnectBookMessageSendNotSuccessfull);
-                        sendIntentBroadcastSendingNotSuccessefull (message);
+                        String command = "";
+                        sendIntentBroadcastSendingNotSuccessefull (message, command);
                     }
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
                     String message = context.getResources().getString(R.string.toastConnectBookMessageSendNotSuccessfull);
-                    sendIntentBroadcastSendingNotSuccessefull (message);
+                    String command = "";
+                    sendIntentBroadcastSendingNotSuccessefull (message, command);
 
                 } catch (IOException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
                     String message = context.getResources().getString(R.string.toastConnectBookMessageSendNotSuccessfull);
-                    sendIntentBroadcastSendingNotSuccessefull (message);
+                    String command = "";
+                    sendIntentBroadcastSendingNotSuccessefull (message, command);
 
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
@@ -1824,7 +1872,8 @@ import java.util.Map;
             else { // no network enable -> try to send comment to server later
                 // send information broadcast to receiver that sending not successfull
                 String message = context.getResources().getString(R.string.toastConnectBookMessageSendNoNetwork);
-                sendIntentBroadcastSendingNotSuccessefull (message);
+                String command = "";
+                sendIntentBroadcastSendingNotSuccessefull (message, command);
             }
 
 
@@ -2013,26 +2062,31 @@ import java.util.Map;
                         myDb.updateStatusMeetingAndSuggestion (dbId, 1); // set status of meeting to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
 
                         // send intent to receiver in Meeting to update listView Meeting (when active)
+                        String command = "ask_parent_activity";
                         Intent tmpIntent = translateMapToIntent (returnMap);
+                        tmpIntent.putExtra("Command", command);
                         tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
                         context.sendBroadcast(tmpIntent);
                     }
                     else { // send not successfull
                         // send information broadcast to receiver that sending was not successefull
-                        String message = context.getResources().getString(R.string.toastMessageMeetingDataNotSuccessfull);
-                        sendIntentBroadcastSendingNotSuccessefull (message);
+                        String message = "";
+                        String command = "ask_parent_activity";
+                        sendIntentBroadcastSendingNotSuccessefull (message, command);
                     }
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
-                    String message = context.getResources().getString(R.string.toastMessageMeetingDataNotSuccessfull);
-                    sendIntentBroadcastSendingNotSuccessefull (message);
+                    String message = "";
+                    String command = "ask_parent_activity";
+                    sendIntentBroadcastSendingNotSuccessefull (message, command);
                 } catch (IOException e) {
                     e.printStackTrace();
                     // send information broadcast to receiver that sending not successfull
-                    String message = context.getResources().getString(R.string.toastMessageMeetingDataNotSuccessfull);
-                    sendIntentBroadcastSendingNotSuccessefull (message);
+                    String message = "";
+                    String command = "ask_parent_activity";
+                    sendIntentBroadcastSendingNotSuccessefull (message, command);
                 } catch (XmlPullParserException e) {
                     e.printStackTrace();
                 }
@@ -2040,7 +2094,8 @@ import java.util.Map;
             else { // no network enable -> try to send meeting data to server later
                 // send information broadcast to receiver that sending not successfull
                 String message = context.getResources().getString(R.string.toastMessageMeetingDataNotSendSuccessfullNoNetwork);
-                sendIntentBroadcastSendingNotSuccessefull (message);
+                String command = "look_message";
+                sendIntentBroadcastSendingNotSuccessefull (message, command);
             }
 
             // stop the task with service
@@ -2233,23 +2288,6 @@ import java.util.Map;
 
 
 
-
-
-
-
-
-
-                
-
-
-
-
-
-
-
-
-
-
             }
 
             return START_STICKY;
@@ -2263,9 +2301,6 @@ import java.util.Map;
 
 
         public void buildCommentNowXmlTagWithData(XmlSerializer xmlSerializer, Cursor commentData) {
-
-
-            Log.d("Exchange Build", "Kommentartext: " + commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT));
 
             try {
                 // open comment now arrangement tag
@@ -2486,11 +2521,7 @@ import java.util.Map;
 
     public void buildJointlyGoalsEvaluationResultXmlTagWithData (XmlSerializer xmlSerializer, Cursor evaluationResultData) {
 
-
-        //Log.d("Ex Build EVAL GOALS", "Kommentartext: " + commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT));
-
         try {
-
 
             // open evaluation result jointly goals tag
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate);
@@ -2579,9 +2610,6 @@ import java.util.Map;
 
     public void buildJointlyCommentXmlTagWithData (XmlSerializer xmlSerializer, Cursor commentData) {
 
-
-        Log.d("Exchange Build", "Kommentartext: " + commentData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT));
-
         try {
             // open comment jointly goals tag
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment);
@@ -2636,9 +2664,6 @@ import java.util.Map;
 
 
     public void buildCommentDebetableXmlTagWithData (XmlSerializer xmlSerializer, Cursor commentData) {
-
-
-        Log.d("Ex Build Debetable", "Kommentartext: " + commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT));
 
         try {
 
@@ -2712,9 +2737,6 @@ import java.util.Map;
 
     public void buildConnectBookMessageXmlTagWithData (XmlSerializer xmlSerializer, Cursor messageData) {
 
-
-        Log.d("Ex Build Connect Book", "Message: " + messageData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_MESSAGE));
-
         try {
 
             // open connect book message tag
@@ -2755,7 +2777,6 @@ import java.util.Map;
 
 
     public void buildMeetingDataXmlTagWithData(XmlSerializer xmlSerializer, Cursor meetingData) {
-
 
         try {
             // open meeting data tag
