@@ -2877,6 +2877,16 @@ import java.util.Map;
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingVote6);
             xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTE6)));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingVote6);
+
+            // start tag meeting/suggestion vote author
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_VoteAuthor);
+            xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_VoteAuthor);
+
+            // start tag meeting/suggestio vote date
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_VoteDate);
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEDATE))/1000)); // convert millis to times
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_VoteDate);
             
             // start tag meeting/suggestion creation time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CreationTime);

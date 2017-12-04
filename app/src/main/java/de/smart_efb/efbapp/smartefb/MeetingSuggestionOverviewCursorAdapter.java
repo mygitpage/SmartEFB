@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
     static final int maxSimultaneousMeetingCheckBoxes = ConstansClassMeeting.maxNumbersOfSuggestion;
 
     // int array for checkbox values (DbId)
-    int [] checkBoxSuggestionsValues = new int [maxSimultaneousMeetingCheckBoxes];
+    int [] checkBoxSuggestionsValues = new int [maxSimultaneousMeetingCheckBoxes+1];
 
     // array of meeting places names (only 3 possible-> 0=nothing; 1=Werder(Havel); 2=Bad Belzig)
     String  meetingPlaceNames[] = new String[3];
@@ -87,11 +88,9 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         meetingPlaceNames = context.getResources().getStringArray(R.array.placesNameForMeetingArray);
 
         // init checkbox value array
-        for (int i=0; i<maxSimultaneousMeetingCheckBoxes; i++) {
+        for (int i=0; i<maxSimultaneousMeetingCheckBoxes+1; i++) {
             checkBoxSuggestionsValues[i] = -1;
         }
-
-
 
         // init db colum names for use in view
         nameDbColumNameDate[0] = DBAdapter.MEETING_SUGGESTION_KEY_DATE1;
@@ -108,22 +107,19 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         nameDbColumNamePlace[4] = DBAdapter.MEETING_SUGGESTION_KEY_PLACE5;
         nameDbColumNamePlace[5] = DBAdapter.MEETING_SUGGESTION_KEY_PLACE6;
 
-
-
-
-
     }
 
 
 
 
     @Override
-    public void bindView(View mView, final Context context, Cursor cursor) {
+    public void bindView(View mView, final Context context, Cursor mCursor) {
 
         final View view = mView;
 
+        final Cursor cursor = mCursor;
 
-        if (cursor.isLast() ) { // listview for last element
+        if (cursor.isFirst() ) { // listview for last element
 
             // find send button "verbindich senden"
             Button tmpSendButton = (Button) view.findViewById(R.id.buttonSendSuggestionToCoach);
@@ -136,31 +132,66 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
                     if (countListViewElementVote >= minNumberOfVotes) { // too little suggestions?
 
+                        // translate vote results from check boxes to variables for update db
+                        int tmpResultVote1 = 0;
+                        if (checkBoxSuggestionsValues[1] > -1) {tmpResultVote1 = 1;}
+                        int tmpResultVote2 = 0;
+                        if (checkBoxSuggestionsValues[2] > -1) {tmpResultVote2 = 1;}
+                        int tmpResultVote3 = 0;
+                        if (checkBoxSuggestionsValues[3] > -1) {tmpResultVote3 = 1;}
+                        int tmpResultVote4 = 0;
+                        if (checkBoxSuggestionsValues[4] > -1) {tmpResultVote4 = 1;}
+                        int tmpResultVote5 = 0;
+                        if (checkBoxSuggestionsValues[5] > -1) {tmpResultVote5 = 1;}
+                        int tmpResultVote6 = 0;
+                        if (checkBoxSuggestionsValues[6] > -1) {tmpResultVote6 = 1;}
 
-                        for (int i=0; i<=countNumberOfCheckBoxObjects; i++) {
+
+                        Log.d("SugCursorAdapter->>", "Tesult 1:"+tmpResultVote1);
+                        Log.d("SugCursorAdapter->>", "Tesult 2:"+tmpResultVote2);
+                        Log.d("SugCursorAdapter->>", "Tesult 3:"+tmpResultVote3);
+
+                        String tmpClientCommentSuggestionText = "";
 
 
+                        // canceled time
+                        Long tmpVoteDate = System.currentTimeMillis();
 
+                        // canceled status
+                        int tmpStatus = 0; // not send to server
+
+                        // insert  in DB
+                        Long clientVoteDbId = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
+
+                        Log.d("Cursor Adapter -->", "VOTE ID:"+clientVoteDbId);
+
+                        if (myDb.updateSuggestionVoteAndCommentByClient(tmpResultVote1, tmpResultVote2, tmpResultVote3, tmpResultVote4, tmpResultVote5, tmpResultVote6, clientVoteDbId, tmpVoteDate, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), tmpClientCommentSuggestionText, tmpStatus)) {
+                            Log.d("DB RETURN", "Erfolgreich eingetragen!");
                         }
 
-                        Toast.makeText(meetingSuggestionOverviewCursorAdapterContext, "CheckBoxes aktiv:"+countListViewElementVote, Toast.LENGTH_SHORT).show();
+                        // set successfull message in parent activity
+                        //String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
+                        //((ActivityMeeting) getActivity()).setSuccessefullMessageForSending (tmpSuccessfullMessage);
 
-                        // TODO ->
-                        //
-                        // Netzwerk status pruefen
-                        // Terminanfrage senden
-                        // Ergebnis anzeigen
 
-                        // send intent back to activity meeting
-                        /*
-                        Intent intent = new Intent(meetingFindMeetingCursorAdapterContext, ActivityMeeting.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("com", "find_meeting");
-                        intent.putExtra("update", true);
-                        intent.putExtra("pop_stack", false);
-                        intent.putExtra("met_status", 6); // TODO Meeting Status anpassen 6 = erstemal einen Terminvorschlag gewählt; 7= wiederholtemal einen Terminvorschlag gewählt
-                        meetingFindMeetingCursorAdapterContext.startActivity(intent);
-                        */
+                        // send intent to service to start the service and send canceled meeting to server!
+                        Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
+                        startServiceIntent.putExtra("com","send_meeting_data");
+                        startServiceIntent.putExtra("dbid",clientVoteDbId);
+                        meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
+
+                        // build intent to go back to suggestionOverview
+                        Intent intent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ActivityMeeting.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.putExtra("com", "suggestion_overview");
+                        meetingSuggestionOverviewCursorAdapterContext.startActivity(intent);
+
+
+
+
+
+
+
 
                     }
                     else { // error too little suggestions!
@@ -297,7 +328,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
                 // set on click listener for checkboxes to vote
                 CheckBox tmpSuggestionCheckBox = (CheckBox) inflatedView.findViewById(checkboxVoteSuggestion[t-1]);
-                tmpSuggestionCheckBox.setOnClickListener(new onClickListenerCheckBoxSuggestionVote(t, cursor.getPosition()));
+                tmpSuggestionCheckBox.setOnClickListener(new onClickListenerCheckBoxSuggestionVote(t));
 
 
 
@@ -346,12 +377,10 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
     //
     public class onClickListenerCheckBoxSuggestionVote implements View.OnClickListener {
 
-        int suggestionVoteNumber = 0;
         int listPosition = 0;
 
-        public onClickListenerCheckBoxSuggestionVote (int tmpSuggestionVoteNumber, int tmpListPosition) {
+        public onClickListenerCheckBoxSuggestionVote (int tmpListPosition) {
 
-            this.suggestionVoteNumber = tmpSuggestionVoteNumber;
             this.listPosition = tmpListPosition;
 
             countNumberOfCheckBoxObjects++;
@@ -366,13 +395,18 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             boolean checked = ((CheckBox) v).isChecked();
 
             if (checked) {
-                checkBoxSuggestionsValues[listPosition] = suggestionVoteNumber;
+                checkBoxSuggestionsValues[listPosition] = 1;
                 countListViewElementVote++; //inc count checkboxes
+
+                Log.d("OnClickCheckBoy-->","ListP:"+listPosition+" +Array:"+checkBoxSuggestionsValues[listPosition]);
+
 
             }
             else {
                 checkBoxSuggestionsValues[listPosition] = -1;
                 countListViewElementVote--; //dec count checkboxes
+
+                Log.d("OnClickCheckBoy-->","NICHT SETZEN!");
 
             }
 

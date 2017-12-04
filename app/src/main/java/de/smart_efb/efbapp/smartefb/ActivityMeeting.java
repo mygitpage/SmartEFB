@@ -96,6 +96,10 @@ public class ActivityMeeting extends AppCompatActivity {
 
 
 
+
+
+
+
         // init meeting
         initMeeting();
 
@@ -215,6 +219,14 @@ public class ActivityMeeting extends AppCompatActivity {
 
         // init DB
         myDb = new DBAdapter(getApplicationContext());
+
+
+
+        // for developing
+        //myDb.deleteAllRowsMeetingAndSuggestion();
+
+
+
 
         // init the prefs
         prefs = getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
