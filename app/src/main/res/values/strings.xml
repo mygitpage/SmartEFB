@@ -939,12 +939,18 @@
 
         <!-- fragment suggestion overview -->
     <string name="suggestionOverviewCanceledSuggestionTitle">Verworfene Terminvorschläge</string>
+
+    <string name="suggestionOverviewVoteSuggestionTitle">Ihre getroffene Terminauswahl</string>
+
     <string name="suggestionOverviewActualSuggestionTitle">Aktuelle Terminvorschläge</string>
     <string name="meetingOverviewNoSuggestionAvailableText">Es sind keine Terminvorschläge vorhanden.</string>
 
     <string name="meetingOverviewSuggestionSelectSuggestFromListIntro">Bitte wählen Sie aus den Terminvorschlägen die für Sie passenden aus.</string>
 
     <string name="meetingOverviewSuggestionAuthorAndDateWithCancele">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt und von &lt;u>%4$s&lt;/u> am %5$s um %6$s Uhr verworfen.</string>
+    <string name="meetingOverviewSuggestionAuthorAndDateVote">Ihre Auswahl an Terminvorschlägen wurde am %1$s um %2$s Uhr zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
+
+
 
     <string name="meetingOverviewSuggestionAuthorAndDate">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt.</string>
 
@@ -955,6 +961,13 @@
     <string name="btnTextSendSuggestionToCoach">Auswahl Senden</string>
 
     <string name="meetingOverviewSuggestionErrorToFewSugestionChoosen">Sie haben zu wenige Terminvorschläge ausgewählt. Es muss mindestens einer sein!</string>
+
+    <string name="meetingOverviewSuggestionCanceledByCoachText">Verworfene Vorschläge</string>
+
+    <string name="meetingOverviewMeetingFoundFromSuggestionByCoachText">Termin gefunden!</string>
+
+    <string name="meetingOverviewSuggestionAlreadySendToCoachText">Ihre Auswahl von Terminvorschlägen wurde bereits zu Ihrer Beraterin/ Ihrem Berater geschickt. Daher sind Änderungen nicht mehr möglich.</string>
+
 
 
     <!-- end fragment suggestion overview -->

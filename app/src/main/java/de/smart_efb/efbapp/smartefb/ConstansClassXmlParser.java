@@ -714,6 +714,10 @@ public class ConstansClassXmlParser {
     public static final String xmlNameForMeeting_Suggestion_VoteAuthor = "meeting_vote_author";
     public static final String xmlNameForMeeting_Suggestion_VoteDate = "meeting_vote_date";
 
+    public static final String xmlNameForMeeting_Meeting_FoundFromSuggestion_Author = "meeting_found_author";
+    public static final String xmlNameForMeeting_Meeting_FoundFromSuggestion_Date = "meeting_found_date";
+
+
     public static final String xmlNameForMeeting_Suggestion_AuthorName = "meeting_authorname";
     public static final String xmlNameForMeeting_Suggestion_CreationTime = "meeting_creation_time";
     public static final String xmlNameForMeeting_Suggestion_Kategorie = "meeting_kategorie";

@@ -10,7 +10,16 @@
     android:paddingRight="10dp">
 
     <TextView
-        android:id="@+id/meetingCanceledInfoText"
+        android:id="@+id/borderBetweenMeetingSuggestion"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_color"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/meetingIntroInfoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18dp"
@@ -19,7 +28,8 @@
         android:paddingLeft="10dp"
         android:paddingBottom="20dp"
         android:textStyle="bold"
-        android:text="@string/meetingOverviewSuggestionSelectSuggestFromListIntro"/>
+        android:text="@string/meetingOverviewSuggestionSelectSuggestFromListIntro"
+        android:visibility="gone"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -64,6 +74,30 @@
 
     </LinearLayout>
 
+
+    <TextView
+        android:id="@+id/suggestionCanceledByCoachTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:textColor="@color/text_accent_color"
+        android:textStyle="bold"
+        android:text="@string/meetingOverviewSuggestionCanceledByCoachText"
+        android:gravity="center_horizontal"
+        android:paddingBottom="15dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/meetingFoundFromSuggestionByCoachTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:textColor="@color/text_accent_color"
+        android:textStyle="bold"
+        android:text="@string/meetingOverviewMeetingFoundFromSuggestionByCoachText"
+        android:gravity="center_horizontal"
+        android:paddingBottom="15dp"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/suggestionErrorToFewSuggestionsChoosen"
@@ -370,6 +404,22 @@
         android:layout_gravity="center_horizontal"
         android:padding="10dp"
         android:layout_marginTop="20dp"/>
+
+
+    <TextView
+        android:id="@+id/suggestionSendAlreadyToCoachInfoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:textColor="@color/text_accent_color"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingBottom="30dp"
+        android:paddingTop="15dp"
+        android:visibility="gone"
+        android:text="@string/meetingOverviewSuggestionAlreadySendToCoachText"/>
+
+
 
 
 </LinearLayout>
