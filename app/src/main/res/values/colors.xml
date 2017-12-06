@@ -7,38 +7,32 @@
 
     // general background color fragments and activitys
     <color name="body_background">#ffffff</color> <!-- 61def1 -->
+
     // gernal text color fragments and activitys
     <color name="text_color">#FF4D4D4D</color>
+
     // gernal text color white fragments and activitys
     <color name="text_color_white">#ffffff</color>
 
     // gernal text accent color fragments and activitys
     <color name="text_accent_color">#e92f32</color>
 
-
     // main menue element inactiv text color
     <color name="main_menue_text_inactiv_color">#8d9393</color>
-
-
-
 
     // general background color text input fields
     <color name="inputfield_background">#17a9ec</color>  // old color: #150656
 
     <color name="colorTextMainMenueElement">#FFFFFF</color>
 
-
-
-    // general background color list view elements (like arrangements, sketch, goals, etc.)
+    // general background color list view elements (like arrangements, sketch, goals, meeting checkboxes, etc.)
     <color name="listview_elements_background">#17a9ec</color>
-
 
     // all tabs selected color
     <color name="all_tabs_selected_color">#150656</color>
 
     // all tabs unselected color
     <color name="all_tabs_unselected_color">#150656</color>
-
 
     <!-- Colors for Connect Book -->
     <color name="title_gray">#434343</color>

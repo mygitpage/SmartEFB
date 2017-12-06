@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -18,6 +19,8 @@ import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ich on 22.11.2017.
@@ -127,83 +130,14 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
         final Cursor cursor = mCursor;
 
-        if (cursor.isFirst() ) { // listview for last element
+        if (cursor.isFirst() ) { // look for button in first element and normal suggestion
 
 
-            // // set border between suggestion to invisible -> it is first suggestion
+            //set border between suggestion to invisible -> it is first suggestion
             TextView tmpBorderBetween = (TextView) view.findViewById(R.id.borderBetweenMeetingSuggestion);
-            tmpBorderBetween.setVisibility(View.INVISIBLE);
-
-            // // set intro text to invisible -> it is not first suggestion
-            TextView tmpIntroText = (TextView) view.findViewById(R.id.meetingIntroInfoText);
-            tmpIntroText.setVisibility(View.VISIBLE);
-
-
-
-            // find send button "verbindich senden"
-            Button tmpSendButton = (Button) view.findViewById(R.id.buttonSendSuggestionToCoach);
-
-            // onClick listener make meeting
-            tmpSendButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-
-                    if (countListViewElementVote >= minNumberOfVotes) { // too little suggestions?
-
-                        String tmpClientCommentSuggestionText = "";
-
-                        // canceled time
-                        Long tmpVoteDate = System.currentTimeMillis();
-
-                        // canceled status
-                        int tmpStatus = 0; // not send to server
-
-                        // insert  in DB
-                        Long clientVoteDbId = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
-
-                        myDb.updateSuggestionVoteAndCommentByClient(checkBoxSuggestionsValues[1], checkBoxSuggestionsValues[2], checkBoxSuggestionsValues[3], checkBoxSuggestionsValues[4], checkBoxSuggestionsValues[5], checkBoxSuggestionsValues[6], clientVoteDbId, tmpVoteDate, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), tmpClientCommentSuggestionText, tmpStatus);
-
-                        // set successfull message in parent activity
-                        //String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
-                        //((ActivityMeeting) getActivity()).setSuccessefullMessageForSending (tmpSuccessfullMessage);
-
-
-                        // send intent to service to start the service and send vote suggestion to server!
-                        Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
-                        startServiceIntent.putExtra("com","send_meeting_data");
-                        startServiceIntent.putExtra("dbid",clientVoteDbId);
-                        meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
-
-                        // build intent to go back to suggestionOverview
-                        Intent intent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ActivityMeeting.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.putExtra("com", "suggestion_overview");
-                        meetingSuggestionOverviewCursorAdapterContext.startActivity(intent);
-
-                    }
-                    else { // error too little suggestions!
-
-                        // show error message in view
-                        TextView textViewTooLittleSuggestionChoosen = (TextView) view.findViewById(R.id.suggestionErrorToFewSuggestionsChoosen);
-                        textViewTooLittleSuggestionChoosen.setVisibility(View.VISIBLE);
-
-                        // show error toast
-                        //Toast.makeText(meetingFindMeetingCursorAdapterContext, meetingFindMeetingCursorAdapterContext.getResources().getString(R.string.errorCountTooLittleCheckBoexesCheckedText), Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-
-
-            });
-
+            tmpBorderBetween.setVisibility(View.GONE);
         }
-        else { // the other elements of cursor
 
-
-
-
-        }
 
 
     }
@@ -211,9 +145,9 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
 
     @Override
-    public View newView(Context mContext, Cursor cursor, ViewGroup parent) {
+    public View newView(Context mContext, Cursor mCursor, ViewGroup parent) {
 
-        View inflatedView;
+        final View inflatedView;
 
         Boolean tmpStatusSuggestionCanceled = false;
         Boolean tmpStatusResponseTimeExpired = false;
@@ -222,6 +156,8 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         Boolean tmpStatusSuggestion = false;
 
         final Context context = mContext;
+
+        final Cursor cursor = mCursor;
 
         inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_overview_firstandlast, parent, false);
 
@@ -247,18 +183,19 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED)) == 1) { // canceled suggestion
             tmpStatusSuggestionCanceled = true;
 
-        } else if (cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)).length() > 0 && cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)).length() > 0) { // suggestion vote send
-            tmpStatusVoteSuggestion = true;
         } else if (cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME)) < System.currentTimeMillis()) {
             tmpStatusResponseTimeExpired = true;
             Log.d("CursorAdapter-->", "WAHL RESPONSE TIME");
 
 
-        } else if (cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_AUTHOR)).length() > 0 && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_DATE)) > 0) {
+        } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND)) == 1) {
             // check for meeting found from suggestion
             tmpStatusMeetingFoundFromSuggestion = true;
             Log.d("CursorAdapter-->", "WAHL FOUND MEETING");
 
+
+        } else if (cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)).length() > 0 && cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)).length() > 0) { // suggestion vote send
+            tmpStatusVoteSuggestion = true;
 
         } else {
             tmpStatusSuggestion = true;
@@ -268,14 +205,19 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
 
 
+        // && cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_AUTHOR)).length() > 0 && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_DATE)
+
+        // check for normal suggestion -> set intro text to visible
+        if (tmpStatusSuggestion) {
+            TextView tmpIntroText = (TextView) inflatedView.findViewById(R.id.meetingIntroInfoText);
+            tmpIntroText.setVisibility(View.VISIBLE);
+        }
+
+
+        Log.d("BUILD VIEW-->","ID: "+cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
 
         // page title
         TextView tmpTextViewTitleForSuggestion = (TextView) inflatedView.findViewById(R.id.suggestionTitleAndNumber);
-
-
-
-
-
         // set info text
         String tmpTitleForSuggestion = "";
         TextView tmpTextViewAuthorNameForSuggestion = (TextView) inflatedView.findViewById(R.id.suggestionAuthorAndDate);
@@ -323,6 +265,23 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
 
 
+        if (tmpStatusMeetingFoundFromSuggestion) {
+            // set info text with meeting found info
+            String tmpFoundAuthorName = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_AUTHOR));
+            String meetingFoundDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_DATE)), "dd.MM.yyyy");
+            String meetingFoundTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_DATE)), "HH:mm");
+            String tmpTextAuthorNameMeetingFoundFromSuggestion = String.format(context.getResources().getString(R.string.meetingOverviewMeetingFoundFromSuggestionAuthorAndDate), tmpFoundAuthorName, meetingFoundDate, meetingFoundTime);
+            tmpTextViewAuthorNameForSuggestion.setText(Html.fromHtml(tmpTextAuthorNameMeetingFoundFromSuggestion));
+
+            // set title "meeting found"
+            tmpTitleForSuggestion = context.getResources().getString(R.string.suggestionOverviewFoundMeetingFromSuggestionTitle);
+            tmpTextViewTitleForSuggestion.setText(tmpTitleForSuggestion);
+        }
+
+
+
+
+
         // check if suggestion entry new?
         if (cursor.getInt(cursor.getColumnIndex(myDb.MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST)) == 1) {
             TextView newEntryOfMeeting = (TextView) inflatedView.findViewById(R.id.meetingNewSuggestionText);
@@ -361,8 +320,8 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                 // find checkboxes to vote
                 CheckBox tmpSuggestionCheckBox = (CheckBox) inflatedView.findViewById(checkboxVoteSuggestion[t-1]);
 
-                //check if suggestions votes already!
-                if (tmpStatusVoteSuggestion) {
+                //check if suggestions votes or canceled meeting or found meeting!
+                if (tmpStatusMeetingFoundFromSuggestion || tmpStatusVoteSuggestion || tmpStatusSuggestionCanceled) {
 
                     // change of checkbox is not possible
                     tmpSuggestionCheckBox.setClickable(false);
@@ -389,16 +348,155 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         }
 
 
-        // check for suggestion vote -> hint send button and show info text
-        if (cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)).length() > 0 && cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)).length() > 0) {
+        // check for suggestion vote or found meeting or suggestion canceled -> hint send button
+        if (tmpStatusMeetingFoundFromSuggestion || tmpStatusVoteSuggestion || tmpStatusSuggestionCanceled) {
             Button tmpButtonSendSuggestion = (Button) inflatedView.findViewById(R.id.buttonSendSuggestionToCoach);
             tmpButtonSendSuggestion.setVisibility(View.GONE);
 
-            TextView tmpTextViewSuggestionSendAlreadyText = (TextView) inflatedView.findViewById(R.id.suggestionSendAlreadyToCoachInfoText);
-            tmpTextViewSuggestionSendAlreadyText.setVisibility(View.VISIBLE);
-
 
         }
+
+
+        // get text view for info text at least
+        TextView tmpTextViewInfoTextAtLeast = (TextView) inflatedView.findViewById(R.id.suggestionAtLeastInfoText);
+        String tmpAtLastMessage = "";
+        // vote -> show info text at least
+        if (tmpStatusVoteSuggestion) {
+            tmpAtLastMessage = context.getResources().getString(R.string.meetingOverviewSuggestionVoteInfoTextAtLeast);
+            tmpTextViewInfoTextAtLeast.setText(tmpAtLastMessage);
+            tmpTextViewInfoTextAtLeast.setVisibility(View.VISIBLE);
+        }
+
+
+        // meeting found from suggestion -> show info text at least
+        if (tmpStatusMeetingFoundFromSuggestion) {
+            tmpAtLastMessage = context.getResources().getString(R.string.meetingOverviewSuggestionFoundMeetingInfoTextAtLeast);
+            tmpTextViewInfoTextAtLeast.setText(tmpAtLastMessage);
+            tmpTextViewInfoTextAtLeast.setVisibility(View.VISIBLE);
+        }
+
+
+
+        // suggestion is canceled by coach
+        if (tmpStatusSuggestionCanceled) {
+            tmpAtLastMessage = context.getResources().getString(R.string.meetingOverviewSuggestionCanceledInfoTextAtLeast);
+            tmpTextViewInfoTextAtLeast.setText(tmpAtLastMessage);
+            tmpTextViewInfoTextAtLeast.setVisibility(View.VISIBLE);
+        }
+
+
+
+
+        // count down timer for response time -> only normal suggestion
+        if (tmpStatusSuggestion) {
+
+            final String tmpTextResponseTimeOver = context.getResources().getString(R.string.suggestionOverviewResponseTimeIsOver);
+
+            // get text view for timer and set visible
+            final TextView placeholderForTicTimer = (TextView) inflatedView.findViewById(R.id.suggestionResponseTicTimer);
+            placeholderForTicTimer.setVisibility(View.VISIBLE);
+
+            // show time until next evaluation period
+            // calculate run time for timer in MILLISECONDS!!!
+            Long nowTime = System.currentTimeMillis();
+            Long runTimeForTimer = cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME)) - nowTime;
+            // start the timer with the calculated milliseconds
+            if (runTimeForTimer > 0) {
+                new CountDownTimer(runTimeForTimer, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        // gernate count down timer
+                        String FORMAT = "%d Stunden %02d Minuten %02d Sekunden";
+                        String tmpTime = String.format(FORMAT,
+                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+
+                        // and set to textview
+                        placeholderForTicTimer.setText(tmpTime);
+
+                    }
+
+                    public void onFinish() {
+                        // change text to response time over
+                        placeholderForTicTimer.setText(tmpTextResponseTimeOver);
+                    }
+                }.start();
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+        if (cursor.isFirst() && tmpStatusSuggestion ) { // look for button in first element and normal suggestion
+
+            // find send button "verbindich senden"
+            Button tmpSendButton = (Button) inflatedView.findViewById(R.id.buttonSendSuggestionToCoach);
+
+            // onClick listener make meeting
+            tmpSendButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if (countListViewElementVote >= minNumberOfVotes) { // too little suggestions?
+
+                        String tmpClientCommentSuggestionText = "";
+
+                        // canceled time
+                        Long tmpVoteDate = System.currentTimeMillis();
+
+                        // canceled status
+                        int tmpStatus = 0; // not send to server
+
+                        // insert  in DB
+                        Long clientVoteDbId = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
+
+                        Log.d("Button GEDRÜCKT-->","ID: "+clientVoteDbId);
+
+                        myDb.updateSuggestionVoteAndCommentByClient(checkBoxSuggestionsValues[1], checkBoxSuggestionsValues[2], checkBoxSuggestionsValues[3], checkBoxSuggestionsValues[4], checkBoxSuggestionsValues[5], checkBoxSuggestionsValues[6], clientVoteDbId, tmpVoteDate, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), tmpClientCommentSuggestionText, tmpStatus);
+
+                        // set successfull message in parent activity
+                        //String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
+                        //((ActivityMeeting) getActivity()).setSuccessefullMessageForSending (tmpSuccessfullMessage);
+
+
+                        // send intent to service to start the service and send vote suggestion to server!
+                        Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
+                        startServiceIntent.putExtra("com","send_meeting_data");
+                        startServiceIntent.putExtra("dbid",clientVoteDbId);
+                        meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
+
+                        // build intent to go back to suggestionOverview
+                        Intent intent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ActivityMeeting.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.putExtra("com", "suggestion_overview");
+                        meetingSuggestionOverviewCursorAdapterContext.startActivity(intent);
+
+                    }
+                    else { // error too little suggestions!
+
+                        // show error message in view
+                        TextView textViewTooLittleSuggestionChoosen = (TextView) inflatedView.findViewById(R.id.suggestionErrorToFewSuggestionsChoosen);
+                        textViewTooLittleSuggestionChoosen.setVisibility(View.VISIBLE);
+
+                        // show error toast
+                        //Toast.makeText(meetingFindMeetingCursorAdapterContext, meetingFindMeetingCursorAdapterContext.getResources().getString(R.string.errorCountTooLittleCheckBoexesCheckedText), Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+
+            });
+
+        }
+
+
 
 
         return inflatedView;

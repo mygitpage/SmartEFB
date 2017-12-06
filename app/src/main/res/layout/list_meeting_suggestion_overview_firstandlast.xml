@@ -394,6 +394,18 @@
         android:visibility="gone"/>
 
 
+    <TextView
+        android:id="@+id/suggestionResponseTicTimer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:textColor="@color/text_accent_color"
+        android:gravity="center"
+        android:paddingBottom="30dp"
+        android:paddingTop="15dp"
+        android:visibility="gone"/>
+
+
     <Button
         android:id="@+id/buttonSendSuggestionToCoach"
         android:layout_width="wrap_content"
@@ -407,17 +419,15 @@
 
 
     <TextView
-        android:id="@+id/suggestionSendAlreadyToCoachInfoText"
+        android:id="@+id/suggestionAtLeastInfoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14dp"
         android:textColor="@color/text_accent_color"
         android:gravity="center"
-        android:paddingLeft="10dp"
         android:paddingBottom="30dp"
         android:paddingTop="15dp"
-        android:visibility="gone"
-        android:text="@string/meetingOverviewSuggestionAlreadySendToCoachText"/>
+        android:visibility="gone"/>
 
 
 
