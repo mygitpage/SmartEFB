@@ -46,6 +46,10 @@ public class ConstansClassMeeting {
 
 
 
+    // suggestion comment max letters
+    public static final int namePrefsSuggestionCommentMaxLetters = 200;
+
+
 
 
 

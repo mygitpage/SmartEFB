@@ -5,27 +5,21 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.CountDownTimer;
-import android.preference.Preference;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ich on 30.05.16.
  */
+
 public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
     // hold layoutInflater
@@ -320,7 +314,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                     .path("ourarrangement")
                     .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID))))
                     .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition()+1))
-                    .appendQueryParameter("com", "show_comment_for_arrangement");;
+                    .appendQueryParameter("com", "show_comment_for_arrangement");
 
 
             if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0) < prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment,0) || !commentLimitationBorder) {

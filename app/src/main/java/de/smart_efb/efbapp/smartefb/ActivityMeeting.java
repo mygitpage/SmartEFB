@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -51,9 +52,6 @@ public class ActivityMeeting extends AppCompatActivity {
     // shared prefs for the settings
     SharedPreferences prefs;
 
-    // shared prefs for storing
-    SharedPreferences.Editor prefsEditor;
-
     // reference to the DB
     DBAdapter myDb;
 
@@ -93,12 +91,6 @@ public class ActivityMeeting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_efb_meeting);
-
-
-
-
-
-
 
         // init meeting
         initMeeting();
@@ -215,7 +207,12 @@ public class ActivityMeeting extends AppCompatActivity {
         toolbarMeeting.setTitleTextColor(Color.WHITE);
 
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        try {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        catch (NullPointerException e) {
+            // do nothing
+        }
 
         // init DB
         myDb = new DBAdapter(getApplicationContext());
@@ -230,10 +227,6 @@ public class ActivityMeeting extends AppCompatActivity {
 
         // init the prefs
         prefs = getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
-
-        // init prefs editor
-        prefsEditor = prefs.edit();
-
 
         for (int t=0; t<ConstansClassMeeting.numberOfDifferentSubtitle; t++) {
             arraySubTitleText[t] = "";
@@ -305,8 +298,6 @@ public class ActivityMeeting extends AppCompatActivity {
 
     // execute the commands that comes from link or intend
     public void executeIntentCommand (String command, Long meetingId) {
-
-        String tmpTabTitle = "";
 
         if (command.equals("comment_from_client")) { // Show fragment client comment a meeting
 
@@ -636,7 +627,6 @@ public class ActivityMeeting extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                TextView tmpdialogTextView;
                 LayoutInflater dialogInflater;
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(ActivityMeeting.this);
@@ -645,9 +635,8 @@ public class ActivityMeeting extends AppCompatActivity {
                 dialogInflater = (LayoutInflater) ActivityMeeting.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 // inflate and get the view
+
                 View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_meeting, null);
-
-
 
                 // get string ressources
                 String tmpTextCloseDialog = ActivityMeeting.this.getResources().getString(R.string.textDialogMeetingCloseDialog);
@@ -752,9 +741,9 @@ public class ActivityMeeting extends AppCompatActivity {
 
         ActivityMeeting.this.lookNewEntryOnTabZero();
 
-        tabLayoutMeeting.getTabAt(0).setText(tabTitleTextTabZero + infoTextNewEntryPostFixTabZeroTitle);
+        String tmpTitleText = tabTitleTextTabZero + infoTextNewEntryPostFixTabZeroTitle;
+        tabLayoutMeeting.getTabAt(0).setText(tmpTitleText);
         ActivityMeeting.this.setUnsetTextColorSignalNewTabZero(infoNewEntryOnTabZero);
-
     }
 
 
@@ -764,9 +753,9 @@ public class ActivityMeeting extends AppCompatActivity {
 
         ActivityMeeting.this.lookNewEntryOnTabOne();
 
-        tabLayoutMeeting.getTabAt(1).setText(tabTitleTextTabOne + infoTextNewEntryPostFixTabOneTitle);
+        String tmpTitleText = tabTitleTextTabOne + infoTextNewEntryPostFixTabOneTitle;
+        tabLayoutMeeting.getTabAt(1).setText(tmpTitleText);
         ActivityMeeting.this.setUnsetTextColorSignalNewTabOne(infoNewEntryOnTabOne);
-
     }
 
 
@@ -791,12 +780,18 @@ public class ActivityMeeting extends AppCompatActivity {
     // look for new entry on tab one
     private void lookNewEntryOnTabOne () {
 
+        Long nowTime = System.currentTimeMillis();
+        Cursor c = myDb.getAllRowsMeetingsAndSuggestion("suggestion_for_show_attention", nowTime);
+
         // look for new entrys in db on tab one
         if (myDb.getCountNewEntryMeetingAndSuggestion("suggestion") > 0) {
             infoNewEntryOnTabOne = true;
             infoTextNewEntryPostFixTabOneTitle = " "+ this.getResources().getString(R.string.newEntryText);
         }
-        else {
+        else if (c != null && c.getCount() > 0 ) {
+            infoNewEntryOnTabOne = true;
+            infoTextNewEntryPostFixTabOneTitle = " "+ this.getResources().getString(R.string.newAttentionText);
+        } else {
             infoNewEntryOnTabOne = false;
             infoTextNewEntryPostFixTabOneTitle = "";
         }

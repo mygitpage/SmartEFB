@@ -299,8 +299,8 @@ public class OurArrangementFragmentNowComment extends Fragment {
                 tmpAuthorName = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentPersonalAuthorName);
             }
 
-            String commentDate = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");;
-            String commentTime = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "HH:mm");;
+            String commentDate = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");
+            String commentTime = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "HH:mm");
             String tmpTextAuthorNameLastActualComment = String.format(fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
             tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
@@ -357,7 +357,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     }
                 }
                 else { // sharing of comments is disable! -> show text
-                    String tmpTextSendInfoLastActualComment = "";
+                    String tmpTextSendInfoLastActualComment;
                     tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
                     if (prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementCommentShareChangeTime, 0) < cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME))) {
                         // show send successfull, but no sharing
@@ -452,7 +452,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0));
 
         // build text element delay time
-        String tmpInfoTextDelaytimeSingluarPluaral = "";
+        String tmpInfoTextDelaytimeSingluarPluaral;
         if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) == 0) {
             tmpInfoTextDelaytimeSingluarPluaral = this.getResources().getString(R.string.infoTextNowCommentDelaytimeNoDelay);
         }
@@ -566,7 +566,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
     // call getter Functions in ActivityOurArrangement for some data
     private void callGetterFunctionInSuper () {
 
-        int tmparrangementServerDbIdToComment = 0;
+        int tmparrangementServerDbIdToComment;
 
         // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
         tmparrangementServerDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();

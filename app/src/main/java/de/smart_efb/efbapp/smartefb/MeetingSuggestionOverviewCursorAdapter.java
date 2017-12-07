@@ -6,8 +6,11 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.CountDownTimer;
+import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CursorAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,48 +32,46 @@ import java.util.concurrent.TimeUnit;
 
 public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
-
-
-
     // hold layoutInflater
     private LayoutInflater cursorInflater;
 
     // context for cursor adapter
-    Context meetingSuggestionOverviewCursorAdapterContext;
+    private Context meetingSuggestionOverviewCursorAdapterContext;
 
     // reference to the DB
-    DBAdapter myDb;
+    private DBAdapter myDb;
 
     // for prefs
-    SharedPreferences prefs;
+    private SharedPreferences prefs;
 
     // max number of simultaneous meeting checkboxes
-    static final int maxSimultaneousMeetingCheckBoxes = ConstansClassMeeting.maxNumbersOfSuggestion;
+    private static final int maxSimultaneousMeetingCheckBoxes = ConstansClassMeeting.maxNumbersOfSuggestion;
 
     // int array for checkbox values (DbId)
-    int [] checkBoxSuggestionsValues = new int [maxSimultaneousMeetingCheckBoxes+1];
+    private int [] checkBoxSuggestionsValues = new int [maxSimultaneousMeetingCheckBoxes+1];
 
     // array of meeting places names (only 3 possible-> 0=nothing; 1=Werder(Havel); 2=Bad Belzig)
-    String  meetingPlaceNames[] = new String[3];
+    private String  meetingPlaceNames[] = new String[3];
 
     // number of min votes for suggestion
-    int minNumberOfVotes = 1;
+    private int minNumberOfVotes = 1;
     
     // init view elements in array
-    int [] linearLayoutSuggestionHolder = new int[] {R.id.listSuggestionLine1, R.id.listSuggestionLine2, R.id.listSuggestionLine3, R.id.listSuggestionLine4, R.id.listSuggestionLine5, R.id.listSuggestionLine6 };
-    int[] textViewSuggestionDateAndTime = new int[] {R.id.listActualDateAndTimeSuggestion1, R.id.listActualDateAndTimeSuggestion2, R.id.listActualDateAndTimeSuggestion3, R.id.listActualDateAndTimeSuggestion4, R.id.listActualDateAndTimeSuggestion5, R.id.listActualDateAndTimeSuggestion6 };
-    int[] textViewSuggestionPlace = new int[] {R.id.listActualPlaceSuggestion1, R.id.listActualPlaceSuggestion2, R.id.listActualPlaceSuggestion3, R.id.listActualPlaceSuggestion4, R.id.listActualPlaceSuggestion5, R.id.listActualPlaceSuggestion6 };
-    String [] nameDbColumNamePlace = new String[ConstansClassMeeting.maxNumbersOfSuggestion];
-    String [] nameDbColumNameDate = new String[ConstansClassMeeting.maxNumbersOfSuggestion];
-    String []  nameDbColumNameVote = new String[ConstansClassMeeting.maxNumbersOfSuggestion];
-    int [] checkboxVoteSuggestion = new int[] {R.id.suggestionCheck1, R.id.suggestionCheck2, R.id.suggestionCheck3, R.id.suggestionCheck4, R.id.suggestionCheck5, R.id.suggestionCheck6 };
+    private int [] linearLayoutSuggestionHolder = new int[] {R.id.listSuggestionLine1, R.id.listSuggestionLine2, R.id.listSuggestionLine3, R.id.listSuggestionLine4, R.id.listSuggestionLine5, R.id.listSuggestionLine6 };
+    private int[] textViewSuggestionDateAndTime = new int[] {R.id.listActualDateAndTimeSuggestion1, R.id.listActualDateAndTimeSuggestion2, R.id.listActualDateAndTimeSuggestion3, R.id.listActualDateAndTimeSuggestion4, R.id.listActualDateAndTimeSuggestion5, R.id.listActualDateAndTimeSuggestion6 };
+    private int[] textViewSuggestionPlace = new int[] {R.id.listActualPlaceSuggestion1, R.id.listActualPlaceSuggestion2, R.id.listActualPlaceSuggestion3, R.id.listActualPlaceSuggestion4, R.id.listActualPlaceSuggestion5, R.id.listActualPlaceSuggestion6 };
+    private String [] nameDbColumNamePlace = new String[ConstansClassMeeting.maxNumbersOfSuggestion];
+    private String [] nameDbColumNameDate = new String[ConstansClassMeeting.maxNumbersOfSuggestion];
+    private String []  nameDbColumNameVote = new String[ConstansClassMeeting.maxNumbersOfSuggestion];
+    private int [] checkboxVoteSuggestion = new int[] {R.id.suggestionCheck1, R.id.suggestionCheck2, R.id.suggestionCheck3, R.id.suggestionCheck4, R.id.suggestionCheck5, R.id.suggestionCheck6 };
+
 
 
     // count list view elements vote for
-    int countListViewElementVote = 0;
+    private int countListViewElementVote = 0;
 
     // number of check box in view
-    int countNumberOfCheckBoxObjects = 0;
+    private int countNumberOfCheckBoxObjects = 0;
 
 
 
@@ -124,21 +126,13 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
 
     @Override
-    public void bindView(View mView, final Context context, Cursor mCursor) {
-
-        final View view = mView;
-
-        final Cursor cursor = mCursor;
+    public void bindView(View view, final Context context, Cursor cursor) {
 
         if (cursor.isFirst() ) { // look for button in first element and normal suggestion
-
-
             //set border between suggestion to invisible -> it is first suggestion
             TextView tmpBorderBetween = (TextView) view.findViewById(R.id.borderBetweenMeetingSuggestion);
             tmpBorderBetween.setVisibility(View.GONE);
         }
-
-
 
     }
 
@@ -183,18 +177,13 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED)) == 1) { // canceled suggestion
             tmpStatusSuggestionCanceled = true;
 
-        } else if (cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME)) < System.currentTimeMillis()) {
-            tmpStatusResponseTimeExpired = true;
-            Log.d("CursorAdapter-->", "WAHL RESPONSE TIME");
-
-
         } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND)) == 1) {
             // check for meeting found from suggestion
             tmpStatusMeetingFoundFromSuggestion = true;
             Log.d("CursorAdapter-->", "WAHL FOUND MEETING");
 
 
-        } else if (cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)).length() > 0 && cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)).length() > 0) { // suggestion vote send
+        } else if (cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)).length() > 0 && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEDATE)) > 0) { // suggestion vote send
             tmpStatusVoteSuggestion = true;
 
         } else {
@@ -223,8 +212,8 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         TextView tmpTextViewAuthorNameForSuggestion = (TextView) inflatedView.findViewById(R.id.suggestionAuthorAndDate);
         if (tmpStatusSuggestion) { // for normal suggestion
             String tmpAuthorName = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR));
-            String meetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "dd.MM.yyyy");;
-            String meetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "HH:mm");;
+            String meetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "dd.MM.yyyy");
+            String meetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "HH:mm");
 
             // set info text
             String tmpTextAuthorNameMeeting = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionAuthorAndDate), tmpAuthorName, meetingDate, meetingTime);
@@ -237,8 +226,8 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         if (tmpStatusSuggestionCanceled) {
             // set info text with canceled info
             String tmpAuthorName = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR));
-            String meetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "dd.MM.yyyy");;
-            String meetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "HH:mm");;
+            String meetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "dd.MM.yyyy");
+            String meetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "HH:mm");
 
             String tmpCanceledAuthorName = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR));
             String meetingCanceledDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME)), "dd.MM.yyyy");
@@ -255,7 +244,14 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             // set info text with vote info
             String meetingVoteDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEDATE)), "dd.MM.yyyy");
             String meetingVoteTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEDATE)), "HH:mm");
-            String tmpTextAuthorNameSuggestionWithVote = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionAuthorAndDateVote), meetingVoteDate, meetingVoteTime);
+
+            String tmpTextAuthorNameSuggestionWithVote;
+            if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false)) {
+                tmpTextAuthorNameSuggestionWithVote = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionAuthorAndDateVoteAndOrComment), meetingVoteDate, meetingVoteTime);
+            }
+            else {
+                tmpTextAuthorNameSuggestionWithVote = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionAuthorAndDateVote), meetingVoteDate, meetingVoteTime);
+            }
             tmpTextViewAuthorNameForSuggestion.setText(Html.fromHtml(tmpTextAuthorNameSuggestionWithVote));
 
             // set title "vote for suggestion send"
@@ -283,13 +279,13 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
 
         // check if suggestion entry new?
-        if (cursor.getInt(cursor.getColumnIndex(myDb.MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST)) == 1) {
+        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST)) == 1) {
             TextView newEntryOfMeeting = (TextView) inflatedView.findViewById(R.id.meetingNewSuggestionText);
             String txtNewEntryOfMeeting = context.getResources().getString(R.string.newEntryText);
             newEntryOfMeeting.setText(txtNewEntryOfMeeting);
 
             // delete status new entry in db
-            myDb.deleteStatusNewEntryMeetingAndSuggestion(cursor.getLong(cursor.getColumnIndex(myDb.KEY_ROWID)));
+            myDb.deleteStatusNewEntryMeetingAndSuggestion(cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
         }
 
 
@@ -303,8 +299,8 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
                 // text view for date
                 TextView tmpTextViewMeetingDateAndTime = (TextView) inflatedView.findViewById(textViewSuggestionDateAndTime[t-1]);
-                String tmpMeetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(nameDbColumNameDate[t-1])), "dd.MM.yyyy");;
-                String tmpMeetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(nameDbColumNameDate[t-1])), "HH:mm");;
+                String tmpMeetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(nameDbColumNameDate[t-1])), "dd.MM.yyyy");
+                String tmpMeetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(nameDbColumNameDate[t-1])), "HH:mm");
                 String tmpDateAndTimeForSuggestion = String.format(context.getResources().getString(R.string.meetingOverviewSuggestiondateAndTimeText), tmpMeetingDate, tmpMeetingTime);
                 tmpTextViewMeetingDateAndTime.setText(tmpDateAndTimeForSuggestion);
 
@@ -312,7 +308,6 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                 TextView tmpTextViewMeetingPlace = (TextView) inflatedView.findViewById(textViewSuggestionPlace[t-1]);
                 String tmpMeetingPlace = meetingPlaceNames[cursor.getInt(cursor.getColumnIndex(nameDbColumNamePlace[t-1]))];
                 tmpTextViewMeetingPlace.setText(tmpMeetingPlace);
-
 
                 // set checkbox selected array to not selected (the other are not present, set to 2)
                 checkBoxSuggestionsValues[t] = 0;
@@ -347,26 +342,47 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             tmpTextViewSuggestionHintText.setVisibility(View.VISIBLE);
         }
 
-
         // check for suggestion vote or found meeting or suggestion canceled -> hint send button
         if (tmpStatusMeetingFoundFromSuggestion || tmpStatusVoteSuggestion || tmpStatusSuggestionCanceled) {
             Button tmpButtonSendSuggestion = (Button) inflatedView.findViewById(R.id.buttonSendSuggestionToCoach);
             tmpButtonSendSuggestion.setVisibility(View.GONE);
 
 
-        }
+            // check for suggestion comment text -> show text or hint no text available
+            if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false)) {
+                String tmpSuggestionCommentText = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT));
+                TextView tmpTextViewSuggestionCommentText = (TextView) inflatedView.findViewById(R.id.suggestionCommentTextByClient);
+                TextView tmpTextViewSuggestionCommentHeadline = (TextView) inflatedView.findViewById(R.id.suggestionCommentTextByClientHeadline);
+                if (tmpSuggestionCommentText.length() > 0) {
+                    tmpTextViewSuggestionCommentText.setText(tmpSuggestionCommentText);
+                    tmpTextViewSuggestionCommentText.setVisibility(View.VISIBLE);
+                    tmpTextViewSuggestionCommentHeadline.setVisibility(View.VISIBLE);
+                }
+                else {
+                    String tmpSuggestionCommentTextNotAvailable = context.getResources().getString(R.string.meetingOverviewSuggestionNoCommentTextAvailable);
+                    tmpTextViewSuggestionCommentText.setText(tmpSuggestionCommentTextNotAvailable);
+                    tmpTextViewSuggestionCommentText.setVisibility(View.VISIBLE);
+                    tmpTextViewSuggestionCommentHeadline.setVisibility(View.VISIBLE);
+                }
+            }
 
+
+        }
 
         // get text view for info text at least
         TextView tmpTextViewInfoTextAtLeast = (TextView) inflatedView.findViewById(R.id.suggestionAtLeastInfoText);
         String tmpAtLastMessage = "";
         // vote -> show info text at least
         if (tmpStatusVoteSuggestion) {
-            tmpAtLastMessage = context.getResources().getString(R.string.meetingOverviewSuggestionVoteInfoTextAtLeast);
+            if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false)) {
+                tmpAtLastMessage = context.getResources().getString(R.string.meetingOverviewSuggestionVoteInfoOrSuggestionCommentTextAtLeast);
+            }
+            else {
+                tmpAtLastMessage = context.getResources().getString(R.string.meetingOverviewSuggestionVoteInfoTextAtLeast);
+            }
             tmpTextViewInfoTextAtLeast.setText(tmpAtLastMessage);
             tmpTextViewInfoTextAtLeast.setVisibility(View.VISIBLE);
         }
-
 
         // meeting found from suggestion -> show info text at least
         if (tmpStatusMeetingFoundFromSuggestion) {
@@ -374,8 +390,6 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             tmpTextViewInfoTextAtLeast.setText(tmpAtLastMessage);
             tmpTextViewInfoTextAtLeast.setVisibility(View.VISIBLE);
         }
-
-
 
         // suggestion is canceled by coach
         if (tmpStatusSuggestionCanceled) {
@@ -392,9 +406,22 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
             final String tmpTextResponseTimeOver = context.getResources().getString(R.string.suggestionOverviewResponseTimeIsOver);
 
-            // get text view for timer and set visible
+            // get text view for timer place and set visible
             final TextView placeholderForTicTimer = (TextView) inflatedView.findViewById(R.id.suggestionResponseTicTimer);
             placeholderForTicTimer.setVisibility(View.VISIBLE);
+
+            // set intro text timer to visible
+            TextView placeholderForTicTimerAskedFor = (TextView) inflatedView.findViewById(R.id.suggestionResponseTicTimerIntroText);
+            placeholderForTicTimerAskedFor.setVisibility(View.VISIBLE);
+
+            // generate end date
+            String tmpResponseDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME)), "dd.MM.yyyy");;
+            String tmpResponseTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME)), "HH:mm");
+            String tmpDateAndTimeForResponse = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionResponseDateAndTimeText), tmpResponseDate, tmpResponseTime);
+            TextView placeholderForTicTimerEndDateInText = (TextView) inflatedView.findViewById(R.id.suggestionResponseTicTimerEndDateInText);
+            placeholderForTicTimerEndDateInText.setText(tmpDateAndTimeForResponse);
+            placeholderForTicTimerEndDateInText.setVisibility(View.VISIBLE);
+
 
             // show time until next evaluation period
             // calculate run time for timer in MILLISECONDS!!!
@@ -425,13 +452,52 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
         }
 
+        // check if comment suggestion is possible -> show comment input field
+        if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false) && tmpStatusSuggestion) {
+
+            // get max letters for edit text comment
+            final int tmpMaxLength = ConstansClassMeeting.namePrefsSuggestionCommentMaxLetters;
+
+            // get textView to count input letters and init it
+            final TextView textViewCountLettersSuggestionCommentEditText = (TextView) inflatedView.findViewById(R.id.countLettersCommentSuggestionEditText);
+            String tmpInfoTextCountLetters = context.getResources().getString(R.string.infoTextCountLettersForComment);
+            tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", tmpMaxLength);
+            textViewCountLettersSuggestionCommentEditText.setText(tmpInfoTextCountLetters);
+            textViewCountLettersSuggestionCommentEditText.setVisibility(View.VISIBLE);
+
+            // comment suggestion textfield
+            final EditText txtInputSuggestionComment = (EditText) inflatedView.findViewById(R.id.inputSuggestionComment);
+
+            // set text watcher to count letters in comment field
+            final TextWatcher txtInputArrangementCommentTextWatcher = new TextWatcher() {
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    //
+                    String tmpInfoTextCountLetters =  context.getResources().getString(R.string.infoTextCountLettersForComment);
+                    tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, String.valueOf(s.length()), tmpMaxLength);
+                    textViewCountLettersSuggestionCommentEditText.setText(tmpInfoTextCountLetters);
+                }
+                public void afterTextChanged(Editable s) {
+                }
+            };
+
+            // set edit text field to visible
+            txtInputSuggestionComment.setVisibility(View.VISIBLE);
+
+            // set text watcher to count input letters
+            txtInputSuggestionComment.addTextChangedListener(txtInputArrangementCommentTextWatcher);
+
+            // set input filter max length for comment field
+            txtInputSuggestionComment.setFilters(new InputFilter[] {new InputFilter.LengthFilter(tmpMaxLength)});
 
 
-
-
-
-
-
+            // set border top and bottom of edittext field visible
+            TextView tmpBorderBetweenCommentSuggestionTop = (TextView) inflatedView.findViewById(R.id.borderBetweenCommentSuggestionTop);
+            tmpBorderBetweenCommentSuggestionTop.setVisibility(View.VISIBLE);
+            TextView tmpBorderBetweenCommentSuggestionBottom = (TextView) inflatedView.findViewById(R.id.borderBetweenCommentSuggestionBottom);
+            tmpBorderBetweenCommentSuggestionBottom.setVisibility(View.VISIBLE);
+        }
 
         if (cursor.isFirst() && tmpStatusSuggestion ) { // look for button in first element and normal suggestion
 
@@ -443,10 +509,14 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                 @Override
                 public void onClick(View v) {
 
+                    // get comment from inputfield when on
+                    String commentSuggestionText = "";
+                    if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false)) {
+                        EditText txtInputSuggestionComment = (EditText) inflatedView.findViewById(R.id.inputSuggestionComment);
+                        commentSuggestionText = txtInputSuggestionComment.getText().toString();
+                    }
 
-                    if (countListViewElementVote >= minNumberOfVotes) { // too little suggestions?
-
-                        String tmpClientCommentSuggestionText = "";
+                    if (countListViewElementVote >= minNumberOfVotes || commentSuggestionText.length() > 3) { // too little suggestions or to few comment letters?
 
                         // canceled time
                         Long tmpVoteDate = System.currentTimeMillis();
@@ -459,7 +529,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
                         Log.d("Button GEDRÜCKT-->","ID: "+clientVoteDbId);
 
-                        myDb.updateSuggestionVoteAndCommentByClient(checkBoxSuggestionsValues[1], checkBoxSuggestionsValues[2], checkBoxSuggestionsValues[3], checkBoxSuggestionsValues[4], checkBoxSuggestionsValues[5], checkBoxSuggestionsValues[6], clientVoteDbId, tmpVoteDate, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), tmpClientCommentSuggestionText, tmpStatus);
+                        myDb.updateSuggestionVoteAndCommentByClient(checkBoxSuggestionsValues[1], checkBoxSuggestionsValues[2], checkBoxSuggestionsValues[3], checkBoxSuggestionsValues[4], checkBoxSuggestionsValues[5], checkBoxSuggestionsValues[6], clientVoteDbId, tmpVoteDate, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), commentSuggestionText, tmpStatus);
 
                         // set successfull message in parent activity
                         //String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
@@ -482,21 +552,18 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                     else { // error too little suggestions!
 
                         // show error message in view
-                        TextView textViewTooLittleSuggestionChoosen = (TextView) inflatedView.findViewById(R.id.suggestionErrorToFewSuggestionsChoosen);
-                        textViewTooLittleSuggestionChoosen.setVisibility(View.VISIBLE);
-
-                        // show error toast
-                        //Toast.makeText(meetingFindMeetingCursorAdapterContext, meetingFindMeetingCursorAdapterContext.getResources().getString(R.string.errorCountTooLittleCheckBoexesCheckedText), Toast.LENGTH_SHORT).show();
+                        if (countListViewElementVote < minNumberOfVotes) {
+                            TextView textViewTooLittleSuggestionChoosen = (TextView) inflatedView.findViewById(R.id.suggestionErrorToFewSuggestionsChoosen);
+                            textViewTooLittleSuggestionChoosen.setVisibility(View.VISIBLE);
+                        }
+                        if (commentSuggestionText.length() < 4) {
+                            TextView textViewToFewLettersInComment = (TextView) inflatedView.findViewById(R.id.errorInputSuggestionComment);
+                            textViewToFewLettersInComment.setVisibility(View.VISIBLE);
+                        }
                     }
-
                 }
-
-
             });
-
         }
-
-
 
 
         return inflatedView;
@@ -520,27 +587,17 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
     }
 
 
-
-
-
-
-
-
-    //
     // onClickListener for vote for timezone
-    //
-    public class onClickListenerCheckBoxSuggestionVote implements View.OnClickListener {
+    private class onClickListenerCheckBoxSuggestionVote implements View.OnClickListener {
 
         int listPosition = 0;
 
-        public onClickListenerCheckBoxSuggestionVote (int tmpListPosition) {
+        private onClickListenerCheckBoxSuggestionVote (int tmpListPosition) {
 
             this.listPosition = tmpListPosition;
 
             countNumberOfCheckBoxObjects++;
-
         }
-
 
         @Override
         public void onClick(View v) {
@@ -551,19 +608,11 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             if (checked) {
                 checkBoxSuggestionsValues[listPosition] = 1;
                 countListViewElementVote++; //inc count checkboxes
-
-                Log.d("OnClickCheckBoy-->","ListP:"+listPosition+" +Array:"+checkBoxSuggestionsValues[listPosition]);
-
-
             }
             else {
                 checkBoxSuggestionsValues[listPosition] = 0;
                 countListViewElementVote--; //dec count checkboxes
-
-                Log.d("OnClickCheckBoy-->","NICHT SETZEN!");
-
             }
-
         }
     }
 
