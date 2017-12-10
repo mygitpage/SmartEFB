@@ -398,7 +398,29 @@ public class ActivityMeeting extends AppCompatActivity {
             // set correct subtitle in toolbar in tab zero
             toolbarMeeting.setSubtitle(arraySubTitleText[0]);
 
-        } else { // Show fragment meeting overview on tab zero
+        } else if (command.equals("client_delete_suggestion_entry")) { // delete suggestion entry by client, because meeting found from suggestion, cnaceneld suggestion or already vote
+
+            // delete selected meeting from db
+            myDb.deleteSelectedMeetingOrSuggestionFromDb(meetingId);
+
+            //set fragment in tab zero to meeting overview
+            meetingViewPagerAdapter.setFragmentTabOne("suggestion_overview");
+
+            // set correct tab one title with information new entry and color change
+            tabTitleTextTabOne = getResources().getString(getResources().getIdentifier("meetingTabTitle_2", "string", getPackageName()));
+            setTabOneTitleAndColor();
+
+            // set command show variable
+            showCommandFragmentTabOne = "suggestion_overview";
+
+            // call notify data change
+            meetingViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab zero
+            toolbarMeeting.setSubtitle(arraySubTitleText[2]);
+
+        }
+        else { // Show fragment meeting overview on tab zero
 
             //set fragment in tab zero to meeting overview
             meetingViewPagerAdapter.setFragmentTabZero("meeting_overview");
@@ -849,15 +871,6 @@ public class ActivityMeeting extends AppCompatActivity {
         }
 
     }
-
-
-
-
-
-
-
-
-
 
     // setter for subtitle in meeting toolbar
     public void setMeetingToolbarSubtitle (String subtitleText, String subtitleChoose) {

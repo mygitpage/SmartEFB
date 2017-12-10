@@ -797,7 +797,7 @@
             <string name="meetingTabTitle_1b">Terminabsage</string>
             <string name="meetingTabTitle_2">Terminvorschläge</string>
             <string name="meetingTabTitle_2a">Ihre Terminvorschläge</string>
-            <string name="meetingTabTitle_3">Alte Termine und Vorschläge</string>
+            <string name="meetingTabTitle_3">Vergangene Termine</string>
         <!-- End tab title -->
 
 
@@ -967,12 +967,15 @@
     <string name="meetingOverviewSuggestionResponseDateAndTimeText">(bis zum %1$s um %2$s Uhr)</string>
 
     <string name="btnTextSendSuggestionToCoach">Meine Auswahl Senden</string>
+    <string name="btnTextSendSuggestionAndCommentToCoach">Meine Auswahl + Kommentar Senden</string>
 
     <string name="meetingOverviewSuggestionErrorToFewSugestionChoosen">Sie haben zu wenige Terminvorschläge ausgewählt. Es muss mindestens einer sein!</string>
 
-    <string name="meetingOverviewSuggestionCanceledByCoachText">Verworfene Vorschläge</string>
+    <string name="meetingOverviewSuggestionCanceledByCoachText">Verworfene Vorschläge!</string>
 
     <string name="meetingOverviewMeetingFoundFromSuggestionByCoachText">Termin gefunden!</string>
+
+    <string name="meetingSuggestionAlreadyVoteText">Auswahl erfolgt!</string>
 
     <string name="meetingOverviewSuggestionVoteInfoTextAtLeast">Ihre Auswahl von Terminvorschlägen wurde bereits zu Ihrer Beraterin/ Ihrem Berater geschickt. Daher sind Änderungen nicht mehr möglich.</string>
     <string name="meetingOverviewSuggestionVoteInfoOrSuggestionCommentTextAtLeast">Ihre Auswahl von Terminvorschlägen und /oder Ihr Kommentar zu den Vorschlägen wurde zu Ihrer Beraterin/ Ihrem Berater geschickt. Daher sind Änderungen nicht mehr möglich.</string>
@@ -992,6 +995,10 @@
 
     <string name="errorInputSuggestionComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz oder enthält nicht erlaubte Zeichen.</string>
     <string name="suggestionCommentHintText">Sie können Vorschläge auswählen und/oder hier einen Kommentar schreiben</string>
+
+    <string name="suggestionOverviewLinkTextDeleteSuggestionEntry">Den obigen Eintrag löschen</string>
+    <string name="suggestionOverviewLinkNormalDeleteDate">(Der Eintrag wird automatisch am %1s um %2s Uhr gelöscht)</string>
+
 
 
 
@@ -1052,8 +1059,8 @@
     <string name="meetingSubtitleSuggestionOverviewNoSuggestion">Keine Vorschläge vorhanden</string>
 
 
-    <string name="meetingSubtitleMeetingSuggestionOverviewOld">Alte Termine und Vorschläge</string>
-    <string name="meetingSubtitleMeetingSuggestionOverviewOldNotAvailable">Keine alten Termine und Vorschläge</string>
+    <string name="meetingSubtitleMeetingSuggestionOverviewOld">Vergangene Termine</string>
+    <string name="meetingSubtitleMeetingSuggestionOverviewOldNotAvailable">Keine vergangenen Termine vorhanden</string>
 
     <string name="meetingSubtitleClientCanceledMeeting">Terminabsage bestätigen</string>
 

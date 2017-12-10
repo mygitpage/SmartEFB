@@ -192,6 +192,9 @@ public class MainActivity extends AppCompatActivity {
 
         // de-register broadcast receiver
         this.unregisterReceiver(mainActivityBrodcastReceiver);
+
+        // close db connection
+        myDb.close();
     }
 
 
@@ -386,8 +389,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case 6: // menue item "Termine"
-                    if ( prefs.getBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime  + ConstansClassMeeting.prefsPraefixMeetings[0], false) || prefs.getBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime  + ConstansClassMeeting.prefsPraefixMeetings[1], false)) {
-                        // meeting A or meeting B new!
+                    if (myDb.getCountNewEntryMeetingAndSuggestion("suggestion") > 0 || myDb.getCountNewEntryMeetingAndSuggestion("meeting") > 0 ) {
                         mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                     } else {
                         mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];

@@ -79,25 +79,36 @@
         android:id="@+id/suggestionCanceledByCoachTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
+        android:textSize="20dp"
         android:textColor="@color/text_accent_color"
         android:textStyle="bold"
         android:text="@string/meetingOverviewSuggestionCanceledByCoachText"
         android:gravity="center_horizontal"
-        android:paddingBottom="15dp"
         android:visibility="gone"/>
 
     <TextView
         android:id="@+id/meetingFoundFromSuggestionByCoachTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
+        android:textSize="20dp"
         android:textColor="@color/text_accent_color"
         android:textStyle="bold"
         android:text="@string/meetingOverviewMeetingFoundFromSuggestionByCoachText"
         android:gravity="center_horizontal"
-        android:paddingBottom="15dp"
         android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/meetingSuggestionAlreadyVoteTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="@color/text_accent_color"
+        android:textStyle="bold"
+        android:text="@string/meetingSuggestionAlreadyVoteText"
+        android:gravity="center_horizontal"
+        android:visibility="gone"/>
+
+
 
     <TextView
         android:id="@+id/suggestionErrorToFewSuggestionsChoosen"
@@ -518,7 +529,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/app_button_style"
         android:textColor="@color/text_color_white"
-        android:text="@string/btnTextSendSuggestionToCoach"
         android:layout_gravity="center_horizontal"
         android:padding="10dp"
         android:layout_marginTop="20dp"
@@ -535,6 +545,26 @@
         android:paddingBottom="30dp"
         android:paddingTop="15dp"
         android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/suggestionDeleteEntryLink"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:textColor="@color/text_color"
+        android:text="Kurzer Test weil"
+        android:textColorLink="@color/colorPrimaryDark"
+        android:gravity="right"/>
+
+    <TextView
+        android:id="@+id/suggestionDeleteRegularyInfoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="right"
+        android:visibility="gone"
+        android:paddingBottom="15dp"/>
 
 
 
