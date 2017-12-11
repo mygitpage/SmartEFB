@@ -228,6 +228,9 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         // de-register broadcast receiver
         this.unregisterReceiver(connectBookBrodcastReceiver);
+
+        // close db connection
+        myDb.close();
     }
 
 

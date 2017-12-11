@@ -26,8 +26,6 @@ import android.widget.Toast;
  */
 public class ActivityTimeTable extends AppCompatActivity {
 
-
-
     // reference for the toolbar
     Toolbar toolbarMeeting;
     ActionBar actionBar;

@@ -12,7 +12,6 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.concurrent.TimeUnit;
 
@@ -153,7 +151,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
         final Cursor cursor = mCursor;
 
-        inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_overview_firstandlast, parent, false);
+        inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_overview_normal, parent, false);
 
         /*
         if (cursor.isFirst() && cursor.getCount() > 1) { // listview for first element, when cursor has more then one element

@@ -70,19 +70,10 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
         // init the DB
         myDb = new DBAdapter(fragmentMeetingSuggestionContext);
 
-
-
         // find the listview for display meetings and suggestion, etc.
-        listViewMeetingSuggestion = (ListView) viewFragmentMeetingSuggestion.findViewById(R.id.listViewMeetingSuggestionOldDates);
-
-
-
+        listViewMeetingSuggestion = (ListView) viewFragmentMeetingSuggestion.findViewById(R.id.listViewOldMeetingDates);
 
     }
-
-
-
-
 
 
 
@@ -94,7 +85,7 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
 
         // get all meetings and suggestion from database in correct order
         Long nowTime = System.currentTimeMillis();
-        Cursor cursorMeetingSuggestion = myDb.getAllRowsMeetingsAndSuggestion("old_meeting_suggestion", nowTime);
+        Cursor cursorMeetingSuggestion = myDb.getAllRowsMeetingsAndSuggestion("old_meeting", nowTime);
 
 
 
@@ -104,7 +95,7 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
             tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMeetingSuggestionOverviewOld", "string", fragmentMeetingSuggestionContext.getPackageName()));
             ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, "meeting_suggestion_old");
 
-            // set no suggestions text visibility gone
+            // set old meeting text visibility gone
             TextView tmpNoSuggestionsText = (TextView) viewFragmentMeetingSuggestion.findViewById(R.id.meetingSuggestionOldOverviewNothingAvailable);
             tmpNoSuggestionsText.setVisibility(View.GONE);
 
@@ -127,7 +118,7 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
             tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMeetingSuggestionOverviewOldNotAvailable", "string", fragmentMeetingSuggestionContext.getPackageName()));
             ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, "meeting_suggestion_old");
 
-            // set no suggestions text visibility gone
+            // set old meeting text visibility show
             TextView tmpNoSuggestionsText = (TextView) viewFragmentMeetingSuggestion.findViewById(R.id.meetingSuggestionOldOverviewNothingAvailable);
             tmpNoSuggestionsText.setVisibility(View.VISIBLE);
 

@@ -122,14 +122,13 @@ public class AlarmReceiverOurGoals extends BroadcastReceiver {
             manager.cancel(pendingIntentOurGoalsEvaluate);
         }
 
+        // close db connection
+        myDb.close();
+
         // send intent to receiver in OurGoalsFragmentJointlyGoalsNow to update listView OurGoals (when active)
         Intent tmpIntent = new Intent();
         tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
-        // put extras to intent -> "UpdateJointlyEvaluationLink" for list views of fragments to update there view
         tmpIntent.putExtra("UpdateJointlyEvaluationLink","1");
         context.sendBroadcast(tmpIntent);
-
-
-
     }
 }

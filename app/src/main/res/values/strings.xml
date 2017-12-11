@@ -714,9 +714,6 @@
             <string name="ourGoalsSubtitleOldJointlyGoals">Älter als</string>
         <!-- End subtitle -->
 
-
-
-
         <!-- our goals dialog goals change -->
             <string name="textDialogOurGoalsGoalsChangeCloseButton">Schliessen</string>
             <string name="textDialogOurGoalsGoalsChangeHeadline">Änderung der gemeinsamen Ziele</string>
@@ -727,8 +724,6 @@
             <string name="textDialogOurGoalsDebetableGoalsChangeInfoText">Es stehen neue strittige Ziele zur Verfügung, die bereits geladen wurden.\nSobald Sie diesen Dialog beenden, sehen Sie die neuen strittigen Ziele.\nEine eventuell gesendete Einschätzung wird bei den älteren strittigen Zielen archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Beraterin.</string>
             <string name="textDialogOurGoalsDebetableJointlyGoalsChangeInfoText">Es stehen neue gemeinsame und strittige Ziele zur Verfügung, die bereits alle geladen wurden.\nSobald Sie diesen Dialog beenden, sehen Sie die neuen gemeinsamen und strittigen Ziele.\nEventuell gesendete Einschätzungen oder Kommentare werden archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Beraterin.</string>
         <!-- End our goals dialog goals change -->
-
-
 
     <!-- Activity our goals End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -765,16 +760,20 @@
     <!-- End Fragment Section One-->
 
 
+    <!-- Fragment Section Two -->
+        <string name="faq_section2_question1">Warum sind in der App Schaltflächen inaktiv?</string>
+        <string name="faq_section2_answer1">Inaktive Schaltflächen werden dann angezeigt, wenn Funktionen nicht eingeschaltet sind. Ihre Beraterin/ Ihr Berater kann Funktionen ein- oder ausschalten. Dies wir sie mit Ihnen besprechen. Beispielsweise werden Funktionen ausgeschaltet, wenn sie zu aktuellen Beratungsverlauf nicht notwendig sind.</string>
+        <string name="faq_section2_question2">Wozu brauche ich die Funktion Übergabebuch?</string>
+        <string name="faq_section2_answer2">Das Übergabebuch ist vergleichbar mit einem moderierten Chat. Als Moderator tritt Ihre Beraterin/ Ihr Berater auf. Sie kann verschiedenen Kommunikationseinstellungen in diesem Chat ändern. Beispielsweise wie viele Nachrichten Sie in 24 Stunden schreiben dürfen oder wie viel Zeichen eine Nachricht hat.\nSie können das Übergabebuch beispielsweise zur kurzfristigen Absprache bei der Übergabe von Kindern von Ihnen zu Ihrem Ex-Partner verwenden. Ihre Beraterin/ Ihr Berater kann ebenfalls Nachrichten in den Chat schreiben.</string>
+
+    <!-- End Fragment Section Two -->
+
     <!-- faq subtitle text -->
-
-
         <string name="faqSubtitleSectionOne">Übersicht</string>
         <string name="faqSubtitleSectionTwo">Fragen zur App</string>
         <string name="faqSubtitleSectionThree">EB - Was ist das?</string>
         <string name="faqSubtitleSectionFour">Wo kann ich mich beraten lassen?</string>
         <string name="faqSubtitleSectionFive">Rund um die Erziehung</string>
-
-
     <!-- End faq subtitle text -->
 
 
@@ -800,274 +799,96 @@
             <string name="meetingTabTitle_3">Vergangene Termine</string>
         <!-- End tab title -->
 
+        <!-- Strings for places -->
+            <string name="firstMeetingPlaceNoPlaceText">Nichts gewählt</string>
+            <string name="firstMeetingPlaceWerderText">Werder (Havel)</string>
+            <string name="firstMeetingPlaceBadBelzigText">Bad Belzig</string>
 
-
-
-
-
-    <string name="toastMessageMeetingDataNotSuccessfull">Die Termindaten wurden nicht gesendet!</string>
-    <string name="toastMessageMeetingDataNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
-
-
-
-
-    
-
-
-        <!-- fragment now meeting -->
-            <string name="btnMakeFirstMeetingText">Ersttermin vereinbaren</string>
-            <string name="btnFindMeetingDateText">Gemeinsamen Termin finden</string>
-            <string name="btnChangeMeetingDateText">Termin verschieben/absagen</string>
-            <string name="nextMeetingIntroTextNoMeeting">Sie haben noch keinen Termin vereinbart.</string>
-            <string name="nextMeetingIntroTextMeetingDeleted">Terminvorschlag abgesagt</string>
-            <string name="nextMeetingIntroTextFirstMeetingConfirmedTownWerder">Wir können Ihnen in unserer Beratungsstelle in Werder (Havel) folgenden Termin anbieten</string>
-            <string name="nextMeetingIntroTextFirstMeetingConfirmedTownBadBelzig">Wir können Ihnen in unserer Beratungsstelle in Bad Belzig folgenden Termin anbieten</string>
-            <string name="nextMeetingIntroTextFirstMeetingConfirmedTownNotSelected">Wir können Ihnen folgenden Termin anbieten. Leider wurde keine Beratungsstelle gewählt</string>
-            <string name="nextMeetingIntroTextFirstMeetingRequested">Sie haben eine Termianfrage an unsere Beratungsstellen gestellt. Sie erhalten in kürze eine Antwort mit einem Terminvorschlag.</string>
-            <string name="nextMeetingNotPossiblePleaseCall">Bitte rufen Sie uns an</string>
-            <string name="nextMeetingIntroTextFirstMeetingNotPossible">Leider sind alle Termine in Ihren gewählten Zeitbereichen bereits vergeben. Bitte <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>, um so einen Termin zu vereinbaren. \nEin weitere Terminanfrage über diese App ist leider nicht möglich.</string>
-            <string name="showExplainTextForMeetingMakeText">Sie können mit uns einen Ersttermin über diese App vereinbaren. Dazu klicken Sie bitte auf den unten stehenden Button "Ersttermin vereinbaren". Sie haben auch die Möglichkeit uns <a href="smart.efb.deeplink://linkin/settings?com=show_contact">telefonisch</a> anzurufen und so einen Termin zu vereinbaren.</string>
-            <string name="showMeetingDateIsDeletedByFragmentChangeText">Der von uns vorgeschlagene Termin wurde von Ihnen abgesagt. Wenn Sie einen neuen Termin vereinbaren möchten, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>. </string>
-            <string name="showClockWordAdditionalText">Uhr</string>
-            <string name="showTimezoneSuggestionExplainText">Folgende Zeitbereiche wurden von Ihnen vorgeschlagen</string>
-            <string name="showPlaceSuggestionExplainText">Als Beratungsort wurde von Ihnen %s vorgeschlagen.</string>
-
-        <!-- fragment now meeting -->
 
         <!-- help dialog -->
             <string name="textDialogMeetingCloseDialog">Schließen</string>
             <string name="textDialogMeetingTitleDialog">Hinweise zu den Terminen</string>
-            <string name="textDialogMeetingSettingsIntro">Mit der Funktion Termine können Sie einen Ersttermin mit unseren Beratungsstellen in Werder(Havel) oder Bad Belzig vereinbaren. Dies geschieht, in dem Sie uns Zeitbereiche mitteilen in den Sie Zeit haben. Wir schauen dann in unseren Terminkalender und versuchen Ihnen in Ihren gewünschten Zeitbereichen einen Termin anzubieten. Dies funktioniert leider nicht immer. In diesem Fall bitten wir Sie uns anzurufen oder eine Email zu schreiben.\nIhre Terminanfrage geschieht anonym\nMit dieser App ist es nur möglich einen einzigen Terminanfrageversuch zu unternehmen.</string>
-
+            <string name="textDialogMeetingSettingsIntro">Im Bereich Termine finden Sie Ihre nächsten Beratungstermine. Die Beratungstermine kann Ihre Beraterin/ Ihr Berater erstellen. Dazu spricht sie sich mit Ihnen ab und erstellt einen entsprechenden Termin. Ein weitere Möglichkeit ist, das Ihre Beraterin/ Ihr Berater mehrere Terminvorschläge unterbreitet, aus denen Sie die für Sie besten auswählen. Aufgrund Ihrer Rückmeldungen kann Ihre Beraterin/ Ihr Berater dann einen Termin finden. </string>
         <!-- End help dialog -->
 
-
-        <!-- fragment make meeting -->
-            <string name="btnSendSuggestionFirstMeeting">Anfrage senden</string>
-            <string name="btnAbbortSuggestionFirstMeeting">Zurück</string>
-            <string name="makeFirstMeetingIntroText">Ersttermin vereinbaren</string>
-            <string name="makeFirstMeetingExplainText">Bitte wählen Sie einen Zeitbereich und Beratungsort, an dem Ihr Ersttermin stattfinden soll. Bitte wählen Sie mindestens drei Zeitbereiche. Die Zeitbereich beziehen sich auf die nächste Woche. Sie haben auch die Möglichkeit uns <a href="smart.efb.deeplink://linkin/settings?com=show_contact">telefonisch</a> zu erreichen oder uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a> zu schreiben.</string>
-            <string name="infoMakeMeetingProcedureText">Wir werden versuchen Ihnen schnellstmöglich einen Termin in Ihrem gewünschten Zeitbereich auf Ihr Smartphone zu schicken. Dies kann allerdings bis zu zwei Tagen dauern. Sie haben auch die Möglichkeit uns <a href="smart.efb.deeplink://linkin/settings?com=show_contact">telefonisch</a> zu erreichen oder uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a> zu schreiben.</string>
-            <string name="makeFirstMeetingChoosePlaceIntroText">Bitte wählen Sie den Ort Ihrer ersten Beratung</string>
-            <string name="makeFirstMeetingProblemIntroText">Bitte geben Sie uns einen Hinweis auf Ihr Anliegen (beispielsweise Trennung, Erziehungsschwierigkeiten, Lese-Rechtschreib-Diagnostik, etc.)</string>
-            <string name="makeFirstMeetingChoosePlaceErrorText">Sie haben keinen Beratungsort gewählt!</string>
-            <string name="makeFirstMeetingChooseTimezoneErrorText">Sie haben zu wenige Zeitbereiche gewählt!</string>
-            <string name="makeFirstMeetingProblemErrorText">Sie haben keinen Hinweis auf Ihr Anliegen eingegeben! Dieser muss mindestens 3 Zeichen und höchstens 500 Zeichen lang sein.</string>
-            <string name="makeFirstMeetingCompletErrorToastText">Ihre Eingaben sind nicht vollständig. Bitte kontrollieren Sie die rot markierten Eingaben.</string>
-            <string name="inputFirstMeetingProblemHintText">Bitte beschreiben Sie kurz Ihr Anliegen oder Problem.</string>
-            <string name="makeFirstMeetingSendSuccesfullToastText">Ihre Terminanfrage wurde erfolgreich gesendet!</string>
-            <string name="makeMeetingTimelineDays">Tage</string>
-            <string name="makeMeetingTimelineDayMo">Mo</string>
-            <string name="makeMeetingTimelineDayDi">Di</string>
-            <string name="makeMeetingTimelineDayMi">Mi</string>
-            <string name="makeMeetingTimelineDayDo">Do</string>
-            <string name="makeMeetingTimelineDayFr">Fr</string>
-            <string name="makeMeetingTimezone1">9 bis 12 Uhr</string>
-            <string name="makeMeetingTimezone2">12 bis 15 Uhr</string>
-            <string name="makeMeetingTimezone3">15 bis 18 Uhr</string>
-            <string name="firstMeetingPlaceWerderText">Werder (Havel)</string>
-            <string name="firstMeetingPlaceBadBelzigText">Bad Belzig</string>
-            <string name="firstMeetingPlaceNoPlaceText">Kein Ort gewählt</string>
-        <!-- end fragment make meeting -->
-
-
         <!-- fragment meeting overview -->
-            <string name="findMeetingIntroTextNoMeetingSoFar">Termin wählen</string>
-            <string name="findMeetingExplainTextNoMeetingSoFar">Bitte wählen Sie mindestens einen Terminvorschlag aus, an dem Sie können. Klicken Sie dann am Ende der Liste auf Verbindlich Senden. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
-            <string name="findMeetingAuthorSuggestionMeeting">Die Vorschläge wurden von %s eingestellt.</string>
+            <string name="toastMessageMeetingDataNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
+            <string name="meetingOverviewNoMeetingAvailableText">Es sind keine aktuellen Termine vorhanden.</string>
+            <string name="meetingOverviewMeetingTitleAndNumberText">Nächster Termin</string>
+            <string name="meetingOverviewMeetingCanceledTitleAndNumberText">Abgesagter Termin</string>
+            <string name="meetingOverviewCreateMeetingAuthorAndDate">Der Termin wurde von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt.</string>
+            <string name="meetingOverviewCreateMeetingAuthorAndDateWithCancele">Der Termin wurde von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt und von &lt;u>%4$s&lt;/u> am %5$s um %6$s Uhr abgesagt.</string>
+            <string name="meetingOverviewClientCanceledMeetingAuthorAndDate">Von Ihnen wurde der Termin am %1$s um %2$s Uhr abgesagt.</string>
+            <string name="meetingOverviewClientCanceledNotSendToServer">Ihre Absage wurde noch nicht zum Server gesendet.</string>
+            <string name="meetingOverviewClientCanceledLinkText">Diesen Termin absagen</string>
+            <string name="meetingOverviewmeetingCanceledByCoachText">Abgesagt!</string>
+            <string name="meetingOverviewDeleteCanceledMeetingLinkText">Diesen abgesagten Termin löschen</string>
+            <string name="toastMessageMeetingNewMeeting">Es sind neue Termine eingetroffen!</string>
+            <string name="toastMessageMeetingCanceledMeetingByCoach">Es wurden Termine durch Ihre Beraterin/ Ihren Berater abgesagt!</string>
+            <string name="toastMessageMeetingCanceledMeetingByClientSuccessfullSend">Ihr Terminabsagewunsch wurde erfolgreich gesendet!</string>
+            <string name="toastMessageMeetingCanceledMeetingByClientNotSuccessfullSend">Ihr Terminabsagewunsch konnte nicht gesendet werden!</string>
+        <!-- end fragment meeting overview -->
 
-
-
-        <!-- fragment meeting overview -->
-
-
-    <string name="meetingOverviewNoMeetingAvailableText">Es sind keine aktuellen Termine vorhanden.</string>
-    <string name="meetingOverviewMeetingTitleAndNumberText">Nächster Termin</string>
-    <string name="meetingOverviewMeetingCanceledTitleAndNumberText">Abgesagter Termin</string>
-    <string name="meetingOverviewCreateMeetingAuthorAndDate">Der Termin wurde von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt.</string>
-    <string name="meetingOverviewCreateMeetingAuthorAndDateWithCancele">Der Termin wurde von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt und von &lt;u>%4$s&lt;/u> am %5$s um %6$s Uhr abgesagt.</string>
-
-    <string name="meetingOverviewClientCanceledMeetingAuthorAndDate">Von Ihnen wurde der Termin am %1$s um %2$s Uhr abgesagt.</string>
-
-    <string name="meetingOverviewClientCanceledNotSendToServer">Ihre Absage wurde noch nicht zum Server gesendet.</string>
-
-    <string name="meetingOverviewClientCanceledLinkText">Diesen Termin absagen</string>
-
-    <string name="meetingOverviewmeetingCanceledByCoachText">Abgesagt!</string>
-    <string name="meetingOverviewDeleteCanceledMeetingLinkText">Diesen abgesagten Termin löschen</string>
-
-
-    <string name="toastMessageMeetingNewMeeting">Es sind neue Termine eingetroffen!</string>
-    <string name="toastMessageMeetingCanceledMeetingByCoach">Es wurden Termine durch Ihre Beraterin/ Ihren Berater abgesagt!</string>
-
-    <string name="toastMessageMeetingCanceledMeetingByClientSuccessfullSend">Ihr Terminabsagewunsch wurde erfolgreich gesendet!</string>
-    <string name="toastMessageMeetingCanceledMeetingByClientNotSuccessfullSend">Ihr Terminabsagewunsch konnte nicht gesendet werden!</string>
-
-
-
-    <!-- end fragment meeting overview -->
-
-
+        <!-- fragment old meeting overview -->
+            <string name="meetingOverviewOldNoMeetingAvailableText">Es sind keine vergangenen Termine vorhanden.</string>
+            <string name="meetingOverviewOldMeetingTitleAndNumberText">Vergangener Termin</string>
+            <string name="oldMeetingOverviewIntroText">Hier finden Sie zu Ihrer Information alle vergangenen oder abgesagten Termine. Termine, die Sie gelöscht haben, sind nicht mehr vorhanden.</string>
+        <!-- end fragment old meeting overview -->
 
         <!-- fragment meeting canceled by client -->
-
-
-    <string name="meetingClientCanceledIntroText">Sind Sie sicher, dass Sie den Termin vom %1$s um %2$s in %3$s absagen möchten?</string>
-    <string name="meetingReasonHintText">Bitte begründen Sie Ihre Absage</string>
-    <string name="errorInputMeetingCanceled">Bitte kontrollieren Sie Ihre Begründung. Sie ist zu kurz!</string>
-    <string name="infoProcedureCanceledMeeting">Sie teilen Ihre Terminabsage nur Ihrer Beraterin/ Ihrem Berater mit. Andere Beteiligte können Ihre Absage nicht lesen. Nur Ihre Beraterin/ Ihr Berater kann dann den Termin offiziel absagen!</string>
-
-    <string name="meetingBackLinkToMeetingOverview">Zurück zu den Terminen</string>
-
-    <string name="meetingCanceledByClientHintText">Der Termin wurde von Ihnen abgesagt!</string>
-    <string name="meetingCanceledByClientHintText1">Diese Absage sehen nur Ihre Beraterin/ Ihr Berater. Ausschließlich diese können den Termin offiziel absagen!</string>
-
-
-
-    <string name="btnSendCanceledReason">Termin absagen</string>
-    <string name="btnAbortCanceledMeeting">Abbrechen</string>
-
-
-
-
-
-
+            <string name="meetingClientCanceledIntroText">Sind Sie sicher, dass Sie den Termin vom %1$s um %2$s in %3$s absagen möchten?</string>
+            <string name="meetingReasonHintText">Bitte begründen Sie Ihre Absage</string>
+            <string name="errorInputMeetingCanceled">Bitte kontrollieren Sie Ihre Begründung. Sie ist zu kurz!</string>
+            <string name="infoProcedureCanceledMeeting">Sie teilen Ihre Terminabsage nur Ihrer Beraterin/ Ihrem Berater mit. Andere Beteiligte können Ihre Absage nicht lesen. Nur Ihre Beraterin/ Ihr Berater kann dann den Termin offiziel absagen!</string>
+            <string name="meetingBackLinkToMeetingOverview">Zurück zu den Terminen</string>
+            <string name="meetingCanceledByClientHintText">Der Termin wurde von Ihnen abgesagt!</string>
+            <string name="meetingCanceledByClientHintText1">Diese Absage sehen nur Ihre Beraterin/ Ihr Berater. Ausschließlich diese können den Termin offiziell absagen! So lange der Termin nicht offiziell abgesagt wurde, gilt dieser!</string>
+            <string name="btnSendCanceledReason">Termin absagen</string>
+            <string name="btnAbortCanceledMeeting">Abbrechen</string>
         <!-- end fragment meeting canceled by client -->
 
-
-
-
-
         <!-- fragment suggestion overview -->
-    <string name="suggestionOverviewCanceledSuggestionTitle">Verworfene Terminvorschläge</string>
-
-    <string name="suggestionOverviewVoteSuggestionTitle">Ihre getroffene Terminauswahl</string>
-
-    <string name="suggestionOverviewFoundMeetingFromSuggestionTitle">Termin gefunden aus Vorschlägen</string>
-
-    <string name="suggestionOverviewActualSuggestionTitle">Aktuelle Terminvorschläge</string>
-    <string name="meetingOverviewNoSuggestionAvailableText">Es sind keine Terminvorschläge vorhanden.</string>
-
-    <string name="meetingOverviewSuggestionSelectSuggestFromListIntro">Bitte wählen Sie aus den Terminvorschlägen die für Sie passenden aus.</string>
-
-    <string name="meetingOverviewSuggestionAuthorAndDateWithCancele">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt und von &lt;u>%4$s&lt;/u> am %5$s um %6$s Uhr verworfen.</string>
-    <string name="meetingOverviewSuggestionAuthorAndDateVote">Ihre Auswahl an Terminvorschlägen wurde am %1$s um %2$s Uhr zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
-    <string name="meetingOverviewSuggestionAuthorAndDateVoteAndOrComment">Ihre Auswahl an Terminvorschlägen und/oder Ihr Kommentar wurde am %1$s um %2$s Uhr zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
-
-
-    <string name="meetingOverviewMeetingFoundFromSuggestionAuthorAndDate">Ihre Beraterin/ Ihr Berater (%1$s) hat am  %2$s um %3$s Uhr aus allen Terminvorschlägen einen Termin gefunden. Bitte schauen Sie in den Bereich Termine.</string>
-
-
-    <string name="meetingOverviewSuggestionAuthorAndDate">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt.</string>
-
-
-    <string name="meetingOverviewSuggestiondateAndTimeText">%1$s - %2$s Uhr</string>
-
-
-    <string name="meetingOverviewSuggestionResponseDateAndTimeText">(bis zum %1$s um %2$s Uhr)</string>
-
-    <string name="btnTextSendSuggestionToCoach">Meine Auswahl Senden</string>
-    <string name="btnTextSendSuggestionAndCommentToCoach">Meine Auswahl + Kommentar Senden</string>
-
-    <string name="meetingOverviewSuggestionErrorToFewSugestionChoosen">Sie haben zu wenige Terminvorschläge ausgewählt. Es muss mindestens einer sein!</string>
-
-    <string name="meetingOverviewSuggestionCanceledByCoachText">Verworfene Vorschläge!</string>
-
-    <string name="meetingOverviewMeetingFoundFromSuggestionByCoachText">Termin gefunden!</string>
-
-    <string name="meetingSuggestionAlreadyVoteText">Auswahl erfolgt!</string>
-
-    <string name="meetingOverviewSuggestionVoteInfoTextAtLeast">Ihre Auswahl von Terminvorschlägen wurde bereits zu Ihrer Beraterin/ Ihrem Berater geschickt. Daher sind Änderungen nicht mehr möglich.</string>
-    <string name="meetingOverviewSuggestionVoteInfoOrSuggestionCommentTextAtLeast">Ihre Auswahl von Terminvorschlägen und /oder Ihr Kommentar zu den Vorschlägen wurde zu Ihrer Beraterin/ Ihrem Berater geschickt. Daher sind Änderungen nicht mehr möglich.</string>
-
-    <string name="meetingOverviewSuggestionFoundMeetingInfoTextAtLeast">Ihre Beraterin/ Ihre Berater konnte aus den Terminvorschlägen aller Beteiligten einen Termin finden. Dieser wurde bzw. wird im Bereich Termine zu finden sein.</string>
-    <string name="meetingOverviewSuggestionCanceledInfoTextAtLeast">Ihre Beraterin/ Ihre Berater hat die Terminvorschläge verworfen. Daher können Sie diese nicht mehr auswählen.</string>
-
-    <string name="suggestionOverviewResponseTimeIsOver">Rückmeldezeit abgelaufen</string>
-    <string name="suggestionOverviewResponseTimeAskedForIntroText">Rückmeldung erbeten in spätestens</string>
-
-
-    <string name="suggestionCommentHeadlineText">Ihr Kommentar</string>
-    <string name="meetingOverviewSuggestionNoCommentTextAvailable">Es ist für diese Terminvorschläge kein Kommentar vorhanden!</string>
-
-
-
-
-    <string name="errorInputSuggestionComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz oder enthält nicht erlaubte Zeichen.</string>
-    <string name="suggestionCommentHintText">Sie können Vorschläge auswählen und/oder hier einen Kommentar schreiben</string>
-
-    <string name="suggestionOverviewLinkTextDeleteSuggestionEntry">Den obigen Eintrag löschen</string>
-    <string name="suggestionOverviewLinkNormalDeleteDate">(Der Eintrag wird automatisch am %1s um %2s Uhr gelöscht)</string>
-
-
-
-
-    <!-- end fragment suggestion overview -->
-
-
-
-
-        <!-- fragment meeting suggestion old overview -->
-
-    <string name="meetingSuggestionOverviewOldNothingAvailableText">Es sind keine älteren Termine oder Terminvorschläge vorhanden.</string>
-
-
-        <!-- end fragment meeting suggestion old overview -->
-
-
-
-
-
-
-
-            <string name="errorCountTooLittleCheckBoexesCheckedText">Bitte wählen Sie mindestens einen Terminvorschlag aus.</string>
-            <string name="textMeetingFindMeetingSuggestionSuccesfullSend">Vielen Dank. Ihre Daten wurden gesendet!</string>
-            <string name="textExplainTextForWaitingForRequest">Ihre bestätigten Terminvorschläge wurden erfolgreich gesendet. Sie erhalten in den nächsten Tagen eine Terminbestätigung. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
-            <string name="findMeetingIntroTextWaitingForRequest">Terminbestätigung abwarten</string>
-            <string name="textExplainTextSendMeetingSuggestions">Folgende Terminvorschläge wurden von Ihnen gesendet:</string>
-            <string name="textShowDateAndTimeForMeetingConfirmationSingular">Ihr nächster Termin:</string>
-            <string name="textShowDateAndTimeForMeetingConfirmationPlural">Ihre nächsten beiden Termine:</string>
-            <string name="meetingFindMeetingNoActualMeetingAvailableText">Alle bisher angezeigten Termine sind abgelaufen und werden daher nicht mehr angezeigt. Bitte <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
-            <string name="textShowDateAndTimeForMeetingAndNewSuggestions">Ihr nächster Termin und Terminvorschläge für einen übernächsten Termin</string>
-            <string name="findMeetingExplainTextWithAnotherMeeting">Für die Planung eines übernächsten Termins stehen folgende Terminvorschläge zur Verfügung. Bitte markieren Sie die Vorschläge, an denen Sie Zeit haben und klicken anschließend auf Senden. Wenn Sie Fragen haben, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
-            <string name="showExplainTextForFindMeetingWithOldMeetingText">Ihr nächster Termin ist abgelaufen und liegt damit in der Vergangenheit.</string>
-            <string name="textShowDateAndTimeForMeetingAndWaitForResponse">Ihr nächster Termin und warten auf eine Terminbestätigung für Ihre Vorschläge:</string>
-            <string name="textResponseDeadlineForMeetingSuggestions">Bitte senden Sie uns Ihre Terminbestätigungen bis zum %s zu.</string>
-        <!-- end fragment find meeting -->
-
-        <!-- fragment change meeting -->
-
-            <string name="changeMeetingIntroText">Möchten Sie folgenden Termin absagen oder verschieben?</string>
-            <string name="changeMeetingIntroDetailDescriptonText">Wenn Sie den folgenden Termin absagen möchten, klicken Sie auf den unten stehenden Button \"Termin absagen\". Bitte teilen Sie uns auch mit, warum Sie den Termin absagen möchten. So können wir unsere Terminvergabe optimieren. Wenn Sie den Termin verschieben möchten, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns bitte an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.</string>
-            <string name="inputChangeMeetingReasonHintText">Bitte begründen Sie Ihre Absage. Danke.</string>
-            <string name="errorInputChangeMeetingReasonText">Bitte kontrollieren Sie Ihre Eingabe. Sie ist zu kurz oder zu lang.</string>
-            <string name="btnConfirmChangeMeetingText">Termin absagen</string>
-            <string name="btnAbbortChangeMeetingText">Zurück</string>
-            <string name="changeDeleteMeetingSendSuccesfullToastText">Ihre Absage wurde erfolgreich gesendet</string>
-            <string name="changeDeleteMeetingNotSendSuccesfullToastText">Ihre Absage ist nicht vollständig. Bitte überprüfen Sie die markierten Stellen.</string>
-
-        <!-- end fragment change meeting -->
+            <string name="suggestionOverviewCanceledSuggestionTitle">Verworfene Terminvorschläge</string>
+            <string name="suggestionOverviewVoteSuggestionTitle">Ihre getroffene Terminauswahl</string>
+            <string name="suggestionOverviewFoundMeetingFromSuggestionTitle">Termin gefunden aus Vorschlägen</string>
+            <string name="suggestionOverviewActualSuggestionTitle">Aktuelle Terminvorschläge</string>
+            <string name="meetingOverviewNoSuggestionAvailableText">Es sind keine Terminvorschläge vorhanden.</string>
+            <string name="meetingOverviewSuggestionSelectSuggestFromListIntro">Bitte wählen Sie aus den Terminvorschlägen die für Sie passenden aus.</string>
+            <string name="meetingOverviewSuggestionAuthorAndDateWithCancele">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt und von &lt;u>%4$s&lt;/u> am %5$s um %6$s Uhr verworfen.</string>
+            <string name="meetingOverviewSuggestionAuthorAndDateVote">Ihre Auswahl an Terminvorschlägen wurde am %1$s um %2$s Uhr zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
+            <string name="meetingOverviewSuggestionAuthorAndDateVoteAndOrComment">Ihre Auswahl an Terminvorschlägen und/oder Ihr Kommentar wurde am %1$s um %2$s Uhr zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
+            <string name="meetingOverviewMeetingFoundFromSuggestionAuthorAndDate">Ihre Beraterin/ Ihr Berater (%1$s) hat am  %2$s um %3$s Uhr aus allen Terminvorschlägen einen Termin gefunden. Bitte schauen Sie in den Bereich Termine.</string>
+            <string name="meetingOverviewSuggestionAuthorAndDate">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt.</string>
+            <string name="meetingOverviewSuggestiondateAndTimeText">%1$s - %2$s Uhr</string>
+            <string name="meetingOverviewSuggestionResponseDateAndTimeText">(bis zum %1$s um %2$s Uhr)</string>
+            <string name="btnTextSendSuggestionToCoach">Meine Auswahl Senden</string>
+            <string name="btnTextSendSuggestionAndCommentToCoach">Meine Auswahl + Kommentar Senden</string>
+            <string name="meetingOverviewSuggestionErrorToFewSugestionChoosen">Sie haben zu wenige Terminvorschläge ausgewählt. Es muss mindestens einer sein!</string>
+            <string name="meetingOverviewSuggestionCanceledByCoachText">Verworfene Vorschläge!</string>
+            <string name="meetingOverviewMeetingFoundFromSuggestionByCoachText">Termin gefunden!</string>
+            <string name="meetingSuggestionAlreadyVoteText">Auswahl erfolgt!</string>
+            <string name="meetingOverviewSuggestionVoteInfoTextAtLeast">Ihre Auswahl von Terminvorschlägen wurde bereits zu Ihrer Beraterin/ Ihrem Berater geschickt. Daher sind Änderungen nicht mehr möglich.</string>
+            <string name="meetingOverviewSuggestionVoteInfoOrSuggestionCommentTextAtLeast">Ihre Auswahl von Terminvorschlägen und /oder Ihr Kommentar zu den Vorschlägen wurde zu Ihrer Beraterin/ Ihrem Berater geschickt. Daher sind Änderungen nicht mehr möglich.</string>
+            <string name="meetingOverviewSuggestionFoundMeetingInfoTextAtLeast">Ihre Beraterin/ Ihre Berater konnte aus den Terminvorschlägen aller Beteiligten einen Termin finden. Dieser wurde bzw. wird im Bereich Termine zu finden sein.</string>
+            <string name="meetingOverviewSuggestionCanceledInfoTextAtLeast">Ihre Beraterin/ Ihre Berater hat die Terminvorschläge verworfen. Daher können Sie diese nicht mehr auswählen.</string>
+            <string name="suggestionOverviewResponseTimeIsOver">Rückmeldezeit abgelaufen</string>
+            <string name="suggestionOverviewResponseTimeAskedForIntroText">Rückmeldung erbeten in spätestens</string>
+            <string name="suggestionCommentHeadlineText">Ihr Kommentar</string>
+            <string name="meetingOverviewSuggestionNoCommentTextAvailable">Es ist für diese Terminvorschläge kein Kommentar vorhanden!</string>
+            <string name="errorInputSuggestionComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz oder enthält nicht erlaubte Zeichen.</string>
+            <string name="suggestionCommentHintText">Sie können Vorschläge auswählen und/oder hier einen Kommentar schreiben</string>
+            <string name="suggestionOverviewLinkTextDeleteSuggestionEntry">Den obigen Eintrag löschen</string>
+            <string name="suggestionOverviewLinkNormalDeleteDate">(Der Eintrag wird automatisch am %1s um %2s Uhr gelöscht)</string>
+        <!-- end fragment suggestion overview -->
 
         <!-- Subtitle under Title Meeting -->
-
-
-
-    <string name="meetingSubtitleMeetingOverview">Aktuelle Termine</string>
-    <string name="meetingSubtitleMeetingOverviewNoMeetings">Keine Termine vorhanden</string>
-
-    <string name="meetingSubtitleSuggestionOverview">Aktuelle Terminvorschläge</string>
-    <string name="meetingSubtitleSuggestionOverviewNoSuggestion">Keine Vorschläge vorhanden</string>
-
-
-    <string name="meetingSubtitleMeetingSuggestionOverviewOld">Vergangene Termine</string>
-    <string name="meetingSubtitleMeetingSuggestionOverviewOldNotAvailable">Keine vergangenen Termine vorhanden</string>
-
-    <string name="meetingSubtitleClientCanceledMeeting">Terminabsage bestätigen</string>
-
-
-
-
-
+            <string name="meetingSubtitleMeetingOverview">Aktuelle Termine</string>
+            <string name="meetingSubtitleMeetingOverviewNoMeetings">Keine Termine vorhanden</string>
+            <string name="meetingSubtitleSuggestionOverview">Aktuelle Terminvorschläge</string>
+            <string name="meetingSubtitleSuggestionOverviewNoSuggestion">Keine Vorschläge vorhanden</string>
+            <string name="meetingSubtitleMeetingSuggestionOverviewOld">Vergangene Termine</string>
+            <string name="meetingSubtitleMeetingSuggestionOverviewOldNotAvailable">Keine vergangenen Termine vorhanden</string>
+            <string name="meetingSubtitleClientCanceledMeeting">Terminabsage bestätigen</string>
         <!-- End Subtitle under Title Meeting -->
 
 

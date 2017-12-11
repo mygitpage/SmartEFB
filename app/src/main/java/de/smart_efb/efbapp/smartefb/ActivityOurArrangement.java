@@ -217,6 +217,15 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // close db connection
+        myDb.close();
+    }
+
+
     // Look for new intents (with data from URI or putExtra)
     @Override
     protected void onNewIntent(Intent intent) {

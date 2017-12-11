@@ -124,10 +124,12 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
             manager.cancel(pendingIntentOurArrangementEvaluate);
         }
 
+        // close db connection
+        myDb.close();
+
         // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
         Intent tmpIntent = new Intent();
         tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
-        // put extras to intent -> "UpdateEvaluationLink" for list views of fragments to update there view
         tmpIntent.putExtra("UpdateEvaluationLink","1");
         context.sendBroadcast(tmpIntent);
 

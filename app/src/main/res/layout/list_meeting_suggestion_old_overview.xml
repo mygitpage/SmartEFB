@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="left"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <TextView
+        android:id="@+id/borderBetweenOldMeeting"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_color"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/oldMeetingIntroInfoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="left"
+        android:paddingLeft="10dp"
+        android:paddingBottom="20dp"
+        android:textStyle="bold"
+        android:text="@string/oldMeetingOverviewIntroText"
+        android:visibility="gone"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/list_element_style">
+
+
+
+        <TextView
+            android:id="@+id/meetingTitleAndNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:textStyle="bold"
+            android:layout_marginLeft="3dp"/>
+
+
+
+        <TextView
+            android:id="@+id/meetingAuthorAndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:layout_marginLeft="3dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/containerShowMeeting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="left"
+        android:background="@color/body_background"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/meetingCanceledByCoachTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/text_accent_color"
+            android:textStyle="bold"
+            android:text="@string/meetingOverviewmeetingCanceledByCoachText"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/meetingDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"/>
+
+        <TextView
+            android:id="@+id/meetingTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"/>
+
+        <TextView
+            android:id="@+id/meetingPlace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"/>
+
+        <TextView
+            android:id="@+id/meetingHintText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:paddingBottom="15dp"/>
+
+    </LinearLayout>
+
+    <!-- End meeting date, time and place first meeting-->
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/meetingCanceleLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimaryDark"
+            android:gravity="right"
+            android:visibility="gone"
+            android:paddingBottom="15dp"/>
+
+        <TextView
+            android:id="@+id/meetingDeleteCanceledMetingLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimaryDark"
+            android:gravity="right"
+            android:visibility="gone"
+            android:paddingBottom="15dp"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/meetingCanceleByClientHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/text_accent_color"
+                android:text="@string/meetingCanceledByClientHintText"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/meetingCanceledByClientHintText1"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

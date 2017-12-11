@@ -2488,8 +2488,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                 where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">=" + nowTime;
                 sort = MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " DESC, " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + " DESC";
                 break;
-            case "old_meeting_suggestion":
-                where = "(" + MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + "<" + nowTime + ") OR (" + MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + nowTime + ")";
+            case "old_meeting":
+                where = "(" + MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + nowTime + ")";
                 sort = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + " DESC";
                 break;
             case "ready_to_send":

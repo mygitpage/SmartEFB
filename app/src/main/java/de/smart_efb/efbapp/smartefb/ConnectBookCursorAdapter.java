@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class ConnectBookCursorAdapter extends CursorAdapter {
 
-
     private LayoutInflater cursorInflater;
 
     private Context connectBookCursorAdapterContext;
@@ -315,11 +314,7 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
         tmpAuthorandDate = String.format(tmpAuthorandDate, cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy,HH:mm"), tmpNewMessage);
         textViewAuthor.setText(Html.fromHtml(tmpAuthorandDate));
 
-
         return inflatedView;
-
-
-
     }
 
     // Turn off view recycling in listview, because there are different views (first, normal)

@@ -59,14 +59,6 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
         
     }
 
-
-
-
-
-
-
-
-
     // help dialog
     void createHelpDialog () {
 

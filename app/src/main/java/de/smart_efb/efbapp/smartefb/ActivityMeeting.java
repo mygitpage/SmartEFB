@@ -261,6 +261,13 @@ public class ActivityMeeting extends AppCompatActivity {
 
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // close db connection
+        myDb.close();
+    }
 
 
 
@@ -442,23 +449,6 @@ public class ActivityMeeting extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /*
 
     // get from prefs meeting date and time and place
@@ -544,7 +534,7 @@ public class ActivityMeeting extends AppCompatActivity {
             // set back to fragment info
             setMeetingBackToFragment (tmpMeetingBackToFragment);
 
-            // replace fragment MeetingFragmentMeetingChange
+            // replace fragment Old_MeetingFragmentMeetingChange
             FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, referenceFragmentMeetingChange);
             fragmentTransaction.addToBackStack("change_meeting");
@@ -558,7 +548,7 @@ public class ActivityMeeting extends AppCompatActivity {
 
             if (tmpUpdateFragement) {
 
-                // refresh fragment MeetingFragmentMeetingFind
+                // refresh fragment Old_MeetingFragmentMeetingFind
                 FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
                 fragmentTransaction.detach(referenceFragmentMeetingFind);
                 fragmentTransaction.attach(referenceFragmentMeetingFind);
@@ -570,7 +560,7 @@ public class ActivityMeeting extends AppCompatActivity {
                     fragmentManagerActivityMeeting.popBackStack("change_meeting", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
 
-                // replace fragment MeetingFragmentMeetingFind
+                // replace fragment Old_MeetingFragmentMeetingFind
                 FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, referenceFragmentMeetingFind);
                 fragmentTransaction.addToBackStack("find_meeting");
@@ -590,7 +580,7 @@ public class ActivityMeeting extends AppCompatActivity {
 
         } else if (command.equals("make_meeting")) { // Show fragment for make first meeting date and time (make_meeting)
 
-            // replace fragment MeetingFragmentMeetingMake
+            // replace fragment Old_MeetingFragmentMeetingMake
             FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, referenceFragmentMeetingMake);
             fragmentTransaction.addToBackStack("make_meeting");
@@ -608,7 +598,7 @@ public class ActivityMeeting extends AppCompatActivity {
 
             }
 
-            // replace fragment MeetingFragmentMeetingMake
+            // replace fragment Old_MeetingFragmentMeetingMake
             FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, referenceFragmentMeetingNow);
             fragmentTransaction.addToBackStack("now_meeting");

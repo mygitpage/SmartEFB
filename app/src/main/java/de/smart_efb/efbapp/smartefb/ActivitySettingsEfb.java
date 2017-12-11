@@ -54,9 +54,6 @@ public class ActivitySettingsEfb extends AppCompatActivity {
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
 
-    // reference to the DB
-    DBAdapter myDb;
-
     // the connecting status (0=not connected, 1=try to connect, 2=connected, 3=error)
     int connectingStatus = 0;
 
@@ -237,7 +234,6 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
         } if (command.equals("show_no_network_try_again")) { // Show tab 0 -> no network available, try again
 
-
             // set correct subtitle
             String tmpSubtitleText = ActivitySettingsEfb.this.getSubtitleForTabZero();
             setSettingsToolbarSubtitle(tmpSubtitleText);
@@ -246,7 +242,6 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             settingsEfbViewPagerAdapter.notifyDataSetChanged();
 
         } if (command.equals("show_connect_sucsessfull")) { // Show tab 0 -> connection sucsessfull, connect with server
-
 
             // set correct subtitle
             String tmpSubtitleText = ActivitySettingsEfb.this.getSubtitleForTabZero();
@@ -263,13 +258,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
             // notify view pager adapter that data change
             settingsEfbViewPagerAdapter.notifyDataSetChanged();
-
-
         }
-
-
-
-
         else {
 
 
@@ -347,14 +336,6 @@ public class ActivitySettingsEfb extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -369,190 +350,6 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         }
 
     }
-
-
-
-    // all following finctions are for fragment d (app settings) -> will be deleted!!!!
-
-    public void onClick_showDateChooserForCurrentArrangement (View v) {
-
-        Calendar c = Calendar.getInstance();
-        int mYear = c.get(Calendar.YEAR);
-        int mMonth = c.get(Calendar.MONTH);
-        int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog dialog = new DatePickerDialog(this, new saveDateForCurrentArrangement(), mYear, mMonth, mDay);
-        dialog.show();
-
-    }
-
-
-
-    private class saveDateForCurrentArrangement implements DatePickerDialog.OnDateSetListener {
-
-
-        SharedPreferences prefs;
-        SharedPreferences.Editor prefsEditor;
-
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-            int mYear = year;
-            int mMonth = monthOfYear+1;
-            int mDay = dayOfMonth;
-            Date date = null;
-
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-
-            try {
-                date = formatter.parse(mDay+"-"+mMonth+"-"+year);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            prefs = getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
-            prefsEditor = prefs.edit();
-
-            prefsEditor.putLong("currentDateOfArrangement", date.getTime());
-            prefsEditor.commit();
-
-            Toast.makeText(ActivitySettingsEfb.this, "Absprachen Stamp:" + date.getTime(), Toast.LENGTH_SHORT).show();
-
-        }
-
-    }
-
-
-
-
-
-    /* Datepicker for Jointly Goals */
-    public void onClick_showDateChooserForJointlyGoals (View v) {
-
-        Calendar c = Calendar.getInstance();
-        int mYear = c.get(Calendar.YEAR);
-        int mMonth = c.get(Calendar.MONTH);
-        int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog dialog = new DatePickerDialog(this, new saveDateForJointlyGoals(), mYear, mMonth, mDay);
-        dialog.show();
-
-    }
-
-
-
-    private class saveDateForJointlyGoals implements DatePickerDialog.OnDateSetListener {
-
-
-        SharedPreferences prefs;
-        SharedPreferences.Editor prefsEditor;
-
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-            int mYear = year;
-            int mMonth = monthOfYear+1;
-            int mDay = dayOfMonth;
-            Date date = null;
-
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-
-            try {
-                date = formatter.parse(mDay+"-"+mMonth+"-"+year);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            prefs = getSharedPreferences("smartEfbSettings", MODE_PRIVATE);
-            prefsEditor = prefs.edit();
-
-            prefsEditor.putLong("currentDateOfJointlyGoals", date.getTime());
-            prefsEditor.commit();
-
-            Toast.makeText(ActivitySettingsEfb.this, "Gemeinsame Ziele Stamp:" + date.getTime(), Toast.LENGTH_SHORT).show();
-
-        }
-
-    }
-
-
-
-
-
-
-    public void onClick_showDateChooserForMeetingSuggestions (View v) {
-
-        Calendar c = Calendar.getInstance();
-        int mYear = c.get(Calendar.YEAR);
-        int mMonth = c.get(Calendar.MONTH);
-        int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog dialog = new DatePickerDialog(this, new saveDateForMeetingSuggestions(), mYear, mMonth, mDay);
-        dialog.show();
-
-    }
-
-
-
-
-
-    public void onClick_readXMLConfigurationFile (View v) {
-
-
-        /*
-        // read configuration xml file ------- TEST
-        EfbXmlParser test = new EfbXmlParser(getApplicationContext());
-        try {
-            test.parseXmlInput();
-        }
-        catch (XmlPullParserException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        */
-
-    }
-
-
-
-
-    private class saveDateForMeetingSuggestions implements DatePickerDialog.OnDateSetListener {
-
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-            int mYear = year;
-            int mMonth = monthOfYear+1;
-            int mDay = dayOfMonth;
-            Date date = null;
-
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-
-            try {
-                date = formatter.parse(mDay+"-"+mMonth+"-"+year);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            //myDb.insertNewMeetingDateAndTime(date.getTime(),"Werder (Havel)", true, 0);
-
-            Toast.makeText(ActivitySettingsEfb.this, "Terminvorschlag Timestamp " + date.getTime(), Toast.LENGTH_SHORT).show();
-
-        }
-
-    }
-
-
-
-
-
 
 
 

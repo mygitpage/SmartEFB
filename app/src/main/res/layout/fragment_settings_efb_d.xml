@@ -505,28 +505,6 @@
         </RadioGroup>
 
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="DatePicker Dialog für Datum Terminvorschläge"
-            android:id="@+id/showDatePickerDialogMeetingSuggestions"
-            android:padding="6dp"
-            android:layout_below="@+id/settingsChooseMeetingStatus"
-            android:onClick="onClick_showDateChooserForMeetingSuggestions"/>
-
-
-
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Read Configuration File"
-            android:id="@+id/readXMLConfigurationFile"
-            android:padding="6dp"
-            android:layout_below="@+id/showDatePickerDialogMeetingSuggestions"
-            android:onClick="onClick_readXMLConfigurationFile"/>
-
-
     </RelativeLayout>
 
 </ScrollView>
