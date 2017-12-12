@@ -219,8 +219,6 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
         Long nowTime = System.currentTimeMillis();
         Cursor cursorMeetingSuggestion = myDb.getAllRowsMeetingsAndSuggestion("future_suggestion", nowTime);
 
-
-
         if (cursorMeetingSuggestion.getCount() > 0 && listViewMeetingSuggestion != null) {
 
             // set correct subtitle

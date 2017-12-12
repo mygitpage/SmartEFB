@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private int[] mainMenueElementBackgroundRessources = new int[ConstansClassMain.mainMenueNumberOfElements];
     // background ressource of new entry elements (image icon)
     private int[] mainMenueElementBackgroundRessourcesNewEntry = new int[ConstansClassMain.mainMenueNumberOfElements];
+    // background ressource of attention entry elements (image icon)
+    private int[] mainMenueElementBackgroundRessourcesAttentionEntry = new int[ConstansClassMain.mainMenueNumberOfElements];
     // background ressource of elemts to show!
     private int[] mainMenueShowElementBackgroundRessources = new int[ConstansClassMain.mainMenueNumberOfElements];
 
@@ -66,9 +68,6 @@ public class MainActivity extends AppCompatActivity {
     Boolean subfunction_goals_evaluation = false;
     Boolean subfunction_goals_debetable = false;
     Boolean subfunction_goals_debetablecomment = false;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,16 +231,13 @@ public class MainActivity extends AppCompatActivity {
 
                     // time table has change -> refresh activity view
                     updateMainView = true;
-
                 }
             }
-
 
             // update the main view
             if (updateMainView) {
                 updateMainView();
             }
-
         }
     };
 
@@ -255,15 +251,13 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
         startActivity(intent);
         overridePendingTransition(0, 0);
-
     }
-
 
 
     // init the elements arrays (title, color, colorLight, backgroundImage)
     private void initMainMenueElementsArrays() {
 
-        String[] tmpBackgroundRessources, tmpBackgroundRessourcesNewEntry, tmpBackgroundRessourcesInactiv;
+        String[] tmpBackgroundRessources, tmpBackgroundRessourcesNewEntry, tmpBackgroundRessourcesAttentionEntry;
 
         // init the context
         mainContext = this;
@@ -285,11 +279,13 @@ public class MainActivity extends AppCompatActivity {
 
         tmpBackgroundRessources = getResources().getStringArray(R.array.mainMenueElementImage);
         tmpBackgroundRessourcesNewEntry = getResources().getStringArray(R.array.mainMenueElementImageNewEntry);
+        tmpBackgroundRessourcesAttentionEntry = getResources().getStringArray(R.array.mainMenueElementImageAttentionEntry);
 
 
         for (int i=0; i<ConstansClassMain.mainMenueNumberOfElements; i++) {
             mainMenueElementBackgroundRessources[i] = getResources().getIdentifier(tmpBackgroundRessources[i], "drawable", "de.smart_efb.efbapp.smartefb");
             mainMenueElementBackgroundRessourcesNewEntry[i] = getResources().getIdentifier(tmpBackgroundRessourcesNewEntry[i], "drawable", "de.smart_efb.efbapp.smartefb");
+            mainMenueElementBackgroundRessourcesAttentionEntry[i] = getResources().getIdentifier(tmpBackgroundRessourcesAttentionEntry[i], "drawable", "de.smart_efb.efbapp.smartefb");
         }
 
         // init array show elements and activ/inactiv sub-functions
@@ -392,7 +388,12 @@ public class MainActivity extends AppCompatActivity {
                     if (myDb.getCountNewEntryMeetingAndSuggestion("suggestion") > 0 || myDb.getCountNewEntryMeetingAndSuggestion("meeting") > 0 ) {
                         mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                     } else {
-                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                        if (myDb.getCountNewEntryMeetingAndSuggestion("suggestion_for_show_attention") > 0) {
+                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesAttentionEntry[countElements];
+                        }
+                        else {
+                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                        }
                     }
                     tmpNew = true;
                     break;
@@ -401,11 +402,7 @@ public class MainActivity extends AppCompatActivity {
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
 
-                case 8: // menue item "Evaluation"
-                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
-                    break;
-
-                case 9: // menue item "Einstellungen"
+                case 8: // menue item "Einstellungen"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
 
@@ -442,7 +439,12 @@ public class MainActivity extends AppCompatActivity {
         AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
 
         // set alarm manager to call exchange receiver
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpAlarmTime, pIntentService);
+        try {
+            alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpAlarmTime, pIntentService);
+        }
+        catch (NullPointerException e) {
+            // do nothing
+        }
     }
 
 

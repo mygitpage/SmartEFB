@@ -61,12 +61,26 @@
         <item>main_pic_connectbook_new_entry</item><!--Uebergabe-->
         <item>main_pic_arrangement_new_entry</item><!--Absprachen-->
         <item>main_pic_goal_new_entry</item><!--Ziele-->
-        <item>main_pic_timetable_normal</item><!--Zeitplan - bitte ein Bild herstellen!!!!!!!!!!!! -->
+        <item>main_pic_timetable_normal</item><!--Zeitplan -->
         <item>main_pic_prevention_new_entry</item><!--Praevention-->
         <item>main_pic_faq_new_entry</item><!--FAQ-->
         <item>main_pic_event_new_entry</item><!--Termine-->
         <item>main_pic_emergencyhelp_normal</item><!--Hilfe - there is no need for new entry-->
         <item>main_pic_setting_normal</item><!--Einstellungen - there is no need for new entry-->
+    </string-array>
+
+
+    <!-- drawable for grid in maim menue for attention entry show-->
+    <string-array name="mainMenueElementImageAttentionEntry">
+        <item>main_pic_connectbook_normal</item><!--Uebergabe - No need for attention entry-->
+        <item>main_pic_arrangement_normal</item><!--Absprachen - No need for attention entry-->
+        <item>main_pic_goal_normal</item><!--Ziele - No need for attention entry-->
+        <item>main_pic_timetable_normal</item><!--Zeitplan - No need for attention entry-->
+        <item>main_pic_prevetion_normal</item><!--Praevention - No need for attention entry-->
+        <item>main_pic_faq_normal</item><!--FAQ - No need for attention entry-->
+        <item>main_pic_event_attention_entry</item><!--Termine-->
+        <item>main_pic_emergencyhelp_normal</item><!--Hilfe - No need for attention entry-->
+        <item>main_pic_setting_normal</item><!--Einstellungen - No need for attention entry-->
     </string-array>
 
 
@@ -213,6 +227,7 @@
         <item>@string/meetingTabTitle_1</item>
         <item>@string/meetingTabTitle_2</item>
         <item>@string/meetingTabTitle_3</item>
+        <item>@string/meetingTabTitle_4</item>
     </string-array>
 
 

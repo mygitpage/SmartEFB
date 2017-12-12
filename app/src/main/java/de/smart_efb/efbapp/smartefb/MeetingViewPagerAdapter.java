@@ -16,7 +16,7 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
 
 
     // number of tabs
-    final static int metingTabCount = 3;
+    final static int metingTabCount = 4;
 
     // array of tab title
     String meetingTabTitleNames[] = new String[metingTabCount];
@@ -76,19 +76,13 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
 
             case 1:
 
-                switch (fragmentChooserTabOne) {
-                    case 0:
-                        return fragSuggestion;
-
-                    case 1:
-                        return fragSuggestionFromClient;
-
-                    case 2:
-                        return fragMeetingCommentFromClient;
-
-                }
+                return fragSuggestionFromClient;
 
             case 2:
+
+                return fragSuggestion;
+
+            case 3:
 
                 return fragMeetingSuggestionOld;
 

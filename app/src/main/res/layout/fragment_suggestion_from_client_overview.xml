@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/body_background">
+
+    <TextView
+        android:id="@+id/meetingOverviewNoSuggestionFromClientAvailable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="left"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:text="@string/meetingOverviewNoSuggestionFromClientAvailableText"
+        android:paddingTop="15dp"
+        android:paddingLeft="15dp"/>
+
+    <TextView
+        android:id="@+id/meetingOverviewSuggestionFromClientFunctionOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="left"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:text="@string/meetingOverviewSuggestionFromClientFunctionOffText"
+        android:paddingTop="15dp"
+        android:paddingLeft="15dp"/>
+
+    <ListView
+        android:id="@+id/listViewSuggestionFromClientDates"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:transcriptMode="normal"
+        android:layout_weight="1"
+        android:stackFromBottom="false"
+        android:background="@null"
+        android:divider="@null">
+    </ListView>
+
+</LinearLayout>

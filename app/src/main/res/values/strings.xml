@@ -747,16 +747,11 @@
         <string name="faqOverviewSectionTwoInfoText">In diesem Bereich finden Sie häufig gestellte Fragen über und zur App.</string>
         <string name="faqOverviewSectionThreeTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section3">Erziehungsberatung (EB)</a></string>
         <string name="faqOverviewSectionThreeInfoText">Hier geht es um Fragen und Anworten um das Thema Erziehungsberatung. Welche Aufgaben diese erfüllt oder welche Themen besprochen werden können.</string>
-
         <string name="faqOverviewSectionFourTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section4">Beratungsstellen</a></string>
         <string name="faqOverviewSectionFourInfoText">Die Mitarbeiterinnen und Mitarbeiter unserer Beratungsstellen zeigen Ihnen die Beratungsstellen.</string>
-
         <string name="faqOverviewSectionFiveTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section5">Erziehungsfragen</a></string>
         <string name="faqOverviewSectionFiveInfoText">Wir versuchen Ihnen einige häufig gestellte Fragen zur Erziehung zu beantworten.</string>
-
         <string name="faqOverviewSectionOneEndText">Sollte eine Frage fehlen, zögern Sie nicht und <a href="smart.efb.deeplink://linkin/faq?com=show_section2">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/faq?com=show_section2">Email</a>.</string>
-
-
     <!-- End Fragment Section One-->
 
 
@@ -765,9 +760,58 @@
         <string name="faq_section2_answer1">Inaktive Schaltflächen werden dann angezeigt, wenn Funktionen nicht eingeschaltet sind. Ihre Beraterin/ Ihr Berater kann Funktionen ein- oder ausschalten. Dies wir sie mit Ihnen besprechen. Beispielsweise werden Funktionen ausgeschaltet, wenn sie zu aktuellen Beratungsverlauf nicht notwendig sind.</string>
         <string name="faq_section2_question2">Wozu brauche ich die Funktion Übergabebuch?</string>
         <string name="faq_section2_answer2">Das Übergabebuch ist vergleichbar mit einem moderierten Chat. Als Moderator tritt Ihre Beraterin/ Ihr Berater auf. Sie kann verschiedenen Kommunikationseinstellungen in diesem Chat ändern. Beispielsweise wie viele Nachrichten Sie in 24 Stunden schreiben dürfen oder wie viel Zeichen eine Nachricht hat.\nSie können das Übergabebuch beispielsweise zur kurzfristigen Absprache bei der Übergabe von Kindern von Ihnen zu Ihrem Ex-Partner verwenden. Ihre Beraterin/ Ihr Berater kann ebenfalls Nachrichten in den Chat schreiben.</string>
-
+        <string name="faq_section2_question3">Wozu brauche ich die Funktion Absprachen?</string>
+        <string name="faq_section2_answer3"></string>
+        <string name="faq_section2_question4">Wozu brauche ich die Funktion Ziele?</string>
+        <string name="faq_section2_answer4"></string>
+        <string name="faq_section2_question5">Wozu brauche ich die Funktion Termine?</string>
+        <string name="faq_section2_answer5"></string>
+        <string name="faq_section2_question6">Welche Daten werden von der App erhoben und wie werden diese übertragen?</string>
+        <string name="faq_section2_answer6"></string>
     <!-- End Fragment Section Two -->
 
+    <!-- Fragment Section Three -->
+        <string name="faq_section3_question1">Mit welchen Fragen kann ich mich an eine Erziehungsberatungsstelle wenden?</string>
+        <string name="faq_section3_answer1"></string>
+        <string name="faq_section3_question2">Wie schnell erhalte ich einen Termin?</string>
+        <string name="faq_section3_answer2"></string>
+        <string name="faq_section3_question3">Kostet Erziehungsberatung Geld?</string>
+        <string name="faq_section3_answer3"></string>
+        <string name="faq_section3_question4">Ist die Beratung anonym?</string>
+        <string name="faq_section3_answer4"></string>
+        <string name="faq_section3_question5">Wer kann sich an eine Erziehungsberatungsstelle wenden?</string>
+        <string name="faq_section3_answer5"></string>
+        <string name="faq_section3_question6">Wie lange dauert eine Beratung?</string>
+        <string name="faq_section3_answer6"></string>
+    <!-- End Fragment Section Three -->
+
+    <!-- Fragment Section Four -->
+        <string name="faq_section4_question1">Wo finde ich die Erziehungsberatungsstellen?</string>
+        <string name="faq_section4_answer1"></string>
+        <string name="faq_section4_question2">Wer ist der Träger der Erziehungsberatungsstellen?</string>
+        <string name="faq_section4_answer2"></string>
+        <string name="faq_section4_question3">Welche Rechtsgrundlage gibt es für die Beratungsstellen?</string>
+        <string name="faq_section4_answer3"></string>
+        <string name="faq_section4_question4">Welchen Qualifikation haben die Beraterinnen und Berater?</string>
+        <string name="faq_section4_answer4"></string>
+
+    <!-- End Fragment Section Four -->
+
+    <!-- Fragment Section Five -->
+        <string name="faq_section5_question1">Hat mein Kind eine Lese- Rechtschreibschwäche (LRS)?</string>
+        <string name="faq_section5_answer1"></string>
+        <string name="faq_section5_question2">Hat mein Kind eine Dyskalkulie?</string>
+        <string name="faq_section5_answer2"></string>
+        <string name="faq_section5_question3">Was ist ADHS?</string>
+        <string name="faq_section5_answer3"></string>
+        <string name="faq_section5_question4">Was ist AWVS?</string>
+        <string name="faq_section5_answer4"></string>
+        <string name="faq_section5_question5">Mein Kind leidet unter der Trennung vom meinem Partner. Was kann ich tun?</string>
+        <string name="faq_section5_answer5"></string>
+
+    <!-- End Fragment Section Five -->
+    
+    
     <!-- faq subtitle text -->
         <string name="faqSubtitleSectionOne">Übersicht</string>
         <string name="faqSubtitleSectionTwo">Fragen zur App</string>
@@ -792,11 +836,10 @@
 
         <!-- Strings for tab title in activity meting -->
             <string name="meetingTabTitle_1">Termine</string>
-            <string name="meetingTabTitle_1a">Ihr Kommentar</string>
-            <string name="meetingTabTitle_1b">Terminabsage</string>
-            <string name="meetingTabTitle_2">Terminvorschläge</string>
-            <string name="meetingTabTitle_2a">Ihre Terminvorschläge</string>
-            <string name="meetingTabTitle_3">Vergangene Termine</string>
+            <string name="meetingTabTitle_1a">Terminabsage</string>
+            <string name="meetingTabTitle_2">Ihre Vorschläge</string>
+            <string name="meetingTabTitle_3">Vorschläge Berater</string>
+            <string name="meetingTabTitle_4">Vergangene Termine</string>
         <!-- End tab title -->
 
         <!-- Strings for places -->
@@ -852,7 +895,7 @@
             <string name="suggestionOverviewVoteSuggestionTitle">Ihre getroffene Terminauswahl</string>
             <string name="suggestionOverviewFoundMeetingFromSuggestionTitle">Termin gefunden aus Vorschlägen</string>
             <string name="suggestionOverviewActualSuggestionTitle">Aktuelle Terminvorschläge</string>
-            <string name="meetingOverviewNoSuggestionAvailableText">Es sind keine Terminvorschläge vorhanden.</string>
+            <string name="meetingOverviewNoSuggestionAvailableText">Es sind keine Terminvorschläge von Ihrer Beraterin/ Ihrem Berater vorhanden.</string>
             <string name="meetingOverviewSuggestionSelectSuggestFromListIntro">Bitte wählen Sie aus den Terminvorschlägen die für Sie passenden aus.</string>
             <string name="meetingOverviewSuggestionAuthorAndDateWithCancele">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt und von &lt;u>%4$s&lt;/u> am %5$s um %6$s Uhr verworfen.</string>
             <string name="meetingOverviewSuggestionAuthorAndDateVote">Ihre Auswahl an Terminvorschlägen wurde am %1$s um %2$s Uhr zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
@@ -881,11 +924,21 @@
             <string name="suggestionOverviewLinkNormalDeleteDate">(Der Eintrag wird automatisch am %1s um %2s Uhr gelöscht)</string>
         <!-- end fragment suggestion overview -->
 
+        <!-- fragment suggestion from client -->
+
+            <string name="meetingOverviewNoSuggestionFromClientAvailableText">Es liegen keine Terminvorschläge von Ihnen vor.</string>
+            <string name="meetingOverviewSuggestionFromClientFunctionOffText">Die Funktion steht im Moment nicht zur Verfügung.</string>
+
+        <!-- end fragment suggestion from client -->
+
         <!-- Subtitle under Title Meeting -->
             <string name="meetingSubtitleMeetingOverview">Aktuelle Termine</string>
             <string name="meetingSubtitleMeetingOverviewNoMeetings">Keine Termine vorhanden</string>
-            <string name="meetingSubtitleSuggestionOverview">Aktuelle Terminvorschläge</string>
-            <string name="meetingSubtitleSuggestionOverviewNoSuggestion">Keine Vorschläge vorhanden</string>
+            <string name="meetingSubtitleSuggestionOverview">Terminvorschläge vom Berater</string>
+            <string name="meetingSubtitleSuggestionOverviewNoSuggestion">Keine Vorschläge vom Berater</string>
+            <string name="meetingSubtitleSuggestionFromClientOverview">Terminvorschläge von Ihnen</string>
+            <string name="meetingSubtitleSuggestionFromClientOverviewNoSuggestion">Keine Vorschläge von Ihnen</string>
+            <string name="meetingSubtitleSuggestionFromClientOverviewFunctionNotPossible">Funktion nicht möglich</string>
             <string name="meetingSubtitleMeetingSuggestionOverviewOld">Vergangene Termine</string>
             <string name="meetingSubtitleMeetingSuggestionOverviewOldNotAvailable">Keine vergangenen Termine vorhanden</string>
             <string name="meetingSubtitleClientCanceledMeeting">Terminabsage bestätigen</string>
@@ -907,20 +960,12 @@
             <string name="emergencyHelpEmergencyCallText">Notruf (Polizei)</string>
             <string name="emergencyHelpEmergencyCallNumber">110</string>
             <string name="emergencyHelpEmergencyCallNumberExplainText">In jedem akuten Notfall ist die Notrufnummer 110 zu wählen. Dort können Sie Ihren Notfall schildern und erhalten Hilfe.</string>
-
-
-
-
             <string name="emergencyHelpFireCallText">Feuerwehr</string>
             <string name="emergencyHelpFireCallNumber">112</string>
             <string name="emergencyHelpFireCallNumberExplainText">Im Falle eines Brandes wählen Sie die Nummer der Feuerwehr.</string>
-
-
-
             <string name="emergencyHelpEmergencyChildCallText">Kinder- und Jugendnotdienst</string>
             <string name="emergencyHelpEmergencyChildCallNumber">000000/12345678</string>
             <string name="emergencyHelpEmergencyChildCallExplainText">Der Kinder- und Jugendnotdienst kann Ihnen bei akuten Krisen im familiären Umfeld, beispielsweise Gewalt, Obdachlosigkeit, etc., helfen.</string>
-
             <string name="emergencyHelpEmergencyCareOfSoulsHeadline">Telefonseelsorge</string>
             <string name="emergencyHelpEmergencyCareOfSoulsExplainText">Bei psychischen Problemen können Sie sich rund um die Uhr telefonisch oder per Email an die Telefonseelsorge wenden.</string>
             <string name="emergencyHelpEmergencyCareOfSoulsNumber">0800/12345678</string>
