@@ -233,8 +233,6 @@ public class ActivityConnectBook extends AppCompatActivity {
         myDb.close();
     }
 
-
-
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
     private BroadcastReceiver connectBookBrodcastReceiver = new BroadcastReceiver() {
 
@@ -333,11 +331,8 @@ public class ActivityConnectBook extends AppCompatActivity {
             if (updateActivityView) {
                 updateActivityView();
             }
-
         }
     };
-
-
 
 
     // update the list view connect book
@@ -355,8 +350,7 @@ public class ActivityConnectBook extends AppCompatActivity {
             displayMessageSet ();
         }
     }
-    
-    
+
     
     public void updateActivityView () {
 
@@ -364,7 +358,6 @@ public class ActivityConnectBook extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         finish();
         startActivity(intent);
-
     }
     
 
@@ -383,10 +376,7 @@ public class ActivityConnectBook extends AppCompatActivity {
 
             // Assign adapter to ListView
             listViewConnectBook.setAdapter(dataAdapter);
-
         }
-
-
     }
 
 

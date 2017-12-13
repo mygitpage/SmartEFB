@@ -29,8 +29,6 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
     AlertDialog alertDialogSettings;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -43,7 +41,6 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
 
         // create help dialog
         createHelpDialog();
-
     }
 
 
@@ -56,21 +53,19 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        
     }
+
 
     // help dialog
     void createHelpDialog () {
 
         Button tmpHelpButtonEmergencyHelp = (Button) findViewById(R.id.helpEmergencyHelp);
 
-
         // add button listener to question mark in activity OurGoals (toolbar)
         tmpHelpButtonEmergencyHelp.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
 
                 LayoutInflater dialogInflater;
 
@@ -81,8 +76,6 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
 
                 // inflate and get the view
                 View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_emergencyhelp, null);
-
-
 
                 // get string ressources
                 String tmpTextCloseDialog = ActivityEmergencyHelp.this.getResources().getString(R.string.textDialogEmergencyHelpCloseDialog);
@@ -106,35 +99,21 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
 
                 // and show the dialog
                 builder.show();
-
             }
         });
-
     }
-
-
-
-
-
-
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-
-
             case android.R.id.home:
                 onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
-    
 
 }
-
-

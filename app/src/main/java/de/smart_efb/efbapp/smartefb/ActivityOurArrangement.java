@@ -254,11 +254,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
             tmpEvalNext = intentExtras.getBoolean("eval_next");
             // get command and execute it
 
-            Log.d("OUR ARRANGEMENT DISP", "New Intent:"+ intentExtras.getString("com"));
-
             executeIntentCommand (intentExtras.getString("com"), tmpServerDbId, tmpNumberinListView, tmpEvalNext);
         }
-
     }
 
 
@@ -367,9 +364,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
             arrangementSketchDbIdFromLink = tmpServerDbId;
             arrangementSketchNumberInListView = tmpNumberinListView;
 
-
-            Log.d("OUR ARRANGEMENT DISP", "Show SKetch Arrangements:"+command);
-
             //set fragment in tab one to show sketch arrangement
             OurArrangementViewPagerAdapter.setFragmentTabOne("show_sketch_arrangement");
 
@@ -387,9 +381,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
             toolbar.setSubtitle(arraySubTitleText[1]);
 
         } else if (command.equals("show_comment_for_sketch_arrangement")) { // Show comments for sketch Arrangments -> TAB ONE
-
-
-            Log.d("OUR ARRANGEMENT DISP", "Show SKetch Ccomments");
 
             // set global varibales
             arrangementSketchDbIdFromLink = tmpServerDbId;
@@ -475,7 +466,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        try {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        catch (NullPointerException e){
+            // do nothing
+        }
 
         // init the DB
         myDb = new DBAdapter(getApplicationContext());
@@ -836,7 +832,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 if (tmpChangeDbEvaluationStatus.equals("delete")) {
                     // update table ourGoals in db -> delete evaluation possible
                     myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""), "delete");
-                } else {
+                }
+                else {
 
                     if (cursor != null) {
 

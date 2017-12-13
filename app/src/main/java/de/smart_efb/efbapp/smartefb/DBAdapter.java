@@ -23,22 +23,22 @@ public class DBAdapter extends SQLiteOpenHelper {
     Context dbContext;
 
     // DB name
-    public static final String DATABASE_NAME = "efbDb";
+    private static final String DATABASE_NAME = "efbDb";
 
     // Tables name
-    public static final String DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT = "ourArrangementCommentTable";
-    public static final String DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT = "ourArrangementSketchCommentTable";
-    public static final String DATABASE_TABLE_OUR_ARRANGEMENT = "ourArrangementTable";
-    public static final String DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE = "ourArrangementEvaluateTable";
-    public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW = "ourGoalsDebetableJointlyGoalsNow";
-    public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT = "ourGoalsJointlyGoalsComment";
-    public static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE = "ourGoalsJointlyGoalsEvaluate";
-    public static final String DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT = "ourGoalsDebetableGoalsComment";
-    public static final String DATABASE_TABLE_MEETING_SUGGESTION = "meetingSuggestion";
-    public static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
+    private static final String DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT = "ourArrangementCommentTable";
+    private static final String DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT = "ourArrangementSketchCommentTable";
+    private static final String DATABASE_TABLE_OUR_ARRANGEMENT = "ourArrangementTable";
+    private static final String DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE = "ourArrangementEvaluateTable";
+    private static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW = "ourGoalsDebetableJointlyGoalsNow";
+    private static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT = "ourGoalsJointlyGoalsComment";
+    private static final String DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE = "ourGoalsJointlyGoalsEvaluate";
+    private static final String DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT = "ourGoalsDebetableGoalsComment";
+    private static final String DATABASE_TABLE_MEETING_SUGGESTION = "meetingSuggestion";
+    private static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
 
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 45;
+    private static final int DATABASE_VERSION = 45;
 
     // Common column names
     public static final String KEY_ROWID = "_id";
@@ -47,21 +47,21 @@ public class DBAdapter extends SQLiteOpenHelper {
     /************************ Begin of table definitions **********************************************************************/
 
     // Our Arrangement - column names and numbers
-    public static final String OUR_ARRANGEMENT_KEY_ARRANGEMENT = "arrangement";
-    public static final String OUR_ARRANGEMENT_KEY_AUTHOR_NAME = "author_name";
-    public static final String OUR_ARRANGEMENT_KEY_WRITE_TIME = "arrangement_time";
-    public static final String OUR_ARRANGEMENT_KEY_NEW_ENTRY = "new_entry";
-    public static final String OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE = "eval_possible";
-    public static final String OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT = "sketch";
-    public static final String OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME = "sketch_time";
-    public static final String OUR_ARRANGEMENT_KEY_SERVER_ID = "serverid";
-    public static final String OUR_ARRANGEMENT_KEY_BLOCK_ID = "blockid";
-    public static final String OUR_ARRANGEMENT_KEY_CHANGE_TO = "change_to";
-    public static final String OUR_ARRANGEMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
-    public static final String OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME = "last_eval_time";
+    static final String OUR_ARRANGEMENT_KEY_ARRANGEMENT = "arrangement";
+    static final String OUR_ARRANGEMENT_KEY_AUTHOR_NAME = "author_name";
+    static final String OUR_ARRANGEMENT_KEY_WRITE_TIME = "arrangement_time";
+    static final String OUR_ARRANGEMENT_KEY_NEW_ENTRY = "new_entry";
+    static final String OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE = "eval_possible";
+    static final String OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT = "sketch";
+    static final String OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME = "sketch_time";
+    static final String OUR_ARRANGEMENT_KEY_SERVER_ID = "serverid";
+    static final String OUR_ARRANGEMENT_KEY_BLOCK_ID = "blockid";
+    static final String OUR_ARRANGEMENT_KEY_CHANGE_TO = "change_to";
+    static final String OUR_ARRANGEMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
+    static final String OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME = "last_eval_time";
 
     // All keys from table app settings in a String
-    public static final String[] OUR_ARRANGEMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_ARRANGEMENT_KEY_ARRANGEMENT, OUR_ARRANGEMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE, OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT, OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME, OUR_ARRANGEMENT_KEY_SERVER_ID, OUR_ARRANGEMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_KEY_STATUS, OUR_ARRANGEMENT_KEY_CHANGE_TO, OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME};
+    static final String[] OUR_ARRANGEMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_ARRANGEMENT_KEY_ARRANGEMENT, OUR_ARRANGEMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE, OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT, OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME, OUR_ARRANGEMENT_KEY_SERVER_ID, OUR_ARRANGEMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_KEY_STATUS, OUR_ARRANGEMENT_KEY_CHANGE_TO, OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME};
 
     // SQL String to create our arrangement table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT =
@@ -83,18 +83,18 @@ public class DBAdapter extends SQLiteOpenHelper {
     /**********************************************************************************************/
     /**********************************************************************************************/
     // Our Arrangement Comment- column names and numbers
-    public static final String OUR_ARRANGEMENT_COMMENT_KEY_COMMENT = "comment";
-    public static final String OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME = "author_name";
-    public static final String OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME = "comment_time";
-    public static final String OUR_ARRANGEMENT_COMMENT_KEY_UPLOAD_TIME = "upload_time";
-    public static final String OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID = "blockid";
-    public static final String OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY = "new_entry";
-    public static final String OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME = "arrangement_time";
-    public static final String OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT = "server_id";
-    public static final String OUR_ARRANGEMENT_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
+    static final String OUR_ARRANGEMENT_COMMENT_KEY_COMMENT = "comment";
+    static final String OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME = "author_name";
+    static final String OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME = "comment_time";
+    static final String OUR_ARRANGEMENT_COMMENT_KEY_UPLOAD_TIME = "upload_time";
+    static final String OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID = "blockid";
+    static final String OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY = "new_entry";
+    static final String OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME = "arrangement_time";
+    static final String OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT = "server_id";
+    static final String OUR_ARRANGEMENT_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
     // All keys from table app settings in a String
-    public static final String[] OUR_ARRANGEMENT_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_COMMENT_KEY_UPLOAD_TIME, OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_COMMENT_KEY_STATUS};
+    static final String[] OUR_ARRANGEMENT_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_COMMENT_KEY_UPLOAD_TIME, OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_COMMENT_KEY_STATUS};
 
     // SQL String to create our arrangement comment table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_COMMENT =
@@ -114,21 +114,21 @@ public class DBAdapter extends SQLiteOpenHelper {
     /**********************************************************************************************/
     // Our Arrangement Sketch Comment- column names and numbers
 
-    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT = "comment";
-    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1 = "result_q_a";
-    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2 = "result_q_b";
-    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3 = "result_q_c";
-    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME = "author_name";
-    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME = "comment_time";
-    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_UPLOAD_TIME = "upload_time";
-    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID = "blockid";
-    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT = "server_id";
-    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY = "new_entry";
-    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME = "arrangement_time";
-    public static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
+    static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT = "comment";
+    static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1 = "result_q_a";
+    static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2 = "result_q_b";
+    static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3 = "result_q_c";
+    static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME = "author_name";
+    static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME = "comment_time";
+    static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_UPLOAD_TIME = "upload_time";
+    static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID = "blockid";
+    static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT = "server_id";
+    static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY = "new_entry";
+    static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME = "arrangement_time";
+    static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
     // All keys from table sketch comment
-    public static final String[] OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_UPLOAD_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS};
+    static final String[] OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_UPLOAD_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS};
 
     // SQL String to create our arrangement sketch comment table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_SKETCH_COMMENT =
@@ -150,22 +150,22 @@ public class DBAdapter extends SQLiteOpenHelper {
     /**********************************************************************************************/
     /**********************************************************************************************/
     // Our Arrangement Evaluate- column names and numbers
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME = "arrangement_time";
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_SERVER_ID_ARRANGEMENT = "server_id";
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_BLOCKID = "block_id";
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1 = "result_q_a";
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2 = "result_q_b";
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3 = "result_q_c";
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4 = "result_q_d";
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS = "result_remarks";
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME = "result_time";
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME = "start_block_time";
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME = "end_block_time";
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME = "username";
-    public static final String OUR_ARRANGEMENT_EVALUATE_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
+    static final String OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME = "arrangement_time";
+    static final String OUR_ARRANGEMENT_EVALUATE_KEY_SERVER_ID_ARRANGEMENT = "server_id";
+    static final String OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_BLOCKID = "block_id";
+    static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1 = "result_q_a";
+    static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2 = "result_q_b";
+    static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3 = "result_q_c";
+    static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4 = "result_q_d";
+    static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS = "result_remarks";
+    static final String OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME = "result_time";
+    static final String OUR_ARRANGEMENT_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME = "start_block_time";
+    static final String OUR_ARRANGEMENT_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME = "end_block_time";
+    static final String OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME = "username";
+    static final String OUR_ARRANGEMENT_EVALUATE_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
     // All keys from table app settings in a String
-    public static final String[] OUR_ARRANGEMENT_EVALUATE_ALL_KEYS = new String[]{KEY_ROWID, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME, OUR_ARRANGEMENT_EVALUATE_KEY_STATUS, OUR_ARRANGEMENT_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_BLOCKID};
+    static final String[] OUR_ARRANGEMENT_EVALUATE_ALL_KEYS = new String[]{KEY_ROWID, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS, OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME, OUR_ARRANGEMENT_EVALUATE_KEY_STATUS, OUR_ARRANGEMENT_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME, OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_BLOCKID};
 
     // SQL String to create our arrangement evaluate table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_EVALUATE =
@@ -188,17 +188,16 @@ public class DBAdapter extends SQLiteOpenHelper {
     /**********************************************************************************************/
     /**********************************************************************************************/
     // Chat Messages - column names and numbers
-    public static final String CHAT_MESSAGE_KEY_WRITE_TIME = "message_time";
-    public static final String CHAT_MESSAGE_KEY_AUTHOR_NAME = "author_name";
-    public static final String CHAT_MESSAGE_KEY_MESSAGE = "message";
-    public static final String CHAT_MESSAGE_KEY_ROLE = "role_status";
-    public static final String CHAT_MESSAGE_KEY_UPLOAD_TIME = "upload_time";
-    public static final String CHAT_MESSAGE_KEY_STATUS = "status";
-    public static final String CHAT_MESSAGE_KEY_NEW_ENTRY = "new_entry";
-
+    static final String CHAT_MESSAGE_KEY_WRITE_TIME = "message_time";
+    static final String CHAT_MESSAGE_KEY_AUTHOR_NAME = "author_name";
+    static final String CHAT_MESSAGE_KEY_MESSAGE = "message";
+    static final String CHAT_MESSAGE_KEY_ROLE = "role_status";
+    static final String CHAT_MESSAGE_KEY_UPLOAD_TIME = "upload_time";
+    static final String CHAT_MESSAGE_KEY_STATUS = "status";
+    static final String CHAT_MESSAGE_KEY_NEW_ENTRY = "new_entry";
 
     // All keys from table chat messages in a String
-    public static final String[] CHAT_MESSAGE_ALL_KEYS = new String[]{KEY_ROWID, CHAT_MESSAGE_KEY_WRITE_TIME, CHAT_MESSAGE_KEY_AUTHOR_NAME, CHAT_MESSAGE_KEY_MESSAGE, CHAT_MESSAGE_KEY_ROLE, CHAT_MESSAGE_KEY_UPLOAD_TIME, CHAT_MESSAGE_KEY_STATUS, CHAT_MESSAGE_KEY_NEW_ENTRY};
+    static final String[] CHAT_MESSAGE_ALL_KEYS = new String[]{KEY_ROWID, CHAT_MESSAGE_KEY_WRITE_TIME, CHAT_MESSAGE_KEY_AUTHOR_NAME, CHAT_MESSAGE_KEY_MESSAGE, CHAT_MESSAGE_KEY_ROLE, CHAT_MESSAGE_KEY_UPLOAD_TIME, CHAT_MESSAGE_KEY_STATUS, CHAT_MESSAGE_KEY_NEW_ENTRY};
 
     // SQL String to create chat-message-table
     private static final String DATABASE_CREATE_SQL_CHAT_MESSAGE =
@@ -216,18 +215,18 @@ public class DBAdapter extends SQLiteOpenHelper {
     /************************ Our Goals Definitions **************************************************************************/
 
     // Debetable/Jointly Goals Now - column names and numbers
-    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL = "goal";
-    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME = "author_name";
-    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME = "goal_time";
-    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY = "new_entry";
-    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE = "eval_possible";
-    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE = "jointlyDebetable";
-    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME = "debetable_time";
-    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID = "serverid";
-    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID = "blockid";
-    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_CHANGE_TO = "change_to";
-    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
-    public static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME = "last_eval_time";
+    static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL = "goal";
+    static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME = "author_name";
+    static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME = "goal_time";
+    static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY = "new_entry";
+    static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE = "eval_possible";
+    static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE = "jointlyDebetable";
+    static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME = "debetable_time";
+    static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID = "serverid";
+    static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID = "blockid";
+    static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_CHANGE_TO = "change_to";
+    static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
+    static final String OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME = "last_eval_time";
 
     // All keys in a String
     public static final String[] OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS = new String[]{KEY_ROWID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_CHANGE_TO, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME};
@@ -252,18 +251,18 @@ public class DBAdapter extends SQLiteOpenHelper {
     /************************ End Definitions Our Goals *********************************************************************/
     /**********************************************************************************************/
     // Our Goals Jointly Goals Comment- column names and numbers
-    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT = "comment";
-    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME = "author_name";
-    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME = "comment_time";
-    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_UPLOAD_TIME = "upload_time";
-    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID = "blockid";
-    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY = "new_entry";
-    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME = "goal_time";
-    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL = "server_id";
-    public static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
+    static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT = "comment";
+    static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME = "author_name";
+    static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME = "comment_time";
+    static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_UPLOAD_TIME = "upload_time";
+    static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID = "blockid";
+    static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY = "new_entry";
+    static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME = "goal_time";
+    static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL = "server_id";
+    static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
     // All keys from table app settings in a String
-    public static final String[] OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_UPLOAD_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS};
+    static final String[] OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_UPLOAD_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS};
 
     // SQL String to create our goals jointly comment table
     private static final String DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_COMMENT =
@@ -1194,8 +1193,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         ContentValues newValues = new ContentValues();
         newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_STATUS, status);
 
-        Log.d("DB Change Stat Comment", "ROW ID:" + rowId);
-
         // Insert it into the database.
         return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null) != 0;
     }
@@ -1967,8 +1964,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Create row status with status
         ContentValues newValues = new ContentValues();
         newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS, status);
-
-        Log.d("DB Change Stat Comment", "ROW ID:" + rowId);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null) != 0;

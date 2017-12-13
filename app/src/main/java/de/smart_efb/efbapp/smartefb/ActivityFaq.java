@@ -4,13 +4,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 /**
@@ -18,13 +15,11 @@ import android.view.MenuItem;
  */
 public class ActivityFaq extends AppCompatActivity {
 
-
     Toolbar toolbarFaq;
     ActionBar actionBar;
 
     ViewPager viewPagerFaq;
     TabLayout tabLayoutFaq;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +65,6 @@ public class ActivityFaq extends AppCompatActivity {
                     default:
                         tmpSubtitleText = getResources().getString(getResources().getIdentifier("faqSubtitleSectionOne", "string", getPackageName()));
                         break;
-
                 }
 
                 // set correct subtitle in toolbar
@@ -78,21 +72,16 @@ public class ActivityFaq extends AppCompatActivity {
 
                 // set correct tab over viewpager
                 viewPagerFaq.setCurrentItem(tab.getPosition());
-
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
-
-
     }
 
 
@@ -109,8 +98,6 @@ public class ActivityFaq extends AppCompatActivity {
         // set correct subtitle for first call
         String tmpSubtitleText = getResources().getString(getResources().getIdentifier("faqSubtitleSectionOne", "string", getPackageName()));
         toolbarFaq.setSubtitle(tmpSubtitleText);
-
-
     }
 
 
@@ -127,13 +114,11 @@ public class ActivityFaq extends AppCompatActivity {
         // get the link data from URI and from the extra
         intentExtras = intent.getExtras();
 
-
         if (intentExtras != null) {
 
             // get command and execute it
             executeIntentCommand (intentExtras.getString("com"));
         }
-
     }
 
 
@@ -145,18 +130,15 @@ public class ActivityFaq extends AppCompatActivity {
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(0);
             tab.select();
 
-
         } else if (command.equals("show_section2")) { // Show fragment for Fragen zur App
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(1);
             tab.select();
 
-
         } else if (command.equals("show_section3")) { // Show fragment for Erziehungsberatung
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(2);
             tab.select();
-
 
         } else if (command.equals("show_section4")) { // Show fragment for Beratungsstellen
 
@@ -175,7 +157,6 @@ public class ActivityFaq extends AppCompatActivity {
             tab.select();
 
         }
-
     }
 
 
@@ -183,22 +164,12 @@ public class ActivityFaq extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-
-
             case android.R.id.home:
                 onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
-
-
-
-
-
-
-
 
 }
