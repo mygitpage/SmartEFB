@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.util.Log;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,17 +23,17 @@ public class EfbXmlParser {
     XmlPullParserFactory xppf;
 
     // pull parser reference
-    XmlPullParser xpp;
+    private XmlPullParser xpp;
 
     // shared prefs for the settings
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
 
     // context of xmlParser
-    Context xmlContext;
+    private Context xmlContext;
 
     // reference to the DB
-    DBAdapter myDb;
+    private DBAdapter myDb;
 
     // return information for change
     Map<String, String> returnMap;
@@ -52,7 +50,6 @@ public class EfbXmlParser {
         // init prefs and editor
         prefs = xmlContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, xmlContext.MODE_PRIVATE);
         prefsEditor = prefs.edit();
-
 
         // init return map
         returnMap = new HashMap<String, String>();
@@ -75,8 +72,6 @@ public class EfbXmlParser {
         returnMap.put("ConnectBookSettingsMessageShareDisable","0");
         returnMap.put("ConnectBookMessageNewOrSend","0"); // only set in ExchangeService to refresh connect book view
 
-
-
         returnMap.put("OurArrangement", "0");
         returnMap.put("OurArrangementNow", "0");
         returnMap.put("OurArrangementNowComment", "0");
@@ -94,15 +89,10 @@ public class EfbXmlParser {
         returnMap.put("OurArrangementSettingsSketchCommentShareEnable","0");
         returnMap.put("OurArrangementSettingsSketchCommentCountComment", "0");
 
-
         // check!!!!!!!!!!!!!!
         returnMap.put("OurArrangementNewOrSend","0"); // only set in ExchangeService to refresh OurArrangement view
         returnMap.put("OurArrangementCommentNewOrSend","0"); // only set in ExchangeService to refresh OurArrangement Comment view
         returnMap.put("OurArrangementShowCommentNewOrSend","0"); // only set in ExchangeService to refresh OurArrangement Show Comment view
-
-
-
-
 
         returnMap.put("OurGoals", "0");
         returnMap.put("OurGoalsJointlyNow", "0");
@@ -123,9 +113,6 @@ public class EfbXmlParser {
         returnMap.put("OurGoalsSettingsDebetableCommentShareEnable","0");
         returnMap.put("OurGoalsSettingsDebetableCommentCountComment", "0");
 
-
-
-
         returnMap.put("Meeting", "0");
         returnMap.put("MeetingSettings", "0");
         returnMap.put("MeetingNewMeeting", "0");
@@ -135,13 +122,10 @@ public class EfbXmlParser {
         returnMap.put("MeetingNewInvitationSuggestion", "0");
         returnMap.put("MeetingFoundFromSuggestion", "0");
 
-
-
         returnMap.put("TimeTable", "0");
         returnMap.put("TimeTableNewValue", "0");
 
         returnMap.put("Settings", "0");
-
     }
 
 
@@ -162,12 +146,7 @@ public class EfbXmlParser {
             int eventType = xpp.getEventType();
 
             while (eventType != XmlPullParser.END_DOCUMENT) {
-
-                Log.d("XML", "In der While Schleife");
-
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("XMLParser", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
 
                         case ConstansClassXmlParser.xmlNameForMasterElement:
@@ -209,16 +188,10 @@ public class EfbXmlParser {
                             }
                             break;
                     }
-
                 }
-
                 // Next XML Element
                 eventType = xpp.next();
-
             }
-
-            Log.d("XMLParser", "End document +++++++++++++");
-            //System.out.println("End document");
         } catch (XmlPullParserException e) {
 
             // set error
@@ -233,9 +206,7 @@ public class EfbXmlParser {
             e.printStackTrace();
         }
 
-
         return returnMap;
-
     }
 
 
@@ -259,48 +230,31 @@ public class EfbXmlParser {
             while (readMoreXml) {
 
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("ReadMain", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
-
                         case ConstansClassXmlParser.xmlNameForMain_Order: // xml data order
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) {
                                 if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
                                     tmpMainOrder = xpp.getText().trim(); // copy main order
-
-                                    Log.d("MAIN", "MAIN ORDER +++++++++++ :"+tmpMainOrder);
-
                                 }
                             }
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMain_ErrorText: // xml data error text
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) {
                                 if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
                                     tmpErrorText = xpp.getText().trim(); // copy main order
-
-                                    Log.d("MAIN", "ERROR TEXT +++++++++++ :"+tmpErrorText);
-
                                 }
                             }
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMain_ClientID: // xml data client id
                             eventType = xpp.next();
-
                             if (eventType == XmlPullParser.TEXT) {
                                 if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
                                     tmpClientId = xpp.getText().trim(); // copy client id
-
-                                    Log.d("MAIN", "CLIENT ID +++++++++++ :"+tmpClientId);
-
-
                                 }
                             }
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMain_MeetingId: // xml data make meeting
                             eventType = xpp.next();
 
@@ -310,28 +264,18 @@ public class EfbXmlParser {
                                 }
                             }
                             break;
-
                     }
-
                 } else if (eventType == XmlPullParser.END_DOCUMENT) {
-                    Log.d("ReadMain", "END OF DOCUMENT");
+
                     readMoreXml = false;
 
                 } else if (eventType == XmlPullParser.END_TAG) {
-                    Log.d("ReadMain", "End tag ++++++++++++++++ " + xpp.getName());
-
-                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain)) {
-
-                        Log.d("XML", "END MAIN TAG ++++++++++");
-
+                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain)) {
                         if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Init) && tmpClientId.trim().length() > 0) { // init client smartphone
-
-                            Log.d("XML", "Order: init");
-
                             // write client id to prefs
                             prefsEditor.putString(ConstansClassSettings.namePrefsClientId, tmpClientId);
                             // set connection status to connect
-                            prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 3);
+                            prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 3); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
                             // write last error messages to prefs
                             prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
                             prefsEditor.commit();
@@ -341,20 +285,11 @@ public class EfbXmlParser {
                             returnMap.put("ConnectionStatus", "3");
                             returnMap.put("Error", "0");
                             returnMap.put("ErrorText", "");
-
-                            Log.d("XML", "Order: init ausgefuehrt!!!!!!!!!!");
-
                             readMoreXml = false;
-
                         }
-
-
                     } else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Receive_Ok_Send)) { // data send and now receive data
-
-                        Log.d("XML", "Order: RECEIVE SEND AUSGEFUEHRT!");
                         returnMap.put("ClientId", tmpClientId);
                         returnMap.put("SendSuccessfull", "1");
-
                         readMoreXml = false;
 
                     } else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Data)) { // receive data
@@ -366,7 +301,7 @@ public class EfbXmlParser {
                         // write last error messages to prefs
                         prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText + " (Position:Main)");
                         // set connection status to error
-                        prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 1);
+                        prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 1); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
                         prefsEditor.commit();
 
                         returnMap.put("ClientId", "");
@@ -377,10 +312,6 @@ public class EfbXmlParser {
 
                         readMoreXml = false;
                     }
-
-
-
-
                 }
 
                 eventType = xpp.next();
@@ -411,30 +342,14 @@ public class EfbXmlParser {
         try {
             int eventType = xpp.next();
 
-
-
-
-
-
             while (parseAnymore) {
-
-
-
                 // look for end tag of ourarrangement
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurArrangement)) {
-
-                        Log.d("readOurArrangementTag", "End Tag ourarrangement gefunden!");
                         parseAnymore = false;
                     }
                 }
-
-
-
-
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readOurArrangementTag", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Now:
                             readOurArrangementTag_Now();
@@ -459,7 +374,6 @@ public class EfbXmlParser {
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings:
                             readOurArrangementTag_Settings();
                             break;
-
                     }
                 }
                 eventType = xpp.next();
@@ -467,10 +381,7 @@ public class EfbXmlParser {
                 // Safety abbort end document
                 if (eventType == XmlPullParser.END_DOCUMENT) {
                     parseAnymore = false;
-                    Log.d("readOurArrangementTag", "ABBRUCH DURCH END DOCUMENT!");
                 }
-
-
             }
         } catch (XmlPullParserException e) {
             // set error
@@ -508,19 +419,13 @@ public class EfbXmlParser {
             while (parseAnymore) {
 
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readOurArrTag_NOW_MORE", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Now_Order:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get order text
                                 if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
                                     tmpOrder = xpp.getText().trim();
-
-                                    Log.d("NOW Arr", "Order:" + tmpOrder);
-
                                     if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
-                                        Log.d("NOW Arr", "Fehler Order!!!");
                                         error = true;
                                         tmpOrder = "";
                                     }
@@ -532,64 +437,46 @@ public class EfbXmlParser {
                             }
 
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Now_ArrangementText:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get arrangementText text
                                 if (xpp.getText().trim().length() > 0) { // check if arrangementText from xml > 0
                                     tmpArrangementText = xpp.getText().trim();
-
-                                    Log.d("Arrangement_NOW:Text", "Text" + tmpArrangementText);
-
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Now_AuthorName:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get authorName text
                                 if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
                                     tmpAuthorName = xpp.getText().trim();
-
-                                    Log.d("NOW Arr", "Author" + tmpAuthorName);
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Now_ArrangementTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get arrangementTime text
                                 if (xpp.getText().trim().length() > 0) { // check if arrangementTime from xml > 0
                                     tmpArrangementTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("NOW Arr", "Author" + tmpArrangementTime);
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Now_SketchCurrent:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get sketchCurrent text
                                 if (xpp.getText().trim().length() > 0) { // check if sketchCurrent from xml > 0
-
-                                    Log.d("NOW Arr", "Arrangement Status: " + xpp.getText().trim());
-
-
                                     if (xpp.getText().trim().equals("normal")) { // arrangement is a current arrangement?
                                         tmpSketchCurrent = false;
                                     } else {
@@ -602,14 +489,11 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Now_ChangeTo:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get ChangeTo text
                                 if (xpp.getText().trim().length() > 0) { // check if ChangeTo from xml > 0
                                     tmpChangeTo = xpp.getText().trim();
-
-                                    Log.d("NOW Arr", "ChangeTo:" + tmpChangeTo);
                                 } else {
                                     error = true;
                                 }
@@ -617,15 +501,11 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Now_BlockId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get BlockId text
                                 if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
                                     tmpBlockId = xpp.getText().trim();
-
-                                    Log.d("NOW Arr", "BlockID:" + tmpBlockId);
                                 } else {
                                     error = true;
                                 }
@@ -633,8 +513,6 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Now_ServerId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get server id text
@@ -646,9 +524,7 @@ public class EfbXmlParser {
                             } else {
                                 error = true;
                             }
-
                             break;
-
                     }
                 }
                 eventType = xpp.next();
@@ -656,30 +532,15 @@ public class EfbXmlParser {
                 // Safety abbort end document
                 if (eventType == XmlPullParser.END_DOCUMENT) {
                     parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
                 // look for end tag of ourarrangement now
                 if (eventType == XmlPullParser.END_TAG) {
-
-                    Log.d("NOW Arr", "END TAG gefunden!");
-
-
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurArrangement_Now)) {
-
-
-                        Log.d("NOW Arr", "END TAG Arr NOW gefunden!");
-
                         // check all data for arrangement now correct?
                         if (!error) {
-
-                            Log.d("NOW__DB", "Te:" + tmpArrangementText + " - Au:" + tmpAuthorName + " - ATi:" + tmpArrangementTime + " - STi" + tmpSketchCurrent);
-
                             // our arrangement order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpArrangementTime > 0 && tmpServerId > 0 && tmpBlockId.length() > 0 && tmpChangeTo.length() > 0) {
-
-                                Log.d("NOW Arr", "NEW Arra Entry!!!");
-
                                 // insert new arrangement in DB
                                 myDb.insertRowOurArrangement(tmpArrangementText, tmpAuthorName, tmpArrangementTime, true, tmpSketchCurrent, 0, 4, tmpServerId, tmpBlockId, tmpChangeTo);
 
@@ -695,7 +556,6 @@ public class EfbXmlParser {
                                 prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, true);
 
                                 prefsEditor.commit();
-
 
                                 // refresh activity ourarrangement and fragement now
                                 returnMap.put("OurArrangement", "1");
@@ -715,28 +575,20 @@ public class EfbXmlParser {
                                 // update arrangement in DB
                                 myDb.updateRowOurArrangement(tmpArrangementText, tmpAuthorName, tmpArrangementTime, true, tmpSketchCurrent, 0, 4, tmpServerId, tmpBlockId);
 
-
                                 // refresh activity ourarrangement and fragement now
                                 returnMap.put("OurArrangement", "1");
                                 returnMap.put("OurArrangementNow", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
 
-                                Log.d("NOW Arr", "Delete All!!!");
-
                                 // delete all arrangements now with the blockId
                                 myDb.deleteAllRowsOurArrangement(tmpBlockId, false); // false -> all now arrangements; true -> all sketch arrangements
 
-
                             }
                         }
-
                         parseAnymore = false;
                     }
                 }
-
-                Log.d("NOW Arr", "Ende der Funktion Arr NOW!");
-
             }
         } catch (XmlPullParserException e) {
             // set error
@@ -752,7 +604,6 @@ public class EfbXmlParser {
 
     // read tag our arrangement now comment and push to database ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void readOurArrangementTag_NowComment() {
-        Log.d("read_NOWCOMMENT", "Zeile " + xpp.getLineNumber());
 
         Boolean parseAnymore = true;
 
@@ -773,10 +624,7 @@ public class EfbXmlParser {
             int eventType = xpp.next();
 
             while (parseAnymore) {
-
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readOurTag_NOW_COMMENT", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_Order:
                             eventType = xpp.next();
@@ -787,35 +635,24 @@ public class EfbXmlParser {
                                         error = true;
                                         tmpOrder = "";
                                     }
-
-                                    Log.d("Now Comment", "ORDER: " + tmpOrder);
-
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_Comment:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get comment text
                                 if (xpp.getText().trim().length() > 0) { // check if commentText from xml > 0
                                     tmpCommentText = xpp.getText().trim();
-
-
-
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_AuthorName:
                             eventType = xpp.next();
@@ -828,7 +665,6 @@ public class EfbXmlParser {
                             } else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentTime:
                             eventType = xpp.next();
@@ -841,16 +677,12 @@ public class EfbXmlParser {
                             } else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_BlockId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get BlockId text
                                 if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
                                     tmpBlockId = xpp.getText().trim();
-
-                                    Log.d("NOW Arr", "BlockID:" + tmpBlockId);
                                 } else {
                                     error = true;
                                 }
@@ -858,7 +690,6 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_DateOfArrangement:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get arrangementTime text
@@ -872,16 +703,11 @@ public class EfbXmlParser {
                             }
 
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_ServerIdArrangement:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get server id arrangement text
                                 if (xpp.getText().trim().length() > 0) { // check if server id arrangement from xml > 0
                                     tmpServerIdArrangement = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Now Comment", "ServerID:" + tmpServerIdArrangement);
-
-
                                 } else {
                                     error = true;
                                 }
@@ -889,7 +715,6 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
                     }
                 }
                 eventType = xpp.next();
@@ -897,7 +722,6 @@ public class EfbXmlParser {
                 // Safety abbort end document
                 if (eventType == XmlPullParser.END_DOCUMENT) {
                     parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
                 // look for end tag of ourarrangement now
@@ -909,9 +733,6 @@ public class EfbXmlParser {
 
                             // our arrangement now comment order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpBlockId.length() > 0) {
-
-                                Log.d("IN_NowComment_DB", "C:" + tmpCommentText + " - Au:" + tmpAuthorName + " - CTi:" + tmpCommentTime + " - AId" + tmpServerIdArrangement + " - CoA:" + tmpArrangementTime);
-
                                 // set upload time on smartphone for commeent
                                 tmpUploadTime = System.currentTimeMillis();
 
@@ -924,7 +745,6 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpBlockId.length() > 0) {
                                 // now comment order -> update
-                                Log.d("IN_NowComment_UPDATE", "C:" + tmpCommentText + " - Au:" + tmpAuthorName + " - CTi:" + tmpCommentTime + " - AId" + tmpServerIdArrangement + " - CoA:" + tmpArrangementTime);
 
                                 // set upload time on smartphone for commeent
                                 tmpUploadTime = System.currentTimeMillis();
@@ -938,15 +758,11 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) { // delete all comments; needed by init process
 
-                                Log.d("NOW Comment Arr", "Delete All!!!");
-
                                 // delete all comments for all current arrangements now with the blockId
                                 myDb.deleteAllRowsOurArrangementComment(tmpBlockId);
 
-
                             }
                         }
-
                         parseAnymore = false;
                     }
                 }
@@ -965,7 +781,6 @@ public class EfbXmlParser {
 
     // read tag our arrangement sketch and push to database ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void readOurArrangementTag_Sketch() {
-        Log.d("read_SKETCH", "Zeile " + xpp.getLineNumber());
 
         Boolean parseAnymore = true;
 
@@ -988,8 +803,6 @@ public class EfbXmlParser {
             while (parseAnymore) {
 
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readOurArrTag_SKETCH", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Sketch_Order:
                             eventType = xpp.next();
@@ -1008,23 +821,17 @@ public class EfbXmlParser {
                             }
 
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Sketch_ArrangementText:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get arrangementText text
                                 if (xpp.getText().trim().length() > 0) { // check if arrangementText from xml > 0
                                     tmpArrangementText = xpp.getText().trim();
-
-
-
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Sketch_AuthorName:
                             eventType = xpp.next();
@@ -1037,16 +844,11 @@ public class EfbXmlParser {
                             } else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Sketch_SketchCurrent:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get sketchCurrent text
                                 if (xpp.getText().trim().length() > 0) { // check if sketchCurrent from xml > 0
-                                    Log.d("Sketch Arr", "Arrangement Status: " + xpp.getText().trim());
-
-
                                     if (xpp.getText().trim().equals("sketch")) { // arrangement is a sketch arrangement?
                                         tmpSketchCurrent = true;
                                     } else {
@@ -1077,8 +879,6 @@ public class EfbXmlParser {
                             if (eventType == XmlPullParser.TEXT) { // get ChangeTo text
                                 if (xpp.getText().trim().length() > 0) { // check if ChangeTo from xml > 0
                                     tmpChangeTo = xpp.getText().trim();
-
-                                    Log.d("Sketch Arr", "ChangeTo:" + tmpChangeTo);
                                 } else {
                                     error = true;
                                 }
@@ -1086,7 +886,6 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Sketch_BlockId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get BlockId text
@@ -1099,7 +898,6 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Sketch_ServerId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get server id text
@@ -1120,22 +918,15 @@ public class EfbXmlParser {
                 // Safety abbort end document
                 if (eventType == XmlPullParser.END_DOCUMENT) {
                     parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
                 // look for end tag of ourarrangement sketch
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurArrangement_Sketch)) {
-
                         // check all data for arrangement sketch correct?
                         if (!error) {
-
-                            Log.d("SKETCH__DB", "Te:" + tmpArrangementText + " - Au:" + tmpAuthorName + " - SATi:" + tmpSketchTime + " - STi" + tmpSketchCurrent);
-
                             // our arrangement sketch order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpArrangementText.length() > 0 && tmpAuthorName.length() > 0 && tmpSketchTime > 0 && tmpServerId > 0 && tmpBlockId.length() > 0 && tmpChangeTo.length() > 0) {
-
-                                Log.d("Sketch Arr", "NEW Sketch Entry!!!");
 
                                 // insert new sketch arrangement in DB
                                 myDb.insertRowOurArrangement(tmpArrangementText, tmpAuthorName, 0, true, tmpSketchCurrent, tmpSketchTime, 4, tmpServerId, tmpBlockId, tmpChangeTo);
@@ -1177,15 +968,11 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
 
-                                Log.d("Sketch Arr", "Delete All!!!");
-
                                 // delete all arrangements sketch with the blockId
                                 myDb.deleteAllRowsOurArrangement(tmpBlockId, true); // false -> all now arrangements; true -> all sketch arrangements
 
-
                             }
                         }
-
                         parseAnymore = false;
                     }
                 }
@@ -1199,17 +986,10 @@ public class EfbXmlParser {
             setErrorMessageInPrefs(2);
             e.printStackTrace();
         }
-
-
     }
 
 
-
     private void readOurArrangementTag_SketchComment() {
-
-
-
-        Log.d("read_SKETCHCOMMENT", "Zeile " + xpp.getLineNumber());
 
         Boolean parseAnymore = true;
 
@@ -1229,16 +1009,11 @@ public class EfbXmlParser {
         String tmpBlockId = "";
         int tmpServerIdArrangement = 0;
 
-
-
         try {
             int eventType = xpp.next();
 
             while (parseAnymore) {
-
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readOur_SKETCH_COMMENT", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Order:
                             eventType = xpp.next();
@@ -1249,10 +1024,6 @@ public class EfbXmlParser {
                                         error = true;
                                         tmpOrder = "";
                                     }
-
-                                    Log.d("SKETCH COMMENT","ORDER: "+tmpOrder);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1261,15 +1032,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_Comment:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get comment text
                                 if (xpp.getText().trim().length() > 0) { // check if commentText from xml > 0
                                     tmpCommentText = xpp.getText().trim();
-                                    
                                 }
                                 else {
                                     error = true;
@@ -1278,17 +1046,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionA:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get result question A text
                                 if (xpp.getText().trim().length() > 0) { // check if result question A from xml > 0
                                     tmpResultQuestionA = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
-
-                                    Log.d("readOur_SKETCH_COMMENT", "Question A: " + tmpResultQuestionA);
-
                                 }
                                 else {
                                     error = true;
@@ -1297,17 +1060,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionB:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get result question B text
                                 if (xpp.getText().trim().length() > 0) { // check if result question B from xml > 0
                                     tmpResultQuestionB = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
-
-                                    Log.d("readOur_SKETCH_COMMENT", "Question B: " + tmpResultQuestionB);
-
                                 }
                                 else {
                                     error = true;
@@ -1316,17 +1074,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ResultQuestionC:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get result question C text
                                 if (xpp.getText().trim().length() > 0) { // check if result question C from xml > 0
                                     tmpResultQuestionC = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
-
-                                    Log.d("readOur_SKETCH_COMMENT", "Question C: " + tmpResultQuestionC);
-
                                 }
                                 else {
                                     error = true;
@@ -1335,18 +1088,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_AuthorName:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get authorName text
                                 if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
                                     tmpAuthorName = xpp.getText().trim();
-
-                                    Log.d("readOur_SKETCH_COMMENT", "Author Name: " + tmpAuthorName);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1355,17 +1102,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get commentTime text
                                 if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
                                     tmpCommentTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
-
-
-                                    Log.d("readOur_SKETCH_COMMENT", "Comment Time: " + tmpCommentTime);
-
                                 }
                                 else {
                                     error = true;
@@ -1374,16 +1116,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_BlockId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get BlockId text
                                 if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
                                     tmpBlockId = xpp.getText().trim();
-
-                                    Log.d("Sketch Arr", "BlockID:"+tmpBlockId);
                                 }
                                 else {
                                     error = true;
@@ -1393,19 +1131,11 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
-
-
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_DateOfArrangement:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get arrangementTime text
                                 if (xpp.getText().trim().length() > 0) { // check if arrangementTime from xml > 0
                                     tmpArrangementTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-
-                                    Log.d("readOur_SKETCH_COMMENT", "Arrangement Date: " + tmpArrangementTime);
-
                                 }
                                 else {
                                     error = true;
@@ -1414,18 +1144,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ServerIdArrangement:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get server id arrangement text
                                 if (xpp.getText().trim().length() > 0) { // check if server id arrangement from xml > 0
                                     tmpServerIdArrangement = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Sketch Comment","ServerID:"+tmpServerIdArrangement);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1435,30 +1159,24 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
                     }
 
                 }
                 eventType = xpp.next();
 
                 // Safety abbort end document
-                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
                 }
 
                 // look for end tag of ourarrangement sketch comment
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment)) {
-
                         // check all data for sketch arrangement comment correct?
                         if (!error) {
 
-                            Log.d("SketchComment_DB","C:"+tmpCommentText+" - Au:"+tmpAuthorName+" - CTi:"+tmpCommentTime+" - AId"+tmpServerIdArrangement+" - CoA:"+tmpArrangementTime);
-
                             // our arrangement sketch comment order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpBlockId.length() > 0) {
-
-                                Log.d("SKETCH COMMENT","NEW AUSführen");
 
                                 // set upload time on smartphone for commeent; value from server is not needed
                                 tmpUploadTime = System.currentTimeMillis();
@@ -1474,8 +1192,6 @@ public class EfbXmlParser {
                             else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpBlockId.length() > 0) {
                                 // our arrangement sketch comment order -> update?
 
-                                Log.d("SKETCH COMMENT","Update AUSführen");
-
                                 // set upload time on smartphone for comment; value from server is not needed
                                 tmpUploadTime = System.currentTimeMillis();
 
@@ -1488,15 +1204,11 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) { // delete all comments for sketch arrangements; needed by init process
 
-                                Log.d("Sketch Comment Arr", "Delete All!!!");
-
                                 // delete all comments for all current sketch arrangements with the blockId
                                 myDb.deleteAllRowsOurArrangementSketchComment (tmpBlockId);
 
                             }
-
                         }
-
                         parseAnymore = false;
                     }
                 }
@@ -1515,30 +1227,15 @@ public class EfbXmlParser {
 
 
 
-
-
-
-
-
-
-
-
     private void readOurArrangementTag_Evaluate() {
-        Log.d("read_EVALUATE", "Zeile " + xpp.getLineNumber());
 
         // TODO: Implematation, when needed!!!!
-
 
     }
 
 
 
-
-
-
-
     private void readOurArrangementTag_Settings() {
-        Log.d("read_SETTINGS", "Zeile " + xpp.getLineNumber());
 
         Boolean parseAnymore = true;
 
@@ -1582,10 +1279,7 @@ public class EfbXmlParser {
             int eventType = xpp.next();
 
             while (parseAnymore) {
-
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readOur_SETTINGS", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_Order:
                             eventType = xpp.next();
@@ -1596,10 +1290,6 @@ public class EfbXmlParser {
                                         error = true;
                                         tmpOrder = "";
                                     }
-
-                                    Log.d("Arr Settings","ORDER: "+tmpOrder);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1610,8 +1300,6 @@ public class EfbXmlParser {
                             }
 
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch our arrangement turn on/off
@@ -1619,10 +1307,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpArrangementOnOff = true;}
                                     else {tmpArrangementOnOff = false;}
-
-                                    Log.d("Arrang_Settings","Arrangement On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1631,10 +1315,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Sketch_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch our arrangement sketch turn on/off
@@ -1642,10 +1323,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpArrangementSketchOnOff = true;}
                                     else {tmpArrangementSketchOnOff = false;}
-
-                                    Log.d("Arrang_Settings","Sketch Arrangement On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1654,9 +1331,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch our arrangement comment turn on/off
@@ -1664,10 +1339,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpArrangementCommentOnOff = true;}
                                     else {tmpArrangementCommentOnOff = false;}
-
-                                    Log.d("Arrang_Settings","Arrangement Comment On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1676,10 +1347,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurArrangementOld_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch our arrangement old turn on/off
@@ -1687,10 +1355,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpArrangementOldOnOff = true;}
                                     else {tmpArrangementOldOnOff = false;}
-
-                                    Log.d("Arrang_Settings","Arrangement Old On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1699,11 +1363,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch our arrangement sketch comment turn on/off
@@ -1711,10 +1371,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpArrangementSketchCommentOnOff = true;}
                                     else {tmpArrangementSketchCommentOnOff = false;}
-
-                                    Log.d("Arrang_Settings","Arrangement Sketch Comment On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1723,9 +1379,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch our arrangement evaluation turn on/off
@@ -1733,10 +1387,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpArrangementEvaluationOnOff = true;}
                                     else {tmpArrangementEvaluationOnOff = false;}
-
-                                    Log.d("Arrang_Settings","Arrangement Evaluation On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1745,18 +1395,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_EvaluatePauseTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get evaluate pause time
                                 if (xpp.getText().trim().length() > 0) { // check if pause time from xml > 0
                                     tmpEvaluatePauseTime = Integer.valueOf(xpp.getText().trim()) * 3600; // make seconds from hours
-
-                                    Log.d("Arrang_Settings","EvaluatePauseTime"+tmpEvaluatePauseTime);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1765,18 +1409,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_EvaluateActiveTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get evaluate active time
                                 if (xpp.getText().trim().length() > 0) { // check if active time from xml > 0
                                     tmpEvaluateActiveTime = Integer.valueOf(xpp.getText().trim())* 3600; // make seconds from hours
-
-                                    Log.d("Arrang_Settings","EvaluateActiveTime"+tmpEvaluateActiveTime);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1785,18 +1423,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_EvaluateStartDate:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get evaluate start date
                                 if (xpp.getText().trim().length() > 0) { // check if start date from xml > 0
                                     tmpEvaluateStartDate = Long.valueOf(xpp.getText().trim())* 1000; // make mills from seconds
-
-                                    Log.d("Arrang_Settings","EvaluateStartDate"+tmpEvaluateStartDate);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1805,18 +1437,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_EvaluateEndDate:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get evaluate end date
                                 if (xpp.getText().trim().length() > 0) { // check if end date from xml > 0
                                     tmpEvaluateEndDate = Long.valueOf(xpp.getText().trim())* 1000; // make mills from seconds
-
-                                    Log.d("Arrang_Settings","EvaluateEndDate"+tmpEvaluateEndDate);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1825,18 +1451,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentMaxComment:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get max comment
                                 if (xpp.getText().trim().length() > 0) { // check if max comment from xml > 0
                                     tmpCommentMaxComment = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Arrang_Settings","CommentMaxComment"+tmpCommentMaxComment);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1845,18 +1465,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentMaxLetters:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get max letters
                                 if (xpp.getText().trim().length() > 0) { // check if max letters from xml > 0
                                     tmpCommentMaxLetters = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Arrang_Settings","CommentMaxLetters"+tmpCommentMaxLetters);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1865,19 +1479,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentDelaytime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get delaytime
                                 if (xpp.getText().trim().length() > 0) { // check if delaytime from xml > 0
                                     tmpCommentDelaytime = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Arrang_Settings","CommentDelaytime"+tmpCommentDelaytime);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1886,18 +1493,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentCountCommentSinceTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get since time
                                 if (xpp.getText().trim().length() > 0) { // check if since time from xml > 0
                                     tmpCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim()) * 1000; // make mills from seconds
-
-                                    Log.d("Arrang_Settings","CommentCountCommentSinceTime"+tmpCommentCountCommentSinceTime);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1906,18 +1507,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentShare:
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_CommentShare:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get share value; 0-> not sharing; 1-> sharing
                                 if (xpp.getText().trim().length() > 0) { // check if share value from xml > 0
                                     tmpCommentShare = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Arrang_Settings","CommentShare"+tmpCommentShare);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1926,18 +1521,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentMaxComment:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get max comment sketch
                                 if (xpp.getText().trim().length() > 0) { // check if max comment sketch from xml > 0
                                     tmpSketchCommentMaxComment = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Arrang_Settings","SketchCommentMaxComment"+tmpSketchCommentMaxComment);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1946,18 +1535,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentMaxLetters:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get max comment sketch letters
                                 if (xpp.getText().trim().length() > 0) { // check if max comment sketch letters from xml > 0
                                     tmpSketchCommentMaxLetters = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Arrang_Settings","SketchCommentMaxLetters"+tmpSketchCommentMaxLetters);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1966,19 +1549,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentDelaytime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get comment sketch delaytime
                                 if (xpp.getText().trim().length() > 0) { // check if comment sketch delaytime from xml > 0
                                     tmpSketchCommentDelaytime = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Arrang_Settings","SketchCommentDelaytime"+tmpSketchCommentDelaytime);
-
-
                                 }
                                 else {
                                     error = true;
@@ -1987,18 +1563,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentCountCommentSinceTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get since time sketch
                                 if (xpp.getText().trim().length() > 0) { // check if since time sketch from xml > 0
                                     tmpSketchCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim()) * 1000; // make mills from seconds
-
-                                    Log.d("Arrang_Settings","SketchCommentCountCommentSinceTime"+tmpSketchCommentCountCommentSinceTime);
-
-
                                 }
                                 else {
                                     error = true;
@@ -2007,19 +1577,13 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurArrangement_Settings_SketchCommentShare:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get share value; 0-> not sharing; 1-> sharing
                                 if (xpp.getText().trim().length() > 0) { // check if share value from xml > 0
                                     tmpSketchCommentShare = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Arrang_Sketch Settings","Comment Sketch Share"+tmpSketchCommentShare);
-
-
-                                }
+                               }
                                 else {
                                     error = true;
                                 }
@@ -2027,10 +1591,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                     }
                 }
                 eventType = xpp.next();
@@ -2038,7 +1599,6 @@ public class EfbXmlParser {
                 // Safety abbort end document
                 if (eventType == XmlPullParser.END_DOCUMENT) {
                     parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
                 // look for end tag of ourarrangement settings
@@ -2047,20 +1607,13 @@ public class EfbXmlParser {
 
                         // check all data for arrangement settings correct?
                         if (!error) {
-
-
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) ) { // our arrangement settings order -> delete?
-
-                                Log.d("Settings","DELETE AUSführen");
-
 
                                 // refresh activity ourarrangement because settings have change
                                 returnMap.put("OurArrangement","1");
                                 returnMap.put("OurArrangementSettings","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // our arrangement settings order -> update?
-
-                                Log.d("Settings Arrangement","UPDATE AUSführen");
 
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, tmpArrangementOnOff); // turn function our arrangement on/off
                                 prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, tmpArrangementSketchOnOff); // turn function our arrangement sketch on/off
@@ -2069,9 +1622,6 @@ public class EfbXmlParser {
 
                                 // update evaluation of arrangements?
                                 if (tmpArrangementEvaluationOnOff && tmpEvaluatePauseTime > 0 && tmpEvaluateActiveTime > 0 && tmpEvaluateStartDate > 0 && tmpEvaluateEndDate > 0) {
-
-                                    Log.d("Arrangement Evaluation","einschalten");
-                                    Log.d ("Settings--","PT:"+tmpEvaluatePauseTime+"AT:"+tmpEvaluateActiveTime+"SD:"+tmpEvaluateStartDate+"ED:"+tmpEvaluateEndDate);
 
                                     // write data to prefs
                                     prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, tmpArrangementEvaluationOnOff); // turn function on
@@ -2089,8 +1639,6 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
                                     // something change in evaluation process
                                     returnMap.put("OurArrangementSettingsEvaluationProcess","1");
-
-                                    Log.d("Arrangement Evaluation","ausschalten");
 
                                 }
 
@@ -2114,9 +1662,6 @@ public class EfbXmlParser {
                                     // check if new since time greater then old one, reset count comments and set new since time
                                     if (tmpCommentCountCommentSinceTime > prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, 0)) {
 
-
-                                        Log.d("XML Parser --->","CommentCountSince time:"+tmpCommentCountCommentSinceTime);
-
                                         prefsEditor.putLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, tmpCommentCountCommentSinceTime); // write new since time to prefs
                                         prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0); // reset count comments to 0
 
@@ -2136,10 +1681,9 @@ public class EfbXmlParser {
                                 else { // turn function arrangement comment off
                                     prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, tmpArrangementCommentOnOff); // turn function on
                                     prefsEditor.commit();
+
                                     // something change in arrangement comment process
                                     returnMap.put("OurArrangementSettingsCommentProcess","1");
-
-                                    Log.d("Arrangement comment","ausschalten");
                                 }
 
                                 // update sketch comment max/count of sketch arrangements?
@@ -2158,13 +1702,8 @@ public class EfbXmlParser {
                                             returnMap.put("OurArrangementSettingsSketchCommentShareDisable","1");
                                         }
                                     }
-
-
-
                                     // check if new since time greater then old one, reset count comments and set new since time
                                     if (tmpSketchCommentCountCommentSinceTime > prefs.getLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, 0)) {
-
-                                        Log.d("XML Parser --->","SketchCommentCountSince time:"+tmpSketchCommentCountCommentSinceTime);
 
                                         prefsEditor.putLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, tmpSketchCommentCountCommentSinceTime); // write new since time to prefs
                                         prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0); // reset count comments to 0
@@ -2186,20 +1725,13 @@ public class EfbXmlParser {
                                     prefsEditor.commit();
                                     // something change in sketch arragement comment process
                                     returnMap.put("OurArrangementSettingsSketchCommentProcess","1");
-
-                                    Log.d("Arrang sketch comment","ausschalten");
                                 }
-
-
-
 
                                 // refresh activity ourarrangement because settings have change
                                 returnMap.put("OurArrangement","1");
                                 returnMap.put("OurArrangementSettings","1");
-
                             }
                         }
-
                         parseAnymore = false;
                     }
                 }
@@ -2234,19 +1766,14 @@ public class EfbXmlParser {
             int eventType = xpp.next();
 
             while (parseAnymore) {
-
                 // look for end tag of ourgoals
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals)) {
-
-                        Log.d("readOurGoalsTag", "End Tag ourgoals gefunden!");
                         parseAnymore = false;
                     }
                 }
 
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readOurGoalsTag", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow:
                             readOurGoalsTag_JointlyNow();
@@ -2271,17 +1798,14 @@ public class EfbXmlParser {
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings:
                             readOurGoalsTag_Settings();
                             break;
-
                     }
                 }
                 eventType = xpp.next();
 
                 // Safety abbort end document
-                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
-                    Log.d("readOurGoalsTag", "ABBRUCH DURCH END DOCUMENT!");
-                }
-
-
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
+                 }
             }
         }
         catch (XmlPullParserException e) {
@@ -2319,11 +1843,8 @@ public class EfbXmlParser {
             int eventType = xpp.next();
 
             while (parseAnymore) {
-
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readOurGoalTag_Jointly", "Start tag " + xpp.getName());
-
-                    switch (xpp.getName().trim()) {
+                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_Order:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get order text
@@ -2341,18 +1862,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_GoalText:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get goalText text
                                 if (xpp.getText().trim().length() > 0) { // check if goalText from xml > 0
                                     tmpGoalText = xpp.getText().trim();
-
-                                    Log.d("Joy Goals", "Goal Text:" + tmpGoalText);
-
-
                                 }
                                 else {
                                     error = true;
@@ -2361,15 +1876,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_AuthorName:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get authorName text
                                 if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
                                     tmpAuthorName = xpp.getText().trim();
-
-                                    Log.d("Joy Goals", "Author Name:" + tmpAuthorName);
                                 }
                                 else {
                                     error = true;
@@ -2378,17 +1890,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_GoalTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get goalTime text
                                 if (xpp.getText().trim().length() > 0) { // check if goalTime from xml > 0
                                     tmpGoalTime = Long.valueOf(xpp.getText().trim()) * 1000; // make milliseconds from seconds
-
-
-                                    Log.d("Joy Goals", "Goal Time:" + tmpGoalTime);
-
                                 }
                                 else {
                                     error = true;
@@ -2397,7 +1904,6 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_JointlyDebetable:
                             eventType = xpp.next();
@@ -2405,10 +1911,6 @@ public class EfbXmlParser {
                                 if (xpp.getText().trim().length() > 0) { // check if jointlyDebetable from xml > 0
                                     if (xpp.getText().trim().equals("jointly")) { // goal is a jointly goal?
                                         tmpJointlyDebetable = false;
-
-
-
-
                                     } else {
                                         error = true;
                                     }
@@ -2421,32 +1923,23 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_ChangeTo:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get ChangeTo text
                                 if (xpp.getText().trim().length() > 0) { // check if ChangeTo from xml > 0
                                     tmpChangeTo = xpp.getText().trim();
-
-                                    Log.d("Joy Goals", "ChangeTo:" + tmpChangeTo);
-                                } else {
+                               } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_BlockId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get BlockId text
                                 if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
                                     tmpBlockId = xpp.getText().trim();
-
-                                    Log.d("Joy Goals", "BlockID:" + tmpBlockId);
                                 } else {
                                     error = true;
                                 }
@@ -2454,52 +1947,34 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow_ServerId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get server id text
                                 if (xpp.getText().trim().length() > 0) { // check if server id from xml > 0
                                     tmpServerId = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
-
-                                    Log.d("Joy Goals", "ServerID:" + tmpServerId);
-
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
-
-
-
                     }
                 }
                 eventType = xpp.next();
 
                 // Safety abbort end document
-                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
                 }
 
                 // look for end tag of ourgoals jointly now
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals_JointlyNow)) {
-
-                        Log.d("Joy Goals", "End Tag gefunden - jetzt verarbeiten!");
-
                         // check all data for jointly goal now correct?
                         if (!error) {
-
-                            Log.d("JointlyNOW_DB","Te:"+tmpGoalText+" - Au:"+tmpAuthorName+" - ATi:"+tmpGoalTime+" - STi"+tmpJointlyDebetable);
-
                             // our goal order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpGoalText.length() > 0 && tmpAuthorName.length() > 0 && tmpGoalTime > 0 && tmpServerId > 0 && tmpBlockId.length() > 0 && tmpChangeTo.length() > 0) {
-
-                                Log.d("Jointly Goal", "NEW Goal Entry!!!");
 
                                 // insert new jointly goals in DB
                                 myDb.insertRowOurGoals(tmpGoalText, tmpAuthorName, tmpGoalTime, true, tmpJointlyDebetable, 0, 4, tmpServerId, tmpBlockId, tmpChangeTo);
@@ -2541,15 +2016,11 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
 
-                                Log.d("Jointly Goals", "Delete All!!!");
-
                                 // delete all jointly goals with the blockId
                                 myDb.deleteAllRowsOurGoals(tmpBlockId, false); // false -> all jointly goals; true -> all debetable goals
 
-
                             }
                         }
-
                         parseAnymore = false;
                     }
                 }
@@ -2571,8 +2042,6 @@ public class EfbXmlParser {
     // read tag our goals jointly comment and push to database
     private void readOurGoalsTag_JointlyComment() {
 
-        Log.d("read_Jointly COMMENT", "Zeile " + xpp.getLineNumber());
-
         Boolean parseAnymore = true;
 
         // true -> error occuret while parsing xml our goals jointly comment tag
@@ -2592,10 +2061,7 @@ public class EfbXmlParser {
             int eventType = xpp.next();
 
             while (parseAnymore) {
-
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("Tag_NOW_JointlyCOMMENT", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_Order:
                             eventType = xpp.next();
@@ -2614,18 +2080,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_Comment:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get comment text
                                 if (xpp.getText().trim().length() > 0) { // check if commentText from xml > 0
                                     tmpCommentText = xpp.getText().trim();
-
-                                    Log.d("Goals_JointlyComment","Comment:"+tmpCommentText);
-
-
                                 }
                                 else {
                                     error = true;
@@ -2634,9 +2094,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_AuthorName:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get authorName text
@@ -2650,9 +2108,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_CommentTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get commentTime text
@@ -2666,9 +2122,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_DateOfJointlyGoal:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get goalTime text
@@ -2684,14 +2138,11 @@ public class EfbXmlParser {
                             }
 
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_BlockId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get BlockId text
                                 if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
                                     tmpBlockId = xpp.getText().trim();
-
-                                    Log.d("Jointly Comment", "BlockID:" + tmpBlockId);
                                 } else {
                                     error = true;
                                 }
@@ -2699,16 +2150,11 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_ServerGoalId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get server id goal text
                                 if (xpp.getText().trim().length() > 0) { // check if server id goal from xml > 0
                                     tmpServerIdGoal = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Jointly Comment", "ServerID:" + tmpServerIdGoal);
-
-
                                 } else {
                                     error = true;
                                 }
@@ -2723,7 +2169,6 @@ public class EfbXmlParser {
                 // Safety abbort end document
                 if (eventType == XmlPullParser.END_DOCUMENT) {
                     parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
                 // look for end tag of our goals jointly comment
@@ -2735,8 +2180,6 @@ public class EfbXmlParser {
 
                             // our goals jointly comment order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpServerIdGoal >= 0 && tmpGoalTime > 0 && tmpBlockId.length() > 0) {
-
-                                Log.d("Jointly Comment_DB", "C:" + tmpCommentText + " - Au:" + tmpAuthorName + " - CTi:" + tmpCommentTime + " - AId" + tmpServerIdGoal + " - CoA:" + tmpGoalTime);
 
                                 // set upload time on smartphone for commeent
                                 tmpUploadTime = System.currentTimeMillis();
@@ -2750,8 +2193,6 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpServerIdGoal >= 0 && tmpGoalTime > 0 && tmpBlockId.length() > 0) { // our goals jointly comment order -> update entry?
 
-                                Log.d("Jointly Comment_DB", "C:" + tmpCommentText + " - Au:" + tmpAuthorName + " - CTi:" + tmpCommentTime + " - AId" + tmpServerIdGoal + " - CoA:" + tmpGoalTime);
-
                                 // set upload time on smartphone for commeent
                                 tmpUploadTime = System.currentTimeMillis();
 
@@ -2764,14 +2205,11 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) { // delete all comments; needed by init process
 
-                                Log.d("Jointly Comment Goal", "Delete All!!!");
-
                                 // delete all comments for all current jointly goals with the blockId
                                 myDb.deleteAllRowsOurJointlyGoalsComment (tmpBlockId);
 
                             }
                        }
-
                         parseAnymore = false;
                     }
                 }
@@ -2802,10 +2240,6 @@ public class EfbXmlParser {
     // read tag our goals debetable comment and push to database
     private void readOurGoalsTag_DebetableComment() {
 
-
-
-        Log.d("read_Debetable COMMENT", "Zeile " + xpp.getLineNumber());
-
         Boolean parseAnymore = true;
 
         // true -> error occuret while parsing xml our goals debetable comment tag
@@ -2833,9 +2267,6 @@ public class EfbXmlParser {
             while (parseAnymore) {
 
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("TagNOW_DebetableCOMMENT", "Start tag " + xpp.getName());
-
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_Order:
                             eventType = xpp.next();
@@ -2854,18 +2285,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_Comment:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get comment text
                                 if (xpp.getText().trim().length() > 0) { // check if commentText from xml > 0
                                     tmpCommentText = xpp.getText().trim();
-
-                                    Log.d("++Goals_DebetComment","Comment:"+tmpCommentText);
-
-
                                 }
                                 else {
                                     error = true;
@@ -2874,17 +2299,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ResultQuestionA:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get result question A text
                                 if (xpp.getText().trim().length() > 0) { // check if result question A from xml > 0
                                     tmpResultQuestionA = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
-
-                                    Log.d("reOur_DEBETABLE_COMMENT", "Question A: " + tmpResultQuestionA);
-
                                 }
                                 else {
                                     error = true;
@@ -2893,17 +2313,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ResultQuestionB:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get result question B text
                                 if (xpp.getText().trim().length() > 0) { // check if result question B from xml > 0
                                     tmpResultQuestionB = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
-
-                                    Log.d("reOur_DEBETABLE_COMMENT", "Question B: " + tmpResultQuestionB);
-
                                 }
                                 else {
                                     error = true;
@@ -2912,17 +2327,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ResultQuestionC:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get result question C text
                                 if (xpp.getText().trim().length() > 0) { // check if result question C from xml > 0
                                     tmpResultQuestionC = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
-
-                                    Log.d("reOur_DEBETABLE_COMMENT", "Question C: " + tmpResultQuestionC);
-
                                 }
                                 else {
                                     error = true;
@@ -2931,18 +2341,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_AuthorName:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get authorName text
                                 if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
                                     tmpAuthorName = xpp.getText().trim();
-
-                                    Log.d("++Goals_DebetComment","Author:"+tmpAuthorName);
-
-
                                 }
                                 else {
                                     error = true;
@@ -2951,16 +2355,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_CommentTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get commentTime text
                                 if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
                                     tmpCommentTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("++Goals_DebetComment","Commenttime:"+tmpCommentTime);
-
                                 }
                                 else {
                                     error = true;
@@ -2969,18 +2369,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_DateOfDebetableGoal:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get goalTime text
                                 if (xpp.getText().trim().length() > 0) { // check if goalTime from xml > 0
                                     tmpGoalTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-
-                                    Log.d("++Goals_DebetComment","Goal time:"+tmpGoalTime);
-
                                 }
                                 else {
                                     error = true;
@@ -2989,16 +2383,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_BlockId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get BlockId text
                                 if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
                                     tmpBlockId = xpp.getText().trim();
-
-                                    Log.d("Debetable Goal", "BlockID:"+tmpBlockId);
                                 }
                                 else {
                                     error = true;
@@ -3008,16 +2398,11 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ServerIdGoal:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get server id arrangement text
                                 if (xpp.getText().trim().length() > 0) { // check if server id arrangement from xml > 0
                                     tmpServerIdGoal = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Debetable Goal","ServerID:"+tmpServerIdGoal);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3027,7 +2412,6 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
                     }
                 }
                 eventType = xpp.next();
@@ -3035,7 +2419,6 @@ public class EfbXmlParser {
                 // Safety abbort end document
                 if (eventType == XmlPullParser.END_DOCUMENT) {
                     parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
                 // look for end tag of our goals jointly comment
@@ -3044,13 +2427,8 @@ public class EfbXmlParser {
 
                         // check all data for arrangement now correct?
                         if (!error) {
-
-                            Log.d("DebetableComment_DB","C:"+tmpCommentText+" - Au:"+tmpAuthorName+" - CTi:"+tmpCommentTime+" - AId"+tmpGoalId+" - CoA:"+tmpGoalTime);
-
                             // our goals debetable comment order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpGoalTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpServerIdGoal >= 0 && tmpBlockId.length() > 0) {
-
-                                Log.d("DEBETABLE COMMENT","NEW AUSführen");
 
                                 // set upload time on smartphone for comment; value from server is not needed
                                 tmpUploadTime = System.currentTimeMillis();
@@ -3064,8 +2442,6 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpGoalTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpServerIdGoal >= 0 && tmpBlockId.length() > 0) {
 
-                                Log.d("DEBETABLE COMMENT","Update AUSführen");
-
                                 // set upload time on smartphone for comment; value from server is not needed
                                 tmpUploadTime = System.currentTimeMillis();
 
@@ -3078,14 +2454,11 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) { // delete all comments for debetable goals; needed by init process
 
-                                Log.d("Sketch Comment Arr", "Delete All!!!");
-
                                 // delete all comments for all current sketch arrangements with the blockId
                                 myDb.deleteAllRowsOurGoalsDebetableComment (tmpBlockId);
 
                             }
                         }
-
                         parseAnymore = false;
                     }
                 }
@@ -3100,10 +2473,6 @@ public class EfbXmlParser {
             setErrorMessageInPrefs(14);
             e.printStackTrace();
         }
-
-
-
-
     }
 
 
@@ -3125,16 +2494,11 @@ public class EfbXmlParser {
         String tmpBlockId = "";
         int tmpServerId = 0;
 
-
-
         try {
             int eventType = xpp.next();
 
             while (parseAnymore) {
-
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("reOurGoalTag_Debetable", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_Order:
                             eventType = xpp.next();
@@ -3153,18 +2517,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_GoalText:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get goalText text
                                 if (xpp.getText().trim().length() > 0) { // check if goalText from xml > 0
                                     tmpDebetableGoalText = xpp.getText().trim();
-
-                                    Log.d("DebetableNOW","Debet Text:"+tmpDebetableGoalText);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3173,16 +2531,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_AuthorName:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get authorName text
                                 if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
                                     tmpDebetableAuthorName = xpp.getText().trim();
-
-                                    Log.d("Ddebetable Goals", "Goal Author Name:" + tmpDebetableAuthorName);
-
                                 }
                                 else {
                                     error = true;
@@ -3191,16 +2545,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_GoalTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get goalTime text
                                 if (xpp.getText().trim().length() > 0) { // check if goalTime from xml > 0
                                     tmpDebetableGoalTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("Ddebetable Goals", "Goal Time:" + tmpDebetableGoalTime);
-
                                 }
                                 else {
                                     error = true;
@@ -3209,7 +2559,6 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_JointlyDebetable:
                             eventType = xpp.next();
@@ -3217,16 +2566,6 @@ public class EfbXmlParser {
                                 if (xpp.getText().trim().length() > 0) { // check if jointlyDebetable from xml > 0
                                     if (xpp.getText().trim().equals("debetable")) { // goal is a debetable goal?
                                         tmpJointlyDebetable = true;
-
-                                        if (tmpJointlyDebetable) {
-                                            Log.d("Ddebetable Goals", "Goal Debe/Joint?: Mit True");
-                                        }
-                                        else {
-                                            Log.d("Ddebetable Goals", "Goal Debe/Joint?: Mit Flase");
-                                        }
-
-
-
                                     } else {
                                         error = true;
                                     }
@@ -3239,15 +2578,11 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_ChangeTo:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get ChangeTo text
                                 if (xpp.getText().trim().length() > 0) { // check if ChangeTo from xml > 0
                                     tmpChangeTo = xpp.getText().trim();
-
-                                    Log.d("Debetable Goals", "ChangeTo:" + tmpChangeTo);
                                 } else {
                                     error = true;
                                 }
@@ -3255,17 +2590,11 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_BlockId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get BlockId text
                                 if (xpp.getText().trim().length() > 0) { // check if Block id from xml > 0
                                     tmpBlockId = xpp.getText().trim();
-
-                                    Log.d("Debetable Goals", "Block ID:" + tmpBlockId);
-
-
                                 } else {
                                     error = true;
                                 }
@@ -3273,27 +2602,18 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_ServerId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get server id text
                                 if (xpp.getText().trim().length() > 0) { // check if server id from xml > 0
                                     tmpServerId = Integer.valueOf(xpp.getText().trim()); // make int from xml-text
-
-                                    Log.d("Debetable Goals", "Server ID:" + tmpServerId);
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
-
-
-
-
                     }
                 }
                 eventType = xpp.next();
@@ -3301,23 +2621,16 @@ public class EfbXmlParser {
                 // Safety abbort end document
                 if (eventType == XmlPullParser.END_DOCUMENT) {
                     parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
                 // look for end tag of ourgoals jointly now
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow)) {
-
                         // check all data for debetable goal now correct?
                         if (!error) {
 
-                            Log.d("DebetableNOW_DB","Te:"+tmpDebetableGoalText+" - Au:"+tmpDebetableAuthorName+" - ATi:"+tmpDebetableGoalTime+" - STi"+tmpJointlyDebetable);
-
                             // our goal order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpDebetableGoalText.length() > 0 && tmpDebetableAuthorName.length() > 0 && tmpDebetableGoalTime > 0 && tmpServerId > 0 && tmpBlockId.length() > 0 && tmpChangeTo.length() > 0) {
-
-
-                                Log.d("Debetable write new"," +++++ Es wird geschrieben!!!!!");
 
                                 // insert new debetable goal in DB
                                 myDb.insertRowOurGoals(tmpDebetableGoalText, tmpDebetableAuthorName, 0, true, tmpJointlyDebetable, tmpDebetableGoalTime, 4, tmpServerId, tmpBlockId, tmpChangeTo);
@@ -3350,10 +2663,6 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpServerId > 0 && tmpBlockId.length() > 0 && tmpDebetableGoalText.length() > 0 && tmpDebetableAuthorName.length() > 0 && tmpDebetableGoalTime > 0) { // our goal order -> update entry?
 
-
-                                Log.d("-- In write update"," +++++ Es wird updated!!!!!");
-
-
                                 // update goal in DB
                                 myDb.updateRowOurGoals(tmpDebetableGoalText, tmpDebetableAuthorName, 0, true, tmpJointlyDebetable, tmpDebetableGoalTime, 4,  tmpServerId, tmpBlockId);
 
@@ -3363,16 +2672,11 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
 
-                                Log.d("Debetable Goals", "Delete All!!!");
-
                                 // delete all jointly goals with the blockId
                                 myDb.deleteAllRowsOurGoals(tmpBlockId, true); // false -> all jointly goals; true -> all debetable goals
 
-
                             }
-
                         }
-
                         parseAnymore = false;
                     }
                 }
@@ -3387,18 +2691,11 @@ public class EfbXmlParser {
             setErrorMessageInPrefs(16);
             e.printStackTrace();
         }
-
-
-
-
-
     }
 
 
     // read tag our goals settings and push to database/prefs
     private void readOurGoalsTag_Settings() {
-
-        Log.d("read_SETTINGS", "Zeile " + xpp.getLineNumber());
 
         Boolean parseAnymore = true;
 
@@ -3433,16 +2730,12 @@ public class EfbXmlParser {
         int tmpDebetableCommentShare = 0;
         int tmpDebetableCommentDelaytime = 0;
 
-
         try {
             int eventType = xpp.next();
 
             while (parseAnymore) {
-
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readGoals_SETTINGS", "Start tag " + xpp.getName());
-
-                    switch (xpp.getName().trim()) {
+                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_Order:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get order text
@@ -3452,10 +2745,6 @@ public class EfbXmlParser {
                                         error = true;
                                         tmpOrder = "";
                                     }
-
-                                    Log.d("Goals Settings","ORDER: "+tmpOrder);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3464,11 +2753,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch our goals turn on/off
@@ -3476,10 +2761,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpGoalsOnOff = true;}
                                     else {tmpGoalsOnOff = false;}
-
-                                    Log.d("Goals_Settings","Goals On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3488,10 +2769,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch our goals debetable turn on/off
@@ -3499,10 +2777,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpGoalsDebetableOnOff = true;}
                                     else {tmpGoalsDebetableOnOff = false;}
-
-                                    Log.d("Goals_Settings","Goals Dedetable On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3511,10 +2785,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch our goals evaluation turn on/off
@@ -3522,10 +2793,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpGoalsEvaluationOnOff = true;}
                                     else {tmpGoalsEvaluationOnOff = false;}
-
-                                    Log.d("Goals_Settings","Goals Evaluation On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3534,10 +2801,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch our goals jointly comment turn on/off
@@ -3545,10 +2809,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpGoalsJointlyCommentOnOff = true;}
                                     else {tmpGoalsJointlyCommentOnOff = false;}
-
-                                    Log.d("Goals_Settings","Goals Join Comment On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3557,10 +2817,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch our goals debetable comment turn on/off
@@ -3568,10 +2825,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpGoalsDebetableCommentOnOff = true;}
                                     else {tmpGoalsDebetableCommentOnOff = false;}
-
-                                    Log.d("Goals_Settings","Goals Debet Comment On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3580,10 +2833,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoalsOld_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch our goals old turn on/off
@@ -3591,10 +2841,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpGoalsOldOnOff = true;}
                                     else {tmpGoalsOldOnOff = false;}
-
-                                    Log.d("Goals_Settings","Goals Old On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3603,19 +2849,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_EvaluatePauseTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get evaluate pause time
                                 if (xpp.getText().trim().length() > 0) { // check if pause time from xml > 0
                                     tmpJointlyEvaluatePauseTime = Integer.valueOf(xpp.getText().trim()) * 3600; // make seconds form hours;
-
-                                    Log.d("Goals_Settings","EvaluatePauseTime"+tmpJointlyEvaluatePauseTime);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3624,18 +2863,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_EvaluateActiveTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get evaluate active time
                                 if (xpp.getText().trim().length() > 0) { // check if active time from xml > 0
                                     tmpJointlyEvaluateActiveTime = Integer.valueOf(xpp.getText().trim())* 3600; // make seconds form hours
-
-                                    Log.d("Goals_Settings","EvaluateActiveTime"+tmpJointlyEvaluateActiveTime);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3644,18 +2877,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_EvaluateStartDate:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get evaluate start date
                                 if (xpp.getText().trim().length() > 0) { // check if start date from xml > 0
                                     tmpJointlyEvaluateStartDate = Long.valueOf(xpp.getText().trim())* 1000; // make mills from seconds
-
-                                    Log.d("Goals_Settings","EvaluateStartDate"+tmpJointlyEvaluateStartDate);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3664,18 +2891,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_EvaluateEndDate:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get evaluate end date
                                 if (xpp.getText().trim().length() > 0) { // check if end date from xml > 0
                                     tmpJointlyEvaluateEndDate = Long.valueOf(xpp.getText().trim())* 1000; // make mills from seconds
-
-                                    Log.d("Goals_Settings","EvaluateEndDate"+tmpJointlyEvaluateEndDate);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3684,18 +2905,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_CommentMaxComment:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get max comment
                                 if (xpp.getText().trim().length() > 0) { // check if max comment from xml > 0
                                     tmpJointlyCommentMaxComment = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("goals_Settings","JointlyCommentMaxComment"+tmpJointlyCommentMaxComment);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3704,18 +2919,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_CommentMaxLetters:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get max comment letters
                                 if (xpp.getText().trim().length() > 0) { // check if max comment letters from xml > 0
                                     tmpJointlyCommentMaxLetters = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("goals_Settings","JointlyCommentMaxLetters"+tmpJointlyCommentMaxLetters);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3724,18 +2933,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_CommentCountCommentSinceTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get since time
                                 if (xpp.getText().trim().length() > 0) { // check if since time from xml > 0
                                     tmpJointlyCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim()) * 1000; // make mills from seconds;
-
-                                    Log.d("Goals_Settings","JointlyCommentCountCommentSinceTime"+tmpJointlyCommentCountCommentSinceTime);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3744,18 +2947,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_JointlyCommentDelaytime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get delaytime
                                 if (xpp.getText().trim().length() > 0) { // check if delaytime from xml > 0
                                     tmpCommentDelaytime = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Jointly Goal_Settings","CommentDelaytime"+tmpCommentDelaytime);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3764,19 +2961,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_JointlyCommentShare:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get share value; 0-> not sharing; 1-> sharing
                                 if (xpp.getText().trim().length() > 0) { // check if share value from xml > 0
                                     tmpCommentShare = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Jointly Goal_Settings","CommentShare"+tmpCommentShare);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3785,19 +2975,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentMaxComment:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get max comment debetable goals
                                 if (xpp.getText().trim().length() > 0) { // check if max comment debetable goals from xml > 0
                                     tmpDebetableCommentMaxComment = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Goals_Settings","DebetableCommentMaxComment"+tmpDebetableCommentMaxComment);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3806,18 +2989,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentMaxLetters:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get max comment debetable letters goals
                                 if (xpp.getText().trim().length() > 0) { // check if max comment debetable letters goals from xml > 0
                                     tmpDebetableCommentMaxLetters = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Goals_Settings","DebetableCommentMaxLetters"+tmpDebetableCommentMaxLetters);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3826,18 +3003,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentCountCommentSinceTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get since time sketch
                                 if (xpp.getText().trim().length() > 0) { // check if since time sketch from xml > 0
                                     tmpDebetableCommentCountCommentSinceTime = Long.valueOf(xpp.getText().trim())* 1000; // make mills from seconds
-
-                                    Log.d("Goals_Settings","DebetableCommentCountCommentSinceTime"+tmpDebetableCommentCountCommentSinceTime);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3846,20 +3017,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentDelaytime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get delaytime
                                 if (xpp.getText().trim().length() > 0) { // check if delaytime from xml > 0
                                     tmpDebetableCommentDelaytime = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Jointly Goal_Settings","CommentDelaytime"+tmpDebetableCommentDelaytime);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3868,19 +3031,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForOurGoals_Settings_DebetableCommentShare:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get share value; 0-> not sharing; 1-> sharing
                                 if (xpp.getText().trim().length() > 0) { // check if share value from xml > 0
                                     tmpDebetableCommentShare = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Jointly Goal_Settings","CommentShare"+tmpDebetableCommentShare);
-
-
                                 }
                                 else {
                                     error = true;
@@ -3889,32 +3045,22 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
-
                     }
                 }
                 eventType = xpp.next();
 
                 // Safety abbort end document
-                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
                 }
 
                 // look for end tag of ourarrangement settings
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals_Settings)) {
-
                         // check all data for goals settings correct?
                         if (!error) {
-
-
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) ) { // our goals settings order -> delete?
-
-                                Log.d("Goals Settings","DELETE AUSführen");
-
 
                                 // refresh activity ourgoals because settings have change
                                 returnMap.put ("OurGoals","1");
@@ -3922,19 +3068,14 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // our goals settings order -> update?
 
-                                Log.d("Goals Settings","UPDATE AUSführen");
-
                                 // write data to prefs
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, tmpGoalsOnOff); // turn function our goals on/off
                                 prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, tmpGoalsDebetableOnOff); // turn function our goals debetable on/off
                                 prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkOldGoals, tmpGoalsOldOnOff); // turn function our goals old on/off
                                 prefsEditor.commit();
 
-
                                 // update evaluation of jointly goals?
                                 if (tmpGoalsEvaluationOnOff && tmpJointlyEvaluatePauseTime > 0 && tmpJointlyEvaluateActiveTime > 0 && tmpJointlyEvaluateStartDate > 0 && tmpJointlyEvaluateEndDate > 0) {
-
-                                    Log.d ("Goals Settings--","PT:"+tmpJointlyEvaluatePauseTime+"AT:"+tmpJointlyEvaluateActiveTime+"SD:"+tmpJointlyEvaluateStartDate+"ED:"+tmpJointlyEvaluateEndDate);
 
                                     // write data to prefs
                                     prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, tmpGoalsEvaluationOnOff); // turn function on
@@ -3972,9 +3113,6 @@ public class EfbXmlParser {
                                     // check if new since time greater then old one, reset count comments and set new since time
                                     if (tmpJointlyCommentCountCommentSinceTime > prefs.getLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, 0)) {
 
-
-                                        Log.d("XML Parser --->","JointlyCommentCountSince time:"+tmpJointlyCommentCountCommentSinceTime);
-
                                         prefsEditor.putLong(ConstansClassOurGoals.namePrefsJointlyCommentTimeSinceInMills, tmpJointlyCommentCountCommentSinceTime); // write new since time to prefs
                                         prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0); // reset count comments to 0
 
@@ -4003,7 +3141,6 @@ public class EfbXmlParser {
                                 // update debetable comment max/count of debetable goals?
                                 if (tmpGoalsDebetableCommentOnOff && tmpDebetableCommentMaxComment > 0 && tmpDebetableCommentMaxLetters > 0 && tmpDebetableCommentDelaytime > 0 && tmpDebetableCommentCountCommentSinceTime > 0 && tmpDebetableCommentShare >= 0) {
 
-
                                     // set new share value for debetable comment to prefs and set returnMap
                                     if (prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentShare, 0) != tmpDebetableCommentShare ) {
                                         prefsEditor.putInt(ConstansClassOurGoals.namePrefsDebetableCommentShare, tmpDebetableCommentShare); // write new share value to prefs
@@ -4017,12 +3154,8 @@ public class EfbXmlParser {
                                         }
                                     }
 
-
-
                                     // check if new since time greater then old one, reset count debetable comments and set new since time
                                     if (tmpDebetableCommentCountCommentSinceTime > prefs.getLong(ConstansClassOurGoals.namePrefsDebetableCommentTimeSinceInMills, 0)) {
-
-                                        Log.d("XML Parser --->","SketchCommentCountSince time:"+tmpDebetableCommentCountCommentSinceTime);
 
                                         prefsEditor.putLong(ConstansClassOurGoals.namePrefsDebetableCommentTimeSinceInMills, tmpDebetableCommentCountCommentSinceTime); // write new since time to prefs
                                         prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, 0); // reset count comments to 0
@@ -4050,10 +3183,8 @@ public class EfbXmlParser {
                                 // refresh activity ourarrangement because settings have change
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsSettings","1");
-
                             }
                         }
-
                         parseAnymore = false;
                     }
                 }
@@ -4068,15 +3199,11 @@ public class EfbXmlParser {
             setErrorMessageInPrefs(18);
             e.printStackTrace();
         }
-
     }
-
 
     //
     // End read our goals -----------------------------------------------------------------------------------
     //
-
-
 
 
     //
@@ -4096,15 +3223,11 @@ public class EfbXmlParser {
                 // look for end tag of meeting
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMeeting)) {
-
-                        Log.d("readMeetingTag", "End Tag meeting gefunden!");
                         parseAnymore = false;
                     }
                 }
 
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readMeetingTag", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForMeeting_Settings:
                             readMeetingTag_Settings();
@@ -4118,8 +3241,8 @@ public class EfbXmlParser {
                 eventType = xpp.next();
 
                 // Safety abbort end document
-                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
-                    Log.d("readMeetingTag", "ABBRUCH DURCH END DOCUMENT!");
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
                 }
             }
         }
@@ -4139,8 +3262,6 @@ public class EfbXmlParser {
     // read tag our meeting settings and push to prefs
     private void readMeetingTag_Settings() {
 
-        Log.d("read_MeetingSettings", "Zeile " + xpp.getLineNumber());
-
         Boolean parseAnymore = true;
 
         // true -> error occuret while parsing xml meeting settings tag
@@ -4158,10 +3279,7 @@ public class EfbXmlParser {
             int eventType = xpp.next();
 
             while (parseAnymore) {
-
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readMeeting_SETTINGS", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForMeeting_Settings_Order:
                             eventType = xpp.next();
@@ -4172,10 +3290,6 @@ public class EfbXmlParser {
                                         error = true;
                                         tmpOrder = "";
                                     }
-
-                                    Log.d("Meeting Settings","ORDER: "+tmpOrder);
-
-
                                 }
                                 else {
                                     error = true;
@@ -4184,10 +3298,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch meeting turn on/off
@@ -4195,10 +3306,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpMeetingOnOff = true;}
                                     else {tmpMeetingOnOff = false;}
-
-                                    Log.d("Meeting_Settings","Meeting On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -4207,9 +3314,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMeeting_ClientCancelMeeting_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch client cancele meeting turn on/off
@@ -4217,10 +3322,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpMeetingClientCanceleMeetingOnOff = true;}
                                     else {tmpMeetingClientCanceleMeetingOnOff = false;}
-
-                                    Log.d("Meeting_Settings","Client cancel meeting On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -4229,10 +3330,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_ClientMakeSuggestion_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch client make suggestion turn on/off
@@ -4240,10 +3338,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpMeetingClientMakeSuggestionOnOff = true;}
                                     else {tmpMeetingClientMakeSuggestionOnOff = false;}
-
-                                    Log.d("Meeting_Settings","Client make suggestion On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -4252,11 +3346,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_ClientMakeSuggestionComment_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch client make suggestion turn on/off
@@ -4264,10 +3354,6 @@ public class EfbXmlParser {
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
                                     if (tmpSwitchValue == 1) {tmpMeetingClientCommentSuggestionOnOff = true;}
                                     else {tmpMeetingClientCommentSuggestionOnOff = false;}
-
-                                    Log.d("Meeting_Settings","Client make comment suggest On/Off"+tmpSwitchValue);
-
-
                                 }
                                 else {
                                     error = true;
@@ -4276,28 +3362,22 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                     }
                 }
                 eventType = xpp.next();
 
                 // Safety abbort end document
-                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
                 }
 
                 // look for end tag of meeting settings
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMeeting_Settings)) {
-
                         // check all data for meeting settings correct?
                         if (!error) {
-
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) ) { // meting settings order -> delete?
-
-                                Log.d("meeting Settings","DELETE AUSführen");
 
                                 // refresh activity meeting because settings have change
                                 returnMap.put ("Meeting","1");
@@ -4315,8 +3395,6 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // meeting settings order -> update?
 
-                                Log.d("meeting Settings","UPDATE AUSführen");
-
                                 // write data meeting on off to prefs
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, tmpMeetingOnOff);
 
@@ -4326,79 +3404,16 @@ public class EfbXmlParser {
                                 // write data meeting client cancele meeting on off to prefs
                                 prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCanceleMeeting_OnOff, tmpMeetingClientCanceleMeetingOnOff);
 
-
                                 // write data meeting client comment suggestion on off to prefs
                                 prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, tmpMeetingClientCommentSuggestionOnOff);
 
-
                                 prefsEditor.commit();
-
-
-
-
-                                /*
-                                // update meeting date a and place a?
-                                if (tmpMeetingDateA > 0 && tmpMeetingPlaceA > 0 ) {
-
-                                    Log.d ("Meetings Settings--","Date A:"+tmpMeetingDateA+" PLace A:"+tmpMeetingPlaceA);
-
-                                    // write data to prefs (A is index zero, B is index 1)
-                                    prefsEditor.putInt(ConstansClassMeeting.namePrefsMeetingPlace + ConstansClassMeeting.prefsPraefixMeetings[0], tmpMeetingPlaceA);
-                                    prefsEditor.putLong(ConstansClassMeeting.namePrefsMeetingTimeAndDate + ConstansClassMeeting.prefsPraefixMeetings[0], tmpMeetingDateA);
-                                    // Sign new meeting date a
-                                    prefsEditor.putBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime + ConstansClassMeeting.prefsPraefixMeetings[0], true);
-                                    prefsEditor.commit();
-
-                                    // something change in evaluation process
-                                    returnMap.put ("MeetingSettingsUpdateDateA","1");
-
-                                }
-
-                                // update meeting date b and place b?
-                                if (tmpMeetingDateB > 0 && tmpMeetingPlaceB > 0 ) {
-
-                                    Log.d ("Meetings Settings--","Date B:"+tmpMeetingDateB+" PLace A:"+tmpMeetingPlaceB);
-
-                                    // write data to prefs (A is index zero, B is index 1)
-                                    prefsEditor.putInt(ConstansClassMeeting.namePrefsMeetingPlace + ConstansClassMeeting.prefsPraefixMeetings[1], tmpMeetingPlaceB);
-                                    prefsEditor.putLong(ConstansClassMeeting.namePrefsMeetingTimeAndDate + ConstansClassMeeting.prefsPraefixMeetings[1], tmpMeetingDateB);
-                                    // Sign new meeting date b
-                                    prefsEditor.putBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime + ConstansClassMeeting.prefsPraefixMeetings[1], true);
-                                    prefsEditor.commit();
-
-                                    // something change in evaluation process
-                                    returnMap.put ("MeetingSettingsUpdateDateB","1");
-
-                                }
-
-                                // update meeting status?
-                                if (tmpMeetingStatus >= 0) {
-
-                                    Log.d ("Meetings Settings--","Status:"+tmpMeetingStatus);
-
-                                    // write data to prefs
-                                    prefsEditor.putInt(ConstansClassMeeting.namePrefsMeetingStatus, tmpMeetingStatus);
-                                    prefsEditor.commit();
-
-                                    // something change in meeting status
-                                    returnMap.put ("MeetingSettingsUpdateStatus","1");
-
-                                }
-
-
-                                */
 
                                 // refresh activity meeting because settings have change
                                 returnMap.put ("Meeting","1");
                                 returnMap.put ("MeetingSettings","1");
-
                             }
-
-
-
-
                         }
-
                         parseAnymore = false;
                     }
                 }
@@ -4413,7 +3428,6 @@ public class EfbXmlParser {
             setErrorMessageInPrefs(22);
             e.printStackTrace();
         }
-
     }
 
 
@@ -4460,7 +3474,6 @@ public class EfbXmlParser {
         String tmpMeetingFoundFromSuggestionAuthor = "";
         Long tmpMeetingFoundFromSuggestionDate = 0L;
 
-
         Long [] array_meetingTime = {0L,0L,0L,0L,0L,0L}; // array store meeting time -> parse to db
         int [] array_meetingPlace = {0,0,0,0,0,0}; // array store meeting place -> parse to db
         int [] array_meetingVote = {0,0,0,0,0,0}; // array store vote results -> parse to db, only needed for db -> comes not from server!!!!!!!!!!
@@ -4469,20 +3482,13 @@ public class EfbXmlParser {
             int eventType = xpp.next();
 
             while (parseAnymore) {
-
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("MeetingTag_Suggestions", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_Order:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get order text
                                 if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
                                     tmpOrder = xpp.getText().trim();
-
-                                    Log.d("Meeting"," ORDER -->"+tmpOrder);
-
-
                                     if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update)) {
                                         error = true;
                                         tmpOrder = "";
@@ -4490,564 +3496,339 @@ public class EfbXmlParser {
                                 }
                                 else {
                                     error = true;
-
-                                    Log.d("ERROR MEETING", "1");
-
-
-
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "2");
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate1:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting/ suggestion date 1 text
                                 if (xpp.getText().trim().length() > 0) { // check if meeting/ suggestion date 1 from xml > 0
                                     tmpMeetingSuggestionDate1 = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("Meeting", "Date 1:"+tmpMeetingSuggestionDate1);
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "3");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "4");
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate2:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting/ suggestion date 2 text
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting/ suggestion date 2 from xml > 0
                                     tmpMeetingSuggestionDate2 = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("Meeting", "Date 2:"+tmpMeetingSuggestionDate2);
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "5");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "6");
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate3:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting/ suggestion date 3 text
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting/ suggestion date 3 from xml > 0
                                     tmpMeetingSuggestionDate3 = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("Meeting", "Date 3:"+tmpMeetingSuggestionDate3);
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "7");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "8");
-                            }
-
+                             }
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate4:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting/ suggestion date 4 text
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting/ suggestion date 4 from xml > 0
                                     tmpMeetingSuggestionDate4 = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("Meeting", "Date 4:"+tmpMeetingSuggestionDate4);
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "9");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "10");
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate5:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting/ suggestion date 5 text
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting/ suggestion date 5 from xml > 0
                                     tmpMeetingSuggestionDate5 = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("Meeting", "Date 5:"+tmpMeetingSuggestionDate5);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "11");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "12");
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingDate6:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting/ suggestion date 6 text
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting/ suggestion date 6 from xml > 0
                                     tmpMeetingSuggestionDate6 = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-
-                                    Log.d("Meeting", "Date 6:"+tmpMeetingSuggestionDate6);
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "13");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "14");
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace1:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting place 1
                                 if (xpp.getText().trim().length() > 0) { // check if meeting place 1 from xml > 0
                                     tmpMeetingPlace1 = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Meetings_Suggestion","Place 1"+tmpMeetingPlace1);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "15");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "16");
                             }
-
                             break;
-
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace2:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting place 2
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting place 2 from xml > 0
                                     tmpMeetingPlace2 = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Meetings_Suggestion","Place 2"+tmpMeetingPlace2);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "17");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "18");
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace3:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting place 3
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting place 3 from xml > 0
                                     tmpMeetingPlace3 = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Meetings_Suggestion","Place 3"+tmpMeetingPlace3);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "19");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "20");
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace4:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting place 4
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting place 4 from xml > 0
                                     tmpMeetingPlace4 = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Meetings_Suggestion","Place 4"+tmpMeetingPlace4);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "21");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "22");
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace5:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting place 5
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting place 5 from xml > 0
                                     tmpMeetingPlace5 = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Meetings_Suggestion","Place 5"+tmpMeetingPlace5);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "23");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "24");
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_MettingPlace6:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting place 6
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting place 6 from xml > 0
                                     tmpMeetingPlace6 = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Meetings_Suggestion","Place 6"+tmpMeetingPlace6);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "25");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "26");
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_AuthorName:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting suggestion author name
                                 if (xpp.getText().trim().length() > 0) { // check if meeting suggestion author name from xml > 0
                                     tmpMeetingSuggestionAuthorName = xpp.getText().trim();
-
-                                    Log.d("Meetings_Suggestion","Author NAme"+tmpMeetingSuggestionAuthorName);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "27");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "28");
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CreationTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting suggestion creation time
                                 if (xpp.getText().trim().length() > 0) { // check if meeting suggestion creation time from xml > 0
                                     tmpMeetingSuggestionCreationTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("Meetings_Suggestion","Creation Time"+tmpMeetingSuggestionCreationTime);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "29");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "30");
                             }
-
                             break;
-
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ResponseTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting suggestion creation time
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting suggestion creation time from xml > 0
                                     tmpMeetingSuggestionResponseTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("Meetings_Suggestion","Response Time"+tmpMeetingSuggestionResponseTime);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "31");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "32");
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_Kategorie:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting suggestion kategorie
                                 if (xpp.getText().trim().length() > 0) { // check if meeting suggestion kategorie time from xml > 0
                                     tmpMeetingSuggestionKategorie = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Meetings_Suggestion","Kategorie"+tmpMeetingSuggestionKategorie);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "33");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "34");
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CoachHintText:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting suggestion coach hint text
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting suggestion coach hint text from xml > 0
                                     tmpMeetingSuggestionCoachHintText = xpp.getText().trim();
-
-                                    Log.d("Meetings_Suggestion","Hint Text Coach"+tmpMeetingSuggestionCoachHintText);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "35");
                                 }
                             }
-
                             break;
-
-
-
-
-
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_DataServerId:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting suggestion coach hint text
                                 if (xpp.getText().trim().length() > 0) { // check if meeting suggestion coach hint text from xml > 0
                                     tmpMeetingSuggestionDataServerId = Long.valueOf(xpp.getText().trim());
-
-                                    Log.d("Meetings_Suggestion","Server Id"+tmpMeetingSuggestionDataServerId);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "37");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "38");
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CoachCanceleTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting suggestion coach cancele time
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting suggestion coach cancele time from xml > 0
                                     tmpMeetingSuggestionCoachCanceleTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("Meetings_Suggestion","Cancele Time"+tmpMeetingSuggestionCoachCanceleTime);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "39");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "40");
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CoachCanceleAuthor:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting suggestion coach cancele author text
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting suggestion coach cancele author from xml > 0
                                     tmpMeetingSuggestionCoachCanceleAuthor = xpp.getText().trim();
-
-                                    Log.d("Meetings_Suggestion","Coach Cancele Author"+tmpMeetingSuggestionCoachCanceleAuthor);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "41");
                                 }
                             }
-
-
                             break;
-
-
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Meeting_FoundFromSuggestion_Date:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting found from suggestion date
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting found from suggestion date from xml > 0
                                     tmpMeetingFoundFromSuggestionDate = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("Meetings_Suggestion","Found Time"+tmpMeetingFoundFromSuggestionDate);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "39");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "40");
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMeeting_Meeting_FoundFromSuggestion_Author:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting found from suggestion author text
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting found from suggestion author from xml > 0
                                     tmpMeetingFoundFromSuggestionAuthor = xpp.getText().trim();
-
-                                    Log.d("Meetings_Suggestion","Found Author"+tmpMeetingFoundFromSuggestionAuthor);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "41");
                                 }
                             }
-
-
                             break;
-
-
-
-
-
-
-
-
                         case ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionStartDate:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting suggestion start date for client suggestion
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting suggestion start date for client suggestion from xml > 0
                                     tmpClientSuggestionStartDate = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("Meetings_Suggestion","Start Date Client Suggestion"+tmpClientSuggestionStartDate);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "39");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "40");
                             }
-
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionEndDate:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get meeting suggestion end date for client suggestion
                                 if (xpp.getText().trim().length() >= 0) { // check if meeting suggestion end date for client suggestion from xml > 0
                                     tmpClientSuggestionEndDate = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("Meetings_Suggestion","End Date Client Suggestion"+tmpClientSuggestionEndDate);
-
-
                                 }
                                 else {
                                     error = true;
-                                    Log.d("ERROR MEETING", "39");
                                 }
                             }
                             else {
                                 error = true;
-                                Log.d("ERROR MEETING", "40");
                             }
-
-
                             break;
-
                     }
                 }
                 eventType = xpp.next();
@@ -5055,27 +3836,16 @@ public class EfbXmlParser {
                 // Safety abbort end document
                 if (eventType == XmlPullParser.END_DOCUMENT) {
                     parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
                 // look for end tag of meeting suggestions
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMeeting_And_Suggestions)) {
-
-                        Log.d("XML Meeting", "Vor general Error Check!");
-
                         // check all data for meeting suggestions correct?
                         if (!error) {
-
-                            Log.d("XML Suggestion", "Keine Fehler vorhanden");
-
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpMeetingSuggestionKategorie > 0) {
                                 // meeting or suggestion
-
-                                Log.d("XML Suggestion", "Switch ERREICHT!");
-
                                 switch (tmpMeetingSuggestionKategorie) { // check for meeting or suggestion
-
                                     case 1: // meeting dates
                                         if (tmpMeetingSuggestionDate1 > 0 && tmpMeetingPlace1 > 0 && tmpMeetingSuggestionAuthorName.length() > 0 && tmpMeetingSuggestionCreationTime > 0 && tmpMeetingSuggestionDataServerId > 0) {
                                             // check if meeting data is canceled or new meeting
@@ -5089,9 +3859,8 @@ public class EfbXmlParser {
 
                                                 returnMap.put("MeetingCanceledMeetingByCoach", "1");
                                                 returnMap.put("Meeting", "1");
-                                            } else {
 
-                                                Log.d("XML Meeting", "Schreibe Meeting to db");
+                                            } else {
 
                                                 // init meeting parameters
                                                 Long tmpUploadTime = System.currentTimeMillis();
@@ -5151,17 +3920,9 @@ public class EfbXmlParser {
                                         }
                                         break;
                                     case 2: // meeting suggestions
-
-                                        Log.d("XML Suggestion", "Suggestion CASE 2");
-
                                         if (tmpMeetingSuggestionCreationTime > 0 && tmpMeetingSuggestionAuthorName.length() > 0 && tmpMeetingSuggestionDataServerId > 0) {
-
-                                            Log.d("XML Suggestion", "Erster if uebersprungen");
-
                                             // check if suggestion data is canceled, new suggestion or suggestion from client
                                             if (tmpMeetingSuggestionCoachCanceleTime > 0 && tmpMeetingSuggestionCoachCanceleAuthor.length() > 0) {
-
-                                                Log.d("XML Suggestion", "Canceled Suggestion");
 
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
@@ -5174,8 +3935,6 @@ public class EfbXmlParser {
 
                                             } else  if (tmpMeetingFoundFromSuggestionAuthor.length() > 0 && tmpMeetingFoundFromSuggestionDate > 0) {
 
-                                                Log.d("XML Suggestion", "Found Meeting From Suggestion");
-
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
 
@@ -5184,14 +3943,11 @@ public class EfbXmlParser {
 
                                                 returnMap.put("MeetingFoundFromSuggestion", "1");
                                                 returnMap.put("Meeting", "1");
-
                                             }
                                             else {
 
                                                 // check suggestion need a response time
                                                 if (tmpMeetingSuggestionResponseTime > 0) {
-
-                                                    Log.d("XML Suggestion", "Schreibe Suggestion to db");
 
                                                     // init suggestion parameters
                                                     Long tmpUploadTime = System.currentTimeMillis();
@@ -5279,8 +4035,6 @@ public class EfbXmlParser {
                                                 }
                                             }
                                         }
-
-
                                         break;
 
                                     case 3: // empty, not needed anymore
@@ -5288,8 +4042,6 @@ public class EfbXmlParser {
 
                                     case 4: // suggestion from client -> invitation from coach
                                         if (tmpClientSuggestionStartDate > 0 && tmpClientSuggestionEndDate > 0 && tmpMeetingSuggestionCreationTime > 0 && tmpMeetingSuggestionAuthorName.length() > 0 && tmpMeetingSuggestionDataServerId > 0) {
-
-                                            Log.d("XML Suggestion", "Schreibe Invitation Suggestion to db");
 
                                             Long tmpUploadTime = System.currentTimeMillis();
 
@@ -5349,94 +4101,9 @@ public class EfbXmlParser {
 
                                         }
                                         break;
-
                                 }
-
-
-
-
-
-
                             }
-
-
-
-
-
-
-                            /*
-                            returnMap.put("Meeting", "0");
-        returnMap.put("MeetingSettings", "0");
-        returnMap.put("MeetingNewMeeting", "0");
-        returnMap.put("MeetingCanceledMeetingByCoach", "0");
-        returnMap.put("MeetingNewSuggestion", "0");
-        returnMap.put("MeetingCanceledSuggestionByCoach", "0");
-                             */
-
-                            /* Muss komplett überarbeitet werden, da sich das Datenbankmodell geändert hat!!!!!!!!!!!
-
-                            // meeting suggestion -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpMeetingSuggestionTime > 0 && tmpMeetingSuggestionPlace.length() > 0) {
-                                // insert new debetable goal in DB
-                                myDb.insertNewMeetingDateAndTime(tmpMeetingSuggestionTime, tmpMeetingSuggestionPlace, true, 4);
-
-                                // refresh activity meeting
-                                returnMap.put ("Meeting","1");
-                                returnMap.put ("MeetingNewSuggestion","1");
-
-
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpOldMeetingSuggestionTime > 0) { // meeting order -> delete suggestion entry?
-
-                                // delete meeting suggestion in DB
-                                myDb.deleteRowMeetingDateAndTime(tmpOldMeetingSuggestionTime);
-
-                                // refresh activity meeting
-                                returnMap.put ("Meeting","1");
-                                returnMap.put ("MeetingNewSuggestion","1");
-
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpOldMeetingSuggestionTime > 0 && tmpMeetingSuggestionTime > 0 && tmpMeetingSuggestionPlace.length() > 0) { // meeting suggestion order -> update entry?
-
-                                // update goal in DB
-                                myDb.updateMeetingDateAndTime(tmpMeetingSuggestionTime, tmpMeetingSuggestionPlace, tmpOldMeetingSuggestionTime, true, 4);
-
-                                // refresh activity meeting
-                                returnMap.put ("Meeting","1");
-                                returnMap.put ("MeetingNewSuggestion","1");
-
-                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpAuthorSuggestions.length() > 0) { // meeting suggestion order -> update author name?
-
-
-                                Log.d("Meetings Suggestions--", "Author NAme:" + tmpAuthorSuggestions);
-
-                                // write new author name of suggestions to prefs
-                                prefsEditor.putString(ConstansClassMeeting.namePrefsAuthorMeetingSuggestion, tmpAuthorSuggestions);
-                                prefsEditor.commit();
-
-                                // refresh activity meeting
-                                returnMap.put ("Meeting","1");
-                                returnMap.put ("MeetingAuthorSuggestion","1");
-
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpResponseDeadline > 0) { // meeting suggestion order -> update response deadline?
-
-
-                                Log.d("Meetings Suggestions--", "Response Deadline:" + tmpResponseDeadline);
-
-                                // write new author name of suggestions to prefs
-                                prefsEditor.putLong(ConstansClassMeeting.namePrefsMeetingSuggestionsResponseDeadline, tmpResponseDeadline);
-                                prefsEditor.commit();
-
-                                // refresh activity meeting
-                                returnMap.put ("Meeting","1");
-                                returnMap.put ("MeetingResponseDeadline","1");
-                            }
-
-                        */
-
                         }
-
-
-
-
                         parseAnymore = false;
                     }
                 }
@@ -5453,19 +4120,6 @@ public class EfbXmlParser {
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     //
     // End read meeting -----------------------------------------------------------------------------------
@@ -5491,15 +4145,11 @@ public class EfbXmlParser {
                 // look for end tag of connect book
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForConnectBook)) {
-
-                        Log.d("readConnect Book Tag", "End Tag connect book gefunden!");
                         parseAnymore = false;
                     }
                 }
 
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readConnectBTag", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForConnectBook_Messages:
                             readConnectBookTag_Messages();
@@ -5513,8 +4163,8 @@ public class EfbXmlParser {
                 eventType = xpp.next();
 
                 // Safety abbort end document
-                if (eventType == XmlPullParser.END_DOCUMENT) {parseAnymore = false;
-                    Log.d("readConnectBookTag", "ABBRUCH DURCH END DOCUMENT!");
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
                 }
             }
         }
@@ -5553,8 +4203,6 @@ public class EfbXmlParser {
             while (parseAnymore) {
 
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("read connect book --", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForConnectBook_Order:
                             eventType = xpp.next();
@@ -5573,18 +4221,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForConnectBook_Message:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get message text text
                                 if (xpp.getText().trim().length() > 0) { // check if message text from xml > 0
                                     tmpMessage = xpp.getText().trim();
-
-                                    Log.d("ConnectBook","Message Text:"+tmpMessage);
-
-
                                 }
                                 else {
                                     error = true;
@@ -5593,16 +4235,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForConnectBook_AuthorName:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get authorName text
                                 if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
                                     tmpAuthorName = xpp.getText().trim();
-
-                                    Log.d("ConnectBook","Author Name:" + tmpAuthorName);
-
                                 }
                                 else {
                                     error = true;
@@ -5611,16 +4249,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForConnectBook_MessageTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get message time text
                                 if (xpp.getText().trim().length() > 0) { // check if message time from xml > 0
                                     tmpMessageTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("ConnectBook","Message Time:" + tmpMessageTime);
-
                                 }
                                 else {
                                     error = true;
@@ -5629,17 +4263,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForConnectBook_MessageRole:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get message role text
                                 if (xpp.getText().trim().length() >= 0) { // check if message role from xml >= 0
                                     tmpMessageRole = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("ConnectBook","Message Role:" + tmpMessageRole);
-
                                 }
                                 else {
                                     error = true;
@@ -5648,9 +4277,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
                     }
                 }
                 eventType = xpp.next();
@@ -5658,25 +4285,15 @@ public class EfbXmlParser {
                 // Safety abbort end document
                 if (eventType == XmlPullParser.END_DOCUMENT) {
                     parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
                 // look for end tag of connectbook
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForConnectBook_Messages)) {
-
-
-                        Log.d("ConnectBook","ORDER ------->:" + tmpOrder);
-
-
-
                         // check all data for connect book correct?
                         if (!error) {
-
                             // connect book message order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageTime > 0 && tmpMessageRole >= 0) {
-
-                                Log.d("Connect Book Message","New AUSführen");
 
                                 // set upload time on smartphone for message; value from server is not needed
                                 tmpUploadTime = System.currentTimeMillis();
@@ -5691,8 +4308,6 @@ public class EfbXmlParser {
 
                             } if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageTime > 0 && tmpMessageRole >= 0) {
 
-                                Log.d("Connect Book Message","Update AUSführen");
-
                                 // set upload time on smartphone for message; value from server is not needed
                                 tmpUploadTime = System.currentTimeMillis();
 
@@ -5705,8 +4320,6 @@ public class EfbXmlParser {
 
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
-
-                                Log.d("Connect Book Messages", "Delete All!!!");
 
                                 // delete all messages in connect book
                                 myDb.deleteAllChatMessage ();
@@ -5733,8 +4346,6 @@ public class EfbXmlParser {
     // read element connect book settings
     private void readConnectBookTag_Settings() {
 
-        Log.d("read_ConnectBSettings", "Zeile " + xpp.getLineNumber());
-
         Boolean parseAnymore = true;
 
         // true -> error occuret while parsing xml connect book settings tag
@@ -5755,8 +4366,6 @@ public class EfbXmlParser {
             while (parseAnymore) {
 
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readConnectB_SETTINGS", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForConnectBook_Order:
                             eventType = xpp.next();
@@ -5767,148 +4376,90 @@ public class EfbXmlParser {
                                         error = true;
                                         tmpOrder = "";
                                     }
-
-                                    Log.d("Meeting Settings","ORDER: "+tmpOrder);
-
-
-                                }
-                                else {
+                                } else {
                                     error = true;
                                 }
-                            }
-                            else {
+                            } else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForConnectBook_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch meeting turn on/off
                                 if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
                                     int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
-                                    if (tmpSwitchValue == 1) {tmpConnectBookOnOff = true;}
-                                    else {tmpConnectBookOnOff = false;}
-
-                                    Log.d("Connect B_Settings","C Book On/Off"+tmpSwitchValue);
-
-
-                                }
-                                else {
+                                    if (tmpSwitchValue == 1) {
+                                        tmpConnectBookOnOff = true;
+                                    } else {
+                                        tmpConnectBookOnOff = false;
+                                    }
+                                } else {
                                     error = true;
                                 }
-                            }
-                            else {
+                            } else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForConnectBook_ClientName:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { //  get client name
                                 if (xpp.getText().trim().length() > 0) { // check if client name from xml > 0
-                                    tmpClientName =  xpp.getText().trim();
-
-                                    Log.d("Connect B_Settings","Client Name"+tmpClientName);
-
-
-                                }
-                                else {
+                                    tmpClientName = xpp.getText().trim();
+                                } else {
                                     error = true;
                                 }
-                            }
-                            else {
+                            } else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForConnectBook_DelayTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get send delay time
                                 if (xpp.getText().trim().length() > 0) { // check if delay time from xml > 0
                                     tmpDelayTime = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("ConnectB_Settings","SendDelayTime"+tmpDelayTime);
-
-
-                                }
-                                else {
+                                } else {
                                     error = true;
                                 }
-                            }
-                            else {
+                            } else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForConnectBook_MaxMessages:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get max messages
                                 if (xpp.getText().trim().length() > 0) { // check if max messages from xml > 0
                                     tmpMaxMessages = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("ConnectB_Settings","Max Messages"+tmpMaxMessages);
-
-
-                                }
-                                else {
+                                } else {
                                     error = true;
                                 }
-                            }
-                            else {
+                            } else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForConnectBook_MaxLetters:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get max letters
                                 if (xpp.getText().trim().length() > 0) { // check if max letters from xml > 0
                                     tmpMaxLetters = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("ConnectB_Settings","Max Letters"+tmpMaxLetters);
-
-
-                                }
-                                else {
+                                } else {
                                     error = true;
                                 }
-                            }
-                            else {
+                            } else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForConnectBook_MessageShare:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get share value; 0-> not sharing; 1-> sharing
                                 if (xpp.getText().trim().length() > 0) { // check if share value from xml > 0
                                     tmpMessageShare = Integer.valueOf(xpp.getText().trim());
-
-                                    Log.d("Connect Book Settings","Message Share"+tmpMessageShare);
-
-
-                                }
-                                else {
+                                } else {
                                     error = true;
                                 }
-                            }
-                            else {
+                            } else {
                                 error = true;
                             }
-
                             break;
-
-
-
                     }
                 }
                 eventType = xpp.next();
@@ -5916,38 +4467,30 @@ public class EfbXmlParser {
                 // Safety abbort end document
                 if (eventType == XmlPullParser.END_DOCUMENT) {
                     parseAnymore = false;
-                    Log.d("ABBRUCH!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
                 // look for end tag of connect book settings
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForConnectBook_Settings)) {
-
                         // check all data for connect book settings correct?
                         if (!error) {
-
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) ) { // connect book settings order -> delete?
-
-                                Log.d("Connect Book Settings","DELETE AUSführen");
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) { // connect book settings order -> delete?
 
                                 // refresh activity connect book because settings have change
-                                returnMap.put ("ConnectBook","1");
-                                returnMap.put ("ConnectBookSettings","1");
+                                returnMap.put("ConnectBook", "1");
+                                returnMap.put("ConnectBookSettings", "1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // connect book settings order -> update?
-
-                                Log.d("connect book Settings","UPDATE AUSführen");
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update)) { // connect book settings order -> update?
 
                                 // in every case -> write data connect book on off to prefs
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_ConnectBook, tmpConnectBookOnOff);
                                 prefsEditor.commit();
 
                                 // write send delay time, max letters and max messages to prefs when all set
-                                if (tmpConnectBookOnOff && tmpDelayTime >=0 && tmpMaxLetters>=0 && tmpMaxMessages>=0) {
+                                if (tmpConnectBookOnOff && tmpDelayTime >= 0 && tmpMaxLetters >= 0 && tmpMaxMessages >= 0) {
                                     prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, tmpDelayTime);
                                     prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectMaxLetters, tmpMaxLetters);
                                     prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectMaxMessages, tmpMaxMessages);
-
 
                                     // reset message counter and start time message counter
                                     prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0);
@@ -5964,14 +4507,12 @@ public class EfbXmlParser {
                                 // update client name?
                                 if (tmpConnectBookOnOff && tmpClientName.length() > 0) {
 
-                                    Log.d ("Connect Book Settings--","Nmae:"+tmpClientName);
-
                                     // write data to prefs
                                     prefsEditor.putString(ConstansClassConnectBook.namePrefsConnectBookUserName, tmpClientName);
                                     prefsEditor.commit();
 
                                     // something change in meeting status
-                                    returnMap.put ("ConnectBookSettingsClientName","1");
+                                    returnMap.put("ConnectBookSettingsClientName", "1");
 
                                 }
 
@@ -5981,28 +4522,22 @@ public class EfbXmlParser {
                                     prefsEditor.putLong(ConstansClassConnectBook.namePrefsConnectMessageShareChangeTime, System.currentTimeMillis());
 
                                     if (tmpMessageShare == 1) { // sharing is enable; 1-> sharing messages; 0-> not sharing
-                                        returnMap.put("ConnectBookSettingsMessageShareEnable","1");
-                                    }
-                                    else {
-                                        returnMap.put("ConnectBookSettingsMessageShareDisable","1");
+                                        returnMap.put("ConnectBookSettingsMessageShareEnable", "1");
+                                    } else {
+                                        returnMap.put("ConnectBookSettingsMessageShareDisable", "1");
                                     }
                                 }
 
-
-
                                 // refresh activity connect book because settings have change
-                                returnMap.put ("ConnectBook","1");
-                                returnMap.put ("ConnectBookSettings","1");
-
+                                returnMap.put("ConnectBook", "1");
+                                returnMap.put("ConnectBookSettings", "1");
                             }
                         }
-
                         parseAnymore = false;
                     }
                 }
             }
-        }
-        catch (XmlPullParserException e) {
+        } catch (XmlPullParserException e) {
             // set error
             setErrorMessageInPrefs(27);
             e.printStackTrace();
@@ -6014,12 +4549,9 @@ public class EfbXmlParser {
 
     }
 
-
-
     //
     // End read connect book -----------------------------------------------------------------------------------
     //
-
 
 
 
@@ -6029,9 +4561,6 @@ public class EfbXmlParser {
 
     // read element settings
     private void readSettingTag() {
-
-
-        Log.d("read_SETTINGS", "Zeile " + xpp.getLineNumber());
 
         Boolean parseAnymore = true;
 
@@ -6053,11 +4582,8 @@ public class EfbXmlParser {
             int eventType = xpp.next();
 
             while (parseAnymore) {
-
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("readOur_SETTINGS", "Start tag " + xpp.getName());
-
-                    switch (xpp.getName().trim()) {
+                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForSettings_Order:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get order text
@@ -6067,20 +4593,13 @@ public class EfbXmlParser {
                                         error = true;
                                         tmpOrder = "";
                                     }
-
-                                    Log.d("Settings Settings", "ORDER: " + tmpOrder);
-
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForSettings_Prevention_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch prevention turn on/off
@@ -6091,20 +4610,13 @@ public class EfbXmlParser {
                                     } else {
                                         tmpPreventionOnOff = false;
                                     }
-
-                                    Log.d("Settings", "Prevention On/Off" + tmpSwitchValue);
-
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForSettings_Faq_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch faq turn on/off
@@ -6115,19 +4627,13 @@ public class EfbXmlParser {
                                     } else {
                                         tmpFaqOnOff = false;
                                     }
-
-                                    Log.d("Settings", "Faq On/Off" + tmpSwitchValue);
-
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForSettings_Emergency_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch emergency help turn on/off
@@ -6138,19 +4644,13 @@ public class EfbXmlParser {
                                     } else {
                                         tmpEmergencyOnOff = false;
                                     }
-
-                                    Log.d("Settings", "Emergency On/Off" + tmpSwitchValue);
-
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForSettings_Settings_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch settings turn on/off
@@ -6161,19 +4661,13 @@ public class EfbXmlParser {
                                     } else {
                                         tmpSettingsOnOff = false;
                                     }
-
-                                    Log.d("Settings", "Settings On/Off" + tmpSwitchValue);
-
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
-
                     }
                 }
                 eventType = xpp.next();
@@ -6181,29 +4675,18 @@ public class EfbXmlParser {
                 // Safety abbort end document
                 if (eventType == XmlPullParser.END_DOCUMENT) {
                     parseAnymore = false;
-                    Log.d("ABBRUCH Settings!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
                 // look for end tag of settings
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForSettings)) {
-
                         // check all data for settings correct?
                         if (!error) {
-
-
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) ) { // settings order -> delete?
-
-                                Log.d("Settings","DELETE AUSführen");
-
-
                                 // refresh activity settings because settings have change
                                 returnMap.put("Settings","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // settings order -> update?
-
-                                Log.d("Settings","UPDATE AUSführen");
-
 
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Prevention, tmpPreventionOnOff); // turn function prevention on/off
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Faq, tmpFaqOnOff); // turn function faq on/off
@@ -6213,11 +4696,8 @@ public class EfbXmlParser {
 
                                 // refresh activity settings because settings have change
                                 returnMap.put("Settings","1");
-
-
                             }
                         }
-
                         parseAnymore = false;
                     }
                 }
@@ -6235,16 +4715,8 @@ public class EfbXmlParser {
     }
 
 
-
-
-
-
-
     // read element time table
     private void readTimeTableTag() {
-
-
-        Log.d("read_TimeTable", "Zeile " + xpp.getLineNumber());
 
         Boolean parseAnymore = true;
 
@@ -6258,15 +4730,11 @@ public class EfbXmlParser {
         Long tmpChangeTime = 0L;
         String tmpAuthorName = "";
 
-
         try {
             int eventType = xpp.next();
 
             while (parseAnymore) {
-
                 if (eventType == XmlPullParser.START_TAG) {
-                    Log.d("read TimeTable", "Start tag " + xpp.getName());
-
                     switch (xpp.getName().trim()) {
                         case ConstansClassXmlParser.xmlNameForTimeTable_Order:
                             eventType = xpp.next();
@@ -6277,20 +4745,13 @@ public class EfbXmlParser {
                                         error = true;
                                         tmpOrder = "";
                                     }
-
-                                    Log.d("Time Table", "ORDER: " + tmpOrder);
-
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForTimeTable_TurnOnOff:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch time table turn on/off
@@ -6301,47 +4762,30 @@ public class EfbXmlParser {
                                     } else {
                                         tmpTimeTableOnOff = false;
                                     }
-
-                                    Log.d("Settings", "Time Table On/Off" + tmpSwitchValue);
-
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
-
-
                         case ConstansClassXmlParser.xmlNameForTimeTable_Value:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get switch faq turn on/off
                                 if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
                                     tmpTimeTableValue = Integer.valueOf(xpp.getText().trim());
-
-
-                                    Log.d("TimeTable", "Value: " + tmpTimeTableValue);
-
-
                                 } else {
                                     error = true;
                                 }
                             } else {
                                 error = true;
                             }
-
                             break;
-
                         case ConstansClassXmlParser.xmlNameForTimeTable_Modified_Author:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get authorName text
                                 if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
                                     tmpAuthorName = xpp.getText().trim();
-
-                                    Log.d("TimeTable -->","Author Name:" + tmpAuthorName);
-
                                 }
                                 else {
                                     error = true;
@@ -6350,16 +4794,12 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
                         case ConstansClassXmlParser.xmlNameForTimeTable_Modified_Date:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get change time text
                                 if (xpp.getText().trim().length() > 0) { // check if change time from xml > 0
                                     tmpChangeTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
-
-                                    Log.d("TimeTable","Change Time:" + tmpChangeTime);
-
                                 }
                                 else {
                                     error = true;
@@ -6368,11 +4808,7 @@ public class EfbXmlParser {
                             else {
                                 error = true;
                             }
-
                             break;
-
-
-
                     }
                 }
                 eventType = xpp.next();
@@ -6380,19 +4816,14 @@ public class EfbXmlParser {
                 // Safety abbort end document
                 if (eventType == XmlPullParser.END_DOCUMENT) {
                     parseAnymore = false;
-                    Log.d("ABBRUCH Settings!!!!!", "ABBRUCH DURCH END DOCUMENT!");
                 }
 
                 // look for end tag of settings
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForTimeTable)) {
-
                         // check all data for time table correct?
                         if (!error) {
-
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // settings order -> update?
-
-                                Log.d("TimeTable","UPDATE AUSführen");
 
                                 // set time table on/off
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_TimeTable, tmpTimeTableOnOff); // turn function time table on/off
@@ -6412,14 +4843,10 @@ public class EfbXmlParser {
 
                                 prefsEditor.commit();
 
-
                                 // refresh activity time table because settings have change
                                 returnMap.put("TimeTable","1");
-
-
                             }
                         }
-
                         parseAnymore = false;
                     }
                 }
@@ -6436,9 +4863,6 @@ public class EfbXmlParser {
         }
     }
 
-
-
-    
     
     private void setErrorMessageInPrefs (int position) {
 
@@ -6454,13 +4878,6 @@ public class EfbXmlParser {
         
         prefsEditor.commit();
         
-        //setErrorMessageInPrefs();
-        
     }
-    
-    
-    
-
-
 
 }

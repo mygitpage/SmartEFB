@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     // point to shared preferences
     SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
     // reference to the DB
     DBAdapter myDb;
@@ -159,12 +161,9 @@ public class MainActivity extends AppCompatActivity {
                         default:
                             break;
                     }
-
                 }
-
             }
         });
-
     }
 
 
@@ -221,7 +220,6 @@ public class MainActivity extends AppCompatActivity {
                 String tmpExtraTimeTable = intentExtras.getString("TimeTable","0");
                 String tmpExtraTimeTableNewValue = intentExtras.getString("TimeTableNewValue","0");
 
-
                 if (tmpExtraConnectBookMessageNewOrSend != null && tmpExtraConnectBookMessageNewOrSend.equals("1")) {
 
                     // new message received
@@ -264,9 +262,17 @@ public class MainActivity extends AppCompatActivity {
 
         // get the shared preferences
         prefs = this.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
         // init the DB
         myDb = new DBAdapter(this);
+
+
+
+        // check installation status (new or update)
+        //newOrUpdateInstallation();
+
+
 
         // start excahnge service with intent
         setAlarmForExchangeService();
@@ -281,7 +287,6 @@ public class MainActivity extends AppCompatActivity {
         tmpBackgroundRessourcesNewEntry = getResources().getStringArray(R.array.mainMenueElementImageNewEntry);
         tmpBackgroundRessourcesAttentionEntry = getResources().getStringArray(R.array.mainMenueElementImageAttentionEntry);
 
-
         for (int i=0; i<ConstansClassMain.mainMenueNumberOfElements; i++) {
             mainMenueElementBackgroundRessources[i] = getResources().getIdentifier(tmpBackgroundRessources[i], "drawable", "de.smart_efb.efbapp.smartefb");
             mainMenueElementBackgroundRessourcesNewEntry[i] = getResources().getIdentifier(tmpBackgroundRessourcesNewEntry[i], "drawable", "de.smart_efb.efbapp.smartefb");
@@ -292,6 +297,7 @@ public class MainActivity extends AppCompatActivity {
         initShowElementArray();
 
     }
+
 
     // init array show elements
     private void initShowElementArray () {
@@ -327,11 +333,8 @@ public class MainActivity extends AppCompatActivity {
         boolean tmpNew = false;
 
         for (int countElements=0; countElements < ConstansClassMain.mainMenueNumberOfElements; countElements++) {
-
             switch (countElements) {
-
                 case 0: // menue item "Uebergabe"
-
                     if (showMainMenueElement[countElements]) { // is element aktiv?
                         if (myDb.getCountNewEntryConnectBookMessage() > 0) {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
@@ -341,7 +344,6 @@ public class MainActivity extends AppCompatActivity {
                         tmpNew = true;
                     }
                     break;
-
                 case 1: // menue item "Absprachen"
                     if (showMainMenueElement[countElements]) { // is element aktiv?
                         if ((subfunction_arrangement_sketchcomment && myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0")) > 0) || ( subfunction_arrangement_comment && myDb.getCountAllNewEntryOurArrangementComment(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0")) > 0) || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "current") > 0 || (subfunction_arrangement_sketch && myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "sketch") > 0)) {
@@ -352,7 +354,6 @@ public class MainActivity extends AppCompatActivity {
                         tmpNew = true;
                     }
                     break;
-
                 case 2: // menue item "Ziele"
                     if (showMainMenueElement[countElements]) { // is element aktiv?
                         if (myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 || (subfunction_goals_comment && myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0) || (subfunction_goals_debetable && myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0) || (subfunction_goals_debetablecomment && myDb.getCountAllNewEntryOurGoalsDebetableGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0)) {
@@ -363,7 +364,6 @@ public class MainActivity extends AppCompatActivity {
                         tmpNew = true;
                     }
                     break;
-
                 case 3: // menue item "Zeitplan"
                     if (showMainMenueElement[countElements]) { // is element aktiv?
                         if (prefs.getBoolean(ConstansClassTimeTable.namePrefsTimeTableNewValue, false)) {
@@ -375,7 +375,6 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     break;
-
                 case 4: // menue item "Praevention"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
@@ -397,24 +396,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                     tmpNew = true;
                     break;
-
                 case 7: // menue item "Notfallhilfe"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-
                 case 8: // menue item "Einstellungen"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-
                 default:
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-
             }
         }
 
         return tmpNew;
-
     }
 
 
@@ -531,6 +525,73 @@ public class MainActivity extends AppCompatActivity {
             return grid;
         }
     }
+
+
+    public void newOrUpdateInstallation () {
+
+        if (prefs.getInt(ConstansClassMain.namePrefsMainNameAppVersion, 0) < ConstansClassMain.actualVersion || (prefs.getInt(ConstansClassMain.namePrefsMainNameAppVersion, 0) == ConstansClassMain.actualVersion && prefs.getInt(ConstansClassMain.namePrefsMainNameAppSubVersion, 0) < ConstansClassMain.actualSubVersion) ) {
+
+            // complete new installation?
+            if (prefs.getInt(ConstansClassMain.namePrefsMainNameAppVersion, 0) == 0) {
+
+                Log.d ("Main Updat Func", "Im NEW!!! ZWEIG!");
+
+                //app function switch off
+                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_ConnectBook, false); // switch off connect book
+
+                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false); // turn function our arrangement off
+                prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false); // turn function our arrangement sketch off
+                prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, false); // turn function our arrangement old off
+
+                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false); // turn function our goals off
+                prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false); // turn function our goals debetable off
+                prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkOldGoals, false); // turn function our goals old off
+
+                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_TimeTable, false); // turn function time table off
+
+                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false); // turn function meeting off
+                prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientSuggestion_OnOff, false); // turn function meeting client suggestion off
+                prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCanceleMeeting_OnOff, false); // turn function meeting client canceled meeting off
+                prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false); // turn function meeting client comment suggestion off
+
+                // set connection parameter and status
+                prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 0); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
+                prefsEditor.putInt(ConstansClassSettings.namePrefsRandomNumberForConnection, 0); // five digits for connetion to server
+                prefsEditor.putString(ConstansClassSettings.namePrefsClientId, ""); // set smarthpone id to nothing
+
+                // set app version / sub version
+                prefsEditor.putInt(ConstansClassMain.namePrefsMainNameAppVersion, ConstansClassMain.actualVersion);
+                prefsEditor.putInt(ConstansClassMain.namePrefsMainNameAppSubVersion, ConstansClassMain.actualSubVersion);
+
+                prefsEditor.commit();
+
+            }
+            else { // update
+
+                // do some update work!
+
+                Log.d ("Main Updat Func", "Im UPDATE ZWEIG!");
+
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
 
 }
 

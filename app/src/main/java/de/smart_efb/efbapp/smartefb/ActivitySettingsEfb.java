@@ -158,7 +158,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         // init prefs editor
         prefsEditor = prefs.edit();
 
-        // get meeting status
+        // get meeting status (0=connect to server; 1=no network available; 2=connection error; 3=connected)
         connectingStatus = prefs.getInt(ConstansClassSettings.namePrefsConnectingStatus, 0);
 
         //get random Number for connection
@@ -291,7 +291,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
         connectingStatus = tmpConnectionStatus;
 
-        prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,tmpConnectionStatus);
+        prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,tmpConnectionStatus); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
 
         prefsEditor.commit();
 

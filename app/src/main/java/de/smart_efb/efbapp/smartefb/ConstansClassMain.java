@@ -5,6 +5,18 @@ package de.smart_efb.efbapp.smartefb;
  */
 class ConstansClassMain {
 
+    // prefs name for the app version
+    static final String namePrefsMainNameAppVersion = "smartEfbAppVersion";
+
+    // actual app version
+    static final int actualVersion = 1;
+
+    // actual app sub version
+    static final int actualSubVersion = 0;
+
+    // prefs name for the app sub version
+    static final String namePrefsMainNameAppSubVersion = "smartEfbAppSubVersion";
+
     // prefs name for the prefs main name
     static final String namePrefsMainNamePrefs = "smartEfbSettings";
 
@@ -44,11 +56,7 @@ class ConstansClassMain {
     // number of grid columns in main menue
     static final int numberOfGridColumns = 2;
 
-
     // wake up time in secondes for exchange service
     static final int wakeUpTimeExchangeService = 50; // secondes
-
-
-
 
 }

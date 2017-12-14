@@ -281,22 +281,22 @@ public class DBAdapter extends SQLiteOpenHelper {
     /**********************************************************************************************/
     /**********************************************************************************************/
     // Our Goals Jointly Goals Evaluate- column names and numbers
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME = "goal_time";
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_SERVER_ID = "server_id";
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_BLOCKID = "block_id";
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1 = "result_q_a";
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2 = "result_q_b";
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3 = "result_q_c";
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4 = "result_q_d";
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS = "result_remarks";
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME = "start_block_time";
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME = "end_block_time";
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME = "result_time";
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME = "username";
-    public static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
+    static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME = "goal_time";
+    static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_SERVER_ID = "server_id";
+    static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_BLOCKID = "block_id";
+    static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1 = "result_q_a";
+    static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2 = "result_q_b";
+    static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3 = "result_q_c";
+    static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4 = "result_q_d";
+    static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS = "result_remarks";
+    static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME = "start_block_time";
+    static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME = "end_block_time";
+    static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME = "result_time";
+    static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME = "username";
+    static final String OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
     // All keys from table app settings in a String
-    public static final String[] OUR_GOALS_JOINTLY_GOALS_EVALUATE_ALL_KEYS = new String[]{KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_STATUS, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_SERVER_ID, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_BLOCKID};
+    static final String[] OUR_GOALS_JOINTLY_GOALS_EVALUATE_ALL_KEYS = new String[]{KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_GOAL_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION1, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION2, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION3, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_STATUS, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_SERVER_ID, OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_BLOCKID};
 
     // SQL String to create our jointly goals evaluate table
     private static final String DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_EVALUATE =
@@ -319,21 +319,21 @@ public class DBAdapter extends SQLiteOpenHelper {
     /**********************************************************************************************/
     /**********************************************************************************************/
     // Our Goals Debetable Goals Comment- column names and numbers
-    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT = "comment";
-    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1 = "result_q_a";
-    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2 = "result_q_b";
-    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3 = "result_q_c";
-    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME = "author_name";
-    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME = "comment_time";
-    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_UPLOAD_TIME = "upload_time";
-    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID = "blockid";
-    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID = "server_id";
-    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY = "new_entry";
-    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME = "goal_time";
-    public static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
+    static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT = "comment";
+    static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1 = "result_q_a";
+    static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2 = "result_q_b";
+    static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3 = "result_q_c";
+    static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME = "author_name";
+    static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME = "comment_time";
+    static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_UPLOAD_TIME = "upload_time";
+    static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID = "blockid";
+    static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID = "server_id";
+    static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY = "new_entry";
+    static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME = "goal_time";
+    static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
     // All keys from table app settings in a String
-    public static final String[] OUR_GOALS_DEBETABLE_GOALS_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_UPLOAD_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS};
+    static final String[] OUR_GOALS_DEBETABLE_GOALS_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_UPLOAD_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS};
 
     // SQL String to create our goals debetable comment table
     private static final String DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_GOALS_COMMENT =
@@ -357,56 +357,56 @@ public class DBAdapter extends SQLiteOpenHelper {
     /**********************************************************************************************/
     // Meeting And Suggestion - column names and numbers
 
-    public static final String MEETING_SUGGESTION_KEY_DATE1 = "date1";
-    public static final String MEETING_SUGGESTION_KEY_DATE2 = "date2";
-    public static final String MEETING_SUGGESTION_KEY_DATE3 = "date3";
-    public static final String MEETING_SUGGESTION_KEY_DATE4 = "date4";
-    public static final String MEETING_SUGGESTION_KEY_DATE5 = "date5";
-    public static final String MEETING_SUGGESTION_KEY_DATE6 = "date6";
-    public static final String MEETING_SUGGESTION_KEY_PLACE1 = "place1";
-    public static final String MEETING_SUGGESTION_KEY_PLACE2 = "place2";
-    public static final String MEETING_SUGGESTION_KEY_PLACE3 = "place3";
-    public static final String MEETING_SUGGESTION_KEY_PLACE4 = "place4";
-    public static final String MEETING_SUGGESTION_KEY_PLACE5 = "place5";
-    public static final String MEETING_SUGGESTION_KEY_PLACE6 = "place6";
-    public static final String MEETING_SUGGESTION_KEY_VOTE1 = "vote1";
-    public static final String MEETING_SUGGESTION_KEY_VOTE2 = "vote2";
-    public static final String MEETING_SUGGESTION_KEY_VOTE3 = "vote3";
-    public static final String MEETING_SUGGESTION_KEY_VOTE4 = "vote4";
-    public static final String MEETING_SUGGESTION_KEY_VOTE5 = "vote5";
-    public static final String MEETING_SUGGESTION_KEY_VOTE6 = "vote6";
-    public static final String MEETING_SUGGESTION_KEY_VOTEDATE = "vote_date";
-    public static final String MEETING_SUGGESTION_KEY_VOTEAUTHOR = "vote_author";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CANCELED = "meeting_canceled"; // 0=not canceled; 1= meeting canceled
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR = "meeting_canceled_author";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME = "meeting_canceled_time";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED = "meeting_client_canceled"; // 0=not canceled; 1= meeting canceled by client
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR = "meeting_client_canceled_author";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME = "meeting_client_canceled_time";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TEXT = "meeting_client_canceled_text";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT = "meeting_client_suggestion"; // 0=not canceled; 1= meeting canceled by client
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR = "meeting_client_suggestion_author";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME = "meeting_client_suggestion_time";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE = "meeting_client_suggestion_startdate";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE = "meeting_client_suggestion_enddate";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME = "meeting_response_time";
-    public static final String MEETING_SUGGESTION_KEY_SUGGESTION_FOUND = "suggestion_found";
-    public static final String MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_AUTHOR = "suggestion_found_author";
-    public static final String MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_DATE = "suggestion_found_date";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT = "meeting_coach_hint";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR = "meeting_client_comment_author";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE = "meeting_client_comment_date";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT = "meeting_client_comment_text";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_SERVER_ID = "meeting_server_id";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME = "meeting_upload_time";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_KATEGORIE = "meeting_kategorie"; // 0 = nothing; 1 = dates are meeting dates; 2 = dates are meeting suggestions; 3 = responses from client for coach suggestion; 4 = suggestion from client; 5 = client comment suggestion
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME = "meeting_creation_time";
-    public static final String MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR = "meeting_creation_author";
-    public static final String MEETING_SUGGESTION_MEETING_KEY_STATUS = "status"; // 0=ready to send, 1=meeting/suggestion send, 4=external message
-    public static final String MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST = "new_mett_suggest"; // 1=new meeting/ suggestion
+    static final String MEETING_SUGGESTION_KEY_DATE1 = "date1";
+    static final String MEETING_SUGGESTION_KEY_DATE2 = "date2";
+    static final String MEETING_SUGGESTION_KEY_DATE3 = "date3";
+    static final String MEETING_SUGGESTION_KEY_DATE4 = "date4";
+    static final String MEETING_SUGGESTION_KEY_DATE5 = "date5";
+    static final String MEETING_SUGGESTION_KEY_DATE6 = "date6";
+    static final String MEETING_SUGGESTION_KEY_PLACE1 = "place1";
+    static final String MEETING_SUGGESTION_KEY_PLACE2 = "place2";
+    static final String MEETING_SUGGESTION_KEY_PLACE3 = "place3";
+    static final String MEETING_SUGGESTION_KEY_PLACE4 = "place4";
+    static final String MEETING_SUGGESTION_KEY_PLACE5 = "place5";
+    static final String MEETING_SUGGESTION_KEY_PLACE6 = "place6";
+    static final String MEETING_SUGGESTION_KEY_VOTE1 = "vote1";
+    static final String MEETING_SUGGESTION_KEY_VOTE2 = "vote2";
+    static final String MEETING_SUGGESTION_KEY_VOTE3 = "vote3";
+    static final String MEETING_SUGGESTION_KEY_VOTE4 = "vote4";
+    static final String MEETING_SUGGESTION_KEY_VOTE5 = "vote5";
+    static final String MEETING_SUGGESTION_KEY_VOTE6 = "vote6";
+    static final String MEETING_SUGGESTION_KEY_VOTEDATE = "vote_date";
+    static final String MEETING_SUGGESTION_KEY_VOTEAUTHOR = "vote_author";
+    static final String MEETING_SUGGESTION_KEY_MEETING_CANCELED = "meeting_canceled"; // 0=not canceled; 1= meeting canceled
+    static final String MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR = "meeting_canceled_author";
+    static final String MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME = "meeting_canceled_time";
+    static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED = "meeting_client_canceled"; // 0=not canceled; 1= meeting canceled by client
+    static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR = "meeting_client_canceled_author";
+    static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME = "meeting_client_canceled_time";
+    static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TEXT = "meeting_client_canceled_text";
+    static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT = "meeting_client_suggestion"; // 0=not canceled; 1= meeting canceled by client
+    static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR = "meeting_client_suggestion_author";
+    static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME = "meeting_client_suggestion_time";
+    static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE = "meeting_client_suggestion_startdate";
+    static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE = "meeting_client_suggestion_enddate";
+    static final String MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME = "meeting_response_time";
+    static final String MEETING_SUGGESTION_KEY_SUGGESTION_FOUND = "suggestion_found";
+    static final String MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_AUTHOR = "suggestion_found_author";
+    static final String MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_DATE = "suggestion_found_date";
+    static final String MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT = "meeting_coach_hint";
+    static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR = "meeting_client_comment_author";
+    static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE = "meeting_client_comment_date";
+    static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT = "meeting_client_comment_text";
+    static final String MEETING_SUGGESTION_KEY_MEETING_SERVER_ID = "meeting_server_id";
+    static final String MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME = "meeting_upload_time";
+    static final String MEETING_SUGGESTION_KEY_MEETING_KATEGORIE = "meeting_kategorie"; // 0 = nothing; 1 = dates are meeting dates; 2 = dates are meeting suggestions; 3 = responses from client for coach suggestion; 4 = suggestion from client; 5 = client comment suggestion
+    static final String MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME = "meeting_creation_time";
+    static final String MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR = "meeting_creation_author";
+    static final String MEETING_SUGGESTION_MEETING_KEY_STATUS = "status"; // 0=ready to send, 1=meeting/suggestion send, 4=external message
+    static final String MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST = "new_mett_suggest"; // 1=new meeting/ suggestion
 
     // All keys from table in a String
-    public static final String[] MEETING_SUGGESTION_MEETING_ALL_KEYS = new String[]{KEY_ROWID, MEETING_SUGGESTION_KEY_DATE1, MEETING_SUGGESTION_KEY_DATE2, MEETING_SUGGESTION_KEY_DATE3, MEETING_SUGGESTION_KEY_DATE4, MEETING_SUGGESTION_KEY_DATE5, MEETING_SUGGESTION_KEY_DATE6,
+    static final String[] MEETING_SUGGESTION_MEETING_ALL_KEYS = new String[]{KEY_ROWID, MEETING_SUGGESTION_KEY_DATE1, MEETING_SUGGESTION_KEY_DATE2, MEETING_SUGGESTION_KEY_DATE3, MEETING_SUGGESTION_KEY_DATE4, MEETING_SUGGESTION_KEY_DATE5, MEETING_SUGGESTION_KEY_DATE6,
             MEETING_SUGGESTION_KEY_PLACE1, MEETING_SUGGESTION_KEY_PLACE2, MEETING_SUGGESTION_KEY_PLACE3, MEETING_SUGGESTION_KEY_PLACE4, MEETING_SUGGESTION_KEY_PLACE5, MEETING_SUGGESTION_KEY_PLACE6,
             MEETING_SUGGESTION_KEY_VOTE1, MEETING_SUGGESTION_KEY_VOTE2, MEETING_SUGGESTION_KEY_VOTE3, MEETING_SUGGESTION_KEY_VOTE4, MEETING_SUGGESTION_KEY_VOTE5, MEETING_SUGGESTION_KEY_VOTE6, MEETING_SUGGESTION_KEY_VOTEDATE, MEETING_SUGGESTION_KEY_VOTEAUTHOR,
             MEETING_SUGGESTION_KEY_SUGGESTION_FOUND, MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_AUTHOR, MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_DATE, MEETING_SUGGESTION_KEY_MEETING_CANCELED, MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR, MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME, MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED,
@@ -488,31 +488,31 @@ public class DBAdapter extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase _db) {
 
         // Create table OurArrangementComment
-        //_db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_COMMENT);
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_COMMENT);
 
         // Create table OurArrangementSketchComment
-        //_db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_SKETCH_COMMENT);
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_SKETCH_COMMENT);
 
         // Create table OurArrangement
-        //_db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT);
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT);
 
         // Create table OurArrangementEvaluate
-        //_db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_EVALUATE);
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_ARRANGEMENT_EVALUATE);
 
         // Create table ChatMessage
-        //_db.execSQL(DATABASE_CREATE_SQL_CHAT_MESSAGE);
+        _db.execSQL(DATABASE_CREATE_SQL_CHAT_MESSAGE);
 
         // Create table Our Goals Debetable/Jointly Goals Now
-        //_db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_JOINTLY_GOALS_NOW);
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_JOINTLY_GOALS_NOW);
 
         // Create table Our Goals Jointly Goals Comment
-        //_db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_COMMENT);
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_COMMENT);
 
         // Create table Our Goals Jointly Goals Evaluate
-        //_db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_EVALUATE);
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_EVALUATE);
 
         // Create table Our Goals Debetable Goals Comment
-        //_db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
+        _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
 
         // Create table Meeting Find Meeting
         _db.execSQL(DATABASE_CREATE_SQL_MEETING_SUGGESTION);
@@ -526,31 +526,31 @@ public class DBAdapter extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase _db, int oldVersion, int newVersion) {
 
         // Destroy table OurArrangementComment
-        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT);
 
         // Destroy table OurArrangementSketchComment
-        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT);
 
         // Destroy table OurArrangement
-        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT);
 
         // Destroy table OurArrangementEvaluate
-        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE);
 
         // Destroy table ChatMessage
-        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_CHAT_MESSAGE);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_CHAT_MESSAGE);
 
         // Destroy table Our Goals Debetable/Jointly Goals Now
-        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW);
 
         // Destroy table Our Goals Jointly Goals Comment
-        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT);
 
         // Destroy table Our Goals Jointly Goals Evaluate
-        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE);
 
         // Destroy table Our Goals Jointly Goals Evaluate
-        //_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
 
         // Destroy table Meeting and Suggestion
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_MEETING_SUGGESTION);
@@ -564,7 +564,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Chat Message  ******************************************/
 
     // Add a new set of values to the database.
-    public long insertRowChatMessage(String author_name, long writeTime, String message, int role, int status, Boolean newEntry, long upload_time) {
+    long insertRowChatMessage(String author_name, long writeTime, String message, int role, int status, Boolean newEntry, long upload_time) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -592,7 +592,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Delete a row from the database, by rowId (primary key)
-    public boolean deleteRowChatMessage(long rowId) {
+    boolean deleteRowChatMessage(long rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -601,7 +601,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    public void deleteAllChatMessage() {
+    void deleteAllChatMessage() {
 
         Cursor c = getAllRowsChatMessage();
         long rowId = c.getColumnIndexOrThrow(KEY_ROWID);
@@ -616,7 +616,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return all data in the database. chat messages sorted by write time ASC
-    public Cursor getAllRowsChatMessage() {
+    Cursor getAllRowsChatMessage() {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -634,7 +634,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
     // Get a specific row (by rowId)
-    public Cursor getOneRowChatMessage(long rowId) {
+    Cursor getOneRowChatMessage(long rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -653,7 +653,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status message in table connectBookMessage
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external message
-    public boolean updateStatusConnectBookMessage(Long rowId, int status) {
+    boolean updateStatusConnectBookMessage(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -669,7 +669,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get all connect book messages with status = 0 (Ready to send) and role = 1 (own messages)
-    public Cursor getAllReadyToSendConnectBookMessages() {
+    Cursor getAllReadyToSendConnectBookMessages() {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -689,7 +689,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get the number of new rows in connect book message
-    public int getCountNewEntryConnectBookMessage() {
+    int getCountNewEntryConnectBookMessage() {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -708,7 +708,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry in table connect book for message rowId.
-    public boolean deleteStatusNewEntryConnectBookMessage(int rowId) {
+    boolean deleteStatusNewEntryConnectBookMessage(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -742,7 +742,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         changeTo -> needed when a arrangement is switch from now arrangement to sketch arrangement or visversa
         status -> the arragement status 0=ready to send, 1=message send, 4=external message
      */
-    public long insertRowOurArrangement(String arrangement, String authorName, long arrangementTime, Boolean newEntry, Boolean sketchCurrent, long sketchTime, int status, int serverId, String blockId, String changeTo) {
+    long insertRowOurArrangement(String arrangement, String authorName, long arrangementTime, Boolean newEntry, Boolean sketchCurrent, long sketchTime, int status, int serverId, String blockId, String changeTo) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -779,7 +779,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Change an existing row of arrangement to be equal to serverId.
-    public boolean updateRowOurArrangement(String arrangement, String authorName, long arrangementTime, Boolean newEntry, Boolean sketchCurrent, long sketchTime, int status, int serverId, String blockId) {
+    boolean updateRowOurArrangement(String arrangement, String authorName, long arrangementTime, Boolean newEntry, Boolean sketchCurrent, long sketchTime, int status, int serverId, String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -817,7 +817,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Delete a row from the database, by serverId
-    public boolean deleteRowOurArrangement(int serverId) {
+    boolean deleteRowOurArrangement(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -828,7 +828,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Delete all arrangements with the same blockId
-    public boolean deleteAllRowsOurArrangement(String blockId, Boolean sketchCurrent) {
+    boolean deleteAllRowsOurArrangement(String blockId, Boolean sketchCurrent) {
 
         int tmpStatus;
 
@@ -849,7 +849,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return all data from the database (table ourArrangement) -> see order!
     // the result is sorted by DESC
-    public Cursor getAllRowsCurrentOurArrangement(String blockID, String order) {
+    Cursor getAllRowsCurrentOurArrangement(String blockID, String order) {
 
         String where = "";
 
@@ -889,7 +889,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return sketch arrangmenet from the database (table ourArrangement)
     // the result is sorted by DESC
-    public Cursor getAllRowsSketchOurArrangement(String blockID) {
+    Cursor getAllRowsSketchOurArrangement(String blockID) {
 
         String where = "";
 
@@ -914,7 +914,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get a specific row from the arrangement (by serverId)
-    public Cursor getRowOurArrangement(int serverId) {
+    Cursor getRowOurArrangement(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -931,7 +931,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get a specific row from the sketch arrangement (by rowId)
-    public Cursor getRowSketchOurArrangement(int serverId) {
+    Cursor getRowSketchOurArrangement(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -948,7 +948,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get the number of new rows in arrangement (new entrys, current and sketch) where date is current arrangement date or sketch write time -> no older one!
-    public int getCountNewEntryOurArrangement(long currentDateOfArrangement, String currentSketch) {
+    int getCountNewEntryOurArrangement(long currentDateOfArrangement, String currentSketch) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -980,7 +980,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry in table ourArrangement for arrangment rowId.
-    public boolean deleteStatusNewEntryOurArrangement(int rowId) {
+    boolean deleteStatusNewEntryOurArrangement(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -997,7 +997,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // change (delete/set) status evaluation possible in table ourArrangement
-    public boolean changeStatusEvaluationPossibleOurArrangement(int serverId, String state) {
+    boolean changeStatusEvaluationPossibleOurArrangement(int serverId, String state) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1026,7 +1026,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // change (delete/set) status evaluation poosible in table ourArrangement for all arrangement with current block id
-    public boolean changeStatusEvaluationPossibleAllOurArrangement(String blockId, String state) {
+    boolean changeStatusEvaluationPossibleAllOurArrangement(String blockId, String state) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1061,7 +1061,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Arrangement Comment ******************************************/
 
     // Add a new set of values to ourArrangementComment .
-    public long insertRowOurArrangementComment(String comment, String authorName, long commentTime, long upload_time, String blockid, Boolean newEntry, long currentDateOfArrangement, int status, int serverId) {
+    long insertRowOurArrangementComment(String comment, String authorName, long commentTime, long upload_time, String blockid, Boolean newEntry, long currentDateOfArrangement, int status, int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1090,7 +1090,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return all comments from the database for arrangement with  server id = id (table ourArrangementComment)
     // the result is sorted by DESC
-    public Cursor getAllRowsOurArrangementComment(int serverId) {
+    Cursor getAllRowsOurArrangementComment(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1112,7 +1112,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get the number of new rows in all comment for all arrangement (new entrys) where block id are current arrangement block
-    public int getCountAllNewEntryOurArrangementComment(String blockIdOfArrangement) {
+    int getCountAllNewEntryOurArrangementComment(String blockIdOfArrangement) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1134,7 +1134,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry in table ourArrangementComment.
-    public boolean deleteStatusNewEntryOurArrangementComment(int rowId) {
+    boolean deleteStatusNewEntryOurArrangementComment(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1151,7 +1151,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete all comments with the same block id
-    public Boolean deleteAllRowsOurArrangementComment(String blockId) {
+    Boolean deleteAllRowsOurArrangementComment(String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1163,7 +1163,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return one comment from the database for arrangement with row id = dbid (table ourArrangementComment)
-    public Cursor getOneRowOurArrangementComment(Long dbId) {
+    Cursor getOneRowOurArrangementComment(Long dbId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1183,7 +1183,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status comment in table ourArrangementComment
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Comment
-    public boolean updateStatusOurArrangementComment(Long rowId, int status) {
+    boolean updateStatusOurArrangementComment(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1199,7 +1199,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get all comments with status = 0 (Ready to send) and block id of current arrangement
-    public Cursor getAllReadyToSendComments(String blockIdOfArrangement) {
+    Cursor getAllReadyToSendComments(String blockIdOfArrangement) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1225,7 +1225,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Arrangement Sketch Comment ******************************************/
 
     // Add a new set of values to ourArrangementSketchComment .
-    public long insertRowOurArrangementSketchComment(String comment, int question_a, int question_b, int question_c, String authorName, long commentTime, long upload_time, String blockid, Boolean newEntry, long currentDateOfArrangement, int status, int serverId) {
+    long insertRowOurArrangementSketchComment(String comment, int question_a, int question_b, int question_c, String authorName, long commentTime, long upload_time, String blockid, Boolean newEntry, long currentDateOfArrangement, int status, int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1257,7 +1257,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return all comments from the database for sketch arrangement with server arrangement id = id (table ourArrangementSketchComment)
     // the result is sorted by DESC
-    public Cursor getAllRowsOurArrangementSketchComment(int serverId) {
+    Cursor getAllRowsOurArrangementSketchComment(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1279,7 +1279,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get the number of new rows in all comment for all sketch arrangement (new entrys) where date is current sketch arrangement date -> no older one!
-    public int getCountAllNewEntryOurArrangementSketchComment(String blockIdOfSketchArrangement) {
+    int getCountAllNewEntryOurArrangementSketchComment(String blockIdOfSketchArrangement) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1298,7 +1298,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry in table ourArrangementSketchComment.
-    public boolean deleteStatusNewEntryOurArrangementSketchComment(int rowId) {
+    boolean deleteStatusNewEntryOurArrangementSketchComment(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1315,7 +1315,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete all comments for sketch arrangements with the same block id
-    public Boolean deleteAllRowsOurArrangementSketchComment(String blockId) {
+    Boolean deleteAllRowsOurArrangementSketchComment(String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1327,7 +1327,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return one comment from the database for sketch arrangement with row id = dbid (table ourArrangementSketchComment)
-    public Cursor getOneRowOurArrangementSketchComment(Long dbId) {
+    Cursor getOneRowOurArrangementSketchComment(Long dbId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1347,7 +1347,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status comment in table ourArrangementSketchComment
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Comment
-    public boolean updateStatusOurArrangementSketchComment(Long rowId, int status) {
+    boolean updateStatusOurArrangementSketchComment(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1363,7 +1363,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get all sketch comments with status = 0 (Ready to send) and block id of sketch arrangement
-    public Cursor getAllReadyToSendSketchComments(String blockIdOfSketchArrangement) {
+    Cursor getAllReadyToSendSketchComments(String blockIdOfSketchArrangement) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1389,7 +1389,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Arrangement Evaluate ******************************************/
 
     // Add a new set of values to ourArrangementEvaluate .
-    public long insertRowOurArrangementEvaluate(int serverId, long currentDateOfArrangement, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName, int status, long startEvaluationTime, long endEvaluationTime, String blockId) {
+    long insertRowOurArrangementEvaluate(int serverId, long currentDateOfArrangement, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName, int status, long startEvaluationTime, long endEvaluationTime, String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1415,7 +1415,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getOneRowEvaluationResultArrangement(Long dbId) {
+    Cursor getOneRowEvaluationResultArrangement(Long dbId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1436,7 +1436,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status evaluation in table ourArrangementEvaluate
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Evaluation
-    public boolean updateStatusOurArrangementEvaluation(Long rowId, int status) {
+    boolean updateStatusOurArrangementEvaluation(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1453,7 +1453,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // get all evaluation results in table ourArrangementEvaluate with status = 0
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Evaluation
-    public Cursor getAllReadyToSendArrangementEvaluationResults() {
+    Cursor getAllReadyToSendArrangementEvaluationResults() {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1471,7 +1471,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // set last evaluation time in choosen (serverId) arrangement in table our arrangement
-    public boolean setEvaluationTimePointForArrangement(int serverId) {
+    boolean setEvaluationTimePointForArrangement(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1508,7 +1508,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         changeTo -> needed when a goal is switch from jointly goal to debetable goal or visversa
         status -> the status of goal -> 0=ready to send, 1=message send, 4=external message
      */
-    public long insertRowOurGoals(String goal, String authorName, long goalTime, Boolean newEntry, Boolean jointlyDebetable, long debetableTime, int status, int serverId, String blockId, String changeTo) {
+    long insertRowOurGoals(String goal, String authorName, long goalTime, Boolean newEntry, Boolean jointlyDebetable, long debetableTime, int status, int serverId, String blockId, String changeTo) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1545,7 +1545,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Delete a row from the database, by serverId
-    public boolean deleteRowOurGoals(int serverId) {
+    boolean deleteRowOurGoals(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1555,7 +1555,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Change an existing row to be equal to oldMd5.
-    public boolean updateRowOurGoals(String goal, String authorName, long goalTime, Boolean newEntry, Boolean jointlyDebetable, long debetableTime, int status, int serverId, String blockId) {
+    boolean updateRowOurGoals(String goal, String authorName, long goalTime, Boolean newEntry, Boolean jointlyDebetable, long debetableTime, int status, int serverId, String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1597,7 +1597,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return all data from the database (table ourGoals) where blockid is equal or not equal!
     // the result is sorted by DESC from wirte_time
-    public Cursor getAllJointlyRowsOurGoals(String blockID, String order) {
+    Cursor getAllJointlyRowsOurGoals(String blockID, String order) {
 
         String where = "";
 
@@ -1637,7 +1637,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return debetable goals from the database (table ourGoals)
     // the result is sorted by DESC
-    public Cursor getAllDebetableRowsOurGoals(String blockId) {
+    Cursor getAllDebetableRowsOurGoals(String blockId) {
 
         String where = "";
 
@@ -1662,7 +1662,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get a specific jointly row from the goals (by serverId)
-    public Cursor getJointlyRowOurGoals(int serverId) {
+    Cursor getJointlyRowOurGoals(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1679,7 +1679,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get a specific debetable row from the goals (by rowId)
-    public Cursor getDebetableRowOurGoals(int serverId) {
+    Cursor getDebetableRowOurGoals(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1696,7 +1696,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get the number of new rows in goals (new entrys, jointly and debetable) where date is write time -> no older one!
-    public int getCountNewEntryOurGoals(long currentDateOfGoals) {
+    int getCountNewEntryOurGoals(long currentDateOfGoals) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1717,7 +1717,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry in table ourGoals for goal rowId.
-    public boolean deleteStatusNewEntryOurGoals(int rowId) {
+    boolean deleteStatusNewEntryOurGoals(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1734,7 +1734,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // change (delete/set) status evaluation poosible in table ourGoals for one goal (rowId)
-    public boolean changeStatusEvaluationPossibleOurGoals(int serverId, String state) {
+    boolean changeStatusEvaluationPossibleOurGoals(int serverId, String state) {
 
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1764,7 +1764,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // change (delete/set) status evaluation poosible in table ourGoals for all goals with current goal time
-    public boolean changeStatusEvaluationPossibleAllOurGoals(String blockId, String state) {
+    boolean changeStatusEvaluationPossibleAllOurGoals(String blockId, String state) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1793,7 +1793,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Delete all goals with the same blockId
-    public boolean deleteAllRowsOurGoals(String blockId, Boolean jointlyDebetable) {
+    boolean deleteAllRowsOurGoals(String blockId, Boolean jointlyDebetable) {
 
         int tmpStatus;
 
@@ -1818,7 +1818,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     /********************************* TABLES FOR FUNCTION: Our Goals Jointly Goals Comment ******************************************/
     // Add a new set of values to ourGoalsJointlyGoalsComment .
-    public long insertRowOurGoalJointlyGoalComment(String comment, String authorName, long commentTime, long upload_time, String blockid, Boolean newEntry, long currentDateOfGoal, int status, int serverId) {
+    long insertRowOurGoalJointlyGoalComment(String comment, String authorName, long commentTime, long upload_time, String blockid, Boolean newEntry, long currentDateOfGoal, int status, int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1847,7 +1847,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return all comments from the database for jointly goals with serverGoalId = id (table ourGoalsJointlyGoalsComment)
     // the result is sorted by DESC
-    public Cursor getAllRowsOurGoalsJointlyGoalsComment(int serverGoalId) {
+    Cursor getAllRowsOurGoalsJointlyGoalsComment(int serverGoalId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1869,7 +1869,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get the number of new rows in all comment for all jointly goals (new entrys) where date is current goal date -> no older one!
-    public int getCountAllNewEntryOurGoalsJointlyGoalsComment(long currentDateOfJointlyGoal) {
+    int getCountAllNewEntryOurGoalsJointlyGoalsComment(long currentDateOfJointlyGoal) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1887,26 +1887,9 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // Get the number of new rows in comment for choosen jointly goal, look jointlyGoalRowId (new entrys)
-    public int getCountNewEntryOurGoalsJointlyGoalComment(int jointlyGoalServerId) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL + "=" + jointlyGoalServerId;
-        Cursor c = db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
-                where, null, null, null, null, null);
-
-        if (c != null) {
-            c.moveToFirst();
-        }
-
-        // return how many
-        return c.getCount();
-    }
-
 
     // delete status new entry in table ourArrangementComment.
-    public boolean deleteStatusNewEntryOurGoalsJointlyGoalComment(int rowId) {
+    boolean deleteStatusNewEntryOurGoalsJointlyGoalComment(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1923,7 +1906,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete all comments with the same block id
-    public Boolean deleteAllRowsOurJointlyGoalsComment(String blockId) {
+    Boolean deleteAllRowsOurJointlyGoalsComment(String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1935,7 +1918,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return one jointly comment from the database for goals with row id = dbid (table ourGoalsJointlyGoalsComment)
-    public Cursor getOneRowOurGoalsJointlyComment(Long dbId) {
+    Cursor getOneRowOurGoalsJointlyComment(Long dbId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1955,7 +1938,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status comment in table ourGoalsJointlyGoalsComment
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Comment
-    public boolean updateStatusOurGoalsJointlyGoalsComment(Long rowId, int status) {
+    boolean updateStatusOurGoalsJointlyGoalsComment(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1971,7 +1954,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get all comments with status = 0 (Ready to send) and block id of current jointly goals
-    public Cursor getAllReadyToSendJointlyGoalsComments(String blockIdOfGoals) {
+    Cursor getAllReadyToSendJointlyGoalsComments(String blockIdOfGoals) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1997,7 +1980,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Goals Jointly Goals Evaluate ******************************************/
 
     // Add a new set of values to ourGoalsJointlyGoalsEvaluate .
-    public long insertRowOurGoalsJointlyGoalEvaluate(int serverGoalId, long currentDateOfGoal, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName, int status, long startEvaluationTime, long endEvaluationTime, String blockId) {
+    long insertRowOurGoalsJointlyGoalEvaluate(int serverGoalId, long currentDateOfGoal, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName, int status, long startEvaluationTime, long endEvaluationTime, String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2022,7 +2005,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getOneRowEvaluationResultGoals(Long dbId) {
+    Cursor getOneRowEvaluationResultGoals(Long dbId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2043,7 +2026,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // get all evaluation results in table ourGoalsEvaluate with status = 0
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Evaluation
-    public Cursor getAllReadyToSendGoalsEvaluationResults() {
+    Cursor getAllReadyToSendGoalsEvaluationResults() {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2062,7 +2045,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status evaluation in table jointly goals evaluation
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Evaluation
-    public boolean updateStatusOurGoalsEvaluation(Long rowId, int status) {
+    boolean updateStatusOurGoalsEvaluation(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2078,7 +2061,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // set last evaluation time in choosen (serverId) goal in table jointly debetable goal
-    public boolean setEvaluationTimePointForGoal(int serverId) {
+    boolean setEvaluationTimePointForGoal(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2100,7 +2083,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Goals Debetable Goals Comment ******************************************/
 
     // Add a new set of values to ourGoalsDebetableGoalsComment .
-    public long insertRowOurGoalsDebetableGoalsComment(String comment, int question_a, int question_b, int question_c, String authorName, long commentTime, long upload_time, String blockid, Boolean newEntry, long currentDateOfDebetableGoal, int status, int serverId) {
+    long insertRowOurGoalsDebetableGoalsComment(String comment, int question_a, int question_b, int question_c, String authorName, long commentTime, long upload_time, String blockid, Boolean newEntry, long currentDateOfDebetableGoal, int status, int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2133,7 +2116,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return all comments from the database for debetable goal with serverGoalId = id (table ourGoalsDebetableGoalsComment)
     // the result is sorted by DESC
-    public Cursor getAllRowsOurGoalsDebetableGoalsComment(int serverGoalId) {
+    Cursor getAllRowsOurGoalsDebetableGoalsComment(int serverGoalId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2156,7 +2139,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get the number of new rows in all comment for all debetable goals (new entrys) where date is current debetable goal date -> no older one!
-    public int getCountAllNewEntryOurGoalsDebetableGoalsComment(long currentDateOfGoal) {
+    int getCountAllNewEntryOurGoalsDebetableGoalsComment(long currentDateOfGoal) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2177,7 +2160,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return one comment from the database for debetable goals with row id = dbid (table DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT)
-    public Cursor getOneRowOurGoalsDebetableComment(Long dbId) {
+    Cursor getOneRowOurGoalsDebetableComment(Long dbId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2197,7 +2180,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status comment in table DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Comment
-    public boolean updateStatusOurGoalsDebetableComment(Long rowId, int status) {
+    boolean updateStatusOurGoalsDebetableComment(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2213,7 +2196,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry in table ourGoalsDebetableGoalsComment.
-    public boolean deleteStatusNewEntryOurGoalsDebetableGoalsComment(int rowId) {
+    boolean deleteStatusNewEntryOurGoalsDebetableGoalsComment(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2230,7 +2213,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete all comments for debetable goals with the same block id
-    public Boolean deleteAllRowsOurGoalsDebetableComment(String blockId) {
+    Boolean deleteAllRowsOurGoalsDebetableComment(String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2242,7 +2225,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get all debetable comments with status = 0 (Ready to send) and block id of current debetable goals
-    public Cursor getAllReadyToSendDebetableComments(String blockIdOfGoals) {
+    Cursor getAllReadyToSendDebetableComments(String blockIdOfGoals) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2267,7 +2250,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Meeting ******************************************/
 
     // Add a new meeting or suggestion date in db
-    public Long insertNewMeetingOrSuggestionDate(Long[] array_meetingTime, int[] array_meetingPlace, int[] array_meetingVote, String tmpClientVoteAuthor, Long tmpClientVoteDate, Long tmpMeetingSuggestionCreationTime, String tmpMeetingSuggestionAuthorName, int tmpMeetingSuggestionKategorie, Long tmpMeetingSuggestionResponseTime, String tmpMeetingSuggestionCoachHintText, int tmpMeetingSuggestionCoachCancele, Long tmpMeetingSuggestionCoachCanceleTime, String tmpMeetingSuggestionCoachCanceleAuthor, String tmpMeetingFoundFromSuggestionAuthor, Long tmpMeetingFoundFromSuggestionDate, int tmpMeetingFoundFromSuggestion, Long tmpMeetingSuggestionDataServerId, String tmpClientSuggestionText, String tmpClientSuggestionAuthor, Long tmpClientSuggestionTime, Long tmpClientSuggestionStartDate, Long tmpClientSuggestionEndDate, String tmpClientCommentText, String tmpClientCommentAuthor, Long tmpClientCommentTime, int tmpMeetingSuggestionClientCancele, Long tmpMeetingSuggestionClientCanceleTime, String tmpMeetingSuggestionClientCanceleAuthor, String tmpMeetingSuggestionClientCanceleText, int meetingStatus, Long tmpUploadTime, int newMeeting) {
+    Long insertNewMeetingOrSuggestionDate(Long[] array_meetingTime, int[] array_meetingPlace, int[] array_meetingVote, String tmpClientVoteAuthor, Long tmpClientVoteDate, Long tmpMeetingSuggestionCreationTime, String tmpMeetingSuggestionAuthorName, int tmpMeetingSuggestionKategorie, Long tmpMeetingSuggestionResponseTime, String tmpMeetingSuggestionCoachHintText, int tmpMeetingSuggestionCoachCancele, Long tmpMeetingSuggestionCoachCanceleTime, String tmpMeetingSuggestionCoachCanceleAuthor, String tmpMeetingFoundFromSuggestionAuthor, Long tmpMeetingFoundFromSuggestionDate, int tmpMeetingFoundFromSuggestion, Long tmpMeetingSuggestionDataServerId, String tmpClientSuggestionText, String tmpClientSuggestionAuthor, Long tmpClientSuggestionTime, Long tmpClientSuggestionStartDate, Long tmpClientSuggestionEndDate, String tmpClientCommentText, String tmpClientCommentAuthor, Long tmpClientCommentTime, int tmpMeetingSuggestionClientCancele, Long tmpMeetingSuggestionClientCanceleTime, String tmpMeetingSuggestionClientCanceleAuthor, String tmpMeetingSuggestionClientCanceleText, int meetingStatus, Long tmpUploadTime, int newMeeting) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2327,7 +2310,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Change an existing meeting to canceled by coach
-    public boolean updateMeetingCanceledByCoach(Long meeting_server_id, long canceledTime, String canceledAuthor, int newMeeting, int status) {
+    boolean updateMeetingCanceledByCoach(Long meeting_server_id, long canceledTime, String canceledAuthor, int newMeeting, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2347,7 +2330,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Change an existing meeting to canceled by client
-    public boolean updateMeetingCanceledByClient(Long meeting_id, long canceledTime, String canceledAuthor, String canceledReasonText, int status) {
+    boolean updateMeetingCanceledByClient(Long meeting_id, long canceledTime, String canceledAuthor, String canceledReasonText, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2368,7 +2351,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Change an existing suggestion that a meeting was found by coach
-    public boolean updateMeetingFoundFromSuggestion(Long meeting_id, long foundTime, String foundAuthor, int newMeeting, int status) {
+    boolean updateMeetingFoundFromSuggestion(Long meeting_id, long foundTime, String foundAuthor, int newMeeting, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2392,7 +2375,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Delete all rows meeting and suggestions from the database
-    public boolean deleteAllRowsMeetingAndSuggestion() {
+    boolean deleteAllRowsMeetingAndSuggestion() {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2401,7 +2384,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Delete selected meeting or suggestion from db
-    public boolean deleteSelectedMeetingOrSuggestionFromDb(Long meeting_id) {
+    boolean deleteSelectedMeetingOrSuggestionFromDb(Long meeting_id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2412,7 +2395,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get the number of new rows in meeting/ suggestion
-    public int getCountNewEntryMeetingAndSuggestion(String meetingOrSuggestion) {
+    int getCountNewEntryMeetingAndSuggestion(String meetingOrSuggestion) {
 
         String where = ""; //new_entry = 1 (true)?
 
@@ -2448,7 +2431,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry for meeting/ suggestion with rowId
-    public boolean deleteStatusNewEntryMeetingAndSuggestion(Long rowId) {
+    boolean deleteStatusNewEntryMeetingAndSuggestion(Long rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2464,7 +2447,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return all meeting/ suggestion from the database
-    public Cursor getAllRowsMeetingsAndSuggestion(String suggestionOrMeetingData, Long nowTime) {
+    Cursor getAllRowsMeetingsAndSuggestion(String suggestionOrMeetingData, Long nowTime) {
 
         String where = "";
         String sort = "";
@@ -2516,7 +2499,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return one row of meeting or suggestion from the database
-    public Cursor getOneRowMeetingsOrSuggestion(Long dbId) {
+    Cursor getOneRowMeetingsOrSuggestion(Long dbId) {
 
         String where = "";
 
@@ -2538,7 +2521,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // update status of meeting/ suggestion with rowId
-    public boolean updateStatusMeetingAndSuggestion(Long rowId, int status) {
+    boolean updateStatusMeetingAndSuggestion(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2553,8 +2536,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    public boolean updateSuggestionVoteAndCommentByClient(int tmpResultVote1, int tmpResultVote2, int tmpResultVote3, int tmpResultVote4, int tmpResultVote5, int tmpResultVote6, Long clientVoteDbId, Long tmpDate, String tmpAuthor, String tmpClientCommentSuggestionText, int tmpStatus) {
-
+    boolean updateSuggestionVoteAndCommentByClient(int tmpResultVote1, int tmpResultVote2, int tmpResultVote3, int tmpResultVote4, int tmpResultVote5, int tmpResultVote6, Long clientVoteDbId, Long tmpDate, String tmpAuthor, String tmpClientCommentSuggestionText, int tmpStatus) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2586,90 +2568,6 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-    /*
-    // Return all choosen meetings from the database
-    // the result is sorted by DESC
-    public Cursor getRowsChoosenSuggesteMeetings() {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        // search string
-        String where = MEETING_FIND_MEETING_KEY_APPROVAL + "=1"; // approval = 1 is set
-
-        // sort string
-        String sort = MEETING_FIND_MEETING_KEY_DATE_TIME + " DESC";
-
-        Cursor c = 	db.query(true, DATABASE_TABLE_MEETING_FIND_MEETING, MEETING_FIND_MEETING_ALL_KEYS,
-                where, null, null, null, sort, null);
-
-        if (c != null) {
-            c.moveToFirst();
-        }
-
-        return c;
-
-    }
-
-*/
-    // set/unset approval for meeting with rowId
-    public boolean setUnsetStatusApprovalMeetingFindMeeting (int rowId, Boolean setUnset) {
-
-        /*
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String where = KEY_ROWID + "=" + rowId;
-
-        // Create row new_entry = 0 (not new!)
-        ContentValues newValues = new ContentValues();
-
-        // set / unset approval for meeting
-        if (setUnset) {
-            newValues.put(MEETING_FIND_MEETING_KEY_APPROVAL, 1);
-        } else {
-            newValues.put(MEETING_FIND_MEETING_KEY_APPROVAL, 0);
-        }
-
-        // Insert it into the database.
-        return db.update(DATABASE_TABLE_MEETING_FIND_MEETING, newValues, where, null) != 0;
-
-        */
-
-        return true;
-
-    }
-
-    // unset all approval meeting in table
-    public boolean unsetAllStatusApprovalMeetingFindMeeting () {
-
-
-        /*
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        // Create row new_entry = 0 (not new!)
-        ContentValues newValues = new ContentValues();
-
-        newValues.put(MEETING_FIND_MEETING_KEY_APPROVAL, 0);
-
-
-        // Insert it into the database.
-        return db.update(DATABASE_TABLE_MEETING_FIND_MEETING, newValues, null, null) != 0;
-        */
-
-        return true;
-
-
-    }
 
     /********************************* End!! TABLES FOR FUNCTION: Meeting ***************************************/
     /****************************************************************************************************************************/

@@ -32,7 +32,7 @@ public class EfbHelperClass {
 
         }
         catch (Exception e) {
-
+            // do nothing
         }
 
         return "";
