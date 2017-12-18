@@ -921,7 +921,7 @@
             <string name="errorInputSuggestionComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz oder enthält nicht erlaubte Zeichen.</string>
             <string name="suggestionCommentHintText">Sie können Vorschläge auswählen und/oder hier einen Kommentar schreiben</string>
             <string name="suggestionOverviewLinkTextDeleteSuggestionEntry">Den obigen Eintrag löschen</string>
-            <string name="suggestionOverviewLinkNormalDeleteDate">(Der Eintrag wird automatisch am %1s um %2s Uhr gelöscht)</string>
+            <string name="suggestionOverviewLinkNormalDeleteDate">(Der Eintrag wird automatisch am %1$s um %2$s Uhr gelöscht)</string>
         <!-- end fragment suggestion overview -->
 
         <!-- fragment suggestion from client -->
@@ -929,7 +929,39 @@
             <string name="meetingOverviewNoSuggestionFromClientAvailableText">Es liegen keine Terminvorschläge von Ihnen vor.</string>
             <string name="meetingOverviewSuggestionFromClientFunctionOffText">Die Funktion steht im Moment nicht zur Verfügung.</string>
 
-        <!-- end fragment suggestion from client -->
+    <string name="meetingOverviewSuggestionFromClientIntroInfoTextInTimezone">Bitte geben Sie Ihre Terminvorschläge ein</string>
+    <string name="meetingOverviewSuggestionFromClientIntroInfoTextOutTimezone">Demnächst hier Ihre Terminvorschläge abgeben</string>
+
+
+    <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextInTimezone">Ihr Terminvorschlag</string>
+    <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextOutTimezone">Demnächst</string>
+    <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextCanceled">Zeitraum abgesagt</string>
+    <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextFoundMeeting">Termin gefunden</string>
+    <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextAlreadySend">Terminvorschläge gesendet</string>
+
+
+
+
+    <string name="meetingOverviewSuggestionFromClientAuthorAndDateCanceled">Der Zeitraum vom %1$s, %2$s Uhr, bis zum %3$s, %4$s Uhr, für die Abgabe von Terminvorschlägen wurde von Ihrer Beraterin/ Ihrem Berater (%5$s) am %6$s um %7$s Uhr abgesagt.</string>
+
+    <string name="meetingOverviewSuggestionFromClientAuthorAndDateMeetingFound">Ihre Beraterin/ Ihr Berater (%1$s) hat am %2$s um %3$s Uhr aus Ihren Terminvorschlägen einen Termin finden können. Bitte schauen Sie unter dem Punkt \"Termine\" nach (Terminabgabezeitraum: %4$s, %5$s Uhr, bis %6$s, %7$s Uhr).</string>
+
+    <string name="meetingOverviewSuggestionFromClientAuthorAndDateAlreadySend">Ihre Terminvorschläge wurden am %1$s um %2$s Uhr zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
+
+
+    <string name="meetingOverviewSuggestionFromClientInTimezone">Bitte geben Sie bis zum %1$s um %2$s Uhr Ihre Terminvorschläge ab. Der Terminvorschlagszeitraum begann am %3$s um %4$s Uhr und wurde von %5$s am %6$s um %7$s Uhr erstellt.</string>
+    <string name="meetingOverviewSuggestionFromClientOutTimezone">Ab dem %1$s um %2$s Uhr können Sie bis zum %3$s um %4$s Uhr Ihre Terminvorschläge abgeben. Der Terminvorschlagszeitraum wurde von %5$s am %6$s um %7$s Uhr erstellt.</string>
+
+    <string name="suggestionFromClientHintText">Bitte geben Sie Ihre Terminvorschläge ein</string>
+    <string name="suggestionFromClientEndDateTimeAskedForIntroText">Terminvorschläge erbeten in spätestens</string>"
+    <string name="suggestionFromClientTimeIsOver">Zeitraum abgelaufen</string>
+    <string name="suggestionFromClientEndDateAndTimeText">(bis zum %1$s um %2$s Uhr)</string>
+
+    <string name="suggestionFromClientButtonSendToCoach">Terminvorschläge senden</string>
+
+
+
+    <!-- end fragment suggestion from client -->
 
         <!-- Subtitle under Title Meeting -->
             <string name="meetingSubtitleMeetingOverview">Aktuelle Termine</string>
@@ -937,7 +969,11 @@
             <string name="meetingSubtitleSuggestionOverview">Terminvorschläge vom Berater</string>
             <string name="meetingSubtitleSuggestionOverviewNoSuggestion">Keine Vorschläge vom Berater</string>
             <string name="meetingSubtitleSuggestionFromClientOverview">Terminvorschläge von Ihnen</string>
-            <string name="meetingSubtitleSuggestionFromClientOverviewNoSuggestion">Keine Vorschläge von Ihnen</string>
+
+
+
+
+    <string name="meetingSubtitleSuggestionFromClientOverviewNoSuggestion">Keine Vorschläge von Ihnen</string>
             <string name="meetingSubtitleSuggestionFromClientOverviewFunctionNotPossible">Funktion nicht möglich</string>
             <string name="meetingSubtitleMeetingSuggestionOverviewOld">Vergangene Termine</string>
             <string name="meetingSubtitleMeetingSuggestionOverviewOldNotAvailable">Keine vergangenen Termine vorhanden</string>

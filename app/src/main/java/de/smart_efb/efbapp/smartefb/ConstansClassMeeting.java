@@ -30,4 +30,7 @@ package de.smart_efb.efbapp.smartefb;
     // suggestion comment max letters
     static final int namePrefsSuggestionCommentMaxLetters = 200;
 
+   // suggestion comment max letters
+   static final int namePrefsSuggestionFromClientMaxLetters = 600;
+
 }

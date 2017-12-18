@@ -267,12 +267,8 @@ public class MainActivity extends AppCompatActivity {
         // init the DB
         myDb = new DBAdapter(this);
 
-
-
         // check installation status (new or update)
-        //newOrUpdateInstallation();
-
-
+        newOrUpdateInstallation();
 
         // start excahnge service with intent
         setAlarmForExchangeService();
@@ -554,6 +550,12 @@ public class MainActivity extends AppCompatActivity {
                 prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCanceleMeeting_OnOff, false); // turn function meeting client canceled meeting off
                 prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false); // turn function meeting client comment suggestion off
 
+                // function to switch on
+                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Prevention, true); // turn function prevention on
+                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Faq, true); // turn function faq on
+                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_EmergencyHelp, true); // turn function emergency help on
+                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Settings, true); // turn function settings on
+
                 // set connection parameter and status
                 prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 0); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
                 prefsEditor.putInt(ConstansClassSettings.namePrefsRandomNumberForConnection, 0); // five digits for connetion to server
@@ -574,24 +576,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-
-
-
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
 
 }
 

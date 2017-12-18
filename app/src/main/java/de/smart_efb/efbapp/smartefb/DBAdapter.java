@@ -384,7 +384,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR = "meeting_client_canceled_author";
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME = "meeting_client_canceled_time";
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TEXT = "meeting_client_canceled_text";
-    static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT = "meeting_client_suggestion"; // 0=not canceled; 1= meeting canceled by client
+    static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT = "meeting_client_suggestion";
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR = "meeting_client_suggestion_author";
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME = "meeting_client_suggestion_time";
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE = "meeting_client_suggestion_startdate";
@@ -2372,6 +2372,28 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
+    // Change an existing suggestion from client with client suggestion
+    boolean updateSuggestionFromClient(Long meeting_id, long suggestionTime, String suggestionAuthor, String suggestionText, int status) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + meeting_id;
+
+        // Create rows data:
+        ContentValues newValues = new ContentValues();
+        newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME, suggestionTime);
+        newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR, suggestionAuthor);
+        newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT, suggestionText);
+        newValues.put(MEETING_SUGGESTION_MEETING_KEY_STATUS, status);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+    }
+
+
+
+
+
 
 
     // Delete all rows meeting and suggestions from the database
@@ -2454,7 +2476,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-
         switch (suggestionOrMeetingData) {
 
             case "future_meeting":
@@ -2464,6 +2485,10 @@ public class DBAdapter extends SQLiteOpenHelper {
                 break;
             case "future_suggestion":
                 where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">=" + nowTime;
+                sort = MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " DESC, " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + " DESC";
+                break;
+            case "future_suggestion_from_client":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + ">" + nowTime;
                 sort = MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " DESC, " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + " DESC";
                 break;
             case "old_meeting":

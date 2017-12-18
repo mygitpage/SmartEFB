@@ -637,14 +637,15 @@ class ConstansClassXmlParser {
     static final String xmlNameForMeeting_Suggestion_ClientCommentAuthorName = "meeting_client_comment_authorname";
     static final String xmlNameForMeeting_Suggestion_ClientCommentTime = "meeting_client_comment_time";
     static final String xmlNameForMeeting_Suggestion_ClientCommentText = "meeting_client_comment_text";
-    static final String xmlNameForMeeting_ClientSuggestionAuthor = "meeting_client_suggestion_authorname";
-    static final String xmlNameForMeeting_ClientSuggestionTime = "meeting_client_suggestion_time";
-    static final String xmlNameForMeeting_ClientSuggestionText = "meeting_client_suggestion_text";
-    static final String xmlNameForMeeting_ClientSuggestionStartDate = "meeting_client_suggestion_startdate";
-    static final String xmlNameForMeeting_ClientSuggestionEndDate = "meeting_client_suggestion_enddate";
+    static final String xmlNameForMeeting_SuggestionFromClient_StartDate = "suggestion_from_client_startdate";
+    static final String xmlNameForMeeting_SuggestionFromClient_EndDate = "suggestion_from_client_enddate";
+    static final String xmlNameForMeeting_SuggestionFromClient_Author = "suggestion_from_client_authorname";
+    static final String xmlNameForMeeting_SuggestionFromClient_Time = "suggestion_from_client_time";
+    static final String xmlNameForMeeting_SuggestionFromClient_Text = "suggestion_from_client_text";
     static final String xmlNameForMeeting_Suggestion_ClientCanceledAuthorName = "meeting_client_canceled_authorrname";
     static final String xmlNameForMeeting_Suggestion_ClientCanceledTime = "meeting_client_canceled_time";
     static final String xmlNameForMeeting_Suggestion_ClientCanceledText = "meeting_client_canceled_text";
+
 
     
     //

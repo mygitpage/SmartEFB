@@ -105,16 +105,16 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
 
             // get all suggestion from client from database in correct order
             Long nowTime = System.currentTimeMillis();
-            Cursor cursorMeetingSuggestionFromClient = myDb.getAllRowsMeetingsAndSuggestion("future_suggestion", nowTime);
+            Cursor cursorMeetingSuggestionFromClient = myDb.getAllRowsMeetingsAndSuggestion("future_suggestion_from_client", nowTime);
 
             if (cursorMeetingSuggestionFromClient.getCount() > 0 && listViewMeetingSuggestionFromClient != null) {
 
                 // set correct subtitle
-                tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleSuggestionOverview", "string", fragmentSuggestionFromClientContext.getPackageName()));
-                ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle(tmpSubtitle, "suggestion_overview");
+                tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleSuggestionFromClientOverview", "string", fragmentSuggestionFromClientContext.getPackageName()));
+                ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle(tmpSubtitle, "suggestion_from_client");
 
                 // set no suggestions text visibility gone
-                TextView tmpNoSuggestionsText = (TextView) viewFragmentSuggestionFromCLient.findViewById(R.id.meetingOverviewNoSuggestionAvailable);
+                TextView tmpNoSuggestionsText = (TextView) viewFragmentSuggestionFromCLient.findViewById(R.id.meetingOverviewNoSuggestionFromClientAvailable);
                 tmpNoSuggestionsText.setVisibility(View.GONE);
 
                 // set listview visible

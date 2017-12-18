@@ -2900,19 +2900,19 @@ import java.util.Map;
 
 
             // start tag meeting/suggestion client suggestion text
-            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionText);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_SuggestionFromClient_Text);
             xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT)));
-            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionText);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_SuggestionFromClient_Text);
 
             // start tag meeting/suggestion client suggestion time
-            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionTime);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_SuggestionFromClient_Time);
             xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME))/1000)); // convert millis to times
-            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionTime);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_SuggestionFromClient_Time);
 
             // start tag meeting/suggestion client suggestion author
-            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionAuthor);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_SuggestionFromClient_Author);
             xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR)));
-            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_ClientSuggestionAuthor);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_SuggestionFromClient_Author);
 
 
             // start tag meeting/suggestion client comment author
