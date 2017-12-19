@@ -183,13 +183,11 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
 
         }
         textViewSuggestionFromClientTitleAndNumber.setText(actualSuggestionFromClientHeadline);
-        textViewSuggestionFromClientAuthorAndDate.setText(tmpTextAuthorAndDate);
+        textViewSuggestionFromClientAuthorAndDate.setText(Html.fromHtml(tmpTextAuthorAndDate));
 
 
 
 
-        
-        
         // we are in timezone -> show input field
         if (tmpInTimezone && cursor.isFirst()) {
 
@@ -239,9 +237,11 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             final TextView placeholderForTicTimer = (TextView) inflatedView.findViewById(R.id.suggestionFromClientEndDateTicTimer);
             placeholderForTicTimer.setVisibility(View.VISIBLE);
 
-            // set intro text timer to visible
+             // set intro text timer to visible
             TextView placeholderForTicTimerAskedFor = (TextView) inflatedView.findViewById(R.id.suggestionFromClientEndDateTicTimerIntroText);
+            String tmpAskForText = context.getResources().getString(R.string.suggestionFromClientEndDateTimeAskedForIntroText);
             placeholderForTicTimerAskedFor.setVisibility(View.VISIBLE);
+            placeholderForTicTimerAskedFor.setText(tmpAskForText);
 
             // generate end date
             String tmpResponseDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)), "dd.MM.yyyy");;
@@ -277,6 +277,21 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                 }.start();
             }
 
+            // hint text from coach?
+            if (cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT)).length() > 0) {
+
+                TextView textViewShowHintTextFromCoach = (TextView) inflatedView.findViewById(R.id.suggestionFromClientCoachHintText);
+                textViewShowHintTextFromCoach.setText(cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT)));
+                textViewShowHintTextFromCoach.setVisibility(View.VISIBLE);
+
+                TextView textViewShowHintTextFromCoachBorder = (TextView) inflatedView.findViewById(R.id.suggestionFromClientCoachHintTextBorder);
+                textViewShowHintTextFromCoachBorder.setVisibility(View.VISIBLE);
+
+            }
+
+
+
+
 
             // find send button "Terminvorschlaege senden"
             Button tmpSendButton = (Button) inflatedView.findViewById(R.id.buttonSendSuggestionFromClientToCoach);
@@ -309,13 +324,13 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                         //String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
                         //((ActivityMeeting) getActivity()).setSuccessefullMessageForSending (tmpSuccessfullMessage);
 
-                        /*
+
                         // send intent to service to start the service and send vote suggestion to server!
                         Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
-                        startServiceIntent.putExtra("com","send_suggestion_from_client_data");
+                        startServiceIntent.putExtra("com","send_meeting_data");
                         startServiceIntent.putExtra("dbid",clientDbId);
                         meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
-                        */
+
 
                         // build intent to go back to suggestionFromClientOverview
                         Intent intent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ActivityMeeting.class);
@@ -334,17 +349,69 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             });
 
 
-
-
-
-
-            
-            
-            
         }
-        
-        
-        
+
+
+        // we are not in timezone -> show count down timer
+        if (tmpOutTimezone && cursor.isFirst()) {
+
+            // set count down timer
+            final String tmpTextResponseTimeOver = context.getResources().getString(R.string.suggestionFromClientTimeIsOver);
+
+            // get text view for timer place and set visible
+            final TextView placeholderForTicTimer = (TextView) inflatedView.findViewById(R.id.suggestionFromClientEndDateTicTimer);
+            placeholderForTicTimer.setVisibility(View.VISIBLE);
+
+            // set intro text timer to visible
+            TextView placeholderForTicTimerAskedFor = (TextView) inflatedView.findViewById(R.id.suggestionFromClientEndDateTicTimerIntroText);
+            String tmpAskForText = context.getResources().getString(R.string.suggestionFromClientStartDateTimeAskedForIntroText);
+            placeholderForTicTimerAskedFor.setVisibility(View.VISIBLE);
+            placeholderForTicTimerAskedFor.setText(tmpAskForText);
+
+            // generate end date
+            String tmpStartDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)), "dd.MM.yyyy");;
+            String tmpStartTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)), "HH:mm");
+            String tmpDateAndTimeForResponse = String.format(context.getResources().getString(R.string.suggestionFromClientStartDateAndTimeText), tmpStartDate, tmpStartTime);
+            TextView placeholderForTicTimerEndStartInText = (TextView) inflatedView.findViewById(R.id.suggestionFromClientEndDateTicTimerInText);
+            placeholderForTicTimerEndStartInText.setText(tmpDateAndTimeForResponse);
+            placeholderForTicTimerEndStartInText.setVisibility(View.VISIBLE);
+
+            // show time until enddate is reach
+            // calculate run time for timer in MILLISECONDS!!!
+            Long nowTime = System.currentTimeMillis();
+            Long runTimeForTimer = cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)) - nowTime;
+            // start the timer with the calculated milliseconds
+            if (runTimeForTimer > 0) {
+                new CountDownTimer(runTimeForTimer, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        // gernate count down timer
+                        String FORMAT = "%d Stunden %02d Minuten %02d Sekunden";
+                        String tmpTime = String.format(FORMAT,
+                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+
+                        // and set to textview
+                        placeholderForTicTimer.setText(tmpTime);
+                    }
+
+                    public void onFinish() {
+                        // build intent to go back to suggestionFromClientOverview and show inputfield for client suggestion
+                        Intent intent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ActivityMeeting.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.putExtra("com", "suggestion_from_client");
+                        meetingSuggestionOverviewCursorAdapterContext.startActivity(intent);
+                    }
+                }.start();
+            }
+
+
+
+
+
+
+
+        }
         
         
         

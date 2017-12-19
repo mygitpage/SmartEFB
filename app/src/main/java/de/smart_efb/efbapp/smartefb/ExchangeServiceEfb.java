@@ -59,11 +59,7 @@ import java.util.Map;
         }
 
 
-
-
         //++++++++++++++++++ TASK AREA ++++++++++++++++++++++++++++++++++++++++++++++
-
-
 
         // Check the DB for unsend comments, evaluation results, meetings, etc. and send to sever.
         // Ask server for new data and get answer from server
@@ -153,7 +149,6 @@ import java.util.Map;
                     // get all meetings data (meetings, suggestions from client, answers, comments, etc.) with status = 0 -> ready to send
                     Cursor allMeetingsReadyToSend = myDb.getAllRowsMeetingsAndSuggestion("ready_to_send", 0L); // time is not needed for db-question, so set to zero
 
-
                     try {
 
                         xmlSerializer.setOutput(writer);
@@ -179,9 +174,6 @@ import java.util.Map;
                         // end tag main
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
-
-                        Log.d("Exchange Arr Comment", "Anzahl Kommentare to send: "+allCommentsReadyToSend.getCount());
-
                         // build xml for all now comments
                         if (allCommentsReadyToSend != null && allCommentsReadyToSend.getCount() > 0) {
 
@@ -191,8 +183,6 @@ import java.util.Map;
                             } while (allCommentsReadyToSend.moveToNext());
                         }
 
-                        Log.d("Exchange", "Anzahl Entwürfe Komm to send: "+allSketchCommentsReadyToSend.getCount());
-
                         // build xml for all sketch comments
                         if (allSketchCommentsReadyToSend != null && allSketchCommentsReadyToSend.getCount() > 0) {
 
@@ -201,9 +191,6 @@ import java.util.Map;
                                 send_sketch_comment_info = true;
                             } while (allSketchCommentsReadyToSend.moveToNext());
                         }
-
-
-                        Log.d ("EXCHANGE --->", "Anzahl Arrangement Evaluation: "+allArrangementEvaluationResultsReadyToSend.getCount());
 
                         // build xml for all arrangement evaluation result
                         if (allArrangementEvaluationResultsReadyToSend != null && allArrangementEvaluationResultsReadyToSend.getCount() > 0) {
@@ -223,10 +210,6 @@ import java.util.Map;
                             } while (allJointlyGoalsCommentsReadyToSend.moveToNext());
                         }
 
-
-
-                        Log.d ("EXCHANGE --->", "Anzahl Goals Evaluation: "+allGoalsEvaluationResultsReadyToSend.getCount());
-
                         // build xml for all goals evaluation result
                         if (allGoalsEvaluationResultsReadyToSend != null && allGoalsEvaluationResultsReadyToSend.getCount() > 0) {
 
@@ -235,8 +218,6 @@ import java.util.Map;
                                 send_goals_evaluation_result_info = true;
                             } while (allGoalsEvaluationResultsReadyToSend.moveToNext());
                         }
-
-
 
                         // build xml for all debetable goals comments
                         if (allDebetableCommentsReadyToSend != null && allDebetableCommentsReadyToSend.getCount() > 0) {
@@ -247,12 +228,6 @@ import java.util.Map;
                             } while (allDebetableCommentsReadyToSend.moveToNext());
                         }
 
-
-
-
-
-                        Log.d ("EXCHANGE --->", "Anzahl ConnectBook Messages: "+allConnectBookMessagesReadyToSend.getCount());
-
                         // build xml for all connect book messages result
                         if (allConnectBookMessagesReadyToSend != null && allConnectBookMessagesReadyToSend.getCount() > 0) {
 
@@ -261,10 +236,6 @@ import java.util.Map;
                                 send_connect_book_messages_result_info = true;
                             } while (allConnectBookMessagesReadyToSend.moveToNext());
                         }
-
-
-
-
 
                         Log.d ("EXCHANGE --->", "Anzahl Meetings Data Set: "+allMeetingsReadyToSend.getCount());
 
@@ -276,9 +247,6 @@ import java.util.Map;
                                 send_meeting_data_result_info = true;
                             } while (allMeetingsReadyToSend.moveToNext());
                         }
-
-
-
 
                         // end tag smartEfb
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
@@ -364,7 +332,6 @@ import java.util.Map;
                             }
                         }
 
-
                         // set status of evaluation result for arrangement to 1 -> send successfull
                         if (allArrangementEvaluationResultsReadyToSend != null) {
                             if (returnMap.get("SendSuccessfull").equals("1") && send_arrangement_evaluation_result_info) {
@@ -374,9 +341,6 @@ import java.util.Map;
                                 } while (allArrangementEvaluationResultsReadyToSend.moveToNext());
                             }
                         }
-
-
-
 
                         // set status of evaluation jointly goal to 1 -> send successfull
                         if (allGoalsEvaluationResultsReadyToSend != null) {
@@ -388,9 +352,6 @@ import java.util.Map;
                             }
                         }
 
-
-
-
                         // set status of jointly goal comment to 1 -> send successfull
                         if (allJointlyGoalsCommentsReadyToSend != null) {
                             if (returnMap.get("SendSuccessfull").equals("1") && send_jointly_goals_comment_info) {
@@ -400,7 +361,6 @@ import java.util.Map;
                                 } while (allJointlyGoalsCommentsReadyToSend.moveToNext());
                             }
                         }
-
 
                         // set status of debetable goal comment to 1 -> send successfull
                         if (allDebetableCommentsReadyToSend != null) {
@@ -427,8 +387,6 @@ import java.util.Map;
                                 context.sendBroadcast(tmpIntent);
                             }
                         }
-
-
 
                         // set status of meeting data to 1 -> send successfull
                         if (allMeetingsReadyToSend != null) {
@@ -466,13 +424,6 @@ import java.util.Map;
             }
         }
 
-
-
-
-
-
-
-
         // send now comment arrangement to server and get answer from server
         public class ExchangeTaskSendNowCommentArrangement implements Runnable {
 
@@ -491,7 +442,6 @@ import java.util.Map;
 
             // return information for change
             Map<String, String> returnMap;
-
 
             // Constructor
             public ExchangeTaskSendNowCommentArrangement (Context context, Long dbid) {
@@ -567,7 +517,6 @@ import java.util.Map;
                     catch (IOException e) {
                         e.printStackTrace();
                     }
-
 
                     // and send xml text to server
                     try {
@@ -664,11 +613,8 @@ import java.util.Map;
 
                 // stop the task with service
                 stopSelf();
-
             }
-
         }
-
 
 
     // send sketch comment arrangement to server and get answer from server
@@ -689,7 +635,6 @@ import java.util.Map;
 
         // return information for change
         Map<String, String> returnMap;
-
 
         // Constructor
         public ExchangeTaskSendSketchCommentArrangement (Context context, Long dbid) {
@@ -859,17 +804,9 @@ import java.util.Map;
 
             // stop the task with service
             stopSelf();
-
         }
-
     }
 
-
-
-
-
-
-    //
     // send evaluation result arrangement to server and get answer from server
     public class ExchangeTaskSendEvaluationResultArrangement implements Runnable {
 
@@ -888,7 +825,6 @@ import java.util.Map;
 
         // return information for change
         Map<String, String> returnMap;
-
 
         // Constructor
         public ExchangeTaskSendEvaluationResultArrangement (Context context, Long dbid) {
@@ -967,7 +903,6 @@ import java.util.Map;
                     e.printStackTrace();
                 }
 
-
                 // and send xml text to server
                 try {
                     // prepair data to send
@@ -1010,7 +945,6 @@ import java.util.Map;
                     }
 
                     Log.d("Evaluation REc. XML", "Content:"+stringBuilder.toString().trim());
-
 
                     // call xml parser with input
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
@@ -2960,16 +2894,6 @@ import java.util.Map;
         }
 
     }
-
-
-
-
-
-
-
-
-
-
 
 
 }

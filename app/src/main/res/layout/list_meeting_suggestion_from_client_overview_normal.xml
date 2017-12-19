@@ -102,6 +102,29 @@
         android:digits="@string/editTextInputFilterTextAlphaNumeric"
         android:visibility="gone"/>
 
+    <!-- coach hint for client suggestion -->
+    <TextView
+        android:id="@+id/suggestionFromClientCoachHintText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="left"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/suggestionFromClientCoachHintTextBorder"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_color"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"/>
+
+    <!-- end coach hint for client suggestion -->
 
 
     <!-- timer for response block -->

@@ -942,23 +942,28 @@
 
 
 
-    <string name="meetingOverviewSuggestionFromClientAuthorAndDateCanceled">Der Zeitraum vom %1$s, %2$s Uhr, bis zum %3$s, %4$s Uhr, für die Abgabe von Terminvorschlägen wurde von Ihrer Beraterin/ Ihrem Berater (%5$s) am %6$s um %7$s Uhr abgesagt.</string>
+    <string name="meetingOverviewSuggestionFromClientAuthorAndDateCanceled">Der Zeitraum vom %1$s, %2$s Uhr, bis zum %3$s, %4$s Uhr, für die Abgabe von Terminvorschlägen wurde von Ihrer Beraterin/ Ihrem Berater (&lt;u>%5$s&lt;/u>) am %6$s um %7$s Uhr abgesagt.</string>
 
-    <string name="meetingOverviewSuggestionFromClientAuthorAndDateMeetingFound">Ihre Beraterin/ Ihr Berater (%1$s) hat am %2$s um %3$s Uhr aus Ihren Terminvorschlägen einen Termin finden können. Bitte schauen Sie unter dem Punkt \"Termine\" nach (Terminabgabezeitraum: %4$s, %5$s Uhr, bis %6$s, %7$s Uhr).</string>
+    <string name="meetingOverviewSuggestionFromClientAuthorAndDateMeetingFound">Ihre Beraterin/ Ihr Berater (&lt;u>%1$s&lt;/u>) hat am %2$s um %3$s Uhr aus Ihren Terminvorschlägen einen Termin finden können. Bitte schauen Sie unter dem Punkt \"Termine\" nach (Terminabgabezeitraum: %4$s, %5$s Uhr, bis %6$s, %7$s Uhr).</string>
 
     <string name="meetingOverviewSuggestionFromClientAuthorAndDateAlreadySend">Ihre Terminvorschläge wurden am %1$s um %2$s Uhr zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
 
 
-    <string name="meetingOverviewSuggestionFromClientInTimezone">Bitte geben Sie bis zum %1$s um %2$s Uhr Ihre Terminvorschläge ab. Der Terminvorschlagszeitraum begann am %3$s um %4$s Uhr und wurde von %5$s am %6$s um %7$s Uhr erstellt.</string>
-    <string name="meetingOverviewSuggestionFromClientOutTimezone">Ab dem %1$s um %2$s Uhr können Sie bis zum %3$s um %4$s Uhr Ihre Terminvorschläge abgeben. Der Terminvorschlagszeitraum wurde von %5$s am %6$s um %7$s Uhr erstellt.</string>
+    <string name="meetingOverviewSuggestionFromClientInTimezone">Bitte geben Sie bis zum %1$s um %2$s Uhr Ihre Terminvorschläge ab. Der Terminvorschlagszeitraum begann am %3$s um %4$s Uhr und wurde von &lt;u>%5$s&lt;/u> am %6$s um %7$s Uhr erstellt.</string>
+    <string name="meetingOverviewSuggestionFromClientOutTimezone">Ab dem %1$s um %2$s Uhr können Sie bis zum %3$s um %4$s Uhr Ihre Terminvorschläge abgeben. Der Terminvorschlagszeitraum wurde von &lt;u>%5$s&lt;/u> am %6$s um %7$s Uhr erstellt.</string>
 
     <string name="suggestionFromClientHintText">Bitte geben Sie Ihre Terminvorschläge ein</string>
-    <string name="suggestionFromClientEndDateTimeAskedForIntroText">Terminvorschläge erbeten in spätestens</string>"
+    <string name="suggestionFromClientEndDateTimeAskedForIntroText">Terminvorschläge erbeten in spätestens</string>
     <string name="suggestionFromClientTimeIsOver">Zeitraum abgelaufen</string>
-    <string name="suggestionFromClientEndDateAndTimeText">(bis zum %1$s um %2$s Uhr)</string>
+    <string name="suggestionFromClientEndDateAndTimeText">(Bis zum %1$s um %2$s Uhr)</string>
 
     <string name="suggestionFromClientButtonSendToCoach">Terminvorschläge senden</string>
 
+
+
+
+    <string name="suggestionFromClientStartDateAndTimeText">(Am %1$s um %2$s Uhr)</string>
+    <string name="suggestionFromClientStartDateTimeAskedForIntroText">Demnächst Terminvorschläge abgeben in</string>
 
 
     <!-- end fragment suggestion from client -->
