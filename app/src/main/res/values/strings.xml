@@ -944,7 +944,7 @@
 
     <string name="meetingOverviewSuggestionFromClientAuthorAndDateCanceled">Der Zeitraum vom %1$s, %2$s Uhr, bis zum %3$s, %4$s Uhr, für die Abgabe von Terminvorschlägen wurde von Ihrer Beraterin/ Ihrem Berater (&lt;u>%5$s&lt;/u>) am %6$s um %7$s Uhr abgesagt.</string>
 
-    <string name="meetingOverviewSuggestionFromClientAuthorAndDateMeetingFound">Ihre Beraterin/ Ihr Berater (&lt;u>%1$s&lt;/u>) hat am %2$s um %3$s Uhr aus Ihren Terminvorschlägen einen Termin finden können. Bitte schauen Sie unter dem Punkt \"Termine\" nach (Terminabgabezeitraum: %4$s, %5$s Uhr, bis %6$s, %7$s Uhr).</string>
+    <string name="meetingOverviewSuggestionFromClientAuthorAndDateMeetingFound">Ihre Beraterin/ Ihr Berater (&lt;u>%1$s&lt;/u>) hat am %2$s um %3$s Uhr aus Ihren Terminvorschlägen einen Termin finden können. Bitte schauen Sie unter dem Punkt \"Termine\" nach (Vorschlagszeitraum war vom %4$s, %5$s Uhr, bis zum %6$s um %7$s Uhr).</string>
 
     <string name="meetingOverviewSuggestionFromClientAuthorAndDateAlreadySend">Ihre Terminvorschläge wurden am %1$s um %2$s Uhr zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
 
@@ -965,6 +965,18 @@
     <string name="suggestionFromClientStartDateAndTimeText">(Am %1$s um %2$s Uhr)</string>
     <string name="suggestionFromClientStartDateTimeAskedForIntroText">Demnächst Terminvorschläge abgeben in</string>
 
+    <string name="suggestionFromClientAllreadySendInputSuggestionHintText">Ihre Terminvorschläge wurden zu Ihrer Beraterin/ Ihrem Berater gesendet. Diese wird versuchen aus allen Vorschlägen einen gemeinsamen Termin zu finden.</string>
+
+    <string name="suggestionFromClientTimezoneCanceledByCoach">Zeitraum abgesagt</string>
+    <string name="suggestionFromClientMeetingFoundByCoachText">Termin gefunden</string>
+
+
+    <string name="errorInputClientSuggestion">Bitte kontrollieren Sie Ihre Vorschläge. Sie sind zu kurz oder enthalten nicht erlaubte Zeichen.</string>
+
+
+    <string name="suggestionFromClientInputInfoTextForUser">Sie können nur einmal Vorschläge unterbreiten. Bitte geben Sie mindestens zwei Terminvorschläge mit Datum, Uhrzeit und Ort (Beratungsstelle in Werder oder Bad Belzig) an. Danke.</string>
+
+    <string name="suggestionFromClientLinkTextDeleteSuggestionEntry">Den obigen Eintrag löschen</string>
 
     <!-- end fragment suggestion from client -->
 

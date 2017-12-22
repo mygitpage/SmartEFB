@@ -34,9 +34,6 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
     MeetingSuggestionOldOverviewCursorAdapter dataAdapterListViewMeetingSuggestionOld = null;
 
 
-
-
-
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
@@ -82,12 +79,9 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
 
         String tmpSubtitle = "";
 
-
         // get all meetings and suggestion from database in correct order
         Long nowTime = System.currentTimeMillis();
         Cursor cursorMeetingSuggestion = myDb.getAllRowsMeetingsAndSuggestion("old_meeting", nowTime);
-
-
 
         if (cursorMeetingSuggestion.getCount() > 0 && listViewMeetingSuggestion != null) {
 
@@ -123,12 +117,6 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
             tmpNoSuggestionsText.setVisibility(View.VISIBLE);
 
         }
-
-
-
-
-
     }
-
 
 }

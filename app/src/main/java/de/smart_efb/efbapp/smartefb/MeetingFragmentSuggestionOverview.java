@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 public class MeetingFragmentSuggestionOverview extends Fragment {
 
-
     // fragment view
     View viewFragmentSuggestion;
 
@@ -41,9 +40,6 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
     MeetingSuggestionOverviewCursorAdapter dataAdapterListViewSuggestion = null;
 
 
-
-
-
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
@@ -54,7 +50,6 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
         getActivity().getApplicationContext().registerReceiver(meetingFragmentSuggestionOverviewBrodcastReceiver, filter);
 
         return viewFragmentSuggestion;
-
     }
 
 
@@ -70,7 +65,6 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
 
         // show actual meeting and suggestion informations
         displayActualSuggestionInformation();
-
     }
 
 
@@ -81,7 +75,6 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
 
         // find the listview for display meetings and suggestion, etc.
         listViewMeetingSuggestion = (ListView) viewFragmentSuggestion.findViewById(R.id.listViewSuggestionDates);
-
     }
 
 
@@ -91,7 +84,6 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
 
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(meetingFragmentSuggestionOverviewBrodcastReceiver);
-
     }
 
 
@@ -208,8 +200,6 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
     }
 
 
-
-
     // show actual suggestion overview
     private void displayActualSuggestionInformation () {
 
@@ -240,8 +230,6 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
 
             // Assign adapter to ListView
             listViewMeetingSuggestion.setAdapter(dataAdapterListViewSuggestion);
-
-
         }
         else {
 
@@ -252,10 +240,6 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
             // set no suggestions text visibility gone
             TextView tmpNoSuggestionsText = (TextView) viewFragmentSuggestion.findViewById(R.id.meetingOverviewNoSuggestionAvailable);
             tmpNoSuggestionsText.setVisibility(View.VISIBLE);
-
         }
     }
-
-
-
 }

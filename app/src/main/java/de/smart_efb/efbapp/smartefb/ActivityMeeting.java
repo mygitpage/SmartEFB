@@ -58,8 +58,11 @@ public class ActivityMeeting extends AppCompatActivity {
     // what to show in tab zero
     String showCommandFragmentTabZero = "";
 
-    // what to show in tab one (
+    // what to show in tab one
     String showCommandFragmentTabOne = "";
+
+    // what to show in tab two
+    String showCommandFragmentTabTwo = "";
 
     // Strings for subtitle ( )
     String [] arraySubTitleText = new String[ConstansClassMeeting.numberOfDifferentSubtitle];
@@ -135,9 +138,6 @@ public class ActivityMeeting extends AppCompatActivity {
 
                 String tmpSubtitleText = "";
 
-
-                Log.d("Meeting", "Tab Listener mit Position: "+ tab.getPosition());
-
                 // Change the subtitle of the activity
                 switch (tab.getPosition()) {
                     case 0: // title for tab zero
@@ -148,7 +148,6 @@ public class ActivityMeeting extends AppCompatActivity {
                             case "meeting_client_canceled":
                                 tmpSubtitleText = arraySubTitleText[5];
                                 break;
-
                         }
 
                         // set correct tab zero title with information new entry and color change
@@ -191,8 +190,7 @@ public class ActivityMeeting extends AppCompatActivity {
         });
 
     }
-    
-    
+
     
     private void initMeeting() {
 
@@ -233,8 +231,11 @@ public class ActivityMeeting extends AppCompatActivity {
         // init show on tab zero meeting overview
         showCommandFragmentTabZero = "meeting_overview";
 
-        // init show on tab one meeting overview
+        // init show on tab one suggestion from client
         showCommandFragmentTabOne = "suggestion_from_client";
+
+        // init show on tab two suggestion from coach
+        showCommandFragmentTabTwo = "suggestion_overview";
 
         for (int t=0; t<ConstansClassOurArrangement.numberOfDifferentSubtitle; t++) {
             arraySubTitleText[t] = "";
@@ -321,21 +322,21 @@ public class ActivityMeeting extends AppCompatActivity {
 
         } else if (command.equals("suggestion_overview")) { // Show fragment overview of suggestions
 
-            //set fragment in tab one to comment suggestions
-            meetingViewPagerAdapter.setFragmentTabOne("suggestion_overview");
+            //set fragment in tab two to suggestion from coach
+            meetingViewPagerAdapter.setFragmentTabTwo("suggestion_overview");
 
             // set correct tab one title with information new entry and color change
             tabTitleTextTabTwo = getResources().getString(getResources().getIdentifier("meetingTabTitle_3", "string", getPackageName()));
             setTabTwoTitleAndColor();
 
             // set command show variable
-            showCommandFragmentTabOne = "suggestion_overview";
+            showCommandFragmentTabTwo = "suggestion_overview";
 
             // call notify data change
             meetingViewPagerAdapter.notifyDataSetChanged();
 
-            // set correct subtitle in toolbar in tab zero
-            toolbarMeeting.setSubtitle(arraySubTitleText[2]);
+            // set correct subtitle in toolbar in tab two
+            toolbarMeeting.setSubtitle(arraySubTitleText[3]);
 
         } else if (command.equals("suggestion_from_client")) { // Show suggestion from client
 
@@ -408,20 +409,40 @@ public class ActivityMeeting extends AppCompatActivity {
             //meetingViewPagerAdapter.setFragmentTabOne("suggestion_overview");
 
             // set correct tab one title with information new entry and color change
-            tabTitleTextTabTwo = getResources().getString(getResources().getIdentifier("meetingTabTitle_2", "string", getPackageName()));
+            tabTitleTextTabTwo = getResources().getString(getResources().getIdentifier("meetingTabTitle_3", "string", getPackageName()));
             setTabTwoTitleAndColor();
 
             // set command show variable
-            showCommandFragmentTabOne = "suggestion_overview";
+            showCommandFragmentTabTwo = "suggestion_overview";
 
             // call notify data change
             meetingViewPagerAdapter.notifyDataSetChanged();
 
-            // set correct subtitle in toolbar in tab zero
+            // set correct subtitle in toolbar in tab two
+            toolbarMeeting.setSubtitle(arraySubTitleText[3]);
+
+        } else if (command.equals("delete_suggestion_from_client_entry")) { // delete suggestion from client entry by client, because meeting found from suggestion or canceneld suggestion
+
+            // delete selected meeting from db
+            myDb.deleteSelectedMeetingOrSuggestionFromDb(meetingId);
+
+            //set fragment in tab zero to meeting overview
+            //meetingViewPagerAdapter.setFragmentTabOne("suggestion_overview");
+
+            // set correct tab one title with information new entry and color change
+            tabTitleTextTabTwo = getResources().getString(getResources().getIdentifier("meetingTabTitle_2", "string", getPackageName()));
+            setTabTwoTitleAndColor();
+
+            // set command show variable
+            showCommandFragmentTabOne = "suggestion_from_client";
+
+            // call notify data change
+            meetingViewPagerAdapter.notifyDataSetChanged();
+
+            // set correct subtitle in toolbar in tab one
             toolbarMeeting.setSubtitle(arraySubTitleText[2]);
 
-        }
-        else { // Show fragment meeting overview on tab zero
+        } else { // Show fragment meeting overview on tab zero
 
             //set fragment in tab zero to meeting overview
             meetingViewPagerAdapter.setFragmentTabZero("meeting_overview");
@@ -784,10 +805,17 @@ public class ActivityMeeting extends AppCompatActivity {
     // look for new entry on tab one
     private void lookNewEntryOnTabOne () {
 
+        Long nowTime = System.currentTimeMillis();
+        Cursor c = myDb.getAllRowsMeetingsAndSuggestion("client_suggestion_for_show_attention", nowTime);
+
         // look for new entrys in db on tab one
-        if (myDb.getCountNewEntryMeetingAndSuggestion("suggestion") > 0) {
+        if (myDb.getCountNewEntryMeetingAndSuggestion("suggestion_from_client") > 0) {
             infoNewEntryOnTabOne = true;
             infoTextNewEntryPostFixTabOneTitle = " "+ this.getResources().getString(R.string.newEntryText);
+        }
+        else if (c != null && c.getCount() > 0 ) {
+            infoNewEntryOnTabOne = true;
+            infoTextNewEntryPostFixTabOneTitle = " "+ this.getResources().getString(R.string.newAttentionText);
         }
         else {
             infoNewEntryOnTabOne = false;
@@ -803,14 +831,15 @@ public class ActivityMeeting extends AppCompatActivity {
         Cursor c = myDb.getAllRowsMeetingsAndSuggestion("suggestion_for_show_attention", nowTime);
 
         // look for new entrys in db on tab two
-        if (myDb.getCountNewEntryMeetingAndSuggestion("meeting") > 0) {
+        if (myDb.getCountNewEntryMeetingAndSuggestion("suggestion") > 0) {
             infoNewEntryOnTabTwo = true;
             infoTextNewEntryPostFixTabTwoTitle = " " + this.getResources().getString(R.string.newEntryText);
         }
         else if (c != null && c.getCount() > 0 ) {
             infoNewEntryOnTabTwo = true;
             infoTextNewEntryPostFixTabTwoTitle = " "+ this.getResources().getString(R.string.newAttentionText);
-        }else {
+        }
+        else {
             infoNewEntryOnTabTwo = false;
             infoTextNewEntryPostFixTabTwoTitle = "";
         }

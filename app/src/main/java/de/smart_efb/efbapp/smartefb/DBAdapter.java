@@ -2428,6 +2428,9 @@ public class DBAdapter extends SQLiteOpenHelper {
             case "suggestion":
                 where = MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST + "=1 AND " + MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2"; // kategorie =2 -> suggestion
                 break;
+            case "suggestion_from_client":
+                where = MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST + "=1 AND " + MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4"; // kategorie =4 -> suggestion from client
+                break;
             case "all":
                 where = MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST + "=1";
                 break;
@@ -2450,6 +2453,11 @@ public class DBAdapter extends SQLiteOpenHelper {
         return c.getCount();
 
     }
+
+
+
+
+
 
 
     // delete status new entry for meeting/ suggestion with rowId
@@ -2503,13 +2511,17 @@ public class DBAdapter extends SQLiteOpenHelper {
                 where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">=" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "='' AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0";
                 sort = MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " DESC, " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + " DESC";
                 break;
+
+            case "client_suggestion_for_show_attention":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + "<" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + "=0";
+                sort = MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " DESC, " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + " DESC";
+                break;
+
             default:
                 where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">=" + nowTime;
                 sort = MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_DATE1 + " DESC";
                 break;
-
         }
-
 
         Cursor c = db.query(true, DATABASE_TABLE_MEETING_SUGGESTION, MEETING_SUGGESTION_MEETING_ALL_KEYS,
                 where, null, null, null, sort, null);

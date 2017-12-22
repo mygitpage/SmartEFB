@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -380,10 +381,15 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case 6: // menue item "Termine"
-                    if (myDb.getCountNewEntryMeetingAndSuggestion("suggestion") > 0 || myDb.getCountNewEntryMeetingAndSuggestion("meeting") > 0 ) {
+
+                    if (myDb.getCountNewEntryMeetingAndSuggestion("all") > 0 ) {
                         mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                     } else {
-                        if (myDb.getCountNewEntryMeetingAndSuggestion("suggestion_for_show_attention") > 0) {
+
+                        Long nowTime = System.currentTimeMillis();
+                        Cursor cSuggest = myDb.getAllRowsMeetingsAndSuggestion("suggestion_for_show_attention", nowTime);
+                        Cursor cClientSuggest = myDb.getAllRowsMeetingsAndSuggestion("client_suggestion_for_show_attention", nowTime);
+                        if ( (cSuggest != null && cSuggest.getCount() > 0) || (cClientSuggest != null && cClientSuggest.getCount() > 0) ) {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesAttentionEntry[countElements];
                         }
                         else {

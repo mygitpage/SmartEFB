@@ -10,6 +10,17 @@
     android:paddingRight="10dp">
 
     <TextView
+        android:id="@+id/suggestionFromClientBorderBetween"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_color"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"/>
+
+    <TextView
         android:id="@+id/suggestionFromClientIntroInfoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,6 +75,32 @@
 
     </LinearLayout>
 
+    <!-- info canceled suggestion from client -->
+    <TextView
+        android:id="@+id/suggestionFromClientCanceledInvitationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="@color/text_accent_color"
+        android:gravity="center"
+        android:paddingTop="15dp"
+        android:visibility="gone"
+        android:text="@string/suggestionFromClientTimezoneCanceledByCoach"/>
+    <!-- end info canceled suggestion from client -->
+
+    <!-- info meeting found from client suggestion -->
+    <TextView
+        android:id="@+id/suggestionFromClientMeetingFoundText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="@color/text_accent_color"
+        android:gravity="center"
+        android:paddingTop="15dp"
+        android:visibility="gone"
+        android:text="@string/suggestionFromClientMeetingFoundByCoachText"/>
+    <!-- end info meeting found from client suggestion -->
+
 
     <TextView
         android:id="@+id/errorInputSuggestionFromClient"
@@ -73,7 +110,7 @@
         android:textColor="@color/text_accent_color"
         android:gravity="left"
         android:visibility="gone"
-        android:text="@string/errorInputSuggestionComment"
+        android:text="@string/errorInputClientSuggestion"
         android:paddingBottom="5dp"
         android:paddingTop="15dp"/>
 
@@ -101,6 +138,33 @@
         android:padding="5dp"
         android:digits="@string/editTextInputFilterTextAlphaNumeric"
         android:visibility="gone"/>
+
+
+    <!-- show input suggestion from client -->
+    <TextView
+        android:id="@+id/suggestionFromClientInputSuggestionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="left"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/suggestionFromClientInputSuggestionHintText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:textColor="@color/text_accent_color"
+        android:paddingTop="15dp"
+        android:gravity="center"
+        android:text="@string/suggestionFromClientAllreadySendInputSuggestionHintText"
+        android:visibility="gone"/>
+
+    <!-- end show input suggestion from client -->
+
+
 
     <!-- coach hint for client suggestion -->
     <TextView
@@ -181,9 +245,9 @@
         android:textSize="14dp"
         android:textColor="@color/text_accent_color"
         android:gravity="center"
-        android:paddingBottom="30dp"
         android:paddingTop="15dp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:text="@string/suggestionFromClientInputInfoTextForUser"/>
 
     <TextView
         android:id="@+id/suggestionFromClientDeleteEntryLink"
@@ -192,7 +256,8 @@
         android:textSize="14dp"
         android:textColor="@color/text_color"
         android:textColorLink="@color/colorPrimaryDark"
-        android:gravity="right"/>
+        android:gravity="right"
+        android:paddingTop="15dp"/>
 
     <TextView
         android:id="@+id/suggestionFromClientDeleteRegularyInfoText"

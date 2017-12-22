@@ -11,10 +11,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
 
-
-
-
-
     // number of tabs
     final static int metingTabCount = 4;
 
@@ -27,6 +23,7 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
     // command to choose a fragment for tab zero in getItem
     static int fragmentChooserTabZero;
     static int fragmentChooserTabOne;
+    static int fragmentChooserTabTwo;
 
     // the fragments for all tabs
     Fragment fragMeeting, fragSuggestion, fragSuggestionFromClient, fragMeetingCommentFromClient, fragMeetingSuggestionOld, fragmentMeetingCanceledFromClient;
@@ -48,6 +45,7 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
 
         fragmentChooserTabZero = 0;
         fragmentChooserTabOne = 0;
+        fragmentChooserTabTwo = 0;
 
         fragMeeting = new MeetingFragmentMeetingOverview();
         fragSuggestion = new MeetingFragmentSuggestionOverview();
@@ -133,21 +131,26 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
 
 
 
-    // set variable for switching between fragments for tab 1
+    // set variable for switching between fragments for tab 1 -> function is simple -> can be delete
     public static void setFragmentTabOne(String subFragmentCommand) {
 
         switch (subFragmentCommand) {
 
-            case "suggestion_overview": // set fragment on tab one to SuggestionOverview
+            case "suggestion_from_client": // set fragment on tab one to SuggestionFromClient
                 fragmentChooserTabOne = 0;
                 break;
+        }
 
-            case "suggestion_from_client": // set fragment on tab one to SuggestionFromClient
-                fragmentChooserTabOne = 1;
-                break;
+    }
 
-            case "meeting_comment_from_client": // set fragment on tab one to MeetingCommentFromClient
-                fragmentChooserTabOne = 2;
+
+    // set variable for switching between fragments for tab 2 -> function is simple -> can be delete
+    public static void setFragmentTabTwo(String subFragmentCommand) {
+
+        switch (subFragmentCommand) {
+
+            case "suggestion_overview": // set fragment on tab one to SuggestionOverview
+                fragmentChooserTabTwo = 0;
                 break;
         }
 

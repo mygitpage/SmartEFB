@@ -56,8 +56,6 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
         //IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
         //getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentNowCommentBrodcastReceiver, filter);
 
-
-
         return viewFragmentSuggestionFromCLient;
 
     }
@@ -65,7 +63,6 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
 
     @Override
     public void onViewCreated (View view, @Nullable Bundle saveInstanceState) {
-
 
         super.onViewCreated(view, saveInstanceState);
 
@@ -76,8 +73,6 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
         initFragmentSuggestionFromClient();
 
         displayActualSuggestionInformation();
-
-
     }
 
 
@@ -91,7 +86,6 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
 
         // find the listview for display meetings and suggestion, etc.
         listViewMeetingSuggestionFromClient = (ListView) viewFragmentSuggestionFromCLient.findViewById(R.id.listViewSuggestionFromClientDates);
-
     }
 
 
@@ -151,25 +145,6 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
             tmpNoSuggestionsText.setVisibility(View.VISIBLE);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 

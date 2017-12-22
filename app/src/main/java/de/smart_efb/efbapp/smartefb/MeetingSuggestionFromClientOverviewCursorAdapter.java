@@ -29,15 +29,11 @@ import java.util.concurrent.TimeUnit;
 
 public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdapter {
 
-    // code kontrollieren !!!!!!!!!!!!!!!!!!!
-
-
     // hold layoutInflater
     private LayoutInflater cursorInflater;
 
     // context for cursor adapter
     Context meetingSuggestionOverviewCursorAdapterContext;
-
 
     // reference to the DB
     DBAdapter myDb;
@@ -65,7 +61,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         meetingPlaceNames = context.getResources().getStringArray(R.array.placesNameForMeetingArray);
-
     }
 
 
@@ -86,7 +81,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
 
         final Cursor cursor = mCursor;
 
-
         Long tmpNowTime = System.currentTimeMillis();
 
         Boolean tmpInTimezone = false;
@@ -97,7 +91,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
 
         // get the view
         inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_from_client_overview_normal, parent, false);
-
 
         // check suggestion from client canceled?
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED)) == 1) {
@@ -119,8 +112,15 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             tmpOutTimezone = true;
         }
 
+        // check if entry new?
+        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST)) == 1) {
+            TextView newEntryOfClientSuggestion = (TextView) inflatedView.findViewById(R.id.suggestionFromClientNewEntryText);
+            String txtNewEntryOfMeeting = context.getResources().getString(R.string.newEntryText);
+            newEntryOfClientSuggestion.setText(txtNewEntryOfMeeting);
 
-
+            // delete status new entry in db
+            myDb.deleteStatusNewEntryMeetingAndSuggestion(cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
+        }
 
         // show intro text different in timezone/ out timezone
         if (tmpInTimezone || tmpOutTimezone) {
@@ -138,7 +138,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             textViewSuggestionFromClientIntroText.setVisibility(View.VISIBLE);
         }
 
-
         // set subtitle and info text+author for suggestion from client
         TextView textViewSuggestionFromClientTitleAndNumber = (TextView) inflatedView.findViewById(R.id.suggestionFromClientTitle);
         TextView textViewSuggestionFromClientAuthorAndDate = (TextView) inflatedView.findViewById(R.id.suggestionFromClientAuthorAndDate);
@@ -155,7 +154,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
         if (tmpSuggestionFromClientCanceled) { // suggestion from client canceled
             actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientTitleAndNumberTextCanceled);
             tmpTextAuthorAndDate = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionFromClientAuthorAndDateCanceled), suggestionFromClientStartDate, suggestionFromClientStartTime, suggestionFromClientEndDate, suggestionFromClientEndTime, suggestionFromClientTimezoneAuthor, suggestionFromClientTimezoneCreationDate, suggestionFromClientTimezoneCreationTime);
-
         }
         else if (tmpSuggestionFromClientMeetingFound) { // meeting found from suggestion from client
             String suggestionFromClientMeetingFoundDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_DATE)), "dd.MM.yyyy");;
@@ -163,37 +161,96 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             String suggestionFromClientMeetingFoundAuthor = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_AUTHOR));
             actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientTitleAndNumberTextFoundMeeting);
             tmpTextAuthorAndDate = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionFromClientAuthorAndDateMeetingFound), suggestionFromClientMeetingFoundAuthor, suggestionFromClientMeetingFoundDate, suggestionFromClientMeetingFoundTime, suggestionFromClientStartDate, suggestionFromClientStartTime, suggestionFromClientEndDate, suggestionFromClientEndTime);
-
         }
         else if (tmpSuggestionFromClientAlreadySend) {
             String suggestionFromClientMeetingSendDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME)), "dd.MM.yyyy");;
             String suggestionFromClientMeetingSendTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME)), "HH:mm");;
             actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientTitleAndNumberTextAlreadySend);
             tmpTextAuthorAndDate = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionFromClientAuthorAndDateAlreadySend), suggestionFromClientMeetingSendDate, suggestionFromClientMeetingSendTime);
-
         }
         else if (tmpInTimezone) { // suggestion from client in timezone
             actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientTitleAndNumberTextInTimezone);
             tmpTextAuthorAndDate = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionFromClientInTimezone), suggestionFromClientEndDate, suggestionFromClientEndTime, suggestionFromClientStartDate, suggestionFromClientStartTime, suggestionFromClientTimezoneAuthor, suggestionFromClientTimezoneCreationDate, suggestionFromClientTimezoneCreationTime);
-
         }
         else { // suggestion from client out timezone
             actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientTitleAndNumberTextOutTimezone);
             tmpTextAuthorAndDate = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionFromClientOutTimezone), suggestionFromClientStartDate, suggestionFromClientStartTime, suggestionFromClientEndDate, suggestionFromClientEndTime, suggestionFromClientTimezoneAuthor, suggestionFromClientTimezoneCreationDate, suggestionFromClientTimezoneCreationTime);
-
         }
         textViewSuggestionFromClientTitleAndNumber.setText(actualSuggestionFromClientHeadline);
         textViewSuggestionFromClientAuthorAndDate.setText(Html.fromHtml(tmpTextAuthorAndDate));
+
+        // we are in canceled suggestion from client
+        if (tmpSuggestionFromClientCanceled) { // suggestion from client canceled
+
+            TextView textViewSuggestionFromClientInvitationCanceled = (TextView) inflatedView.findViewById(R.id.suggestionFromClientCanceledInvitationText);
+            textViewSuggestionFromClientInvitationCanceled.setVisibility(View.VISIBLE);
+
+            if (!cursor.isFirst()) { // show border when not first
+                TextView textViewSuggestionFromClientInvitationCanceledBorder = (TextView) inflatedView.findViewById(R.id.suggestionFromClientBorderBetween);
+                textViewSuggestionFromClientInvitationCanceledBorder.setVisibility(View.VISIBLE);
+            }
+
+            // show input suggestion from client
+            String inputClientSuggestion = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT));
+            if (inputClientSuggestion.length() > 0) {
+                TextView suggestionFromClientShowInputSuggestion = (TextView) inflatedView.findViewById(R.id.suggestionFromClientInputSuggestionText);
+                suggestionFromClientShowInputSuggestion.setText(inputClientSuggestion);
+                suggestionFromClientShowInputSuggestion.setVisibility(View.VISIBLE);
+            }
+        }
+
+        // we are in meeting found from client suggestion
+        if (tmpSuggestionFromClientMeetingFound) { // suggestion from client canceled
+
+            TextView textViewSuggestionFromClientMeetingFound = (TextView) inflatedView.findViewById(R.id.suggestionFromClientMeetingFoundText);
+            textViewSuggestionFromClientMeetingFound.setVisibility(View.VISIBLE);
+
+            if (!cursor.isFirst()) { // show border when not first
+                TextView textViewSuggestionFromClientInvitationCanceledBorder = (TextView) inflatedView.findViewById(R.id.suggestionFromClientBorderBetween);
+                textViewSuggestionFromClientInvitationCanceledBorder.setVisibility(View.VISIBLE);
+            }
+
+            // show input suggestion from client
+            String inputClientSuggestion = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT));
+            if (inputClientSuggestion.length() > 0) {
+                TextView suggestionFromClientShowInputSuggestion = (TextView) inflatedView.findViewById(R.id.suggestionFromClientInputSuggestionText);
+                suggestionFromClientShowInputSuggestion.setText(inputClientSuggestion);
+                suggestionFromClientShowInputSuggestion.setVisibility(View.VISIBLE);
+            }
+        }
+
+
+
+        // we are in meeting found from suggestion, in canceled suggestion or suggestion send
+        if (tmpSuggestionFromClientCanceled || tmpSuggestionFromClientMeetingFound || tmpSuggestionFromClientAlreadySend) {
+
+            // set link to delete suggestion entry, because canceled or meeting found from suggestion
+            TextView tmpTextViewClientDeleteEntry = (TextView) inflatedView.findViewById(R.id.suggestionFromClientDeleteEntryLink);
+
+            final Uri.Builder meetingClientDeleteEntryLinkBuilder = new Uri.Builder();
+            meetingClientDeleteEntryLinkBuilder.scheme("smart.efb.deeplink")
+                    .authority("linkin")
+                    .path("meeting")
+                    .appendQueryParameter("meeting_id", Long.toString(cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
+                    .appendQueryParameter("com", "delete_suggestion_from_client_entry");
+
+            String tmpLinkClientDeleteEntry = context.getResources().getString(context.getResources().getIdentifier("suggestionFromClientLinkTextDeleteSuggestionEntry", "string", context.getPackageName()));
+
+            // generate link for output
+            Spanned tmpDeleteEntrydLink = Html.fromHtml("<a href=\"" + meetingClientDeleteEntryLinkBuilder.build().toString() + "\">" + tmpLinkClientDeleteEntry + "</a>");
+
+            // and set to textview
+            tmpTextViewClientDeleteEntry.setVisibility(View.VISIBLE);
+            tmpTextViewClientDeleteEntry.setText(tmpDeleteEntrydLink);
+            tmpTextViewClientDeleteEntry.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+
 
 
 
 
         // we are in timezone -> show input field
         if (tmpInTimezone && cursor.isFirst()) {
-
-            
-            // Error Text view -> errorInputSuggestionFromClient
-
 
             // get max letters for edit text comment
             final int tmpMaxLength = ConstansClassMeeting.namePrefsSuggestionFromClientMaxLetters;
@@ -289,10 +346,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
 
             }
 
-
-
-
-
             // find send button "Terminvorschlaege senden"
             Button tmpSendButton = (Button) inflatedView.findViewById(R.id.buttonSendSuggestionFromClientToCoach);
             tmpSendButton.setVisibility(View.VISIBLE);
@@ -331,7 +384,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                         startServiceIntent.putExtra("dbid",clientDbId);
                         meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
 
-
                         // build intent to go back to suggestionFromClientOverview
                         Intent intent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ActivityMeeting.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -341,22 +393,22 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                     }
                     else { // error too few suggestions!
 
-                            TextView textViewToFewLettersInSuggestion = (TextView) inflatedView.findViewById(R.id.suggestionFromClientAtLeastInfoText);
-                            textViewToFewLettersInSuggestion.setVisibility(View.VISIBLE);
+                            TextView textViewErrorToFewLettersInClientSuggestion = (TextView) inflatedView.findViewById(R.id.errorInputSuggestionFromClient);
+                            textViewErrorToFewLettersInClientSuggestion.setVisibility(View.VISIBLE);
 
                     }
                 }
             });
 
+            // show info text for suggestion input for user
+            TextView textViewClientSuggestionInfoTextForUser = (TextView) inflatedView.findViewById(R.id.suggestionFromClientAtLeastInfoText);
+            textViewClientSuggestionInfoTextForUser.setVisibility(View.VISIBLE);
+
 
         }
 
-
         // we are not in timezone -> show count down timer
         if (tmpOutTimezone && cursor.isFirst()) {
-
-            // set count down timer
-            final String tmpTextResponseTimeOver = context.getResources().getString(R.string.suggestionFromClientTimeIsOver);
 
             // get text view for timer place and set visible
             final TextView placeholderForTicTimer = (TextView) inflatedView.findViewById(R.id.suggestionFromClientEndDateTicTimer);
@@ -404,158 +456,24 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                     }
                 }.start();
             }
-
-
-
-
-
-
-
-        }
-        
-        
-        
-        
-        
-        
-
-
-
-
-
-
-
-
-
-        /*
-        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED)) == 1) {
-            actualMeetingHeadline = context.getResources().getString(R.string.meetingOverviewMeetingCanceledTitleAndNumberText);
-        }
-        textViewMeetingTitleAndNumber.setText(actualMeetingHeadline);
-        */
-
-
-
-        /*
-        // check if meeting entry new?
-        if (cursor.getInt(cursor.getColumnIndex(myDb.MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST)) == 1) {
-            TextView newEntryOfMeeting = (TextView) inflatedView.findViewById(R.id.meetingNewMeetingText);
-            String txtNewEntryOfMeeting = context.getResources().getString(R.string.newEntryText);
-            newEntryOfMeeting.setText(txtNewEntryOfMeeting);
-
-            // delete status new entry in db
-            myDb.deleteStatusNewEntryMeetingAndSuggestion(cursor.getLong(cursor.getColumnIndex(myDb.KEY_ROWID)));
         }
 
-        // textview for the author and date
-        TextView tmpTextViewAuthorNameForMeeting = (TextView) inflatedView.findViewById(R.id.meetingAuthorAndDate);
-        String tmpAuthorName = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR));
-        String meetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "dd.MM.yyyy");;
-        String meetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "HH:mm");;
-        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED)) == 1) {
+        // client suggestion allready send -> show client suggestion and hint text
+        if (tmpSuggestionFromClientAlreadySend) {
 
-            String tmpCanceledAuthorName = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR));
-            String meetingCanceledDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME)), "dd.MM.yyyy");;
-            String meetingCanceledTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME)), "HH:mm");;
-            String tmpTextAuthorNameMeetingWithCancele = String.format(context.getResources().getString(R.string.meetingOverviewCreateMeetingAuthorAndDateWithCancele), tmpAuthorName, meetingDate, meetingTime, tmpCanceledAuthorName, meetingCanceledDate, meetingCanceledTime);
-            tmpTextViewAuthorNameForMeeting.setText(Html.fromHtml(tmpTextAuthorNameMeetingWithCancele));
+            // show input suggestion from client
+            TextView suggestionFromClientShowInputSuggestion = (TextView) inflatedView.findViewById(R.id.suggestionFromClientInputSuggestionText);
+            String inputClientSuggestion = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT));
+            suggestionFromClientShowInputSuggestion.setText(inputClientSuggestion);
+            suggestionFromClientShowInputSuggestion.setVisibility(View.VISIBLE);
 
-        } else {
-            String tmpTextAuthorNameMeeting = String.format(context.getResources().getString(R.string.meetingOverviewCreateMeetingAuthorAndDate), tmpAuthorName, meetingDate, meetingTime);
-
-            // check if meeting is canceled by client
-            String tmpTextClientCanceledMeeting = "";
-            if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED)) == 1) {
-                String tmpClientCanceledDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME)), "dd.MM.yyyy");
-                String tmpClientCanceledTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME)), "HH:mm");
-                tmpTextClientCanceledMeeting = String.format(context.getResources().getString(R.string.meetingOverviewClientCanceledMeetingAuthorAndDate), tmpClientCanceledDate, tmpClientCanceledTime);
-
-                if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_MEETING_KEY_STATUS)) == 0) {
-                    String tmpNotSendToServer = context.getResources().getString(R.string.meetingOverviewClientCanceledNotSendToServer);
-                    tmpTextClientCanceledMeeting = tmpTextClientCanceledMeeting + " " + tmpNotSendToServer;
-                }
-            }
-            tmpTextViewAuthorNameForMeeting.setText(Html.fromHtml(tmpTextAuthorNameMeeting+ " " + tmpTextClientCanceledMeeting));
+            // show input suggestion hint text for process information
+            TextView suggestionFromClientShowInputSuggestionHintText = (TextView) inflatedView.findViewById(R.id.suggestionFromClientInputSuggestionHintText);
+            suggestionFromClientShowInputSuggestionHintText.setVisibility(View.VISIBLE);
         }
-
-        // textview for meeting date
-        TextView tmpTextViewMeetingDate = (TextView) inflatedView.findViewById(R.id.meetingDate);
-        String tmpMeetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "dd.MM.yyyy");;
-        tmpTextViewMeetingDate.setText(tmpMeetingDate);
-
-
-        // textview for meeting time
-        TextView tmpTextViewMeetingTime = (TextView) inflatedView.findViewById(R.id.meetingTime);
-        String tmpMeetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "HH:mm");;
-        tmpTextViewMeetingTime.setText(tmpMeetingTime);
-
-        // textview for meeting place
-        TextView tmpTextViewMeetingPlace = (TextView) inflatedView.findViewById(R.id.meetingPlace);
-        String tmpMeetingPlace = meetingPlaceNames[cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE1))];
-        tmpTextViewMeetingPlace.setText(tmpMeetingPlace);
-
-        // textview for meeting hint text
-        TextView tmpTextViewMeetingHintText = (TextView) inflatedView.findViewById(R.id.meetingHintText);
-        String tmpMeetingHintText = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT));
-        tmpTextViewMeetingHintText.setText(tmpMeetingHintText);
-
-        if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCanceleMeeting_OnOff, false) && cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED)) == 0 && cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED)) == 0) { // show cancele link for meeting
-
-            TextView tmpTextViewClientCanceledLink = (TextView) inflatedView.findViewById(R.id.meetingCanceleLink);
-
-            final Uri.Builder meetingClientCanceleLinkBuilder = new Uri.Builder();
-            meetingClientCanceleLinkBuilder.scheme("smart.efb.deeplink")
-                    .authority("linkin")
-                    .path("meeting")
-                    .appendQueryParameter("meeting_id", Long.toString(cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
-                    .appendQueryParameter("com", "meeting_client_canceled");
-
-            String tmpLinkClientCanceledMeeting = context.getResources().getString(context.getResources().getIdentifier("meetingOverviewClientCanceledLinkText", "string", context.getPackageName()));
-
-            // generate link for output
-            Spanned tmpMeetingCanceledLink = Html.fromHtml("<a href=\"" + meetingClientCanceleLinkBuilder.build().toString() + "\">" + tmpLinkClientCanceledMeeting + "</a>");
-
-            // and set to textview
-            tmpTextViewClientCanceledLink.setVisibility(View.VISIBLE);
-            tmpTextViewClientCanceledLink.setText(tmpMeetingCanceledLink);
-            tmpTextViewClientCanceledLink.setMovementMethod(LinkMovementMethod.getInstance());
-        }
-
-        // meeting is canceled by coach -> show hint
-        if (cursor.getInt(cursor.getColumnIndex(DBAdapter. MEETING_SUGGESTION_KEY_MEETING_CANCELED)) == 1) {
-            TextView tmpTextViewCanceledByCoach = (TextView) inflatedView.findViewById(R.id.meetingCanceledByCoachTextView);
-            tmpTextViewCanceledByCoach.setVisibility(View.VISIBLE);
-
-            TextView tmpTextViewDeleteCanceledMeetingLink = (TextView) inflatedView.findViewById(R.id.meetingDeleteCanceledMetingLink);
-            // generate delete link for client -> delete meeting in db!
-            final Uri.Builder meetingDeleteCanceledMeetingLink = new Uri.Builder();
-            meetingDeleteCanceledMeetingLink.scheme("smart.efb.deeplink")
-                    .authority("linkin")
-                    .path("meeting")
-                    .appendQueryParameter("meeting_id", Long.toString(cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID))))
-                    .appendQueryParameter("com", "delete_canceled_meeting_by_client");
-
-            String tmpLinkDeleteCanceledMeeting = context.getResources().getString(context.getResources().getIdentifier("meetingOverviewDeleteCanceledMeetingLinkText", "string", context.getPackageName()));
-
-            // generate link for output
-            Spanned tmpMeetingDeleteCanceledLink = Html.fromHtml("<a href=\"" + meetingDeleteCanceledMeetingLink.build().toString() + "\">" + tmpLinkDeleteCanceledMeeting + "</a>");
-
-            tmpTextViewDeleteCanceledMeetingLink.setVisibility(View.VISIBLE);
-            tmpTextViewDeleteCanceledMeetingLink.setText(tmpMeetingDeleteCanceledLink);
-            tmpTextViewDeleteCanceledMeetingLink.setMovementMethod(LinkMovementMethod.getInstance());
-        }
-        else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED)) == 1) {
-            LinearLayout tmpLinearLayoutHintMeetingIsCanceled = (LinearLayout) inflatedView.findViewById(R.id.meetingCanceleByClientHint);
-            tmpLinearLayoutHintMeetingIsCanceled.setVisibility(View.VISIBLE);
-        }
-
-        */
-
 
         return inflatedView;
-
     }
-
 
 
     // Turn off view recycling in listview, because there are different views (first, normal)

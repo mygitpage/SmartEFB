@@ -250,11 +250,4 @@ public class MeetingFragmentMeetingOverview extends Fragment {
         }
     }
 
-
-
-
-
-
-
-
 }
