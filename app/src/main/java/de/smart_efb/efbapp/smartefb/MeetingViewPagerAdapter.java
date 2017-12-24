@@ -26,7 +26,7 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
     static int fragmentChooserTabTwo;
 
     // the fragments for all tabs
-    Fragment fragMeeting, fragSuggestion, fragSuggestionFromClient, fragMeetingCommentFromClient, fragMeetingSuggestionOld, fragmentMeetingCanceledFromClient;
+    Fragment fragMeeting, fragSuggestion, fragSuggestionFromClient, fragMeetingSuggestionOld, fragmentMeetingCanceledFromClient;
 
     // Reference to fragment manager
     FragmentManager meetingFragmentManager;
@@ -50,7 +50,6 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
         fragMeeting = new MeetingFragmentMeetingOverview();
         fragSuggestion = new MeetingFragmentSuggestionOverview();
         fragSuggestionFromClient = new MeetingFragmentSuggestionFromClient();
-        fragMeetingCommentFromClient = new MeetingFragmentMeetingCommentFromClient();
         fragMeetingSuggestionOld = new MeetingFragmentMeetingSuggestionOld();
         fragmentMeetingCanceledFromClient = new MeetingFragmentMeetingClientCanceled();
     }

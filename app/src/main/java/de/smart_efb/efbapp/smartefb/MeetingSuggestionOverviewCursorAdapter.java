@@ -63,18 +63,12 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
     private String []  nameDbColumNameVote = new String[ConstansClassMeeting.maxNumbersOfSuggestion];
     private int [] checkboxVoteSuggestion = new int[] {R.id.suggestionCheck1, R.id.suggestionCheck2, R.id.suggestionCheck3, R.id.suggestionCheck4, R.id.suggestionCheck5, R.id.suggestionCheck6 };
 
-
-
     // count list view elements vote for
     private int countListViewElementVote = 0;
 
-    // number of check box in view
-    private int countNumberOfCheckBoxObjects = 0;
 
-
-
-    // Own constructor
-    public MeetingSuggestionOverviewCursorAdapter(Context context, Cursor cursor, int flags) {
+    // constructor
+    MeetingSuggestionOverviewCursorAdapter(Context context, Cursor cursor, int flags) {
 
         super(context, cursor, flags);
 
@@ -117,10 +111,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         nameDbColumNameVote[3] = DBAdapter.MEETING_SUGGESTION_KEY_VOTE4;
         nameDbColumNameVote[4] = DBAdapter.MEETING_SUGGESTION_KEY_VOTE5;
         nameDbColumNameVote[5] = DBAdapter.MEETING_SUGGESTION_KEY_VOTE6;
-        
     }
-
-
 
 
     @Override
@@ -131,9 +122,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             TextView tmpBorderBetween = (TextView) view.findViewById(R.id.borderBetweenMeetingSuggestion);
             tmpBorderBetween.setVisibility(View.GONE);
         }
-
     }
-
 
 
     @Override
@@ -153,35 +142,18 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
         inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_overview_normal, parent, false);
 
-        /*
-        if (cursor.isFirst() && cursor.getCount() > 1) { // listview for first element, when cursor has more then one element
-            inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_overview_first, parent, false);
-
-        }
-        else if (cursor.isFirst() && cursor.getCount() == 1) { // listview for first element, when cursor has only one element
-            inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_overview_firstandlast, parent, false);
-
-        }
-        else if (cursor.isLast()) { // listview for last element
-            inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_overview_last, parent, false);
-
-        }
-        else { // listview for "normal" element
-            inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_overview_normal, parent, false);
-
-        }
-        */
-
-        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED)) == 1) { // canceled suggestion
+        // canceled suggestion
+        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED)) == 1) {
             tmpStatusSuggestionCanceled = true;
 
         } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND)) == 1) {
             // check for meeting found from suggestion
             tmpStatusMeetingFoundFromSuggestion = true;
         } else if (cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)).length() > 0 && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEDATE)) > 0) { // suggestion vote send
+            // check for voting
             tmpStatusVoteSuggestion = true;
-
         } else {
+            // check for normal suggestion
             tmpStatusSuggestion = true;
         }
 
@@ -380,9 +352,6 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             tmpSuggestionDeleteRegularyInfoText = String.format(tmpSuggestionDeleteRegularyInfoText,suggestionDeleteEntryDate, suggestionDeleteEntryTime);
             tmpTextViewClientDeleteRegularyEntry.setVisibility(View.VISIBLE);
             tmpTextViewClientDeleteRegularyEntry.setText(tmpSuggestionDeleteRegularyInfoText);
-
-
-
         }
 
         // get text view for info text at least
@@ -514,9 +483,8 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
             // check if comment suggestion is possible -> show comment input field
             String tmpSendButtonText;
-            if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false) && tmpStatusSuggestion) {
+            if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false)) {
                 tmpSendButtonText =  context.getResources().getString(R.string.btnTextSendSuggestionAndCommentToCoach);
-
             }
             else {
                 tmpSendButtonText =  context.getResources().getString(R.string.btnTextSendSuggestionToCoach);
@@ -547,10 +515,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                         Long clientVoteDbId = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
                         myDb.updateSuggestionVoteAndCommentByClient(checkBoxSuggestionsValues[1], checkBoxSuggestionsValues[2], checkBoxSuggestionsValues[3], checkBoxSuggestionsValues[4], checkBoxSuggestionsValues[5], checkBoxSuggestionsValues[6], clientVoteDbId, tmpVoteDate, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), commentSuggestionText, tmpStatus);
 
-                        // set successfull message in parent activity
-                        //String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
-                        //((ActivityMeeting) getActivity()).setSuccessefullMessageForSending (tmpSuccessfullMessage);
-
+                        // message for successfull sending or not successfull sending is set in class MeetingFragmentSuggestionOverview
 
                         // send intent to service to start the service and send vote suggestion to server!
                         Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
@@ -582,9 +547,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         }
 
         return inflatedView;
-
     }
-
 
 
     // Turn off view recycling in listview, because there are different views (first, normal)
@@ -610,8 +573,6 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         private onClickListenerCheckBoxSuggestionVote (int tmpListPosition) {
 
             this.listPosition = tmpListPosition;
-
-            countNumberOfCheckBoxObjects++;
         }
 
         @Override
@@ -630,16 +591,5 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }

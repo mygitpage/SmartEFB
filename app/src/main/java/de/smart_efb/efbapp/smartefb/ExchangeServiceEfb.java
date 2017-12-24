@@ -237,8 +237,6 @@ import java.util.Map;
                             } while (allConnectBookMessagesReadyToSend.moveToNext());
                         }
 
-                        Log.d ("EXCHANGE --->", "Anzahl Meetings Data Set: "+allMeetingsReadyToSend.getCount());
-
                         // build xml for all meetings data set result
                         if (allMeetingsReadyToSend != null && allMeetingsReadyToSend.getCount() > 0) {
 
@@ -1860,7 +1858,6 @@ import java.util.Map;
         // return information for change
         Map<String, String> returnMap;
 
-
         // Constructor
         public ExchangeTaskSendMeetingData (Context context, Long dbid) {
 
@@ -1876,7 +1873,6 @@ import java.util.Map;
             // init the prefs
             prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
             prefsEditor = prefs.edit();
-
         }
 
         // the task
@@ -1886,8 +1882,6 @@ import java.util.Map;
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
             if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
-
-                Log.d("Exchange Service", "Network on in meeting");
 
                 // get comment from db
                 Cursor meetingData = myDb.getOneRowMeetingsOrSuggestion(dbId);

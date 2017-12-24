@@ -220,13 +220,23 @@ public class MainActivity extends AppCompatActivity {
                 // new time table value
                 String tmpExtraTimeTable = intentExtras.getString("TimeTable","0");
                 String tmpExtraTimeTableNewValue = intentExtras.getString("TimeTableNewValue","0");
+                // new meeting/ suggestion
+                String tmpExtraMeeting = intentExtras.getString("Meeting","0");
+                String tmpExtraSuggestionNewSuggestion = intentExtras.getString("MeetingNewSuggestion","0");
+                String tmpExtraMeetingNewMeeting = intentExtras.getString("MeetingNewMeeting","0");
+                String tmpExtraSuggestionFromClientNewInvitation = intentExtras.getString("MeetingNewInvitationSuggestion","0");
 
                 if (tmpExtraConnectBookMessageNewOrSend != null && tmpExtraConnectBookMessageNewOrSend.equals("1")) {
 
                     // new message received
                     updateMainView = true;
 
-                } else if (tmpExtraTimeTable != null && tmpExtraTimeTable.equals("1") && tmpExtraTimeTableNewValue != null && tmpExtraTimeTableNewValue.equals("1")) {
+                }  else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && ((tmpExtraSuggestionNewSuggestion != null && tmpExtraSuggestionNewSuggestion.equals("1")) || (tmpExtraMeetingNewMeeting != null && tmpExtraMeetingNewMeeting.equals("1")) || (tmpExtraSuggestionFromClientNewInvitation != null && tmpExtraSuggestionFromClientNewInvitation.equals("1"))   )) {
+
+                    // meeting, suggestion or suggestion from client has change -> refresh activity view
+                    updateMainView = true;
+                }
+                else if (tmpExtraTimeTable != null && tmpExtraTimeTable.equals("1") && tmpExtraTimeTableNewValue != null && tmpExtraTimeTableNewValue.equals("1")) {
 
                     // time table has change -> refresh activity view
                     updateMainView = true;
@@ -385,7 +395,6 @@ public class MainActivity extends AppCompatActivity {
                     if (myDb.getCountNewEntryMeetingAndSuggestion("all") > 0 ) {
                         mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                     } else {
-
                         Long nowTime = System.currentTimeMillis();
                         Cursor cSuggest = myDb.getAllRowsMeetingsAndSuggestion("suggestion_for_show_attention", nowTime);
                         Cursor cClientSuggest = myDb.getAllRowsMeetingsAndSuggestion("client_suggestion_for_show_attention", nowTime);

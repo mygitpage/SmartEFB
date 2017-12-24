@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,6 +33,9 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
 
     // reference to the DB
     DBAdapter myDb;
+
+    // for prefs
+    private SharedPreferences prefs;
 
     // ListView for meetings and suggestion
     ListView listViewMeetingSuggestion = null;
@@ -73,6 +77,9 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
         // init the DB
         myDb = new DBAdapter(fragmentSuggestionContext);
 
+        // open sharedPrefs
+        prefs = fragmentSuggestionContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentSuggestionContext.MODE_PRIVATE);
+
         // find the listview for display meetings and suggestion, etc.
         listViewMeetingSuggestion = (ListView) viewFragmentSuggestion.findViewById(R.id.listViewSuggestionDates);
     }
@@ -87,15 +94,11 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
     }
 
 
-    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeServiceEfb
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
     private BroadcastReceiver meetingFragmentSuggestionOverviewBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-
-
-            // Code anpassen, da von Meeting FRagment kopiert!!!!!!!!!!!!!!!!!!!!!!!!
-
 
             // Extras from intent that holds data
             Bundle intentExtras = null;
@@ -109,17 +112,18 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                 // check intent order
 
                 String tmpExtraMeeting = intentExtras.getString("Meeting","0");
-                String tmpExtraMeetingNewMeeting = intentExtras.getString("MeetingNewMeeting","0");
-                String tmpExtraMeetingCanceledMeetingByCoach = intentExtras.getString("MeetingCanceledMeetingByCoach","0");
+                String tmpExtraSuggestionNewSuggestion = intentExtras.getString("MeetingNewSuggestion","0");
+                String tmpExtraSuggestionCanceledSuggestionByCoach = intentExtras.getString("MeetingCanceledSuggestionByCoach","0");
+                String tmpExtraSuggestionMeetingFound = intentExtras.getString("MeetingFoundFromSuggestion","0");
                 String tmpCommand = intentExtras.getString("Command");
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpMessage = intentExtras.getString("Message");
 
-                if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingNewMeeting != null && tmpExtraMeetingNewMeeting.equals("1")) {
-                    // new meeting on smartphone -> update meeting view and show toast
-                    String updateNewMeeting = fragmentSuggestionContext.getString(R.string.toastMessageMeetingNewMeeting);
-                    Toast toast = Toast.makeText(context, updateNewMeeting, Toast.LENGTH_LONG);
+                if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraSuggestionNewSuggestion != null && tmpExtraSuggestionNewSuggestion.equals("1")) {
+                    // new suggestion from coach on smartphone -> update suggestion view and show toast
+                    String updateNewSuggestion = fragmentSuggestionContext.getString(R.string.toastMessageSuggestionOverviewNewSuggestion);
+                    Toast toast = Toast.makeText(context, updateNewSuggestion, Toast.LENGTH_LONG);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
@@ -127,10 +131,21 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                     // update the view
                     updateListView = true;
                 }
-                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingCanceledMeetingByCoach != null && tmpExtraMeetingCanceledMeetingByCoach.equals("1")) {
-                    // meeting canceled by coach -> update meeting view -> show toast and update view
-                    String updateNewMeeting = fragmentSuggestionContext.getString(R.string.toastMessageMeetingCanceledMeetingByCoach);
-                    Toast toast = Toast.makeText(context, updateNewMeeting, Toast.LENGTH_LONG);
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraSuggestionCanceledSuggestionByCoach != null && tmpExtraSuggestionCanceledSuggestionByCoach.equals("1")) {
+                    // suggestion canceled by coach -> update suggestion view -> show toast and update view
+                    String updateNewSuggestion = fragmentSuggestionContext.getString(R.string.toastMessageSuggestionOverviewCanceledSuggestionByCoach);
+                    Toast toast = Toast.makeText(context, updateNewSuggestion, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                    // update the view
+                    updateListView = true;
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraSuggestionMeetingFound != null && tmpExtraSuggestionMeetingFound.equals("1")) {
+                    // meeting found from suggestion by coach -> update suggestion view -> show toast and update view
+                    String updateNewSuggestion = fragmentSuggestionContext.getString(R.string.toastMessageSuggestionOverviewMeetingFoundByCoach);
+                    Toast toast = Toast.makeText(context, updateNewSuggestion, Toast.LENGTH_LONG);
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
@@ -218,6 +233,25 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
             // set no suggestions text visibility gone
             TextView tmpNoSuggestionsText = (TextView) viewFragmentSuggestion.findViewById(R.id.meetingOverviewNoSuggestionAvailable);
             tmpNoSuggestionsText.setVisibility(View.GONE);
+
+            // set message for sending successful and not successful -> in cursorAdapter is a button with intent to exchangeServiceEfb
+            if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false)) { // is client comment on -> show other successfull and not successfull text
+                // set successfull message in parent activity -> show in toast, when vote from client + comment for suggestion is send successfull
+                String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageSuggestionOverviewVoteAndCommentByClientSuccessfullSend", "string", fragmentSuggestionContext.getPackageName()));
+                ((ActivityMeeting) getActivity()).setSuccessefullMessageForSending(tmpSuccessfullMessage);
+                // set not successfull message in parent activity -> show in toast, when vote from client + comment for suggestion is send not successfull
+                String tmpNotSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageSuggestionOverviewVoteAndCommentByClientNotSuccessfullSend", "string", fragmentSuggestionContext.getPackageName()));
+                ((ActivityMeeting) getActivity()).setNotSuccessefullMessageForSending(tmpNotSuccessfullMessage);
+
+            }
+            else {
+                // set successfull message in parent activity -> show in toast, when vote from client for suggestion is send successfull
+                String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageSuggestionOverviewVoteByClientSuccessfullSend", "string", fragmentSuggestionContext.getPackageName()));
+                ((ActivityMeeting) getActivity()).setSuccessefullMessageForSending(tmpSuccessfullMessage);
+                // set not successfull message in parent activity -> show in toast, when vote from client for suggestion is send not successfull
+                String tmpNotSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageSuggestionOverviewVoteByClientNotSuccessfullSend", "string", fragmentSuggestionContext.getPackageName()));
+                ((ActivityMeeting) getActivity()).setNotSuccessefullMessageForSending(tmpNotSuccessfullMessage);
+            }
 
             // set listview visible
             listViewMeetingSuggestion.setVisibility(View.VISIBLE);

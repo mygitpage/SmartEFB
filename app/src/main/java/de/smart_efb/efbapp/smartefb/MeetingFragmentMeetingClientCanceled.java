@@ -35,7 +35,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MeetingFragmentMeetingClientCanceled extends Fragment {
 
-
     // fragment view
     View viewFragmentClientCanceledMeeting;
 
@@ -99,8 +98,6 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
 
     private void initFragmentMeetingClientCanceled () {
 
-        String tmpSubtitle = "";
-
         callGetterFunctionInSuper();
 
         // init the DB
@@ -116,7 +113,7 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
         prefs = fragmentClientCanceledMeetingContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentClientCanceledMeetingContext.MODE_PRIVATE);
 
         // set correct subtitle
-        tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleClientCanceledMeeting", "string", fragmentClientCanceledMeetingContext.getPackageName()));
+        String tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleClientCanceledMeeting", "string", fragmentClientCanceledMeetingContext.getPackageName()));
         ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, "meeting_client_canceled");
     }
 
@@ -148,7 +145,7 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
         public void onReceive(Context context, Intent intent) {
 
             // Extras from intent that holds data
-            Bundle intentExtras = null;
+            Bundle intentExtras;
 
             // check for intent extras
             intentExtras = intent.getExtras();
@@ -295,11 +292,11 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
                         // insert  in DB
                         myDb.updateMeetingCanceledByClient(clientCanceledMeetingId, tmpCanceledTime, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), txtInputCanceledReason.getText().toString(), tmpStatus);
 
-                        // set successfull message in parent activity
+                        // set successfull message in parent activity -> show in toast, when canceled message is send successfull
                         String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
                         ((ActivityMeeting) getActivity()).setSuccessefullMessageForSending (tmpSuccessfullMessage);
 
-                        // set not successfull message in parent activity
+                        // set not successfull message in parent activity -> show in toast, when canceled message is send not successfull
                         String tmpNotSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientNotSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
                         ((ActivityMeeting) getActivity()).setNotSuccessefullMessageForSending (tmpNotSuccessfullMessage);
 

@@ -41,9 +41,6 @@ public class MeetingFragmentMeetingOverview extends Fragment {
     MeetingOverviewCursorAdapter dataAdapterListViewMeeting = null;
 
 
-
-
-
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
@@ -54,7 +51,6 @@ public class MeetingFragmentMeetingOverview extends Fragment {
         getActivity().getApplicationContext().registerReceiver(meetingFragmentMeetingOverviewBrodcastReceiver, filter);
 
         return viewFragmentMeeting;
-
     }
 
 
@@ -70,7 +66,6 @@ public class MeetingFragmentMeetingOverview extends Fragment {
 
         // show actual meeting and suggestion informations
         displayActualMeetingSuggestionInformation();
-
     }
 
 

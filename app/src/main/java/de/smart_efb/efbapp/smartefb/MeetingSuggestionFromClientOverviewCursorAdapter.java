@@ -245,10 +245,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             tmpTextViewClientDeleteEntry.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
-
-
-
-
         // we are in timezone -> show input field
         if (tmpInTimezone && cursor.isFirst()) {
 

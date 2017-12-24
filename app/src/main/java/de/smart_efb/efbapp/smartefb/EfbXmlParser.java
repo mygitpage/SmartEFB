@@ -119,8 +119,10 @@ public class EfbXmlParser {
         returnMap.put("MeetingCanceledMeetingByCoach", "0");
         returnMap.put("MeetingNewSuggestion", "0");
         returnMap.put("MeetingCanceledSuggestionByCoach", "0");
-        returnMap.put("MeetingNewInvitationSuggestion", "0");
         returnMap.put("MeetingFoundFromSuggestion", "0");
+        returnMap.put("MeetingNewInvitationSuggestion", "0");
+        returnMap.put("MeetingCanceledClientSuggestionByCoach", "0");
+        returnMap.put("MeetingFoundFromClientSuggestion", "0");
 
         returnMap.put("TimeTable", "0");
         returnMap.put("TimeTableNewValue", "0");
@@ -4052,7 +4054,7 @@ public class EfbXmlParser {
                                                 // update row in db table
                                                 myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus);
 
-                                                returnMap.put("MeetingCanceledSuggestionByCoach", "1");
+                                                returnMap.put("MeetingCanceledClientSuggestionByCoach", "1");
                                                 returnMap.put("Meeting", "1");
 
                                             } else  if (tmpMeetingFoundFromSuggestionAuthor.length() > 0 && tmpMeetingFoundFromSuggestionDate > 0) {
@@ -4064,7 +4066,7 @@ public class EfbXmlParser {
                                                 // update row in db table
                                                 myDb.updateMeetingFoundFromSuggestion(tmpMeetingSuggestionDataServerId, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestionAuthor, newMeeting, meetingStatus);
 
-                                                returnMap.put("MeetingFoundFromSuggestion", "1");
+                                                returnMap.put("MeetingFoundFromClientSuggestion", "1");
                                                 returnMap.put("Meeting", "1");
                                             }
                                             else {
@@ -4123,16 +4125,9 @@ public class EfbXmlParser {
                                                 // insert new data into db
                                                 myDb.insertNewMeetingOrSuggestionDate(array_meetingTime, array_meetingPlace, array_meetingVote, tmpClientVoteAuthor, tmpClientVoteDate, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingFoundFromSuggestionAuthor, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestion, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientSuggestionStartDate, tmpClientSuggestionEndDate, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting);
 
-
-                                                Log.d("XML Parser"," Suggestion Client INSERT!");
-
-
                                                 returnMap.put("MeetingNewInvitationSuggestion", "1");
                                                 returnMap.put("Meeting", "1");
                                             }
-
-
-
                                         }
                                         break;
                                 }
@@ -4152,7 +4147,6 @@ public class EfbXmlParser {
             setErrorMessageInPrefs(24);
             e.printStackTrace();
         }
-
     }
 
     //

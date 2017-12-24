@@ -922,7 +922,15 @@
             <string name="suggestionCommentHintText">Sie können Vorschläge auswählen und/oder hier einen Kommentar schreiben</string>
             <string name="suggestionOverviewLinkTextDeleteSuggestionEntry">Den obigen Eintrag löschen</string>
             <string name="suggestionOverviewLinkNormalDeleteDate">(Der Eintrag wird automatisch am %1$s um %2$s Uhr gelöscht)</string>
-        <!-- end fragment suggestion overview -->
+
+    <string name="toastMessageSuggestionOverviewNewSuggestion">Es sind neue Terminvorschläge von Ihrer Beraterin/ Ihrem Berater eingetroffen!</string>
+    <string name="toastMessageSuggestionOverviewCanceledSuggestionByCoach">Es wurden die Berater-Terminvorschläge durch Ihre Beraterin/ Ihren Berater abgesagt!</string>
+    <string name="toastMessageSuggestionOverviewMeetingFoundByCoach">Es wurde aus den Terminvorschlägen ein gemeinsamer Termin gefunden!</string>
+    <string name="toastMessageSuggestionOverviewVoteByClientSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen wurde erfolgreich gesendet!</string>
+    <string name="toastMessageSuggestionOverviewVoteByClientNotSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen konnte nicht gesendet werden!</string>
+    <string name="toastMessageSuggestionOverviewVoteAndCommentByClientSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen und/ oder Ihr Kommentar wurden erfolgreich gesendet!</string>
+    <string name="toastMessageSuggestionOverviewVoteAndCommentByClientNotSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen und/ oder Ihr Kommentar konnten nicht gesendet werden!</string>
+    <!-- end fragment suggestion overview -->
 
         <!-- fragment suggestion from client -->
 
@@ -977,6 +985,18 @@
     <string name="suggestionFromClientInputInfoTextForUser">Sie können nur einmal Vorschläge unterbreiten. Bitte geben Sie mindestens zwei Terminvorschläge mit Datum, Uhrzeit und Ort (Beratungsstelle in Werder oder Bad Belzig) an. Danke.</string>
 
     <string name="suggestionFromClientLinkTextDeleteSuggestionEntry">Den obigen Eintrag löschen</string>
+
+
+    <string name="toastMessageSuggestionFromClientNewInvitation">Sie können neue Terminvorschläge an Ihre Beraterin/ Ihren Berater schicken!</string>
+    <string name="toastMessageSuggestionFromCanceledByCoach">Der Zeitraum für die Abgabe von Terrminvorschlägen wurde durch Ihre Beraterin/ Ihren Berater abgesagt!</string>
+    <string name="toastMessageSuggestionFromClientMeetingFoundByCoach">Es wurde aus Ihren Terminvorschlägen ein gemeinsamer Termin gefunden!</string>
+    <string name="toastMessageSuggestionFromClientByClientSuccessfullSend">Ihre Terminvorschläge wurden erfolgreich gesendet!</string>
+    <string name="toastMessageSuggestionFromClientByClientNotSuccessfullSend">Ihre Terminvorschläge konnten nicht gesendet werden!</string>
+
+
+
+
+
 
     <!-- end fragment suggestion from client -->
 
