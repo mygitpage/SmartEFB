@@ -131,7 +131,6 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         final View inflatedView;
 
         Boolean tmpStatusSuggestionCanceled = false;
-        Boolean tmpStatusResponseTimeExpired = false;
         Boolean tmpStatusVoteSuggestion = false;
         Boolean tmpStatusMeetingFoundFromSuggestion = false;
         Boolean tmpStatusSuggestion = false;
@@ -149,8 +148,8 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND)) == 1) {
             // check for meeting found from suggestion
             tmpStatusMeetingFoundFromSuggestion = true;
-        } else if (cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)).length() > 0 && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEDATE)) > 0) { // suggestion vote send
-            // check for voting
+        } else if ((cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)).length() > 0 && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEDATE)) > 0) || (cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR)).length() > 0 && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE)) > 0)) { // suggestion vote or comment send
+            // check for vote (vote and/or comment
             tmpStatusVoteSuggestion = true;
         } else {
             // check for normal suggestion
@@ -324,7 +323,6 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                 }
             }
 
-
             // set link to delete suggestion entry, because already vote, canceled or meeting found from suggestion
             TextView tmpTextViewClientDeleteEntry = (TextView) inflatedView.findViewById(R.id.suggestionDeleteEntryLink);
             TextView tmpTextViewClientDeleteRegularyEntry = (TextView) inflatedView.findViewById(R.id.suggestionDeleteRegularyInfoText);
@@ -497,23 +495,36 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                 public void onClick(View v) {
 
                     // get comment from inputfield when on
-                    String commentSuggestionText = "";
+                    String tmpClientCommentText = "";
                     if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false)) {
                         EditText txtInputSuggestionComment = (EditText) inflatedView.findViewById(R.id.inputSuggestionComment);
-                        commentSuggestionText = txtInputSuggestionComment.getText().toString();
+                        tmpClientCommentText = txtInputSuggestionComment.getText().toString();
                     }
 
-                    if (countListViewElementVote >= minNumberOfVotes || commentSuggestionText.length() > 3) { // too little suggestions or to few comment letters?
+                    if (countListViewElementVote >= minNumberOfVotes || tmpClientCommentText.length() > 3) { // too little suggestions or to few comment letters?
 
-                        // canceled time
-                        Long tmpVoteDate = System.currentTimeMillis();
-
-                        // canceled status
+                        // status of suggestion data -> 0= not send; 1=send; 4= external
                         int tmpStatus = 0; // not send to server
+
+                        // set comment author and date
+                        String tmpClientCommentAuthor = "";
+                        Long tmpClientCommentDate = 0L;
+                        if (tmpClientCommentText.length() > 3) {
+                            tmpClientCommentAuthor = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                            tmpClientCommentDate = System.currentTimeMillis();
+                        }
+
+                        // set vote author and date
+                        String tmpVoteAuthor = "";
+                        Long tmpVoteDate = 0L;
+                        if (countListViewElementVote >= minNumberOfVotes) {
+                            tmpVoteDate = System.currentTimeMillis();
+                            tmpVoteAuthor = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                        }
 
                         // insert  in DB
                         Long clientVoteDbId = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
-                        myDb.updateSuggestionVoteAndCommentByClient(checkBoxSuggestionsValues[1], checkBoxSuggestionsValues[2], checkBoxSuggestionsValues[3], checkBoxSuggestionsValues[4], checkBoxSuggestionsValues[5], checkBoxSuggestionsValues[6], clientVoteDbId, tmpVoteDate, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), commentSuggestionText, tmpStatus);
+                        myDb.updateSuggestionVoteAndCommentByClient(checkBoxSuggestionsValues[1], checkBoxSuggestionsValues[2], checkBoxSuggestionsValues[3], checkBoxSuggestionsValues[4], checkBoxSuggestionsValues[5], checkBoxSuggestionsValues[6], tmpVoteDate, tmpVoteAuthor, tmpClientCommentAuthor, tmpClientCommentDate,  tmpClientCommentText, clientVoteDbId, tmpStatus);
 
                         // message for successfull sending or not successfull sending is set in class MeetingFragmentSuggestionOverview
 
@@ -537,7 +548,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                             TextView textViewTooLittleSuggestionChoosen = (TextView) inflatedView.findViewById(R.id.suggestionErrorToFewSuggestionsChoosen);
                             textViewTooLittleSuggestionChoosen.setVisibility(View.VISIBLE);
                         }
-                        if (commentSuggestionText.length() < 4) {
+                        if (tmpClientCommentText.length() < 4) {
                             TextView textViewToFewLettersInComment = (TextView) inflatedView.findViewById(R.id.errorInputSuggestionComment);
                             textViewToFewLettersInComment.setVisibility(View.VISIBLE);
                         }

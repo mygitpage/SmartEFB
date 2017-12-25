@@ -2508,7 +2508,7 @@ public class DBAdapter extends SQLiteOpenHelper {
                 sort = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + " DESC";
                 break;
             case "suggestion_for_show_attention":
-                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">=" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "='' AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0";
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">=" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "='' AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR + "='' AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE + "=0 AND (" + MEETING_SUGGESTION_MEETING_KEY_STATUS + "=0 OR " + MEETING_SUGGESTION_MEETING_KEY_STATUS + "=4)";
                 sort = MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " DESC, " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + " DESC";
                 break;
 
@@ -2573,7 +2573,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    boolean updateSuggestionVoteAndCommentByClient(int tmpResultVote1, int tmpResultVote2, int tmpResultVote3, int tmpResultVote4, int tmpResultVote5, int tmpResultVote6, Long clientVoteDbId, Long tmpDate, String tmpAuthor, String tmpClientCommentSuggestionText, int tmpStatus) {
+    boolean updateSuggestionVoteAndCommentByClient(int tmpResultVote1, int tmpResultVote2, int tmpResultVote3, int tmpResultVote4, int tmpResultVote5, int tmpResultVote6, Long tmpVoteDate, String tmpVoteAuthor, String tmpClientCommentAuthor, Long tmpClientCommentDate,  String tmpClientCommentText, Long clientVoteDbId, int tmpStatus) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2582,22 +2582,22 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Create rows data:
         ContentValues newValues = new ContentValues();
 
+        // set vote data
         newValues.put(MEETING_SUGGESTION_KEY_VOTE1, tmpResultVote1);
         newValues.put(MEETING_SUGGESTION_KEY_VOTE2, tmpResultVote2);
         newValues.put(MEETING_SUGGESTION_KEY_VOTE3, tmpResultVote3);
         newValues.put(MEETING_SUGGESTION_KEY_VOTE4, tmpResultVote4);
         newValues.put(MEETING_SUGGESTION_KEY_VOTE5, tmpResultVote5);
         newValues.put(MEETING_SUGGESTION_KEY_VOTE6, tmpResultVote6);
-        newValues.put(MEETING_SUGGESTION_KEY_VOTEAUTHOR, tmpAuthor);
-        newValues.put(MEETING_SUGGESTION_KEY_VOTEDATE, tmpDate);
+        newValues.put(MEETING_SUGGESTION_KEY_VOTEAUTHOR, tmpVoteAuthor);
+        newValues.put(MEETING_SUGGESTION_KEY_VOTEDATE, tmpVoteDate);
         newValues.put(MEETING_SUGGESTION_MEETING_KEY_STATUS, tmpStatus);
 
-        // update client comment for suggestion only when given
-        if (tmpClientCommentSuggestionText.length() > 0) {
-            newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE, tmpDate);
-            newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR, tmpAuthor);
-            newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT, tmpClientCommentSuggestionText);
-        }
+        // set client comment suggestion data
+        newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE, tmpClientCommentDate);
+        newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR, tmpClientCommentAuthor);
+        newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT, tmpClientCommentText);
+
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;

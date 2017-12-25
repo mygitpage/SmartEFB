@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,6 +127,7 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpMessage = intentExtras.getString("Message");
+                String tmpExtraSuggestionFromClientUpdateListView = intentExtras.getString("SuggestionFromClientUpdateListView","0"); // broadcast from MeetingSuggestionFromClientOverviewCursorAdapter when count down timer (wait time) is finish
 
                 if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraSuggestionFromClientNewInvitation != null && tmpExtraSuggestionFromClientNewInvitation.equals("1")) {
                     // new invitation for client suggestion from coach on smartphone -> update client suggestion view and show toast
@@ -197,7 +199,11 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
                         if( v != null) v.setGravity(Gravity.CENTER);
                         toast.show();
                     }
+                }
+                else if (tmpExtraSuggestionFromClientUpdateListView != null && tmpExtraSuggestionFromClientUpdateListView.equals("update")) {
 
+                    // update the view
+                    updateListView = true;
                 }
 
                 // update the list view because data has change?

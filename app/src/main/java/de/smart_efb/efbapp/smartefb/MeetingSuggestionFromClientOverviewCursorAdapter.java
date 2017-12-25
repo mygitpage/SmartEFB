@@ -12,6 +12,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,9 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
 
     // for prefs
     SharedPreferences prefs;
+
+    // count down timer for start of period
+    CountDownTimer countDownEndTimeFormPeriod;
 
 
     // Own constructor
@@ -369,11 +373,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                         Long clientDbId = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
                         myDb.updateSuggestionFromClient(clientDbId, tmpSuggestionDate, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), suggestionFromClientText, tmpStatus);
 
-                        // set successfull message in parent activity
-                        //String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
-                        //((ActivityMeeting) getActivity()).setSuccessefullMessageForSending (tmpSuccessfullMessage);
-
-
                         // send intent to service to start the service and send vote suggestion to server!
                         Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
                         startServiceIntent.putExtra("com","send_meeting_data");
@@ -430,7 +429,7 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             Long runTimeForTimer = cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)) - nowTime;
             // start the timer with the calculated milliseconds
             if (runTimeForTimer > 0) {
-                new CountDownTimer(runTimeForTimer, 1000) {
+                countDownEndTimeFormPeriod = new CountDownTimer(runTimeForTimer, 1000) {
                     public void onTick(long millisUntilFinished) {
                         // gernate count down timer
                         String FORMAT = "%d Stunden %02d Minuten %02d Sekunden";
@@ -444,11 +443,11 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                     }
 
                     public void onFinish() {
-                        // build intent to go back to suggestionFromClientOverview and show inputfield for client suggestion
-                        Intent intent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ActivityMeeting.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.putExtra("com", "suggestion_from_client");
-                        meetingSuggestionOverviewCursorAdapterContext.startActivity(intent);
+                        // send intent to receiver in MeetingFragmentSuggestionFromClient to update list view -> waiting time is over, now client can vote for meetings!
+                        Intent tmpIntent = new Intent();
+                        tmpIntent.putExtra("SuggestionFromClientUpdateListView", "update");
+                        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                        context.sendBroadcast(tmpIntent);
                     }
                 }.start();
             }
