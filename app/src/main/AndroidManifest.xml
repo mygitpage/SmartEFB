@@ -44,10 +44,28 @@
             android:launchMode="singleTop">
         </activity>
 
+        <!-- Activity Message -->
+        <!--
+        <activity
+            android:name=".ActivityMessage"
+            android:label="@string/mainMenueElementId_4"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
+        </activity>
+        -->
+
+        <!-- Activity Meeting -->
+        <activity
+            android:name=".ActivityMeeting"
+            android:label="@string/mainMenueElementId_5"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
+        </activity>
+
         <!-- Activity Time Table -->
         <activity
             android:name=".ActivityTimeTable"
-            android:label="@string/mainMenueElementId_4"
+            android:label="@string/mainMenueElementId_6"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
         </activity>
@@ -55,31 +73,22 @@
         <!-- Activity Prevetion -->
         <activity
             android:name=".ActivityPrevention"
-            android:label="@string/mainMenueElementId_5"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop">
-        </activity>
-
-
-        <!-- Activity FAQ -->
-        <activity
-            android:name=".ActivityFaq"
-            android:label="@string/mainMenueElementId_6"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <!-- Activity Meeting -->
-        <activity
-            android:name=".ActivityMeeting"
             android:label="@string/mainMenueElementId_7"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
         </activity>
 
+        <!-- Activity FAQ -->
+        <activity
+            android:name=".ActivityFaq"
+            android:label="@string/mainMenueElementId_8"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <!-- Activity Emergency Help -->
         <activity
             android:name=".ActivityEmergencyHelp"
-            android:label="@string/mainMenueElementId_8"
+            android:label="@string/mainMenueElementId_9"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
         </activity>
@@ -87,7 +96,7 @@
         <!-- Activity Settings -->
         <activity
             android:name=".ActivitySettingsEfb"
-            android:label="@string/mainMenueElementId_9"
+            android:label="@string/mainMenueElementId_10"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 

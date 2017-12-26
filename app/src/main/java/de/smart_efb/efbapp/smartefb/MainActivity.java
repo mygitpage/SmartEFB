@@ -122,37 +122,45 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("title", mainMenueElementTitle[position]);
                             mainContext.startActivity(intent);
                             break;
-                        case 3: // grid "zeitplan"
-                            intent = new Intent(getApplicationContext(), ActivityTimeTable.class);
+                        case 3: // grid "nachrichten"
+                            /*
+                            intent = new Intent(getApplicationContext(), ActivityMeeting.class);
                             intent.putExtra("position", position);
                             intent.putExtra("title", mainMenueElementTitle[position]);
                             mainContext.startActivity(intent);
+                            */
                             break;
-                        case 4: // grid "praevention"
-                            intent = new Intent(getApplicationContext(), ActivityPrevention.class);
-                            intent.putExtra("position", position);
-                            intent.putExtra("title", mainMenueElementTitle[position]);
-                            mainContext.startActivity(intent);
-                            break;
-                        case 5: // grid "faq"
-                            intent = new Intent(getApplicationContext(), ActivityFaq.class);
-                            intent.putExtra("position", position);
-                            intent.putExtra("title", mainMenueElementTitle[position]);
-                            mainContext.startActivity(intent);
-                            break;
-                        case 6: // grid "termine"
+                        case 4: // grid "termine"
                             intent = new Intent(getApplicationContext(), ActivityMeeting.class);
                             intent.putExtra("position", position);
                             intent.putExtra("title", mainMenueElementTitle[position]);
                             mainContext.startActivity(intent);
                             break;
-                        case 7: // grid "hilfe"
+                        case 5: // grid "zeitplan"
+                            intent = new Intent(getApplicationContext(), ActivityTimeTable.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
+                            break;
+                        case 6: // grid "praevention"
+                            intent = new Intent(getApplicationContext(), ActivityPrevention.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
+                            break;
+                        case 7: // grid "faq"
+                            intent = new Intent(getApplicationContext(), ActivityFaq.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("title", mainMenueElementTitle[position]);
+                            mainContext.startActivity(intent);
+                            break;
+                        case 8: // grid "hilfe"
                             intent = new Intent(getApplicationContext(), ActivityEmergencyHelp.class);
                             intent.putExtra("position", position);
                             intent.putExtra("title", mainMenueElementTitle[position]);
                             mainContext.startActivity(intent);
                             break;
-                        case 8:
+                        case 9:
                             // grid "einstellungen"
                             intent = new Intent(getApplicationContext(), ActivitySettingsEfb.class);
                             intent.putExtra("position", position);
@@ -371,31 +379,16 @@ public class MainActivity extends AppCompatActivity {
                         tmpNew = true;
                     }
                     break;
-                case 3: // menue item "Zeitplan"
-                    if (showMainMenueElement[countElements]) { // is element aktiv?
-                        if (prefs.getBoolean(ConstansClassTimeTable.namePrefsTimeTableNewValue, false)) {
-                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
-                        } else {
-                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
-                        }
-                        tmpNew = true;
-                    }
-
-                    break;
-                case 4: // menue item "Praevention"
+                case 3: // menue item "Nachrichten"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-
-                case 5: // menue item "FAQ"
-                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
-                    break;
-
-                case 6: // menue item "Termine"
-
+                case 4: // menue item "Termine"
+                    // delete all meeting/ suggestion mark with new but never show (time expired, etc.)
+                    Long nowTime = System.currentTimeMillis();
+                    myDb.deleteStatusNewEntryAllOldMeetingAndSuggestion (nowTime);
                     if (myDb.getCountNewEntryMeetingAndSuggestion("all") > 0 ) {
                         mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                     } else {
-                        Long nowTime = System.currentTimeMillis();
                         Cursor cSuggest = myDb.getAllRowsMeetingsAndSuggestion("suggestion_for_show_attention", nowTime);
                         Cursor cClientSuggest = myDb.getAllRowsMeetingsAndSuggestion("client_suggestion_for_show_attention", nowTime);
                         if ( (cSuggest != null && cSuggest.getCount() > 0) || (cClientSuggest != null && cClientSuggest.getCount() > 0) ) {
@@ -407,10 +400,30 @@ public class MainActivity extends AppCompatActivity {
                     }
                     tmpNew = true;
                     break;
-                case 7: // menue item "Notfallhilfe"
+                case 5: // menue item "Zeitplan"
+                    if (showMainMenueElement[countElements]) { // is element aktiv?
+                        if (prefs.getBoolean(ConstansClassTimeTable.namePrefsTimeTableNewValue, false)) {
+                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
+                        } else {
+                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                        }
+                        tmpNew = true;
+                    }
+
+                    break;
+                case 6: // menue item "Praevention"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-                case 8: // menue item "Einstellungen"
+
+                case 7: // menue item "FAQ"
+                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    break;
+
+
+                case 8: // menue item "Notfallhilfe"
+                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    break;
+                case 10: // menue item "Einstellungen"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
                 default:

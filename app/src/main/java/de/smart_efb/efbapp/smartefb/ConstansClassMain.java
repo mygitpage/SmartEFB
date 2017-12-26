@@ -32,26 +32,29 @@ class ConstansClassMain {
         // prefs name for substring of boolean to show/hide main menue element our goals
         static final String namePrefsMainMenueElementId_OurGoals = "mainMenueElementId_2";
 
-        // prefs name for substring of boolean to show/hide main menue element timetable
-        static final String namePrefsMainMenueElementId_TimeTable = "mainMenueElementId_3";
-
-        // prefs name for substring of boolean to show/hide main menue element prevention
-        static final String namePrefsMainMenueElementId_Prevention = "mainMenueElementId_4";
-
-        // prefs name for substring of boolean to show/hide main menue element faq
-        static final String namePrefsMainMenueElementId_Faq = "mainMenueElementId_5";
+        // prefs name for substring of boolean to show/hide main menue element message
+        static final String namePrefsMainMenueElementId_Message = "mainMenueElementId_3";
 
         // prefs name for substring of boolean to show/hide main menue element meeting
-        static final String namePrefsMainMenueElementId_Meeting = "mainMenueElementId_6";
+        static final String namePrefsMainMenueElementId_Meeting = "mainMenueElementId_4";
+
+        // prefs name for substring of boolean to show/hide main menue element timetable
+        static final String namePrefsMainMenueElementId_TimeTable = "mainMenueElementId_5";
+
+        // prefs name for substring of boolean to show/hide main menue element prevention
+        static final String namePrefsMainMenueElementId_Prevention = "mainMenueElementId_6";
+
+        // prefs name for substring of boolean to show/hide main menue element faq
+        static final String namePrefsMainMenueElementId_Faq = "mainMenueElementId_7";
 
         // prefs name for substring of boolean to show/hide main menue element emergency help
-        static final String namePrefsMainMenueElementId_EmergencyHelp = "mainMenueElementId_7";
+        static final String namePrefsMainMenueElementId_EmergencyHelp = "mainMenueElementId_8";
 
         // prefs name for substring of boolean to show/hide main menue element settings
-        static final String namePrefsMainMenueElementId_Settings = "mainMenueElementId_8";
+        static final String namePrefsMainMenueElementId_Settings = "mainMenueElementId_9";
 
     // total number of elements in main menue (in test-mode please edit variable in class SettingsEfbFragmentD please too!!!!!!!!!!!!!)
-    static final int mainMenueNumberOfElements = 9;
+    static final int mainMenueNumberOfElements = 10;
 
     // number of grid columns in main menue
     static final int numberOfGridColumns = 2;

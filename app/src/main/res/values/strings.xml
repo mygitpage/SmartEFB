@@ -57,14 +57,13 @@
     <string name="mainMenueElementId_1">Übergabe</string>
     <string name="mainMenueElementId_2">Absprachen</string>
     <string name="mainMenueElementId_3">Ziele</string>
-    <string name="mainMenueElementId_4">Zeitplan</string>
-    <string name="mainMenueElementId_5">Prävention</string>
-    <string name="mainMenueElementId_6">FAQ</string>
-    <string name="mainMenueElementId_7">Termine</string>
-    <string name="mainMenueElementId_8">Notfallhilfe</string>
-    <string name="mainMenueElementId_9">Einstellungen</string>
-
-
+    <string name="mainMenueElementId_4">Nachrichten</string>
+    <string name="mainMenueElementId_5">Termine</string>
+    <string name="mainMenueElementId_6">Zeitplan</string>
+    <string name="mainMenueElementId_7">Prävention</string>
+    <string name="mainMenueElementId_8">FAQ</string>
+    <string name="mainMenueElementId_9">Notfall</string>
+    <string name="mainMenueElementId_10">Einstellungen</string>
     <string name="main_menue_text_inactiv">Inaktiv</string>
 
     <!-- Main Menue Element Strings End-->
@@ -977,11 +976,7 @@
             <string name="meetingSubtitleSuggestionOverview">Terminvorschläge vom Berater</string>
             <string name="meetingSubtitleSuggestionOverviewNoSuggestion">Keine Vorschläge vom Berater</string>
             <string name="meetingSubtitleSuggestionFromClientOverview">Terminvorschläge von Ihnen</string>
-
-
-
-
-    <string name="meetingSubtitleSuggestionFromClientOverviewNoSuggestion">Keine Vorschläge von Ihnen</string>
+            <string name="meetingSubtitleSuggestionFromClientOverviewNoSuggestion">Keine Vorschläge von Ihnen</string>
             <string name="meetingSubtitleSuggestionFromClientOverviewFunctionNotPossible">Funktion nicht möglich</string>
             <string name="meetingSubtitleMeetingSuggestionOverviewOld">Vergangene Termine</string>
             <string name="meetingSubtitleMeetingSuggestionOverviewOldNotAvailable">Keine vergangenen Termine vorhanden</string>

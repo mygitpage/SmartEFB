@@ -12,6 +12,7 @@
         <item>@string/mainMenueElementId_7</item>
         <item>@string/mainMenueElementId_8</item>
         <item>@string/mainMenueElementId_9</item>
+        <item>@string/mainMenueElementId_10</item>
     </string-array>
 
     // Main menue button color active
@@ -25,6 +26,7 @@
         <item>#FF354644</item>
         <item>#FFACAAA4</item>
         <item>#FFFBBE5E</item>
+        <item>#FFAFAC81</item>
     </string-array>
 
 
@@ -39,6 +41,7 @@
         <item>#FFAEB5B4</item>
         <item>#FFDEDDDB</item>
         <item>#FFFDDEAE</item>
+        <item>#FFDFD5C0</item>
     </string-array>
 
 
@@ -47,10 +50,11 @@
         <item>main_pic_connectbook_normal</item><!--Uebergabe-->
         <item>main_pic_arrangement_normal</item><!--Absprachen-->
         <item>main_pic_goal_normal</item><!--Ziele-->
+        <item>main_pic_emergencyhelp_normal</item><!--Nachrichten - new pic please!!!!!!!!!!-->
+        <item>main_pic_event_normal</item><!--Termine-->
         <item>main_pic_timetable_normal</item><!--Zeitplan-->
         <item>main_pic_prevetion_normal</item><!--Praevention-->
         <item>main_pic_faq_normal</item><!--FAQ-->
-        <item>main_pic_event_normal</item><!--Termine-->
         <item>main_pic_emergencyhelp_normal</item><!--Hilfe-->
         <item>main_pic_setting_normal</item><!--Einstellungen-->
     </string-array>
@@ -61,10 +65,11 @@
         <item>main_pic_connectbook_new_entry</item><!--Uebergabe-->
         <item>main_pic_arrangement_new_entry</item><!--Absprachen-->
         <item>main_pic_goal_new_entry</item><!--Ziele-->
+        <item>main_pic_emergencyhelp_normal</item><!--Nachrichten - new pic please!!!!!!!!!!-->
+        <item>main_pic_event_new_entry</item><!--Termine-->
         <item>main_pic_timetable_normal</item><!--Zeitplan -->
         <item>main_pic_prevention_new_entry</item><!--Praevention-->
         <item>main_pic_faq_new_entry</item><!--FAQ-->
-        <item>main_pic_event_new_entry</item><!--Termine-->
         <item>main_pic_emergencyhelp_normal</item><!--Hilfe - there is no need for new entry-->
         <item>main_pic_setting_normal</item><!--Einstellungen - there is no need for new entry-->
     </string-array>
@@ -75,10 +80,11 @@
         <item>main_pic_connectbook_normal</item><!--Uebergabe - No need for attention entry-->
         <item>main_pic_arrangement_normal</item><!--Absprachen - No need for attention entry-->
         <item>main_pic_goal_normal</item><!--Ziele - No need for attention entry-->
+        <item>main_pic_emergencyhelp_normal</item><!--Nachrichten - new pic please!!!!!!!!!! -->
+        <item>main_pic_event_attention_entry</item><!--Termine-->
         <item>main_pic_timetable_normal</item><!--Zeitplan - No need for attention entry-->
         <item>main_pic_prevetion_normal</item><!--Praevention - No need for attention entry-->
         <item>main_pic_faq_normal</item><!--FAQ - No need for attention entry-->
-        <item>main_pic_event_attention_entry</item><!--Termine-->
         <item>main_pic_emergencyhelp_normal</item><!--Hilfe - No need for attention entry-->
         <item>main_pic_setting_normal</item><!--Einstellungen - No need for attention entry-->
     </string-array>

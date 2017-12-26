@@ -1228,13 +1228,11 @@ public class EfbXmlParser {
     }
 
 
-
     private void readOurArrangementTag_Evaluate() {
 
         // TODO: Implematation, when needed!!!!
 
     }
-
 
 
     private void readOurArrangementTag_Settings() {
@@ -1275,7 +1273,6 @@ public class EfbXmlParser {
         int tmpSketchCommentDelaytime = 0;
         Long tmpSketchCommentCountCommentSinceTime = 0L;
         int tmpSketchCommentShare = 0; //0-> not sharing; 1-> sharing
-
 
         try {
             int eventType = xpp.next();
@@ -1645,7 +1642,7 @@ public class EfbXmlParser {
                                 }
 
                                 // update comment max/count of arrangements?
-                                if (tmpArrangementCommentOnOff && tmpCommentMaxComment > 0 && tmpCommentMaxLetters > 0 && tmpCommentDelaytime > 0 && tmpCommentCountCommentSinceTime > 0 && tmpCommentShare >= 0) {
+                                if (tmpArrangementCommentOnOff && tmpCommentMaxComment > 0 && tmpCommentMaxLetters > 0 && tmpCommentDelaytime >= 0 && tmpCommentCountCommentSinceTime > 0 && tmpCommentShare >= 0) {
 
                                     // set new share value to prefs and set returnMap
                                     if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) != tmpCommentShare ) {
@@ -1689,7 +1686,7 @@ public class EfbXmlParser {
                                 }
 
                                 // update sketch comment max/count of sketch arrangements?
-                                if (tmpArrangementSketchCommentOnOff && tmpSketchCommentMaxComment > 0 && tmpSketchCommentMaxLetters > 0 && tmpSketchCommentDelaytime > 0 && tmpSketchCommentCountCommentSinceTime > 0 && tmpSketchCommentShare >= 0) {
+                                if (tmpArrangementSketchCommentOnOff && tmpSketchCommentMaxComment > 0 && tmpSketchCommentMaxLetters > 0 && tmpSketchCommentDelaytime >= 0 && tmpSketchCommentCountCommentSinceTime > 0 && tmpSketchCommentShare >= 0) {
                                     // write data to prefs
 
                                     // set new share value for sketch comment to prefs and set returnMap
@@ -3098,7 +3095,7 @@ public class EfbXmlParser {
                                 }
 
                                 // update comment max/count of jointly goals?
-                                if (tmpGoalsJointlyCommentOnOff && tmpJointlyCommentMaxComment > 0 && tmpJointlyCommentMaxLetters > 0 && tmpCommentDelaytime > 0 && tmpJointlyCommentCountCommentSinceTime > 0 && tmpCommentShare >= 0) {
+                                if (tmpGoalsJointlyCommentOnOff && tmpJointlyCommentMaxComment > 0 && tmpJointlyCommentMaxLetters > 0 && tmpCommentDelaytime >= 0 && tmpJointlyCommentCountCommentSinceTime > 0 && tmpCommentShare >= 0) {
                                     // set new share value to prefs and set returnMap
                                     if (prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentShare, 0) != tmpCommentShare ) {
                                         prefsEditor.putInt(ConstansClassOurGoals.namePrefsJointlyCommentShare, tmpCommentShare); // write new share value to prefs
@@ -3141,7 +3138,7 @@ public class EfbXmlParser {
 
 
                                 // update debetable comment max/count of debetable goals?
-                                if (tmpGoalsDebetableCommentOnOff && tmpDebetableCommentMaxComment > 0 && tmpDebetableCommentMaxLetters > 0 && tmpDebetableCommentDelaytime > 0 && tmpDebetableCommentCountCommentSinceTime > 0 && tmpDebetableCommentShare >= 0) {
+                                if (tmpGoalsDebetableCommentOnOff && tmpDebetableCommentMaxComment > 0 && tmpDebetableCommentMaxLetters > 0 && tmpDebetableCommentDelaytime >= 0 && tmpDebetableCommentCountCommentSinceTime > 0 && tmpDebetableCommentShare >= 0) {
 
                                     // set new share value for debetable comment to prefs and set returnMap
                                     if (prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentShare, 0) != tmpDebetableCommentShare ) {
