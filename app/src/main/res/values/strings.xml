@@ -820,19 +820,12 @@
         <string name="faqSubtitleSectionFive">Rund um die Erziehung</string>
     <!-- End faq subtitle text -->
 
-
-
-
-
-
     <!-- Activity FAQ End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Activity Meeting -->
-
-
 
         <!-- Strings for tab title in activity meting -->
             <string name="meetingTabTitle_1">Termine</string>
@@ -851,8 +844,20 @@
         <!-- help dialog -->
             <string name="textDialogMeetingCloseDialog">Schließen</string>
             <string name="textDialogMeetingTitleDialog">Hinweise zu den Terminen</string>
-            <string name="textDialogMeetingSettingsIntro">Im Bereich Termine finden Sie Ihre nächsten Beratungstermine. Die Beratungstermine kann Ihre Beraterin/ Ihr Berater erstellen. Dazu spricht sie sich mit Ihnen ab und erstellt einen entsprechenden Termin. Ein weitere Möglichkeit ist, das Ihre Beraterin/ Ihr Berater mehrere Terminvorschläge unterbreitet, aus denen Sie die für Sie besten auswählen. Aufgrund Ihrer Rückmeldungen kann Ihre Beraterin/ Ihr Berater dann einen Termin finden. </string>
+            <string name="textDialogMeetingSettingsIntro">Im Bereich \"Termine\" finden Sie Ihre nächsten Beratungstermine, können eigene Terminvorschläge machen oder auf Terminvorschläge Ihrer Beraterin/ Ihres Beraters antworten.</string>
+            <string name="textDialogMeetingSettingsIntroMeetingFunction">Die verbindlichen Beratungsterrmine kann nur Ihre Beraterin/ Ihr Berater einstellen. Dazu wird sie sich mit Ihnen in der persönlichen Beratung austauschen, Ihnen über die App Terminvorschläge unterbreiten oder Sie auffordern über die App eigene Terminvorschläge einzureichen.</string>
+            <string name="textDialogMeetingSettingsIntroMeetingFunctionCanceleOn">Sie können verbindliche Beratungstermine über die App absagen. Beachten Sie bitte, dass es sich dabei nur um einen Absagewunsch handelt. Einen Termin offiziel absagen kann nur Ihre Beraterin/ Ihr Berater.</string>
+            <string name="textDialogMeetingSettingsIntroMeetingFunctionCanceleOff">Sie können verbindliche Beratungstermine nicht über die App absagen. Wenn Sie kurzfirstig einen Termin nicht wahrnehmen können, rufen Sie bitte Ihre Beraterin/ Ihren Berater an.</string>
+            <string name="textDialogMeetingSettingsIntroMeetingFunctionAtLeast">Ihre Beraterin/ Ihr Berater kann Termine absagen. Dies wird Sie Ihnen über die App mitteilen.</string>
+            <string name="textDialogMeetingSettingsIntroClientSuggestionFunctionOn">Mit der Funktion \"Ihre Vorschläge\" können Sie in einem von Ihrer Beraterin/ Ihrem Berater vorgegebenen Zeitraum Terminvorschläge abgeben. Geben Sie dazu bitte das Datum, die Uhrzeit und den Ort, Beratungsstellen Werder(Havel) oder Bad Belzig, an. Ihre Beraterin/ Ihr Berater kann Zeiträume für die Abgabe Ihrer Terminvorschläge, aus beispielsweise Krankheitsgründen, absagen. Ebenso kann Ihnen Ihre Beraterin/ Ihr Berater mitteilen wenn sie einen gemeinsamen Termin aus den Ihren Vorschlägen gefunden hat.</string>
+            <string name="textDialogMeetingSettingsIntroClientSuggestionFunctionOff">Die Funktion \"Ihre Vorschläge\" steht zurzeit nicht zur Verfügung.</string>
+            <string name="textDialogMeetingSettingsIntroCoachSuggestionFunction">Über die Funktion \"Vorschläge Berater\" kann Ihnen Ihre Beraterin/ Ihr Berater verschiedene Terminvorschläge unterbreiten. Sie können dann bis zu einem Zeitpunkt ein oder mehrere Terminvorschläge auswählen und zu Ihrer Beraterin/ Ihrem Berater zurückschicken. Diese kann dann aus den Antworten einen gemeinsamen Termin finden.</string>
+            <string name="textViewDialogMeetingSettingsIntroCoachSuggestionFunctionCommentOn">Zusammen mit Ihrer Terminauswahl können Sie einen Kommentar zu Ihrer Beraterin/ Ihrem Berater schicken. Sie haben auch die Möglichkeit nur den Kommentar oder nur eine Terminauswahl zu schicken.</string>
+            <string name="textViewDialogMeetingSettingsIntroCoachSuggestionFunctionCommentOff">Sie können die Terminvorschläge nicht kommentieren.</string>
+            <string name="textDialogMeetingSettingsIntroCoachSuggestionFunctionAtLeast">Ihre Beraterin/ Ihr Berater kann Terminvorschläge absagen, falls sich kurzfristig Hindernisse ergeben haben (beispielsweise Krankheit, etc.). Ebenso kann Ihnen Ihre Beraterin/ Ihr Berater mitteilen wenn sie einen gemeinsamen Termin aus den Vorschlägen gefunden hat.</string>
+            <string name="textDialogMeetingSettingsIntroOldMeeting">Unter dem Punkt \"Vergangene Termine\" finden Sie zu Ihrer Information Termine die stattgefunden haben.</string>
         <!-- End help dialog -->
+
 
         <!-- fragment meeting overview -->
             <string name="toastMessageMeetingDataNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
@@ -922,83 +927,49 @@
             <string name="suggestionCommentHintText">Sie können Vorschläge auswählen und/oder hier einen Kommentar schreiben</string>
             <string name="suggestionOverviewLinkTextDeleteSuggestionEntry">Den obigen Eintrag löschen</string>
             <string name="suggestionOverviewLinkNormalDeleteDate">(Der Eintrag wird automatisch am %1$s um %2$s Uhr gelöscht)</string>
-
-    <string name="toastMessageSuggestionOverviewNewSuggestion">Es sind neue Terminvorschläge von Ihrer Beraterin/ Ihrem Berater eingetroffen!</string>
-    <string name="toastMessageSuggestionOverviewCanceledSuggestionByCoach">Es wurden die Berater-Terminvorschläge durch Ihre Beraterin/ Ihren Berater abgesagt!</string>
-    <string name="toastMessageSuggestionOverviewMeetingFoundByCoach">Es wurde aus den Terminvorschlägen ein gemeinsamer Termin gefunden!</string>
-    <string name="toastMessageSuggestionOverviewVoteByClientSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen wurde erfolgreich gesendet!</string>
-    <string name="toastMessageSuggestionOverviewVoteByClientNotSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen konnte nicht gesendet werden!</string>
-    <string name="toastMessageSuggestionOverviewVoteAndCommentByClientSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen und/ oder Ihr Kommentar wurden erfolgreich gesendet!</string>
-    <string name="toastMessageSuggestionOverviewVoteAndCommentByClientNotSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen und/ oder Ihr Kommentar konnten nicht gesendet werden!</string>
-    <!-- end fragment suggestion overview -->
+            <string name="toastMessageSuggestionOverviewNewSuggestion">Es sind neue Terminvorschläge von Ihrer Beraterin/ Ihrem Berater eingetroffen!</string>
+            <string name="toastMessageSuggestionOverviewCanceledSuggestionByCoach">Es wurden die Berater-Terminvorschläge durch Ihre Beraterin/ Ihren Berater abgesagt!</string>
+            <string name="toastMessageSuggestionOverviewMeetingFoundByCoach">Es wurde aus den Terminvorschlägen ein gemeinsamer Termin gefunden!</string>
+            <string name="toastMessageSuggestionOverviewVoteByClientSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen wurde erfolgreich gesendet!</string>
+            <string name="toastMessageSuggestionOverviewVoteByClientNotSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen konnte nicht gesendet werden!</string>
+            <string name="toastMessageSuggestionOverviewVoteAndCommentByClientSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen und/ oder Ihr Kommentar wurden erfolgreich gesendet!</string>
+            <string name="toastMessageSuggestionOverviewVoteAndCommentByClientNotSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen und/ oder Ihr Kommentar konnten nicht gesendet werden!</string>
+        <!-- end fragment suggestion overview -->
 
         <!-- fragment suggestion from client -->
-
             <string name="meetingOverviewNoSuggestionFromClientAvailableText">Es liegen keine Terminvorschläge von Ihnen vor.</string>
             <string name="meetingOverviewSuggestionFromClientFunctionOffText">Die Funktion steht im Moment nicht zur Verfügung.</string>
-
-    <string name="meetingOverviewSuggestionFromClientIntroInfoTextInTimezone">Bitte geben Sie Ihre Terminvorschläge ein</string>
-    <string name="meetingOverviewSuggestionFromClientIntroInfoTextOutTimezone">Demnächst hier Ihre Terminvorschläge abgeben</string>
-
-
-    <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextInTimezone">Ihr Terminvorschlag</string>
-    <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextOutTimezone">Demnächst</string>
-    <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextCanceled">Zeitraum abgesagt</string>
-    <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextFoundMeeting">Termin gefunden</string>
-    <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextAlreadySend">Terminvorschläge gesendet</string>
-
-
-
-
-    <string name="meetingOverviewSuggestionFromClientAuthorAndDateCanceled">Der Zeitraum vom %1$s, %2$s Uhr, bis zum %3$s, %4$s Uhr, für die Abgabe von Terminvorschlägen wurde von Ihrer Beraterin/ Ihrem Berater (&lt;u>%5$s&lt;/u>) am %6$s um %7$s Uhr abgesagt.</string>
-
-    <string name="meetingOverviewSuggestionFromClientAuthorAndDateMeetingFound">Ihre Beraterin/ Ihr Berater (&lt;u>%1$s&lt;/u>) hat am %2$s um %3$s Uhr aus Ihren Terminvorschlägen einen Termin finden können. Bitte schauen Sie unter dem Punkt \"Termine\" nach (Vorschlagszeitraum war vom %4$s, %5$s Uhr, bis zum %6$s um %7$s Uhr).</string>
-
-    <string name="meetingOverviewSuggestionFromClientAuthorAndDateAlreadySend">Ihre Terminvorschläge wurden am %1$s um %2$s Uhr zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
-
-
-    <string name="meetingOverviewSuggestionFromClientInTimezone">Bitte geben Sie bis zum %1$s um %2$s Uhr Ihre Terminvorschläge ab. Der Terminvorschlagszeitraum begann am %3$s um %4$s Uhr und wurde von &lt;u>%5$s&lt;/u> am %6$s um %7$s Uhr erstellt.</string>
-    <string name="meetingOverviewSuggestionFromClientOutTimezone">Ab dem %1$s um %2$s Uhr können Sie bis zum %3$s um %4$s Uhr Ihre Terminvorschläge abgeben. Der Terminvorschlagszeitraum wurde von &lt;u>%5$s&lt;/u> am %6$s um %7$s Uhr erstellt.</string>
-
-    <string name="suggestionFromClientHintText">Bitte geben Sie Ihre Terminvorschläge ein</string>
-    <string name="suggestionFromClientEndDateTimeAskedForIntroText">Terminvorschläge erbeten in spätestens</string>
-    <string name="suggestionFromClientTimeIsOver">Zeitraum abgelaufen</string>
-    <string name="suggestionFromClientEndDateAndTimeText">(Bis zum %1$s um %2$s Uhr)</string>
-
-    <string name="suggestionFromClientButtonSendToCoach">Terminvorschläge senden</string>
-
-
-
-
-    <string name="suggestionFromClientStartDateAndTimeText">(Am %1$s um %2$s Uhr)</string>
-    <string name="suggestionFromClientStartDateTimeAskedForIntroText">Demnächst Terminvorschläge abgeben in</string>
-
-    <string name="suggestionFromClientAllreadySendInputSuggestionHintText">Ihre Terminvorschläge wurden zu Ihrer Beraterin/ Ihrem Berater gesendet. Diese wird versuchen aus allen Vorschlägen einen gemeinsamen Termin zu finden.</string>
-
-    <string name="suggestionFromClientTimezoneCanceledByCoach">Zeitraum abgesagt</string>
-    <string name="suggestionFromClientMeetingFoundByCoachText">Termin gefunden</string>
-
-
-    <string name="errorInputClientSuggestion">Bitte kontrollieren Sie Ihre Vorschläge. Sie sind zu kurz oder enthalten nicht erlaubte Zeichen.</string>
-
-
-    <string name="suggestionFromClientInputInfoTextForUser">Sie können nur einmal Vorschläge unterbreiten. Bitte geben Sie mindestens zwei Terminvorschläge mit Datum, Uhrzeit und Ort (Beratungsstelle in Werder oder Bad Belzig) an. Danke.</string>
-
-    <string name="suggestionFromClientLinkTextDeleteSuggestionEntry">Den obigen Eintrag löschen</string>
-
-
-    <string name="toastMessageSuggestionFromClientNewInvitation">Sie können neue Terminvorschläge an Ihre Beraterin/ Ihren Berater schicken!</string>
-    <string name="toastMessageSuggestionFromCanceledByCoach">Der Zeitraum für die Abgabe von Terrminvorschlägen wurde durch Ihre Beraterin/ Ihren Berater abgesagt!</string>
-    <string name="toastMessageSuggestionFromClientMeetingFoundByCoach">Es wurde aus Ihren Terminvorschlägen ein gemeinsamer Termin gefunden!</string>
-    <string name="toastMessageSuggestionFromClientByClientSuccessfullSend">Ihre Terminvorschläge wurden erfolgreich gesendet!</string>
-    <string name="toastMessageSuggestionFromClientByClientNotSuccessfullSend">Ihre Terminvorschläge konnten nicht gesendet werden!</string>
-
-
-
-
-
-
-    <!-- end fragment suggestion from client -->
+            <string name="meetingOverviewSuggestionFromClientIntroInfoTextInTimezone">Bitte geben Sie Ihre Terminvorschläge ein</string>
+            <string name="meetingOverviewSuggestionFromClientIntroInfoTextOutTimezone">Demnächst hier Ihre Terminvorschläge abgeben</string>
+            <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextInTimezone">Ihr Terminvorschlag</string>
+            <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextOutTimezone">Demnächst</string>
+            <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextCanceled">Zeitraum abgesagt</string>
+            <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextFoundMeeting">Termin gefunden</string>
+            <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextAlreadySend">Terminvorschläge gesendet</string>
+            <string name="meetingOverviewSuggestionFromClientAuthorAndDateCanceled">Der Zeitraum vom %1$s, %2$s Uhr, bis zum %3$s, %4$s Uhr, für die Abgabe von Terminvorschlägen wurde von Ihrer Beraterin/ Ihrem Berater (&lt;u>%5$s&lt;/u>) am %6$s um %7$s Uhr abgesagt.</string>
+            <string name="meetingOverviewSuggestionFromClientAuthorAndDateMeetingFound">Ihre Beraterin/ Ihr Berater (&lt;u>%1$s&lt;/u>) hat am %2$s um %3$s Uhr aus Ihren Terminvorschlägen einen Termin finden können. Bitte schauen Sie unter dem Punkt \"Termine\" nach (Vorschlagszeitraum war vom %4$s, %5$s Uhr, bis zum %6$s um %7$s Uhr).</string>
+            <string name="meetingOverviewSuggestionFromClientAuthorAndDateAlreadySend">Ihre Terminvorschläge wurden am %1$s um %2$s Uhr zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
+            <string name="meetingOverviewSuggestionFromClientInTimezone">Bitte geben Sie bis zum %1$s um %2$s Uhr Ihre Terminvorschläge ab. Der Terminvorschlagszeitraum begann am %3$s um %4$s Uhr und wurde von &lt;u>%5$s&lt;/u> am %6$s um %7$s Uhr erstellt.</string>
+            <string name="meetingOverviewSuggestionFromClientOutTimezone">Ab dem %1$s um %2$s Uhr können Sie bis zum %3$s um %4$s Uhr Ihre Terminvorschläge abgeben. Der Terminvorschlagszeitraum wurde von &lt;u>%5$s&lt;/u> am %6$s um %7$s Uhr erstellt.</string>
+            <string name="suggestionFromClientHintText">Bitte geben Sie Ihre Terminvorschläge ein</string>
+            <string name="suggestionFromClientEndDateTimeAskedForIntroText">Terminvorschläge erbeten in spätestens</string>
+            <string name="suggestionFromClientTimeIsOver">Zeitraum abgelaufen</string>
+            <string name="suggestionFromClientEndDateAndTimeText">(Bis zum %1$s um %2$s Uhr)</string>
+            <string name="suggestionFromClientButtonSendToCoach">Terminvorschläge senden</string>
+            <string name="suggestionFromClientStartDateAndTimeText">(Am %1$s um %2$s Uhr)</string>
+            <string name="suggestionFromClientStartDateTimeAskedForIntroText">Demnächst Terminvorschläge abgeben in</string>
+            <string name="suggestionFromClientAllreadySendInputSuggestionHintText">Ihre Terminvorschläge wurden zu Ihrer Beraterin/ Ihrem Berater gesendet. Diese wird versuchen aus allen Vorschlägen einen gemeinsamen Termin zu finden.</string>
+            <string name="suggestionFromClientTimezoneCanceledByCoach">Zeitraum abgesagt</string>
+            <string name="suggestionFromClientMeetingFoundByCoachText">Termin gefunden</string>
+            <string name="errorInputClientSuggestion">Bitte kontrollieren Sie Ihre Vorschläge. Sie sind zu kurz oder enthalten nicht erlaubte Zeichen.</string>
+            <string name="suggestionFromClientInputInfoTextForUser">Sie können nur einmal Vorschläge unterbreiten. Bitte geben Sie mindestens zwei Terminvorschläge mit Datum, Uhrzeit und Ort (Beratungsstelle in Werder oder Bad Belzig) an. Danke.</string>
+            <string name="suggestionFromClientLinkTextDeleteSuggestionEntry">Den obigen Eintrag löschen</string>
+            <string name="toastMessageSuggestionFromClientNewInvitation">Sie können neue Terminvorschläge an Ihre Beraterin/ Ihren Berater schicken!</string>
+            <string name="toastMessageSuggestionFromCanceledByCoach">Der Zeitraum für die Abgabe von Terrminvorschlägen wurde durch Ihre Beraterin/ Ihren Berater abgesagt!</string>
+            <string name="toastMessageSuggestionFromClientMeetingFoundByCoach">Es wurde aus Ihren Terminvorschlägen ein gemeinsamer Termin gefunden!</string>
+            <string name="toastMessageSuggestionFromClientByClientSuccessfullSend">Ihre Terminvorschläge wurden erfolgreich gesendet!</string>
+            <string name="toastMessageSuggestionFromClientByClientNotSuccessfullSend">Ihre Terminvorschläge konnten nicht gesendet werden!</string>
+        <!-- end fragment suggestion from client -->
 
         <!-- Subtitle under Title Meeting -->
             <string name="meetingSubtitleMeetingOverview">Aktuelle Termine</string>

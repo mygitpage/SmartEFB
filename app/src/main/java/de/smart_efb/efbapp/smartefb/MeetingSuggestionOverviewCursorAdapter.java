@@ -12,6 +12,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,6 +118,10 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, final Context context, Cursor cursor) {
 
+        Log.d("Suggestion bindView++>","Bind- ID:"+cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID))+" ++ ServerID:"+cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_SERVER_ID)));
+
+
+
         if (cursor.isFirst() ) { // look for button in first element and normal suggestion
             //set border between suggestion to invisible -> it is first suggestion
             TextView tmpBorderBetween = (TextView) view.findViewById(R.id.borderBetweenMeetingSuggestion);
@@ -155,6 +160,16 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             // check for normal suggestion
             tmpStatusSuggestion = true;
         }
+
+
+
+        Log.d("Suggestion Overview++>","ID:"+cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID))+" ++ ServerID:"+cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_SERVER_ID)));
+
+
+
+
+
+
 
         // check for normal suggestion -> set intro text to visible
         if (tmpStatusSuggestion) {
@@ -474,7 +489,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             tmpBorderBetweenCommentSuggestionBottom.setVisibility(View.VISIBLE);
         }
 
-        if (cursor.isFirst() && tmpStatusSuggestion ) { // look for button in first element and normal suggestion
+        if (tmpStatusSuggestion ) { // look for button in first element and normal suggestion
 
             // find send button "verbindich senden"
             Button tmpSendButton = (Button) inflatedView.findViewById(R.id.buttonSendSuggestionToCoach);
@@ -528,17 +543,26 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
                         // message for successfull sending or not successfull sending is set in class MeetingFragmentSuggestionOverview
 
+
+                        Log.d("SuggestionOverview +++>", "Vote DB ID:"+clientVoteDbId);
+
+                        Log.d("SuggestionOverview +++>", "Server ID:"+cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_SERVER_ID)));
+
+
                         // send intent to service to start the service and send vote suggestion to server!
                         Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
                         startServiceIntent.putExtra("com","send_meeting_data");
                         startServiceIntent.putExtra("dbid",clientVoteDbId);
+                        startServiceIntent.putExtra("receiverBroadcast", "meetingFragmentSuggestionOverview");
                         meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
 
+                        /*
                         // build intent to go back to suggestionOverview
                         Intent intent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ActivityMeeting.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.putExtra("com", "suggestion_overview");
                         meetingSuggestionOverviewCursorAdapterContext.startActivity(intent);
+                        */
 
                     }
                     else { // error too little suggestions!
@@ -548,7 +572,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                             TextView textViewTooLittleSuggestionChoosen = (TextView) inflatedView.findViewById(R.id.suggestionErrorToFewSuggestionsChoosen);
                             textViewTooLittleSuggestionChoosen.setVisibility(View.VISIBLE);
                         }
-                        if (tmpClientCommentText.length() < 4) {
+                        if (tmpClientCommentText.length() < 4 && prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false)) {
                             TextView textViewToFewLettersInComment = (TextView) inflatedView.findViewById(R.id.errorInputSuggestionComment);
                             textViewToFewLettersInComment.setVisibility(View.VISIBLE);
                         }

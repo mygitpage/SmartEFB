@@ -377,14 +377,26 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                         Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
                         startServiceIntent.putExtra("com","send_meeting_data");
                         startServiceIntent.putExtra("dbid",clientDbId);
+                        startServiceIntent.putExtra("receiverBroadcast", "meetingFragmentSuggestionFromClient");
                         meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
 
+
+                        /*
+                        // send intent to receiver in MeetingFragmentSuggestionFromClient to update list view -> data send
+                        Intent tmpIntent = new Intent();
+                        tmpIntent.putExtra("SuggestionFromClientUpdateListView", "update");
+                        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                        context.sendBroadcast(tmpIntent);
+                        */
+
+
+                        /*
                         // build intent to go back to suggestionFromClientOverview
                         Intent intent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ActivityMeeting.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.putExtra("com", "suggestion_from_client");
                         meetingSuggestionOverviewCursorAdapterContext.startActivity(intent);
-
+                        */
                     }
                     else { // error too few suggestions!
 

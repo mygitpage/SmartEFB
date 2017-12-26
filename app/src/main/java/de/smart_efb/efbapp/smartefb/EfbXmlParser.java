@@ -3855,9 +3855,10 @@ public class EfbXmlParser {
 
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
+                                                Long nowTime = System.currentTimeMillis();
 
                                                 // update row in db table
-                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus);
+                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus, "meeting", nowTime);
 
                                                 returnMap.put("MeetingCanceledMeetingByCoach", "1");
                                                 returnMap.put("Meeting", "1");
@@ -3928,9 +3929,10 @@ public class EfbXmlParser {
 
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
+                                                Long nowTime = System.currentTimeMillis();
 
                                                 // update row in db table
-                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus);
+                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus, "suggestion", nowTime);
 
                                                 returnMap.put("MeetingCanceledSuggestionByCoach", "1");
                                                 returnMap.put("Meeting", "1");
@@ -3939,9 +3941,10 @@ public class EfbXmlParser {
 
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
+                                                Long nowTime = System.currentTimeMillis();
 
                                                 // update row in db table
-                                                myDb.updateMeetingFoundFromSuggestion(tmpMeetingSuggestionDataServerId, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestionAuthor, newMeeting, meetingStatus);
+                                                myDb.updateMeetingFoundFromSuggestion(tmpMeetingSuggestionDataServerId, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestionAuthor, newMeeting, meetingStatus, "suggestion", nowTime);
 
                                                 returnMap.put("MeetingFoundFromSuggestion", "1");
                                                 returnMap.put("Meeting", "1");
@@ -4050,9 +4053,10 @@ public class EfbXmlParser {
 
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
+                                                Long nowTime = System.currentTimeMillis();
 
                                                 // update row in db table
-                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus);
+                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus, "suggestion_from_client", nowTime);
 
                                                 returnMap.put("MeetingCanceledClientSuggestionByCoach", "1");
                                                 returnMap.put("Meeting", "1");
@@ -4062,15 +4066,15 @@ public class EfbXmlParser {
 
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
+                                                Long nowTime = System.currentTimeMillis();
 
                                                 // update row in db table
-                                                myDb.updateMeetingFoundFromSuggestion(tmpMeetingSuggestionDataServerId, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestionAuthor, newMeeting, meetingStatus);
+                                                myDb.updateMeetingFoundFromSuggestion(tmpMeetingSuggestionDataServerId, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestionAuthor, newMeeting, meetingStatus, "suggestion_from_client", nowTime);
 
                                                 returnMap.put("MeetingFoundFromClientSuggestion", "1");
                                                 returnMap.put("Meeting", "1");
                                             }
                                             else {
-
 
                                                 Long tmpUploadTime = System.currentTimeMillis();
 

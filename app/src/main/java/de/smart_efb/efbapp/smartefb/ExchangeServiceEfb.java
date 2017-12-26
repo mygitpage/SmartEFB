@@ -1845,6 +1845,9 @@ import java.util.Map;
         // id of the data row in db
         private Long dbId;
 
+        // receiver broadcast -> to cancele double show of messages in class meeting
+        private String receiverBroadcast;
+
         // reference to the DB
         private DBAdapter myDb;
 
@@ -1859,10 +1862,13 @@ import java.util.Map;
         Map<String, String> returnMap;
 
         // Constructor
-        public ExchangeTaskSendMeetingData (Context context, Long dbid) {
+        public ExchangeTaskSendMeetingData (Context context, Long dbid, String mReceiverBroadcast) {
 
             // id of the data row in db
             this.dbId = dbid;
+
+            // receiver broadcast -> to cancele double show of messages in class meeting
+            this.receiverBroadcast = mReceiverBroadcast;
 
             // context of task
             this.context = context;
@@ -1883,7 +1889,7 @@ import java.util.Map;
 
             if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
 
-                // get comment from db
+                // get meeting from db
                 Cursor meetingData = myDb.getOneRowMeetingsOrSuggestion(dbId);
 
                 // get client id from prefs
@@ -1984,8 +1990,9 @@ import java.util.Map;
                     answerInputStream.close();
                     connection.disconnect();
 
-
                     if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
+
+                        Log.d("Exchange ++++>", "Erfolgreich gesendet!!!");
 
                         myDb.updateStatusMeetingAndSuggestion (dbId, 1); // set status of meeting to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
 
@@ -1993,6 +2000,7 @@ import java.util.Map;
                         String command = "ask_parent_activity";
                         Intent tmpIntent = translateMapToIntent (returnMap);
                         tmpIntent.putExtra("Command", command);
+                        tmpIntent.putExtra("receiverBroadcast", receiverBroadcast);
                         tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
                         context.sendBroadcast(tmpIntent);
                     }
@@ -2115,6 +2123,7 @@ import java.util.Map;
 
                 // get db id from intent extras
                 Long dbId = intentExtras.getLong("dbid", 0);
+                String receiverBroadcast = intentExtras.getString("receiverBroadcast", ""); // this is needed for double "mystic" messages receives in view pager like suggestion and client suggestion
 
                 if (command.equals("ask_new_data")) { // Ask server for new data
 
@@ -2136,8 +2145,6 @@ import java.util.Map;
 
                 } else if (command.equals("send_sketch_comment_arrangement") && dbId > 0) { // send new sketch arrangement comment to server
 
-                    Log.d("Excange Service", "Command erhalten !!!!!!!!");
-
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendSketchCommentArrangement (context, dbId));
                     // task is running
@@ -2146,8 +2153,6 @@ import java.util.Map;
                     this.backgroundThread.start();
 
                 } else if (command.equals("send_evaluation_result_arrangement") && dbId > 0) { // send new evaluation result to server
-
-                    Log.d("Excange Service", "Evaluation REsult erhalten !!!!!!!!");
 
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendEvaluationResultArrangement(context, dbId));
@@ -2158,8 +2163,6 @@ import java.util.Map;
 
                 } else if (command.equals("send_jointly_comment_goal") && dbId > 0) { // send jointly goal comment to server
 
-                    Log.d("Excange Service", "Jointly comment !!!!!!!!");
-
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendJointlyCommentGoals (context, dbId));
                     // task is running
@@ -2168,8 +2171,6 @@ import java.util.Map;
                     this.backgroundThread.start();
 
                 } else if (command.equals("send_evaluation_result_goal") && dbId > 0) { // send jointly goal evaluation result to server
-
-                    Log.d("Excange Service", "Jointly Goal Evaluation REsult !!!!!!!!");
 
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendJointlyGoalsEvaluationResult (context, dbId));
@@ -2180,8 +2181,6 @@ import java.util.Map;
 
                 }  else if (command.equals("send_debetable_comment_goal") && dbId > 0) { // send debetable comment result to server
 
-                    Log.d("Excange Service", "Debetable Comment REsult !!!!!!!!");
-
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendDebetableGoalCommentResult (context, dbId));
                     // task is running
@@ -2190,8 +2189,6 @@ import java.util.Map;
                     this.backgroundThread.start();
                 
                 } else if (command.equals("send_connectbook_message") && dbId > 0) { // send connect book message to server
-
-                    Log.d("Excange Service", "Connect Book message !!!!!!!!");
 
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendConnectBookMessage (context, dbId));
@@ -2205,27 +2202,17 @@ import java.util.Map;
                     Log.d("Excange Service", "MEETING DATA !!!!!!!!");
 
                     // generate new send task
-                    this.backgroundThread = new Thread(new ExchangeTaskSendMeetingData (context, dbId));
+                    this.backgroundThread = new Thread(new ExchangeTaskSendMeetingData (context, dbId, receiverBroadcast));
                     // task is running
                     this.isRunning = true;
                     // start task
                     this.backgroundThread.start();
                 }
-
-
-
-
-
             }
 
             return START_STICKY;
 
         }
-
-
-
-
-
 
 
         public void buildCommentNowXmlTagWithData(XmlSerializer xmlSerializer, Cursor commentData) {

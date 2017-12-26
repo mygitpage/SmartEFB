@@ -103,8 +103,6 @@ public class ActivityMeeting extends AppCompatActivity {
 
         // init view tabs
         initMeetingTabs();
-
-
     }
 
 
@@ -188,7 +186,6 @@ public class ActivityMeeting extends AppCompatActivity {
             }
 
         });
-
     }
 
     
@@ -212,11 +209,15 @@ public class ActivityMeeting extends AppCompatActivity {
 
 
 
+
         // for developing
         //myDb.deleteAllRowsMeetingAndSuggestion();
 
 
 
+        // delete all meeting/ suggestion mark with new but never show (time expired, etc.)
+        Long nowTime = System.currentTimeMillis();
+        myDb.deleteStatusNewEntryAllOldMeetingAndSuggestion (nowTime);
 
         // init the prefs
         prefs = getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
@@ -251,7 +252,6 @@ public class ActivityMeeting extends AppCompatActivity {
 
         // create help dialog in Meeting
         createHelpDialog();
-
     }
 
 
@@ -293,7 +293,6 @@ public class ActivityMeeting extends AppCompatActivity {
             // get command and execute it
             executeIntentCommand (intentExtras.getString("com"), tmpMeetingId);
         }
-
     }
 
 
@@ -464,189 +463,10 @@ public class ActivityMeeting extends AppCompatActivity {
     }
 
 
-    /*
-
-    // get from prefs meeting date and time and place
-    private void getDateAndTimeFromPrefs () {
-
-        for (int t = 0; t < ConstansClassMeeting.numberSimultaneousMeetings; t++) {
-
-            // get the current meeting date and time
-            currentMeetingDateAndTime[t] = prefs.getLong(ConstansClassMeeting.namePrefsMeetingTimeAndDate + ConstansClassMeeting.prefsPraefixMeetings[t], 0);
-
-            if (currentMeetingDateAndTime[t] > System.currentTimeMillis()) { // is meeting timestamp > current time?
-
-                // get meeting place
-                meetingPlace[t] = prefs.getInt(ConstansClassMeeting.namePrefsMeetingPlace + ConstansClassMeeting.prefsPraefixMeetings[t], 0);
-
-                // get info new meeting date and time from prefs
-                meetingNewDateAndTime[t] = prefs.getBoolean(ConstansClassMeeting.namePrefsNewMeetingDateAndTime  + ConstansClassMeeting.prefsPraefixMeetings[t], false);
-
-            }
-            else { // no -> init with zero
-                currentMeetingDateAndTime[t] = 0;
-                meetingPlace[t] = 0;
-                meetingNewDateAndTime[t] = false;
-            }
-        }
-    }
-
-
-    // Look for new intents (with data from putExtra)
-    @Override
-    protected void onNewIntent(Intent intent) {
-
-        // Extras from intent that holds data
-        Bundle intentExtras = null;
-
-        // call super
-        super.onNewIntent(intent);
-
-        // get the link data from URI and from the extra
-        intentExtras = intent.getExtras();
-
-        Boolean tmpPopBackStack = false;
-        Boolean  tmpUpdateFragement = false;
-        int tmpMeetingStatus = 0;
-        int tmpMeetingIndexToChange = 0;
-        String tmpMeetingBackToFragment = "";
-
-        if (intentExtras != null) {
-
-            // get data that comes with extras -> pop_stack
-            tmpPopBackStack = intentExtras.getBoolean("pop_stack",false);
-
-            // get data that comes with extras -> pop_stack
-            tmpMeetingStatus = intentExtras.getInt("met_status",0);
-
-            // get the meeting indexnumber for deleting or changing meeting date
-            tmpMeetingIndexToChange = intentExtras.getInt("met_index",0);
-
-            // get info back to fragement
-            tmpMeetingBackToFragment = intentExtras.getString("met_backto","");
-
-            // get info to update fragement or replace (find_meeting)
-            tmpUpdateFragement = intentExtras.getBoolean("update", false);
-
-
-            // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"), tmpPopBackStack, tmpMeetingStatus, tmpMeetingIndexToChange, tmpMeetingBackToFragment, tmpUpdateFragement);
-        }
-
-    }
-
-
-    // execute the commands that comes from link or intend
-    public void executeIntentCommand (String command, Boolean tmpPopBackStack, int tmpMeetingStatus, int tmpMeetingIndexToChange, String tmpMeetingBackToFragment, Boolean tmpUpdateFragement) {
-
-
-
-        if (command.equals("change_meeting")) { // Show fragment for changing meeting date and time
-
-            // set index of meeting to delete
-            setMeetingIndexToChange (tmpMeetingIndexToChange);
-
-            // set back to fragment info
-            setMeetingBackToFragment (tmpMeetingBackToFragment);
-
-            // replace fragment Old_MeetingFragmentMeetingChange
-            FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, referenceFragmentMeetingChange);
-            fragmentTransaction.addToBackStack("change_meeting");
-            fragmentTransaction.commit();
-
-
-        } else if (command.equals("find_meeting")) { // Show fragment for finding meeting date and time
-
-            // set new meeting status
-            setMeetingStatus (tmpMeetingStatus);
-
-            if (tmpUpdateFragement) {
-
-                // refresh fragment Old_MeetingFragmentMeetingFind
-                FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
-                fragmentTransaction.detach(referenceFragmentMeetingFind);
-                fragmentTransaction.attach(referenceFragmentMeetingFind);
-                fragmentTransaction.commit();
-
-            } else {
-
-                if (tmpPopBackStack) {
-                    fragmentManagerActivityMeeting.popBackStack("change_meeting", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                }
-
-                // replace fragment Old_MeetingFragmentMeetingFind
-                FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, referenceFragmentMeetingFind);
-                fragmentTransaction.addToBackStack("find_meeting");
-                fragmentTransaction.commit();
-
-                if (tmpPopBackStack) {
-                    fragmentManagerActivityMeeting.popBackStack("find_meeting", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                }
-
-                // delete back to fragment info
-                setMeetingBackToFragment ("");
-
-            }
-
-
-
-
-        } else if (command.equals("make_meeting")) { // Show fragment for make first meeting date and time (make_meeting)
-
-            // replace fragment Old_MeetingFragmentMeetingMake
-            FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, referenceFragmentMeetingMake);
-            fragmentTransaction.addToBackStack("make_meeting");
-            fragmentTransaction.commit();
-
-        } else {
-
-            if (tmpPopBackStack && getMeetingBackToFragment().equals("") ) {
-
-                fragmentManagerActivityMeeting.popBackStack("make_meeting", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-            } else if (tmpPopBackStack && getMeetingBackToFragment().equals("now_meeting") ) {
-
-                fragmentManagerActivityMeeting.popBackStack("change_meeting", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-            }
-
-            // replace fragment Old_MeetingFragmentMeetingMake
-            FragmentTransaction fragmentTransaction = fragmentManagerActivityMeeting.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, referenceFragmentMeetingNow);
-            fragmentTransaction.addToBackStack("now_meeting");
-            fragmentTransaction.commit();
-
-            if (tmpPopBackStack) {
-                fragmentManagerActivityMeeting.popBackStack("now_meeting", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-            }
-
-            // delete back to fragment info
-            setMeetingBackToFragment ("");
-
-        }
-
-
-    }
-
-*/
-
-
-
-
-
-
-
-
-
     // help dialog
     void createHelpDialog () {
 
         Button tmpHelpButtonMeeting = (Button) findViewById(R.id.helpMeetingNow);
-
 
         // add button listener to question mark in activity Meeting (toolbar)
         tmpHelpButtonMeeting.setOnClickListener(new View.OnClickListener() {
@@ -664,6 +484,56 @@ public class ActivityMeeting extends AppCompatActivity {
                 // inflate and get the view
 
                 View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_meeting, null);
+
+
+
+                //String tmpDateAndTimeForResponse = String.format(context.getResources().getString(R.string.suggestionFromClientEndDateAndTimeText), tmpResponseDate, tmpResponseTime);
+
+
+
+
+                // show text meeting cancele by client on/off
+                TextView tmpFunctionMeetingCanceleOnOff = (TextView) dialogSettings.findViewById(R.id.textViewDialogMeetingSettingsIntroMeetingFunctionCanceleOnOff);
+                String tmpTextFunctionMeetingCanceleOnOff;
+                if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCanceleMeeting_OnOff, false)) {
+                    tmpTextFunctionMeetingCanceleOnOff = ActivityMeeting.this.getResources().getString(R.string.textDialogMeetingSettingsIntroMeetingFunctionCanceleOn);
+                }
+                else {
+                    tmpTextFunctionMeetingCanceleOnOff = ActivityMeeting.this.getResources().getString(R.string.textDialogMeetingSettingsIntroMeetingFunctionCanceleOff);
+                }
+                tmpFunctionMeetingCanceleOnOff.setText(tmpTextFunctionMeetingCanceleOnOff);
+
+                // show text client suggestion on/off
+                TextView tmpFunctionClientSuggestionOnOff = (TextView) dialogSettings.findViewById(R.id.textViewDialogMeetingSettingsIntroClientSuggestionFunctionOnOff);
+                String tmpTextFunctionClientSuggestionOnOff;
+                if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientSuggestion_OnOff, false)) {
+                    tmpTextFunctionClientSuggestionOnOff = ActivityMeeting.this.getResources().getString(R.string.textDialogMeetingSettingsIntroClientSuggestionFunctionOn);
+                }
+                else {
+                    tmpTextFunctionClientSuggestionOnOff = ActivityMeeting.this.getResources().getString(R.string.textDialogMeetingSettingsIntroClientSuggestionFunctionOff);
+                }
+                tmpFunctionClientSuggestionOnOff.setText(tmpTextFunctionClientSuggestionOnOff);
+
+
+
+
+
+                // set text client comment for suggestion on/off
+                TextView tmpFunctionClientCommentCoachSuggestionOnOff = (TextView) dialogSettings.findViewById(R.id.textViewDialogMeetingSettingsIntroCoachSuggestionFunctionCommentOnOff);
+                String tmpTextFunctionClientCommentCoachSuggestionOnOff;
+                if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false)) {
+                    tmpTextFunctionClientCommentCoachSuggestionOnOff = ActivityMeeting.this.getResources().getString(R.string.textViewDialogMeetingSettingsIntroCoachSuggestionFunctionCommentOn);
+                }
+                else {
+                    tmpTextFunctionClientCommentCoachSuggestionOnOff = ActivityMeeting.this.getResources().getString(R.string.textViewDialogMeetingSettingsIntroCoachSuggestionFunctionCommentOff);
+                }
+                tmpFunctionClientCommentCoachSuggestionOnOff.setText(tmpTextFunctionClientCommentCoachSuggestionOnOff);
+
+
+
+
+
+
 
                 // get string ressources
                 String tmpTextCloseDialog = ActivityMeeting.this.getResources().getString(R.string.textDialogMeetingCloseDialog);

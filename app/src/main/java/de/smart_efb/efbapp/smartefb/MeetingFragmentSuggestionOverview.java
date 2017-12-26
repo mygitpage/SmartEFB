@@ -119,6 +119,7 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpMessage = intentExtras.getString("Message");
+                String tmpReceiverBroadcast = intentExtras.getString("receiverBroadcast", "");
 
                 if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraSuggestionNewSuggestion != null && tmpExtraSuggestionNewSuggestion.equals("1")) {
                     // new suggestion from coach on smartphone -> update suggestion view and show toast
@@ -153,7 +154,7 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                     // update the view
                     updateListView = true;
                 }
-                else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpCommand != null && tmpCommand.length() > 0) { // send successfull?
+                else if (tmpReceiverBroadcast != null && tmpReceiverBroadcast.equals("meetingFragmentSuggestionOverview") && tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpCommand != null && tmpCommand.length() > 0) { // send successfull?
 
                     if (tmpCommand.equals("ask_parent_activity")) {
 
@@ -190,6 +191,9 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                         if( v != null) v.setGravity(Gravity.CENTER);
                         toast.show();
                     }
+
+                    // update the view
+                    updateListView = true;
 
                 }
 

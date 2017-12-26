@@ -128,6 +128,7 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpMessage = intentExtras.getString("Message");
                 String tmpExtraSuggestionFromClientUpdateListView = intentExtras.getString("SuggestionFromClientUpdateListView","0"); // broadcast from MeetingSuggestionFromClientOverviewCursorAdapter when count down timer (wait time) is finish
+                String tmpReceiverBroadcast = intentExtras.getString("receiverBroadcast", "");
 
                 if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraSuggestionFromClientNewInvitation != null && tmpExtraSuggestionFromClientNewInvitation.equals("1")) {
                     // new invitation for client suggestion from coach on smartphone -> update client suggestion view and show toast
@@ -162,7 +163,7 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
                     // update the view
                     updateListView = true;
                 }
-                else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpCommand != null && tmpCommand.length() > 0) { // send successfull?
+                else if (tmpReceiverBroadcast != null && tmpReceiverBroadcast.equals("meetingFragmentSuggestionFromClient") && tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpCommand != null && tmpCommand.length() > 0) { // send successfull?
 
                     if (tmpCommand.equals("ask_parent_activity")) {
 

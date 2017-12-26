@@ -20,13 +20,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
-            android:textStyle="bold"
             android:text="@string/textDialogMeetingSettingsIntro"
             android:paddingTop="5dp"
             android:paddingBottom="10dp"/>
 
+        <TextView
+            android:id="@+id/textViewDialogMeetingSettingsIntroMeetingFunction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:text="@string/textDialogMeetingSettingsIntroMeetingFunction"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/textViewDialogMeetingSettingsIntroMeetingFunctionCanceleOnOff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/textViewDialogMeetingSettingsIntroMeetingFunctionAtLeast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:text="@string/textDialogMeetingSettingsIntroMeetingFunctionAtLeast"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"/>
 
 
 
@@ -37,6 +67,73 @@
             android:layout_marginLeft="40dp"
             android:background="@android:color/darker_gray"/>
 
+
+        <TextView
+            android:id="@+id/textViewDialogMeetingSettingsIntroClientSuggestionFunctionOnOff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:background="@android:color/darker_gray"/>
+
+        <TextView
+            android:id="@+id/textViewDialogMeetingSettingsIntroCoachSuggestionFunction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:text="@string/textDialogMeetingSettingsIntroCoachSuggestionFunction"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/textViewDialogMeetingSettingsIntroCoachSuggestionFunctionCommentOnOff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/textViewDialogMeetingSettingsIntroCoachSuggestionFunctionAtLeast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:text="@string/textDialogMeetingSettingsIntroCoachSuggestionFunctionAtLeast"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:background="@android:color/darker_gray"/>
+
+        <TextView
+            android:id="@+id/textViewDialogMeetingSettingsIntroOldMeeting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:text="@string/textDialogMeetingSettingsIntroOldMeeting"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"/>
 
     </LinearLayout>
 

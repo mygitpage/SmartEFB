@@ -2310,11 +2310,26 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Change an existing meeting to canceled by coach
-    boolean updateMeetingCanceledByCoach(Long meeting_server_id, long canceledTime, String canceledAuthor, int newMeeting, int status) {
+    boolean updateMeetingCanceledByCoach(Long meeting_server_id, long canceledTime, String canceledAuthor, int newMeeting, int status, String suggestOrSuggestFromClient, Long nowTime) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_server_id;
+        String where = "";
+
+        switch (suggestOrSuggestFromClient) {
+            case "meeting":
+                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_server_id + " AND " + MEETING_SUGGESTION_KEY_DATE1 + ">" + nowTime;
+                break;
+            case "suggestion":
+                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_server_id + " AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">" + nowTime;
+                break;
+            case "suggestion_from_client":
+                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_server_id + " AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + ">" + nowTime;
+                break;
+            default:
+                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_server_id + " AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">" + nowTime;
+                break;
+        }
 
         // Create rows data:
         ContentValues newValues = new ContentValues();
@@ -2351,11 +2366,23 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Change an existing suggestion that a meeting was found by coach
-    boolean updateMeetingFoundFromSuggestion(Long meeting_id, long foundTime, String foundAuthor, int newMeeting, int status) {
+    boolean updateMeetingFoundFromSuggestion(Long meeting_id, long foundTime, String foundAuthor, int newMeeting, int status, String suggestOrSuggestFromClient, Long nowTime) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_id;
+        String where = "";
+
+        switch (suggestOrSuggestFromClient) {
+            case "suggestion":
+                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_id + " AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">" + nowTime;
+                break;
+            case "suggestion_from_client":
+                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_id + " AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + ">" + nowTime;
+                break;
+            default:
+                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_id + " AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">" + nowTime;
+                break;
+        }
 
         // Create rows data:
         ContentValues newValues = new ContentValues();
@@ -2389,11 +2416,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Insert it into the database.
         return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
     }
-
-
-
-
-
 
 
     // Delete all rows meeting and suggestions from the database
@@ -2455,11 +2477,6 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-
-
-
-
-
     // delete status new entry for meeting/ suggestion with rowId
     boolean deleteStatusNewEntryMeetingAndSuggestion(Long rowId) {
 
@@ -2474,6 +2491,25 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Insert it into the database.
         return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
     }
+
+
+    // delete status new entry for old meetings/ suggestions -> these are meeting/suggestion with time border
+    boolean deleteStatusNewEntryAllOldMeetingAndSuggestion(Long nowTime) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = "((" + MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + nowTime + ") OR (" + MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + "<" + nowTime + ") OR (" + MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + "<" + nowTime + "))";
+
+        // Create row new_entry = 0 (not new!)
+        ContentValues newValues = new ContentValues();
+        newValues.put(MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST, 0);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+    }
+
+
+
 
 
     // Return all meeting/ suggestion from the database
