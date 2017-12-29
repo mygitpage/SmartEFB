@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -188,9 +190,7 @@ public class MainActivity extends AppCompatActivity {
         if (createMainMenueElementBackgroundRessources()) { // new things in grid?
 
             mainMenueGridViewApdapter.notifyDataSetChanged();
-
         }
-
     }
 
     @Override
@@ -233,13 +233,28 @@ public class MainActivity extends AppCompatActivity {
                 String tmpExtraSuggestionNewSuggestion = intentExtras.getString("MeetingNewSuggestion","0");
                 String tmpExtraMeetingNewMeeting = intentExtras.getString("MeetingNewMeeting","0");
                 String tmpExtraSuggestionFromClientNewInvitation = intentExtras.getString("MeetingNewInvitationSuggestion","0");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings","0");
+                String tmpCaseClose = intentExtras.getString("Case_close","0");
 
-                if (tmpExtraConnectBookMessageNewOrSend != null && tmpExtraConnectBookMessageNewOrSend.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = MainActivity.this.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                    // case close -> refresh activity view
+                    updateMainView = true;
+                }
+                else if (tmpExtraConnectBookMessageNewOrSend != null && tmpExtraConnectBookMessageNewOrSend.equals("1")) {
 
                     // new message received
                     updateMainView = true;
 
-                }  else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && ((tmpExtraSuggestionNewSuggestion != null && tmpExtraSuggestionNewSuggestion.equals("1")) || (tmpExtraMeetingNewMeeting != null && tmpExtraMeetingNewMeeting.equals("1")) || (tmpExtraSuggestionFromClientNewInvitation != null && tmpExtraSuggestionFromClientNewInvitation.equals("1"))   )) {
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && ((tmpExtraSuggestionNewSuggestion != null && tmpExtraSuggestionNewSuggestion.equals("1")) || (tmpExtraMeetingNewMeeting != null && tmpExtraMeetingNewMeeting.equals("1")) || (tmpExtraSuggestionFromClientNewInvitation != null && tmpExtraSuggestionFromClientNewInvitation.equals("1"))   )) {
 
                     // meeting, suggestion or suggestion from client has change -> refresh activity view
                     updateMainView = true;
@@ -289,8 +304,10 @@ public class MainActivity extends AppCompatActivity {
         // check installation status (new or update)
         newOrUpdateInstallation();
 
-        // start excahnge service with intent
-        setAlarmForExchangeService();
+        // start exchange service with intent, when case is open!
+        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+            setAlarmForExchangeService();
+        }
 
         mainMenueElementTitle = getResources().getStringArray(R.array.mainMenueElementTitle);
 
@@ -560,23 +577,34 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d ("Main Updat Func", "Im NEW!!! ZWEIG!");
 
+                // set case close to true
+                prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, false);
+
                 //app function switch off
+                // set function connect book off
                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_ConnectBook, false); // switch off connect book
 
+                // set function our arrangement off
                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false); // turn function our arrangement off
                 prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false); // turn function our arrangement sketch off
                 prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, false); // turn function our arrangement old off
 
+                // set function our goals off
                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false); // turn function our goals off
                 prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false); // turn function our goals debetable off
                 prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkOldGoals, false); // turn function our goals old off
 
+                // set function time table off
                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_TimeTable, false); // turn function time table off
 
+                // set function and subfunction off
                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false); // turn function meeting off
                 prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientSuggestion_OnOff, false); // turn function meeting client suggestion off
                 prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCanceleMeeting_OnOff, false); // turn function meeting client canceled meeting off
                 prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false); // turn function meeting client comment suggestion off
+
+                // set function message off
+                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, false); // turn function message off
 
                 // function to switch on
                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Prevention, true); // turn function prevention on
@@ -599,6 +627,12 @@ public class MainActivity extends AppCompatActivity {
             else { // update
 
                 // do some update work!
+
+                // set function message off (hinzugefuegt am 29.12.2017)
+                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, false); // turn function message off
+
+                // set case close to true (hinzugefuegt am 29.12.2017)
+                prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, false);
 
                 Log.d ("Main Updat Func", "Im UPDATE ZWEIG!");
 

@@ -2646,6 +2646,45 @@ public class DBAdapter extends SQLiteOpenHelper {
     /****************************************************************************************************************************/
 
 
+    // delete all content from all tables, call by init process
+    void initDeleteAllContentFromTables() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // delete content from chat messages table
+        db.delete(DATABASE_TABLE_CHAT_MESSAGE, null, null);
+
+        // delete content from meeting/suggestion table
+        db.delete(DATABASE_TABLE_MEETING_SUGGESTION, null, null);
+
+        // delete content from debetable goals comment table
+        db.delete(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, null, null);
+
+        // delete content from jointly goals evaluation table
+        db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE, null, null);
+
+        // delete content from jointly goals comment table
+        db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, null, null);
+
+        // delete content from jointly goals table
+        db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, null, null);
+
+        // delete content from arrangement evaluate table
+        db.delete(DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE, null, null);
+
+        // delete content from arrangement table
+        db.delete(DATABASE_TABLE_OUR_ARRANGEMENT, null, null);
+
+        // delete content from arrangement sketch comment table
+        db.delete(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, null, null);
+
+        // delete content from arrangement comment table
+        db.delete(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, null, null);
+
+    }
+
+
+
 
 }
 

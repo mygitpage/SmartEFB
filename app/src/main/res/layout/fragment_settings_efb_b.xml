@@ -1,15 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/body_background">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Einstellungen Über diese App"
-        android:id="@+id/textView18"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="198dp" />
-</RelativeLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/containerShowEmergencyHelpInformation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="left"
+        android:background="@color/body_background"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style">
+
+            <TextView
+                android:id="@+id/emergencyHelpEmergencyCallNumberHeadline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/emergencyHelpEmergencyCallText"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:layout_marginLeft="3dp"/>
+
+            <TextView
+                android:id="@+id/emergencyHelpEmergencyCallNumberExplainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/emergencyHelpEmergencyCallNumberExplainText"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/emergencyHelpEmergencyCallNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:text="@string/emergencyHelpEmergencyCallNumber"
+            android:gravity="center"
+            android:paddingTop="20dp"/>
+
+        <TextView
+            android:id="@+id/borderBetweenCallNumbers"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"/>
+
+
+    </LinearLayout>
+
+</ScrollView>

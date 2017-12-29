@@ -66,6 +66,8 @@
     <string name="mainMenueElementId_10">Einstellungen</string>
     <string name="main_menue_text_inactiv">Inaktiv</string>
 
+    <string name="toastCaseClose">Der Fall wurde von Ihrer Beraterin/ Ihrem Berater abgeschlossen und die Verbindung zum Server wurde getrennt.</string>
+
     <!-- Main Menue Element Strings End-->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
@@ -1009,13 +1011,11 @@
             <string name="emergencyHelpEmergencyCareOfSoulsExplainText">Bei psychischen Problemen können Sie sich rund um die Uhr telefonisch oder per Email an die Telefonseelsorge wenden.</string>
             <string name="emergencyHelpEmergencyCareOfSoulsNumber">0800/12345678</string>
             <string name="emergencyHelpEmergencyCareOfSoulsEmail">seelsorge@seelsorge.de</string>
+            <string name="emergencyHelpEmergencyEFBCallHeadline">Onlineberatung</string>
+            <string name="emergencyHelpEmergencyEFBCallExplainText">Sie können uns (Erziehungs- und Familienbratungsstelle \"Lichtblick\" zu allen Fragen rund um Erziehungs- und Familienfragen auch per Mail erreichen.</string>
+            <string name="emergencyHelpEmergencyEFBCallEmail">beratung@beratung.de</string>
 
-
-
-            <string name="emergencyHelpEmergencyEFBCallText">Erziehungs- und Familienberatung Online</string>
-            <string name="emergencyHelpEmergencyEFBEmail">beratung@beratung.de</string>
-
-
+        <!-- end emergency help -->
 
 
 

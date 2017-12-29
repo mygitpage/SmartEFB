@@ -89,11 +89,6 @@ public class EfbXmlParser {
         returnMap.put("OurArrangementSettingsSketchCommentShareEnable","0");
         returnMap.put("OurArrangementSettingsSketchCommentCountComment", "0");
 
-        // check!!!!!!!!!!!!!!
-        returnMap.put("OurArrangementNewOrSend","0"); // only set in ExchangeService to refresh OurArrangement view
-        returnMap.put("OurArrangementCommentNewOrSend","0"); // only set in ExchangeService to refresh OurArrangement Comment view
-        returnMap.put("OurArrangementShowCommentNewOrSend","0"); // only set in ExchangeService to refresh OurArrangement Show Comment view
-
         returnMap.put("OurGoals", "0");
         returnMap.put("OurGoalsJointlyNow", "0");
         returnMap.put("OurGoalsDebetableNow", "0");
@@ -128,6 +123,7 @@ public class EfbXmlParser {
         returnMap.put("TimeTableNewValue", "0");
 
         returnMap.put("Settings", "0");
+        returnMap.put("Case_close", "0");
     }
 
 
@@ -274,6 +270,8 @@ public class EfbXmlParser {
                 } else if (eventType == XmlPullParser.END_TAG) {
                      if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain)) {
                         if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Init) && tmpClientId.trim().length() > 0) { // init client smartphone
+                            // set case close to true
+                            prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, false);
                             // write client id to prefs
                             prefsEditor.putString(ConstansClassSettings.namePrefsClientId, tmpClientId);
                             // set connection status to connect
@@ -281,6 +279,9 @@ public class EfbXmlParser {
                             // write last error messages to prefs
                             prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
                             prefsEditor.commit();
+
+                            // delete all content from db tables (init process)
+                            myDb.initDeleteAllContentFromTables();
 
                             returnMap.put("ClientId", tmpClientId);
                             returnMap.put("MainOrder", "init");
@@ -4602,10 +4603,10 @@ public class EfbXmlParser {
         Boolean tmpFaqOnOff = false;
         Boolean tmpEmergencyOnOff = false;
         Boolean tmpSettingsOnOff = false;
+        Boolean tmpCaseClose = false;
 
         // settings order
         String tmpOrder = "";
-
 
         try {
             int eventType = xpp.next();
@@ -4697,6 +4698,23 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
+                         case ConstansClassXmlParser.xmlNameForSettings_CaseClose:
+                             eventType = xpp.next();
+                             if (eventType == XmlPullParser.TEXT) { // get case close
+                                 if (xpp.getText().trim().length() > 0) { // check if case close from xml > 0
+                                     int tmpCaseCloseValue = Integer.valueOf(xpp.getText().trim());
+                                     if (tmpCaseCloseValue == 1) {
+                                         tmpCaseClose = true;
+                                     } else {
+                                         tmpCaseClose = false;
+                                     }
+                                 } else {
+                                     error = true;
+                                 }
+                             } else {
+                                 error = true;
+                             }
+                             break;
                     }
                 }
                 eventType = xpp.next();
@@ -4717,11 +4735,28 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // settings order -> update?
 
-                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Prevention, tmpPreventionOnOff); // turn function prevention on/off
-                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Faq, tmpFaqOnOff); // turn function faq on/off
-                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_EmergencyHelp, tmpEmergencyOnOff); // turn function emergency help on/off
-                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Settings, tmpSettingsOnOff); // turn function settings on/off
-                                prefsEditor.commit();
+                                if (tmpCaseClose) { // case is close!!!
+
+                                    // set case close to true
+                                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, true);
+                                    // delete client id
+                                    prefsEditor.putString(ConstansClassSettings.namePrefsClientId, "");
+                                    // set connection status to connect to server
+                                    prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 0); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
+                                    // write last error messages to prefs
+                                    prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
+                                    prefsEditor.commit();
+
+                                    // refresh app beause case is close
+                                    returnMap.put("Case_close","1");
+                                }
+                                else {
+                                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Prevention, tmpPreventionOnOff); // turn function prevention on/off
+                                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Faq, tmpFaqOnOff); // turn function faq on/off
+                                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_EmergencyHelp, tmpEmergencyOnOff); // turn function emergency help on/off
+                                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Settings, tmpSettingsOnOff); // turn function settings on/off
+                                    prefsEditor.commit();
+                                }
 
                                 // refresh activity settings because settings have change
                                 returnMap.put("Settings","1");

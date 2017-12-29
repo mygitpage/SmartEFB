@@ -117,9 +117,6 @@ class ConstansClassXmlParser {
             // xml name for element our arrangement change to
             static final String xmlNameForOurArrangement_Now_ChangeTo = "ourarrangement_now_changeto";
 
-
-
-
         // xml name for element our arrangement sketch
         static final String xmlNameForOurArrangement_Sketch = "ourarrangement_sketch";
 
@@ -149,8 +146,6 @@ class ConstansClassXmlParser {
 
             // xml name for element our arrangement change to
             static final String xmlNameForOurArrangement_Sketch_ChangeTo = "ourarrangement_sketch_changeto";
-
-
 
         // xml name for element our arrangement now comment
         static final String xmlNameForOurArrangement_NowComment = "ourarrangement_nowcomment";
@@ -216,11 +211,6 @@ class ConstansClassXmlParser {
             // xml name for element our arrangement sketch comment block number for sketch arrangements
             static final String xmlNameForOurArrangement_SketchComment_BlockId = "ourarrangement_sketchcomment_blockid";
 
-
-
-
-
-
         // xml name for element our arrangement evaluate
         static final String xmlNameForOurArrangement_Evaluate = "ourarrangement_evaluate";
 
@@ -265,9 +255,6 @@ class ConstansClassXmlParser {
 
             // xml name for element our arrangement evaluate block number for arrangements
             static final String xmlNameForOurArrangement_Evaluate_BlockId = "ourarrangement_evaluate_blockid";
-
-
-
 
         // xml name for element our arrangement settings
         static final String xmlNameForOurArrangement_Settings = "ourarrangement_settings";
@@ -324,8 +311,6 @@ class ConstansClassXmlParser {
     //
     // ++++++++++++++++++++++ End Our Arrangements ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //
-
-
 
     //
     // ++++++++++++++++++++++ Our Goals ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -439,9 +424,6 @@ class ConstansClassXmlParser {
             // xml name for element our goals evaluate block number for goals
             static final String xmlNameForOurGoals_JointlyEvaluate_BlockId = "ourgoals_evaluate_blockid";
 
-
-
-
     // xml name for element our goals jointly comment
         static final String xmlNameForOurGoals_JointlyComment = "ourgoals_jointlycomment";
 
@@ -506,9 +488,6 @@ class ConstansClassXmlParser {
             // xml name for element our goals debetable comment block number for debetable goals
             static final String xmlNameForOurGoals_DebetableComment_BlockId = "ourgoals_debetablecomment_blockid";
 
-
-
-
     // xml name for element our goals settings
         static final String xmlNameForOurGoals_Settings = "ourgoals_settings";
 
@@ -564,9 +543,6 @@ class ConstansClassXmlParser {
     //
     // ++++++++++++++++++++++ End Our Goals ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //
-
-
-
 
 
     //
@@ -646,8 +622,6 @@ class ConstansClassXmlParser {
     static final String xmlNameForMeeting_Suggestion_ClientCanceledTime = "meeting_client_canceled_time";
     static final String xmlNameForMeeting_Suggestion_ClientCanceledText = "meeting_client_canceled_text";
 
-
-    
     //
     // ++++++++++++++++++++++ End Meeting ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //
@@ -673,6 +647,8 @@ class ConstansClassXmlParser {
         // xml name for element settings settings turn on/off
         static final String xmlNameForSettings_Settings_TurnOnOff = "settings_settings_turnonoff";
 
+        // xml name for element settings case close
+        static final String xmlNameForSettings_CaseClose ="settings_caseclose";
 
     //
     // ++++++++++++++++++++++ End Main Settings ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -703,8 +679,6 @@ class ConstansClassXmlParser {
     //
     // ++++++++++++++++++++++ End Time Table ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //
-
-
 
 
     //
@@ -769,7 +743,5 @@ class ConstansClassXmlParser {
     //
     // ++++++++++++++++++++++ End Order Definitions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //
-
-
 
 }
