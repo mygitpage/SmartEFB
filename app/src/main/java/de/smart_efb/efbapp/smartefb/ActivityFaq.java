@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 /**
@@ -82,6 +83,21 @@ public class ActivityFaq extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
+        // check for intent on start time
+        // Extras from intent that holds data
+        Bundle intentExtras = null;
+        // intent
+        Intent intent = getIntent();
+
+        if (intent != null) { // intent set?
+            // get the link data from the extra
+            intentExtras = intent.getExtras();
+            if (intentExtras != null && intentExtras.getString("com") != null) { // extra data set?
+                // get command and execute it
+                executeIntentCommand(intentExtras.getString("com"));
+            }
+        }
     }
 
 
@@ -129,33 +145,31 @@ public class ActivityFaq extends AppCompatActivity {
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(0);
             tab.select();
-
-        } else if (command.equals("show_section2")) { // Show fragment for Fragen zur App
+        }
+        else if (command.equals("show_section2")) { // Show fragment for Fragen zur App
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(1);
             tab.select();
-
-        } else if (command.equals("show_section3")) { // Show fragment for Erziehungsberatung
+        }
+        else if (command.equals("show_section3")) { // Show fragment for Erziehungsberatung
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(2);
             tab.select();
-
-        } else if (command.equals("show_section4")) { // Show fragment for Beratungsstellen
+        }
+        else if (command.equals("show_section4")) { // Show fragment for Beratungsstellen
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(3);
             tab.select();
-
-        } else if (command.equals("show_section5")) { // Show fragment for Erziehungsfragen
+        }
+        else if (command.equals("show_section5")) { // Show fragment for Erziehungsfragen
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(4);
             tab.select();
-
         }
         else { // default is overview
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(0);
             tab.select();
-
         }
     }
 

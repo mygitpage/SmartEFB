@@ -5,7 +5,6 @@
     android:fillViewport="true">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/containerShowEmergencyHelpInformation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -23,49 +22,233 @@
             android:background="@drawable/list_element_style">
 
             <TextView
-                android:id="@+id/emergencyHelpEmergencyCallNumberHeadline"
+                android:id="@+id/settingsEfbFragmentBInformationHeadine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:textSize="16dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:text="@string/emergencyHelpEmergencyCallText"
+                android:text="@string/settingsEfbFragmentBInformationHeadineText"
                 android:gravity="left"
                 android:textStyle="bold"
                 android:layout_marginLeft="3dp"/>
 
             <TextView
-                android:id="@+id/emergencyHelpEmergencyCallNumberExplainText"
+                android:id="@+id/settingsEfbFragmentBInformationIntro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="13dp"
+                android:textSize="14dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:text="@string/emergencyHelpEmergencyCallNumberExplainText"
+                android:text="@string/settingsEfbFragmentBInformationIntroText"
                 android:gravity="left"
                 android:layout_marginLeft="3dp"/>
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/emergencyHelpEmergencyCallNumber"
+            android:id="@+id/settingsEfbFragmentBInformationText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
+            android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold"
-            android:text="@string/emergencyHelpEmergencyCallNumber"
+            android:text="@string/settingsEfbFragmentBInformationText"
+            android:gravity="left"
+            android:paddingBottom="20dp"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style">
+
+            <TextView
+                android:id="@+id/settingsEfbFragmentBContactPersonHeadine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/settingsEfbFragmentBContactPersonHeadline"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:layout_marginLeft="3dp"/>
+
+            <TextView
+                android:id="@+id/settingsEfbFragmentBContactPersonIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/settingsEfbFragmentBContactPersonIntroText"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/settingsEfbFragmentBContactPersonA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="@string/settingsEfbFragmentBContactPersonA"
             android:gravity="center"
             android:paddingTop="20dp"/>
 
         <TextView
-            android:id="@+id/borderBetweenCallNumbers"
+            android:id="@+id/borderBetween2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colorPrimaryDark"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/settingsEfbFragmentBContactPersonB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="@string/settingsEfbFragmentBContactPersonB"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style">
+
+            <TextView
+                android:id="@+id/settingsEfbFragmentBAdviceCenterHeadine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/settingsEfbFragmentBAdviceCenterHeadline"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:layout_marginLeft="3dp"/>
+
+            <TextView
+                android:id="@+id/settingsEfbFragmentBAdviceCenterIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/settingsEfbFragmentBAdviceCenterIntroText"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/settingsEfbFragmentBAdviceCenterA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="@string/settingsEfbFragmentBAdviceCenterA"
+            android:gravity="center"
+            android:paddingTop="20dp"/>
+
+        <TextView
+            android:id="@+id/borderBetween1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/settingsEfbFragmentBAdviceCenterB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="@string/settingsEfbFragmentBAdviceCenterB"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style">
+
+            <TextView
+                android:id="@+id/settingsEfbFragmentBCompanyHeadine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/settingsEfbFragmentBCompanyHeadine"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:layout_marginLeft="3dp"/>
+
+            <TextView
+                android:id="@+id/settingsEfbFragmentBCompanyIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/settingsEfbFragmentBCompanyIntro"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/settingsEfbFragmentBCompanyManager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="@string/settingsEfbFragmentBCompanyManager"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style">
+
+            <TextView
+                android:id="@+id/settingsEfbFragmentBFundingHeadine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/settingsEfbFragmentBFundingHeadine"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:layout_marginLeft="3dp"/>
+
+            <TextView
+                android:id="@+id/settingsEfbFragmentBFundingIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/settingsEfbFragmentBFundingIntro"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/settingsEfbFragmentBFundingImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/auerbach_icon"
+            android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"/>
-
 
     </LinearLayout>
 

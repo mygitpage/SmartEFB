@@ -12,7 +12,6 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +66,9 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
     // count list view elements vote for
     private int countListViewElementVote = 0;
 
+    // vote db id for send button
+    Long clientVoteDbId;
+
 
     // constructor
     MeetingSuggestionOverviewCursorAdapter(Context context, Cursor cursor, int flags) {
@@ -118,10 +120,6 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, final Context context, Cursor cursor) {
 
-        Log.d("Suggestion bindView++>","Bind- ID:"+cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID))+" ++ ServerID:"+cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_SERVER_ID)));
-
-
-
         if (cursor.isFirst() ) { // look for button in first element and normal suggestion
             //set border between suggestion to invisible -> it is first suggestion
             TextView tmpBorderBetween = (TextView) view.findViewById(R.id.borderBetweenMeetingSuggestion);
@@ -146,6 +144,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
         inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_overview_normal, parent, false);
 
+
         // canceled suggestion
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED)) == 1) {
             tmpStatusSuggestionCanceled = true;
@@ -156,20 +155,12 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         } else if ((cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)).length() > 0 && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEDATE)) > 0) || (cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR)).length() > 0 && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE)) > 0)) { // suggestion vote or comment send
             // check for vote (vote and/or comment
             tmpStatusVoteSuggestion = true;
-        } else {
+        } else if (cursor.isFirst()) {
             // check for normal suggestion
             tmpStatusSuggestion = true;
+            // init vote db id for button send
+            clientVoteDbId = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
         }
-
-
-
-        Log.d("Suggestion Overview++>","ID:"+cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID))+" ++ ServerID:"+cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_SERVER_ID)));
-
-
-
-
-
-
 
         // check for normal suggestion -> set intro text to visible
         if (tmpStatusSuggestion) {
@@ -516,7 +507,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                         tmpClientCommentText = txtInputSuggestionComment.getText().toString();
                     }
 
-                    if (countListViewElementVote >= minNumberOfVotes || tmpClientCommentText.length() > 3) { // too little suggestions or to few comment letters?
+                    if ((countListViewElementVote >= minNumberOfVotes || tmpClientCommentText.length() > 3) && clientVoteDbId != null && clientVoteDbId > 0) { // too little suggestions or to few comment letters AND vote db id  > 0?
 
                         // status of suggestion data -> 0= not send; 1=send; 4= external
                         int tmpStatus = 0; // not send to server
@@ -538,16 +529,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                         }
 
                         // insert  in DB
-                        Long clientVoteDbId = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
-                        myDb.updateSuggestionVoteAndCommentByClient(checkBoxSuggestionsValues[1], checkBoxSuggestionsValues[2], checkBoxSuggestionsValues[3], checkBoxSuggestionsValues[4], checkBoxSuggestionsValues[5], checkBoxSuggestionsValues[6], tmpVoteDate, tmpVoteAuthor, tmpClientCommentAuthor, tmpClientCommentDate,  tmpClientCommentText, clientVoteDbId, tmpStatus);
-
-                        // message for successfull sending or not successfull sending is set in class MeetingFragmentSuggestionOverview
-
-
-                        Log.d("SuggestionOverview +++>", "Vote DB ID:"+clientVoteDbId);
-
-                        Log.d("SuggestionOverview +++>", "Server ID:"+cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_SERVER_ID)));
-
+                        myDb.updateSuggestionVoteAndCommentByClient(checkBoxSuggestionsValues[1], checkBoxSuggestionsValues[2], checkBoxSuggestionsValues[3], checkBoxSuggestionsValues[4], checkBoxSuggestionsValues[5], checkBoxSuggestionsValues[6], tmpVoteDate, tmpVoteAuthor, tmpClientCommentAuthor, tmpClientCommentDate, tmpClientCommentText, clientVoteDbId, tmpStatus);
 
                         // send intent to service to start the service and send vote suggestion to server!
                         Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
@@ -555,15 +537,6 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                         startServiceIntent.putExtra("dbid",clientVoteDbId);
                         startServiceIntent.putExtra("receiverBroadcast", "meetingFragmentSuggestionOverview");
                         meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
-
-                        /*
-                        // build intent to go back to suggestionOverview
-                        Intent intent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ActivityMeeting.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.putExtra("com", "suggestion_overview");
-                        meetingSuggestionOverviewCursorAdapterContext.startActivity(intent);
-                        */
-
                     }
                     else { // error too little suggestions!
 
