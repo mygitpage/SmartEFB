@@ -59,8 +59,6 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
         getActivity().getApplicationContext().registerReceiver(ourGoalsFragmentDebetableBrodcastReceiver, filter);
 
         return viewFragmentDebetablGoalNow;
-
-
     }
 
 
@@ -76,10 +74,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
 
         // show actual debetable goal set
         displayDebetableGoalsSet();
-
-
     }
-
 
 
     // fragment is destroyed
@@ -89,6 +84,8 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourGoalsFragmentDebetableBrodcastReceiver);
 
+        // close db connection
+        myDb.close();
     }
 
 
@@ -109,15 +106,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
 
         // find the listview for debetable goals
         listViewDebetableGoals = (ListView) viewFragmentDebetablGoalNow.findViewById(R.id.listOurGoalsDebetableGoalsNow);
-
-        Log.d("OurGoalsDebet","Date Time: "+currentDateOfDebetableGoal+" +++++++++");
-
-
     }
-
-
-
-
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
@@ -147,8 +136,20 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpMessage = intentExtras.getString("Message");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsDebetableNow != null && tmpExtraOurGoalsDebetableNow.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentDebetableGoalNowContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsDebetableNow != null && tmpExtraOurGoalsDebetableNow.equals("1")) {
                     // new jointly goals on smartphone -> update now view
 
                     //update current block id of jointly goals
@@ -209,7 +210,6 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
-
                 }
 
                 // update the list view because data has change?
@@ -232,7 +232,6 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
             displayDebetableGoalsSet ();
         }
     }
-
 
 
     // show listView with debetable goals or info: nothing there
@@ -262,8 +261,8 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
 
                 // Assign adapter to ListView
                 listViewDebetableGoals.setAdapter(dataAdapterListViewOurGoalsDebetableGoalsNow);
-
-            } else {
+            }
+            else {
 
                 // set listView and textView not available gone, set textView nothing there visible
                 setVisibilityListViewDebetableGoalsNow("hide");
@@ -274,7 +273,6 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                 String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleGoalsNothingThere", "string", fragmentDebetableGoalNowContext.getPackageName()));
                 ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "debetableNow");
             }
-
         }
         else {
 
@@ -286,7 +284,6 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
             // Set correct subtitle in Activity -> "Funktion nicht moeglich"
             String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleFunctionNotAvailable", "string", fragmentDebetableGoalNowContext.getPackageName()));
             ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "debetableNow");
-
         }
     }
 
@@ -304,11 +301,8 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                 case "hide":
                     listViewDebetableGoals.setVisibility(View.GONE);
                     break;
-
             }
-
         }
-
     }
 
 
@@ -327,11 +321,8 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                 case "hide":
                     tmpNotAvailable.setVisibility(View.GONE);
                     break;
-
             }
-
         }
-
     }
 
 
@@ -349,13 +340,9 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                 case "hide":
                     tmpNothingThere.setVisibility(View.GONE);
                     break;
-
             }
-
         }
-
     }
-
 
 
 }

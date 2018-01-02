@@ -5,6 +5,8 @@ package de.smart_efb.efbapp.smartefb;
  */
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -14,11 +16,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -60,6 +65,9 @@ public class ActivitySettingsEfb extends AppCompatActivity {
     // actual random number for connetion to server
     int randomNumberForConnection = 0;
 
+    // reference to dialog settings
+    AlertDialog alertDialogSettings;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +103,9 @@ public class ActivitySettingsEfb extends AppCompatActivity {
                     case 2: // title for tab two
                         tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleHelpForApp", "string", getPackageName()));
                         break;
+                    case 3: // title for tab three
+                        tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleAppSettingsChange", "string", getPackageName()));
+                        break;
 
                     default:
                         tmpSubtitleText = getResources().getString(getResources().getIdentifier("settingsSubtitleConnectToServer", "string", getPackageName()));
@@ -106,7 +117,6 @@ public class ActivitySettingsEfb extends AppCompatActivity {
                 setSettingsToolbarSubtitle(tmpSubtitleText);
 
                 viewPagerSettingsEfb.setCurrentItem(tab.getPosition());
-
             }
 
             @Override
@@ -120,7 +130,6 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             }
         });
 
-
         // check for intent on start time
         // Extras from intent that holds data
         Bundle intentExtras = null;
@@ -131,14 +140,12 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             // get the link data from the extra
             intentExtras = intent.getExtras();
             if (intentExtras != null && intentExtras.getString("com") != null) { // extra data set?
-                if (intentExtras.getString("com").equals("show_contact")) { // execute only command show_contact (comes from activity: meeting, faq)
+                if (intentExtras.getString("com").equals("show_contact") || intentExtras.getString("com").equals("data_protection")) { // execute only command show_contact (comes from activity: settings) or data_protection (comes from settings)
                     // get command and execute it
                     executeIntentCommand(intentExtras.getString("com"));
                 }
             }
         }
-
-
     }
 
 
@@ -168,6 +175,8 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         String tmpSubtitleText = getSubtitleForTabZero();
         setSettingsToolbarSubtitle(tmpSubtitleText);
 
+        // create help dialog
+        createHelpDialog();
     }
 
 
@@ -199,7 +208,6 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         }
 
         return tmpSubtitleText;
-
     }
 
 
@@ -220,7 +228,6 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             // get command and execute it
             executeIntentCommand (intentExtras.getString("com"));
         }
-
     }
 
 
@@ -232,7 +239,12 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             TabLayout.Tab tab = tabLayoutSettingsEfb.getTabAt(1);
             tab.select();
 
-        } if (command.equals("show_no_network_try_again")) { // Show tab 0 -> no network available, try again
+        } else if (command.equals("data_protection")) { // Show tab 3 'hilfe' -> used to show data protection information from other activitys
+            // set tab 3
+            TabLayout.Tab tab = tabLayoutSettingsEfb.getTabAt(2);
+            tab.select();
+
+        } else if (command.equals("show_no_network_try_again")) { // Show tab 0 -> no network available, try again
 
             // set correct subtitle
             String tmpSubtitleText = ActivitySettingsEfb.this.getSubtitleForTabZero();
@@ -241,7 +253,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             // notify view pager adapter that data change
             settingsEfbViewPagerAdapter.notifyDataSetChanged();
 
-        } if (command.equals("show_connect_sucsessfull")) { // Show tab 0 -> connection sucsessfull, connect with server
+        } else if (command.equals("show_connect_sucsessfull")) { // Show tab 0 -> connection sucsessfull, connect with server
 
             // set correct subtitle
             String tmpSubtitleText = ActivitySettingsEfb.this.getSubtitleForTabZero();
@@ -250,7 +262,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             // notify view pager adapter that data change
             settingsEfbViewPagerAdapter.notifyDataSetChanged();
 
-        } if (command.equals("show_connect_error")) { // Show tab 0 -> connection error
+        } else if (command.equals("show_connect_error")) { // Show tab 0 -> connection error
 
             // set correct subtitle
             String tmpSubtitleText = ActivitySettingsEfb.this.getSubtitleForTabZero();
@@ -259,31 +271,67 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             // notify view pager adapter that data change
             settingsEfbViewPagerAdapter.notifyDataSetChanged();
         }
-        else {
-
-
-
-        }
-
     }
 
 
+    // help dialog
+    void createHelpDialog () {
+
+        Button tmpHelpButtonSettings = (Button) findViewById(R.id.helpSettings);
+
+        // add button listener to question mark in activity settings efb (toolbar)
+        tmpHelpButtonSettings.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                LayoutInflater dialogInflater;
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivitySettingsEfb.this);
+
+                // Get the layout inflater
+                dialogInflater = (LayoutInflater) ActivitySettingsEfb.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                // inflate and get the view
+                View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_settings, null);
+
+                // get string ressources
+                String tmpTextCloseDialog = ActivitySettingsEfb.this.getResources().getString(R.string.textDialogSettingsEfbCloseDialog);
+                String tmpTextTitleDialog = ActivitySettingsEfb.this.getResources().getString(R.string.textDialogSettingsEfbTitleDialog);
+
+                // build the dialog
+                builder.setView(dialogSettings)
+
+                        // Add close button
+                        .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                alertDialogSettings.cancel();
+                            }
+                        })
+
+                        // add title
+                        .setTitle(tmpTextTitleDialog);
+
+                // and create
+                alertDialogSettings = builder.create();
+
+                // and show the dialog
+                builder.show();
+            }
+        });
+    }
 
     // setter for subtitle in ActivitySettingsEfb toolbar
     public void setSettingsToolbarSubtitle (String subtitleText) {
 
         toolbarSettingsEfb.setSubtitle(subtitleText);
-
     }
-
-
 
 
     // getter for connecting status
     public int getConnectingStatus () {
 
         return connectingStatus;
-
     }
 
     // setter for connecting status
@@ -294,20 +342,13 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,tmpConnectionStatus); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
 
         prefsEditor.commit();
-
     }
-
-
-
 
 
     // getter for random number for connection to server
     public int getRandomNumberForConnection() {
 
-
         return randomNumberForConnection;
-
-
     }
 
     // setter for random number for connection to server
@@ -318,13 +359,10 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         prefsEditor.putInt(ConstansClassSettings.namePrefsRandomNumberForConnection,tmpRandomNumber);
 
         prefsEditor.commit();
-
     }
 
 
-
     public String getLastErrorText () {
-
 
         String tmp_errortext = prefs.getString(ConstansClassSettings.namePrefsLastErrorMessages,"");
 
@@ -332,7 +370,6 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         if (tmp_errortext.length() == 0 ) {tmp_errortext = "Leider kein Fehlertext übermittelt!";}
 
         return tmp_errortext;
-
     }
 
 
@@ -341,17 +378,13 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
-
             case android.R.id.home:
                 onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
-
-
 
 }
 

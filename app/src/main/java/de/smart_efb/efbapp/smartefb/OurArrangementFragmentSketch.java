@@ -9,8 +9,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,8 +58,6 @@ public class OurArrangementFragmentSketch  extends Fragment {
         getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentSketchBrodcastReceiver, filter);
 
         return viewFragmentSketch;
-
-
     }
 
 
@@ -77,8 +73,6 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
         // show actual arrangement set
         displaySketchArrangementSet();
-
-
     }
 
 
@@ -88,6 +82,9 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentSketchBrodcastReceiver);
+
+        // close db connection
+        myDb.close();
 
     }
 
@@ -111,10 +108,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
         // find the listview for sketch arrangement
         listViewSketchArrangement = (ListView) viewFragmentSketch.findViewById(R.id.listOurArrangementSketch);
-
     }
-
-
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
@@ -143,8 +137,19 @@ public class OurArrangementFragmentSketch  extends Fragment {
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpMessage = intentExtras.getString("Message");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketch != null && tmpExtraOurArrangementSketch.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentSketchContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                } else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketch != null && tmpExtraOurArrangementSketch.equals("1")) {
 
                     //update current block id of sketch arrangements
                     currentBlockIdOfSketchArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0");
@@ -210,11 +215,8 @@ public class OurArrangementFragmentSketch  extends Fragment {
             if (updateListView) {
                 updateListView();
             }
-
         }
     };
-
-
 
 
     // update the list view with sketch arrangements
@@ -228,9 +230,6 @@ public class OurArrangementFragmentSketch  extends Fragment {
             displaySketchArrangementSet ();
         }
     }
-
-
-
 
 
     // show listView with sketch arrangements or info: nothing there
@@ -272,7 +271,6 @@ public class OurArrangementFragmentSketch  extends Fragment {
                 String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleSketchNothingThere", "string", fragmentSketchContext.getPackageName()));
                 ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "sketch");
             }
-
         }
         else {
 
@@ -302,11 +300,8 @@ public class OurArrangementFragmentSketch  extends Fragment {
                 case "hide":
                     listViewSketchArrangement.setVisibility(View.GONE);
                     break;
-
             }
-
         }
-
     }
 
 
@@ -325,11 +320,8 @@ public class OurArrangementFragmentSketch  extends Fragment {
                 case "hide":
                     tmpNotAvailable.setVisibility(View.GONE);
                     break;
-
             }
-
         }
-
     }
 
 
@@ -347,13 +339,9 @@ public class OurArrangementFragmentSketch  extends Fragment {
                 case "hide":
                     tmpNothingThere.setVisibility(View.GONE);
                     break;
-
             }
-
         }
-
     }
-
 
 
 }

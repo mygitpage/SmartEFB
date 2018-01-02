@@ -123,8 +123,6 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
 
         // call getter-methode getActualMeetingDbId() in ActivityMeeting to get DB ID for the actuale meeting
         clientCanceledMeetingId = ((ActivityMeeting)getActivity()).getActualMeetingDbId();
-
-
     }
 
 
@@ -135,6 +133,8 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(meetingFragmentMeetingClientCanceledBrodcastReceiver);
 
+        // close db connection
+        myDb.close();
     }
 
 
@@ -159,8 +159,19 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpMessage = intentExtras.getString("Message");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingNewMeeting != null && tmpExtraMeetingNewMeeting.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentClientCanceledMeetingContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                } else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingNewMeeting != null && tmpExtraMeetingNewMeeting.equals("1")) {
                     // new meeting on smartphone -> show toast
                     String updateNewMeeting = fragmentClientCanceledMeetingContext.getString(R.string.toastMessageMeetingNewMeeting);
                     Toast toast = Toast.makeText(context, updateNewMeeting, Toast.LENGTH_LONG);
@@ -210,7 +221,6 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
                         if( v != null) v.setGravity(Gravity.CENTER);
                         toast.show();
                     }
-
                 }
             }
         }
@@ -317,7 +327,6 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
                         TextView tmpErrorTextView = (TextView) viewFragmentClientCanceledMeeting.findViewById(R.id.errorInputMeetingCanceled);
                         tmpErrorTextView.setVisibility(View.VISIBLE);
                     }
-
                 }
             });
 

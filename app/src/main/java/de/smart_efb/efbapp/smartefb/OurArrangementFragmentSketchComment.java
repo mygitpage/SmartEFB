@@ -96,13 +96,11 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentSketchCommentBrodcastReceiver, filter);
 
         return viewFragmentSketchComment;
-
     }
 
 
     @Override
     public void onViewCreated (View view, @Nullable Bundle saveInstanceState) {
-
 
         super.onViewCreated(view, saveInstanceState);
 
@@ -119,7 +117,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             // init the fragment now
             initFragmentSketchComment();
         }
-
     }
 
 
@@ -130,8 +127,9 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentSketchCommentBrodcastReceiver);
 
+        // close db connection
+        myDb.close();
     }
-
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
@@ -157,8 +155,20 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 String tmpExtraOurArrangementSketchCommentShareEnable = intentExtras.getString("OurArrangementSettingsSketchCommentShareEnable","0");
                 String tmpExtraOurArrangementSketchCommentShareDisable = intentExtras.getString("OurArrangementSettingsSketchCommentShareDisable","0");
                 String tmpExtraOurArrangementResetSketchCommentCountComment = intentExtras.getString("OurArrangementSettingsSketchCommentCountComment","0");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketchComment != null && tmpExtraOurArrangementSketchComment.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentSketchCommentContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketchComment != null && tmpExtraOurArrangementSketchComment.equals("1")) {
                     // update now comment view -> show toast and update view
                     String updateMessageCommentNow = fragmentSketchCommentContext.getString(R.string.toastMessageCommentSketchNewComments);
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
@@ -167,7 +177,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     refreshView = true;
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketch != null && tmpExtraOurArrangementSketch.equals("1")) {
-                    // update sketch arrangement! -> go back to fragment sketch arrangement and show dialog
 
                     // check sketch arrangement and sketch arrangement update and show dialog skezch arrangement and sketch arrangement change
                     ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("sketch");
@@ -217,13 +226,9 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.detach(fragmentSketchCommentThisFragmentContext).attach(fragmentSketchCommentThisFragmentContext).commit();
                 }
-
-
             }
         }
     };
-
-
 
 
     // inits the fragment for use
@@ -255,12 +260,10 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         String tmpCommentNumberIntro = this.getResources().getString(R.string.showSketchArrangementIntroText) + " " + sketchArrangementNumberInListView;
         textCommentNumberIntro.setText(tmpCommentNumberIntro);
 
-
         // textview for the author of sketch arrangement
         TextView tmpTextViewAuthorNameText = (TextView) viewFragmentSketchComment.findViewById(R.id.textAuthorName);
         String tmpTextAuthorNameText = String.format(fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentAuthorNameTextWithDate), cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
         tmpTextViewAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
-
 
         // generate back link "zurueck zu allen Entwuerfen"
         Uri.Builder backLinkBuilder = new Uri.Builder();
@@ -315,7 +318,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             String tmpTextAuthorNameLastActualComment = String.format(fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
             tmpTextViewAuthorNameLastActualSketchComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
-
             // textview for status 0 of the last actual comment
             final TextView tmpTextViewSendInfoLastActualSketchComment = (TextView) viewFragmentSketchComment.findViewById(R.id.textSendInfoLastActualSketchComment);
             if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS)) == 0) {
@@ -323,9 +325,8 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 String tmpTextSendInfoLastActualComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentSendInfo);
                 tmpTextViewSendInfoLastActualSketchComment.setVisibility(View.VISIBLE);
                 tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
-
-
-            } else if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS)) == 1) {
+            }
+            else if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS)) == 1) {
                 // textview for status 1 of the last actual comment
 
                 // check, sharing of sketch comments enable?
@@ -382,7 +383,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     }
                     tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualSketchComment);
                 }
-
             }
 
             // show actual result struct question only when result > 0
@@ -432,7 +432,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 String tmpLinkStringShowAllSketchComments = fragmentSketchCommentContext.getResources().getString(fragmentSketchCommentContext.getResources().getIdentifier("ourArrangementSketchCommentLinkToShowAllCommentsNotAvailable", "string", fragmentSketchCommentContext.getPackageName()));
                 tmpTextViewLInkToShowAllSketchComment.setText(tmpLinkStringShowAllSketchComments);
             }
-
         }
         else { // no comments
 
@@ -450,14 +449,11 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             // textview for the comment text
             TextView tmpTextViewSketchCommentText = (TextView) viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentText);
             tmpTextViewSketchCommentText.setVisibility(View.GONE);
-
         }
-
 
         // set onClickListener for radio button in radio group question 1
         String tmpRessourceName ="";
         RadioButton tmpRadioButtonQuestion;
-
 
         for (int numberOfButtons=0; numberOfButtons < numberOfRadioButtonsStructQuestion; numberOfButtons++) {
             tmpRessourceName ="structQuestionOne_Answer" + (numberOfButtons+1);
@@ -509,7 +505,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         else {
             tmpInfoTextDelaytimeSingluarPluaral = this.getResources().getString(R.string.infoTextSketchCommentDelaytimePlural);
             tmpInfoTextDelaytimeSingluarPluaral = String.format(tmpInfoTextDelaytimeSingluarPluaral, prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime, 0));
-
         }
 
         // generate text comment max letters
@@ -528,10 +523,8 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", tmpMaxLength);
         textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
 
-
         // get edit text field for sketch comment
         final EditText txtInputSketchArrangementComment = (EditText) viewFragmentSketchComment.findViewById(R.id.inputSketchArrangementComment);
-
 
         // set text watcher to count letters in comment field
         final TextWatcher txtInputArrangementCommentTextWatcher = new TextWatcher() {
@@ -572,7 +565,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
                 } else if (tmpErrorTextView != null) {
                     tmpErrorTextView.setVisibility(View.GONE);
-
                 }
 
                 // comment textfield -> insert new comment
@@ -607,7 +599,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.putExtra("com","show_sketch_arrangement");
                     getActivity().startActivity(intent);
-
                 }
             }
         });
@@ -626,9 +617,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
             }
         });
-
         // End build the view
-
     }
 
 
@@ -650,143 +639,10 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             // check for comment limitations
             commentLimitationBorder = ((ActivityOurArrangement)getActivity()).isCommentLimitationBorderSet("current");
         }
-
     }
 
 
-    public void addActualCommentSetToView () {
-
-        /*
-        LinearLayout commentHolderLayout = (LinearLayout) viewFragmentSketchComment.findViewById(R.id.commentSketchHolder);
-
-        cursorSketchArrangementAllComments.moveToFirst();
-
-        do {
-
-            int actualCursorNumber = cursorSketchArrangementAllComments.getPosition()+1;
-
-            // Linear Layout holds comment text and linear layout with author,date and new entry text
-            LinearLayout l_inner_layout = new LinearLayout(fragmentSketchCommentContext);
-            l_inner_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            l_inner_layout.setOrientation(LinearLayout.VERTICAL);
-
-            //add textView for actual result struct question
-            TextView txtViewSketchCommentResultStructQuestion = new TextView (fragmentSketchCommentContext);
-            String actualResultStructQuestion;
-            if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1)) > 0) {
-                actualResultStructQuestion = getResources().getString(R.string.textSketchCommentActualResultStructQuestion);
-                actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateSketchCommentScalesLevel[cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1))-1]);
-
-            } else {
-                actualResultStructQuestion = getResources().getString(R.string.textSketchCommentNoActualResultStructQuestion);
-            }
-            txtViewSketchCommentResultStructQuestion.setText(actualResultStructQuestion);
-            txtViewSketchCommentResultStructQuestion.setId(actualCursorNumber);
-            txtViewSketchCommentResultStructQuestion.setTextColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.text_color));
-            txtViewSketchCommentResultStructQuestion.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            txtViewSketchCommentResultStructQuestion.setTextSize(12);
-            txtViewSketchCommentResultStructQuestion.setGravity(Gravity.LEFT);
-            txtViewSketchCommentResultStructQuestion.setPadding(15,0,0,0);
-
-            //add textView for comment text
-            TextView txtViewCommentText = new TextView (fragmentSketchCommentContext);
-            txtViewCommentText.setText(cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT)));
-            txtViewCommentText.setId(actualCursorNumber);
-            txtViewCommentText.setTextColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.text_color));
-            txtViewCommentText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            txtViewCommentText.setTextSize(16);
-            txtViewCommentText.setGravity(Gravity.LEFT);
-            txtViewCommentText.setPadding(15,0,0,0);
-
-            // Linear Layout holds author, date and text new entry
-            LinearLayout aadn_inner_layout = new LinearLayout(fragmentSketchCommentContext);
-            aadn_inner_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            aadn_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
-
-            // check if comment new entry
-            if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY)) == 1) {
-                //add textView for text new entry
-                TextView txtViewCommentNewEntry = new TextView (fragmentSketchCommentContext);
-                txtViewCommentNewEntry.setText(this.getResources().getString(R.string.newEntryText));
-                txtViewCommentNewEntry.setId(actualCursorNumber);
-                txtViewCommentNewEntry.setTextColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.text_accent_color));
-                txtViewCommentNewEntry.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                txtViewCommentNewEntry.setTextSize(14);
-                txtViewCommentNewEntry.setGravity(Gravity.LEFT);
-                txtViewCommentNewEntry.setPadding(15,0,0,0);
-
-                // add new entry text to linear layout
-                aadn_inner_layout.addView (txtViewCommentNewEntry);
-
-                // delete status new entry in db
-                myDb.deleteStatusNewEntryOurArrangementSketchComment(cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
-            }
-
-            //add textView for comment author and date
-            TextView txtViewCommentAuthorAndDate = new TextView (fragmentSketchCommentContext);
-            long writeTime = cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME));
-            String authorAndDate = cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME)) + ", " + EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy - HH:mm");
-            txtViewCommentAuthorAndDate.setText(authorAndDate);
-            txtViewCommentAuthorAndDate.setId(actualCursorNumber);
-            txtViewCommentAuthorAndDate.setTextColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.text_color));
-            txtViewCommentAuthorAndDate.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            txtViewCommentAuthorAndDate.setTextSize(14);
-            txtViewCommentAuthorAndDate.setGravity(Gravity.RIGHT);
-            txtViewCommentAuthorAndDate.setPadding(0,0,0,55);
-
-            aadn_inner_layout.addView (txtViewCommentAuthorAndDate);
-
-            // add elements to inner linear layout
-            l_inner_layout.addView (txtViewSketchCommentResultStructQuestion);
-            l_inner_layout.addView (txtViewCommentText);
-            l_inner_layout.addView (aadn_inner_layout);
-
-            // add inner layout to comment holder (linear layout in xml-file)
-            commentHolderLayout.addView(l_inner_layout);
-
-        } while (cursorSketchArrangementAllComments.moveToNext());
-
-        // Linear Layout holds author, date and text new entry
-        LinearLayout btnBack_inner_layout = new LinearLayout(fragmentSketchCommentContext);
-        btnBack_inner_layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        btnBack_inner_layout.setOrientation(LinearLayout.HORIZONTAL);
-        btnBack_inner_layout.setGravity(Gravity.CENTER);
-
-        // create back button (to arrangement)
-        Button btnBackToArrangement = new Button (fragmentSketchCommentContext);
-        btnBackToArrangement.setText(this.getResources().getString(R.string.ourArrangementBackLinkToSketchArrangement));
-        btnBackToArrangement.setTextColor(ContextCompat.getColor(fragmentSketchCommentContext, R.color.text_color));
-        btnBackToArrangement.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        btnBackToArrangement.setTextSize(14);
-        btnBackToArrangement.setGravity(Gravity.CENTER);
-        btnBackToArrangement.setBackground(ContextCompat.getDrawable(fragmentSketchCommentContext,R.drawable.app_button_style));
-        btnBackToArrangement.setPadding(10,10,10,10);
-        btnBackToArrangement.setTop(25);
-        btnBackToArrangement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent.putExtra("com","show_sketch_arrangement");
-                getActivity().startActivity(intent);
-
-            }
-        });
-
-        // add elements to inner linear layout
-        btnBack_inner_layout.addView (btnBackToArrangement);
-
-        // add back button to comment holder (linear layout in xml-file)
-        commentHolderLayout.addView(btnBack_inner_layout);
-
-        */
-    }
-
-
-    //
     // onClickListener for radioButtons in fragment layout evaluate
-    //
     public class sketchCommentRadioButtonListener implements View.OnClickListener {
 
         int radioButtonNumber;
@@ -794,7 +650,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         public sketchCommentRadioButtonListener (int number) {
 
             this.radioButtonNumber = number;
-
         }
 
         @Override
@@ -826,15 +681,8 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             }
 
             structQuestionResultSketchComment = tmpResultQuestion;
-
         }
-
     }
-
-
-
-
-
 
 
 }

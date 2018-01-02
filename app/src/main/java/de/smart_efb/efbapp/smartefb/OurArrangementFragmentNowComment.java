@@ -2,7 +2,6 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -13,27 +12,19 @@ import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -88,13 +79,11 @@ public class OurArrangementFragmentNowComment extends Fragment {
         getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentNowCommentBrodcastReceiver, filter);
 
         return viewFragmentNowComment;
-
     }
 
 
     @Override
     public void onViewCreated (View view, @Nullable Bundle saveInstanceState) {
-
 
         super.onViewCreated(view, saveInstanceState);
 
@@ -110,8 +99,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
             initFragmentNowComment();
             buildFragmentNowCommentView();
         }
-
-
     }
 
 
@@ -122,6 +109,8 @@ public class OurArrangementFragmentNowComment extends Fragment {
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentNowCommentBrodcastReceiver);
 
+        // close db connection
+        myDb.close();
     }
 
 
@@ -148,8 +137,19 @@ public class OurArrangementFragmentNowComment extends Fragment {
                 String tmpExtraOurArrangementCommentShareEnable = intentExtras.getString("OurArrangementSettingsCommentShareEnable","0");
                 String tmpExtraOurArrangementCommentShareDisable = intentExtras.getString("OurArrangementSettingsCommentShareDisable","0");
                 String tmpExtraOurArrangementResetCommentCountComment = intentExtras.getString("OurArrangementSettingsCommentCountComment","0");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNowComment != null && tmpExtraOurArrangementNowComment.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentNowCommentContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                } else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNowComment != null && tmpExtraOurArrangementNowComment.equals("1")) {
                     // update now comment view -> show toast and update view
                     String updateMessageCommentNow = fragmentNowCommentContext.getString(R.string.toastMessageCommentNowNewComments);
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
@@ -232,7 +232,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentNowCommentText", "string", fragmentNowCommentContext.getPackageName())) + " " + arrangementNumberInListView;
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "nowComment");
-
     }
 
 
@@ -253,7 +252,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
         String arrangement = cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(arrangement);
 
-
         // generate back link "zurueck zu allen Absprachen"
         Uri.Builder backArrangementLinkBuilder = new Uri.Builder();
         backArrangementLinkBuilder.scheme("smart.efb.deeplink")
@@ -271,7 +269,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
             TextView textCommentSharingIsDisable = (TextView) viewFragmentNowComment.findViewById(R.id.commentSharingIsDisable);
             textCommentSharingIsDisable.setVisibility (View.VISIBLE);
         }
-
 
         // some comments for arrangement available?
         if (cursorArrangementAllComments.getCount() > 0) {
@@ -472,7 +469,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
         // show info text
         textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextCommentMaxLetters + " " +tmpInfoTextDelaytimeSingluarPluaral);
 
-
         // get max letters for edit text comment
         final int tmpMaxLength = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters, 10);
 
@@ -558,9 +554,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
             }
         });
-
     }
-
 
 
     // call getter Functions in ActivityOurArrangement for some data
@@ -581,7 +575,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
             // check for comment limitations
             commentLimitationBorder = ((ActivityOurArrangement)getActivity()).isCommentLimitationBorderSet("current");
         }
-
     }
 
 }

@@ -1,14 +1,19 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.method.LinkMovementMethod;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by ich on 12.08.16.
@@ -17,7 +22,6 @@ public class FaqFragmentSection1 extends Fragment {
 
     // fragment view
     View viewFragmentSection1;
-
 
     // fragment context
     Context fragmentFaqSectionOneContext = null;
@@ -28,38 +32,64 @@ public class FaqFragmentSection1 extends Fragment {
 
         viewFragmentSection1 = layoutInflater.inflate(R.layout.fragment_faq_section_1, null);
 
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(faqFragmentSection1BrodcastReceiver, filter);
+
         return viewFragmentSection1;
-
     }
-
-
 
 
     @Override
     public void onViewCreated (View view, @Nullable Bundle saveInstanceState) {
 
-
         super.onViewCreated(view, saveInstanceState);
 
         fragmentFaqSectionOneContext = getActivity().getApplicationContext();
 
-        // init the fragment meeting now
-        initFragmentFaqSectionOne();
-
         // show actual faq section one
         displayActualFaqSectionOne();
-
-
-
     }
 
 
-    // init fragment
-    private void initFragmentFaqSectionOne () {
+    // fragment is destroyed
+    public void onDestroyView() {
+        super.onDestroyView();
 
+        // de-register broadcast receiver
+        getActivity().getApplicationContext().unregisterReceiver(faqFragmentSection1BrodcastReceiver);
     }
 
 
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeServiceEfb
+    private BroadcastReceiver faqFragmentSection1BrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
+
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentFaqSectionOneContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                }
+            }
+        }
+    };
 
 
     // show fragment ressources
@@ -84,14 +114,6 @@ public class FaqFragmentSection1 extends Fragment {
         // set movement methode info text missing faq
         TextView tmpShowMissingFaq = (TextView) viewFragmentSection1.findViewById(R.id.faqOverviewSectionOneEnd);
         tmpShowMissingFaq.setMovementMethod(LinkMovementMethod.getInstance());
-
-
-
     }
 
-
-
-
-
-
-    }
+}

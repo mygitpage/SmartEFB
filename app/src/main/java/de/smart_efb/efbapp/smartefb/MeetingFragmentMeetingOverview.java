@@ -85,8 +85,10 @@ public class MeetingFragmentMeetingOverview extends Fragment {
 
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(meetingFragmentMeetingOverviewBrodcastReceiver);
-    }
 
+        // close db connection
+        myDb.close();
+    }
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeServiceEfb
@@ -113,8 +115,19 @@ public class MeetingFragmentMeetingOverview extends Fragment {
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpMessage = intentExtras.getString("Message");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingNewMeeting != null && tmpExtraMeetingNewMeeting.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentMeetingContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                } else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingNewMeeting != null && tmpExtraMeetingNewMeeting.equals("1")) {
                     // new meeting on smartphone -> update meeting view and show toast
                     String updateNewMeeting = fragmentMeetingContext.getString(R.string.toastMessageMeetingNewMeeting);
                     Toast toast = Toast.makeText(context, updateNewMeeting, Toast.LENGTH_LONG);

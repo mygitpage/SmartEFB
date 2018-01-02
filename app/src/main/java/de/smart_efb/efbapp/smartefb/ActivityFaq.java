@@ -1,15 +1,26 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by ich on 12.08.16.
@@ -21,6 +32,9 @@ public class ActivityFaq extends AppCompatActivity {
 
     ViewPager viewPagerFaq;
     TabLayout tabLayoutFaq;
+
+    // reference to dialog settings
+    AlertDialog alertDialogFaq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +128,9 @@ public class ActivityFaq extends AppCompatActivity {
         // set correct subtitle for first call
         String tmpSubtitleText = getResources().getString(getResources().getIdentifier("faqSubtitleSectionOne", "string", getPackageName()));
         toolbarFaq.setSubtitle(tmpSubtitleText);
+
+        // create help dialog
+        createHelpDialog();
     }
 
 
@@ -171,6 +188,54 @@ public class ActivityFaq extends AppCompatActivity {
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(0);
             tab.select();
         }
+    }
+
+
+    // help dialog
+    void createHelpDialog () {
+
+        Button tmpHelpButtonSettings = (Button) findViewById(R.id.helpFaq);
+
+        // add button listener to question mark in activity settings efb (toolbar)
+        tmpHelpButtonSettings.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                LayoutInflater dialogInflater;
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityFaq.this);
+
+                // Get the layout inflater
+                dialogInflater = (LayoutInflater) ActivityFaq.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                // inflate and get the view
+                View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_faq, null);
+
+                // get string ressources
+                String tmpTextCloseDialog = ActivityFaq.this.getResources().getString(R.string.textDialogSettingsEfbCloseDialog);
+                String tmpTextTitleDialog = ActivityFaq.this.getResources().getString(R.string.textDialogSettingsEfbTitleDialog);
+
+                // build the dialog
+                builder.setView(dialogSettings)
+
+                        // Add close button
+                        .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                alertDialogFaq.cancel();
+                            }
+                        })
+
+                        // add title
+                        .setTitle(tmpTextTitleDialog);
+
+                // and create
+                alertDialogFaq = builder.create();
+
+                // and show the dialog
+                builder.show();
+            }
+        });
     }
 
 

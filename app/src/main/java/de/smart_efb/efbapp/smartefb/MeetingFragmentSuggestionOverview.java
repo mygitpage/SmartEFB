@@ -91,6 +91,9 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
 
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(meetingFragmentSuggestionOverviewBrodcastReceiver);
+
+        // close db connection
+        myDb.close();
     }
 
 
@@ -120,8 +123,19 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpMessage = intentExtras.getString("Message");
                 String tmpReceiverBroadcast = intentExtras.getString("receiverBroadcast", "");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraSuggestionNewSuggestion != null && tmpExtraSuggestionNewSuggestion.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentSuggestionContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                } else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraSuggestionNewSuggestion != null && tmpExtraSuggestionNewSuggestion.equals("1")) {
                     // new suggestion from coach on smartphone -> update suggestion view and show toast
                     String updateNewSuggestion = fragmentSuggestionContext.getString(R.string.toastMessageSuggestionOverviewNewSuggestion);
                     Toast toast = Toast.makeText(context, updateNewSuggestion, Toast.LENGTH_LONG);

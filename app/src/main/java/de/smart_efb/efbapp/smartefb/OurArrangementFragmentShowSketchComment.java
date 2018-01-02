@@ -65,7 +65,6 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
         getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentShowSketchCommentBrodcastReceiver, filter);
 
         return viewFragmentShowSketchComment;
-
     }
 
 
@@ -88,7 +87,6 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
             // show actual comment set for arrangement
             displayActualCommentSet();
         }
-
     }
 
 
@@ -99,8 +97,9 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentShowSketchCommentBrodcastReceiver);
 
+        // close db connection
+        myDb.close();
     }
-
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
@@ -118,8 +117,6 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
-                // check intent order
-
 
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
                 String tmpExtraOurArrangementSketch = intentExtras.getString("OurArrangementSketch","0");
@@ -128,8 +125,19 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
                 String tmpExtraOurArrangementSketchCommentShareEnable = intentExtras.getString("OurArrangementSettingsSketchCommentShareEnable","0");
                 String tmpExtraOurArrangementSketchCommentShareDisable = intentExtras.getString("OurArrangementSettingsSketchCommentShareDisable","0");
                 String tmpExtraOurArrangementResetSketchCommentCountComment = intentExtras.getString("OurArrangementSettingsSketchCommentCountComment","0");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketchComment != null && tmpExtraOurArrangementSketchComment.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentShowSketchCommentContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                } else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketchComment != null && tmpExtraOurArrangementSketchComment.equals("1")) {
                     // update show sketch comment view -> show toast and update view
                     String updateMessageCommentNow = fragmentShowSketchCommentContext.getString(R.string.toastMessageCommentSketchNewComments);
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
@@ -187,8 +195,6 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
                 if (updateListView) {
                     updateListView();
                 }
-
-
             }
         }
     };
@@ -221,7 +227,6 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
         // Set correct subtitle in Activity -> "Einschaetzungen Entwuerfe ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentShowSketchCommentText", "string", fragmentShowSketchCommentContext.getPackageName())) + " " + sketchArrangementNumberInListView;
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "showSketchComment");
-
     }
 
 
@@ -242,9 +247,7 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
 
             // call getter-methode isCommentLimitationBorderSet in ActivityOurArrangement to get true-> sketch comments are limited, false-> sketch comments are not limited
             commentLimitationBorder = ((ActivityOurArrangement)getActivity()).isCommentLimitationBorderSet("sketch");
-
         }
-
     }
 
 
@@ -271,7 +274,6 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
 
         // Assign adapter to ListView
         listViewShowSketchComment.setAdapter(showSketchCommentCursorAdapter);
-
     }
 
 }

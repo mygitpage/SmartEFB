@@ -2,29 +2,27 @@ package de.smart_efb.efbapp.smartefb;
 
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.util.Xml;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +34,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
-import java.util.concurrent.TimeoutException;
+
 
 /**
  * Created by ich on 20.06.16.
@@ -48,7 +46,7 @@ public class SettingsEfbFragmentA extends Fragment {
     // fragment view
     View viewFragmentConnectToServer;
 
-     // fragment context
+    // fragment context
     Context fragmentConnectToServerContext = null;
 
     // minimum and maximum for random number to connect to server
@@ -76,16 +74,16 @@ public class SettingsEfbFragmentA extends Fragment {
 
         viewFragmentConnectToServer = layoutInflater.inflate(R.layout.fragment_settings_efb_a, null);
 
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(settingsFragmentABrodcastReceiver, filter);
+
         return viewFragmentConnectToServer;
-
     }
-
-
 
 
     @Override
     public void onViewCreated (View view, @Nullable Bundle saveInstanceState) {
-
 
         super.onViewCreated(view, saveInstanceState);
 
@@ -98,8 +96,15 @@ public class SettingsEfbFragmentA extends Fragment {
 
         // show actual connecting informations
         displayActualConnectingInformation();
+    }
 
 
+    // fragment is destroyed
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // de-register broadcast receiver
+        getActivity().getApplicationContext().unregisterReceiver(settingsFragmentABrodcastReceiver);
     }
 
 
@@ -107,8 +112,38 @@ public class SettingsEfbFragmentA extends Fragment {
 
         // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get meeting status
         connectingStatus = ((ActivitySettingsEfb)getActivity()).getConnectingStatus();
-
     }
+
+
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeServiceEfb
+    private BroadcastReceiver settingsFragmentABrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
+
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentConnectToServerContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                }
+            }
+        }
+    };
 
 
     // show actual process data of connecting to server
@@ -116,8 +151,6 @@ public class SettingsEfbFragmentA extends Fragment {
 
         // connecting status 0 -> not connected to server
         if (connectingStatus == 0) {
-
-            Log.d("Settings A","ConnectinStatus == 0");
 
             // replace headline connect to server
             TextView textViewConnectedWithServerHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
@@ -143,7 +176,6 @@ public class SettingsEfbFragmentA extends Fragment {
             textViewConnectToServerRemarkClickButtonText.setText(tmpTextRemarkClickButton);
             textViewConnectToServerRemarkClickButtonText.setVisibility(View.VISIBLE);
 
-
             // send button
             Button tmpButton = (Button) viewFragmentConnectToServer.findViewById(R.id.buttonSendConnectToServerKeyNumber);
             tmpButton.setVisibility(View.VISIBLE);
@@ -161,10 +193,7 @@ public class SettingsEfbFragmentA extends Fragment {
                         // new thread -> send pin to server and get answer (xml data with arrangement, goals, meeting, settings, etc.)
                         new sendPinToServer().execute(Integer.toString(randomNumberForConnection));
 
-
-
                     } else { // no network connection!
-
 
                         // call setter-methode setConnectionStatus in ActivitySettingsEfb
                         ((ActivitySettingsEfb)getActivity()).setConnectionStatus(1); // 1 -> no internet
@@ -177,14 +206,10 @@ public class SettingsEfbFragmentA extends Fragment {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("com","show_no_network_try_again");
                         fragmentConnectToServerContext.startActivity(intent);
-
                     }
-
                 }
             });
-
         }
-
 
         // connecting status 1 -> no connection, no network, try again
         if (connectingStatus == 1) {
@@ -227,19 +252,13 @@ public class SettingsEfbFragmentA extends Fragment {
                         // new thread -> send pin to server and get answer (xml data with arrangement, goals, meeting, settings, etc.)
                         new sendPinToServer().execute(Integer.toString(randomNumberForConnection));
 
-
-
-
                     } else { // no network connection!
                         
                         // show dialog "no imternet"
                         dialogNoInternetAvailable ();
-                    
                     }
-
                 }
             });
-
         }
 
         // connecting status 2 -> connection error
@@ -269,7 +288,6 @@ public class SettingsEfbFragmentA extends Fragment {
             ((ActivitySettingsEfb)getActivity()).setConnectionStatus(1); // 0 -> not connected so far
 
             connectingStatus = 1;
-
         }
 
         // connecting status 3 -> sucsessfull connected with server
@@ -284,9 +302,7 @@ public class SettingsEfbFragmentA extends Fragment {
             TextView textViewConnectedWithServerIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerSucsessfullIntro);
             textViewConnectedWithServerIntroText.setVisibility(View.VISIBLE);
             textViewConnectedWithServerIntroText.setMovementMethod(LinkMovementMethod.getInstance());
-
         }
-
     }
 
 
@@ -303,7 +319,6 @@ public class SettingsEfbFragmentA extends Fragment {
                     }
                 });
         alertDialog.show();
-
     }
 
 
@@ -317,8 +332,6 @@ public class SettingsEfbFragmentA extends Fragment {
         pDialog.show();
 
     }
-
-
 
 
     // Background Async Task
@@ -379,11 +392,9 @@ public class SettingsEfbFragmentA extends Fragment {
                 EfbXmlParser xmlparser = new EfbXmlParser(fragmentConnectToServerContext);
                 returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
 
-
                 // close input stream and disconnect
                 answerInputStream.close();
                 connection.disconnect();
-
 
                 // connection status correct and no error occured?
                 if (returnMap.get("ConnectionStatus") == "3" && returnMap.get("Error") == "0" ) { // connection status 3 -> connection sucsessfull; 2 -> connection error; 1 -> no internet; 0 -> no try to connect so far
@@ -392,7 +403,6 @@ public class SettingsEfbFragmentA extends Fragment {
                     ((ActivitySettingsEfb)getActivity()).setConnectionStatus(3); // 3 -> Connect with server
 
                     connectingStatus = 3;
-
 
                     // prepair data to send -> send all data correct received to server
                     String xmlCodeEstablished = "xmlcode=" + URLEncoder.encode(makeXMLRequestForConnectionEstablished (returnMap.get("ClientId")), "UTF-8");
@@ -408,12 +418,8 @@ public class SettingsEfbFragmentA extends Fragment {
                     OutputStreamWriter contentWriterEstablished = new OutputStreamWriter(connectionEstablished.getOutputStream());
                     contentWriterEstablished.write(xmlCodeEstablished);
                     contentWriterEstablished.flush();
-
                     contentWriterEstablished.close();
-
-
                     connectionEstablished.disconnect();
-
 
                     // show text connect sucsessfull
                     Intent intent = new Intent(fragmentConnectToServerContext, ActivitySettingsEfb.class);
@@ -426,27 +432,14 @@ public class SettingsEfbFragmentA extends Fragment {
                     // set connection status to connect error
                     ((ActivitySettingsEfb)getActivity()).setConnectionStatus(2); // 2 -> Connect error
 
-
-                    Log.d("DEBUG INFO","CONNECTION:"+returnMap.get("ConnectionStatus") + "-- ERROR:" +  returnMap.get("Error"));
-
-
                     connectingStatus = 2;
-
 
                     // show error text
                     Intent intent = new Intent(fragmentConnectToServerContext, ActivitySettingsEfb.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("com","show_connect_error");
                     fragmentConnectToServerContext.startActivity(intent);
-
                 }
-
-
-
-
-
-
-                Log.d("AsynTask","Empfangen: "+stringBuilder.toString().trim());
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -465,16 +458,8 @@ public class SettingsEfbFragmentA extends Fragment {
 
             // dismiss the dialog after getting clientID and configuration
             pDialog.dismiss();
-
         }
-
     }
-
-
-
-
-
-
 
 
     private String makeXMLRequestForFirstConnection (String clientpin) {
@@ -519,11 +504,7 @@ public class SettingsEfbFragmentA extends Fragment {
         }
 
         return writer.toString();
-
     }
-
-
-
 
 
     private String makeXMLRequestForConnectionEstablished (String clientId) {
@@ -568,15 +549,8 @@ public class SettingsEfbFragmentA extends Fragment {
         }
 
         return writer.toString();
-
     }
 
-
-
-
-
 }
-
-
 
 

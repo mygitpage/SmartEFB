@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,7 +63,6 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
         getActivity().getApplicationContext().registerReceiver(ourGoalsFragmentShowCommentDebetableGoalsBrodcastReceiver, filter);
 
         return viewFragmentShowDebetableGoalComment;
-
     }
 
 
@@ -87,7 +85,6 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
             // show actual comment set for debetable goal
             displayActualCommentSet();
         }
-
     }
 
 
@@ -98,10 +95,9 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourGoalsFragmentShowCommentDebetableGoalsBrodcastReceiver);
 
+        // close db connection
+        myDb.close();
     }
-
-
-
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
@@ -127,6 +123,18 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
                 String tmpExtraOurGoalsCommentShareDisable= intentExtras.getString("OurGoalsSettingsDebetableCommentShareDisable","0");
                 String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsDebetableCommentShareEnable","0");
                 String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsDebetableCommentCountComment","0");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
+
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentShowDebetableGoalCommentContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                }
 
                 if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsDebetableNowComment != null && tmpExtraOurGoalsDebetableNowComment.equals("1")) {
                     // update debetable comment view -> show toast and update view
@@ -137,7 +145,6 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
                     refreshView = true;
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsDebetableNow != null && tmpExtraOurGoalsDebetableNow.equals("1")) {
-                    // update debetable goals! -> go back to fragment now goals and show dialog
 
                     // check goals and goals update and show dialog goals change
                     ((ActivityOurGoals) getActivity()).checkUpdateForShowDialog ("debetable");

@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,6 @@ import android.widget.Toast;
  * Created by ich on 16.10.2016.
  */
 public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
-
 
     // fragment view
     View viewFragmentJointlyGoalsNow;
@@ -63,7 +61,6 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
         getActivity().getApplicationContext().registerReceiver(ourGoalsFragmentJointlyGoalsNowBrodcastReceiver, filter);
 
         return viewFragmentJointlyGoalsNow;
-
     }
 
 
@@ -79,7 +76,6 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
 
         // show actual jointly goals set
         displayActualJointlyGoalsSet();
-
     }
 
 
@@ -90,6 +86,8 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
         //de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourGoalsFragmentJointlyGoalsNowBrodcastReceiver);
 
+        // close db connection
+        myDb.close();
     }
 
 
@@ -121,8 +119,20 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpUpdateEvaluationLink = intentExtras.getString("UpdateJointlyEvaluationLink");
                 String tmpMessage = intentExtras.getString("Message");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNow != null && tmpExtraOurGoalsNow.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentJointlyGoalsNowContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNow != null && tmpExtraOurGoalsNow.equals("1")) {
                     // new jointly goals on smartphone -> update now view
 
                     //update current block id of jointly goals
@@ -238,9 +248,6 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
 
         // find the listview for the jointly goals
         listViewJointlyGoals = (ListView)  viewFragmentJointlyGoalsNow.findViewById(R.id.listOurGoalsJointlyGoalsNow);
-              
-        
-        
     }
 
 
@@ -267,7 +274,6 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
 
             // Assign adapter to ListView
             listViewJointlyGoals.setAdapter(dataAdapterListViewOurGoals);
-
         }
         else {
 
@@ -278,9 +284,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
             // Set correct subtitle in Activity -> "Keine gemeinsamen Ziele vorhanden"
             String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleGoalsNothingThere", "string", fragmentJointlyGoalsNowContext.getPackageName()));
             ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyNow");
-
         }
-
     }
 
 
@@ -299,10 +303,8 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                 case "hide":
                     tmplistView.setVisibility(View.GONE);
                     break;
-
             }
         }
-
     }
 
 
@@ -321,11 +323,8 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                 case "hide":
                     tmpNotAvailable.setVisibility(View.GONE);
                     break;
-
             }
-
         }
-
     }
 
 
@@ -334,9 +333,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
 
         // true-> comments are limited; false-> no limit
         return  commentLimitationBorder;
-
     }
-
 
 
 }

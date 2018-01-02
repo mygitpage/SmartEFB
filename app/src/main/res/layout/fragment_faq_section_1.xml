@@ -20,129 +20,115 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/faqOverviewIntroText"
-            android:paddingTop="15dp"
-            android:paddingLeft="15dp"/>
+            android:text="@string/faqOverviewIntroText"/>
 
         <TextView
             android:id="@+id/faqOverviewSectionTwoTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:textStyle="bold"
             android:text="@string/faqOverviewSectionTwoTitleText"
-            android:paddingTop="15dp"
-            android:paddingLeft="15dp"/>
+            android:paddingTop="15dp"/>
 
         <TextView
             android:id="@+id/faqOverviewSectionTwoInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:textColorLink="@color/colorPrimary"
             android:gravity="left"
-            android:textStyle="bold"
             android:text="@string/faqOverviewSectionTwoInfoText"
-            android:paddingTop="5dp"
-            android:paddingLeft="25dp"/>
+            android:paddingTop="5dp"/>
 
         <TextView
             android:id="@+id/faqOverviewSectionThreeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:textStyle="bold"
             android:text="@string/faqOverviewSectionThreeTitleText"
-            android:paddingTop="15dp"
-            android:paddingLeft="15dp"/>
+            android:paddingTop="15dp"/>
 
         <TextView
             android:id="@+id/faqOverviewSectionThreeInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:textColorLink="@color/colorPrimary"
             android:gravity="left"
-            android:textStyle="bold"
             android:text="@string/faqOverviewSectionThreeInfoText"
-            android:paddingTop="5dp"
-            android:paddingLeft="25dp"/>
+            android:paddingTop="5dp"/>
 
         <TextView
             android:id="@+id/faqOverviewSectionFourTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:textStyle="bold"
             android:text="@string/faqOverviewSectionFourTitleText"
-            android:paddingTop="15dp"
-            android:paddingLeft="15dp"/>
+            android:paddingTop="15dp"/>
 
         <TextView
             android:id="@+id/faqOverviewSectionFourInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:textColorLink="@color/colorPrimary"
             android:gravity="left"
-            android:textStyle="bold"
             android:text="@string/faqOverviewSectionFourInfoText"
-            android:paddingTop="5dp"
-            android:paddingLeft="25dp"/>
+            android:paddingTop="5dp"/>
 
         <TextView
             android:id="@+id/faqOverviewSectionFiveTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:textStyle="bold"
             android:text="@string/faqOverviewSectionFiveTitleText"
-            android:paddingTop="15dp"
-            android:paddingLeft="15dp"/>
+            android:paddingTop="15dp"/>
 
         <TextView
             android:id="@+id/faqOverviewSectionFiveInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:textColorLink="@color/colorPrimary"
             android:gravity="left"
-            android:textStyle="bold"
             android:text="@string/faqOverviewSectionFiveInfoText"
-            android:paddingTop="5dp"
-            android:paddingLeft="25dp"/>
+            android:paddingTop="5dp"/>
 
         <TextView
             android:id="@+id/faqOverviewSectionOneEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/colorPrimaryDark"
             android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:textStyle="bold"
             android:text="@string/faqOverviewSectionOneEndText"
             android:paddingTop="15dp"
-            android:paddingLeft="15dp"/>
+            android:paddingBottom="25dp"/>
 
     </LinearLayout>
 

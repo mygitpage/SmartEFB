@@ -8,16 +8,13 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +30,6 @@ import android.widget.Toast;
  * Created by ich on 10.08.16.
  */
 public class OurArrangementFragmentEvaluate extends Fragment {
-
 
     // fragment view
     View viewFragmentEvaluate;
@@ -96,9 +92,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentEvaluateBrodcastReceiver, filter);
 
         return viewFragmentEvaluate;
-
     }
-
 
 
     @Override
@@ -115,11 +109,9 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         // init the fragment evaluate only when an arrangement is choosen
         if (arrangementServerDbIdToEvaluate != 0) {
-
             // init the fragment now
             initFragmentEvaluate();
         }
-
     }
 
 
@@ -130,8 +122,9 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentEvaluateBrodcastReceiver);
 
+        // close db connection
+        myDb.close();
     }
-
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
@@ -155,10 +148,19 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 String tmpExtraOurArrangementCommentShareEnable = intentExtras.getString("OurArrangementSettingsCommentShareEnable","0");
                 String tmpExtraOurArrangementCommentShareDisable = intentExtras.getString("OurArrangementSettingsCommentShareDisable","0");
                 String tmpExtraOurArrangementResetCommentCountComment = intentExtras.getString("OurArrangementSettingsCommentCountComment","0");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                Log.d("BROA REC Evaluate", "In der Funktion -------");
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentEvaluateContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
 
-                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNowComment != null && tmpExtraOurArrangementNowComment.equals("1")) {
+                } else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNowComment != null && tmpExtraOurArrangementNowComment.equals("1")) {
                     // show toast new comments
                     String updateMessageCommentNow = fragmentEvaluateContext.getString(R.string.toastMessageCommentNowNewComments);
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
@@ -202,7 +204,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
             }
         }
     };
-
 
 
     // inits the fragment for use
@@ -282,7 +283,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 }
 
             } while (cursorNextArrangementToEvaluate.moveToNext());
-
         }
 
         // set textview textViewNextArrangementEvaluateIntro
@@ -296,7 +296,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 textViewThankAndEvaluateNext.setVisibility(View.VISIBLE);
                 textViewBorderBetweenThankAndEvaluateNext.setVisibility(View.VISIBLE);
             }
-
         }
         else { // nothing more to evaluate
 
@@ -308,7 +307,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 textViewThankAndEvaluateNext.setVisibility(View.VISIBLE);
                 textViewBorderBetweenThankAndEvaluateNext.setVisibility(View.VISIBLE);
             }
-
         }
 
         // set onClickListener for radio button in radio group question 1-4
@@ -328,7 +326,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     e.printStackTrace();
                 }
             }
-
         }
 
         // get textView to count input letters and init it
@@ -476,7 +473,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     // Toast "Evaluate not completly"
                     Toast.makeText(fragmentEvaluateContext, fragmentEvaluateContext.getResources().getString(R.string.evaluateResultNotCompletely), Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
@@ -494,10 +490,8 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.putExtra("com","show_arrangement_now");
                 getActivity().startActivity(intent);
-
             }
         });
-
     }
 
     // reset evaluation results
@@ -523,12 +517,10 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         // Clear comment text field for next evaluation
         EditText tmpInputEvaluateResultComment = (EditText) viewFragmentEvaluate.findViewById(R.id.inputEvaluateResultComment);
         tmpInputEvaluateResultComment.setText("");
-
     }
 
-    //
+
     // onClickListener for radioButtons in fragment layout evaluate
-    //
     public class evaluateRadioButtonListenerQuestion1 implements View.OnClickListener {
 
         int radioButtonNumber;
@@ -538,7 +530,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
             this.radioButtonNumber = number;
             this.questionNumber = questionNr;
-
         }
 
         @Override
@@ -594,9 +585,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     evaluateResultQuestion4 = 0;
                     break;
             }
-
         }
-
     }
 
 
@@ -618,7 +607,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
             // call getter-methode getEvaluateNextArrangement() in ActivityOurArrangement for evaluation next arrangement?
             evaluateNextArrangement = ((ActivityOurArrangement) getActivity()).getEvaluateNextArrangement();
         }
-
     }
 
 }

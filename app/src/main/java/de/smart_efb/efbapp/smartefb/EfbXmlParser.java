@@ -39,7 +39,7 @@ public class EfbXmlParser {
     Map<String, String> returnMap;
 
 
-    public EfbXmlParser(Context tmpXmlContext) {
+    EfbXmlParser(Context tmpXmlContext) {
 
         // init context
         xmlContext = tmpXmlContext;
@@ -127,7 +127,7 @@ public class EfbXmlParser {
     }
 
 
-    public Map<String, String> parseXmlInput(String xmlInput) throws XmlPullParserException, IOException {
+    Map<String, String> parseXmlInput(String xmlInput) throws XmlPullParserException, IOException {
 
         // true -> master element of xml file was found
         Boolean masterElementFound = false;

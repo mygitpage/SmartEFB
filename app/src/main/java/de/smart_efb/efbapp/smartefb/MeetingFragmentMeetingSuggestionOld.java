@@ -1,15 +1,20 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by ich on 21.11.2017.
@@ -17,12 +22,11 @@ import android.widget.TextView;
 
 public class MeetingFragmentMeetingSuggestionOld extends Fragment {
 
-
     // fragment view
     View viewFragmentMeetingSuggestion;
 
     // fragment context
-    Context fragmentMeetingSuggestionContext = null;
+    Context fragmentMeetingSuggestionContextOld = null;
 
     // reference to the DB
     DBAdapter myDb;
@@ -39,8 +43,11 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
 
         viewFragmentMeetingSuggestion = layoutInflater.inflate(R.layout.fragment_meeting_suggestion_old, null);
 
-        return viewFragmentMeetingSuggestion;
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        getActivity().getApplicationContext().registerReceiver(meetingFragmentMeetingOverviewOldBrodcastReceiver, filter);
 
+        return viewFragmentMeetingSuggestion;
     }
 
 
@@ -49,29 +56,70 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
 
         super.onViewCreated(view, saveInstanceState);
 
-        fragmentMeetingSuggestionContext = getActivity().getApplicationContext();
+        fragmentMeetingSuggestionContextOld = getActivity().getApplicationContext();
 
         // init the fragment meeting now
         initFragmentSuggestion();
 
         // show actual meeting and suggestion informations
         displayActualSuggestionInformation();
-
     }
 
 
+    // fragment is destroyed
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // de-register broadcast receiver
+        getActivity().getApplicationContext().unregisterReceiver(meetingFragmentMeetingOverviewOldBrodcastReceiver);
+
+        // close db connection
+        myDb.close();
+    }
 
 
     private void initFragmentSuggestion () {
 
         // init the DB
-        myDb = new DBAdapter(fragmentMeetingSuggestionContext);
+        myDb = new DBAdapter(fragmentMeetingSuggestionContextOld);
 
         // find the listview for display meetings and suggestion, etc.
         listViewMeetingSuggestion = (ListView) viewFragmentMeetingSuggestion.findViewById(R.id.listViewOldMeetingDates);
-
     }
 
+
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeServiceEfb
+    private BroadcastReceiver meetingFragmentMeetingOverviewOldBrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // true-> update the list view with arrangements
+            Boolean updateListView = false;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
+
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentMeetingSuggestionContextOld.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                }
+            }
+        }
+    };
 
 
     // show actual suggestion overview
@@ -86,7 +134,7 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
         if (cursorMeetingSuggestion.getCount() > 0 && listViewMeetingSuggestion != null) {
 
             // set correct subtitle
-            tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMeetingSuggestionOverviewOld", "string", fragmentMeetingSuggestionContext.getPackageName()));
+            tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMeetingSuggestionOverviewOld", "string", fragmentMeetingSuggestionContextOld.getPackageName()));
             ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, "meeting_suggestion_old");
 
             // set old meeting text visibility gone
@@ -104,18 +152,16 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
 
             // Assign adapter to ListView
             listViewMeetingSuggestion.setAdapter(dataAdapterListViewMeetingSuggestionOld);
-
         }
         else {
 
             // set correct subtitle
-            tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMeetingSuggestionOverviewOldNotAvailable", "string", fragmentMeetingSuggestionContext.getPackageName()));
+            tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMeetingSuggestionOverviewOldNotAvailable", "string", fragmentMeetingSuggestionContextOld.getPackageName()));
             ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, "meeting_suggestion_old");
 
             // set old meeting text visibility show
             TextView tmpNoSuggestionsText = (TextView) viewFragmentMeetingSuggestion.findViewById(R.id.meetingSuggestionOldOverviewNothingAvailable);
             tmpNoSuggestionsText.setVisibility(View.VISIBLE);
-
         }
     }
 

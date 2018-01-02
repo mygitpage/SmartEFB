@@ -15,7 +15,6 @@ import android.text.Html;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +30,6 @@ import android.widget.Toast;
  * Created by ich on 31.10.2016.
  */
 public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
-
 
     // fragment view
     View viewFragmentJointlyGoalsEvaluate;
@@ -97,7 +95,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         getActivity().getApplicationContext().registerReceiver(ourGoalsFragmentEvaluateJointlyGoalsBrodcastReceiver, filter);
 
         return viewFragmentJointlyGoalsEvaluate;
-
     }
 
 
@@ -130,6 +127,8 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourGoalsFragmentEvaluateJointlyGoalsBrodcastReceiver);
 
+        // close db connection
+        myDb.close();
     }
 
 
@@ -154,10 +153,20 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsCommentShareEnable","0");
                 String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsCommentShareDisable","0");
                 String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsCommentCountComment","0");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                Log.d("BROA REC Evaluate", "In der Funktion -------");
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentEvaluateThisFragmentContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
 
-                if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNowComment != null && tmpExtraOurGoalsNowComment.equals("1")) {
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNowComment != null && tmpExtraOurGoalsNowComment.equals("1")) {
                     // new comments -> update now view -> show toast
                     String updateMessageCommentNow = fragmentEvaluateThisFragmentContext.getString(R.string.toastMessageCommentJointlyGoalsNewComments);
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
@@ -279,7 +288,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
             cursorNextJointlyGoalToEvaluate.moveToFirst();
             do {
-
                 if (cursorNextJointlyGoalToEvaluate.getInt(cursorNextJointlyGoalToEvaluate.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE)) == 1 && cursorNextJointlyGoalToEvaluate.getInt(cursorNextJointlyGoalToEvaluate.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)) != jointlyGoalServerDbIdToEvaluate) { // evaluation possible for jointly goal?
                     nextJointlyGoalDbIdToEvaluate = cursorNextJointlyGoalToEvaluate.getInt(cursorNextJointlyGoalToEvaluate.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID));
                     nextJointlyGoalListPositionToEvaluate = cursorNextJointlyGoalToEvaluate.getPosition() + 1;
@@ -287,7 +295,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 }
 
             } while (cursorNextJointlyGoalToEvaluate.moveToNext());
-
         }
 
       // set textview textViewNextJointlyGoalEvaluateIntro
@@ -300,7 +307,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 textViewThankAndEvaluateNext.setVisibility(View.VISIBLE);
                 textViewBorderBetweenThankAndEvaluateNext.setVisibility(View.VISIBLE);
             }
-
         }
         else { // nothing more to evaluate
 
@@ -312,7 +318,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 textViewThankAndEvaluateNext.setVisibility(View.VISIBLE);
                 textViewBorderBetweenThankAndEvaluateNext.setVisibility(View.VISIBLE);
             }
-
         }
 
         // set onClickListener for radio button in radio group question 1-4
@@ -479,7 +484,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                     // Toast "Evaluate not completly"
                     Toast.makeText(fragmentEvaluateJointlyGoalsContext, fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.evaluateJointlyGoalResultNotCompletely), Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
@@ -497,10 +501,8 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.putExtra("com","show_jointly_goals_now");
                 getActivity().startActivity(intent);
-
             }
         });
-
     }
 
     // reset evaluation results
@@ -526,13 +528,9 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         // Clear comment text field for next evaluation
         EditText tmpInputEvaluateResultComment = (EditText) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.inputJointlyGoalEvaluateResultComment);
         tmpInputEvaluateResultComment.setText("");
-
-
     }
 
-    //
     // onClickListener for radioButtons in fragment layout evaluate
-    //
     public class evaluateRadioButtonListenerQuestion1 implements View.OnClickListener {
 
         int radioButtonNumber;
@@ -542,7 +540,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
             this.radioButtonNumber = number;
             this.questionNumber = questionNr;
-
         }
 
         @Override
@@ -598,9 +595,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                     evaluateResultQuestion4 = 0;
                     break;
             }
-
         }
-
     }
 
 
@@ -622,7 +617,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
             // call getter-methode getevaluateNextJointlyGoal() in ActivityOurGoals for evaluation next jointly goal?
             evaluateNextJointlyGoal = ((ActivityOurGoals) getActivity()).getEvaluateNextJointlyGoal();
         }
-
     }
+
 
 }

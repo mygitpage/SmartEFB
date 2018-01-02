@@ -4,69 +4,67 @@
 
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Activity Connect Book -->
-    <!-- String Activity Connect Book -->
+        <!-- String Activity Connect Book -->
+            <string name="buttonSendMessage">SENDEN</string>
+            <string name="infoTextCountCurrentMessages">%1$d von %2$d Nachrichten in 24 Stunden</string>
+            <string name="textConnectBookMessageAuthorAndDate">%1$s - %2$s &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
+            <string name="textConnectBookMessageNoSharing">Die Nachrichten werden im Moment nicht zugestellt!</string>
+            <string name="textConnectBookMessageNotSendYet">Die Nachricht wurde noch nicht gesendet.</string>
+            <string name="textConnectBookMessageSendDelayInfo">Die Nachricht wurde gesendet und \nwird in %1$s zugestellt.</string>
+            <string name="textConnectBookMessageSendSuccsessfullInfo">Die Nachricht wurde gesendet.</string>
+            <string name="textConnectBookMessageSendInfoSharingDisable">Die Nachricht wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
+            <string name="toastConnectBookMessageSendSuccessfull">Nachricht gesendet!</string>
+            <string name="toastConnectBookMessageSendNotSuccessfull">Nachricht senden wird verschoben!</string>
+            <string name="toastConnectBookMessageSendNoNetwork">Nachricht senden wird verschoben! Kein Netzwerk!</string>
+            <string name="toastConnectBookMessageSettingsChangeMessageAndDelay">Die Nachrichten- und Verzögerungseinstellungen wurden durch Ihre Berater/In verändert!</string>
+            <string name="toastConnectBookMessageSettingsSharingEnable">Die Nachrichten werden wieder zugestellt!</string>
+            <string name="toastConnectBookMessageSettingsSharingDisable">Die Nachrichten werden im Momentan nicht mehr zugestellt!</string>
+            <string name="toastConnectBookToLessLettersMessageInput">Ihre Nachricht muss aus mindestens einem Zeichen bestehen!</string>
+        <!-- End String Activity Connect Book -->
 
-        <string name="buttonSendMessage">SENDEN</string>
-        <string name="infoTextCountCurrentMessages">%1$d von %2$d Nachrichten in 24 Stunden</string>
-        <string name="textConnectBookMessageAuthorAndDate">%1$s - %2$s &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
-        <string name="textConnectBookMessageNoSharing">Die Nachrichten werden im Moment nicht zugestellt!</string>
-        <string name="textConnectBookMessageNotSendYet">Die Nachricht wurde noch nicht gesendet.</string>
-        <string name="textConnectBookMessageSendDelayInfo">Die Nachricht wurde gesendet und \nwird in %1$s zugestellt.</string>
-        <string name="textConnectBookMessageSendSuccsessfullInfo">Die Nachricht wurde gesendet.</string>
-        <string name="textConnectBookMessageSendInfoSharingDisable">Die Nachricht wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
-        <string name="toastConnectBookMessageSendSuccessfull">Nachricht gesendet!</string>
-        <string name="toastConnectBookMessageSendNotSuccessfull">Nachricht senden wird verschoben!</string>
-        <string name="toastConnectBookMessageSendNoNetwork">Nachricht senden wird verschoben! Kein Netzwerk!</string>
-        <string name="toastConnectBookMessageSettingsChangeMessageAndDelay">Die Nachrichten- und Verzögerungseinstellungen wurden durch Ihre Berater/In verändert!</string>
-        <string name="toastConnectBookMessageSettingsSharingEnable">Die Nachrichten werden wieder zugestellt!</string>
-        <string name="toastConnectBookMessageSettingsSharingDisable">Die Nachrichten werden im Momentan nicht mehr zugestellt!</string>
+        <!-- connect book dialog settings -->
+            <string name="textDialogConnectBookCloseDialog">Schließen</string>
+            <string name="textDialogConnectBookTitleDialog">Einstellungen Übergabe</string>
+            <string name="textDialogConnectBookSettingsIntro">Für die Funktion Übergabe gelten folgende Einstellungen.</string>
+            <string name="textDialogConnectBookSettingsMaxMessagesSingular">Sie können innerhalb von 24 Stunden maximal %1s Nachricht schreiben.</string>
+            <string name="textDialogConnectBookSettingsMaxMessagesPlural">Sie können innerhalb von 24 Stunden maximal %1$s Nachrichten schreiben.</string>
+            <string name="textDialogConnectBookSettingsCountCurrentMessagesSingular">Davon haben Sie bereits %1s Nachricht geschrieben.</string>
+            <string name="textDialogConnectBookSettingsCountCurrentMessagesPlural">Davon haben Sie bereits %1s Nachrichten geschrieben.</string>
+            <string name="textDialogConnectBookSettingsCountCurrentMessagesNothing">Davon haben Sie bisher noch keine Nachricht geschrieben.</string>
+            <string name="textDialogConnectBookSettingsCountCurrentMessagesNoMorePossible">Weitere Nachrichten sind somit erst nach Ablauf von 24 Stunden möglich.</string>
+            <string name="textDialogConnectBookSettingsDelayTimeSingular">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minute zugestellt.</string>
+            <string name="textDialogConnectBookSettingsDelayTimePlural">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minuten zugestellt.</string>
+            <string name="textDialogConnectBookSettingsInfoTextReadByCoach">Alle in der Funktion Übergabe geschriebenen Nachrichten können von Ihrer Beraterin/ Ihrem Berater gelesen und kommentiert werden..</string>
+            <string name="textDialogConnectBookSettingsInfoTextContactCoach">Sollten Sie Fragen oder Änderungswünsche zu diesen Einstellungen haben, wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.</string>
+        <!-- End connect book dialog settings -->
 
-    <!-- End String Activity Connect Book -->
-
-    <!-- connect book dialog settings -->
-        <string name="textDialogConnectBookCloseDialog">Schließen</string>
-        <string name="textDialogConnectBookTitleDialog">Einstellungen Übergabe</string>
-        <string name="textDialogConnectBookSettingsIntro">Für die Funktion Übergabe gelten folgende Einstellungen.</string>
-        <string name="textDialogConnectBookSettingsMaxMessagesSingular">Sie können innerhalb von 24 Stunden maximal %1s Nachricht schreiben.</string>
-        <string name="textDialogConnectBookSettingsMaxMessagesPlural">Sie können innerhalb von 24 Stunden maximal %1$s Nachrichten schreiben.</string>
-        <string name="textDialogConnectBookSettingsCountCurrentMessagesSingular">Davon haben Sie bereits %1s Nachricht geschrieben.</string>
-        <string name="textDialogConnectBookSettingsCountCurrentMessagesPlural">Davon haben Sie bereits %1s Nachrichten geschrieben.</string>
-        <string name="textDialogConnectBookSettingsCountCurrentMessagesNothing">Davon haben Sie bisher noch keine Nachricht geschrieben.</string>
-        <string name="textDialogConnectBookSettingsCountCurrentMessagesNoMorePossible">Weitere Nachrichten sind somit erst nach Ablauf von 24 Stunden möglich.</string>
-        <string name="textDialogConnectBookSettingsDelayTimeSingular">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minute zugestellt.</string>
-        <string name="textDialogConnectBookSettingsDelayTimePlural">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minuten zugestellt.</string>
-        <string name="textDialogConnectBookSettingsInfoTextReadByCoach">Alle in der Funktion Übergabe geschriebenen Nachrichten können von Ihrer Beraterin/ Ihrem Berater gelesen und kommentiert werden..</string>
-        <string name="textDialogConnectBookSettingsInfoTextContactCoach">Sollten Sie Fragen oder Änderungswünsche zu diesen Einstellungen haben, wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.</string>
-    <!-- End connect book dialog settings -->
-
-    <!-- connect book dialog no more messages -->
-        <string name="textDialogConnectBookTitleNoMoreMessages">Keine weiteren Nachrichten</string>
-        <string name="textDialogConnectBookNoMoreMessages">Sie haben alle möglichen Nachrichten, die Sie in 24 Stunden schreiben können, geschrieben.</string>
-        <string name="textDialogConnectBookInfoCoach">Sollten Sie Fragen oder Änderungswünsche zu dieser Einschränkung haben, wenden Sie sich bitte an Ihre Beraterin oder Ihren Berater.</string>
-    <!-- End connect book dialog no more messages -->
+        <!-- connect book dialog no more messages -->
+            <string name="textDialogConnectBookTitleNoMoreMessages">Keine weiteren Nachrichten</string>
+            <string name="textDialogConnectBookNoMoreMessages">Sie haben alle möglichen Nachrichten, die Sie in 24 Stunden schreiben können, geschrieben.</string>
+            <string name="textDialogConnectBookInfoCoach">Sollten Sie Fragen oder Änderungswünsche zu dieser Einschränkung haben, wenden Sie sich bitte an Ihre Beraterin oder Ihren Berater.</string>
+        <!-- End connect book dialog no more messages -->
 
 
     <!-- End Activity Connect Book -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
-
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Main Activity Start -->
     <!-- Main Menue Element Strings Start-->
-    <string name="mainMenueElementId_1">Übergabe</string>
-    <string name="mainMenueElementId_2">Absprachen</string>
-    <string name="mainMenueElementId_3">Ziele</string>
-    <string name="mainMenueElementId_4">Nachrichten</string>
-    <string name="mainMenueElementId_5">Termine</string>
-    <string name="mainMenueElementId_6">Zeitplan</string>
-    <string name="mainMenueElementId_7">Prävention</string>
-    <string name="mainMenueElementId_8">FAQ</string>
-    <string name="mainMenueElementId_9">Notfall</string>
-    <string name="mainMenueElementId_10">Einstellungen</string>
-    <string name="main_menue_text_inactiv">Inaktiv</string>
+        <string name="mainMenueElementId_1">Übergabe</string>
+        <string name="mainMenueElementId_2">Absprachen</string>
+        <string name="mainMenueElementId_3">Ziele</string>
+        <string name="mainMenueElementId_4">Nachrichten</string>
+        <string name="mainMenueElementId_5">Termine</string>
+        <string name="mainMenueElementId_6">Zeitplan</string>
+        <string name="mainMenueElementId_7">Prävention</string>
+        <string name="mainMenueElementId_8">FAQ</string>
+        <string name="mainMenueElementId_9">Notfall</string>
+        <string name="mainMenueElementId_10">Einstellungen</string>
+        <string name="main_menue_text_inactiv">Inaktiv</string>
 
-    <string name="toastCaseClose">Der Fall wurde von Ihrer Beraterin/ Ihrem Berater abgeschlossen und die Verbindung zum Server wurde getrennt.</string>
+        <string name="toastCaseClose">Der Fall wurde von Ihrer Beraterin/ Ihrem Berater abgeschlossen und die Verbindung zum Server wurde getrennt.</string>
 
     <!-- Main Menue Element Strings End-->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -75,101 +73,89 @@
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Activity Settings -->
 
-    <!-- Strings for tab title in activity settings -->
-        <string name="settingsEfbTabTitleId_1">Verbinden</string>
-        <string name="settingsEfbTabTitleId_2">Über</string>
-        <string name="settingsEfbTabTitleId_3">Hilfe</string>
-        <string name="settingsEfbTabTitleId_4">SetUp</string>
-    <!-- End Strings for tab title in activity settings -->
+        <!-- Strings for tab title in activity settings -->
+            <string name="settingsEfbTabTitleId_1">Verbinden</string>
+            <string name="settingsEfbTabTitleId_2">Über</string>
+            <string name="settingsEfbTabTitleId_3">Datenschutz</string>
+            <string name="settingsEfbTabTitleId_4">App-Einstellungen</string>
+        <!-- End Strings for tab title in activity settings -->
 
+        <!-- Fragment settings a (connect to server) -->
+            <string name="settingsConnectToServerIntroHeadingText">Mit Server verbinden</string>
+            <string name="settingsConnectedWithServerIntroHeadingText">Serververbindung hergestellt</string>
+            <string name="settingsConnectedWithServerErrorIntroHeadingText">Verbindungsfehler aufgetreten</string>
+            <string name="settingsConnectToServerIntroText">Damit eine sichere Kommunikation zwischen Ihrem Smartphone und dem Server möglich ist, müssen Sie Ihrer Beraterin/ Ihrem Berater folgende fünfstellige Nummer mitteilen und anschließend, wenn Sie dazu aufgefordert werden, auf \"Mit Server verbinden\" klicken.</string>
+            <string name="settingsConnectToServerRemarkClickButtonText">Bitte klicken Sie nur auf den Button, wenn Sie dazu aufgefordert werden.</string>
+            <string name="settingsConnectToServerRemarkNoInternetClickButtonText">Bitte klicken Sie erneut auf den Button. Danke.</string>
+            <string name="buttonSendConnectToServerKeyNumberText">Mit Server verbinden</string>
+            <string name="sendConnectToServerKeyNumberSuccsesfulyText">Verbindungsnummer erfolgreich gesendet</string>
+            <string name="settingsConnectToServerSuccessfulText">Sie sind erfolgreich mit dem Server verbunden.\nWenn Sie Fragen zu den übermittelten Daten haben, schauen Sie bitte <a href="smart.efb.deeplink://linkin/settings?com=data_protection">hier</a> nach.\nWenn Sie Fragen zur App haben, können Sie <a href="smart.efb.deeplink://linkin/faq?com=show_section2">hier</a> nachschauen.\nDie Ansprechpartner für dieses Projekt finden Sie <a href="smart.efb.deeplink://linkin/settings?com=show_contact">hier</a>.\nSelbstverständlich können Sie auch alle Fragen Ihrer Beraterin/ Ihrem Berater stellen. Sie/ er wird sie gerne beantworten.</string>
+            <string name="settingsWaitingForResponseIntroText">Ihre Nummer wurde zum Server gesendet. Es wird auf eine Antwort gewartet!</string>
+            <string name="settingsConnectToServerDialogNoInternetHeadline">Keine Internetverbindung</string>
+            <string name="settingsConnectToServerDialogNoInternetInfoText">Es besteht keine Verbindung zum Internet. Bitte verbinden Sie sich und versuchen Sie es noch einmal.</string>
+            <string name="settingsConnectToServerDialogOkButton">Ok</string>
+            <string name="settingsConnectToServerHeadingNoInternetOrError">Keine Internetverbindung oder Fehler</string>
+            <string name="settingsConnectToServerIntroTextNoInternetOrError">Es besteht keine Verbindung mit dem Internet oder es ist ein Kommunikationsfehler aufgetreten. Bitte kontrollieren Sie Ihre Verbindung zum Internet und versuchen Sie sich erneut mit dem Server zu verbinden. Bei Fragen kann Ihnen gerne Ihre Beraterin/ Ihr Berater helfen.\n\nIhre Pin-Nummer ist gleich geblieben.</string>
+            <string name="settingsConnectToServerErrorPreIntroText">Während der Kommunikation mit dem Server ist ein Fehler aufgetreten. Folgender Fehlertext wurde übermittelt:</string>
+            <string name="settingsConnectToServerErrorPostIntroText">Bitte teilen Sie diesen Fehlertext Ihrer Beraterin/ Ihrem Berater mit. Kehren Sie anschließend zum Hauptmenü zurück und versuchen Sie es noch einmal.</string>
+            <string name="settingsSendingToServerDialogInfoText">Daten senden</string>
+        <!-- End Fragment settings a (connect to server) -->
 
+        <!-- Subtitle under Title Settings -->
+            <string name="settingsSubtitleConnectToServer">Serverkommunikation</string>
+            <string name="settingsSubtitleConnectionError">Verbindungsfehler</string>
+            <string name="settingsSubtitleSucsessfullConnected">Verbindung hergestellt</string>
+            <string name="settingsSubtitleNoNetworkAvailable">Keine Internetverbindung</string>
+            <string name="settingsSubtitleContactdetails">Telefon, Email, etc.</string>
+            <string name="settingsSubtitleHelpForApp">Datenschutzerklärung</string>
+            <string name="settingsSubtitleAppSettingsChange">App-Einstellungen verändern</string>
+        <!-- End Subtitle under Title Settings -->
 
-    <!-- Fragment settings a (connect to server) -->
-        <string name="settingsConnectToServerIntroHeadingText">Mit Server verbinden</string>
-        <string name="settingsConnectedWithServerIntroHeadingText">Serververbindung hergestellt</string>
-        <string name="settingsConnectedWithServerErrorIntroHeadingText">Verbindungsfehler aufgetreten</string>
-        <string name="settingsConnectToServerIntroText">Damit eine sichere Kommunikation zwischen Ihrem Smartphone und dem Server möglich ist, müssen Sie Ihrer Beraterin/ Ihrem Berater folgende fünfstellige Nummer mitteilen und anschließend, wenn Sie dazu aufgefordert werden, auf \"Mit Server verbinden\" klicken.</string>
-        <string name="settingsConnectToServerRemarkClickButtonText">Bitte klicken Sie nur auf den Button, wenn Sie dazu aufgefordert werden.</string>
-        <string name="settingsConnectToServerRemarkNoInternetClickButtonText">Bitte klicken Sie erneut auf den Button. Danke.</string>
-        <string name="buttonSendConnectToServerKeyNumberText">Mit Server verbinden</string>
-        <string name="sendConnectToServerKeyNumberSuccsesfulyText">Verbindungsnummer erfolgreich gesendet</string>
-        <string name="settingsConnectToServerSuccessfulText">Sie sind erfolgreich mit dem Server verbunden und die Kommunikation funktioniert.\nWenn Sie Fragen zu den übermittelten Daten haben, schauen Sie bitte <a href="smart.efb.deeplink://linkin/settings?com=show_contact">hier</a> nach, <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">E-Mail</a>.\nSelbstverständlich können Sie auch Ihre Beraterin/ Ihren Berater fragen.</string>
-        <string name="settingsWaitingForResponseIntroText">Ihre Nummer wurde zum Server gesendet. Es wird auf eine Antwort gewartet!</string>
-        <string name="settingsConnectToServerDialogNoInternetHeadline">Keine Internetverbindung</string>
-        <string name="settingsConnectToServerDialogNoInternetInfoText">Es besteht keine Verbindung zum Internet. Bitte verbinden Sie sich und versuchen Sie es noch einmal.</string>
-        <string name="settingsConnectToServerDialogOkButton">Ok</string>
-        <string name="settingsConnectToServerHeadingNoInternetOrError">Keine Internetverbindung oder Fehler</string>
-        <string name="settingsConnectToServerIntroTextNoInternetOrError">Es besteht keine Verbindung mit dem Internet oder es ist ein Kommunikationsfehler aufgetreten. Bitte kontrollieren Sie Ihre Verbindung zum Internet und versuchen Sie sich erneut mit dem Server zu verbinden. Bei Fragen kann Ihnen gerne Ihre Beraterin/ Ihr Berater helfen.\n\nIhre Pin-Nummer ist gleich geblieben.</string>
-        <string name="settingsConnectToServerErrorPreIntroText">Während der Kommunikation mit dem Server ist ein Fehler aufgetreten. Folgender Fehlertext wurde übermittelt:</string>
-        <string name="settingsConnectToServerErrorPostIntroText">Bitte teilen Sie diesen Fehlertext Ihrer Beraterin/ Ihrem Berater mit. Kehren Sie anschließend zum Hauptmenü zurück und versuchen Sie es noch einmal.</string>
-        <string name="settingsSendingToServerDialogInfoText">Daten senden</string>
-    <!-- End Fragment settings a (connect to server) -->
+        <!-- settings fragment b  -->
+            <string name="settingsEfbFragmentBInformationHeadineText">Information</string>
+            <string name="settingsEfbFragmentBInformationIntroText">Die wesentlichen Informationen zur App</string>
+            <string name="settingsEfbFragmentBInformationText">Die App dient der Beratungsunterstützung in den Erziehungs- und Familienberatungsstellen \"Lichtblick\". Die Beraterinnen und Berater sprechen mit Ihnen ab, welche Funktionen für Ihre individuelle Beratung benötigt werder und schalten diese frei. Zurzeit ist die App noch in der Erprobung. Der Umgang mit der App wird wissenschaftliche begleitet, um deren Akzeptanz und Wirkung zu erfahren. Bei allen Fragen stehen Ihnen Ihre Beraterinnen und Berater zur Verfügung.</string>
+            <string name="settingsEfbFragmentBContactPersonHeadline">Ansprechpartner</string>
+            <string name="settingsEfbFragmentBContactPersonIntroText">Die Ansprechpartner zum Projekt</string>
+            <string name="settingsEfbFragmentBContactPersonA">Holger Robbers\n(Leiter Beratungsstelle \"Lichtblick\")\nholger.robbers@gfb-potsdam.de</string>
+            <string name="settingsEfbFragmentBContactPersonB">Jens Hemker\n(Programmierung und wissenschaftliche Begleitung)\njens.hemker@gfb-potsdam.de</string>
+            <string name="settingsEfbFragmentBAdviceCenterHeadline">Beratungsstellen</string>
+            <string name="settingsEfbFragmentBAdviceCenterIntroText">Bei Fragen wenden Sie sich bitte an unsere Beratungsstellen</string>
+            <string name="settingsEfbFragmentBAdviceCenterA">Beratungsstelle \"Lichtblick\"\nBeratunsstelle Werder\nBernhard-Kellermann-Straße 17 (im Ärztehaus)\n14542 Werder/Havel\n03327/573931\n03327/573932 (Fax)\nlichtblick.werder@gfb-potsdam.de</string>
+            <string name="settingsEfbFragmentBAdviceCenterB">Beratungsstelle \"Lichtblick\"\nBeratunsstelle Bad Belzig\nAm Bahnhof 11 (Fläming Bahnhof)\n14806 Bad Belzig\n033841/449522\n033841/449525 (Fax)\nlichtblick.badbelzig@gfb-potsdam.de</string>
+            <string name="settingsEfbFragmentBCompanyHeadine">Träger</string>
+            <string name="settingsEfbFragmentBCompanyIntro">Die Beratungsstellen \"Lichtblick\" gehören zur Gesellschaft zur Förderung Brandenburger Kinder und Jugendlicher (GFB)</string>
+            <string name="settingsEfbFragmentBCompanyManager">Norbert Lekow\n(Geschäftsführer)\nnorbert.lekow@gfb-potsdam.de</string>
+            <string name="settingsEfbFragmentBFundingHeadine">Förderung</string>
+            <string name="settingsEfbFragmentBFundingIntro">Das Projekt wird durch die Auerbachstiftung gefördert</string>
 
+        <!-- end settings fragment b  -->
 
-    <!-- Subtitle under Title Settings -->
+        <!-- settings fragment c  -->
+            <string name="settingsEfbFragmentCDataPrivacyHeadineText">Datenschutz</string>
+            <string name="settingsEfbFragmentCDataPrivacyText">Personenbezogene Daten werden in der App nur gespeichert, sofern Sie oder Ihre Beraterinnen oder Berater diese über die App-Funktionen oder das Backend (Übergabebuch, Absprachen, Ziele, Kommentare, Nachrichten, etc.) eingeben.\nDie Beratungsfälle werden mit einer eindeutigen Nummer (Fallnummer) gekennzeichent, die eine Verknüpfug mit der Papierakte Ihrer Beraterinnen und Berater zulässt.\nDie Pin-Nummer zur Verbindungsherstellung zwischen App und Backend dient zum erstmaligen Austausch und wird durch eine lange eindeutige Zeichenkette ersetzt. Anhand dieser Zeichenkette ist Ihre App eindeutig durch den Server zu erkennen. Diese Zeichenkette enthält keine personenbezogenen Merkmale und entsteht durch einen Zufallsprozess. Die Kommunikation zwischen App und Server ist durch eine Verschlüsselung geschützt.</string>
+            <string name="settingsEfbFragmentCHelpForAppHeadineText">Weitere Fragen zur App</string>
+            <string name="settingsEfbFragmentCHelpForAppText">Wenn Sie weitere Fragen zur App haben, schauen Sie bitte <a href="smart.efb.deeplink://linkin/faq?com=show_section2">hier</a> nach.</string>
+        <!-- end settings fragment c  -->
 
-        <string name="settingsSubtitleConnectToServer">Serverkommunikation</string>
-        <string name="settingsSubtitleConnectionError">Verbindungsfehler</string>
-        <string name="settingsSubtitleSucsessfullConnected">Verbindung hergestellt</string>
-        <string name="settingsSubtitleNoNetworkAvailable">Keine Internetverbindung</string>
-        <string name="settingsSubtitleContactdetails">Telefon, Email, etc.</string>
-        <string name="settingsSubtitleHelpForApp">Hilfe für die App</string>
+        <!-- settings fragment d  -->
+            <string name="settingsEfbFragmentDAcousticsSignalsHeadline">Akustische Hinweise</string>
+            <string name="settingsEfbFragmentDAcousticsSignalsIntroText">Bei folgenden Ereignissen soll ein Hinweiston gespielt werden</string>
+            <string name="checkBoxArrangementAcousticsSignalText">Neue Vereinbarungen und neue Kommentare (Aktuell und Entwürfe)</string>
+        <!-- end settings fragment d  -->
 
-    <!-- End Subtitle under Title Settings -->
-
-
-    <!-- settings username in connect book -->
-        <string name="txtChatNameHint">Bitte Namen eingeben</string>
-        <string name="radioRoleMother">Ma</string>
-        <string name="radioRoleFather">Pa</string>
-        <string name="radioRoleThird">Dritte</string>
-
-
-    <!-- settings fragment b  -->
-
-        <string name="settingsEfbFragmentBInformationHeadineText">Information</string>
-        <string name="settingsEfbFragmentBInformationIntroText">Die wesentlichen Informationen zur App</string>
-        <string name="settingsEfbFragmentBInformationText">Die App dient der Beratungsunterstützung in den Erziehungs- und Familienberatungsstellen \"Lichtblick\". Die Beraterinnen und Berater sprechen mit Ihnen ab, welche Funktionen für Ihre individuelle Beratung benötigt werder und schalten diese frei. Zurzeit ist die App noch in der Erprobung. Der Umgang mit der App wird wissenschaftliche begleitet, um deren Akzeptanz und Wirkung zu erfahren. Bei allen Fragen stehen Ihnen Ihre Beraterinnen und Berater zur Verfügung.</string>
-
-        <string name="settingsEfbFragmentBContactPersonHeadline">Ansprechpartner</string>
-        <string name="settingsEfbFragmentBContactPersonIntroText">Die Ansprechpartner zum Projekt</string>
-        <string name="settingsEfbFragmentBContactPersonA">Holger Robbers\n(Leiter Beratungsstelle \"Lichtblick\")\nholger.robbers@gfb-potsdam.de</string>
-        <string name="settingsEfbFragmentBContactPersonB">Jens Hemker\n(Programmierung und wissenschaftliche Begleitung)\njens.hemker@gfb-potsdam.de</string>
-
-
-        <string name="settingsEfbFragmentBAdviceCenterHeadline">Beratungsstellen</string>
-        <string name="settingsEfbFragmentBAdviceCenterIntroText">Bei Fragen wenden Sie sich bitte an unsere Beratungsstellen</string>
-        <string name="settingsEfbFragmentBAdviceCenterA">Beratungsstelle \"Lichtblick\"\nBeratunsstelle Werder\nBernhard-Kellermann-Straße 17 (im Ärztehaus)\n14542 Werder/Havel\n03327/573931\n03327/573932 (Fax)\nlichtblick.werder@gfb-potsdam.de</string>
-        <string name="settingsEfbFragmentBAdviceCenterB">Beratungsstelle \"Lichtblick\"\nBeratunsstelle Bad Belzig\nAm Bahnhof 11 (Fläming Bahnhof)\n14806 Bad Belzig\n033841/449522\n033841/449525 (Fax)\nlichtblick.badbelzig@gfb-potsdam.de</string>
-
-        <string name="settingsEfbFragmentBCompanyHeadine">Träger</string>
-        <string name="settingsEfbFragmentBCompanyIntro">Die Beratungsstellen \"Lichtblick\" gehören zur Gesellschaft zur Förderung Brandenburger Kinder und Jugendlicher (GFB)</string>
-        <string name="settingsEfbFragmentBCompanyManager">Norbert Lekow\n(Geschäftsführer)\nnorbert.lekow@gfb-potsdam.de</string>
-
-        <string name="settingsEfbFragmentBFundingHeadine">Förderung</string>
-        <string name="settingsEfbFragmentBFundingIntro">Das Projekt wird durch die Auerbachstiftung gefördert</string>
-
-    <!-- end settings fragment b  -->
-
-    <!-- settings fragment c  -->
-    <string name="settingsEfbFragmentCDataPrivacyHeadineText">Datenschutz</string>
-    <string name="settingsEfbFragmentCDataPrivacyText">Personenbezogene Daten werden in der App nur gespeichert, sofern Sie oder Ihre Beraterinnen oder Berater diese über die App-Funktionen oder das Backend (Übergabebuch, Absprachen, Ziele, Kommentare, Nachrichten, etc.) eingeben.\nDie Beratungsfälle werden mit einer eindeutigen Nummer (Fallnummer) gekennzeichent, die eine Verknüpfug mit der Papierakte Ihrer Beraterinnen und Berater zulässt.\nDie Pin-Nummer zur Verbindungsherstellung zwischen App und Backend dient zum erstmaligen Austausch und wird durch eine lange eindeutige Zeichenkette ersetzt. Anhand dieser Zeichenkette ist Ihre App eindeutig durch den Server zu erkennen. Diese Zeichenkette enthält keine personenbezogenen Merkmale und entsteht durch einen Zufallsprozess.</string>
-
-    <string name="settingsEfbFragmentCHelpForAppHeadineText">Fragen zur App</string>
-    <string name="settingsEfbFragmentCHelpForAppText">Wenn Sie Fragen zur App haben, schauen Sie bitte <a href="smart.efb.deeplink://linkin/faq?com=show_section2">hier</a> nach.</string>
-
-
-    <!-- end settings fragment c  -->
+        <!-- help dialog -->
+            <string name="textDialogSettingsEfbCloseDialog">Schließen</string>
+            <string name="textDialogSettingsEfbTitleDialog">Hinweise zu den Einstellungen</string>
+            <string name="textDialogSettingsEfbSettingsIntro">Damit die App korrekt mit dem Server kommunizieren kann, ist eine eindeutige Kennung notwendig. Hierzu dient die fünfstellige PIN-Nummer, die Sie auf dem Reiter \"Verbinden\" finden.\nTeilen Sie diese Nummer Ihrer Beraterin/ Ihrem Berater mit und drücken Sie nach Aufforderung auf den Button \"Mit Server verbinden\". Im Erfolgs- und Fehlerfall erhalten Sie eine entsprechende Meldung. Bei Fragen wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.\n\nUnter dem Reiter \"Über\" finden Sie die an der Entwicklung der App beteiligten Institutionen und Personen sowie deren Kontaktdaten.\n\nUnter dem Reiter \"Datenschutz\" finden Sie eine Datenschutzerklärung.\n\nUnter dem Reiter \"App-Einstellungen\" können Sie verschiedene Einstellungen, u.a. zu den Signaltönen und Benachrichtigungen, ändern.</string>
+        <!-- End help dialog -->
 
     <!-- Activity Settings End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
-
-
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Activity Our Arrangements -->
-
 
         <!-- Strings for tab title in activity our arrangement -->
             <string name="ourArrangementTabTitle_1">Aktuell</string>
@@ -769,93 +755,99 @@
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Activity FAQ -->
 
-    <!-- Strings for tab title in activity faq -->
-        <string name="faqTabTitleSection_1">Übersicht</string>
-        <string name="faqTabTitleSection_2">App Fragen</string>
-        <string name="faqTabTitleSection_3">Erziehungsberatung (EB)</string>
-        <string name="faqTabTitleSection_4">Beratungsstellen</string>
-        <string name="faqTabTitleSection_5">Erziehungsfragen</string>
-    <!-- End tab title -->
+        <!-- Strings for tab title in activity faq -->
+            <string name="faqTabTitleSection_1">Übersicht</string>
+            <string name="faqTabTitleSection_2">App Fragen</string>
+            <string name="faqTabTitleSection_3">Erziehungsberatung (EB)</string>
+            <string name="faqTabTitleSection_4">Beratungsstellen</string>
+            <string name="faqTabTitleSection_5">Erziehungsfragen</string>
+        <!-- End tab title -->
 
 
-    <!-- Fragment Section One -->
-        <string name="faqOverviewIntroText">In dem Bereich Frequently Asked Question (FAQ) versuchen wir Ihnen einige Antworten auf häufig gestellte Fragen zu geben.</string>
-        <string name="faqOverviewSectionTwoTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section2">Fragen zur App</a></string>
-        <string name="faqOverviewSectionTwoInfoText">In diesem Bereich finden Sie häufig gestellte Fragen über und zur App.</string>
-        <string name="faqOverviewSectionThreeTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section3">Erziehungsberatung (EB)</a></string>
-        <string name="faqOverviewSectionThreeInfoText">Hier geht es um Fragen und Anworten um das Thema Erziehungsberatung. Welche Aufgaben diese erfüllt oder welche Themen besprochen werden können.</string>
-        <string name="faqOverviewSectionFourTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section4">Beratungsstellen</a></string>
-        <string name="faqOverviewSectionFourInfoText">Die Mitarbeiterinnen und Mitarbeiter unserer Beratungsstellen zeigen Ihnen die Beratungsstellen.</string>
-        <string name="faqOverviewSectionFiveTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section5">Erziehungsfragen</a></string>
-        <string name="faqOverviewSectionFiveInfoText">Wir versuchen Ihnen einige häufig gestellte Fragen zur Erziehung zu beantworten.</string>
-        <string name="faqOverviewSectionOneEndText">Sollte eine Frage fehlen, zögern Sie nicht und <a href="smart.efb.deeplink://linkin/faq?com=show_section2">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/faq?com=show_section2">Email</a>.</string>
-    <!-- End Fragment Section One-->
+        <!-- Fragment Section One -->
+            <string name="faqOverviewIntroText">In dem Bereich Frequently Asked Question (FAQ) versuchen wir Ihnen einige Antworten auf häufig gestellte Fragen zu geben.</string>
+            <string name="faqOverviewSectionTwoTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section2">Fragen zur App</a></string>
+            <string name="faqOverviewSectionTwoInfoText">In diesem Bereich finden Sie häufig gestellte Fragen über und zur App.</string>
+            <string name="faqOverviewSectionThreeTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section3">Erziehungsberatung (EB)</a></string>
+            <string name="faqOverviewSectionThreeInfoText">Hier geht es um Fragen und Anworten um das Thema Erziehungsberatung. Welche Aufgaben diese erfüllt oder welche Themen besprochen werden können.</string>
+            <string name="faqOverviewSectionFourTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section4">Beratungsstellen</a></string>
+            <string name="faqOverviewSectionFourInfoText">Die Mitarbeiterinnen und Mitarbeiter unserer Beratungsstellen zeigen Ihnen die Beratungsstellen.</string>
+            <string name="faqOverviewSectionFiveTitleText"><a href="smart.efb.deeplink://linkin/faq?com=show_section5">Erziehungsfragen</a></string>
+            <string name="faqOverviewSectionFiveInfoText">Wir versuchen Ihnen einige häufig gestellte Fragen zur Erziehung zu beantworten.</string>
+            <string name="faqOverviewSectionOneEndText">Sollte eine Frage fehlen, zögern Sie nicht und <a href="smart.efb.deeplink://linkin/settings?com=show_contact">rufen</a> Sie uns an oder schreiben Sie uns eine <a href="smart.efb.deeplink://linkin/settings?com=show_contact">Email</a>.</string>
+        <!-- End Fragment Section One-->
 
 
-    <!-- Fragment Section Two -->
-        <string name="faq_section2_question1">Warum sind in der App Schaltflächen inaktiv?</string>
-        <string name="faq_section2_answer1">Inaktive Schaltflächen werden dann angezeigt, wenn Funktionen nicht eingeschaltet sind. Ihre Beraterin/ Ihr Berater kann Funktionen ein- oder ausschalten. Dies wir sie mit Ihnen besprechen. Beispielsweise werden Funktionen ausgeschaltet, wenn sie zu aktuellen Beratungsverlauf nicht notwendig sind.</string>
-        <string name="faq_section2_question2">Wozu brauche ich die Funktion Übergabebuch?</string>
-        <string name="faq_section2_answer2">Das Übergabebuch ist vergleichbar mit einem moderierten Chat. Als Moderator tritt Ihre Beraterin/ Ihr Berater auf. Sie kann verschiedenen Kommunikationseinstellungen in diesem Chat ändern. Beispielsweise wie viele Nachrichten Sie in 24 Stunden schreiben dürfen oder wie viel Zeichen eine Nachricht hat.\nSie können das Übergabebuch beispielsweise zur kurzfristigen Absprache bei der Übergabe von Kindern von Ihnen zu Ihrem Ex-Partner verwenden. Ihre Beraterin/ Ihr Berater kann ebenfalls Nachrichten in den Chat schreiben.</string>
-        <string name="faq_section2_question3">Wozu brauche ich die Funktion Absprachen?</string>
-        <string name="faq_section2_answer3"></string>
-        <string name="faq_section2_question4">Wozu brauche ich die Funktion Ziele?</string>
-        <string name="faq_section2_answer4"></string>
-        <string name="faq_section2_question5">Wozu brauche ich die Funktion Termine?</string>
-        <string name="faq_section2_answer5"></string>
-        <string name="faq_section2_question6">Welche Daten werden von der App erhoben und wie werden diese übertragen?</string>
-        <string name="faq_section2_answer6"></string>
-    <!-- End Fragment Section Two -->
+        <!-- Fragment Section Two -->
+            <string name="faq_section2_question1">Warum sind in der App Schaltflächen inaktiv?</string>
+            <string name="faq_section2_answer1">Inaktive Schaltflächen werden dann angezeigt, wenn Funktionen nicht eingeschaltet sind. Ihre Beraterin/ Ihr Berater kann Funktionen ein- oder ausschalten. Dies wir sie mit Ihnen besprechen. Beispielsweise werden Funktionen ausgeschaltet, wenn sie zu aktuellen Beratungsverlauf nicht notwendig sind.</string>
+            <string name="faq_section2_question2">Wozu brauche ich die Funktion Übergabebuch?</string>
+            <string name="faq_section2_answer2">Das Übergabebuch ist vergleichbar mit einem moderierten Chat. Als Moderator tritt Ihre Beraterin/ Ihr Berater auf. Sie kann verschiedenen Kommunikationseinstellungen in diesem Chat ändern. Beispielsweise wie viele Nachrichten Sie in 24 Stunden schreiben dürfen oder wie viel Zeichen eine Nachricht hat.\nSie können das Übergabebuch beispielsweise zur kurzfristigen Absprache bei der Übergabe von Kindern von Ihnen zu Ihrem Ex-Partner verwenden. Ihre Beraterin/ Ihr Berater kann ebenfalls Nachrichten in den Chat schreiben.</string>
+            <string name="faq_section2_question3">Wozu brauche ich die Funktion Absprachen?</string>
+            <string name="faq_section2_answer3"></string>
+            <string name="faq_section2_question4">Wozu brauche ich die Funktion Ziele?</string>
+            <string name="faq_section2_answer4"></string>
+            <string name="faq_section2_question5">Wozu brauche ich die Funktion Termine?</string>
+            <string name="faq_section2_answer5"></string>
+            <string name="faq_section2_question6">Welche Daten werden von der App erhoben und wie werden diese übertragen?</string>
+            <string name="faq_section2_answer6"></string>
+        <!-- End Fragment Section Two -->
 
-    <!-- Fragment Section Three -->
-        <string name="faq_section3_question1">Mit welchen Fragen kann ich mich an eine Erziehungsberatungsstelle wenden?</string>
-        <string name="faq_section3_answer1"></string>
-        <string name="faq_section3_question2">Wie schnell erhalte ich einen Termin?</string>
-        <string name="faq_section3_answer2"></string>
-        <string name="faq_section3_question3">Kostet Erziehungsberatung Geld?</string>
-        <string name="faq_section3_answer3"></string>
-        <string name="faq_section3_question4">Ist die Beratung anonym?</string>
-        <string name="faq_section3_answer4"></string>
-        <string name="faq_section3_question5">Wer kann sich an eine Erziehungsberatungsstelle wenden?</string>
-        <string name="faq_section3_answer5"></string>
-        <string name="faq_section3_question6">Wie lange dauert eine Beratung?</string>
-        <string name="faq_section3_answer6"></string>
-    <!-- End Fragment Section Three -->
+        <!-- Fragment Section Three -->
+            <string name="faq_section3_question1">Mit welchen Fragen kann ich mich an eine Erziehungsberatungsstelle wenden?</string>
+            <string name="faq_section3_answer1"></string>
+            <string name="faq_section3_question2">Wie schnell erhalte ich einen Termin?</string>
+            <string name="faq_section3_answer2"></string>
+            <string name="faq_section3_question3">Kostet Erziehungsberatung Geld?</string>
+            <string name="faq_section3_answer3"></string>
+            <string name="faq_section3_question4">Ist die Beratung anonym?</string>
+            <string name="faq_section3_answer4"></string>
+            <string name="faq_section3_question5">Wer kann sich an eine Erziehungsberatungsstelle wenden?</string>
+            <string name="faq_section3_answer5"></string>
+            <string name="faq_section3_question6">Wie lange dauert eine Beratung?</string>
+            <string name="faq_section3_answer6"></string>
+        <!-- End Fragment Section Three -->
 
-    <!-- Fragment Section Four -->
-        <string name="faq_section4_question1">Wo finde ich die Erziehungsberatungsstellen?</string>
-        <string name="faq_section4_answer1"></string>
-        <string name="faq_section4_question2">Wer ist der Träger der Erziehungsberatungsstellen?</string>
-        <string name="faq_section4_answer2"></string>
-        <string name="faq_section4_question3">Welche Rechtsgrundlage gibt es für die Beratungsstellen?</string>
-        <string name="faq_section4_answer3"></string>
-        <string name="faq_section4_question4">Welchen Qualifikation haben die Beraterinnen und Berater?</string>
-        <string name="faq_section4_answer4"></string>
+        <!-- Fragment Section Four -->
+            <string name="faq_section4_question1">Wo finde ich die Erziehungsberatungsstellen?</string>
+            <string name="faq_section4_answer1"></string>
+            <string name="faq_section4_question2">Wer ist der Träger der Erziehungsberatungsstellen?</string>
+            <string name="faq_section4_answer2"></string>
+            <string name="faq_section4_question3">Welche Rechtsgrundlage gibt es für die Beratungsstellen?</string>
+            <string name="faq_section4_answer3"></string>
+            <string name="faq_section4_question4">Welchen Qualifikation haben die Beraterinnen und Berater?</string>
+            <string name="faq_section4_answer4"></string>
 
-    <!-- End Fragment Section Four -->
+        <!-- End Fragment Section Four -->
 
-    <!-- Fragment Section Five -->
-        <string name="faq_section5_question1">Hat mein Kind eine Lese- Rechtschreibschwäche (LRS)?</string>
-        <string name="faq_section5_answer1"></string>
-        <string name="faq_section5_question2">Hat mein Kind eine Dyskalkulie?</string>
-        <string name="faq_section5_answer2"></string>
-        <string name="faq_section5_question3">Was ist ADHS?</string>
-        <string name="faq_section5_answer3"></string>
-        <string name="faq_section5_question4">Was ist AWVS?</string>
-        <string name="faq_section5_answer4"></string>
-        <string name="faq_section5_question5">Mein Kind leidet unter der Trennung vom meinem Partner. Was kann ich tun?</string>
-        <string name="faq_section5_answer5"></string>
+        <!-- Fragment Section Five -->
+            <string name="faq_section5_question1">Hat mein Kind eine Lese- Rechtschreibschwäche (LRS)?</string>
+            <string name="faq_section5_answer1"></string>
+            <string name="faq_section5_question2">Hat mein Kind eine Dyskalkulie?</string>
+            <string name="faq_section5_answer2"></string>
+            <string name="faq_section5_question3">Was ist ADHS?</string>
+            <string name="faq_section5_answer3"></string>
+            <string name="faq_section5_question4">Was ist AWVS?</string>
+            <string name="faq_section5_answer4"></string>
+            <string name="faq_section5_question5">Mein Kind leidet unter der Trennung vom meinem Partner. Was kann ich tun?</string>
+            <string name="faq_section5_answer5"></string>
 
-    <!-- End Fragment Section Five -->
-    
-    
-    <!-- faq subtitle text -->
-        <string name="faqSubtitleSectionOne">Übersicht</string>
-        <string name="faqSubtitleSectionTwo">Fragen zur App</string>
-        <string name="faqSubtitleSectionThree">EB - Was ist das?</string>
-        <string name="faqSubtitleSectionFour">Wo kann ich mich beraten lassen?</string>
-        <string name="faqSubtitleSectionFive">Rund um die Erziehung</string>
-    <!-- End faq subtitle text -->
+        <!-- End Fragment Section Five -->
+
+
+        <!-- faq subtitle text -->
+            <string name="faqSubtitleSectionOne">Übersicht</string>
+            <string name="faqSubtitleSectionTwo">Fragen zur App</string>
+            <string name="faqSubtitleSectionThree">EB - Was ist das?</string>
+            <string name="faqSubtitleSectionFour">Wo kann ich mich beraten lassen?</string>
+            <string name="faqSubtitleSectionFive">Rund um die Erziehung</string>
+        <!-- End faq subtitle text -->
+
+        <!-- help dialog -->
+            <string name="textDialogFaqCloseDialog">Schließen</string>
+            <string name="textDialogFaqTitleDialog">Hinweise zum FAQ-Bereich</string>
+            <string name="textDialogFaqIntro">Im FAQ-Bereich (Frequenty asked questions) finden Sie viele häufig gestellte Fragen zur App und zur Erziehungs- und Familienberatung. Dieser Bereich wird laufend ergänzt und erweitert. Wenn Sie eine Frage bzw. Antwort vermissen, zögern Sie nicht und schreiben Sie uns eine E-Mail oder sprechen Sie Ihre Beraterin/ Ihren Berater an.</string>
+        <!-- End help dialog -->
 
     <!-- Activity FAQ End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -1058,7 +1050,7 @@
         <!-- help dialog -->
             <string name="textDialogEmergencyHelpCloseDialog">Schließen</string>
             <string name="textDialogEmergencyHelpTitleDialog">Hinweise zur Notfallhilfe</string>
-            <string name="textDialogEmergencyHelpSettingsIntro">Hier finden Sie Notrufnummer und weitere Kontaktdaten zu Institutionen, die Hilfe in verschiedensten Lenenslagen anbieten. Wir sind stets bemüht, die Kontaktdaten aktuell zu halten. Können dies aber nicht immer garantieren.</string>
+            <string name="textDialogEmergencyHelpSettingsIntro">Hier finden Sie Notrufnummern und weitere Kontaktdaten zu Institutionen, die Hilfe in schwierigen Lebenslagen anbieten.\nWir sind bemüht, die Kontaktdaten aktuell zu halten. Können dies aber nicht immer garantieren.</string>
 
         <!-- End help dialog -->
 

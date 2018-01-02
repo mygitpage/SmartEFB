@@ -6,20 +6,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,6 +84,8 @@ public class OurArrangementFragmentOld extends Fragment {
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentOldBrodcastReceiver);
 
+        myDb.close();
+
     }
 
 
@@ -109,9 +105,19 @@ public class OurArrangementFragmentOld extends Fragment {
 
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
                 String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
-                    // update now arrangement! -> go back to fragment now arrangement and show dialog
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentOldContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                } else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
 
                     //check arrangement and now arrangement update and show dialog arrangement and now arrangement change
                     ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("now");
@@ -121,7 +127,6 @@ public class OurArrangementFragmentOld extends Fragment {
                     backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     backIntent.putExtra("com","show_arrangement_now_with_tab_change");
                     getActivity().startActivity(backIntent);
-
                 }
             }
         }
@@ -154,9 +159,6 @@ public class OurArrangementFragmentOld extends Fragment {
 
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, false) && listView != null) { // Function showOldArrangement is available!!!!
 
-
-            Log.d("Old Arr","Hier dirn!!!!!!!!!!!!");
-
             // get all old arrangement from DB
             Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentBlockIdOfArrangement,"notEqualBlockId");
 
@@ -179,7 +181,6 @@ public class OurArrangementFragmentOld extends Fragment {
 
                 // Assign adapter to ListView
                 listView.setAdapter(dataAdapter);
-
             }
             else {
 
@@ -203,10 +204,8 @@ public class OurArrangementFragmentOld extends Fragment {
             // Set correct subtitle in Activity -> "Funktion nicht moeglich"
             tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNotAvailable", "string", fragmentOldContext.getPackageName()));
             ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "old");
-
         }
     }
-
 
 
     private void setVisibilityListViewOldArrangements (String visibility) {
@@ -223,11 +222,9 @@ public class OurArrangementFragmentOld extends Fragment {
                 case "hide":
                     tmplistView.setVisibility(View.GONE);
                     break;
-
             }
         }
     }
-
 
 
     private void setVisibilityTextViewFunctionNotAvailable (String visibility) {
@@ -244,7 +241,6 @@ public class OurArrangementFragmentOld extends Fragment {
                 case "hide":
                     tmpNotAvailable.setVisibility(View.GONE);
                     break;
-
             }
         }
     }
@@ -264,7 +260,6 @@ public class OurArrangementFragmentOld extends Fragment {
                 case "hide":
                     tmpNothingThere.setVisibility(View.GONE);
                     break;
-
             }
         }
     }

@@ -192,23 +192,36 @@ public class ActivityConnectBook extends AppCompatActivity {
                 // check number of send messages in 24h
                 if (tmpCountCurrentMessages < tmpMaxMessages) {
 
-                    // put message into db (role: 0= left; 1= right; 2= center)
-                    long tmpDbId = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), txtInputMsg.getText().toString(), roleConnectBook, 0, false, System.currentTimeMillis());
+                    String inputMessage = txtInputMsg.getText().toString();
 
-                    // add current number of send messages and write to prefs
-                    tmpCountCurrentMessages++;
-                    prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, tmpCountCurrentMessages);
-                    prefsEditor.commit();
+                    if (inputMessage.length() > 0) {
 
-                    // send intent to service to start the service and send message to server!
-                    Intent startServiceIntent = new Intent(contextOfConnectBook, ExchangeServiceEfb.class);
-                    startServiceIntent.putExtra("com","send_connectbook_message");
-                    startServiceIntent.putExtra("dbid",tmpDbId);
-                    contextOfConnectBook.startService(startServiceIntent);
+                        // put message into db (role: 0= left; 1= right; 2= center)
+                        long tmpDbId = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), inputMessage, roleConnectBook, 0, false, System.currentTimeMillis());
 
-                    // delete text in edittextfield
-                    txtInputMsg.setText("");
-               }
+                        // add current number of send messages and write to prefs
+                        tmpCountCurrentMessages++;
+                        prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, tmpCountCurrentMessages);
+                        prefsEditor.commit();
+
+                        // send intent to service to start the service and send message to server!
+                        Intent startServiceIntent = new Intent(contextOfConnectBook, ExchangeServiceEfb.class);
+                        startServiceIntent.putExtra("com", "send_connectbook_message");
+                        startServiceIntent.putExtra("dbid", tmpDbId);
+                        contextOfConnectBook.startService(startServiceIntent);
+
+                        // delete text in edittextfield
+                        txtInputMsg.setText("");
+                    }
+                    else {
+                        // to less letters in message
+                        String textCaseClose = ActivityConnectBook.this.getString(R.string.toastConnectBookToLessLettersMessageInput);
+                        Toast toast = Toast.makeText(contextOfConnectBook, textCaseClose, Toast.LENGTH_LONG);
+                        TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+                        if( v != null) viewMessage.setGravity(Gravity.CENTER);
+                        toast.show();
+                    }
+                }
                 else {
 
                     // delete text in edittextfield
@@ -261,8 +274,19 @@ public class ActivityConnectBook extends AppCompatActivity {
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpMessage = intentExtras.getString("Message");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings","0");
+                String tmpCaseClose = intentExtras.getString("Case_close","0");
 
-                if (tmpExtraConnectBook != null && tmpExtraConnectBook.equals("1") && tmpExtraConnectBookSettings != null && tmpExtraConnectBookSettings.equals("1") && tmpExtraConnectBookMessageSharingEnable != null && tmpExtraConnectBookMessageSharingEnable.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = ActivityConnectBook.this.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                } else if (tmpExtraConnectBook != null && tmpExtraConnectBook.equals("1") && tmpExtraConnectBookSettings != null && tmpExtraConnectBookSettings.equals("1") && tmpExtraConnectBookMessageSharingEnable != null && tmpExtraConnectBookMessageSharingEnable.equals("1")) {
                     // sharing enable
                     String updateConnectBookShare = getResources().getString(R.string.toastConnectBookMessageSettingsSharingEnable);
                     Toast toast = Toast.makeText(context,updateConnectBookShare , Toast.LENGTH_LONG);

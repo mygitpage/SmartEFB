@@ -99,6 +99,9 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
 
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(meetingFragmentSuggestionFromClientBrodcastReceiver);
+
+        // close db connection
+        myDb.close();
     }
 
 
@@ -129,8 +132,19 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
                 String tmpMessage = intentExtras.getString("Message");
                 String tmpExtraSuggestionFromClientUpdateListView = intentExtras.getString("SuggestionFromClientUpdateListView","0"); // broadcast from MeetingSuggestionFromClientOverviewCursorAdapter when count down timer (wait time) is finish
                 String tmpReceiverBroadcast = intentExtras.getString("receiverBroadcast", "");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraSuggestionFromClientNewInvitation != null && tmpExtraSuggestionFromClientNewInvitation.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentSuggestionFromClientContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                } else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraSuggestionFromClientNewInvitation != null && tmpExtraSuggestionFromClientNewInvitation.equals("1")) {
                     // new invitation for client suggestion from coach on smartphone -> update client suggestion view and show toast
                     String updateNewSuggestion = fragmentSuggestionFromClientContext.getString(R.string.toastMessageSuggestionFromClientNewInvitation);
                     Toast toast = Toast.makeText(context, updateNewSuggestion, Toast.LENGTH_LONG);

@@ -20,11 +20,10 @@ public class SettingsEfbViewPagerAdapter extends FragmentPagerAdapter {
 
 
     // number of tabs
-    final static int settingsEfbTabCount = 3;
+    final static int settingsEfbTabCount = 4;
 
     // array of tab title
     String settingsEfbTabTitleNames[] = new String[settingsEfbTabCount];
-
 
     // calling context
     Context pagerAdapterContext = null;
@@ -37,13 +36,11 @@ public class SettingsEfbViewPagerAdapter extends FragmentPagerAdapter {
         this.pagerAdapterContext = context;
 
         settingsEfbTabTitleNames = pagerAdapterContext.getResources().getStringArray(R.array.settingsEfbTabTitle);
-
     }
 
 
     @Override
     public Fragment getItem(int position) {
-
 
         switch (position) {
 
@@ -62,14 +59,13 @@ public class SettingsEfbViewPagerAdapter extends FragmentPagerAdapter {
             default:
                 return new SettingsEfbFragmentA();
 
-
         }
-
     }
 
 
     @Override
     public int getCount() {
+
         return settingsEfbTabCount;
     }
 
@@ -78,19 +74,14 @@ public class SettingsEfbViewPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
 
         return settingsEfbTabTitleNames[position];
-
     }
+
 
     @Override
     public int getItemPosition(Object object)
     {
 
         return POSITION_NONE;
-
     }
 
-
 }
-
-
-

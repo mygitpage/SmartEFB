@@ -12,7 +12,6 @@ import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
@@ -24,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,7 +93,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         getActivity().getApplicationContext().registerReceiver(ourGoalsFragmentCommentDebetableGoalsBrodcastReceiver, filter);
 
         return viewFragmentDebetableGoalsComment;
-
     }
 
 
@@ -119,9 +116,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
             initFragmentDebetableGoalComment();
             buildFragmentDebetableGoalsCommentView();
         }
-
     }
-
 
 
     // fragment is destroyed
@@ -130,6 +125,9 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
 
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourGoalsFragmentCommentDebetableGoalsBrodcastReceiver);
+
+        // close db connection
+        myDb.close();
 
     }
 
@@ -157,8 +155,20 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                 String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsDebetableCommentShareDisable","0");
                 String tmpExtraOurGoalsCommentShareEnable= intentExtras.getString("OurGoalsSettingsDebetableCommentShareEnable","0");
                 String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsDebetableCommentCountComment","0");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsDebetableNowComment != null && tmpExtraOurGoalsDebetableNowComment.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentDebetableGoalsContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsDebetableNowComment != null && tmpExtraOurGoalsDebetableNowComment.equals("1")) {
                     // update debetable comment view -> show toast and update view
                     String updateMessageCommentNow = fragmentDebetableGoalsContext.getString(R.string.toastMessageCommentDebetableGoalsNewComments);
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
@@ -244,8 +254,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
         String tmpSubtitle = String.format(getResources().getString(getResources().getIdentifier("ourGoalsSubtitleDebetableGoalsComment", "string", fragmentDebetableGoalsContext.getPackageName())), debetableGoalNumberInListView);
         ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle(tmpSubtitle, "debetableComment");
-
-
     }
 
 
@@ -256,7 +264,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         TextView textCommentNumberIntro = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.debetableGoalCommentNumberIntro);
         String tmpCommentNumberIntro = this.getResources().getString(R.string.showDebetableGoalsIntroText) + " " + debetableGoalNumberInListView;
         textCommentNumberIntro.setText(tmpCommentNumberIntro);
-
 
         // textview for the author of debetable goal
         TextView tmpTextViewAuthorNameText = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.textAuthorName);
@@ -316,7 +323,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
             String tmpTextAuthorNameLastActualComment = String.format(fragmentDebetableGoalsContext.getResources().getString(R.string.ourGoalsDebetableCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
             tmpTextViewAuthorNameLastActualDebetableComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
-
             // textview for status 0 of the last actual comment
             final TextView tmpTextViewSendInfoLastActualDebetableComment = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.textSendInfoLastActualDebetableComment);
             if (cursorDebetableGoalAllComments.getInt(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS)) == 0) {
@@ -324,9 +330,8 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                 String tmpTextSendInfoLastActualComment = fragmentDebetableGoalsContext.getResources().getString(R.string.ourGoalsDebetableCommentSendInfo);
                 tmpTextViewSendInfoLastActualDebetableComment.setVisibility(View.VISIBLE);
                 tmpTextViewSendInfoLastActualDebetableComment.setText(tmpTextSendInfoLastActualComment);
-
-
-            } else if (cursorDebetableGoalAllComments.getInt(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS)) == 1) {
+            }
+            else if (cursorDebetableGoalAllComments.getInt(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS)) == 1) {
                 // textview for status 1 of the last actual comment
 
                 // check, sharing of debetable comments enable?
@@ -383,7 +388,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                     }
                     tmpTextViewSendInfoLastActualDebetableComment.setText(tmpTextSendInfoLastActualDebetableComment);
                 }
-
             }
 
             // show actual result struct question only when result > 0
@@ -408,7 +412,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
             // more than one comment available?
             if (cursorDebetableGoalAllComments.getCount() > 1) {
 
-
                 // make link to show comment for debetable goal
                 Uri.Builder showDebetableCommentLinkBuilder = new Uri.Builder();
                 showDebetableCommentLinkBuilder.scheme("smart.efb.deeplink")
@@ -417,7 +420,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                         .appendQueryParameter("db_id", Integer.toString(debetableGoalsServerDbIdToComment))
                         .appendQueryParameter("arr_num", Integer.toString(debetableGoalNumberInListView))
                         .appendQueryParameter("com", "show_comment_for_debetable_goal");;
-
 
                 if (cursorDebetableGoalAllComments.getCount() == 2) {
                     String tmpLinkStringShowAllDebetableComments = String.format(fragmentDebetableGoalsContext.getResources().getString(fragmentDebetableGoalsContext.getResources().getIdentifier("ourGoalsDebetableCommentLinkToShowAllCommentsSingular", "string", fragmentDebetableGoalsContext.getPackageName())),cursorDebetableGoalAllComments.getCount()-1);
@@ -428,14 +430,12 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                     tmpTextViewLInkToShowAllDebetableComment.setText(Html.fromHtml("<a href=\"" + showDebetableCommentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllDebetableComments + "</a>"));
                 }
                 tmpTextViewLInkToShowAllDebetableComment.setMovementMethod(LinkMovementMethod.getInstance());
-
             }
             else {
                 // no comment anymore
                 String tmpLinkStringShowAllDebetableComments = fragmentDebetableGoalsContext.getResources().getString(fragmentDebetableGoalsContext.getResources().getIdentifier("ourGoalsDebetableCommentLinkToShowAllCommentsNotAvailable", "string", fragmentDebetableGoalsContext.getPackageName()));
                 tmpTextViewLInkToShowAllDebetableComment.setText(tmpLinkStringShowAllDebetableComments);
             }
-
         }
         else { // no comments
 
@@ -453,15 +453,11 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
             // textview for the comment text
             TextView tmpTextViewDebetableCommentText = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.lastActualDebetableCommentText);
             tmpTextViewDebetableCommentText.setVisibility(View.GONE);
-
         }
-
-
 
         // set onClickListener for radio button in radio group question 1-4
         String tmpRessourceName ="";
         RadioButton tmpRadioButtonQuestion;
-
 
         for (int numberOfButtons=0; numberOfButtons < numberOfRadioButtonsStructQuestion; numberOfButtons++) {
             tmpRessourceName ="structQuestionOne_Answer" + (numberOfButtons+1);
@@ -502,8 +498,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         }
         tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, 0));
 
-
-
         // build text element delay time
         String tmpInfoTextDelaytimeSingluarPluaral = "";
         if (prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentDelaytime, 0) == 0) {
@@ -515,7 +509,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         else {
             tmpInfoTextDelaytimeSingluarPluaral = this.getResources().getString(R.string.infoTextDebetableCommentDelaytimePlural);
             tmpInfoTextDelaytimeSingluarPluaral = String.format(tmpInfoTextDelaytimeSingluarPluaral, prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentDelaytime, 0));
-
         }
 
         // generate text comment max letters
@@ -576,7 +569,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
 
                 } else if (tmpErrorTextView != null) {
                     tmpErrorTextView.setVisibility(View.GONE);
-
                 }
 
                 // comment textfield -> insert new comment
@@ -609,10 +601,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.putExtra("com","show_debetable_goals_now");
                     getActivity().startActivity(intent);
-
                 }
-
-
             }
         });
 
@@ -627,25 +616,9 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.putExtra("com","show_debetable_goals_now");
                 getActivity().startActivity(intent);
-
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // End build the view
-
     }
 
 
@@ -667,13 +640,10 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
             // check for comment limitations
             commentLimitationBorder = ((ActivityOurGoals)getActivity()).isCommentLimitationBorderSet("debetableGoals");
         }
-
     }
 
 
-    //
     // onClickListener for radioButtons in fragment layout debetable goal comment
-    //
     public class debetableGoalCommentRadioButtonListener implements View.OnClickListener {
 
         int radioButtonNumber;
@@ -681,7 +651,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         public debetableGoalCommentRadioButtonListener (int number) {
 
             this.radioButtonNumber = number;
-
         }
 
         @Override
@@ -713,9 +682,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
             }
 
             structQuestionResultDebetableGoalComment = tmpResultQuestion;
-
         }
-
     }
 
 

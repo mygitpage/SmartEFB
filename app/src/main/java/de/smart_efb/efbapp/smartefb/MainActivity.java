@@ -441,7 +441,13 @@ public class MainActivity extends AppCompatActivity {
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
                 case 10: // menue item "Einstellungen"
-                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    // check case close?
+                    if (prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesAttentionEntry[countElements];
+                    }
+                    else {
+                        mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    }
                     break;
                 default:
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];

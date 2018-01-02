@@ -112,6 +112,9 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourGoalsFragmentCommentJointlyGoalsBrodcastReceiver);
+
+        // close db connection
+        myDb.close();
     }
 
 
@@ -138,8 +141,20 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                 String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsCommentShareDisable","0");
                 String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsCommentShareEnable","0");
                 String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsCommentCountComment","0");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNowComment != null && tmpExtraOurGoalsNowComment.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentCommentContextJointlyGoals.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNowComment != null && tmpExtraOurGoalsNowComment.equals("1")) {
                     // update now comment view -> show toast and update view
                     String updateMessageCommentNow = fragmentCommentContextJointlyGoals.getString(R.string.toastMessageCommentJointlyGoalsNewComments);
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
@@ -225,6 +240,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyNowComment");
     }
 
+
     // build the view for the fragment
     private void buildFragmentJointlyGoalsCommentView () {
 
@@ -292,7 +308,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
             String tmpTextAuthorNameLastActualComment = String.format(fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
             tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
-
             // textview for status 0 of the last actual comment
             final TextView tmpTextViewSendInfoLastActualComment = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.textSendInfoLastActualComment);
             if (cursorGoalAllComments.getInt(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS)) == 0) {
@@ -300,9 +315,8 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                 String tmpTextSendInfoLastActualComment = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentSendInfo);
                 tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
                 tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
-
-
-            } else if (cursorGoalAllComments.getInt(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS)) == 1) {
+            }
+            else if (cursorGoalAllComments.getInt(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS)) == 1) {
                 // textview for status 1 of the last actual comment
 
                 // check, sharing of comments enable?
@@ -390,14 +404,12 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     tmpTextViewLInkToShowAllComment.setText(Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllComments + "</a>"));
                 }
                 tmpTextViewLInkToShowAllComment.setMovementMethod(LinkMovementMethod.getInstance());
-
             }
             else {
                 // no comment anymore
                 String tmpLinkStringShowAllComments = fragmentCommentContextJointlyGoals.getResources().getString(fragmentCommentContextJointlyGoals.getResources().getIdentifier("ourGoalsJointlyCommentLinkToShowAllCommentsNotAvailable", "string", fragmentCommentContextJointlyGoals.getPackageName()));
                 tmpTextViewLInkToShowAllComment.setText(tmpLinkStringShowAllComments);
             }
-
         }
         else { // no comments
 
@@ -415,7 +427,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
             // textview for the comment text
             TextView tmpTextViewCommentText = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.lastActualCommentText);
             tmpTextViewCommentText.setVisibility(View.GONE);
-
         }
 
         // textview for max comments, count comments and max letters
@@ -455,7 +466,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         else {
             tmpInfoTextDelaytimeSingluarPluaral = this.getResources().getString(R.string.infoTextJointlyCommentDelaytimePlural);
             tmpInfoTextDelaytimeSingluarPluaral = String.format(tmpInfoTextDelaytimeSingluarPluaral, prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentDelaytime, 0));
-
         }
 
         // generate text comment max letters
@@ -550,7 +560,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
             }
         });
-
         // End build the view
     }
 

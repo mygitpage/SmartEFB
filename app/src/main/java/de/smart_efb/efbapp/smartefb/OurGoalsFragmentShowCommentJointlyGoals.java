@@ -64,7 +64,6 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
         getActivity().getApplicationContext().registerReceiver(ourGoalsFragmentShowCommentJointlyGoalsBrodcastReceiver, filter);
 
         return viewFragmentShowCommentJointlyGoals; 
-
     }
 
 
@@ -86,9 +85,7 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
 
             // show actual comment set for selected jointly goal
             displayActualCommentSet();
-
         }
-
     }
 
 
@@ -98,6 +95,9 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
 
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourGoalsFragmentShowCommentJointlyGoalsBrodcastReceiver);
+
+        // close db connection
+        myDb.close();
     }
 
 
@@ -119,10 +119,7 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
         // Set correct subtitle in Activity -> "Kommentare Ziel ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleJointlyGoalsShowComment", "string", fragmentShowCommentJointlyGoalsContext.getPackageName())) + " " + jointlyGoalNumberInListView;
         ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyShowComment");
-
     }
-
-
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
@@ -149,13 +146,19 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
                 String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsCommentShareEnable","0");
                 String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsCommentShareDisable","0");
                 String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsCommentCountComment","0");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                Log.d("BROA REC show COMMENT", "In der Funktion -------");
-
-                //viewFragmentShowCommentJointlyGoals;
-                
-                
-                if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsJointlyComment != null && tmpExtraOurGoalsJointlyComment.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentShowCommentJointlyGoalsContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsJointlyComment != null && tmpExtraOurGoalsJointlyComment.equals("1")) {
                     // update now comment view -> show toast and update view
                     String updateMessageCommentNow = fragmentShowCommentJointlyGoalsContext.getString(R.string.toastMessageCommentJointlyGoalsNewComments);
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
@@ -213,7 +216,6 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
                 if (updateListView) {
                     updateListView();
                 }
-
             }
         }
     };
@@ -230,13 +232,7 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
             displayActualCommentSet ();
         }
     }
-    
-    
-    
-    
-    
-    
-    
+
 
     // call getter Functions in ActivityOurGoals for some data
     private void callGetterFunctionInSuper () {
@@ -255,9 +251,7 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
 
             // check for comment limitations
             commentLimitationBorder = ((ActivityOurGoals)getActivity()).isCommentLimitationBorderSet("jointlyGoals");
-
         }
-
     }
 
 
@@ -284,10 +278,8 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
 
             // Assign adapter to ListView
             listViewShowComments.setAdapter(showCommentJointlyGoalsCursorAdapter);
-
         }
     }
-
 
 
 }

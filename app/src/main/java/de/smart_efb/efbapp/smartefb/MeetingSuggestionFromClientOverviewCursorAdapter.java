@@ -48,6 +48,9 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
     // count down timer for start of period
     CountDownTimer countDownEndTimeFormPeriod;
 
+    // vote db id for send button
+    Long clientDbId;
+
 
     // Own constructor
     public MeetingSuggestionFromClientOverviewCursorAdapter(Context context, Cursor cursor, int flags) {
@@ -73,7 +76,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
 
 
     }
-
 
 
     @Override
@@ -107,9 +109,11 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
         else if (cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR)).length() > 0 && cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT)).length() > 0 && cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME)).length() > 0) {
             tmpSuggestionFromClientAlreadySend = true;
         }
-        else if (cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)) < tmpNowTime && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)) > tmpNowTime) {
+        else if (cursor.isFirst() && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)) < tmpNowTime && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)) > tmpNowTime) {
             // in timezone
             tmpInTimezone = true;
+            // init vote db id for button send
+            clientDbId = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
         }
         else {
             // out timezone
@@ -223,8 +227,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             }
         }
 
-
-
         // we are in meeting found from suggestion, in canceled suggestion or suggestion send
         if (tmpSuggestionFromClientCanceled || tmpSuggestionFromClientMeetingFound || tmpSuggestionFromClientAlreadySend) {
 
@@ -250,7 +252,7 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
         }
 
         // we are in timezone -> show input field
-        if (tmpInTimezone && cursor.isFirst()) {
+        if (tmpInTimezone) {
 
             // get max letters for edit text comment
             final int tmpMaxLength = ConstansClassMeeting.namePrefsSuggestionFromClientMaxLetters;
@@ -361,7 +363,7 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                     suggestionFromClientText = txtInputSuggestionFromClient.getText().toString();
 
 
-                    if (suggestionFromClientText.length() > 3) { // too few letters?
+                    if (suggestionFromClientText.length() > 3 && clientDbId != null && clientDbId > 0) { // too few letters AND vote db id  > 0?
 
                         // canceled time
                         Long tmpSuggestionDate = System.currentTimeMillis();
@@ -370,7 +372,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                         int tmpStatus = 0; // not send to server
 
                         // insert  in DB
-                        Long clientDbId = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
                         myDb.updateSuggestionFromClient(clientDbId, tmpSuggestionDate, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), suggestionFromClientText, tmpStatus);
 
                         // send intent to service to start the service and send vote suggestion to server!
@@ -379,24 +380,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                         startServiceIntent.putExtra("dbid",clientDbId);
                         startServiceIntent.putExtra("receiverBroadcast", "meetingFragmentSuggestionFromClient");
                         meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
-
-
-                        /*
-                        // send intent to receiver in MeetingFragmentSuggestionFromClient to update list view -> data send
-                        Intent tmpIntent = new Intent();
-                        tmpIntent.putExtra("SuggestionFromClientUpdateListView", "update");
-                        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
-                        context.sendBroadcast(tmpIntent);
-                        */
-
-
-                        /*
-                        // build intent to go back to suggestionFromClientOverview
-                        Intent intent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ActivityMeeting.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.putExtra("com", "suggestion_from_client");
-                        meetingSuggestionOverviewCursorAdapterContext.startActivity(intent);
-                        */
                     }
                     else { // error too few suggestions!
 

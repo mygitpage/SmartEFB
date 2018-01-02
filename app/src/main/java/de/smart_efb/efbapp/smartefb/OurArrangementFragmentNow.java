@@ -2,23 +2,17 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,7 +61,6 @@ public class OurArrangementFragmentNow extends Fragment {
         getActivity().getApplicationContext().registerReceiver(ourArrangementFragmentNowBrodcastReceiver, filter);
 
         return viewFragmentNow;
-
     }
 
 
@@ -83,7 +76,6 @@ public class OurArrangementFragmentNow extends Fragment {
 
         // show actual arrangement set
         displayActualArrangementSet();
-
     }
 
 
@@ -94,6 +86,8 @@ public class OurArrangementFragmentNow extends Fragment {
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentNowBrodcastReceiver);
 
+        // close db connection
+        myDb.close();
     }
 
 
@@ -125,8 +119,19 @@ public class OurArrangementFragmentNow extends Fragment {
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpUpdateEvaluationLink = intentExtras.getString("UpdateEvaluationLink");
                 String tmpMessage = intentExtras.getString("Message");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentNowContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                } else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNow != null && tmpExtraOurArrangementNow.equals("1")) {
                     // new arrangement on smartphone -> update now view
 
                     //update current block id of arrangements
@@ -219,7 +224,6 @@ public class OurArrangementFragmentNow extends Fragment {
     }
 
 
-
     // inits the fragment for use
     private void initFragmentNow() {
 
@@ -241,7 +245,6 @@ public class OurArrangementFragmentNow extends Fragment {
 
         // find the listview for the arrangements
         listViewArrangements = (ListView) viewFragmentNow.findViewById(R.id.listOurArrangementNow);
-
     }
 
 
@@ -249,8 +252,6 @@ public class OurArrangementFragmentNow extends Fragment {
     public void displayActualArrangementSet () {
 
         Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentBlockIdOfArrangement, "equalBlockId");
-
-        Log.d("Arrangement NOW","Anzahl:"+cursor.getCount());
 
         if (cursor.getCount() > 0 && listViewArrangements != null) {
 
@@ -270,7 +271,6 @@ public class OurArrangementFragmentNow extends Fragment {
 
             // Assign adapter to ListView
             listViewArrangements.setAdapter(dataAdapterListViewOurArrangement);
-
         }
         else {
 
@@ -281,9 +281,7 @@ public class OurArrangementFragmentNow extends Fragment {
             // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
             String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNothingThere", "string", fragmentNowContext.getPackageName()));
             ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "now");
-
         }
-
     }
 
 
@@ -305,7 +303,6 @@ public class OurArrangementFragmentNow extends Fragment {
 
             }
         }
-
     }
 
 
@@ -324,11 +321,8 @@ public class OurArrangementFragmentNow extends Fragment {
                 case "hide":
                     tmpNotAvailable.setVisibility(View.GONE);
                     break;
-
             }
-
         }
-
     }
 
 }

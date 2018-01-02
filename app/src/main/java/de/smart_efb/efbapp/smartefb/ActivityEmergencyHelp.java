@@ -1,7 +1,10 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,11 +12,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by ich on 20.01.2017.
@@ -26,7 +31,7 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
     ActionBar actionBar;
 
     // reference to dialog settings
-    AlertDialog alertDialogSettings;
+    AlertDialog alertDialogEmergencyHelp;
 
 
     @Override
@@ -35,6 +40,10 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_efb_emergencyhelp);
+
+        // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
+        IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
+        this.registerReceiver(emergencyHelpBrodcastReceiver, filter);
 
         // init meeting
         initEmergencyHelp();
@@ -56,12 +65,21 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // de-register broadcast receiver
+        this.unregisterReceiver(emergencyHelpBrodcastReceiver);
+    }
+
+
     // help dialog
     void createHelpDialog () {
 
         Button tmpHelpButtonEmergencyHelp = (Button) findViewById(R.id.helpEmergencyHelp);
 
-        // add button listener to question mark in activity OurGoals (toolbar)
+        // add button listener to question mark in activity emergency help (toolbar)
         tmpHelpButtonEmergencyHelp.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -87,7 +105,7 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
                         // Add close button
                         .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                alertDialogSettings.cancel();
+                                alertDialogEmergencyHelp.cancel();
                             }
                         })
 
@@ -95,13 +113,45 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
                         .setTitle(tmpTextTitleDialog);
 
                 // and create
-                alertDialogSettings = builder.create();
+                alertDialogEmergencyHelp = builder.create();
 
                 // and show the dialog
                 builder.show();
             }
         });
     }
+
+
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    private BroadcastReceiver emergencyHelpBrodcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extras from intent that holds data
+            Bundle intentExtras = null;
+
+            // check for intent extras
+            intentExtras = intent.getExtras();
+            if (intentExtras != null) {
+                // check intent order
+
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings","0");
+                String tmpCaseClose = intentExtras.getString("Case_close","0");
+
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = ActivityEmergencyHelp.this.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                }
+            }
+        }
+    };
 
 
     @Override

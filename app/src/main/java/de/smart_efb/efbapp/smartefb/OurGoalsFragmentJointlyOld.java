@@ -9,11 +9,13 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by ich on 30.11.2016.
@@ -81,6 +83,9 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
 
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourGoalsFragmentOldBrodcastReceiver);
+
+        // close db connection
+        myDb.close();
     }
 
 
@@ -100,8 +105,20 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
 
                 String tmpExtraOurGoals = intentExtras.getString("OurGoals","0");
                 String tmpExtraOurGoalsNow = intentExtras.getString("OurGoalsJointlyNow","0");
+                // case is close
+                String tmpSettings = intentExtras.getString("Settings", "0");
+                String tmpCaseClose = intentExtras.getString("Case_close", "0");
 
-                if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNow != null && tmpExtraOurGoalsNow.equals("1")) {
+                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                    // case close! -> show toast
+                    String textCaseClose = fragmentJointlyOldContext.getString(R.string.toastCaseClose);
+                    Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
+
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNow != null && tmpExtraOurGoalsNow.equals("1")) {
 
                     //update current block id of jointly goals
                     currentBlockIdOfJointlyGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0");
@@ -114,7 +131,6 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                     backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     backIntent.putExtra("com","show_jointly_goals_now");
                     getActivity().startActivity(backIntent);
-
                 }
             }
         }
@@ -197,7 +213,6 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
     }
 
 
-
     private void setVisibilityListViewOldJointlyGoals (String visibility) {
 
         ListView tmplistView = (ListView) viewFragmentJointlyOld.findViewById(R.id.listOurGoalsJointlyOld);
@@ -212,7 +227,6 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                 case "hide":
                     tmplistView.setVisibility(View.GONE);
                     break;
-
             }
         }
     }
@@ -233,7 +247,6 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                 case "hide":
                     tmpNotAvailable.setVisibility(View.GONE);
                     break;
-
             }
         }
     }
@@ -253,12 +266,9 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                 case "hide":
                     tmpNothingThere.setVisibility(View.GONE);
                     break;
-
             }
         }
     }
-
-
 
 
 }

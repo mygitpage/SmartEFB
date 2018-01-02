@@ -16,17 +16,16 @@
         android:paddingRight="10dp">
 
         <TextView
-            android:id="@+id/textViewDialogEmergencyHelpSettingsIntro"
+            android:id="@+id/textViewDialogSettingsIntro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14dp"
             android:textColor="@color/text_color"
             android:gravity="left"
             android:textStyle="bold"
-            android:text="@string/textDialogEmergencyHelpSettingsIntro"
+            android:text="@string/textDialogSettingsEfbSettingsIntro"
             android:paddingTop="5dp"
             android:paddingBottom="10dp"/>
-
 
     </LinearLayout>
 
