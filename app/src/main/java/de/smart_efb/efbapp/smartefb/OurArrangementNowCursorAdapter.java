@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,13 +146,22 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         // generate link for evaluate an arrangement
         final TextView linkEvaluateAnArrangement = (TextView) inflatedView.findViewById(R.id.linkToEvaluateAnArrangement);
 
+        Log.d("NowArrangementCursor","vor erster if!");
+
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false)) { // evaluation on/off?
+
+            Log.d("NowArrangementCursor","vor zweiter if!!!!!!!!!");
 
             // evaluation timezone expired?
             if (System.currentTimeMillis() < prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis())) {
 
+                Log.d("NowArrangementCursor","vor dritter if!");
+
                 // make link to evaluate arrangement, when evaluation is possible for this arrangement
                 if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE)) == 1) {
+
+                    Log.d("NowArrangementCursor","durch ----> if!");
+
 
                     final Uri.Builder evaluateLinkBuilder = new Uri.Builder();
                     evaluateLinkBuilder.scheme("smart.efb.deeplink")

@@ -32,8 +32,10 @@
             <string name="textDialogConnectBookSettingsCountCurrentMessagesPlural">Davon haben Sie bereits %1s Nachrichten geschrieben.</string>
             <string name="textDialogConnectBookSettingsCountCurrentMessagesNothing">Davon haben Sie bisher noch keine Nachricht geschrieben.</string>
             <string name="textDialogConnectBookSettingsCountCurrentMessagesNoMorePossible">Weitere Nachrichten sind somit erst nach Ablauf von 24 Stunden möglich.</string>
-            <string name="textDialogConnectBookSettingsDelayTimeSingular">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minute zugestellt.</string>
-            <string name="textDialogConnectBookSettingsDelayTimePlural">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minuten zugestellt.</string>
+            <string name="textDialogConnectBookSettingsDelayTimeSingular">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minute weitergeleitet.</string>
+            <string name="textDialogConnectBookSettingsDelayTimeSingularZero">\nIhre Nachrichten werden sofort weitergeleitet (Verzögerung %1s Minuten).</string>
+            <string name="textDialogConnectBookSettingsDelayTimePlural">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minuten weitergeleitet.</string>
+            <string name="textDialogConnectBookSettingsMessageMaxLetters">\nEine Nachricht darf maximal %1d Zeichen enthalten.</string>
             <string name="textDialogConnectBookSettingsInfoTextReadByCoach">Alle in der Funktion Übergabe geschriebenen Nachrichten können von Ihrer Beraterin/ Ihrem Berater gelesen und kommentiert werden..</string>
             <string name="textDialogConnectBookSettingsInfoTextContactCoach">Sollten Sie Fragen oder Änderungswünsche zu diesen Einstellungen haben, wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.</string>
         <!-- End connect book dialog settings -->

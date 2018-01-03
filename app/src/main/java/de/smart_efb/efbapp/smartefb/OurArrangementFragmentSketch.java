@@ -89,7 +89,6 @@ public class OurArrangementFragmentSketch  extends Fragment {
     }
 
 
-
     // inits the fragment for use
     private void initFragmentSketch() {
 
@@ -208,6 +207,10 @@ public class OurArrangementFragmentSketch  extends Fragment {
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
+                    // arrangement settings have change -> refresh view
+                    updateListView = true;
                 }
             }
 

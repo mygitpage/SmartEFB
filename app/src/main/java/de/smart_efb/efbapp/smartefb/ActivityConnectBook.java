@@ -429,7 +429,7 @@ public class ActivityConnectBook extends AppCompatActivity {
 
                 // show the settings for connect book
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogConnectBookSettings);
-                String tmpTxtElement, tmpTxtElement1, tmpTxtElement2, tmpTxtElement3, tmpTxtElementSum;
+                String tmpTxtElement, tmpTxtElement1, tmpTxtElement2, tmpTxtElement2a, tmpTxtElement3;
 
 
                 // generate text for max messages
@@ -460,9 +460,16 @@ public class ActivityConnectBook extends AppCompatActivity {
 
                 }
 
+                String tmpMaxLettersCount = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsMessageMaxLetters);
+                tmpTxtElement2a = String.format(tmpMaxLettersCount, prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxLetters, 0));
+
+
                 // generate text for delay time
                 if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, 0) > 1) {
                     tmpTxtElement3 = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsDelayTimePlural);
+                }
+                else if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, 0) == 0) {
+                    tmpTxtElement3 = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsDelayTimeSingularZero);
                 }
                 else {
                     tmpTxtElement3 = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsDelayTimeSingular);
@@ -470,7 +477,7 @@ public class ActivityConnectBook extends AppCompatActivity {
                 tmpTxtElement3 = String.format(tmpTxtElement3, prefs.getInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, 0));
 
                 // set generate text to view
-                tmpdialogTextView.setText(tmpTxtElement + " " + tmpTxtElement1 + " " + tmpTxtElement2 + " " + tmpTxtElement3);
+                tmpdialogTextView.setText(tmpTxtElement + " " + tmpTxtElement1 + " " + tmpTxtElement2 + " " + tmpTxtElement2a + " " + tmpTxtElement3);
 
                 // get string ressources
                 String tmpTextCloseDialog = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookCloseDialog);

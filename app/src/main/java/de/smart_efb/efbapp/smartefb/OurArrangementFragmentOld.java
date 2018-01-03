@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,7 +104,10 @@ public class OurArrangementFragmentOld extends Fragment {
             if (intentExtras != null) {
                 // check intent order
 
+                Boolean updateView = false;
+
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
+                String tmpExtraOurArrangementSettings = intentExtras.getString("OurArrangementSettings","0");
                 String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
@@ -127,6 +131,16 @@ public class OurArrangementFragmentOld extends Fragment {
                     backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     backIntent.putExtra("com","show_arrangement_now_with_tab_change");
                     getActivity().startActivity(backIntent);
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
+                    // arrangement settigs have change -> refresh view
+                    updateView = true;
+                }
+
+                if (updateView) {
+                    // refresh fragments view
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(fragmentOldThisFragmentContext).attach(fragmentOldThisFragmentContext).commit();
                 }
             }
         }

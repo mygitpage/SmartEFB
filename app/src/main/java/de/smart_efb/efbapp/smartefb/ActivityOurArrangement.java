@@ -401,10 +401,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // set correct subtitle in toolbar in tab one
             toolbar.setSubtitle(arraySubTitleText[7]);
-
         }
         else if (command.equals("show_arrangement_now_with_tab_change")) { // Change to Tab 0 and show arranement now
-
 
             // set global varibales
             arrangementServerDbIdFromLink = tmpServerDbId;
@@ -498,7 +496,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // init show on tab one sketch arrangemet
         showCommandFragmentTabOne = "show_sketch_arrangement";
 
-
         for (int t=0; t<ConstansClassOurArrangement.numberOfDifferentSubtitle; t++) {
             arraySubTitleText[t] = "";
         }
@@ -512,7 +509,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         // create help dialog in OurArrangement
         createHelpDialog();
-
     }
 
 
@@ -613,7 +609,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                                 tmpTxtComment4 = String.format(tmpTxtComment4, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime,0));
                                 break;
                         }
-
                     }
                     else {
                         tmpTxtComment2 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentCountNumberOff);
@@ -621,7 +616,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                         tmpTxtComment3 = "";
                         tmpTxtComment4 = "";
                     }
-
 
                     tmpTxtCommentSum = tmpTxtComment + " " + tmpTxtComment1 + " " + tmpTxtComment2 + tmpTxtComment3 + tmpTxtComment4;
 
@@ -632,7 +626,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                         TextView tmpdialogTextViewNoSharing = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementCommentSharingDisable);
                         tmpdialogTextViewNoSharing.setVisibility(View.VISIBLE);
                     }
-
                 }
                 else {
                     tmpTxtComment = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsCommentDisable);
@@ -698,7 +691,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                             tmpTxtSketchArrangement4 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentMaxLetters);
                             tmpTxtSketchArrangement4 = String.format(tmpTxtSketchArrangement4, prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters,0));
 
-
                             // show delaytime for comments
                             switch (prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime, 0)) {
                                 case 0:
@@ -712,8 +704,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                                     tmpTxtSketchArrangement5 = String.format(tmpTxtSketchArrangement5, prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime,0));
                                     break;
                             }
-
-
                         }
                         else {
                             tmpTxtSketchArrangement3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountNumberOff);
@@ -771,7 +761,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             }
         });
-
     }
 
 
@@ -830,7 +819,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
 
                 if (tmpChangeDbEvaluationStatus.equals("delete")) {
-                    // update table ourGoals in db -> delete evaluation possible
+                    // update table ourArrangement in db -> delete evaluation possible
                     myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""), "delete");
                 }
                 else {
@@ -872,7 +861,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 manager.cancel(pendingIntentOurArrangementEvaluate);
             }
         }
-
     }
 
 
@@ -910,7 +898,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
             infoNewEntryOnTabZero = false;
             infoTextNewEntryPostFixTabZeroTitle = "";
         }
-
     }
 
 
@@ -926,7 +913,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
             infoNewEntryOnTabOne = false;
             infoTextNewEntryPostFixTabOneTitle = "";
         }
-
     }
 
     // set/ unset textcolor for tab title on tab zero
@@ -951,8 +937,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 ((TextView) tabViewCild).setTextColor(tmpTextColor);
             }
         }
-
     }
+
 
     // set/ unset textcolor for tab title on tab one
     private void setUnsetTextColorSignalNewTabOne (Boolean colorSet) {
@@ -976,9 +962,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 ((TextView) tabViewCild).setTextColor(tmpTextColor);
             }
         }
-
     }
-
 
 
     @Override
@@ -992,23 +976,20 @@ public class ActivityOurArrangement extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
-
 
 
     // getter for DB-Id of arrangement
     public int getArrangementDbIdFromLink () {
 
         return arrangementServerDbIdFromLink;
-
     }
+
 
     // getter for DB-Id of sketch arrangement
     public int getSketchArrangementDbIdFromLink () {
 
         return arrangementSketchDbIdFromLink;
-
     }
 
 
@@ -1016,27 +997,21 @@ public class ActivityOurArrangement extends AppCompatActivity {
     public int getArrangementNumberInListview () {
 
         return arrangementNumberInListView;
-
     }
+
 
     // getter for sketch arrangement number in listview
     public int getSketchArrangementNumberInListview () {
 
         return arrangementSketchNumberInListView;
-
     }
-
 
 
     // geter for evaluate next arrangement
     public boolean getEvaluateNextArrangement () {
 
         return evaluateNextArrangement;
-
     }
-
-
-
 
 
     // geter for border for comments
@@ -1056,7 +1031,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
         }
 
         return  false; // write infinitely comments!
-
     }
 
 
@@ -1065,13 +1039,13 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         switch (subtitleChoose) {
 
-           case "sketch":
+            case "sketch":
                arraySubTitleText[1] = subtitleText;
                break;
-           case "old":
+            case "old":
                arraySubTitleText[2] = subtitleText;
                break;
-           case "now":
+            case "now":
                arraySubTitleText[0] = subtitleText;
                break;
             case "nowComment":
@@ -1089,7 +1063,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
             case "showSketchComment":
                 arraySubTitleText[7] = subtitleText;
                 break;
-
         }
 
         // first time -> set initial subtitle
@@ -1097,9 +1070,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
             toolbar.setSubtitle(subtitleText);
             setSubtitleFirstTime = false;
         }
-
     }
-
 
 
     // check prefs for update now and sketch arrangement or only now arrangements or only sketch?
@@ -1131,14 +1102,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // show dialog arrangement change
             alertDialogArrangementChange("sketch");
-
         }
-
-
     }
-
-
-
 
 
     public void alertDialogArrangementChange (String whatDialog) {
@@ -1188,7 +1153,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 infoTextForChange = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSketchAndCurrentArrangementChangeInfoText);
                 textViewArrangement.setText(infoTextForChange);
                 break;
-
         }
 
         // build the dialog
@@ -1209,11 +1173,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         // and show the dialog
         builder.show();
-
     }
-
-
-
 
 
 }

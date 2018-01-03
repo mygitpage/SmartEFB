@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
@@ -141,6 +142,8 @@ public class OurArrangementFragmentEvaluate extends Fragment {
             if (intentExtras != null) {
                 // check intent order
 
+                Boolean refreshView = false;
+
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
                 String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
                 String tmpExtraOurArrangementNowComment = intentExtras.getString("OurArrangementNowComment","0");
@@ -200,6 +203,16 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
+                    // arrangement settings have change -> refresh view
+                    refreshView = true;
+                }
+
+                if (refreshView) {
+                    // refresh fragments view
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(fragmentEvaluateThisFragmentContext).attach(fragmentEvaluateThisFragmentContext).commit();
                 }
             }
         }

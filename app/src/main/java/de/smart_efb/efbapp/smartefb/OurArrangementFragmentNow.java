@@ -193,16 +193,23 @@ public class OurArrangementFragmentNow extends Fragment {
                     toast.show();
                 }
                 else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
-                    // evaluationperiod hass change -> update view
+                    // evaluationperiod has change -> update view
 
                     updateListView = true;
 
                     // set new start point for evaluation timer in view
                     prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis());
                     prefsEditor.commit();
-               }
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
+                    // arrangement settings have change -> refresh view
+                    updateListView = true;
 
-                // update the list view because data has change?
+                    // settings have change -> check AlarmManger for Evaluation to switch on
+                    ((ActivityOurArrangement) getActivity()).setAlarmManagerOurArrangement();
+                }
+
+                    // update the list view because data has change?
                 if (updateListView) {
                     updateListView();
                 }

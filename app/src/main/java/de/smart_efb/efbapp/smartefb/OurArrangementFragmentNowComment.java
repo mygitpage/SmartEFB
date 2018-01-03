@@ -202,6 +202,10 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     // refresh fragments view
                     refreshView = true;
                 }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
+                    // arrangement settings has change -> refresh fragments view
+                    refreshView = true;
+                }
 
                 if (refreshView) {
                     // refresh fragments view

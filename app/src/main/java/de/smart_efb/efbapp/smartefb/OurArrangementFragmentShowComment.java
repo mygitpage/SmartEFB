@@ -210,6 +210,10 @@ public class OurArrangementFragmentShowComment extends Fragment {
                     // update the view
                     updateListView = true;
                 }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
+                    // arrangement settings have change -> refresh view
+                    updateListView = true;
+                }
 
                 // update the list view because data has change?
                 if (updateListView) {

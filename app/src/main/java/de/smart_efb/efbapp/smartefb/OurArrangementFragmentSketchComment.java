@@ -220,6 +220,10 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     // refresh fragments view
                     refreshView = true;
                 }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
+                    // arrangement settings have change -> refresh view
+                    refreshView = true;
+                }
 
                 if (refreshView) {
                     // refresh fragments view

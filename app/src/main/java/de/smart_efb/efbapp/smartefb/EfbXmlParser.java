@@ -121,8 +121,10 @@ public class EfbXmlParser {
 
         returnMap.put("TimeTable", "0");
         returnMap.put("TimeTableNewValue", "0");
+        returnMap.put("TimeTableSettings","0");
 
         returnMap.put("Settings", "0");
+        returnMap.put("SettingsOtherMenueItems","0");
         returnMap.put("Case_close", "0");
     }
 
@@ -3117,7 +3119,6 @@ public class EfbXmlParser {
                                         prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0); // reset count comments to 0
 
                                         returnMap.put("OurGoalsSettingsCommentCountComment", "1");
-
                                     }
 
                                     // write data to prefs
@@ -3136,7 +3137,6 @@ public class EfbXmlParser {
                                     // something change in jointly goals comment process
                                     returnMap.put ("OurGoalsSettingsCommentProcess","1");
                                 }
-
 
                                 // update debetable comment max/count of debetable goals?
                                 if (tmpGoalsDebetableCommentOnOff && tmpDebetableCommentMaxComment > 0 && tmpDebetableCommentMaxLetters > 0 && tmpDebetableCommentDelaytime >= 0 && tmpDebetableCommentCountCommentSinceTime > 0 && tmpDebetableCommentShare >= 0) {
@@ -4760,6 +4760,8 @@ public class EfbXmlParser {
 
                                 // refresh activity settings because settings have change
                                 returnMap.put("Settings","1");
+                                returnMap.put("SettingsOtherMenueItems","1");
+
                             }
                         }
                         parseAnymore = false;
@@ -4892,12 +4894,18 @@ public class EfbXmlParser {
                                 // set time table on/off
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_TimeTable, tmpTimeTableOnOff); // turn function time table on/off
 
+                                // get old time table value for nothing change check
+                                int tmpOldTimeTableValue = prefs.getInt(ConstansClassTimeTable.namePrefsTimeTableValue, tmpTimeTableValue); // get old value for time table
+
                                 if (tmpTimeTableOnOff && tmpTimeTableValue >= 0 && tmpAuthorName.length() > 0 && tmpChangeTime > 0) { // change time table value?
-                                    prefsEditor.putInt(ConstansClassTimeTable.namePrefsTimeTableValue, tmpTimeTableValue); // set value for time table
-                                    prefsEditor.putString(ConstansClassTimeTable.namePrefsTimeTableModifiedAuthor, tmpAuthorName); // set author name for time table
-                                    prefsEditor.putLong(ConstansClassTimeTable.namePrefsTimeTableModifiedDate, tmpChangeTime); // set change date for time table
-                                    prefsEditor.putBoolean(ConstansClassTimeTable.namePrefsTimeTableNewValue, true); // set new value for time table to true
-                                    returnMap.put("TimeTableNewValue","1");
+                                    // check for value change!
+                                    if (tmpOldTimeTableValue != tmpTimeTableValue) {
+                                        prefsEditor.putInt(ConstansClassTimeTable.namePrefsTimeTableValue, tmpTimeTableValue); // set value for time table
+                                        prefsEditor.putString(ConstansClassTimeTable.namePrefsTimeTableModifiedAuthor, tmpAuthorName); // set author name for time table
+                                        prefsEditor.putLong(ConstansClassTimeTable.namePrefsTimeTableModifiedDate, tmpChangeTime); // set change date for time table
+                                        prefsEditor.putBoolean(ConstansClassTimeTable.namePrefsTimeTableNewValue, true); // set new value for time table to true
+                                        returnMap.put("TimeTableNewValue", "1");
+                                    }
                                 }
                                 else { // time table is off -> set value to default
                                     prefsEditor.putInt(ConstansClassTimeTable.namePrefsTimeTableValue, 0); // set value for time table
@@ -4909,6 +4917,7 @@ public class EfbXmlParser {
 
                                 // refresh activity time table because settings have change
                                 returnMap.put("TimeTable","1");
+                                returnMap.put("TimeTableSettings","1");
                             }
                         }
                         parseAnymore = false;

@@ -224,20 +224,32 @@ public class MainActivity extends AppCompatActivity {
 
                 // check intent order
                 // new connect book message
+                String tmpExtraConnectBook = intentExtras.getString("ConnectBook","0");
+                String tmpExtraConnectBookSettings = intentExtras.getString("ConnectBookSettings","0");
                 String tmpExtraConnectBookMessageNewOrSend = intentExtras.getString("ConnectBookMessageNewOrSend","0");
                 // new time table value
                 String tmpExtraTimeTable = intentExtras.getString("TimeTable","0");
                 String tmpExtraTimeTableNewValue = intentExtras.getString("TimeTableNewValue","0");
+                String tmpExtraTimeTableSettings = intentExtras.getString("TimeTableSettings","0");
                 // new meeting/ suggestion
                 String tmpExtraMeeting = intentExtras.getString("Meeting","0");
                 String tmpExtraSuggestionNewSuggestion = intentExtras.getString("MeetingNewSuggestion","0");
                 String tmpExtraMeetingNewMeeting = intentExtras.getString("MeetingNewMeeting","0");
                 String tmpExtraSuggestionFromClientNewInvitation = intentExtras.getString("MeetingNewInvitationSuggestion","0");
-                // case is close
-                String tmpSettings = intentExtras.getString("Settings","0");
-                String tmpCaseClose = intentExtras.getString("Case_close","0");
+                String tmpExtraMeetingSettings = intentExtras.getString("MeetingSettings","0");
+                // case is close or other menue items chnage
+                String tmpExtraSettings = intentExtras.getString("Settings","0");
+                String tmpExtraSettingsOtherMenueItems = intentExtras.getString("SettingsOtherMenueItems","0");
+                String tmpExtraCaseClose = intentExtras.getString("Case_close","0");
 
-                if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
+                // Settings arrangement change
+                String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
+                String tmpExtraOurArrangementSettings = intentExtras.getString("OurArrangementSettings","0");
+                // Settings goal change
+                String tmpExtraOurGoal = intentExtras.getString("OurGoals","0");
+                String tmpExtraOurGoalSettings = intentExtras.getString("OurGoalsSettings","0");
+
+                if (tmpExtraSettings != null && tmpExtraSettings.equals("1") && tmpExtraCaseClose != null && tmpExtraCaseClose.equals("1")) {
                     // case close! -> show toast
                     String textCaseClose = MainActivity.this.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
@@ -248,20 +260,34 @@ public class MainActivity extends AppCompatActivity {
                     // case close -> refresh activity view
                     updateMainView = true;
                 }
-                else if (tmpExtraConnectBookMessageNewOrSend != null && tmpExtraConnectBookMessageNewOrSend.equals("1")) {
+                else if (tmpExtraSettings != null && tmpExtraSettings.equals("1") && tmpExtraSettingsOtherMenueItems != null && tmpExtraSettingsOtherMenueItems.equals("1")) {
 
-                    // new message received
-                    updateMainView = true;
-
-                }
-                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && ((tmpExtraSuggestionNewSuggestion != null && tmpExtraSuggestionNewSuggestion.equals("1")) || (tmpExtraMeetingNewMeeting != null && tmpExtraMeetingNewMeeting.equals("1")) || (tmpExtraSuggestionFromClientNewInvitation != null && tmpExtraSuggestionFromClientNewInvitation.equals("1"))   )) {
-
-                    // meeting, suggestion or suggestion from client has change -> refresh activity view
+                    // other menue items change, like prevention, settings, faq or emergency help
                     updateMainView = true;
                 }
-                else if (tmpExtraTimeTable != null && tmpExtraTimeTable.equals("1") && tmpExtraTimeTableNewValue != null && tmpExtraTimeTableNewValue.equals("1")) {
+                else if (tmpExtraOurGoal != null && tmpExtraOurGoal.equals("1") && tmpExtraOurGoalSettings != null && tmpExtraOurGoalSettings.equals("1")) {
 
-                    // time table has change -> refresh activity view
+                    // goal settings change
+                    updateMainView = true;
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
+
+                    // arrangement settings change
+                    updateMainView = true;
+                }
+                else if (tmpExtraConnectBookMessageNewOrSend != null && tmpExtraConnectBookMessageNewOrSend.equals("1") || (tmpExtraConnectBook != null && tmpExtraConnectBook.equals("1") && tmpExtraConnectBookSettings != null && tmpExtraConnectBookSettings.equals("1"))) {
+
+                    // new message received or connect book settings change
+                    updateMainView = true;
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && ((tmpExtraSuggestionNewSuggestion != null && tmpExtraSuggestionNewSuggestion.equals("1")) || (tmpExtraMeetingNewMeeting != null && tmpExtraMeetingNewMeeting.equals("1")) || (tmpExtraSuggestionFromClientNewInvitation != null && tmpExtraSuggestionFromClientNewInvitation.equals("1"))  || (tmpExtraMeetingSettings != null && tmpExtraMeetingSettings.equals("1")))) {
+
+                    // meeting, suggestion, suggestion from client or meeting settings have change -> refresh activity view
+                    updateMainView = true;
+                }
+                else if (tmpExtraTimeTable != null && tmpExtraTimeTable.equals("1") && ((tmpExtraTimeTableNewValue != null && tmpExtraTimeTableNewValue.equals("1")) || (tmpExtraTimeTableSettings != null && tmpExtraTimeTableSettings.equals("1")))) {
+
+                    // time table value or settings have change -> refresh activity view
                     updateMainView = true;
                 }
             }
@@ -272,7 +298,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-
 
 
     public void updateMainView () {
@@ -530,12 +555,10 @@ public class MainActivity extends AppCompatActivity {
             if(convertView==null){
                 LayoutInflater inflater = getLayoutInflater();
                 grid = inflater.inflate (R.layout.gridview_main_layout, parent, false);
-
             }
             else {
 
                 grid = convertView;
-
             }
 
             ImageView imageView = (ImageView) grid.findViewById(R.id.grid_item_image);
@@ -554,17 +577,31 @@ public class MainActivity extends AppCompatActivity {
                     imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     imageView.setImageResource(mainMenueShowElementBackgroundRessources[position]);
                     linearLayoutView.addView(imageView,0);
-
                 }
 
+                // show menue name
                 txtView.setText(mainMenueElementTitle[position]);
                 txtView.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_white));
                 tmpLinearLayoutBackgroundColor = mainMenueElementColor[position];
             }
             else { //Element is inaktiv
+
+                // set normal background ressource (picture)
+                if (imageView != null) {
+                    imageView.setImageResource(mainMenueElementBackgroundRessources[position]);
+                }
+                else {
+                    imageView = new ImageView(mContext);
+                    imageView.setId(R.id.grid_item_image);
+                    imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    imageView.setImageResource(mainMenueElementBackgroundRessources[position]);
+                    linearLayoutView.addView(imageView,0);
+                }
+
+                // show text "inactiv"
                 txtView.setText(getResources().getString(getResources().getIdentifier("main_menue_text_inactiv", "string", getPackageName())));
                 txtView.setTextColor(ContextCompat.getColor(mContext, R.color.main_menue_text_inactiv_color));
-                linearLayoutView.removeView(imageView);
+                //linearLayoutView.removeView(imageView);
             }
 
             linearLayoutView.setBackgroundColor(Color.parseColor(tmpLinearLayoutBackgroundColor));
