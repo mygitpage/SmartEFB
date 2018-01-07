@@ -16,7 +16,6 @@ import java.util.Calendar;
  */
 public class AlarmReceiverOurArrangement extends BroadcastReceiver {
 
-
     // evaluate pause time and active time (get from prefs)
     int evaluatePauseTime = 0;
     int evaluateActivTime = 0;
@@ -35,7 +34,6 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
 
         // init the DB
         myDb = new DBAdapter(context);
@@ -110,8 +108,6 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
             pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             // set alarm manager
             manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpAlarmTime, pendingIntentOurArrangementEvaluate);
-
-
         }
         else { // delete alarm - it is out of time
 
@@ -132,6 +128,6 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
         tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
         tmpIntent.putExtra("UpdateEvaluationLink","1");
         context.sendBroadcast(tmpIntent);
-
     }
+
 }

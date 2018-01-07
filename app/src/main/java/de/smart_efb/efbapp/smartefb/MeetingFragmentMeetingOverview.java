@@ -22,7 +22,6 @@ import android.widget.Toast;
  */
 
 
-
 public class MeetingFragmentMeetingOverview extends Fragment {
 
     // fragment view
@@ -110,6 +109,7 @@ public class MeetingFragmentMeetingOverview extends Fragment {
 
                 String tmpExtraMeeting = intentExtras.getString("Meeting","0");
                 String tmpExtraMeetingNewMeeting = intentExtras.getString("MeetingNewMeeting","0");
+                String tmpExtraMeetingSettings = intentExtras.getString("MeetingSettings","0");
                 String tmpExtraMeetingCanceledMeetingByCoach = intentExtras.getString("MeetingCanceledMeetingByCoach","0");
                 String tmpCommand = intentExtras.getString("Command");
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
@@ -186,7 +186,11 @@ public class MeetingFragmentMeetingOverview extends Fragment {
                         if( v != null) v.setGravity(Gravity.CENTER);
                         toast.show();
                     }
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingSettings != null && tmpExtraMeetingSettings.equals("1")) {
 
+                    // meeting settings change
+                    updateListView = true;
                 }
 
                 // update the list view because data has change?

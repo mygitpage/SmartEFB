@@ -146,23 +146,12 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         // generate link for evaluate an arrangement
         final TextView linkEvaluateAnArrangement = (TextView) inflatedView.findViewById(R.id.linkToEvaluateAnArrangement);
 
-        Log.d("NowArrangementCursor","vor erster if!");
-
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false)) { // evaluation on/off?
-
-            Log.d("NowArrangementCursor","vor zweiter if!!!!!!!!!");
-
             // evaluation timezone expired?
             if (System.currentTimeMillis() < prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis())) {
 
-                Log.d("NowArrangementCursor","vor dritter if!");
-
                 // make link to evaluate arrangement, when evaluation is possible for this arrangement
                 if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE)) == 1) {
-
-                    Log.d("NowArrangementCursor","durch ----> if!");
-
-
                     final Uri.Builder evaluateLinkBuilder = new Uri.Builder();
                     evaluateLinkBuilder.scheme("smart.efb.deeplink")
                             .authority("linkin")

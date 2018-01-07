@@ -104,7 +104,21 @@ public class SettingsEfbFragmentD extends Fragment {
 
     void displayActualView() {
 
-        LinearLayout placeholderArrangementAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerArrangementAcoustics);
-        placeholderArrangementAcoustics.setVisibility(View.VISIBLE);
+        // check Our Arrangement on? -> show acoustic signal check box for new arrangement, sketch, comment, etc.
+        if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false)) {
+            LinearLayout placeholderArrangementAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerArrangementAcoustics);
+            placeholderArrangementAcoustics.setVisibility(View.VISIBLE);
+        }
+
+        // check Our Arrangement evaluation on? -> show acoustic signal check box for new arrangement, sketch, comment, etc.
+        if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false) && prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false)) {
+            LinearLayout placeholderArrangementEvaluationAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerArrangementEvaluationAcoustics);
+            placeholderArrangementEvaluationAcoustics.setVisibility(View.VISIBLE);
+        }
+
+
+
+
+
     }
 }

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
@@ -152,9 +153,12 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
             if (intentExtras != null) {
                 // check intent order
 
+                Boolean refreshView = false;
+
                 String tmpExtraMeeting = intentExtras.getString("Meeting","0");
                 String tmpExtraMeetingNewMeeting = intentExtras.getString("MeetingNewMeeting","0");
                 String tmpExtraMeetingCanceledMeetingByCoach = intentExtras.getString("MeetingCanceledMeetingByCoach","0");
+                String tmpExtraMeetingSettings = intentExtras.getString("MeetingSettings","0");
                 String tmpCommand = intentExtras.getString("Command");
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
@@ -222,6 +226,18 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
                         toast.show();
                     }
                 }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingSettings != null && tmpExtraMeetingSettings.equals("1")) {
+
+                    // meeting settings change
+                    refreshView = true;
+                }
+
+                if (refreshView) {
+                    // refresh fragments view
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(fragmentThisFragmentContext).attach(fragmentThisFragmentContext).commit();
+                }
+
             }
         }
     };

@@ -115,6 +115,7 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                 // check intent order
 
                 String tmpExtraMeeting = intentExtras.getString("Meeting","0");
+                String tmpExtraMeetingSettings = intentExtras.getString("MeetingSettings","0");
                 String tmpExtraSuggestionNewSuggestion = intentExtras.getString("MeetingNewSuggestion","0");
                 String tmpExtraSuggestionCanceledSuggestionByCoach = intentExtras.getString("MeetingCanceledSuggestionByCoach","0");
                 String tmpExtraSuggestionMeetingFound = intentExtras.getString("MeetingFoundFromSuggestion","0");
@@ -208,7 +209,11 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
 
                     // update the view
                     updateListView = true;
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingSettings != null && tmpExtraMeetingSettings.equals("1")) {
 
+                    // meeting settings change
+                    updateListView = true;
                 }
 
                 // update the list view because data has change?

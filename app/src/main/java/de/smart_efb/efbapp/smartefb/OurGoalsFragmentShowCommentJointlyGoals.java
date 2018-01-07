@@ -211,6 +211,11 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
                     // update the view
                     updateListView = true;
                 }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1")) {
+
+                    // goal settings change
+                    updateListView = true;
+                }
 
                 // update the list view because data has change?
                 if (updateListView) {

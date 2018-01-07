@@ -123,6 +123,7 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
 
                 // check intent order
                 String tmpExtraMeeting = intentExtras.getString("Meeting","0");
+                String tmpExtraMeetingSettings = intentExtras.getString("MeetingSettings","0");
                 String tmpExtraSuggestionFromClientNewInvitation = intentExtras.getString("MeetingNewInvitationSuggestion","0");
                 String tmpExtraSuggestionFromClientCanceledByCoach = intentExtras.getString("MeetingCanceledClientSuggestionByCoach","0");
                 String tmpExtraSuggestionFromClientMeetingFound = intentExtras.getString("MeetingFoundFromClientSuggestion","0");
@@ -218,6 +219,11 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
                 else if (tmpExtraSuggestionFromClientUpdateListView != null && tmpExtraSuggestionFromClientUpdateListView.equals("update")) {
 
                     // update the view
+                    updateListView = true;
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingSettings != null && tmpExtraMeetingSettings.equals("1")) {
+
+                    // meeting settings change
                     updateListView = true;
                 }
 

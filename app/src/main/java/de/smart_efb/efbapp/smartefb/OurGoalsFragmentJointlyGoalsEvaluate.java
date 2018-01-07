@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
@@ -145,6 +146,8 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
 
+                Boolean refreshView = false;
+
                 // check intent order
                 String tmpExtraOurGoals = intentExtras.getString("OurGoals","0");
                 String tmpExtraOurGoalsNow = intentExtras.getString("OurGoalsJointlyNow","0");
@@ -209,6 +212,17 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1")) {
+
+                    // goal settings change
+                    refreshView = true;
+                }
+
+                if (refreshView) {
+                    // refresh fragments view
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(fragmentEvaluateThisFragmentContext).attach(fragmentEvaluateThisFragmentContext).commit();
                 }
             }
         }

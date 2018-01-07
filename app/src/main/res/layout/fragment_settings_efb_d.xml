@@ -44,7 +44,7 @@
 
         </LinearLayout>
 
-        <!-- Settings Line 1 (Signal New Arrangement (Now or sketch) or arrangement comment) -->
+        <!-- Settings Line 1 (Signal arrangement event) -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/checkBoxContainerArrangementAcoustics"
             android:layout_width="match_parent"
@@ -75,6 +75,42 @@
                     android:textColor="@color/text_color"
                     android:gravity="left"
                     android:text="@string/checkBoxArrangementAcousticsSignalText"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Settings Line 2 (Signal arrangement evaluation event) -->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/checkBoxContainerArrangementEvaluationAcoustics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp">
+
+            <CheckBox android:id="@+id/checkBoxArrangementEvaluationAcousticsSignal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="left">
+
+                <TextView
+                    android:id="@+id/checkBoxArrangementEvaluationAcousticsSignalTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/text_color"
+                    android:gravity="left"
+                    android:text="@string/checkBoxArrangementEvaluationAcousticsSignalText"/>
 
             </LinearLayout>
 

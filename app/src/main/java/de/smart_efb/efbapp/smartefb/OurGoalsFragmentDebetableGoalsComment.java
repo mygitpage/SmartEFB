@@ -221,6 +221,11 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                     // refresh fragments view
                     refreshView = true;
                 }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1")) {
+
+                    // goal settings change
+                    refreshView = true;
+                }
 
                 if (refreshView) {
                     // refresh fragments view

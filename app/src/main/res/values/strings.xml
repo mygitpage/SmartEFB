@@ -32,9 +32,9 @@
             <string name="textDialogConnectBookSettingsCountCurrentMessagesPlural">Davon haben Sie bereits %1s Nachrichten geschrieben.</string>
             <string name="textDialogConnectBookSettingsCountCurrentMessagesNothing">Davon haben Sie bisher noch keine Nachricht geschrieben.</string>
             <string name="textDialogConnectBookSettingsCountCurrentMessagesNoMorePossible">Weitere Nachrichten sind somit erst nach Ablauf von 24 Stunden möglich.</string>
-            <string name="textDialogConnectBookSettingsDelayTimeSingular">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minute weitergeleitet.</string>
-            <string name="textDialogConnectBookSettingsDelayTimeSingularZero">\nIhre Nachrichten werden sofort weitergeleitet (Verzögerung %1s Minuten).</string>
-            <string name="textDialogConnectBookSettingsDelayTimePlural">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minuten weitergeleitet.</string>
+            <string name="textDialogConnectBookSettingsDelayTimeSingular">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minute weitergeleitet (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogConnectBookSettingsDelayTimeSingularZero">\nIhre Nachrichten werden sofort weitergeleitet (Verzögerung %1s Minuten, sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogConnectBookSettingsDelayTimePlural">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minuten weitergeleitet (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogConnectBookSettingsMessageMaxLetters">\nEine Nachricht darf maximal %1d Zeichen enthalten.</string>
             <string name="textDialogConnectBookSettingsInfoTextReadByCoach">Alle in der Funktion Übergabe geschriebenen Nachrichten können von Ihrer Beraterin/ Ihrem Berater gelesen und kommentiert werden..</string>
             <string name="textDialogConnectBookSettingsInfoTextContactCoach">Sollten Sie Fragen oder Änderungswünsche zu diesen Einstellungen haben, wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.</string>
@@ -64,7 +64,7 @@
         <string name="mainMenueElementId_8">FAQ</string>
         <string name="mainMenueElementId_9">Notfall</string>
         <string name="mainMenueElementId_10">Einstellungen</string>
-        <string name="main_menue_text_inactiv">Inaktiv</string>
+        <string name="main_menue_text_inactiv">(Inaktiv)</string>
 
         <string name="toastCaseClose">Der Fall wurde von Ihrer Beraterin/ Ihrem Berater abgeschlossen und die Verbindung zum Server wurde getrennt.</string>
 
@@ -101,6 +101,7 @@
             <string name="settingsConnectToServerErrorPreIntroText">Während der Kommunikation mit dem Server ist ein Fehler aufgetreten. Folgender Fehlertext wurde übermittelt:</string>
             <string name="settingsConnectToServerErrorPostIntroText">Bitte teilen Sie diesen Fehlertext Ihrer Beraterin/ Ihrem Berater mit. Kehren Sie anschließend zum Hauptmenü zurück und versuchen Sie es noch einmal.</string>
             <string name="settingsSendingToServerDialogInfoText">Daten senden</string>
+            <string name="hintTextCaseCloseIntroText">Der Fall wurde von Ihrer Beraterin/ Ihrem Berater abgeschlossen. Daher werden keine weiteren Nachrichten, Kommentare, etc. gesendet oder empfangen. Wenn Sie möchten, können Sie die App deinstallieren. Beachten Sie aber, dass dann der gesamte Kommunikationsverlauf gelöscht wird.</string>
         <!-- End Fragment settings a (connect to server) -->
 
         <!-- Subtitle under Title Settings -->
@@ -143,7 +144,8 @@
         <!-- settings fragment d  -->
             <string name="settingsEfbFragmentDAcousticsSignalsHeadline">Akustische Hinweise</string>
             <string name="settingsEfbFragmentDAcousticsSignalsIntroText">Bei folgenden Ereignissen soll ein Hinweiston gespielt werden</string>
-            <string name="checkBoxArrangementAcousticsSignalText">Neue Vereinbarungen und neue Kommentare (Aktuell und Entwürfe)</string>
+            <string name="checkBoxArrangementAcousticsSignalText">Ereignisse in den Absprachen</string>
+            <string name="checkBoxArrangementEvaluationAcousticsSignalText">Wechsel der Evaluationsperioden in den Absprachen</string>
         <!-- end settings fragment d  -->
 
         <!-- help dialog -->
@@ -261,9 +263,9 @@
             <string name="ourArrangementCommentSendInfo">Der Kommentar wurde noch nicht gesendet.</string>
             <string name="ourArrangementCommentSendSuccsessfullInfo">Der Kommentar wurde gesendet.</string>
             <string name="ourArrangementCommentSendDelayInfo">Der Kommentar wurde gesendet und wird in %1$s zugestellt.</string>
-            <string name="infoTextNowCommentDelaytimeNoDelay">die Kommentare werden sofort zugestellt (wenn eine Internetverbindung besteht)</string>
-            <string name="infoTextNowCommentDelaytimeSingular">die Kommentare werden mit einer Verzögerungszeit von einer Minute zugestellt (wenn eine Internetverbindung besteht)</string>
-            <string name="infoTextNowCommentDelaytimePlural">die Kommentare werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
+            <string name="infoTextNowCommentDelaytimeNoDelay">die Kommentare werden sofort weitergeleitet (wenn eine Internetverbindung besteht)</string>
+            <string name="infoTextNowCommentDelaytimeSingular">die Kommentare werden mit einer Verzögerungszeit von einer Minute weitergeleitet (wenn eine Internetverbindung besteht)</string>
+            <string name="infoTextNowCommentDelaytimePlural">die Kommentare werden mit einer Verzögerungszeit von %1$d Minuten weitergeleitet (wenn eine Internetverbindung besteht)</string>
             <string name="ourArrangementCommentPersonalAuthorName">Ihnen</string>
             <string name="textOurArrangementCommentNoSharing">Die Kommentare werden im Moment nicht zugestellt!</string>
             <string name="ourArrangementCommentSendInfoSharingDisable">Der Kommentar wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
@@ -412,9 +414,9 @@
             <string name="textDialogOurArrangementSettingsCommentMaxLetters">\nDer Kommentartext darf maximal %1$d Zeichen lang sein.</string>
             <string name="textDialogOurArrangementSettingsCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Kommentare geschrieben.</string>
             <string name="textDialogOurArrangementSettingsCountCommentZero">Seit dem %1$s haben Sie noch keinen Kommentar geschrieben.</string>
-            <string name="textDialogOurArrangementSettingsCommentDelaytimeNoDelay">\nDie Kommentare werden ohne Verzögerungszeit zugestellt (sofern eine Internetverbindung besteht).</string>
-            <string name="textDialogOurArrangementSettingsCommentDelaytimeSingular">\nDie Kommentare werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
-            <string name="textDialogOurArrangementSettingsCommentDelaytimePlural">\nDie Kommentare werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurArrangementSettingsCommentDelaytimeNoDelay">\nDie Kommentare werden ohne Verzögerungszeit weitergeleitet (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurArrangementSettingsCommentDelaytimeSingular">\nDie Kommentare werden mit einer Verzögerungszeit von einer Minute weitergeleitet (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurArrangementSettingsCommentDelaytimePlural">\nDie Kommentare werden mit einer Verzögerungszeit von %1$d Minuten weitergeleitet (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogOurArrangementSettingsOldArrangementEnable">Ihnen stehen die älteren Absprachen zur Verfügung.</string>
             <string name="textDialogOurArrangementSettingsOldArrangementDisable">Ihnen stehen die älteren Absprachen nicht zur Verfügung.</string>
             <string name="textDialogOurArrangementSettingsSketchArrangementEnable">Ihnen stehen die Entwürfe der Absprachen zur Verfügung.</string>
@@ -507,9 +509,9 @@
             <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberPlural">Seit dem %1$s haben Sie %2$d Kommentare geschrieben.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsCommentCountNumberOff">Seit dem %1$s haben Sie alle möglichen Kommentare geschrieben.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsCommentMaxLetters">\nDer Kommentartext darf maximal %1$d Zeichen lang sein.</string>
-            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimeNoDelay">\nDie Kommentare werden ohne Verzögerungszeit zugestellt (sofern eine Internetverbindung besteht).</string>
-            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimeSingular">\nDie Kommentare werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
-            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimePlural">\nDie Kommentare werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimeNoDelay">\nDie Kommentare werden ohne Verzögerungszeit weitergeleitet (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimeSingular">\nDie Kommentare werden mit einer Verzögerungszeit von einer Minute weitergeleitet (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDelaytimePlural">\nDie Kommentare werden mit einer Verzögerungszeit von %1$d Minuten weitergeleitet (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsCommentDisable">Sie können keine gemeinsamen Ziele kommentieren.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsOldEnable">Ihnen stehen die älteren gemeinsamen Ziele zur Verfügung.</string>
             <string name="textDialogOurGoalsJointlyGoalsSettingsOldDisable">Ihnen stehen die älteren gemeinsamen Ziele nicht zur Verfügung.</string>
@@ -556,9 +558,9 @@
             <string name="infoTextJointlyGoalsCommentCountZero">Sie haben noch keinen Kommentar geschrieben.</string>
             <string name="infoTextJointlyGoalsCommentCountSingular">Davon haben Sie bereits %1$d Kommentar geschrieben.</string>
             <string name="infoTextJointlyGoalsCommentCountPlural">Davon haben Sie bereits %1$d Kommentare geschrieben.</string>
-            <string name="infoTextJointlyGoalsCommentDelaytimeNoDelay">die Kommentare werden sofort zugestellt (wenn eine Internetverbindung besteht)</string>
-            <string name="infoTextJointlyGoalsCommentDelaytimeSingular">die Kommentare werden mit einer Verzögerungszeit von einer Minute zugestellt (wenn eine Internetverbindung besteht)</string>
-            <string name="infoTextJointlyGoalsCommentDelaytimePlural">die Kommentare werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
+            <string name="infoTextJointlyGoalsCommentDelaytimeNoDelay">die Kommentare werden sofort weitergeleitet (wenn eine Internetverbindung besteht)</string>
+            <string name="infoTextJointlyGoalsCommentDelaytimeSingular">die Kommentare werden mit einer Verzögerungszeit von einer Minute weitergeleitet (wenn eine Internetverbindung besteht)</string>
+            <string name="infoTextJointlyGoalsCommentDelaytimePlural">die Kommentare werden mit einer Verzögerungszeit von %1$d Minuten weitergeleitet (wenn eine Internetverbindung besteht)</string>
             <string name="toastMessageJointlyGoalsCommentSendSuccessfull">Der Kommentar wurde gesendet!</string>
             <string name="toastMessageJointlyGoalsCommentSendNotSuccessfull">Der Kommentar wurde noch nicht gesendet!</string>
             <string name="toastMessageJointlyGoalsCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
@@ -575,15 +577,15 @@
             <string name="ourGoalsJointlyCommentSendInfo">Der Kommentar wurde noch nicht gesendet.</string>
             <string name="ourGoalsJointlyCommentSendDelayInfo">Der Kommentar wurde gesendet und wird in %1$s zugestellt.</string>
             <string name="ourGoalsJointlyCommentSendSuccsessfullInfo">Der Kommentar wurde gesendet.</string>
-            <string name="ourGoalsJointlyCommentSendInfoSharingDisable">Der Kommentar wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
+            <string name="ourGoalsJointlyCommentSendInfoSharingDisable">Der Kommentar wurde gesendet. Wird aber im Moment nicht weitergeleitet!</string>
             <string name="ourGoalsJointlyCommentLinkToShowAllCommentsPlural">%1$d weitere Kommentare vorhanden</string>
             <string name="ourGoalsJointlyCommentLinkToShowAllCommentsSingular">%1$d weiterer Kommentar vorhanden</string>
             <string name="ourGoalsJointlyCommentLinkToShowAllCommentsNotAvailable">Keine weiteren Kommentare vorhanden</string>
-            <string name="infoTextJointlyCommentDelaytimeNoDelay">die Kommentare werden sofort zugestellt (wenn eine Internetverbindung besteht)</string>
-            <string name="infoTextJointlyCommentDelaytimeSingular">die Kommentare werden mit einer Verzögerungszeit von einer Minute zugestellt (wenn eine Internetverbindung besteht)</string>
-            <string name="infoTextJointlyCommentDelaytimePlural">die Kommentare werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
-            <string name="textOurGoalsJointlyCommentNoSharing">Die Kommentare werden im Moment nicht zugestellt!</string>
-            <string name="ourJointlyGoalsCommentSendInfoSharingDisable">Der Kommentar wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
+            <string name="infoTextJointlyCommentDelaytimeNoDelay">die Kommentare werden sofort weitergeleitet (wenn eine Internetverbindung besteht)</string>
+            <string name="infoTextJointlyCommentDelaytimeSingular">die Kommentare werden mit einer Verzögerungszeit von einer Minute weitergeleitet (wenn eine Internetverbindung besteht)</string>
+            <string name="infoTextJointlyCommentDelaytimePlural">die Kommentare werden mit einer Verzögerungszeit von %1$d Minuten weitergeleitet (wenn eine Internetverbindung besteht)</string>
+            <string name="textOurGoalsJointlyCommentNoSharing">Die Kommentare werden im Moment nicht weitergeleitet!</string>
+            <string name="ourJointlyGoalsCommentSendInfoSharingDisable">Der Kommentar wurde gesendet. Wird aber im Moment nicht weitergeleitet!</string>
         <!-- End comment jointly goals -->
 
         <!-- Fragment show comment jointly goals -->
@@ -1015,19 +1017,14 @@
             <string name="meetingSubtitleClientCanceledMeeting">Terminabsage bestätigen</string>
         <!-- End Subtitle under Title Meeting -->
 
-
     <!-- Activity Meeting End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-
 
 
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Activity EmergencyHelp -->
 
-
         <!-- emergency help -->
-
             <string name="emergencyHelpEmergencyCallText">Notruf (Polizei)</string>
             <string name="emergencyHelpEmergencyCallNumber">110</string>
             <string name="emergencyHelpEmergencyCallNumberExplainText">In jedem akuten Notfall ist die Notrufnummer 110 zu wählen. Dort können Sie Ihren Notfall schildern und erhalten Hilfe.</string>
@@ -1044,22 +1041,16 @@
             <string name="emergencyHelpEmergencyEFBCallHeadline">Onlineberatung</string>
             <string name="emergencyHelpEmergencyEFBCallExplainText">Sie können uns (Erziehungs- und Familienbratungsstelle \"Lichtblick\" zu allen Fragen rund um Erziehungs- und Familienfragen auch per Mail erreichen.</string>
             <string name="emergencyHelpEmergencyEFBCallEmail">beratung@beratung.de</string>
-
         <!-- end emergency help -->
-
-
 
         <!-- help dialog -->
             <string name="textDialogEmergencyHelpCloseDialog">Schließen</string>
             <string name="textDialogEmergencyHelpTitleDialog">Hinweise zur Notfallhilfe</string>
             <string name="textDialogEmergencyHelpSettingsIntro">Hier finden Sie Notrufnummern und weitere Kontaktdaten zu Institutionen, die Hilfe in schwierigen Lebenslagen anbieten.\nWir sind bemüht, die Kontaktdaten aktuell zu halten. Können dies aber nicht immer garantieren.</string>
-
         <!-- End help dialog -->
-
 
     <!-- Activity EmergencyHelp End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
 
 
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -1067,8 +1058,6 @@
 
 
     <!-- timetable -->
-
-
         <string name="timeTableIntroText">Gemeinsamer Beratungsstand</string>
         <string name="timeTableIntroTextComputeValueExplain">Wie entsteht dieser Wert und was sagt er aus?</string>
         <string name="timeTableChangeAuthorNameWithDate">Der Beratungsstand wurde von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr verändert.</string>

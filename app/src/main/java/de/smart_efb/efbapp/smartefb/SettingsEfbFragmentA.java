@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.method.LinkMovementMethod;
 import android.util.Xml;
@@ -48,6 +50,12 @@ public class SettingsEfbFragmentA extends Fragment {
 
     // fragment context
     Context fragmentConnectToServerContext = null;
+
+    // the fragment
+    Fragment fragmentSettingsEfbAThisFragment;
+
+    // shared prefs for settings
+    SharedPreferences prefs;
 
     // minimum and maximum for random number to connect to server
     static int randomNumberForConnectionMin = 10000;
@@ -89,6 +97,8 @@ public class SettingsEfbFragmentA extends Fragment {
 
         fragmentConnectToServerContext = getActivity().getApplicationContext();
 
+        fragmentSettingsEfbAThisFragment = this;
+
         efbHelperConnectionClass = new EfbHelperConnectionClass(fragmentConnectToServerContext);
 
         // init the fragment connect to server
@@ -110,8 +120,11 @@ public class SettingsEfbFragmentA extends Fragment {
 
     private void initFragmentConnectToServer () {
 
-        // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get meeting status
+        // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get connection status
         connectingStatus = ((ActivitySettingsEfb)getActivity()).getConnectingStatus();
+
+        // init the prefs
+        prefs = fragmentConnectToServerContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentConnectToServerContext.MODE_PRIVATE);
     }
 
 
@@ -128,6 +141,8 @@ public class SettingsEfbFragmentA extends Fragment {
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
 
+                Boolean refreshView = false;
+
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
@@ -140,6 +155,16 @@ public class SettingsEfbFragmentA extends Fragment {
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
+                    refreshView = true;
+                }
+
+                if (refreshView) {
+                    // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get connection status
+                    connectingStatus = ((ActivitySettingsEfb)getActivity()).getConnectingStatus();
+
+                    // refresh fragments view
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(fragmentSettingsEfbAThisFragment).attach(fragmentSettingsEfbAThisFragment).commit();
                 }
             }
         }
@@ -148,6 +173,12 @@ public class SettingsEfbFragmentA extends Fragment {
 
     // show actual process data of connecting to server
     private void displayActualConnectingInformation () {
+
+        // show hint text case close
+        if (prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+            TextView textViewCaseCloseHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.hintTextCaseCloseIntro);
+            textViewCaseCloseHeadlineText.setVisibility(View.VISIBLE);
+        }
 
         // connecting status 0 -> not connected to server
         if (connectingStatus == 0) {

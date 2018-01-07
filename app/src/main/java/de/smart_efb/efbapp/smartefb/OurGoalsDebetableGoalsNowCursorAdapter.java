@@ -38,7 +38,6 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
     private String[] numberCountForAssessments = new String [12];
 
 
-
     // Default constructor
     public OurGoalsDebetableGoalsNowCursorAdapter (Context context, Cursor cursor, int flags) {
 
@@ -56,8 +55,6 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
 
         // open sharedPrefs
         prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
-
-
     }
 
 
@@ -86,7 +83,6 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
             tmpGapToBottom.setVisibility(View.VISIBLE);
         }
     }
-
 
 
     @Override

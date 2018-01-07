@@ -183,6 +183,11 @@ public class MainActivity extends AppCompatActivity {
 
         super.onStart();
 
+        // start exchange service with intent, when case is open!
+        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+            setAlarmForExchangeService();
+        }
+
         // init array show elements
         initShowElementArray();
 
@@ -290,6 +295,10 @@ public class MainActivity extends AppCompatActivity {
                     // time table value or settings have change -> refresh activity view
                     updateMainView = true;
                 }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1")) {
+                    // default anything new in our arrangement -> refresh main view
+                    updateMainView = true;
+                }
             }
 
             // update the main view
@@ -330,9 +339,10 @@ public class MainActivity extends AppCompatActivity {
         newOrUpdateInstallation();
 
         // start exchange service with intent, when case is open!
-        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+        /*if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
             setAlarmForExchangeService();
         }
+        */
 
         mainMenueElementTitle = getResources().getStringArray(R.array.mainMenueElementTitle);
 
@@ -352,7 +362,6 @@ public class MainActivity extends AppCompatActivity {
 
         // init array show elements and activ/inactiv sub-functions
         initShowElementArray();
-
     }
 
 
@@ -380,7 +389,6 @@ public class MainActivity extends AppCompatActivity {
         subfunction_goals_evaluation = prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false);
         subfunction_goals_debetable = prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false);
         subfunction_goals_debetablecomment = prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentDebetableGoals, false);
-
     }
 
 
@@ -391,6 +399,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (int countElements=0; countElements < ConstansClassMain.mainMenueNumberOfElements; countElements++) {
             switch (countElements) {
+
                 case 0: // menue item "Uebergabe"
                     if (showMainMenueElement[countElements]) { // is element aktiv?
                         if (myDb.getCountNewEntryConnectBookMessage() > 0) {
@@ -401,6 +410,7 @@ public class MainActivity extends AppCompatActivity {
                         tmpNew = true;
                     }
                     break;
+
                 case 1: // menue item "Absprachen"
                     if (showMainMenueElement[countElements]) { // is element aktiv?
                         if ((subfunction_arrangement_sketchcomment && myDb.getCountAllNewEntryOurArrangementSketchComment(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0")) > 0) || ( subfunction_arrangement_comment && myDb.getCountAllNewEntryOurArrangementComment(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0")) > 0) || myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "current") > 0 || (subfunction_arrangement_sketch && myDb.getCountNewEntryOurArrangement(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "sketch") > 0)) {
@@ -411,6 +421,7 @@ public class MainActivity extends AppCompatActivity {
                         tmpNew = true;
                     }
                     break;
+
                 case 2: // menue item "Ziele"
                     if (showMainMenueElement[countElements]) { // is element aktiv?
                         if (myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 || (subfunction_goals_comment && myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0) || (subfunction_goals_debetable && myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0) || (subfunction_goals_debetablecomment && myDb.getCountAllNewEntryOurGoalsDebetableGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0)) {
@@ -421,9 +432,11 @@ public class MainActivity extends AppCompatActivity {
                         tmpNew = true;
                     }
                     break;
+
                 case 3: // menue item "Nachrichten"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
+
                 case 4: // menue item "Termine"
                     // delete all meeting/ suggestion mark with new but never show (time expired, etc.)
                     Long nowTime = System.currentTimeMillis();
@@ -442,6 +455,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     tmpNew = true;
                     break;
+
                 case 5: // menue item "Zeitplan"
                     if (showMainMenueElement[countElements]) { // is element aktiv?
                         if (prefs.getBoolean(ConstansClassTimeTable.namePrefsTimeTableNewValue, false)) {
@@ -451,8 +465,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                         tmpNew = true;
                     }
-
                     break;
+
                 case 6: // menue item "Praevention"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
@@ -461,11 +475,11 @@ public class MainActivity extends AppCompatActivity {
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
 
-
                 case 8: // menue item "Notfallhilfe"
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
-                case 10: // menue item "Einstellungen"
+
+                case 9: // menue item "Einstellungen"
                     // check case close?
                     if (prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
                         mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesAttentionEntry[countElements];
@@ -474,6 +488,7 @@ public class MainActivity extends AppCompatActivity {
                         mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     }
                     break;
+
                 default:
                     mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
                     break;
@@ -495,7 +510,7 @@ public class MainActivity extends AppCompatActivity {
         calendar.add(Calendar.SECOND, ConstansClassMain.wakeUpTimeExchangeService);
         int tmpAlarmTime = ConstansClassMain.wakeUpTimeExchangeService * 1000; // make mills-seconds
 
-        // make intent for  alarm receiver
+        // make intent for alarm receiver
         Intent startIntentService = new Intent (getApplicationContext(), AlarmReceiverExchangeService.class);
 
         // make pending intent
@@ -512,7 +527,6 @@ public class MainActivity extends AppCompatActivity {
             // do nothing
         }
     }
-
 
 
     // inner class grid view adapter
@@ -535,7 +549,6 @@ public class MainActivity extends AppCompatActivity {
         public Object getItem(int item) {
 
             return mainMenueElementBackgroundRessources[item];
-
         }
 
         @Override
@@ -601,7 +614,6 @@ public class MainActivity extends AppCompatActivity {
                 // show text "inactiv"
                 txtView.setText(getResources().getString(getResources().getIdentifier("main_menue_text_inactiv", "string", getPackageName())));
                 txtView.setTextColor(ContextCompat.getColor(mContext, R.color.main_menue_text_inactiv_color));
-                //linearLayoutView.removeView(imageView);
             }
 
             linearLayoutView.setBackgroundColor(Color.parseColor(tmpLinearLayoutBackgroundColor));
@@ -617,8 +629,6 @@ public class MainActivity extends AppCompatActivity {
 
             // complete new installation?
             if (prefs.getInt(ConstansClassMain.namePrefsMainNameAppVersion, 0) == 0) {
-
-                Log.d ("Main Updat Func", "Im NEW!!! ZWEIG!");
 
                 // set case close to true
                 prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, false);
@@ -676,8 +686,6 @@ public class MainActivity extends AppCompatActivity {
 
                 // set case close to true (hinzugefuegt am 29.12.2017)
                 prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, false);
-
-                Log.d ("Main Updat Func", "Im UPDATE ZWEIG!");
 
             }
         }

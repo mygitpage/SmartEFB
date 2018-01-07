@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,7 +104,10 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
             if (intentExtras != null) {
                 // check intent order
 
+                Boolean refreshView = false;
+
                 String tmpExtraOurGoals = intentExtras.getString("OurGoals","0");
+                String tmpExtraOurGoalsSettings = intentExtras.getString("OurGoalsSettings","0");
                 String tmpExtraOurGoalsNow = intentExtras.getString("OurGoalsJointlyNow","0");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
@@ -131,6 +135,17 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                     backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     backIntent.putExtra("com","show_jointly_goals_now");
                     getActivity().startActivity(backIntent);
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1")) {
+
+                    // goal settings change
+                    refreshView = true;
+                }
+
+                if (refreshView) {
+                    // refresh fragments view
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(fragmentOldThisFragmentContext).attach(fragmentOldThisFragmentContext).commit();
                 }
             }
         }

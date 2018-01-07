@@ -1,6 +1,5 @@
 package de.smart_efb.efbapp.smartefb;
 
-import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,15 +7,12 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -114,9 +110,6 @@ public class ActivityTimeTable extends AppCompatActivity {
             // Extras from intent that holds data
             Bundle intentExtras = null;
 
-            // true-> update the list view with arrangements
-            Boolean updateListView = false;
-
             // true-> update the view of activity connect book
             Boolean updateActivityView = false;
 
@@ -154,7 +147,6 @@ public class ActivityTimeTable extends AppCompatActivity {
             if (updateActivityView) {
                 updateActivityView();
             }
-
         }
     };
 
@@ -165,7 +157,6 @@ public class ActivityTimeTable extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         finish();
         startActivity(intent);
-
     }
 
 
@@ -174,7 +165,6 @@ public class ActivityTimeTable extends AppCompatActivity {
         // set new value for time table to false
         prefsEditor.putBoolean(ConstansClassTimeTable.namePrefsTimeTableNewValue, false);
         prefsEditor.commit();
-
     }
 
 
@@ -197,7 +187,6 @@ public class ActivityTimeTable extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
 
 }

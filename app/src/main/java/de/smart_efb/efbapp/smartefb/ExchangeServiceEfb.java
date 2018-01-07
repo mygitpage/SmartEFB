@@ -1,5 +1,6 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.util.Xml;
 
@@ -307,6 +309,27 @@ import java.util.Map;
                             returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
 
                             //++++++++++++++++ db status update section +++++++++++++++++++++++++++++++++
+
+
+                            if (returnMap.get("OurArrangement").equals("1")) {
+
+                                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                                NotificationCompat.Builder mBuilder =
+                                        new NotificationCompat.Builder(context)
+                                                .setSmallIcon(R.drawable.notification_smile)
+                                                .setContentTitle("Neues in den Absprachen")
+                                                .setContentText("Es sind neue Absprachen eingetroffen!");
+
+
+                                mNotificationManager.notify(001, mBuilder.build());
+
+                            }
+
+
+
+
+
 
                             // set status of now comment to 1 -> send successfull
                             if (allCommentsReadyToSend != null) {

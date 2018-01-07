@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,9 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
 
     // fragment context
     Context fragmentMeetingSuggestionContextOld = null;
+
+    // the fragment
+    Fragment fragmentThisFragmentContext;
 
     // reference to the DB
     DBAdapter myDb;
@@ -103,7 +107,9 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
-                
+
+                String tmpExtraMeeting = intentExtras.getString("Meeting","0");
+                String tmpExtraMeetingSettings = intentExtras.getString("MeetingSettings","0");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
@@ -117,6 +123,18 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
                     toast.show();
 
                 }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingSettings != null && tmpExtraMeetingSettings.equals("1")) {
+
+                    // meeting settings change
+                    updateListView = true;
+                }
+
+                if (updateListView) {
+                    // refresh fragments view
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(fragmentThisFragmentContext).attach(fragmentThisFragmentContext).commit();
+                }
+
             }
         }
     };
