@@ -36,7 +36,7 @@
             <string name="textDialogConnectBookSettingsDelayTimeSingularZero">\nIhre Nachrichten werden sofort weitergeleitet (Verzögerung %1s Minuten, sofern eine Internetverbindung besteht).</string>
             <string name="textDialogConnectBookSettingsDelayTimePlural">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minuten weitergeleitet (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogConnectBookSettingsMessageMaxLetters">\nEine Nachricht darf maximal %1d Zeichen enthalten.</string>
-            <string name="textDialogConnectBookSettingsInfoTextReadByCoach">Alle in der Funktion Übergabe geschriebenen Nachrichten können von Ihrer Beraterin/ Ihrem Berater gelesen und kommentiert werden..</string>
+            <string name="textDialogConnectBookSettingsInfoTextReadByCoach">Alle in der Funktion Übergabe geschriebenen Nachrichten können von Ihrer Beraterin/ Ihrem Berater gelesen und kommentiert werden.</string>
             <string name="textDialogConnectBookSettingsInfoTextContactCoach">Sollten Sie Fragen oder Änderungswünsche zu diesen Einstellungen haben, wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.</string>
         <!-- End connect book dialog settings -->
 

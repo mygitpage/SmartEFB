@@ -1,6 +1,7 @@
 package de.smart_efb.efbapp.smartefb;
 
 import android.app.AlarmManager;
+import android.app.Application;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -79,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_efb_main);
+
+        // register lifecycle counter for Application
+        getApplication().registerActivityLifecycleCallbacks(new EfbLifecycle());
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
@@ -175,6 +179,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        // first ask to server for new data, when case is not closed!
+        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+            // send intent to service to start the service
+            Intent startServiceIntent = new Intent(getApplicationContext(), ExchangeServiceEfb.class);
+            // set command = "ask new data" on server
+            startServiceIntent.putExtra("com", "ask_new_data");
+            // start service
+            getApplicationContext().startService(startServiceIntent);
+        }
     }
 
 
@@ -262,9 +277,19 @@ public class MainActivity extends AppCompatActivity {
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
-                    // case close -> refresh activity view
+                    // refresh view
+                    updateMainView = true;
+
+                }
+                else if (tmpExtraConnectBook != null && tmpExtraConnectBook.equals("1") || tmpExtraMeeting != null && tmpExtraMeeting.equals("1") || tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") || tmpExtraOurGoal != null && tmpExtraOurGoal.equals("1") || tmpExtraSettings != null && tmpExtraSettings.equals("1") || tmpExtraTimeTable != null && tmpExtraTimeTable.equals("1")) {
+                    // new update signal for connect book, meeting, our arrangement, our goal, settings, timetable -> refresh activity view
                     updateMainView = true;
                 }
+
+
+
+
+                /*
                 else if (tmpExtraSettings != null && tmpExtraSettings.equals("1") && tmpExtraSettingsOtherMenueItems != null && tmpExtraSettingsOtherMenueItems.equals("1")) {
 
                     // other menue items change, like prevention, settings, faq or emergency help
@@ -299,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
                     // default anything new in our arrangement -> refresh main view
                     updateMainView = true;
                 }
+                */
             }
 
             // update the main view

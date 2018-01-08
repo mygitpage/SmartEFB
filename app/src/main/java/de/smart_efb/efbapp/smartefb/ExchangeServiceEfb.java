@@ -1,13 +1,17 @@
 package de.smart_efb.efbapp.smartefb;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.SystemClock;
@@ -310,27 +314,6 @@ import java.util.Map;
 
                             //++++++++++++++++ db status update section +++++++++++++++++++++++++++++++++
 
-
-                            if (returnMap.get("OurArrangement").equals("1")) {
-
-                                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-                                NotificationCompat.Builder mBuilder =
-                                        new NotificationCompat.Builder(context)
-                                                .setSmallIcon(R.drawable.notification_smile)
-                                                .setContentTitle("Neues in den Absprachen")
-                                                .setContentText("Es sind neue Absprachen eingetroffen!");
-
-
-                                mNotificationManager.notify(001, mBuilder.build());
-
-                            }
-
-
-
-
-
-
                             // set status of now comment to 1 -> send successfull
                             if (allCommentsReadyToSend != null) {
                                 if (returnMap.get("SendSuccessfull").equals("1") && send_now_comment_info) {
@@ -417,6 +400,10 @@ import java.util.Map;
                                 }
                             }
 
+                            // show notification when needed
+                            setNotificationToScreen(returnMap);
+
+
                             //++++++++++++++++ end db status update section +++++++++++++++++++++++++++++++++
 
                             // close input stream and disconnect
@@ -443,6 +430,71 @@ import java.util.Map;
                 stopSelf();
             }
         }
+
+
+        private void setNotificationToScreen (Map<String, String> returnMap) {
+
+            // get notofocation manager
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            // get alarm tone
+            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+
+
+            Log.d("Exchange -->", "Resumed > Paused:" + EfbLifecycle.isApplicationInForeground());
+            Log.d("Exchange -->", "Started > Stopped:" + EfbLifecycle.isApplicationVisible());
+
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+
+
+            if (returnMap.get("OurArrangement").equals("1") && returnMap.get("OurArrangementNow").equals("1")) {
+
+                mBuilder.setSmallIcon(R.drawable.notification_smile);
+                mBuilder.setContentTitle("Neues in den Absprachen");
+                mBuilder.setContentText("Es sind neue Absprachen eingetroffen!");
+                mBuilder.setSound(alarmSound);
+
+                mNotificationManager.notify(001, mBuilder.build());
+
+            }
+            else if (returnMap.get("ConnectBook").equals("1") && returnMap.get("ConnectBookMessageNewOrSend").equals("1")) {
+
+
+                //**add this line**
+                int requestID = (int) System.currentTimeMillis();
+
+
+
+
+                Intent notificationIntent = new Intent(getApplicationContext(), ActivityConnectBook.class);
+                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                PendingIntent contentIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+
+
+
+
+
+                mBuilder.setLargeIcon(BitmapFactory.decodeResource( getResources(), R.drawable.notification_large_appicon));
+                mBuilder.setSmallIcon(R.drawable.notification_smile);
+                mBuilder.setContentTitle("Neue Nachrichten im Übergabebuch");
+                mBuilder.setContentText("Es sind neue Nachrichten eingetroffen!");
+                mBuilder.setSound(alarmSound);
+                mBuilder.setContentIntent(contentIntent);
+
+
+                mNotificationManager.notify(001, mBuilder.build());
+
+            }
+
+
+        }
+
+
+
+
 
         // send now comment arrangement to server and get answer from server
         public class ExchangeTaskSendNowCommentArrangement implements Runnable {

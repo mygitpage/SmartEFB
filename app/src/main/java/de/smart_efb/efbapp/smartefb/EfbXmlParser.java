@@ -66,7 +66,6 @@ public class EfbXmlParser {
         returnMap.put("ConnectBook", "0");
         returnMap.put("ConnectBookSettings", "0");
         returnMap.put("ConnectBookSettingsClientName", "0");
-        returnMap.put("ConnectBookMessageNewOrSend", "0");
         returnMap.put("ConnectBookSettingsMessageAndDelay", "0");
         returnMap.put("ConnectBookSettingsMessageShareEnable","0");
         returnMap.put("ConnectBookSettingsMessageShareDisable","0");
