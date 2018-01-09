@@ -8,10 +8,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -104,21 +106,198 @@ public class SettingsEfbFragmentD extends Fragment {
 
     void displayActualView() {
 
+        CheckBox checkBox;
+
+        // check connect book on? -> show acoustic signal check box for new message
+        if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_ConnectBook, false)) {
+            // get linaer layout and set visible
+            LinearLayout placeholderConnectBookAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerConnectBookAcoustics);
+            placeholderConnectBookAcoustics.setVisibility(View.VISIBLE);
+            // get check box and set on click listener
+            checkBox = (CheckBox) viewFragmentD.findViewById(R.id.checkBoxConnectBookAcousticsSignal);
+            checkBox.setOnClickListener(new checkBoxSettingAcousticsListener("connect_book"));
+            if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true)) {checkBox.setChecked(true);}
+            else {checkBox.setChecked(false);}
+        }
+
         // check Our Arrangement on? -> show acoustic signal check box for new arrangement, sketch, comment, etc.
         if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false)) {
+            // get linaer layout and set visible
             LinearLayout placeholderArrangementAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerArrangementAcoustics);
             placeholderArrangementAcoustics.setVisibility(View.VISIBLE);
+            // get check box and set on click listener
+            checkBox = (CheckBox) viewFragmentD.findViewById(R.id.checkBoxArrangementAcousticsSignal);
+            checkBox.setOnClickListener(new checkBoxSettingAcousticsListener("our_arrangement"));
+            if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, true)) {checkBox.setChecked(true);}
+            else {checkBox.setChecked(false);}
         }
 
         // check Our Arrangement evaluation on? -> show acoustic signal check box for new arrangement, sketch, comment, etc.
         if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false) && prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false)) {
+            // get linaer layout and set visible
             LinearLayout placeholderArrangementEvaluationAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerArrangementEvaluationAcoustics);
             placeholderArrangementEvaluationAcoustics.setVisibility(View.VISIBLE);
+            // get check box and set on click listener
+            checkBox = (CheckBox) viewFragmentD.findViewById(R.id.checkBoxArrangementEvaluationAcousticsSignal);
+            checkBox.setOnClickListener(new checkBoxSettingAcousticsListener("our_arrangement_evaluation"));
+            if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, true)) {checkBox.setChecked(true);}
+            else {checkBox.setChecked(false);}
         }
 
+        // check Our Goal on? -> show acoustic signal check box for new Goal, debetable, comment, etc.
+        if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false)) {
+            // get linaer layout and set visible
+            LinearLayout placeholderGoalAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerGoalAcoustics);
+            placeholderGoalAcoustics.setVisibility(View.VISIBLE);
+            // get check box and set on click listener
+            checkBox = (CheckBox) viewFragmentD.findViewById(R.id.checkBoxGoalAcousticsSignal);
+            checkBox.setOnClickListener(new checkBoxSettingAcousticsListener("our_goal"));
+            if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, true)) {checkBox.setChecked(true);}
+            else {checkBox.setChecked(false);}
+        }
+
+        // check Our Goal evaluation on? -> show acoustic signal check box for new Goal, sketch, comment, etc.
+        if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false) && prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false)) {
+            // get linaer layout and set visible
+            LinearLayout placeholderGoalEvaluationAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerGoalEvaluationAcoustics);
+            placeholderGoalEvaluationAcoustics.setVisibility(View.VISIBLE);
+            // get check box and set on click listener
+            checkBox = (CheckBox) viewFragmentD.findViewById(R.id.checkBoxGoalEvaluationAcousticsSignal);
+            checkBox.setOnClickListener(new checkBoxSettingAcousticsListener("our_goal_evaluation"));
+            if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, true)) {checkBox.setChecked(true);}
+            else {checkBox.setChecked(false);}
+        }
+
+
+        // check message on? -> show acoustic signal check box for new message in message
+        if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, false)) {
+            // get linaer layout and set visible
+            LinearLayout placeholderMessageAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerMessageAcoustics);
+            placeholderMessageAcoustics.setVisibility(View.VISIBLE);
+            // get check box and set on click listener
+            checkBox = (CheckBox) viewFragmentD.findViewById(R.id.checkBoxMessageAcousticsSignal);
+            checkBox.setOnClickListener(new checkBoxSettingAcousticsListener("message"));
+            if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_Message, true)) {checkBox.setChecked(true);}
+            else {checkBox.setChecked(false);}
+        }
+        
+        
+        
 
 
 
 
     }
+
+
+
+    // onClickListener for check box acoustics signals
+    public class checkBoxSettingAcousticsListener implements View.OnClickListener {
+
+        String checkBoxName;
+        Boolean checkBoxValue;
+
+        public checkBoxSettingAcousticsListener (String tmpCheckBoxName) {
+
+            this.checkBoxName = tmpCheckBoxName;
+            this.checkBoxValue = false;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            Log.d("Setting Onclick -->", "In OnClick!");
+
+            switch (checkBoxName) {
+
+                case "connect_book":
+                    if (checkBoxValue) {
+                        checkBoxValue = false;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true);
+
+                        Log.d("Setting Onclick -->", "Aktiviere Connect Book");
+
+                    }
+                    else {
+                        checkBoxValue = true;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, false);
+                        Log.d("Setting Onclick -->", "Deaktiviere Connect Book");
+                    }
+                    prefsEditor.commit();
+                    break;
+
+                case "our_arrangement":
+                    if (checkBoxValue) {
+                        checkBoxValue = false;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, true);
+
+                    }
+                    else {
+                        checkBoxValue = true;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, false);
+                    }
+                    prefsEditor.commit();
+                    break;
+
+
+                case "our_arrangement_evaluation":
+                    if (checkBoxValue) {
+                        checkBoxValue = false;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, true);
+
+                    }
+                    else {
+                        checkBoxValue = true;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, false);
+                    }
+                    prefsEditor.commit();
+                    break;
+
+
+
+                case "our_goal":
+                    if (checkBoxValue) {
+                        checkBoxValue = false;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, true);
+
+                    }
+                    else {
+                        checkBoxValue = true;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, false);
+                    }
+                    prefsEditor.commit();
+                    break;
+
+
+                case "our_goal_evaluation":
+                    if (checkBoxValue) {
+                        checkBoxValue = false;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, true);
+
+                    }
+                    else {
+                        checkBoxValue = true;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, false);
+                    }
+                    prefsEditor.commit();
+                    break;
+
+
+
+
+
+
+
+            }
+
+
+        }
+    }
+
+
+
+
+
+
+
 }

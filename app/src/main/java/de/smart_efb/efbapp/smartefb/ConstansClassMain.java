@@ -5,17 +5,19 @@ package de.smart_efb.efbapp.smartefb;
  */
 class ConstansClassMain {
 
-    // prefs name for the app version
-    static final String namePrefsMainNameAppVersion = "smartEfbAppVersion";
 
     // actual app version
-    static final int actualVersion = 1;
+    static final int actualAppVersionNumber = 1; // increment these number with ervery new version
 
-    // actual app sub version
-    static final int actualSubVersion = 0;
+    // app version number of local installation
+    static final String namePrefsNumberAppVersion = "smartEfbAppNumberVersion";
 
-    // prefs name for the app sub version
-    static final String namePrefsMainNameAppSubVersion = "smartEfbAppSubVersion";
+
+
+
+
+
+
 
     // prefs name for the prefs main name
     static final String namePrefsMainNamePrefs = "smartEfbSettings";

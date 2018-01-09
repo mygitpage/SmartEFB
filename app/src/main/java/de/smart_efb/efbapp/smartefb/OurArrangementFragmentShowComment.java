@@ -97,6 +97,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentShowCommentBrodcastReceiver);
 
+        // close db connection
         myDb.close();
     }
 

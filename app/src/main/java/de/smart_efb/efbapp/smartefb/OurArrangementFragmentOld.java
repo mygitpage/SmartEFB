@@ -85,6 +85,7 @@ public class OurArrangementFragmentOld extends Fragment {
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(ourArrangementFragmentOldBrodcastReceiver);
 
+        // close db connection
         myDb.close();
 
     }

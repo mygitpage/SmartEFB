@@ -415,7 +415,6 @@ import java.util.Map;
                             tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
                             context.sendBroadcast(tmpIntent);
 
-
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
@@ -426,6 +425,9 @@ import java.util.Map;
                     }
                 }
 
+                // close db connection
+                myDb.close();
+
                 // stop the task with service
                 stopSelf();
             }
@@ -434,57 +436,53 @@ import java.util.Map;
 
         private void setNotificationToScreen (Map<String, String> returnMap) {
 
+            String notificationContentTitle;
+            Intent notificationIntent;
+            PendingIntent contentPendingIntent;
+
+            // set unique request id
+            int requestID = (int) System.currentTimeMillis();
+
             // get notofocation manager
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             // get alarm tone
             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-
-
-            Log.d("Exchange -->", "Resumed > Paused:" + EfbLifecycle.isApplicationInForeground());
-            Log.d("Exchange -->", "Started > Stopped:" + EfbLifecycle.isApplicationVisible());
-
+            // new notofication builder
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
-
+            // set basic things to all notofications
+            mBuilder.setLargeIcon(BitmapFactory.decodeResource( getResources(), R.drawable.notification_large_appicon));
+            mBuilder.setSmallIcon(R.drawable.notification_smile);
 
             if (returnMap.get("OurArrangement").equals("1") && returnMap.get("OurArrangementNow").equals("1")) {
 
-                mBuilder.setSmallIcon(R.drawable.notification_smile);
+
                 mBuilder.setContentTitle("Neues in den Absprachen");
-                mBuilder.setContentText("Es sind neue Absprachen eingetroffen!");
-                mBuilder.setSound(alarmSound);
+
 
                 mNotificationManager.notify(001, mBuilder.build());
 
             }
-            else if (returnMap.get("ConnectBook").equals("1") && returnMap.get("ConnectBookMessageNewOrSend").equals("1")) {
 
+            if (returnMap.get("ConnectBook").equals("1") && returnMap.get("ConnectBookMessageNewOrSend").equals("1")) {
 
-                //**add this line**
-                int requestID = (int) System.currentTimeMillis();
+                // get connect book notification string
+                notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewConnectBookMessage);
 
-
-
-
-                Intent notificationIntent = new Intent(getApplicationContext(), ActivityConnectBook.class);
+                // set intent/ pending intent to start connect book
+                notificationIntent = new Intent(getApplicationContext(), ActivityConnectBook.class);
                 notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                PendingIntent contentIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                contentPendingIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-
-
-
-
-
-
-                mBuilder.setLargeIcon(BitmapFactory.decodeResource( getResources(), R.drawable.notification_large_appicon));
-                mBuilder.setSmallIcon(R.drawable.notification_smile);
-                mBuilder.setContentTitle("Neue Nachrichten im Übergabebuch");
-                mBuilder.setContentText("Es sind neue Nachrichten eingetroffen!");
-                mBuilder.setSound(alarmSound);
-                mBuilder.setContentIntent(contentIntent);
-
-
+                // set notofication attributes
+                mBuilder.setContentTitle(notificationContentTitle);
+                mBuilder.setContentIntent(contentPendingIntent);
+                // sound on/off for connect book?
+                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true)) {
+                    mBuilder.setSound(alarmSound);
+                }
+                // show notification
                 mNotificationManager.notify(001, mBuilder.build());
 
             }
@@ -682,6 +680,9 @@ import java.util.Map;
                     sendIntentBroadcastSendingNotSuccessefull (message, command);
                 }
 
+                // close db connection
+                myDb.close();
+
                 // stop the task with service
                 stopSelf();
             }
@@ -873,6 +874,9 @@ import java.util.Map;
                 sendIntentBroadcastSendingNotSuccessefull (message, command);
             }
 
+            // close db connection
+            myDb.close();
+
             // stop the task with service
             stopSelf();
         }
@@ -1046,6 +1050,9 @@ import java.util.Map;
                 context.sendBroadcast(tmpIntent);
             }
 
+            // close db connection
+            myDb.close();
+
             // stop the task with service
             stopSelf();
         }
@@ -1055,11 +1062,7 @@ import java.util.Map;
     // send message to activity that sending was not successfull
     public void sendIntentBroadcastSendingNotSuccessefull (String message, String command) {
 
-        Log.d("Exchange Service", "SENDE FEHLER BRAODCAST TO all Listener!!!");
-
         SystemClock.sleep(2000); // wait two second because fragment change and with in the broadcast receiver
-
-        Log.d("Exchange Service", "SENDE FEHLER BRAODCAST TO all Listener 1s later!!!");
 
         // send intent to receiver that sending not successfull
         Intent tmpIntent = new Intent();
@@ -1257,6 +1260,9 @@ import java.util.Map;
                 sendIntentBroadcastSendingNotSuccessefull (message, command);
             }
 
+            // close db connection
+            myDb.close();
+
             // stop the task with service
             stopSelf();
         }
@@ -1426,6 +1432,9 @@ import java.util.Map;
                 tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageJointlyGoalsCommentNotSendSuccessfullNoNetwork));
                 context.sendBroadcast(tmpIntent);
             }
+
+            // close db connection
+            myDb.close();
 
             // stop the task with service
             stopSelf();
@@ -1618,6 +1627,9 @@ import java.util.Map;
                 sendIntentBroadcastSendingNotSuccessefull (message, command);
             }
 
+            // close db connection
+            myDb.close();
+
             // stop the task with service
             stopSelf();
         }
@@ -1647,7 +1659,6 @@ import java.util.Map;
         // return information for change
         Map<String, String> returnMap;
 
-
         // Constructor
         public ExchangeTaskSendConnectBookMessage (Context context, Long dbid) {
 
@@ -1663,7 +1674,6 @@ import java.util.Map;
             // init the prefs
             prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
             prefsEditor = prefs.edit();
-
         }
 
         // the task
@@ -1817,6 +1827,9 @@ import java.util.Map;
                 sendIntentBroadcastSendingNotSuccessefull (message, command);
             }
 
+            // close db connection
+            myDb.close();
+
             // stop the task with service
             stopSelf();
         }
@@ -1923,7 +1936,6 @@ import java.util.Map;
                     e.printStackTrace();
                 }
 
-
                 // and send xml text to server
                 try {
                     // prepair data to send
@@ -2018,6 +2030,9 @@ import java.util.Map;
                 String command = "look_message";
                 sendIntentBroadcastSendingNotSuccessefull (message, command);
             }
+
+            // close db connection
+            myDb.close();
 
             // stop the task with service
             stopSelf();

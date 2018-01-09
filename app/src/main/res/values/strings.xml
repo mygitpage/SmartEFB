@@ -1,5 +1,22 @@
 <resources>
-    <string name="app_name">Smart<b>EFB</b></string>
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- app strings -->
+
+        <!-- App name -->
+            <string name="app_name">Smart<b>EFB</b></string>
+        <!-- End app name -->
+
+        <!-- Edit Text String Filter Definition -->
+            <string name="editTextInputFilterTextAlphaNumeric">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ÄäÖöÜüß +-,;.:()§*!=?</string>
+        <!-- End Edit Text String Filter Definition -->
+
+        <!-- Text for count comments -->
+            <string name="infoTextCountLettersForComment">%1$s von %2$d Zeichen</string>
+        <!-- End Text for count comments -->
+
+    <!-- end app strings -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -144,8 +161,11 @@
         <!-- settings fragment d  -->
             <string name="settingsEfbFragmentDAcousticsSignalsHeadline">Akustische Hinweise</string>
             <string name="settingsEfbFragmentDAcousticsSignalsIntroText">Bei folgenden Ereignissen soll ein Hinweiston gespielt werden</string>
+            <string name="checkBoxConnectBookAcousticsSignalText">Neue Nachrichten im Übergabebuch</string>
             <string name="checkBoxArrangementAcousticsSignalText">Ereignisse in den Absprachen</string>
             <string name="checkBoxArrangementEvaluationAcousticsSignalText">Wechsel der Evaluationsperioden in den Absprachen</string>
+            <string name="checkBoxGoalAcousticsSignalText">Ereignisse in den Zielen</string>
+            <string name="checkBoxGoalEvaluationAcousticsSignalText">Wechsel der Evaluationsperioden in den Zielen</string>
         <!-- end settings fragment d  -->
 
         <!-- help dialog -->
@@ -1098,11 +1118,18 @@
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 
-    <!-- Edit Text String Filter Definition -->
-        <string name="editTextInputFilterTextAlphaNumeric">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ÄäÖöÜüß +-,;.:()§*!=?</string>
+
+
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Service Exchange Service -->
+
+        <string name="exchangeServiceNotificationTextNewConnectBookMessage">Neue Nachrichten im Übergabebuch</string>
+
+
+    <!-- End Service Exchange Service -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-    <string name="infoTextCountLettersForComment">%1$s von %2$d Zeichen</string>
 
 
 </resources>

@@ -361,6 +361,16 @@ public class MainActivity extends AppCompatActivity {
         // init the DB
         myDb = new DBAdapter(this);
 
+
+        // for testing
+        // write app version to prefs
+        //prefsEditor.putInt(ConstansClassMain.namePrefsNumberAppVersion, 1);
+        //prefsEditor.commit();
+
+
+
+
+
         // check installation status (new or update)
         newOrUpdateInstallation();
 
@@ -651,6 +661,108 @@ public class MainActivity extends AppCompatActivity {
 
     public void newOrUpdateInstallation () {
 
+        // check for version change
+        int localAppVersionNumber = prefs.getInt(ConstansClassMain.namePrefsNumberAppVersion, 0);
+
+        if (localAppVersionNumber < ConstansClassMain.actualAppVersionNumber ) {
+
+            switch (localAppVersionNumber) {
+
+                case 0: // installation of app -> first time
+
+                    // set case close to true
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, false);
+
+                    //app function switch off
+                    // set function connect book off
+                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_ConnectBook, false); // switch off connect book
+
+                    // set function our arrangement off
+                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false); // turn function our arrangement off
+                    prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false); // turn function our arrangement sketch off
+                    prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, false); // turn function our arrangement old off
+
+                    // set function our goals off
+                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false); // turn function our goals off
+                    prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false); // turn function our goals debetable off
+                    prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkOldGoals, false); // turn function our goals old off
+
+                    // set function time table off
+                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_TimeTable, false); // turn function time table off
+
+                    // set meeting function and subfunction off
+                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false); // turn function meeting off
+                    prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientSuggestion_OnOff, false); // turn function meeting client suggestion off
+                    prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCanceleMeeting_OnOff, false); // turn function meeting client canceled meeting off
+                    prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false); // turn function meeting client comment suggestion off
+
+                    // set function message off
+                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, false); // turn function message off
+
+                    // function to switch on
+                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Prevention, true); // turn function prevention on
+                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Faq, true); // turn function faq on
+                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_EmergencyHelp, true); // turn function emergency help on
+                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Settings, true); // turn function settings on
+
+                    // set connection parameter and status
+                    prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 0); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
+                    prefsEditor.putInt(ConstansClassSettings.namePrefsRandomNumberForConnection, 0); // five digits for connection to server
+                    prefsEditor.putString(ConstansClassSettings.namePrefsClientId, ""); // set smarthpone id to nothing
+
+                    // set acoustics and visual notification
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true);
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, true);
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, true);
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, true);
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, true);
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_Message, true);
+
+                    // write init to prefs
+                    prefsEditor.commit();
+
+
+
+
+
+                case 1: // update one -> put new inits here
+
+                    Log.d ("Update aus Main -->", "Version 1! +++++++++++++++");
+
+                case 2: // update two
+
+                    Log.d ("Update aus Main -->", "Version 2! +++++++++++++++");
+
+                case 3: // update three
+
+                    Log.d ("Update aus Main -->", "Version 3! +++++++++++++++");
+
+                case 4: // update four
+
+                    Log.d ("Update aus Main -->", "Version 4! +++++++++++++++");
+
+                case 5: // update five
+
+                    Log.d ("Update aus Main -->", "Version 5! +++++++++++++++");
+
+            }
+
+            // write app version to prefs
+            prefsEditor.putInt(ConstansClassMain.namePrefsNumberAppVersion, ConstansClassMain.actualAppVersionNumber);
+            prefsEditor.commit();
+
+
+
+        }
+
+
+
+
+
+
+
+        /*
+
         if (prefs.getInt(ConstansClassMain.namePrefsMainNameAppVersion, 0) < ConstansClassMain.actualVersion || (prefs.getInt(ConstansClassMain.namePrefsMainNameAppVersion, 0) == ConstansClassMain.actualVersion && prefs.getInt(ConstansClassMain.namePrefsMainNameAppSubVersion, 0) < ConstansClassMain.actualSubVersion) ) {
 
             // complete new installation?
@@ -696,11 +808,14 @@ public class MainActivity extends AppCompatActivity {
                 prefsEditor.putInt(ConstansClassSettings.namePrefsRandomNumberForConnection, 0); // five digits for connetion to server
                 prefsEditor.putString(ConstansClassSettings.namePrefsClientId, ""); // set smarthpone id to nothing
 
-                // set app version / sub version
-                prefsEditor.putInt(ConstansClassMain.namePrefsMainNameAppVersion, ConstansClassMain.actualVersion);
-                prefsEditor.putInt(ConstansClassMain.namePrefsMainNameAppSubVersion, ConstansClassMain.actualSubVersion);
+                // set acoustics and visual notification
+                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true);
+                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, true);
+                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, true);
+                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, true);
+                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, true);
+                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_Message, true);
 
-                prefsEditor.commit();
 
             }
             else { // update
@@ -713,9 +828,29 @@ public class MainActivity extends AppCompatActivity {
                 // set case close to true (hinzugefuegt am 29.12.2017)
                 prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, false);
 
+                // set acoustics and visual notification (hinzugefuegt am 09.01.2018)
+                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true);
+                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, true);
+                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, true);
+                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, true);
+                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, true);
+                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_Message, true);
+
+
             }
+
+            // set app version / sub version
+            prefsEditor.putInt(ConstansClassMain.namePrefsMainNameAppVersion, ConstansClassMain.actualVersion);
+            prefsEditor.putInt(ConstansClassMain.namePrefsMainNameAppSubVersion, ConstansClassMain.actualSubVersion);
+
+            prefsEditor.commit();
+
         }
+
+        */
     }
+
+
 
 }
 
