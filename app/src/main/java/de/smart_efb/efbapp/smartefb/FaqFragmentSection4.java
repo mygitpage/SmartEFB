@@ -84,4 +84,25 @@ public class FaqFragmentSection4 extends Fragment {
         }
     };
 
+
+
+
+    void showLongFaqText() {
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
 }

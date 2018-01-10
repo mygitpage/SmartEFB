@@ -213,8 +213,8 @@ public class ActivityFaq extends AppCompatActivity {
                 View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_faq, null);
 
                 // get string ressources
-                String tmpTextCloseDialog = ActivityFaq.this.getResources().getString(R.string.textDialogSettingsEfbCloseDialog);
-                String tmpTextTitleDialog = ActivityFaq.this.getResources().getString(R.string.textDialogSettingsEfbTitleDialog);
+                String tmpTextCloseDialog = ActivityFaq.this.getResources().getString(R.string.textDialogFaqCloseDialog);
+                String tmpTextTitleDialog = ActivityFaq.this.getResources().getString(R.string.textDialogFaqTitleDialog);
 
                 // build the dialog
                 builder.setView(dialogSettings)

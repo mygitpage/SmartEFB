@@ -440,58 +440,102 @@ import java.util.Map;
             Intent notificationIntent;
             PendingIntent contentPendingIntent;
 
-            // set unique request id
-            int requestID = (int) System.currentTimeMillis();
-
-            // get notofocation manager
-            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-            // get alarm tone
-            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-            // new notofication builder
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
-            // set basic things to all notofications
-            mBuilder.setLargeIcon(BitmapFactory.decodeResource( getResources(), R.drawable.notification_large_appicon));
-            mBuilder.setSmallIcon(R.drawable.notification_smile);
-
-            if (returnMap.get("OurArrangement").equals("1") && returnMap.get("OurArrangementNow").equals("1")) {
+            // check is app visible and in foreground -> only then set notification
+            if (!EfbLifecycle.isApplicationVisible() && !EfbLifecycle.isApplicationInForeground()) {
 
 
-                mBuilder.setContentTitle("Neues in den Absprachen");
+                // set unique request id
+                int requestID = (int) System.currentTimeMillis();
 
+                // get notofocation manager
+                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-                mNotificationManager.notify(001, mBuilder.build());
+                // get alarm tone
+                Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-            }
+                // new notofication builder
+                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+                // set basic things to all notofications
+                mBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.notification_large_appicon));
+                mBuilder.setSmallIcon(R.drawable.notification_smile);
 
-            if (returnMap.get("ConnectBook").equals("1") && returnMap.get("ConnectBookMessageNewOrSend").equals("1")) {
+                // notification for arrangement
+                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangement, true) && returnMap.get("OurArrangement").equals("1") && (returnMap.get("OurArrangementNow").equals("1") || returnMap.get("OurArrangementSketch").equals("1") || returnMap.get("OurArrangementNowComment").equals("1") || returnMap.get("OurArrangementSketchComment").equals("1"))) {
 
-                // get connect book notification string
-                notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewConnectBookMessage);
+                    // get our arrangement notification string
+                    notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewEventOurArrangement);
 
-                // set intent/ pending intent to start connect book
-                notificationIntent = new Intent(getApplicationContext(), ActivityConnectBook.class);
-                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                contentPendingIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    // set intent/ pending intent to start connect book
+                    notificationIntent = new Intent(getApplicationContext(), ActivityOurArrangement.class);
+                    notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    contentPendingIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                // set notofication attributes
-                mBuilder.setContentTitle(notificationContentTitle);
-                mBuilder.setContentIntent(contentPendingIntent);
-                // sound on/off for connect book?
-                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true)) {
-                    mBuilder.setSound(alarmSound);
+                    // set notofication attributes
+                    mBuilder.setContentTitle(notificationContentTitle);
+                    mBuilder.setContentIntent(contentPendingIntent);
+                    // sound on/off for connect book?
+                    if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, true)) {
+                        mBuilder.setSound(alarmSound);
+                    }
+                    // show notification
+                    mNotificationManager.notify(001, mBuilder.build());
                 }
-                // show notification
-                mNotificationManager.notify(001, mBuilder.build());
+
+                // notification for connect book
+                if (returnMap.get("ConnectBook").equals("1") && returnMap.get("ConnectBookMessageNewOrSend").equals("1") && prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_ConnectBook, true)) {
+
+                    // get connect book notification string
+                    notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewConnectBookMessage);
+
+                    // set intent/ pending intent to start connect book
+                    notificationIntent = new Intent(getApplicationContext(), ActivityConnectBook.class);
+                    notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    contentPendingIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    // set notofication attributes
+                    mBuilder.setContentTitle(notificationContentTitle);
+                    mBuilder.setContentIntent(contentPendingIntent);
+                    // sound on/off for connect book?
+                    if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true)) {
+                        mBuilder.setSound(alarmSound);
+                    }
+                    // show notification
+                    mNotificationManager.notify(001, mBuilder.build());
+                }
+
+
+                // notification for goal
+                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoal, true) && returnMap.get("OurGoals").equals("1") && (returnMap.get("OurGoalsJointlyNow").equals("1") || returnMap.get("OurGoalsDebetableNow").equals("1") || returnMap.get("OurGoalsJointlyComment").equals("1") || returnMap.get("OurGoalsDebetableComment").equals("1"))) {
+
+                    // get our goals notification string
+                    notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewEventOurGoals);
+
+                    // set intent/ pending intent to start connect book
+                    notificationIntent = new Intent(getApplicationContext(), ActivityOurGoals.class);
+                    notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    contentPendingIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    // set notofication attributes
+                    mBuilder.setContentTitle(notificationContentTitle);
+                    mBuilder.setContentIntent(contentPendingIntent);
+                    // sound on/off for connect book?
+                    if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, true)) {
+                        mBuilder.setSound(alarmSound);
+                    }
+                    // show notification
+                    mNotificationManager.notify(001, mBuilder.build());
+                }
+
+
+                // notification for message
+                // write code here!!!!!!!!!!!!!!
+                // ++++++++++++++++++++++++++++++++++++
+
+
+
 
             }
-
-
         }
-
-
-
 
 
         // send now comment arrangement to server and get answer from server

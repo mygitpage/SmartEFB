@@ -225,7 +225,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
     private BroadcastReceiver mainActivityBrodcastReceiver = new BroadcastReceiver() {
 
@@ -245,29 +244,29 @@ public class MainActivity extends AppCompatActivity {
                 // check intent order
                 // new connect book message
                 String tmpExtraConnectBook = intentExtras.getString("ConnectBook","0");
-                String tmpExtraConnectBookSettings = intentExtras.getString("ConnectBookSettings","0");
-                String tmpExtraConnectBookMessageNewOrSend = intentExtras.getString("ConnectBookMessageNewOrSend","0");
+                //String tmpExtraConnectBookSettings = intentExtras.getString("ConnectBookSettings","0");
+                //String tmpExtraConnectBookMessageNewOrSend = intentExtras.getString("ConnectBookMessageNewOrSend","0");
                 // new time table value
                 String tmpExtraTimeTable = intentExtras.getString("TimeTable","0");
-                String tmpExtraTimeTableNewValue = intentExtras.getString("TimeTableNewValue","0");
-                String tmpExtraTimeTableSettings = intentExtras.getString("TimeTableSettings","0");
+                //String tmpExtraTimeTableNewValue = intentExtras.getString("TimeTableNewValue","0");
+                //String tmpExtraTimeTableSettings = intentExtras.getString("TimeTableSettings","0");
                 // new meeting/ suggestion
                 String tmpExtraMeeting = intentExtras.getString("Meeting","0");
-                String tmpExtraSuggestionNewSuggestion = intentExtras.getString("MeetingNewSuggestion","0");
-                String tmpExtraMeetingNewMeeting = intentExtras.getString("MeetingNewMeeting","0");
-                String tmpExtraSuggestionFromClientNewInvitation = intentExtras.getString("MeetingNewInvitationSuggestion","0");
-                String tmpExtraMeetingSettings = intentExtras.getString("MeetingSettings","0");
+                //String tmpExtraSuggestionNewSuggestion = intentExtras.getString("MeetingNewSuggestion","0");
+                //String tmpExtraMeetingNewMeeting = intentExtras.getString("MeetingNewMeeting","0");
+                //String tmpExtraSuggestionFromClientNewInvitation = intentExtras.getString("MeetingNewInvitationSuggestion","0");
+                //String tmpExtraMeetingSettings = intentExtras.getString("MeetingSettings","0");
                 // case is close or other menue items chnage
                 String tmpExtraSettings = intentExtras.getString("Settings","0");
-                String tmpExtraSettingsOtherMenueItems = intentExtras.getString("SettingsOtherMenueItems","0");
+                //String tmpExtraSettingsOtherMenueItems = intentExtras.getString("SettingsOtherMenueItems","0");
                 String tmpExtraCaseClose = intentExtras.getString("Case_close","0");
 
                 // Settings arrangement change
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
-                String tmpExtraOurArrangementSettings = intentExtras.getString("OurArrangementSettings","0");
+                //String tmpExtraOurArrangementSettings = intentExtras.getString("OurArrangementSettings","0");
                 // Settings goal change
                 String tmpExtraOurGoal = intentExtras.getString("OurGoals","0");
-                String tmpExtraOurGoalSettings = intentExtras.getString("OurGoalsSettings","0");
+                //String tmpExtraOurGoalSettings = intentExtras.getString("OurGoalsSettings","0");
 
                 if (tmpExtraSettings != null && tmpExtraSettings.equals("1") && tmpExtraCaseClose != null && tmpExtraCaseClose.equals("1")) {
                     // case close! -> show toast
@@ -285,46 +284,6 @@ public class MainActivity extends AppCompatActivity {
                     // new update signal for connect book, meeting, our arrangement, our goal, settings, timetable -> refresh activity view
                     updateMainView = true;
                 }
-
-
-
-
-                /*
-                else if (tmpExtraSettings != null && tmpExtraSettings.equals("1") && tmpExtraSettingsOtherMenueItems != null && tmpExtraSettingsOtherMenueItems.equals("1")) {
-
-                    // other menue items change, like prevention, settings, faq or emergency help
-                    updateMainView = true;
-                }
-                else if (tmpExtraOurGoal != null && tmpExtraOurGoal.equals("1") && tmpExtraOurGoalSettings != null && tmpExtraOurGoalSettings.equals("1")) {
-
-                    // goal settings change
-                    updateMainView = true;
-                }
-                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
-
-                    // arrangement settings change
-                    updateMainView = true;
-                }
-                else if (tmpExtraConnectBookMessageNewOrSend != null && tmpExtraConnectBookMessageNewOrSend.equals("1") || (tmpExtraConnectBook != null && tmpExtraConnectBook.equals("1") && tmpExtraConnectBookSettings != null && tmpExtraConnectBookSettings.equals("1"))) {
-
-                    // new message received or connect book settings change
-                    updateMainView = true;
-                }
-                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && ((tmpExtraSuggestionNewSuggestion != null && tmpExtraSuggestionNewSuggestion.equals("1")) || (tmpExtraMeetingNewMeeting != null && tmpExtraMeetingNewMeeting.equals("1")) || (tmpExtraSuggestionFromClientNewInvitation != null && tmpExtraSuggestionFromClientNewInvitation.equals("1"))  || (tmpExtraMeetingSettings != null && tmpExtraMeetingSettings.equals("1")))) {
-
-                    // meeting, suggestion, suggestion from client or meeting settings have change -> refresh activity view
-                    updateMainView = true;
-                }
-                else if (tmpExtraTimeTable != null && tmpExtraTimeTable.equals("1") && ((tmpExtraTimeTableNewValue != null && tmpExtraTimeTableNewValue.equals("1")) || (tmpExtraTimeTableSettings != null && tmpExtraTimeTableSettings.equals("1")))) {
-
-                    // time table value or settings have change -> refresh activity view
-                    updateMainView = true;
-                }
-                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1")) {
-                    // default anything new in our arrangement -> refresh main view
-                    updateMainView = true;
-                }
-                */
             }
 
             // update the main view
@@ -362,9 +321,12 @@ public class MainActivity extends AppCompatActivity {
         myDb = new DBAdapter(this);
 
 
+
         // for testing
         // write app version to prefs
         //prefsEditor.putInt(ConstansClassMain.namePrefsNumberAppVersion, 1);
+
+
         //prefsEditor.commit();
 
 
@@ -373,12 +335,6 @@ public class MainActivity extends AppCompatActivity {
 
         // check installation status (new or update)
         newOrUpdateInstallation();
-
-        // start exchange service with intent, when case is open!
-        /*if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
-            setAlarmForExchangeService();
-        }
-        */
 
         mainMenueElementTitle = getResources().getStringArray(R.array.mainMenueElementTitle);
 
@@ -710,7 +666,16 @@ public class MainActivity extends AppCompatActivity {
                     prefsEditor.putInt(ConstansClassSettings.namePrefsRandomNumberForConnection, 0); // five digits for connection to server
                     prefsEditor.putString(ConstansClassSettings.namePrefsClientId, ""); // set smarthpone id to nothing
 
-                    // set acoustics and visual notification
+
+                    // set visual notification
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_ConnectBook, false);
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangement, false);
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangementEvaluation, false);
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoal, false);
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoalEvaluation, false);
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_Message, false);
+                    
+                    // set acoustics notification
                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true);
                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, true);
                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, true);
@@ -721,143 +686,23 @@ public class MainActivity extends AppCompatActivity {
                     // write init to prefs
                     prefsEditor.commit();
 
-
-
-
-
+                    // no break between case!
                 case 1: // update one -> put new inits here
-
-                    Log.d ("Update aus Main -->", "Version 1! +++++++++++++++");
 
                 case 2: // update two
 
-                    Log.d ("Update aus Main -->", "Version 2! +++++++++++++++");
-
                 case 3: // update three
-
-                    Log.d ("Update aus Main -->", "Version 3! +++++++++++++++");
 
                 case 4: // update four
 
-                    Log.d ("Update aus Main -->", "Version 4! +++++++++++++++");
-
-                case 5: // update five
-
-                    Log.d ("Update aus Main -->", "Version 5! +++++++++++++++");
-
+                case 5: // update five and so on
             }
 
             // write app version to prefs
             prefsEditor.putInt(ConstansClassMain.namePrefsNumberAppVersion, ConstansClassMain.actualAppVersionNumber);
             prefsEditor.commit();
-
-
-
         }
-
-
-
-
-
-
-
-        /*
-
-        if (prefs.getInt(ConstansClassMain.namePrefsMainNameAppVersion, 0) < ConstansClassMain.actualVersion || (prefs.getInt(ConstansClassMain.namePrefsMainNameAppVersion, 0) == ConstansClassMain.actualVersion && prefs.getInt(ConstansClassMain.namePrefsMainNameAppSubVersion, 0) < ConstansClassMain.actualSubVersion) ) {
-
-            // complete new installation?
-            if (prefs.getInt(ConstansClassMain.namePrefsMainNameAppVersion, 0) == 0) {
-
-                // set case close to true
-                prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, false);
-
-                //app function switch off
-                // set function connect book off
-                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_ConnectBook, false); // switch off connect book
-
-                // set function our arrangement off
-                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false); // turn function our arrangement off
-                prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false); // turn function our arrangement sketch off
-                prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, false); // turn function our arrangement old off
-
-                // set function our goals off
-                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false); // turn function our goals off
-                prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false); // turn function our goals debetable off
-                prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkOldGoals, false); // turn function our goals old off
-
-                // set function time table off
-                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_TimeTable, false); // turn function time table off
-
-                // set function and subfunction off
-                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false); // turn function meeting off
-                prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientSuggestion_OnOff, false); // turn function meeting client suggestion off
-                prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCanceleMeeting_OnOff, false); // turn function meeting client canceled meeting off
-                prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false); // turn function meeting client comment suggestion off
-
-                // set function message off
-                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, false); // turn function message off
-
-                // function to switch on
-                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Prevention, true); // turn function prevention on
-                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Faq, true); // turn function faq on
-                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_EmergencyHelp, true); // turn function emergency help on
-                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Settings, true); // turn function settings on
-
-                // set connection parameter and status
-                prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 0); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
-                prefsEditor.putInt(ConstansClassSettings.namePrefsRandomNumberForConnection, 0); // five digits for connetion to server
-                prefsEditor.putString(ConstansClassSettings.namePrefsClientId, ""); // set smarthpone id to nothing
-
-                // set acoustics and visual notification
-                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true);
-                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, true);
-                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, true);
-                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, true);
-                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, true);
-                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_Message, true);
-
-
-            }
-            else { // update
-
-                // do some update work!
-
-                // set function message off (hinzugefuegt am 29.12.2017)
-                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, false); // turn function message off
-
-                // set case close to true (hinzugefuegt am 29.12.2017)
-                prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, false);
-
-                // set acoustics and visual notification (hinzugefuegt am 09.01.2018)
-                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true);
-                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, true);
-                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, true);
-                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, true);
-                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, true);
-                prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_Message, true);
-
-
-            }
-
-            // set app version / sub version
-            prefsEditor.putInt(ConstansClassMain.namePrefsMainNameAppVersion, ConstansClassMain.actualVersion);
-            prefsEditor.putInt(ConstansClassMain.namePrefsMainNameAppSubVersion, ConstansClassMain.actualSubVersion);
-
-            prefsEditor.commit();
-
-        }
-
-        */
     }
 
 
-
 }
-
-
-
-
-
-
-
-

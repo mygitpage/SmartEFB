@@ -159,13 +159,25 @@
         <!-- end settings fragment c  -->
 
         <!-- settings fragment d  -->
+
+            <string name="settingsEfbFragmentDVisualSignalsHeadline">Ereignishinweise</string>
+            <string name="settingsEfbFragmentDVisualSignalsIntroText">Bei folgenden Ereignissen soll ein Hinweistext auf dem Smartphone angezeigt werden. Innerhalb der App findet immer eine Benachrichtigung statt.</string>
+            <string name="checkBoxConnectBookVisualSignalText">Neue Nachrichten im Übergabebuch</string>
+            <string name="checkBoxOurArrangementVisualSignalText">Ereignisse in den Absprachen</string>
+            <string name="checkBoxArrangementEvaluationVisualSignalText">Wechsel der Evaluationsperioden in den Absprachen</string>
+            <string name="checkBoxOurGoalVisualSignalText">Ereignisse in den Zielen</string>
+            <string name="checkBoxOurGoalEvaluationVisualSignalText">Wechsel der Evaluationsperioden in den Zielen</string>
+            <string name="checkBoxMessageVisualSignalText">Ereignisse in der Nachrichtenfunktion</string>
+
             <string name="settingsEfbFragmentDAcousticsSignalsHeadline">Akustische Hinweise</string>
-            <string name="settingsEfbFragmentDAcousticsSignalsIntroText">Bei folgenden Ereignissen soll ein Hinweiston gespielt werden</string>
+            <string name="settingsEfbFragmentDAcousticsSignalsIntroText">Bei folgenden Ereignissen soll neben dem visuellen Hinweis ein Hinweiston gespielt werden</string>
             <string name="checkBoxConnectBookAcousticsSignalText">Neue Nachrichten im Übergabebuch</string>
             <string name="checkBoxArrangementAcousticsSignalText">Ereignisse in den Absprachen</string>
             <string name="checkBoxArrangementEvaluationAcousticsSignalText">Wechsel der Evaluationsperioden in den Absprachen</string>
             <string name="checkBoxGoalAcousticsSignalText">Ereignisse in den Zielen</string>
             <string name="checkBoxGoalEvaluationAcousticsSignalText">Wechsel der Evaluationsperioden in den Zielen</string>
+            <string name="checkBoxMessageAcousticsSignalText">Ereignisse in der Nachrichtenfunktion</string>
+            <string name="textViewInfoNoAcousticsChekcBoxPossible">Zurzeit können keine akustischen Hinweistöne eingestellt werden, da alle Hinweistexte ausgeschaltet sind.</string>
         <!-- end settings fragment d  -->
 
         <!-- help dialog -->
@@ -1104,15 +1116,17 @@
 
         <string name="textPreventionNothingThere">Zurzeit liegen keine Präventionsinhalte vor.</string>
 
+    <string name="preventionDepressionHeadlineText">Depression</string>
+    <string name="preventionDepressionExplainText">Ein interessantes Video (\"Ich hatte einen schwarzen Hund\") zur Entstehung, Auswirkungen und Hilfmöglichkeiten zur Depression</string>
+    <string name="preventionDepressionLinkToVideo"><a href="smart.efb.deeplink://linkin/prevention?com=showvideo_depression">Video anschauen</a>\n\nDirekter Link zum Video: https://www.youtube.com/watch?v=1UiA32Qv4yE</string>
 
     <!-- end prevention -->
 
     <!-- help dialog -->
-
-
-
-
-    <!-- help dialog -->
+    <string name="textDialogPreventionCloseDialog">Schließen</string>
+    <string name="textDialogPreventionTitleDialog">Hinweise zum Präventionsbereich</string>
+    <string name="textDialogPreventionIntro">Im Präventionsbereich</string>
+    <!-- End help dialog -->
 
     <!-- Activity Prevention -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -1125,6 +1139,8 @@
     <!-- Service Exchange Service -->
 
         <string name="exchangeServiceNotificationTextNewConnectBookMessage">Neue Nachrichten im Übergabebuch</string>
+        <string name="exchangeServiceNotificationTextNewEventOurArrangement">Neues in den Absprachen</string>
+        <string name="exchangeServiceNotificationTextNewEventOurGoals">Neues in den Zielen</string>
 
 
     <!-- End Service Exchange Service -->

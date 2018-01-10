@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +31,7 @@ public class ActivityPrevention extends AppCompatActivity {
     ActionBar actionBar;
 
     // reference to dialog settings
-    AlertDialog alertDialogSettings;
+    AlertDialog alertDialogPrevention;
 
 
 
@@ -50,7 +51,29 @@ public class ActivityPrevention extends AppCompatActivity {
         initPrevention();
 
         // create help dialog
-        //createHelpDialog();
+        createHelpDialog();
+
+
+
+
+
+
+        // check for intent on start time
+        // Extras from intent that holds data
+        Bundle intentExtras = null;
+        // intent
+        Intent intent = getIntent();
+
+        if (intent != null) { // intent set?
+            // get the link data from the extra
+            intentExtras = intent.getExtras();
+            if (intentExtras != null && intentExtras.getString("com") != null) { // extra data set?
+                // get command and execute it
+                executeIntentCommand(intentExtras.getString("com"));
+            }
+        }
+
+
 
     }
 
@@ -110,22 +133,57 @@ public class ActivityPrevention extends AppCompatActivity {
 
 
 
+    // Look for new intents (with data from putExtra)
+    @Override
+    protected void onNewIntent(Intent intent) {
+
+        // Extras from intent that holds data
+        Bundle intentExtras = null;
+
+        // call super
+        super.onNewIntent(intent);
+
+        // get the link data from URI and from the extra
+        intentExtras = intent.getExtras();
+
+        if (intentExtras != null) {
+
+            // get command and execute it
+            executeIntentCommand (intentExtras.getString("com"));
+        }
+    }
 
 
-    /*
+    // execute the commands that comes from link or intend
+    public void executeIntentCommand (String command) {
+
+        if (command.equals("show_section1")) { // Show fragment for overview
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     // help dialog
     void createHelpDialog () {
 
-        Button tmpHelpButtonEmergencyHelp = (Button) findViewById(R.id.helpEmergencyHelp);
+        Button tmpHelpButtonSettings = (Button) findViewById(R.id.helpPrevention);
 
-
-        // add button listener to question mark in activity OurGoals (toolbar)
-        tmpHelpButtonEmergencyHelp.setOnClickListener(new View.OnClickListener() {
+        // add button listener to question mark in activity settings efb (toolbar)
+        tmpHelpButtonSettings.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
 
                 LayoutInflater dialogInflater;
 
@@ -135,9 +193,7 @@ public class ActivityPrevention extends AppCompatActivity {
                 dialogInflater = (LayoutInflater) ActivityPrevention.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 // inflate and get the view
-                View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_emergencyhelp, null);
-
-
+                View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_prevention, null);
 
                 // get string ressources
                 String tmpTextCloseDialog = ActivityPrevention.this.getResources().getString(R.string.textDialogPreventionCloseDialog);
@@ -149,7 +205,7 @@ public class ActivityPrevention extends AppCompatActivity {
                         // Add close button
                         .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                alertDialogSettings.cancel();
+                                alertDialogPrevention.cancel();
                             }
                         })
 
@@ -157,21 +213,13 @@ public class ActivityPrevention extends AppCompatActivity {
                         .setTitle(tmpTextTitleDialog);
 
                 // and create
-                alertDialogSettings = builder.create();
+                alertDialogPrevention = builder.create();
 
                 // and show the dialog
                 builder.show();
-
             }
         });
-
     }
-
-    */
-
-
-
-
 
 
     @Override

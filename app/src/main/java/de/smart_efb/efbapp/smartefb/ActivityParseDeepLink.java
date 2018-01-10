@@ -19,6 +19,7 @@ public class ActivityParseDeepLink extends Activity {
     public static final String MEETING = "/meeting";
     public static final String SETTINGS = "/settings";
     public static final String FAQ = "/faq";
+    public static final String PREVENTION = "/prevention";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,13 @@ public class ActivityParseDeepLink extends Activity {
         } else if (FAQ.equals(path)) {
             // Launch settings
             Intent intent = new Intent(this, ActivityFaq.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra("com",tmpCommand);
+            startActivity(intent);
+
+        } else if (PREVENTION.equals(path)) {
+            // Launch prevention
+            Intent intent = new Intent(this, ActivityPrevention.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra("com",tmpCommand);
             startActivity(intent);

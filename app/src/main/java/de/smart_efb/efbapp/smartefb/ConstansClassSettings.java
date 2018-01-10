@@ -60,7 +60,16 @@ class ConstansClassSettings {
     static final String urlConnectionSendMeetingDataToServer = "http://192.168.178.28/index.php?com=exchange&subcom=sendmeetingdata";
 
 
-    // Setting for acoustics and visual notification
+
+    // Setting for Visuals and visual notification
+    static final String namePrefsNotificationVisualSignal_ConnectBook = "notificationVisualSignal_ConnectBook";
+    static final String namePrefsNotificationVisualSignal_OurArrangement = "notificationVisualSignal_OurArrangment";
+    static final String namePrefsNotificationVisualSignal_OurArrangementEvaluation = "notificationVisualSignal_OurArrangmentEvaluation";
+    static final String namePrefsNotificationVisualSignal_OurGoal = "notificationVisualSignal_OurGoal";
+    static final String namePrefsNotificationVisualSignal_OurGoalEvaluation = "notificationVisualSignal_OurGoalEvaluation";
+    static final String namePrefsNotificationVisualSignal_Message = "notificationVisualSignal_Message";
+    
+    // Setting for acoustics notification
     static final String namePrefsNotificationAcousticSignal_ConnectBook = "notificationAcousticSignal_ConnectBook";
     static final String namePrefsNotificationAcousticSignal_OurArrangement = "notificationAcousticSignal_OurArrangment";
     static final String namePrefsNotificationAcousticSignal_OurArrangementEvaluation = "notificationAcousticSignal_OurArrangmentEvaluation";
