@@ -24,10 +24,6 @@ class ConstansClassXmlParser {
     // xml name for element main client pin
     static final String xmlNameForMainClientPin = "clientpin";
 
-    // xml name for element main_meetingId
-    static final String xmlNameForMain_MeetingId = "meetingid";
-
-
 
 
     //

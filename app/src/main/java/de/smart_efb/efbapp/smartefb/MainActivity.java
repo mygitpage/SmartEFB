@@ -198,6 +198,14 @@ public class MainActivity extends AppCompatActivity {
 
         super.onStart();
 
+
+        // for testing
+        //prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,0); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
+        //prefsEditor.commit();
+
+
+
+
         // start exchange service with intent, when case is open!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
             setAlarmForExchangeService();

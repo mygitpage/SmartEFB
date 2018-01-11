@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.util.Xml;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -308,8 +309,9 @@ public class SettingsEfbFragmentA extends Fragment {
             TextView textViewConnectedWithServerErrorTextError = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerConnectionErrorTextError);
             // get last error text from prefs (ActivitySettingsEfb) and show
             String lastErrorText = ((ActivitySettingsEfb)getActivity()).getLastErrorText();
-            textViewConnectedWithServerErrorTextError.setText(lastErrorText + " (Position:Settings)");
+            textViewConnectedWithServerErrorTextError.setText(lastErrorText);
             textViewConnectedWithServerErrorTextError.setVisibility(View.VISIBLE);
+            ((ActivitySettingsEfb)getActivity()).deleteLastErrorText(); // delete last error text!!!
 
             // show error post intro text
             TextView textViewConnectedWithServerErrorPostIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerConnectionErrorPostIntro);
@@ -422,6 +424,9 @@ public class SettingsEfbFragmentA extends Fragment {
                 // call xml parser with input
                 EfbXmlParser xmlparser = new EfbXmlParser(fragmentConnectToServerContext);
                 returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
+
+                Log.d("First Connect -->","INputStream:"+stringBuilder.toString().trim());
+
 
                 // close input stream and disconnect
                 answerInputStream.close();

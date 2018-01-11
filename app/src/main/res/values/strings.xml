@@ -1117,8 +1117,24 @@
         <string name="textPreventionNothingThere">Zurzeit liegen keine Präventionsinhalte vor.</string>
 
     <string name="preventionDepressionHeadlineText">Depression</string>
-    <string name="preventionDepressionExplainText">Ein interessantes Video (\"Ich hatte einen schwarzen Hund\") zur Entstehung, Auswirkungen und Hilfmöglichkeiten zur Depression</string>
-    <string name="preventionDepressionLinkToVideo"><a href="smart.efb.deeplink://linkin/prevention?com=showvideo_depression">Video anschauen</a>\n\nDirekter Link zum Video: https://www.youtube.com/watch?v=1UiA32Qv4yE</string>
+    <string name="preventionDepressionExplainText">Ein interessantes Video (\"Ich hatte einen schwarzen Hund\") zur Entstehung, Auswirkungen und Hilfsmöglichkeiten bei einer Depression. Der direkte Link zum Youtube-Video lautet: https://www.youtube.com/watch?v=1UiA32Qv4yE</string>
+    <string name="preventionDepressionLinkToVideo">Video anschauen</string>
+
+    <string name="preventionPainHeadlineText">Schmerz</string>
+    <string name="preventionPainExplainText">Spannendes Viedeo für Eltern und Kinder: Wie kann man Schmerzen verstehen, die keine körperliche Ursache haben und wie kann man damit umgehen. Den Schmerz verstehen - und was zu tun ist in 10 Minuten, vom deutschen Kinderschmerzzentrum. Der direkte Link zum Youtube-Video lautet: https://www.youtube.com/watch?v=KpJfixYgBrw </string>
+
+    <string name="preventionMediaCompetenceHeadlineText">Medienkompetenz</string>
+    <string name="preventionMediaCompetenceExplainText1">Mit dem neuen SCHAU HIN!-Medienquiz können Eltern zusammen mit ihrem Kind das eigene Wissen zu Internet, TV, mobilen Geräten, sozialen Netzwerken und Games testen und damit ihre Medienkompetenz spielerisch stärken (vom Bundesministerium für Familien, Senioren, Frauen und Jugend).</string>
+    <string name="preventionMediaCompetenceExplainText1Link"><a href="smart.efb.deeplink://linkin/prevention?com=open_link_medienquiz_schau_hin">Medienquiz Schau hin</a></string>
+
+    <string name="preventionMediaCompetenceExplainText2">Kompetente und kritische Nutzung von Medien. Im Auftrage der Europäischen Kommission</string>
+    <string name="preventionMediaCompetenceExplainText2Link"><a href="smart.efb.deeplink://linkin/prevention?com=open_link_klicksafe">Klicksafe</a></string>
+
+
+
+
+    <string name="btnPreventionShowVideo">Video anschauen</string>
+    <string name="toastNoLinkGoalFound">Es wurde keine App zum öffnen der Inhalte gefunden!</string>
 
     <!-- end prevention -->
 

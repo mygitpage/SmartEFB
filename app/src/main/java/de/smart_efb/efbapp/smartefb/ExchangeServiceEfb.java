@@ -2126,7 +2126,7 @@ import java.util.Map;
             // get data from intent
             intentExtras = intent.getExtras();
 
-            if (intentExtras != null && !this.isRunning && !prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+            if (intentExtras != null && !this.isRunning && !prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false) && prefs.getInt(ConstansClassSettings.namePrefsConnectingStatus, 0) == 3) {
 
                 // get command from intent extras
                 String command = intentExtras.getString("com");

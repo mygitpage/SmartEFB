@@ -220,7 +220,6 @@ public class EfbXmlParser {
         String tmpClientId = "";
         String tmpMainOrder = "";
         String tmpErrorText = "";
-        String tmpMeetingId = "";
 
         try {
 
@@ -233,19 +232,12 @@ public class EfbXmlParser {
                         case ConstansClassXmlParser.xmlNameForMain_Order: // xml data order
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) {
-                                if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
+                                if (xpp.getText().trim().length() > 0) { // check if main order from xml > 0
                                     tmpMainOrder = xpp.getText().trim(); // copy main order
                                 }
                             }
                             break;
-                        case ConstansClassXmlParser.xmlNameForMain_ErrorText: // xml data error text
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) {
-                                if (xpp.getText().trim().length() > 0) { // check if clientid from xml > 0
-                                    tmpErrorText = xpp.getText().trim(); // copy main order
-                                }
-                            }
-                            break;
+
                         case ConstansClassXmlParser.xmlNameForMain_ClientID: // xml data client id
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) {
@@ -254,24 +246,25 @@ public class EfbXmlParser {
                                 }
                             }
                             break;
-                        case ConstansClassXmlParser.xmlNameForMain_MeetingId: // xml data make meeting
-                            eventType = xpp.next();
 
+                        case ConstansClassXmlParser.xmlNameForMain_ErrorText: // xml data error text
+                            eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) {
-                                if (xpp.getText().trim().length() > 0) { // check if meetingid from xml > 0
-                                    tmpMeetingId = xpp.getText().trim();
+                                if (xpp.getText().trim().length() > 0) { // check if error text from xml > 0
+                                    tmpErrorText = xpp.getText().trim(); // copy error text
                                 }
                             }
                             break;
                     }
-                } else if (eventType == XmlPullParser.END_DOCUMENT) {
+                }
+                else if (eventType == XmlPullParser.END_DOCUMENT) {
 
                     readMoreXml = false;
 
-                } else if (eventType == XmlPullParser.END_TAG) {
-                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain)) {
-                        if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Init) && tmpClientId.trim().length() > 0) { // init client smartphone
-                            // set case close to true
+                } else if (eventType == XmlPullParser.END_TAG && xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain)) {
+
+                    if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Init) && tmpClientId.trim().length() > 0) { // init client smartphone
+                            // set case close to false
                             prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, false);
                             // write client id to prefs
                             prefsEditor.putString(ConstansClassSettings.namePrefsClientId, tmpClientId);
@@ -290,20 +283,22 @@ public class EfbXmlParser {
                             returnMap.put("Error", "0");
                             returnMap.put("ErrorText", "");
                             readMoreXml = false;
-                        }
-                    } else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Receive_Ok_Send)) { // data send and now receive data
+                    }
+                    else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Receive_Ok_Send)) { // data send and now receive data
                         returnMap.put("ClientId", tmpClientId);
                         returnMap.put("SendSuccessfull", "1");
                         readMoreXml = false;
 
-                    } else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Data)) { // receive data
+                    }
+                    else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Data)) { // receive data
 
                         readMoreXml = false;
 
-                    } else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Error)) { // Error in main tag
+                    }
+                    else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Error)) { // Error in main tag
 
                         // write last error messages to prefs
-                        prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText + " (Position:Main)");
+                        prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText);
                         // set connection status to error
                         prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 1); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
                         prefsEditor.commit();

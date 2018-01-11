@@ -48,6 +48,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
 
+            // prevention depression
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,25 +59,173 @@
                     android:id="@+id/preventionDepressionHeadline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="16dp"
                     android:textColor="@color/colorPrimaryDark"
                     android:text="@string/preventionDepressionHeadlineText"
                     android:gravity="left"
                     android:textStyle="bold"
                     android:layout_marginLeft="3dp"/>
 
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/preventionDepressionExplain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/preventionDepressionExplainText"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
+
+            <Button
+                android:id="@+id/buttonShowVideoDepression"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/app_button_style"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/btnPreventionShowVideo"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:padding="10dp"/>
+
+            <TextView
+                android:id="@+id/borderBetweenSection1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"/>
+
+
+            // prevention media competence
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/list_element_style">
+
                 <TextView
-                    android:id="@+id/preventionDepressionExplain"
+                    android:id="@+id/preventionMediaCompetenceHeadline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="13dp"
+                    android:textSize="16dp"
                     android:textColor="@color/colorPrimaryDark"
-                    android:text="@string/preventionDepressionExplainText"
+                    android:text="@string/preventionMediaCompetenceHeadlineText"
                     android:gravity="left"
+                    android:textStyle="bold"
                     android:layout_marginLeft="3dp"/>
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/preventionMediaCompetenceExplain1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/preventionMediaCompetenceExplainText1"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
+
+            <TextView
+                android:id="@+id/preventionMediaCompetenceLinkToVideo1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorLink="@color/colorPrimary"
+                android:text="@string/preventionMediaCompetenceExplainText1Link"
+                android:gravity="right"
+                android:paddingTop="20dp"/>
+
+
+            <TextView
+                android:id="@+id/preventionMediaCompetenceExplain2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/preventionMediaCompetenceExplainText2"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"
+                android:paddingTop="20dp"/>
+
+            <TextView
+                android:id="@+id/preventionMediaCompetenceLinkToVideo2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorLink="@color/colorPrimary"
+                android:text="@string/preventionMediaCompetenceExplainText2Link"
+                android:gravity="right"
+                android:paddingTop="20dp"/>
+
+
+
+            <TextView
+                android:id="@+id/borderBetweenSection2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"/>
+
+
+
+            // prevention pain
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/list_element_style">
+
+                <TextView
+                    android:id="@+id/preventionPainHeadline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="@string/preventionPainHeadlineText"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="3dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/preventionPainExplain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/preventionPainExplainText"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
+
+            <Button
+                android:id="@+id/buttonShowVideoPain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/app_button_style"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/btnPreventionShowVideo"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:padding="10dp"/>
+
+
+            <!--
             <TextView
                 android:id="@+id/preventionDepressionLinkToVideo"
                 android:layout_width="match_parent"
@@ -97,7 +246,7 @@
                 android:layout_marginRight="40dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"/>
-
+-->
         </LinearLayout>
 
     </ScrollView>

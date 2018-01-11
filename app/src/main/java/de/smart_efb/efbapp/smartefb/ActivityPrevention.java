@@ -1,17 +1,21 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -33,6 +37,8 @@ public class ActivityPrevention extends AppCompatActivity {
     // reference to dialog settings
     AlertDialog alertDialogPrevention;
 
+    View preventionView;
+
 
 
 
@@ -42,6 +48,8 @@ public class ActivityPrevention extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_efb_prevention);
+
+        preventionView = this.findViewById(android.R.id.content);
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
@@ -53,9 +61,8 @@ public class ActivityPrevention extends AppCompatActivity {
         // create help dialog
         createHelpDialog();
 
-
-
-
+        // show prevention view
+        displayPreventionView();
 
 
         // check for intent on start time
@@ -97,6 +104,79 @@ public class ActivityPrevention extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
+
+
+
+
+    void displayPreventionView () {
+
+        TextView tmpLinkToVideo;
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // get button show video depression
+        Button buttonShowVideoDepression = (Button) preventionView.findViewById(R.id.buttonShowVideoDepression);
+
+        // set onClick listener send intent to youtube app or browser
+        buttonShowVideoDepression.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // play video
+                String idVideo = "1UiA32Qv4yE";
+                sendIntentForYouTubeVideo(idVideo);
+            }
+        });
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // get button show video pain
+        Button buttonShowVideoPain = (Button) preventionView.findViewById(R.id.buttonShowVideoPain);
+
+        // set onClick listener send intent to youtube app or browser
+        buttonShowVideoPain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // play video
+                String idVideo = "KpJfixYgBrw";
+                sendIntentForYouTubeVideo(idVideo);
+            }
+        });
+
+
+
+        // get textview for Link to media competence medienquiz schaun hin
+        tmpLinkToVideo = (TextView) preventionView.findViewById(R.id.preventionMediaCompetenceLinkToVideo1);
+        tmpLinkToVideo.setMovementMethod(LinkMovementMethod.getInstance());
+
+        // get textview for Link to media competence klicksafe
+        tmpLinkToVideo = (TextView) preventionView.findViewById(R.id.preventionMediaCompetenceLinkToVideo2);
+        tmpLinkToVideo.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+
+
+
+
+
+    }
+
+
+
+
+    void sendIntentForYouTubeVideo(String videoId) {
+
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoId));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=" + videoId));
+        try {
+            startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            startActivity(webIntent);
+        }
+    }
+
+
+
+
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
@@ -157,9 +237,38 @@ public class ActivityPrevention extends AppCompatActivity {
     // execute the commands that comes from link or intend
     public void executeIntentCommand (String command) {
 
-        if (command.equals("show_section1")) { // Show fragment for overview
+        if (command.equals("open_link_medienquiz_schau_hin")) {
+
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://medienquiz.schau-hin.info"));
+            try {
+                startActivity(webIntent);
+            }
+            catch (ActivityNotFoundException ex) {
+                String textCaseClose = ActivityPrevention.this.getString(R.string.toastNoLinkGoalFound);
+                Toast toast = Toast.makeText(ActivityPrevention.this, textCaseClose, Toast.LENGTH_LONG);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if( v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
+            }
 
         }
+        else if (command.equals("open_link_klicksafe")) {
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.klicksafe.de"));
+            try {
+                startActivity(webIntent);
+            }
+            catch (ActivityNotFoundException ex) {
+                String textCaseClose = ActivityPrevention.this.getString(R.string.toastNoLinkGoalFound);
+                Toast toast = Toast.makeText(ActivityPrevention.this, textCaseClose, Toast.LENGTH_LONG);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if( v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
+            }
+        }
+
+
+
+
     }
 
 

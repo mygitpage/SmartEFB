@@ -12,13 +12,6 @@ class ConstansClassMain {
     // app version number of local installation
     static final String namePrefsNumberAppVersion = "smartEfbAppNumberVersion";
 
-
-
-
-
-
-
-
     // prefs name for the prefs main name
     static final String namePrefsMainNamePrefs = "smartEfbSettings";
 

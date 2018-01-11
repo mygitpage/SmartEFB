@@ -373,6 +373,14 @@ public class ActivitySettingsEfb extends AppCompatActivity {
     }
 
 
+    public void deleteLastErrorText () {
+
+        prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
+
+        prefsEditor.commit();
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
