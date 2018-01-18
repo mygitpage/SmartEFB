@@ -124,6 +124,7 @@ public class EfbXmlParser {
 
         returnMap.put("Settings", "0");
         returnMap.put("SettingsOtherMenueItems","0");
+        returnMap.put("InvolvedPerson","0");
         returnMap.put("Case_close", "0");
     }
 
@@ -184,6 +185,11 @@ public class EfbXmlParser {
                         case ConstansClassXmlParser.xmlNameForSettings:
                             if (masterElementFound) {
                                 readSettingTag();
+                            }
+                            break;
+                        case ConstansClassXmlParser.xmlNameForSettings_CaseInvolvedPerson:
+                            if (masterElementFound) {
+                                readSettingInvolvedPersonTag();
                             }
                             break;
                     }
@@ -4756,6 +4762,199 @@ public class EfbXmlParser {
                                 returnMap.put("Settings","1");
                                 returnMap.put("SettingsOtherMenueItems","1");
 
+                            }
+                        }
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs(29);
+            e.printStackTrace();
+        } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs(30);
+            e.printStackTrace();
+        }
+    }
+
+
+    // read element involved person
+    private void readSettingInvolvedPersonTag() {
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml our arrangement settings comment tag
+        Boolean error = false;
+
+        // tmp data for prefs and database insert
+        String tmpInvolvedPersonName = "";
+        String tmpInvolvedPersonFunction = "";
+        String tmpInvolvedPersonPrecenseTextOne = "";
+        String tmpInvolvedPersonPrecenseTextTwo = "";
+        Long tmpInvolvedPersonPrecenseTwoStart = 0L;
+        Long tmpInvolvedPersonPrecenseTwoEnd = 0L;
+        Long tmpInvolvedPersonModifiedTime = 0L;
+
+        // involved person order
+        String tmpOrder = "";
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+                if (eventType == XmlPullParser.START_TAG) {
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForSettings_CaseInvolvedPersonOrder:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+                        case ConstansClassXmlParser.xmlNameForSettings_CaseInvolvedPersonName:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get name for involved person
+                                if (xpp.getText().trim().length() > 0) { // check name from xml > 0
+                                    tmpInvolvedPersonName = xpp.getText().trim();
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForSettings_CaseInvolvedPersonFunction:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get function for involved person
+                                if (xpp.getText().trim().length() > 0) { // check function from xml > 0
+                                    tmpInvolvedPersonFunction = xpp.getText().trim();
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForSettings_CaseInvolvedPersonPrecenseOne:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get precense text one for involved person
+                                if (xpp.getText().trim().length() > 0) { // check text from xml > 0
+                                    tmpInvolvedPersonPrecenseTextOne = xpp.getText().trim();
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForSettings_CaseInvolvedPersonPrecenseTwo:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get precense text two for involved person
+                                if (xpp.getText().trim().length() > 0) { // check text from xml > 0
+                                    tmpInvolvedPersonPrecenseTextTwo = xpp.getText().trim();
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForSettings_CaseInvolvedPersonPrecenseStart:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get start time precense text two
+                                if (xpp.getText().trim().length() > 0) { // check if start time precense text two from xml > 0
+                                    tmpInvolvedPersonPrecenseTwoStart = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForSettings_CaseInvolvedPersonPrecenseEnd:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get end time precense text two
+                                if (xpp.getText().trim().length() > 0) { // check if end time precense text two from xml > 0
+                                    tmpInvolvedPersonPrecenseTwoEnd = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForSettings_CaseInvolvedPersonModifiedTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get modified time precense text two
+                                if (xpp.getText().trim().length() > 0) { // check if modified time precense text two from xml > 0
+                                    tmpInvolvedPersonModifiedTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
+                }
+
+                // look for end tag of involved person
+                if (eventType == XmlPullParser.END_TAG) {
+
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForSettings_CaseInvolvedPerson)) {
+                        // check all data for settings correct?
+                        if (!error) {
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) ) { // involved person order -> new?
+
+                                if (tmpInvolvedPersonName.length() > 0 && tmpInvolvedPersonFunction.length() > 0 && tmpInvolvedPersonModifiedTime > 0) {
+                                    // delete all content from db table
+                                    myDb.deleteTableInvolvedPerson();
+
+                                    // and insert first person
+                                    int newEntry = 1; // entry is new!
+                                    myDb.insertNewInvolvedPerson(tmpInvolvedPersonName, tmpInvolvedPersonFunction, tmpInvolvedPersonPrecenseTextOne, tmpInvolvedPersonPrecenseTextTwo, tmpInvolvedPersonPrecenseTwoStart, tmpInvolvedPersonPrecenseTwoEnd, tmpInvolvedPersonModifiedTime, newEntry);
+
+                                    // refresh activity settings because settings have change
+                                    returnMap.put("Settings","1");
+                                    returnMap.put("InvolvedPerson","1");
+                                }
+                            }
+                            else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // involved person order -> update?
+
+                                if (tmpInvolvedPersonName.length() > 0 && tmpInvolvedPersonFunction.length() > 0 && tmpInvolvedPersonModifiedTime > 0) {
+
+                                    // insert follow person
+                                    int newEntry = 1; // entry is new!
+                                    myDb.insertNewInvolvedPerson(tmpInvolvedPersonName, tmpInvolvedPersonFunction, tmpInvolvedPersonPrecenseTextOne, tmpInvolvedPersonPrecenseTextTwo, tmpInvolvedPersonPrecenseTwoStart, tmpInvolvedPersonPrecenseTwoEnd, tmpInvolvedPersonModifiedTime, newEntry);
+
+                                    // refresh activity settings because settings have change
+                                    returnMap.put("Settings","1");
+                                    returnMap.put("InvolvedPerson","1");
+                                }
                             }
                         }
                         parseAnymore = false;

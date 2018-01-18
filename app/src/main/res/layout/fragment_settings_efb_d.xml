@@ -270,6 +270,19 @@
 
 
         <TextView
+            android:id="@+id/textViewInfoNoVisualChekcBoxPossible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="30dp"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="left"
+            android:text="@string/textViewInfoNoVisualChekcBoxPossible"
+            android:visibility="gone"/>
+
+
+        <TextView
             android:id="@+id/borderBetweenAcousticsAndVisual"
             android:layout_width="match_parent"
             android:layout_height="1dp"

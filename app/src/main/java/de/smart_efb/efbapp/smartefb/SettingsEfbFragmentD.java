@@ -114,6 +114,7 @@ public class SettingsEfbFragmentD extends Fragment {
 
         CheckBox checkBox;
         Boolean showAcousticChekcBox = false;
+        Boolean showVisualChekcBox = false;
 
         // show hints for visual signals (when visual signal is off the acoustic signal is off!!!!) +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -127,6 +128,7 @@ public class SettingsEfbFragmentD extends Fragment {
             checkBox.setOnClickListener(new checkBoxSettingVisualListener("connect_book", prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_ConnectBook, true)));
             if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_ConnectBook, true)) {checkBox.setChecked(true);}
             else {checkBox.setChecked(false);}
+            showVisualChekcBox = true;
         }
 
         // check our arrangement on? -> show  notification signal check box for new event in our arrangement
@@ -139,6 +141,7 @@ public class SettingsEfbFragmentD extends Fragment {
             checkBox.setOnClickListener(new checkBoxSettingVisualListener("our_arrangement", prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangement, true)));
             if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangement, true)) {checkBox.setChecked(true);}
             else {checkBox.setChecked(false);}
+            showVisualChekcBox = true;
         }
 
         // check Our Arrangement evaluation on? -> show notification signal check box for new arrangement, sketch, comment, etc.
@@ -151,6 +154,7 @@ public class SettingsEfbFragmentD extends Fragment {
             checkBox.setOnClickListener(new checkBoxSettingVisualListener("our_arrangement_evaluation", prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangementEvaluation, true)));
             if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangementEvaluation, true)) {checkBox.setChecked(true);}
             else {checkBox.setChecked(false);}
+            showVisualChekcBox = true;
         }
 
 
@@ -164,6 +168,7 @@ public class SettingsEfbFragmentD extends Fragment {
             checkBox.setOnClickListener(new checkBoxSettingVisualListener("our_goal", prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoal, true)));
             if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoal, true)) {checkBox.setChecked(true);}
             else {checkBox.setChecked(false);}
+            showVisualChekcBox = true;
         }
 
         // check our goals evaluation on? -> show  notification signal check box for goal evaluation change
@@ -176,6 +181,7 @@ public class SettingsEfbFragmentD extends Fragment {
             checkBox.setOnClickListener(new checkBoxSettingVisualListener("our_goal_evaluation", prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoalEvaluation, true)));
             if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoalEvaluation, true)) {checkBox.setChecked(true);}
             else {checkBox.setChecked(false);}
+            showVisualChekcBox = true;
         }
 
         // check messages on? -> show  notification signal check box for message
@@ -188,15 +194,20 @@ public class SettingsEfbFragmentD extends Fragment {
             checkBox.setOnClickListener(new checkBoxSettingVisualListener("message", prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_Message, true)));
             if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_Message, true)) {checkBox.setChecked(true);}
             else {checkBox.setChecked(false);}
+            showVisualChekcBox = true;
         }
 
 
+        if (!showVisualChekcBox) {
+            TextView tmpHintTextNoVisualCheckBox = (TextView) viewFragmentD.findViewById(R.id.textViewInfoNoVisualChekcBoxPossible);
+            tmpHintTextNoVisualCheckBox.setVisibility(View.VISIBLE);
+        }
 
 
         // show hints for acoustics signals +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         
         // show acoustic signal check box for new message only when visual notification on!
-        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_ConnectBook, false)) {
+        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_ConnectBook, false) && prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_ConnectBook, false)) {
             // get linaer layout and set visible
             LinearLayout placeholderConnectBookAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerConnectBookAcoustics);
             placeholderConnectBookAcoustics.setVisibility(View.VISIBLE);
@@ -209,7 +220,7 @@ public class SettingsEfbFragmentD extends Fragment {
         }
 
         // show acoustic signal check box for new arrangement, sketch, comment, etc. only when visual notification on!
-        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangement, false)) {
+        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangement, false) && prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false)) {
             // get linaer layout and set visible
             LinearLayout placeholderArrangementAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerArrangementAcoustics);
             placeholderArrangementAcoustics.setVisibility(View.VISIBLE);
@@ -222,7 +233,7 @@ public class SettingsEfbFragmentD extends Fragment {
         }
 
         // show acoustic signal check box for arrangement evaluation only when visual notification on!
-        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangementEvaluation, false)) {
+        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangementEvaluation, false) && prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false) && prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false)) {
             // get linaer layout and set visible
             LinearLayout placeholderArrangementEvaluationAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerArrangementEvaluationAcoustics);
             placeholderArrangementEvaluationAcoustics.setVisibility(View.VISIBLE);
@@ -235,7 +246,7 @@ public class SettingsEfbFragmentD extends Fragment {
         }
 
         // show acoustic signal check box for new Goal, debetable, comment, etc.
-        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoal, false)) {
+        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoal, false) && prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false)) {
             // get linaer layout and set visible
             LinearLayout placeholderGoalAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerGoalAcoustics);
             placeholderGoalAcoustics.setVisibility(View.VISIBLE);
@@ -248,7 +259,7 @@ public class SettingsEfbFragmentD extends Fragment {
         }
 
         // show acoustic signal check box for goal evaluation change
-        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoalEvaluation, false)) {
+        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoalEvaluation, false) && prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false) && prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false)) {
             // get linaer layout and set visible
             LinearLayout placeholderGoalEvaluationAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerGoalEvaluationAcoustics);
             placeholderGoalEvaluationAcoustics.setVisibility(View.VISIBLE);
@@ -261,7 +272,7 @@ public class SettingsEfbFragmentD extends Fragment {
         }
 
         // show acoustic signal check box for new message in message
-        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_Message, true)) {
+        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_Message, true) && prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, false)) {
             // get linaer layout and set visible
             LinearLayout placeholderMessageAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerMessageAcoustics);
             placeholderMessageAcoustics.setVisibility(View.VISIBLE);

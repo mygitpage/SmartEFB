@@ -8,12 +8,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.Xml;
@@ -22,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.xmlpull.v1.XmlPullParserException;
@@ -57,6 +60,9 @@ public class SettingsEfbFragmentA extends Fragment {
 
     // shared prefs for settings
     SharedPreferences prefs;
+
+    // reference to the DB
+    DBAdapter myDb;
 
     // minimum and maximum for random number to connect to server
     static int randomNumberForConnectionMin = 10000;
@@ -116,6 +122,9 @@ public class SettingsEfbFragmentA extends Fragment {
 
         // de-register broadcast receiver
         getActivity().getApplicationContext().unregisterReceiver(settingsFragmentABrodcastReceiver);
+
+        // close db connection
+        myDb.close();
     }
 
 
@@ -126,6 +135,9 @@ public class SettingsEfbFragmentA extends Fragment {
 
         // init the prefs
         prefs = fragmentConnectToServerContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentConnectToServerContext.MODE_PRIVATE);
+
+        // init the DB
+        myDb = new DBAdapter(fragmentConnectToServerContext);
     }
 
 
@@ -335,6 +347,64 @@ public class SettingsEfbFragmentA extends Fragment {
             TextView textViewConnectedWithServerIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerSucsessfullIntro);
             textViewConnectedWithServerIntroText.setVisibility(View.VISIBLE);
             textViewConnectedWithServerIntroText.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+            // get all case involved persons like coach or clients
+            Cursor case_coaches = myDb.getInvolvedPerson("coach");
+            Cursor case_clients = myDb.getInvolvedPerson("client");
+
+
+            if (case_coaches != null && case_coaches.getCount() > 0) {
+                String tmpAllCoachesForView = "";
+
+
+                String tmpFunctionCoachString = fragmentConnectToServerContext.getResources().getString(R.string.functionStringForCoach);
+                case_coaches.moveToFirst();
+                do {
+                    tmpAllCoachesForView += case_coaches.getString(case_coaches.getColumnIndex(DBAdapter.INVOLVED_PERSON_KEY_NAME)) + " " + tmpFunctionCoachString + "<br />";
+                } while (case_coaches.moveToNext());
+
+
+                TextView textViewBorder = (TextView) viewFragmentConnectToServer.findViewById(R.id.borderBetweenMessageAndInvolvedPerson);
+                textViewBorder.setVisibility(View.VISIBLE);
+                LinearLayout linearLayoutInvolvedPersonCoaches = (LinearLayout) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonHeadline);
+                linearLayoutInvolvedPersonCoaches.setVisibility(View.VISIBLE);
+                TextView textViewInvolvedPersonCoaches = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonCoaches);
+                textViewInvolvedPersonCoaches.setText(Html.fromHtml(tmpAllCoachesForView));
+                textViewInvolvedPersonCoaches.setVisibility(View.VISIBLE);
+            }
+
+
+            Log.d("CURSOR CLIENT", "COUNT: "+case_clients.getCount());
+
+
+            if (case_clients != null && case_clients.getCount() > 0) {
+                String tmpAllClientsForView = "";
+
+
+                Log.d("FRAGMENT A", "CURSOR CLIENT OK");
+
+                case_clients.moveToFirst();
+                do {
+                    tmpAllClientsForView += case_clients.getString(case_clients.getColumnIndex(DBAdapter.INVOLVED_PERSON_KEY_NAME)) + "<br />";
+
+                    Log.d("FRAGMENT A", "CURSOR CLIENT WORK");
+
+                } while (case_clients.moveToNext());
+
+
+
+                TextView textViewInvolvedPersonClients = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonClients);
+                textViewInvolvedPersonClients.setText(Html.fromHtml(tmpAllClientsForView));
+                textViewInvolvedPersonClients.setVisibility(View.VISIBLE);
+
+
+
+
+
+            }
+
+
         }
     }
 

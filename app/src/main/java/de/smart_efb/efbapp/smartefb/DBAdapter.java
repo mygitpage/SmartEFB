@@ -36,9 +36,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     private static final String DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT = "ourGoalsDebetableGoalsComment";
     private static final String DATABASE_TABLE_MEETING_SUGGESTION = "meetingSuggestion";
     private static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
+    private static final String DATABASE_TABLE_INVOLVED_PERSON = "involvedPersonTable";
 
     // Track DB version if a new version of your app changes the format.
-    private static final int DATABASE_VERSION = 45;
+    private static final int DATABASE_VERSION = 46;
 
     // Common column names
     public static final String KEY_ROWID = "_id";
@@ -469,6 +470,36 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + ");";
 
 
+
+    /**********************************************************************************************/
+    /**********************************************************************************************/
+    // involved person- column names and numbers
+    static final String INVOLVED_PERSON_KEY_NAME = "name";
+    static final String INVOLVED_PERSON_KEY_FUNCTION = "function";
+    static final String INVOLVED_PERSON_KEY_PRESENCE_TEXT_ONE = "precense_one";
+    static final String INVOLVED_PERSON_KEY_PRESENCE_TEXT_TWO = "precense_two";
+    static final String INVOLVED_PERSON_KEY_PRESENCE_TWO_START = "precense_two_start";
+    static final String INVOLVED_PERSON_KEY_PRESENCE_TWO_END = "precense_two_end";
+    static final String INVOLVED_PERSON_KEY_MODIFIED_TIME = "modified_time";
+    static final String INVOLVED_PERSON_KEY_NEW_ENTRY = "new_entry";
+
+    // All keys from table involved person in a String
+    static final String[] INVOLVED_PERSON_ALL_KEYS = new String[]{KEY_ROWID, INVOLVED_PERSON_KEY_NAME, INVOLVED_PERSON_KEY_FUNCTION, INVOLVED_PERSON_KEY_PRESENCE_TEXT_ONE, INVOLVED_PERSON_KEY_PRESENCE_TEXT_TWO, INVOLVED_PERSON_KEY_PRESENCE_TWO_START, INVOLVED_PERSON_KEY_PRESENCE_TWO_END, INVOLVED_PERSON_KEY_MODIFIED_TIME, INVOLVED_PERSON_KEY_NEW_ENTRY};
+
+    // SQL String to create involved person table
+    private static final String DATABASE_CREATE_SQL_INVOLVED_PERSON =
+            "create table " + DATABASE_TABLE_INVOLVED_PERSON + " (" + KEY_ROWID + " integer primary key autoincrement, "
+                    + INVOLVED_PERSON_KEY_NAME + " STRING not null, "
+                    + INVOLVED_PERSON_KEY_FUNCTION + " STRING not null, "
+                    + INVOLVED_PERSON_KEY_PRESENCE_TEXT_ONE + " TEXT not null, "
+                    + INVOLVED_PERSON_KEY_PRESENCE_TEXT_TWO + " TEXT not null, "
+                    + INVOLVED_PERSON_KEY_PRESENCE_TWO_START + " INTEGER not null, "
+                    + INVOLVED_PERSON_KEY_PRESENCE_TWO_END + " INTEGER not null, "
+                    + INVOLVED_PERSON_KEY_MODIFIED_TIME + " INTEGER not null, "
+                    + INVOLVED_PERSON_KEY_NEW_ENTRY + " INTEGER DEFAULT 0"
+                    + ");";
+
+
     /**********************************************************************************************/
     /************************ End of table definitions **********************************************************************/
 
@@ -514,9 +545,11 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Create table Our Goals Debetable Goals Comment
         _db.execSQL(DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_GOALS_COMMENT);
 
-        // Create table Meeting Find Meeting
+        // Create table Meeting
         _db.execSQL(DATABASE_CREATE_SQL_MEETING_SUGGESTION);
 
+        // Create table involved person
+        _db.execSQL(DATABASE_CREATE_SQL_INVOLVED_PERSON);
 
     }
 
@@ -554,6 +587,9 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Destroy table Meeting and Suggestion
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_MEETING_SUGGESTION);
+
+        // Destroy table Meeting and Suggestion
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_INVOLVED_PERSON);
 
 
         // Recreate new database:
@@ -2646,6 +2682,95 @@ public class DBAdapter extends SQLiteOpenHelper {
     /****************************************************************************************************************************/
 
 
+
+
+    /********************************* TABLES FOR FUNCTION: Involved Person ******************************************/
+
+    // Add a new case involved person in db
+    void insertNewInvolvedPerson(String tmpName, String tmpFunction, String tmpPrecenseTextOne, String tmpPrecenseTextTwo, Long tmpPrecenseTwoStart, Long tmpPrecenseTwoEnd, Long tmpModifiedTime, int tmpNewEntry) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues initialValues = new ContentValues();
+
+        initialValues.put(INVOLVED_PERSON_KEY_NAME, tmpName);
+        initialValues.put(INVOLVED_PERSON_KEY_FUNCTION, tmpFunction);
+        initialValues.put(INVOLVED_PERSON_KEY_PRESENCE_TEXT_ONE, tmpPrecenseTextOne);
+        initialValues.put(INVOLVED_PERSON_KEY_PRESENCE_TEXT_TWO, tmpPrecenseTextTwo);
+        initialValues.put(INVOLVED_PERSON_KEY_PRESENCE_TWO_START, tmpPrecenseTwoStart);
+        initialValues.put(INVOLVED_PERSON_KEY_PRESENCE_TWO_END, tmpPrecenseTwoEnd);
+        initialValues.put(INVOLVED_PERSON_KEY_MODIFIED_TIME, tmpModifiedTime);
+        initialValues.put(INVOLVED_PERSON_KEY_NEW_ENTRY, tmpNewEntry);
+
+        // Insert it into the database.
+        db.insert(DATABASE_TABLE_INVOLVED_PERSON, null, initialValues);
+    }
+
+
+    // delete all content from table involved person
+    void deleteTableInvolvedPerson () {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // delete content from involved person table
+        db.delete(DATABASE_TABLE_INVOLVED_PERSON, null, null);
+
+    }
+
+
+
+    // Return selected persons with function like coach or client or both
+    Cursor getInvolvedPerson (String functionOfPerson) {
+
+        String where = "";
+        String sort = "";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        switch (functionOfPerson) {
+
+            case "coach":
+                where = INVOLVED_PERSON_KEY_FUNCTION + "='coach'";
+                sort = INVOLVED_PERSON_KEY_NAME + " DESC";
+                break;
+            case "client":
+                where = INVOLVED_PERSON_KEY_FUNCTION + "='client'";
+                sort = INVOLVED_PERSON_KEY_NAME + " DESC";
+                break;
+            case "all":
+                where = INVOLVED_PERSON_KEY_FUNCTION + "='client' OR " + INVOLVED_PERSON_KEY_FUNCTION + "='coach'";
+                sort = INVOLVED_PERSON_KEY_NAME + " DESC";
+                break;
+            default:
+                where = INVOLVED_PERSON_KEY_FUNCTION + "='coach'";
+                sort = INVOLVED_PERSON_KEY_NAME + " DESC";
+                break;
+        }
+
+        Cursor c = db.query(true, DATABASE_TABLE_INVOLVED_PERSON, INVOLVED_PERSON_ALL_KEYS,
+                where, null, null, null, sort, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+
+    }
+
+
+
+
+
+
+
+    /********************************* End!! TABLES FOR FUNCTION: Involved Person ***************************************/
+    /****************************************************************************************************************************/
+
+
+
+
+
     // delete all content from all tables, call by init process
     void initDeleteAllContentFromTables() {
 
@@ -2680,6 +2805,9 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // delete content from arrangement comment table
         db.delete(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, null, null);
+
+        // delete content from involved person table
+        db.delete(DATABASE_TABLE_INVOLVED_PERSON, null, null);
 
     }
 

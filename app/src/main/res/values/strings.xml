@@ -119,6 +119,8 @@
             <string name="settingsConnectToServerErrorPostIntroText">Bitte teilen Sie diesen Fehlertext Ihrer Beraterin/ Ihrem Berater mit. Kehren Sie anschließend zum Hauptmenü zurück und versuchen Sie es noch einmal.</string>
             <string name="settingsSendingToServerDialogInfoText">Daten senden</string>
             <string name="hintTextCaseCloseIntroText">Der Fall wurde von Ihrer Beraterin/ Ihrem Berater abgeschlossen. Daher werden keine weiteren Nachrichten, Kommentare, etc. gesendet oder empfangen. Wenn Sie möchten, können Sie die App deinstallieren. Beachten Sie aber, dass dann der gesamte Kommunikationsverlauf gelöscht wird.</string>
+        <string name="settingsSendingToServerInvolvedPersonHeadlineText">Beteiligte an dieser App-Beratung</string>
+    <string name="functionStringForCoach">(BeraterIn)</string>
         <!-- End Fragment settings a (connect to server) -->
 
         <!-- Subtitle under Title Settings -->
@@ -168,6 +170,7 @@
             <string name="checkBoxOurGoalVisualSignalText">Ereignisse in den Zielen</string>
             <string name="checkBoxOurGoalEvaluationVisualSignalText">Wechsel der Evaluationsperioden in den Zielen</string>
             <string name="checkBoxMessageVisualSignalText">Ereignisse in der Nachrichtenfunktion</string>
+            <string name="textViewInfoNoVisualChekcBoxPossible">Da alle Funktionen ausgeschaltete sind, können zurzeit keine Einstellungen vorgenommen werden.</string>
 
             <string name="settingsEfbFragmentDAcousticsSignalsHeadline">Akustische Hinweise</string>
             <string name="settingsEfbFragmentDAcousticsSignalsIntroText">Bei folgenden Ereignissen soll neben dem visuellen Hinweis ein Hinweiston gespielt werden</string>

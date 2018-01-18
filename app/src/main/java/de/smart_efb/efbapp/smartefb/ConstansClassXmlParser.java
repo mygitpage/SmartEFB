@@ -646,6 +646,33 @@ class ConstansClassXmlParser {
         // xml name for element settings case close
         static final String xmlNameForSettings_CaseClose ="settings_caseclose";
 
+    // xml name for element case involved person
+    static final String xmlNameForSettings_CaseInvolvedPerson ="case_involved_person";
+
+        // xml name for element case involved person order
+        static final String xmlNameForSettings_CaseInvolvedPersonOrder ="case_involved_person_order";
+
+        // xml name for element case involved person name
+        static final String xmlNameForSettings_CaseInvolvedPersonName ="case_involved_person_name";
+
+        // xml name for element case involved person function
+        static final String xmlNameForSettings_CaseInvolvedPersonFunction ="case_involved_person_function";
+
+        // xml name for element case involved person precense text one
+        static final String xmlNameForSettings_CaseInvolvedPersonPrecenseOne ="case_involved_person_precense_one";
+
+        // xml name for element case involved person precense text two
+        static final String xmlNameForSettings_CaseInvolvedPersonPrecenseTwo ="case_involved_person_precense_two";
+
+        // xml name for element case involved person precense text two start time
+        static final String xmlNameForSettings_CaseInvolvedPersonPrecenseStart ="case_involved_person_precense_start";
+
+        // xml name for element case involved person precense text two end time
+        static final String xmlNameForSettings_CaseInvolvedPersonPrecenseEnd ="case_involved_person_precense_end";
+
+        // xml name for element case involved person precense text two modified time
+        static final String xmlNameForSettings_CaseInvolvedPersonModifiedTime ="case_involved_person_precense_modified";
+
     //
     // ++++++++++++++++++++++ End Main Settings ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //
