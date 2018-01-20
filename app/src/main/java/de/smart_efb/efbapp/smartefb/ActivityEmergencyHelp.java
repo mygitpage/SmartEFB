@@ -33,6 +33,9 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
     // reference to dialog settings
     AlertDialog alertDialogEmergencyHelp;
 
+    // for prefs
+    private SharedPreferences prefs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,16 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
 
         // create help dialog
         createHelpDialog();
+
+        // first ask to server for new data, when case is not closed!
+        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+            // send intent to service to start the service
+            Intent startServiceIntent = new Intent(getApplicationContext(), ExchangeServiceEfb.class);
+            // set command = "ask new data" on server
+            startServiceIntent.putExtra("com", "ask_new_data");
+            // start service
+            getApplicationContext().startService(startServiceIntent);
+        }
     }
 
 
@@ -62,6 +75,9 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        // open sharedPrefs
+        prefs =  getApplicationContext().getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, getApplicationContext().MODE_PRIVATE);
     }
 
 

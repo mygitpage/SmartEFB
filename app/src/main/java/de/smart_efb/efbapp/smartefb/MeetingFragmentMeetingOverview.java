@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,6 +33,9 @@ public class MeetingFragmentMeetingOverview extends Fragment {
 
     // reference to the DB
     DBAdapter myDb;
+
+    // shared prefs for the settings
+    SharedPreferences prefs;
 
     // ListView for meetings and suggestion
     ListView listViewMeetingSuggestion = null;
@@ -65,6 +69,16 @@ public class MeetingFragmentMeetingOverview extends Fragment {
 
         // show actual meeting and suggestion informations
         displayActualMeetingSuggestionInformation();
+
+        // first ask to server for new data, when case is not closed!
+        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+            // send intent to service to start the service
+            Intent startServiceIntent = new Intent(fragmentMeetingContext, ExchangeServiceEfb.class);
+            // set command = "ask new data" on server
+            startServiceIntent.putExtra("com", "ask_new_data");
+            // start service
+            fragmentMeetingContext.startService(startServiceIntent);
+        }
     }
 
 
@@ -75,6 +89,10 @@ public class MeetingFragmentMeetingOverview extends Fragment {
 
         // find the listview for display meetings and suggestion, etc.
         listViewMeetingSuggestion = (ListView) viewFragmentMeeting.findViewById(R.id.listViewMeetingDates);
+
+        // init the prefs
+        prefs = fragmentMeetingContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentMeetingContext.MODE_PRIVATE);
+
     }
 
 

@@ -13,7 +13,6 @@ import android.util.Log;
  */
 public class ActivityParseDeepLink extends Activity {
 
-
     public static final String OUR_ARRANGEMENT = "/ourarrangement";
     public static final String OUR_GOALS = "/ourgoals";
     public static final String MEETING = "/meeting";
@@ -49,7 +48,6 @@ public class ActivityParseDeepLink extends Activity {
 
         // get data that comes with intent-link from URI
         tmpCommand = (deepLink.getQueryParameter("com"));
-
 
         if (OUR_ARRANGEMENT.equals(path)) {
 

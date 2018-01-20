@@ -51,6 +51,16 @@ public class ActivityTimeTable extends AppCompatActivity {
 
         // set progress value
         setTimeTableValue ();
+
+        // first ask to server for new data, when case is not closed!
+        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+            // send intent to service to start the service
+            Intent startServiceIntent = new Intent(getApplicationContext(), ExchangeServiceEfb.class);
+            // set command = "ask new data" on server
+            startServiceIntent.putExtra("com", "ask_new_data");
+            // start service
+            getApplicationContext().startService(startServiceIntent);
+        }
     }
 
 

@@ -51,7 +51,7 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
     // reference to the DB
     DBAdapter myDb;
 
-    // shared prefs for the settings
+    // shared prefs
     SharedPreferences prefs;
 
     // cursor for the canceled meeting
@@ -94,6 +94,16 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
 
         // build view
         buildFragmentClientCanceledMeetingView();
+
+        // first ask to server for new data, when case is not closed!
+        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+            // send intent to service to start the service
+            Intent startServiceIntent = new Intent(fragmentClientCanceledMeetingContext, ExchangeServiceEfb.class);
+            // set command = "ask new data" on server
+            startServiceIntent.putExtra("com", "ask_new_data");
+            // start service
+            fragmentClientCanceledMeetingContext.startService(startServiceIntent);
+        }
     }
 
 

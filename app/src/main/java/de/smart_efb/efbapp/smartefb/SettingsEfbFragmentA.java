@@ -113,6 +113,16 @@ public class SettingsEfbFragmentA extends Fragment {
 
         // show actual connecting informations
         displayActualConnectingInformation();
+
+        // first ask to server for new data, when case is not closed!
+        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+            // send intent to service to start the service
+            Intent startServiceIntent = new Intent(fragmentConnectToServerContext, ExchangeServiceEfb.class);
+            // set command = "ask new data" on server
+            startServiceIntent.putExtra("com", "ask_new_data");
+            // start service
+            fragmentConnectToServerContext.startService(startServiceIntent);
+        }
     }
 
 
@@ -348,63 +358,91 @@ public class SettingsEfbFragmentA extends Fragment {
             textViewConnectedWithServerIntroText.setVisibility(View.VISIBLE);
             textViewConnectedWithServerIntroText.setMovementMethod(LinkMovementMethod.getInstance());
 
-
             // get all case involved persons like coach or clients
             Cursor case_coaches = myDb.getInvolvedPerson("coach");
             Cursor case_clients = myDb.getInvolvedPerson("client");
 
+            Boolean first_set = true;
+            String modifiedTime = "";
+            String tmpAllCoachesForView = "";
 
             if (case_coaches != null && case_coaches.getCount() > 0) {
-                String tmpAllCoachesForView = "";
-
 
                 String tmpFunctionCoachString = fragmentConnectToServerContext.getResources().getString(R.string.functionStringForCoach);
                 case_coaches.moveToFirst();
                 do {
                     tmpAllCoachesForView += case_coaches.getString(case_coaches.getColumnIndex(DBAdapter.INVOLVED_PERSON_KEY_NAME)) + " " + tmpFunctionCoachString + "<br />";
+                    if (first_set) {
+                        modifiedTime = EfbHelperClass.timestampToDateFormat(case_coaches.getLong(case_coaches.getColumnIndex(DBAdapter.INVOLVED_PERSON_KEY_MODIFIED_TIME)), "dd.MM.yyyy - HH:mm");
+                        first_set = false;
+                    }
                 } while (case_coaches.moveToNext());
 
+                // add client names when possible
+                if (case_clients != null && case_clients.getCount() > 0) {
+                    case_clients.moveToFirst();
+                    do {
+                        tmpAllCoachesForView += case_clients.getString(case_clients.getColumnIndex(DBAdapter.INVOLVED_PERSON_KEY_NAME)) + "<br />";
+                    } while (case_clients.moveToNext());
+                }
 
-                TextView textViewBorder = (TextView) viewFragmentConnectToServer.findViewById(R.id.borderBetweenMessageAndInvolvedPerson);
-                textViewBorder.setVisibility(View.VISIBLE);
+                // put involved person to view
                 LinearLayout linearLayoutInvolvedPersonCoaches = (LinearLayout) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonHeadline);
                 linearLayoutInvolvedPersonCoaches.setVisibility(View.VISIBLE);
-                TextView textViewInvolvedPersonCoaches = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonCoaches);
+                // explain text with date
+                String tmpExplainText = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerInvolvedPersonHeadlineExplainText);
+                String tmpExplainTextWithTime = String.format(tmpExplainText, modifiedTime);
+                TextView textViewHeadlineExplainText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonHeadlineExplainText);
+                textViewHeadlineExplainText.setText(tmpExplainTextWithTime);
+                // set border visible
+                TextView textViewBorder = (TextView) viewFragmentConnectToServer.findViewById(R.id.borderBetweenMessageAndInvolvedPerson);
+                textViewBorder.setVisibility(View.VISIBLE);
+                // set coach and client names to view
+                TextView textViewInvolvedPersonCoaches = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonCoachesAndClients);
                 textViewInvolvedPersonCoaches.setText(Html.fromHtml(tmpAllCoachesForView));
                 textViewInvolvedPersonCoaches.setVisibility(View.VISIBLE);
             }
 
+            // look for precense text from coaches
+            if (case_coaches != null && case_coaches.getCount() > 0) {
 
-            Log.d("CURSOR CLIENT", "COUNT: "+case_clients.getCount());
+                String tmpAllPresenceTextCoaches = "";
+                Boolean precense_text_found = false;
 
-
-            if (case_clients != null && case_clients.getCount() > 0) {
-                String tmpAllClientsForView = "";
-
-
-                Log.d("FRAGMENT A", "CURSOR CLIENT OK");
-
-                case_clients.moveToFirst();
+                case_coaches.moveToFirst();
                 do {
-                    tmpAllClientsForView += case_clients.getString(case_clients.getColumnIndex(DBAdapter.INVOLVED_PERSON_KEY_NAME)) + "<br />";
+                    if  (case_coaches.getString(case_coaches.getColumnIndex(DBAdapter.INVOLVED_PERSON_KEY_PRESENCE_TEXT_ONE)).length() > 0) {
 
-                    Log.d("FRAGMENT A", "CURSOR CLIENT WORK");
+                        Long tmpActualTime = System.currentTimeMillis();
 
-                } while (case_clients.moveToNext());
+                        if (case_coaches.getString(case_coaches.getColumnIndex(DBAdapter.INVOLVED_PERSON_KEY_PRESENCE_TEXT_TWO)).length() > 0 && case_coaches.getLong(case_coaches.getColumnIndex(DBAdapter.INVOLVED_PERSON_KEY_PRESENCE_TWO_START)) < tmpActualTime && case_coaches.getLong(case_coaches.getColumnIndex(DBAdapter.INVOLVED_PERSON_KEY_PRESENCE_TWO_END)) > tmpActualTime) {
+                            tmpAllPresenceTextCoaches += "<b>" + case_coaches.getString(case_coaches.getColumnIndex(DBAdapter.INVOLVED_PERSON_KEY_NAME)) + "</b><br />";
+                            tmpAllPresenceTextCoaches += case_coaches.getString(case_coaches.getColumnIndex(DBAdapter.INVOLVED_PERSON_KEY_PRESENCE_TEXT_TWO)) + "<br /><br />";
+                            precense_text_found = true;
+                        }
+                        else {
+                            tmpAllPresenceTextCoaches += "<b>" + case_coaches.getString(case_coaches.getColumnIndex(DBAdapter.INVOLVED_PERSON_KEY_NAME)) + "</b><br />";
+                            tmpAllPresenceTextCoaches += case_coaches.getString(case_coaches.getColumnIndex(DBAdapter.INVOLVED_PERSON_KEY_PRESENCE_TEXT_ONE)) + "<br /><br />";
+                            precense_text_found = true;
+                        }
+                   }
+                } while (case_coaches.moveToNext());
 
+                if (precense_text_found) {
 
+                    // put involved person precense text to view
+                    LinearLayout linearLayoutInvolvedPersonPresenceContainer = (LinearLayout) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonPresenceContainer);
+                    linearLayoutInvolvedPersonPresenceContainer.setVisibility(View.VISIBLE);
 
-                TextView textViewInvolvedPersonClients = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonClients);
-                textViewInvolvedPersonClients.setText(Html.fromHtml(tmpAllClientsForView));
-                textViewInvolvedPersonClients.setVisibility(View.VISIBLE);
-
-
-
-
-
+                    // set border visible
+                    TextView textViewBorder = (TextView) viewFragmentConnectToServer.findViewById(R.id.borderBetweenInvolvedPersonAndPresenceText);
+                    textViewBorder.setVisibility(View.VISIBLE);
+                    // set presence text to view
+                    TextView textViewInvolvedPersonPrecenseText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonPresenceText);
+                    textViewInvolvedPersonPrecenseText.setText(Html.fromHtml(tmpAllPresenceTextCoaches));
+                    textViewInvolvedPersonPrecenseText.setVisibility(View.VISIBLE);
+                }
             }
-
-
         }
     }
 

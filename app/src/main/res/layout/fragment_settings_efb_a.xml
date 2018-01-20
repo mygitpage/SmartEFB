@@ -100,18 +100,24 @@
                 android:text="@string/settingsSendingToServerInvolvedPersonHeadlineText"
                 android:layout_marginLeft="3dp"/>
 
+            <TextView
+                android:id="@+id/settingsConnectToServerInvolvedPersonHeadlineExplainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
+
         </LinearLayout>
 
         <TextView
-            android:id="@+id/settingsConnectToServerInvolvedPersonCoaches"
+            android:id="@+id/settingsConnectToServerInvolvedPersonCoachesAndClients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
             android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
+            android:gravity="center"
             android:visibility="gone"/>
 
         <TextView
@@ -119,14 +125,62 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:paddingLeft="10dp"
             android:paddingBottom="15dp"
             android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
+            android:gravity="center"
             android:visibility="gone"/>
 
+        <TextView
+            android:id="@+id/borderBetweenInvolvedPersonAndPresenceText"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"/>
 
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style"
+            android:id="@+id/settingsConnectToServerInvolvedPersonPresenceContainer"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/settingsConnectToServerInvolvedPersonPresenceHeadlineText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:text="@string/settingsConnectToServerInvolvedPersonPresenceHeadlineText"
+                android:layout_marginLeft="3dp"/>
+
+            <TextView
+                android:id="@+id/settingsConnectToServerInvolvedPersonPresenceExplainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/settingsConnectToServerInvolvedPersonPresenceExplainText"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/settingsConnectToServerInvolvedPersonPresenceText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:paddingBottom="15dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:visibility="gone"/>
 
 
         <!-- Start Error section -->

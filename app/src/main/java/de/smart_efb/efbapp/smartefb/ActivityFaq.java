@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -131,7 +132,7 @@ public class ActivityFaq extends AppCompatActivity {
 
         // create help dialog
         createHelpDialog();
-    }
+   }
 
 
     // Look for new intents (with data from putExtra)

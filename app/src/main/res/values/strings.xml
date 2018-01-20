@@ -120,7 +120,10 @@
             <string name="settingsSendingToServerDialogInfoText">Daten senden</string>
             <string name="hintTextCaseCloseIntroText">Der Fall wurde von Ihrer Beraterin/ Ihrem Berater abgeschlossen. Daher werden keine weiteren Nachrichten, Kommentare, etc. gesendet oder empfangen. Wenn Sie möchten, können Sie die App deinstallieren. Beachten Sie aber, dass dann der gesamte Kommunikationsverlauf gelöscht wird.</string>
         <string name="settingsSendingToServerInvolvedPersonHeadlineText">Beteiligte an dieser App-Beratung</string>
-    <string name="functionStringForCoach">(BeraterIn)</string>
+        <string name="settingsConnectToServerInvolvedPersonHeadlineExplainText">Hier finden Sie die Namen der Beraterinnen und Berater und Klienten, die an der Kommunikation über die App teilnehmen (Stand: %1$s Uhr)</string>
+        <string name="functionStringForCoach">(BeraterIn)</string>
+    <string name="settingsConnectToServerInvolvedPersonPresenceHeadlineText">Verfügbarkeit Ihrer Beraterinnen und Berater</string>
+    <string name="settingsConnectToServerInvolvedPersonPresenceExplainText">Ihre Beraterinnen und Berater können in der Regel zu den unten angegebenen Zeiten auf Nachrichten, Kommentare oder andere Ereignisse in der App-Beratung reagieren.</string>
         <!-- End Fragment settings a (connect to server) -->
 
         <!-- Subtitle under Title Settings -->
@@ -136,15 +139,15 @@
         <!-- settings fragment b  -->
             <string name="settingsEfbFragmentBInformationHeadineText">Information</string>
             <string name="settingsEfbFragmentBInformationIntroText">Die wesentlichen Informationen zur App</string>
-            <string name="settingsEfbFragmentBInformationText">Die App dient der Beratungsunterstützung in den Erziehungs- und Familienberatungsstellen \"Lichtblick\". Die Beraterinnen und Berater sprechen mit Ihnen ab, welche Funktionen für Ihre individuelle Beratung benötigt werder und schalten diese frei. Zurzeit ist die App noch in der Erprobung. Der Umgang mit der App wird wissenschaftliche begleitet, um deren Akzeptanz und Wirkung zu erfahren. Bei allen Fragen stehen Ihnen Ihre Beraterinnen und Berater zur Verfügung.</string>
+            <string name="settingsEfbFragmentBInformationText">Die App dient der Beratungsunterstützung in den Erziehungs- und Familienberatungsstellen \"Lichtblick\". Die Beraterinnen und Berater sprechen mit Ihnen ab, welche Funktionen für Ihre individuelle Beratung benötigt werden und schalten diese ein. Zurzeit ist die App noch in der Erprobung. Der Umgang mit der App wird wissenschaftlich begleitet, um deren Akzeptanz und Wirkung zu erfahren. Bei allen Fragen stehen Ihnen Ihre Beraterinnen und Berater zur Verfügung.</string>
             <string name="settingsEfbFragmentBContactPersonHeadline">Ansprechpartner</string>
             <string name="settingsEfbFragmentBContactPersonIntroText">Die Ansprechpartner zum Projekt</string>
             <string name="settingsEfbFragmentBContactPersonA">Holger Robbers\n(Leiter Beratungsstelle \"Lichtblick\")\nholger.robbers@gfb-potsdam.de</string>
             <string name="settingsEfbFragmentBContactPersonB">Jens Hemker\n(Programmierung und wissenschaftliche Begleitung)\njens.hemker@gfb-potsdam.de</string>
             <string name="settingsEfbFragmentBAdviceCenterHeadline">Beratungsstellen</string>
             <string name="settingsEfbFragmentBAdviceCenterIntroText">Bei Fragen wenden Sie sich bitte an unsere Beratungsstellen</string>
-            <string name="settingsEfbFragmentBAdviceCenterA">Beratungsstelle \"Lichtblick\"\nBeratunsstelle Werder\nBernhard-Kellermann-Straße 17 (im Ärztehaus)\n14542 Werder/Havel\n03327/573931\n03327/573932 (Fax)\nlichtblick.werder@gfb-potsdam.de</string>
-            <string name="settingsEfbFragmentBAdviceCenterB">Beratungsstelle \"Lichtblick\"\nBeratunsstelle Bad Belzig\nAm Bahnhof 11 (Fläming Bahnhof)\n14806 Bad Belzig\n033841/449522\n033841/449525 (Fax)\nlichtblick.badbelzig@gfb-potsdam.de</string>
+            <string name="settingsEfbFragmentBAdviceCenterA">Beratungsstelle \"Lichtblick\"\nBeratungsstelle Werder\nBernhard-Kellermann-Straße 17 (im Ärztehaus)\n14542 Werder/Havel\n03327/573931\n03327/573932 (Fax)\nlichtblick.werder@gfb-potsdam.de</string>
+            <string name="settingsEfbFragmentBAdviceCenterB">Beratungsstelle \"Lichtblick\"\nBeratungsstelle Bad Belzig\nAm Bahnhof 11 (Fläming Bahnhof)\n14806 Bad Belzig\n033841/449522\n033841/449525 (Fax)\nlichtblick.badbelzig@gfb-potsdam.de</string>
             <string name="settingsEfbFragmentBCompanyHeadine">Träger</string>
             <string name="settingsEfbFragmentBCompanyIntro">Die Beratungsstellen \"Lichtblick\" gehören zur Gesellschaft zur Förderung Brandenburger Kinder und Jugendlicher (GFB)</string>
             <string name="settingsEfbFragmentBCompanyManager">Norbert Lekow\n(Geschäftsführer)\nnorbert.lekow@gfb-potsdam.de</string>

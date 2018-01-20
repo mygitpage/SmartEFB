@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,7 +40,8 @@ public class ActivityPrevention extends AppCompatActivity {
 
     View preventionView;
 
-
+    // for prefs
+    private SharedPreferences prefs;
 
 
     @Override
@@ -64,6 +66,15 @@ public class ActivityPrevention extends AppCompatActivity {
         // show prevention view
         displayPreventionView();
 
+        // first ask to server for new data, when case is not closed!
+        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+            // send intent to service to start the service
+            Intent startServiceIntent = new Intent(getApplicationContext(), ExchangeServiceEfb.class);
+            // set command = "ask new data" on server
+            startServiceIntent.putExtra("com", "ask_new_data");
+            // start service
+            getApplicationContext().startService(startServiceIntent);
+        }
 
         // check for intent on start time
         // Extras from intent that holds data
@@ -103,6 +114,9 @@ public class ActivityPrevention extends AppCompatActivity {
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        // open sharedPrefs
+        prefs =  getApplicationContext().getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, getApplicationContext().MODE_PRIVATE);
     }
 
 

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,9 @@ public class FaqFragmentSection2 extends Fragment {
     // fragment context
     Context fragmentFaqSectionTwoContext = null;
 
+    // for prefs
+    private SharedPreferences prefs;
+
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
@@ -45,6 +49,19 @@ public class FaqFragmentSection2 extends Fragment {
         super.onViewCreated(view, saveInstanceState);
 
         fragmentFaqSectionTwoContext = getActivity().getApplicationContext();
+
+        // open sharedPrefs
+        prefs =  fragmentFaqSectionTwoContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentFaqSectionTwoContext.MODE_PRIVATE);
+
+        // first ask to server for new data, when case is not closed!
+        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+            // send intent to service to start the service
+            Intent startServiceIntent = new Intent(fragmentFaqSectionTwoContext, ExchangeServiceEfb.class);
+            // set command = "ask new data" on server
+            startServiceIntent.putExtra("com", "ask_new_data");
+            // start service
+            fragmentFaqSectionTwoContext.startService(startServiceIntent);
+        }
     }
 
 

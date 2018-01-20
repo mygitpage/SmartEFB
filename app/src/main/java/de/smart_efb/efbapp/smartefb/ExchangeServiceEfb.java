@@ -410,10 +410,13 @@ import java.util.Map;
                             answerInputStream.close();
                             connection.disconnect();
 
-                            // send intent to broadcast receiver -> the receiver looks for relevant data in intent
-                            Intent tmpIntent = translateMapToIntent(returnMap);
-                            tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
-                            context.sendBroadcast(tmpIntent);
+                            // check is app visible and in foreground -> only then send brodcast to receiver!
+                            if (EfbLifecycle.isApplicationVisible() && EfbLifecycle.isApplicationInForeground()) {
+                                // send intent to broadcast receiver -> the receiver looks for relevant data in intent
+                                Intent tmpIntent = translateMapToIntent(returnMap);
+                                tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                                context.sendBroadcast(tmpIntent);
+                            }
 
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
@@ -443,7 +446,6 @@ import java.util.Map;
             // check is app visible and in foreground -> only then set notification
             if (!EfbLifecycle.isApplicationVisible() && !EfbLifecycle.isApplicationInForeground()) {
 
-
                 // set unique request id
                 int requestID = (int) System.currentTimeMillis();
 
@@ -453,11 +455,12 @@ import java.util.Map;
                 // get alarm tone
                 Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-                // new notofication builder
+                // new notification builder
                 NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
-                // set basic things to all notofications
+                // set basic things to all notifications
                 mBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.notification_large_appicon));
                 mBuilder.setSmallIcon(R.drawable.notification_smile);
+                mBuilder.setAutoCancel(true);
 
                 // notification for arrangement
                 if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangement, true) && returnMap.get("OurArrangement").equals("1") && (returnMap.get("OurArrangementNow").equals("1") || returnMap.get("OurArrangementSketch").equals("1") || returnMap.get("OurArrangementNowComment").equals("1") || returnMap.get("OurArrangementSketchComment").equals("1"))) {
@@ -490,6 +493,8 @@ import java.util.Map;
                     // set intent/ pending intent to start connect book
                     notificationIntent = new Intent(getApplicationContext(), ActivityConnectBook.class);
                     notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    notificationIntent.putExtra("ConnectBook","1");
+                    notificationIntent.putExtra("ConnectBookMessageNewOrSend","1");
                     contentPendingIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                     // set notofication attributes

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,6 +36,9 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
     // reference to the DB
     DBAdapter myDb;
 
+    // shared prefs
+    SharedPreferences prefs;
+
     // ListView for meetings and suggestion
     ListView listViewMeetingSuggestion = null;
 
@@ -62,11 +66,21 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
 
         fragmentMeetingSuggestionContextOld = getActivity().getApplicationContext();
 
-        // init the fragment meeting now
-        initFragmentSuggestion();
+        // init the fragment meeting old
+        initFragmentMeetingSuggestionOld();
 
         // show actual meeting and suggestion informations
         displayActualSuggestionInformation();
+
+        // first ask to server for new data, when case is not closed!
+        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+            // send intent to service to start the service
+            Intent startServiceIntent = new Intent(fragmentMeetingSuggestionContextOld, ExchangeServiceEfb.class);
+            // set command = "ask new data" on server
+            startServiceIntent.putExtra("com", "ask_new_data");
+            // start service
+            fragmentMeetingSuggestionContextOld.startService(startServiceIntent);
+        }
     }
 
 
@@ -82,13 +96,17 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
     }
 
 
-    private void initFragmentSuggestion () {
+    private void initFragmentMeetingSuggestionOld() {
 
         // init the DB
         myDb = new DBAdapter(fragmentMeetingSuggestionContextOld);
 
         // find the listview for display meetings and suggestion, etc.
         listViewMeetingSuggestion = (ListView) viewFragmentMeetingSuggestion.findViewById(R.id.listViewOldMeetingDates);
+
+        // init the prefs
+        prefs = fragmentMeetingSuggestionContextOld.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentMeetingSuggestionContextOld.MODE_PRIVATE);
+
     }
 
 

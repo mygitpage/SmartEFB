@@ -74,7 +74,7 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
-        this.registerReceiver(connectBookBrodcastReceiver, filter);
+        this.registerReceiver(connectBookBroadcastReceiver, filter);
 
         // init the connect book
         initConnectBook();
@@ -87,6 +87,16 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         // init the ui
         displayMessageSet();
+
+        // first ask to server for new data, when case is not closed!
+        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+            // send intent to service to start the service
+            Intent startServiceIntent = new Intent(contextOfConnectBook, ExchangeServiceEfb.class);
+            // set command = "ask new data" on server
+            startServiceIntent.putExtra("com", "ask_new_data");
+            // start service
+            contextOfConnectBook.startService(startServiceIntent);
+        }
     }
 
 
@@ -240,14 +250,14 @@ public class ActivityConnectBook extends AppCompatActivity {
         super.onDestroy();
 
         // de-register broadcast receiver
-        this.unregisterReceiver(connectBookBrodcastReceiver);
+        this.unregisterReceiver(connectBookBroadcastReceiver);
 
         // close db connection
         myDb.close();
     }
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
-    private BroadcastReceiver connectBookBrodcastReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver connectBookBroadcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
