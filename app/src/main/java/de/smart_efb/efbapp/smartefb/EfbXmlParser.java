@@ -1660,7 +1660,6 @@ public class EfbXmlParser {
                                         }
                                     }
 
-
                                     // check if new since time greater then old one, reset count comments and set new since time
                                     if (tmpCommentCountCommentSinceTime > prefs.getLong(ConstansClassOurArrangement.namePrefsCommentTimeSinceCommentStartInMills, 0)) {
 

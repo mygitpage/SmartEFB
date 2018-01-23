@@ -149,13 +149,19 @@ public class OurArrangementFragmentOld extends Fragment {
                 }
 
                 if (updateView) {
-                    // refresh fragments view
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.detach(fragmentOldThisFragmentContext).attach(fragmentOldThisFragmentContext).commit();
+                    refreshFragmentView ();
                 }
             }
         }
     };
+
+
+    // refresh the fragments view
+    private void refreshFragmentView () {
+        // refresh fragments view
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(fragmentOldThisFragmentContext).attach(fragmentOldThisFragmentContext).commit();
+    }
 
 
     // inits the fragment for use

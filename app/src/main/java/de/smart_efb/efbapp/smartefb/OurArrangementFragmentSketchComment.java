@@ -236,13 +236,19 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 }
 
                 if (refreshView) {
-                    // refresh fragments view
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.detach(fragmentSketchCommentThisFragmentContext).attach(fragmentSketchCommentThisFragmentContext).commit();
+                    refreshFragmentView();
                 }
             }
         }
     };
+
+
+    // refresh the fragments view
+    private void refreshFragmentView () {
+        // refresh fragments view
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(fragmentSketchCommentThisFragmentContext).attach(fragmentSketchCommentThisFragmentContext).commit();
+    }
 
 
     // inits the fragment for use

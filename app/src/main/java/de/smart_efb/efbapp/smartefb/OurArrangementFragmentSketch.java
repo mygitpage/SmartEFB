@@ -95,7 +95,6 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
         // close db connection
         myDb.close();
-
     }
 
 

@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -278,6 +279,12 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
         // get the data (the choosen arrangement) from the DB
         Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToShow);
+
+
+
+        Log.d("Fragment ARR SHOW COM", "DISPLAY SHARING."+prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0));
+
+
 
         if (cursorComments.getCount() > 0 && choosenArrangement.getCount() > 0 && listViewShowComments != null) {
 

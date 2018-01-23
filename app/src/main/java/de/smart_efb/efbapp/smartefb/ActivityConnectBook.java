@@ -243,7 +243,16 @@ public class ActivityConnectBook extends AppCompatActivity {
             }
         });
     }
- 
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // update listview  on resume
+        updateListView();
+    }
+
 
     @Override
     protected void onDestroy() {

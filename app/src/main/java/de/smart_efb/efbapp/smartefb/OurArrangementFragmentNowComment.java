@@ -17,6 +17,7 @@ import android.text.Html;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -218,13 +219,19 @@ public class OurArrangementFragmentNowComment extends Fragment {
                 }
 
                 if (refreshView) {
-                    // refresh fragments view
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.detach(fragmentNowCommentThisFragmentContext).attach(fragmentNowCommentThisFragmentContext).commit();
+                    refreshFragmentView ();
                 }
             }
         }
     };
+
+
+    // refresh the fragments view
+    private void refreshFragmentView () {
+        // refresh fragments view
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(fragmentNowCommentThisFragmentContext).attach(fragmentNowCommentThisFragmentContext).commit();
+    }
 
 
     // inits the fragment for use
@@ -326,8 +333,16 @@ public class OurArrangementFragmentNowComment extends Fragment {
             } else if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 1) {
                 // textview for status 1 of the last actual comment
 
+
+                Log.d("Fragment ARR COMMENT", "VOR IF SHARING."+prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0));
+
+
                 // check, sharing of comments enable?
                 if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) == 1) {
+
+
+                    Log.d("Fragment ARR COMMENT", "SHARING."+prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0));
+
 
                     // set textview visible
                     tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);

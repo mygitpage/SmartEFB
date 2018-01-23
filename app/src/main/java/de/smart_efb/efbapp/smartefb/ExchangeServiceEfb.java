@@ -493,8 +493,6 @@ import java.util.Map;
                     // set intent/ pending intent to start connect book
                     notificationIntent = new Intent(getApplicationContext(), ActivityConnectBook.class);
                     notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    notificationIntent.putExtra("ConnectBook","1");
-                    notificationIntent.putExtra("ConnectBookMessageNewOrSend","1");
                     contentPendingIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                     // set notofication attributes
@@ -520,7 +518,7 @@ import java.util.Map;
                     notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     contentPendingIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                    // set notofication attributes
+                    // set notification attributes
                     mBuilder.setContentTitle(notificationContentTitle);
                     mBuilder.setContentIntent(contentPendingIntent);
                     // sound on/off for connect book?
