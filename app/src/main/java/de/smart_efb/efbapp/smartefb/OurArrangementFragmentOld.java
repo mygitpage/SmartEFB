@@ -82,6 +82,8 @@ public class OurArrangementFragmentOld extends Fragment {
             Intent startServiceIntent = new Intent(fragmentOldContext, ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
+            startServiceIntent.putExtra("dbid",0L);
+            startServiceIntent.putExtra("receiverBroadcast","");
             // start service
             fragmentOldContext.startService(startServiceIntent);
         }

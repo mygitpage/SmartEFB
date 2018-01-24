@@ -75,6 +75,8 @@ public class SettingsEfbFragmentD extends Fragment {
             Intent startServiceIntent = new Intent(fragmentContextD, ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
+            startServiceIntent.putExtra("dbid",0L);
+            startServiceIntent.putExtra("receiverBroadcast","");
             // start service
             fragmentContextD.startService(startServiceIntent);
         }
@@ -207,6 +209,31 @@ public class SettingsEfbFragmentD extends Fragment {
             showVisualChekcBox = true;
         }
 
+        // check meeting on? -> show notification signal check box for remember meeting
+        if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false)) {
+            // get linaer layout and set visible
+            LinearLayout placeholderRememberMeetingVisual = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerRememberMeetingVisual);
+            placeholderRememberMeetingVisual.setVisibility(View.VISIBLE);
+            // get check box and set on click listener
+            checkBox = (CheckBox) viewFragmentD.findViewById(R.id.checkBoxRememberMeetingVisualSignal);
+            checkBox.setOnClickListener(new checkBoxSettingVisualListener("remember_meeting", prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberMeeting, true)));
+            if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberMeeting, true)) {checkBox.setChecked(true);}
+            else {checkBox.setChecked(false);}
+            showVisualChekcBox = true;
+        }
+
+        // check meeting on? -> show notification signal check box for remember suggestion time period
+        if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false)) {
+            // get linaer layout and set visible
+            LinearLayout placeholderRememberSuggestionTimePeriod = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerRememberSuggestionTimePeriodVisual);
+            placeholderRememberSuggestionTimePeriod.setVisibility(View.VISIBLE);
+            // get check box and set on click listener
+            checkBox = (CheckBox) viewFragmentD.findViewById(R.id.checkBoxRememberSuggestionTimePeriodVisualSignal);
+            checkBox.setOnClickListener(new checkBoxSettingVisualListener("remember_suggestion", prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberSuggestion, true)));
+            if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberSuggestion, true)) {checkBox.setChecked(true);}
+            else {checkBox.setChecked(false);}
+            showVisualChekcBox = true;
+        }
 
         if (!showVisualChekcBox) {
             TextView tmpHintTextNoVisualCheckBox = (TextView) viewFragmentD.findViewById(R.id.textViewInfoNoVisualChekcBoxPossible);
@@ -293,6 +320,32 @@ public class SettingsEfbFragmentD extends Fragment {
             else {checkBox.setChecked(false);}
             showAcousticChekcBox = true;
         }
+
+        // show acoustic signal check box for remember meeting
+        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberMeeting, true) && prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false)) {
+            // get linaer layout and set visible
+            LinearLayout placeholderRememberMeetingAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerRememberMeetingAcoustics);
+            placeholderRememberMeetingAcoustics.setVisibility(View.VISIBLE);
+            // get check box and set on click listener
+            checkBox = (CheckBox) viewFragmentD.findViewById(R.id.checkBoxRememberMeetingAcousticsSignal);
+            checkBox.setOnClickListener(new checkBoxSettingAcousticsListener("remember_meeting", prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, true)));
+            if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, true)) {checkBox.setChecked(true);}
+            else {checkBox.setChecked(false);}
+            showAcousticChekcBox = true;
+        }
+
+        // show acoustic signal check box for remember suggestion time period
+        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberSuggestion, true) && prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false)) {
+            // get linaer layout and set visible
+            LinearLayout placeholderRememberSuggestionAcoustics = (LinearLayout) viewFragmentD.findViewById(R.id.checkBoxContainerRememberSuggestionTimePeriodAcoustics);
+            placeholderRememberSuggestionAcoustics.setVisibility(View.VISIBLE);
+            // get check box and set on click listener
+            checkBox = (CheckBox) viewFragmentD.findViewById(R.id.checkBoxRememberSuggestionTimePeriodAcousticsSignal);
+            checkBox.setOnClickListener(new checkBoxSettingAcousticsListener("remember_suggestion", prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true)));
+            if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true)) {checkBox.setChecked(true);}
+            else {checkBox.setChecked(false);}
+            showAcousticChekcBox = true;
+        }
         
 
         
@@ -353,17 +406,11 @@ public class SettingsEfbFragmentD extends Fragment {
 
                 case "our_arrangement_evaluation":
                     if (checkBoxValue) {
-
-                        Log.d("Vis Arr Evaluation -->", "CASE Arr!!! TRUE");
-
                         checkBoxValue = false;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangementEvaluation, false);
                     }
                     else {
                         checkBoxValue = true;
-
-                        Log.d("Vis Arr Evaluation -->", "CASE Arr!!! FLASE");
-
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangementEvaluation, true);
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, true);
                     }
@@ -395,6 +442,33 @@ public class SettingsEfbFragmentD extends Fragment {
                     }
                     prefsEditor.commit();
                     break;
+
+                case "remember_meeting":
+                    if (checkBoxValue) {
+                        checkBoxValue = false;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberMeeting, false);
+                    }
+                    else {
+                        checkBoxValue = true;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberMeeting, true);
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, true);
+                    }
+                    prefsEditor.commit();
+                    break;
+
+                case "remember_suggestion":
+                    if (checkBoxValue) {
+                        checkBoxValue = false;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberSuggestion, false);
+                    }
+                    else {
+                        checkBoxValue = true;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberSuggestion, true);
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true);
+                    }
+                    prefsEditor.commit();
+                    break;
+
             }
 
 
@@ -428,23 +502,16 @@ public class SettingsEfbFragmentD extends Fragment {
 
         @Override
         public void onClick(View v) {
-
-            Log.d("Setting Onclick -->", "In OnClick!");
-
             switch (checkBoxName) {
 
                 case "connect_book":
                     if (checkBoxValue) {
                         checkBoxValue = false;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, false);
-
-                        Log.d("Setting Onclick -->", "Aktiviere Connect Book");
-
                     }
                     else {
                         checkBoxValue = true;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true);
-                        Log.d("Setting Onclick -->", "Deaktiviere Connect Book");
                     }
                     prefsEditor.commit();
                     break;
@@ -453,7 +520,6 @@ public class SettingsEfbFragmentD extends Fragment {
                     if (checkBoxValue) {
                         checkBoxValue = false;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, false);
-
                     }
                     else {
                         checkBoxValue = true;
@@ -462,12 +528,10 @@ public class SettingsEfbFragmentD extends Fragment {
                     prefsEditor.commit();
                     break;
 
-
                 case "our_arrangement_evaluation":
                     if (checkBoxValue) {
                         checkBoxValue = false;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, false);
-
                     }
                     else {
                         checkBoxValue = true;
@@ -476,13 +540,10 @@ public class SettingsEfbFragmentD extends Fragment {
                     prefsEditor.commit();
                     break;
 
-
-
                 case "our_goal":
                     if (checkBoxValue) {
                         checkBoxValue = false;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, false);
-
                     }
                     else {
                         checkBoxValue = true;
@@ -491,16 +552,38 @@ public class SettingsEfbFragmentD extends Fragment {
                     prefsEditor.commit();
                     break;
 
-
                 case "our_goal_evaluation":
                     if (checkBoxValue) {
                         checkBoxValue = false;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, false);
-
                     }
                     else {
                         checkBoxValue = true;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, true);
+                    }
+                    prefsEditor.commit();
+                    break;
+
+                case "remember_meeting":
+                    if (checkBoxValue) {
+                        checkBoxValue = false;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, false);
+                    }
+                    else {
+                        checkBoxValue = true;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, true);
+                    }
+                    prefsEditor.commit();
+                    break;
+
+                case "remember_suggestion":
+                    if (checkBoxValue) {
+                        checkBoxValue = false;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, false);
+                    }
+                    else {
+                        checkBoxValue = true;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true);
                     }
                     prefsEditor.commit();
                     break;

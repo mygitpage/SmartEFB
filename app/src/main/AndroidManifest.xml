@@ -25,7 +25,12 @@
         <activity
             android:name=".ActivityConnectBook"
             android:label="@string/mainMenueElementId_1"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+
         </activity>
 
         <!-- Activity Our Arrangement -->
@@ -34,6 +39,9 @@
             android:label="@string/mainMenueElementId_2"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
 
         <!-- Activity Our Goals -->
@@ -42,6 +50,9 @@
             android:label="@string/mainMenueElementId_3"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
 
         <!-- Activity Message -->
@@ -51,6 +62,9 @@
             android:label="@string/mainMenueElementId_4"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         -->
 
@@ -60,6 +74,9 @@
             android:label="@string/mainMenueElementId_5"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
 
         <!-- Activity Time Table -->
@@ -68,6 +85,9 @@
             android:label="@string/mainMenueElementId_6"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
 
         <!-- Activity Prevetion -->
@@ -76,13 +96,20 @@
             android:label="@string/mainMenueElementId_7"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
 
         <!-- Activity FAQ -->
         <activity
             android:name=".ActivityFaq"
             android:label="@string/mainMenueElementId_8"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
 
         <!-- Activity Emergency Help -->
@@ -91,13 +118,20 @@
             android:label="@string/mainMenueElementId_9"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
 
         <!-- Activity Settings -->
         <activity
             android:name=".ActivitySettingsEfb"
             android:label="@string/mainMenueElementId_10"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
 
         <!-- Dispatcher activity for deep links -->
@@ -118,7 +152,7 @@
 
         <!-- Alarm receiver for exchange service -->
         <receiver
-            android:name=".AlarmReceiverExchangeService"
+            android:name=".AlarmReceiverExchangeAndEventService"
             android:process=":remote">
         </receiver>
 

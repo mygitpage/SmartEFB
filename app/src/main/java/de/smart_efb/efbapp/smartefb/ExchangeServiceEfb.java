@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.util.Xml;
 
@@ -441,7 +442,9 @@ import java.util.Map;
 
             String notificationContentTitle;
             Intent notificationIntent;
+            Intent  mainActivityIntent;
             PendingIntent contentPendingIntent;
+            TaskStackBuilder stackBuilder;
 
             // check is app visible and in foreground -> only then set notification
             if (!EfbLifecycle.isApplicationVisible() && !EfbLifecycle.isApplicationInForeground()) {
@@ -449,7 +452,7 @@ import java.util.Map;
                 // set unique request id
                 int requestID = (int) System.currentTimeMillis();
 
-                // get notofocation manager
+                // get notifocation manager
                 NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
                 // get alarm tone
@@ -462,6 +465,10 @@ import java.util.Map;
                 mBuilder.setSmallIcon(R.drawable.notification_smile);
                 mBuilder.setAutoCancel(true);
 
+                // needed for back stack -> start main activity after pressing back
+                mainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);
+                mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
                 // notification for arrangement
                 if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangement, true) && returnMap.get("OurArrangement").equals("1") && (returnMap.get("OurArrangementNow").equals("1") || returnMap.get("OurArrangementSketch").equals("1") || returnMap.get("OurArrangementNowComment").equals("1") || returnMap.get("OurArrangementSketchComment").equals("1"))) {
 
@@ -471,7 +478,17 @@ import java.util.Map;
                     // set intent/ pending intent to start connect book
                     notificationIntent = new Intent(getApplicationContext(), ActivityOurArrangement.class);
                     notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    contentPendingIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    // generate back stack for pending intent and add main activity
+                    stackBuilder = TaskStackBuilder.create(this);
+                    stackBuilder.addParentStack(MainActivity.class);
+                    stackBuilder.addNextIntent(mainActivityIntent);
+
+                    // add intent for connect book
+                    stackBuilder.addNextIntent(notificationIntent);
+
+                    // generate pending intent
+                    contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
                     // set notofication attributes
                     mBuilder.setContentTitle(notificationContentTitle);
@@ -493,7 +510,17 @@ import java.util.Map;
                     // set intent/ pending intent to start connect book
                     notificationIntent = new Intent(getApplicationContext(), ActivityConnectBook.class);
                     notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    contentPendingIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    // generate back stack for pending intent and add main activity
+                    stackBuilder = TaskStackBuilder.create(this);
+                    stackBuilder.addParentStack(MainActivity.class);
+                    stackBuilder.addNextIntent(mainActivityIntent);
+
+                    // add intent for connect book
+                    stackBuilder.addNextIntent(notificationIntent);
+
+                    // generate pending intent
+                    contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
                     // set notofication attributes
                     mBuilder.setContentTitle(notificationContentTitle);
@@ -506,7 +533,6 @@ import java.util.Map;
                     mNotificationManager.notify(001, mBuilder.build());
                 }
 
-
                 // notification for goal
                 if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoal, true) && returnMap.get("OurGoals").equals("1") && (returnMap.get("OurGoalsJointlyNow").equals("1") || returnMap.get("OurGoalsDebetableNow").equals("1") || returnMap.get("OurGoalsJointlyComment").equals("1") || returnMap.get("OurGoalsDebetableComment").equals("1"))) {
 
@@ -516,7 +542,17 @@ import java.util.Map;
                     // set intent/ pending intent to start connect book
                     notificationIntent = new Intent(getApplicationContext(), ActivityOurGoals.class);
                     notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    contentPendingIntent = PendingIntent.getActivity(this, requestID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    // generate back stack for pending intent and add main activity
+                    stackBuilder = TaskStackBuilder.create(this);
+                    stackBuilder.addParentStack(MainActivity.class);
+                    stackBuilder.addNextIntent(mainActivityIntent);
+
+                    // add intent for connect book
+                    stackBuilder.addNextIntent(notificationIntent);
+
+                    // generate pending intent
+                    contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
                     // set notification attributes
                     mBuilder.setContentTitle(notificationContentTitle);

@@ -94,6 +94,8 @@ public class ActivityConnectBook extends AppCompatActivity {
             Intent startServiceIntent = new Intent(contextOfConnectBook, ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
+            startServiceIntent.putExtra("dbid",0L);
+            startServiceIntent.putExtra("receiverBroadcast","");
             // start service
             contextOfConnectBook.startService(startServiceIntent);
         }
@@ -218,6 +220,7 @@ public class ActivityConnectBook extends AppCompatActivity {
                         Intent startServiceIntent = new Intent(contextOfConnectBook, ExchangeServiceEfb.class);
                         startServiceIntent.putExtra("com", "send_connectbook_message");
                         startServiceIntent.putExtra("dbid", tmpDbId);
+                        startServiceIntent.putExtra("receiverBroadcast","");
                         contextOfConnectBook.startService(startServiceIntent);
 
                         // delete text in edittextfield

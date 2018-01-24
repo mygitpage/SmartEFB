@@ -110,6 +110,8 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
             Intent startServiceIntent = new Intent(fragmentCommentContextJointlyGoals, ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
+            startServiceIntent.putExtra("dbid",0L);
+            startServiceIntent.putExtra("receiverBroadcast","");
             // start service
             fragmentCommentContextJointlyGoals.startService(startServiceIntent);
         }
@@ -544,6 +546,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     Intent startServiceIntent = new Intent(fragmentCommentContextJointlyGoals, ExchangeServiceEfb.class);
                     startServiceIntent.putExtra("com","send_jointly_comment_goal");
                     startServiceIntent.putExtra("dbid",tmpDbId);
+                    startServiceIntent.putExtra("receiverBroadcast","");
                     fragmentCommentContextJointlyGoals.startService(startServiceIntent);
 
                     // build intent to get back to OurGoalsFragmentJointlyGoals

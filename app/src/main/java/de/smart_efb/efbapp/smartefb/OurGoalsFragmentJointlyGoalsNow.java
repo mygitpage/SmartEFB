@@ -83,6 +83,8 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
             Intent startServiceIntent = new Intent(fragmentJointlyGoalsNowContext, ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
+            startServiceIntent.putExtra("dbid",0L);
+            startServiceIntent.putExtra("receiverBroadcast","");
             // start service
             fragmentJointlyGoalsNowContext.startService(startServiceIntent);
         }
@@ -220,7 +222,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                     updateListView = true;
 
                     // settings have change -> check AlarmManger for Evaluation to switch on
-                    ((ActivityOurGoals) getActivity()).setAlarmManagerOurGoals();
+                    ((MainActivity) getActivity()).setAlarmManagerForOurGoalsEvaluation();
                 }
 
                 // update the list view because data has change?

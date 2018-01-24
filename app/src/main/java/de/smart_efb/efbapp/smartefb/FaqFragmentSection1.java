@@ -60,6 +60,8 @@ public class FaqFragmentSection1 extends Fragment {
             Intent startServiceIntent = new Intent(fragmentFaqSectionOneContext, ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
+            startServiceIntent.putExtra("dbid",0L);
+            startServiceIntent.putExtra("receiverBroadcast","");
             // start service
             fragmentFaqSectionOneContext.startService(startServiceIntent);
         }

@@ -268,6 +268,78 @@
 
         </LinearLayout>
 
+        <!-- Settings (Signal remember meetings) -->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/checkBoxContainerRememberMeetingVisual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp">
+
+            <CheckBox android:id="@+id/checkBoxRememberMeetingVisualSignal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="left">
+
+                <TextView
+                    android:id="@+id/checkBoxRememberMeetingVisualSignalTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:text="@string/checkBoxRememberMeetingVisualSignalText"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Settings (Signal remember suggestion time period) -->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/checkBoxContainerRememberSuggestionTimePeriodVisual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp">
+
+            <CheckBox android:id="@+id/checkBoxRememberSuggestionTimePeriodVisualSignal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="left">
+
+                <TextView
+                    android:id="@+id/checkBoxRememberSuggestionTimePeriodVisualSignalTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:text="@string/checkBoxRememberSuggestionTimePeriodVisualSignalText"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/textViewInfoNoVisualChekcBoxPossible"
@@ -544,6 +616,78 @@
 
         </LinearLayout>
 
+        <!-- Settings (Signal remember meetings) -->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/checkBoxContainerRememberMeetingAcoustics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp">
+
+            <CheckBox android:id="@+id/checkBoxRememberMeetingAcousticsSignal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="left">
+
+                <TextView
+                    android:id="@+id/checkBoxRememberMeetingAcousticsSignalTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:text="@string/checkBoxRememberMeetingAcousticsSignalText"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Settings (Signal remember suggestion time period) -->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/checkBoxContainerRememberSuggestionTimePeriodAcoustics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp">
+
+            <CheckBox android:id="@+id/checkBoxRememberSuggestionTimePeriodAcousticsSignal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="left">
+
+                <TextView
+                    android:id="@+id/checkBoxRememberSuggestionTimePeriodAcousticsSignalTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:text="@string/checkBoxRememberSuggestionTimePeriodAcousticsSignalText"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
 
 
         <TextView
@@ -560,6 +704,15 @@
 
 
 
+        <TextView
+            android:id="@+id/borderBetweenAcousticsAndBottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"/>
 
 
     </LinearLayout>

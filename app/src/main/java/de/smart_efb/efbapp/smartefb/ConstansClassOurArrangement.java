@@ -44,6 +44,18 @@ class ConstansClassOurArrangement {
     // prefs name for start Date Evaluation in mills
     static final String namePrefsEndDateEvaluationInMills = "endDataEvaluationInMills";
 
+    // prefs name for evaluation pause time in seconds
+    static final String namePrefsEvaluatePauseTimeInSeconds = "evaluatePauseTimeInSeconds";
+
+    // prefs name for evaluation active time in seconds
+    static final String namePrefsEvaluateActiveTimeInSeconds = "evaluateActivTimeInSeconds";
+
+    // prefs name for start point now arrangement evaluation in mills
+    static final String namePrefsStartPointEvaluationPeriodInMills = "startPointEvaluationPeriodInMills";
+
+    // prefs name for notification check if evaluation period change
+    static final String namePrefsEvalautionPeriodChangeNotification = "evaluationPeriodChangeNotification";
+
     // prefs name for count max comment
     static final String namePrefsCommentMaxComment = "commentOurArrangementMaxComment";
 
@@ -85,15 +97,6 @@ class ConstansClassOurArrangement {
 
     // prefs name for store change time of arrangement sketch comment counter
     static final String namePrefsArrangementSketchCommentShareChangeTime  = "sketchCommentOurArrangementShareChangeTime";
-
-    // prefs name for evaluation pause time in seconds
-    static final String namePrefsEvaluatePauseTimeInSeconds = "evaluatePauseTimeInSeconds";
-
-    // prefs name for evaluation active time in seconds
-    static final String namePrefsEvaluateActiveTimeInSeconds = "evaluateActivTimeInSeconds";
-
-    // prefs name for start point now arrangement evaluation in mills
-    static final String namePrefsStartPointEvaluationPeriodInMills = "startPointEvaluationPeriodInMills";
 
     // true -> Sketch arragement are updated; false -> no update
     static final String namePrefsSignalSketchArrangementUpdate = "signalSketchArrangementUpdated";

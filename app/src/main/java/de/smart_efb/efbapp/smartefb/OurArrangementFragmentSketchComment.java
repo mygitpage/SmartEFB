@@ -124,6 +124,8 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             Intent startServiceIntent = new Intent(fragmentSketchCommentContext, ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
+            startServiceIntent.putExtra("dbid",0L);
+            startServiceIntent.putExtra("receiverBroadcast","");
             // start service
             fragmentSketchCommentContext.startService(startServiceIntent);
         }
@@ -612,6 +614,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     Intent startServiceIntent = new Intent(fragmentSketchCommentContext, ExchangeServiceEfb.class);
                     startServiceIntent.putExtra("com","send_sketch_comment_arrangement");
                     startServiceIntent.putExtra("dbid",tmpDbId);
+                    startServiceIntent.putExtra("receiverBroadcast","");
                     fragmentSketchCommentContext.startService(startServiceIntent);
 
                     // build intent to get back to OurArrangementFragmentSketchArrangement

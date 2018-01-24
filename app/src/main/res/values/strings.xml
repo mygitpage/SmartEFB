@@ -173,8 +173,9 @@
             <string name="checkBoxOurGoalVisualSignalText">Ereignisse in den Zielen</string>
             <string name="checkBoxOurGoalEvaluationVisualSignalText">Wechsel der Evaluationsperioden in den Zielen</string>
             <string name="checkBoxMessageVisualSignalText">Ereignisse in der Nachrichtenfunktion</string>
+            <string name="checkBoxRememberMeetingVisualSignalText">Erinnerungen bei anstehenden Terminen (24 Stunden, 2 Stunden und 15 Minuten vorher)</string>
+            <string name="checkBoxRememberSuggestionTimePeriodVisualSignalText">Erinnerungen an laufende Zeiträume für Terminvorschläge (24 Stunden, 2 Stunden und 15 Minuten vor Ablauf)</string>
             <string name="textViewInfoNoVisualChekcBoxPossible">Da alle Funktionen ausgeschaltete sind, können zurzeit keine Einstellungen vorgenommen werden.</string>
-
             <string name="settingsEfbFragmentDAcousticsSignalsHeadline">Akustische Hinweise</string>
             <string name="settingsEfbFragmentDAcousticsSignalsIntroText">Bei folgenden Ereignissen soll neben dem visuellen Hinweis ein Hinweiston gespielt werden</string>
             <string name="checkBoxConnectBookAcousticsSignalText">Neue Nachrichten im Übergabebuch</string>
@@ -183,6 +184,8 @@
             <string name="checkBoxGoalAcousticsSignalText">Ereignisse in den Zielen</string>
             <string name="checkBoxGoalEvaluationAcousticsSignalText">Wechsel der Evaluationsperioden in den Zielen</string>
             <string name="checkBoxMessageAcousticsSignalText">Ereignisse in der Nachrichtenfunktion</string>
+            <string name="checkBoxRememberMeetingAcousticsSignalText">Erinnerungen bei anstehenden Terminen (24 Stunden, 2 Stunden und 15 Minuten vorher)</string>
+            <string name="checkBoxRememberSuggestionTimePeriodAcousticsSignalText">Erinnerungen an laufende Zeiträume für Terminvorschläge (24 Stunden, 2 Stunden und 15 Minuten vor Ablauf)</string>
             <string name="textViewInfoNoAcousticsChekcBoxPossible">Zurzeit können keine akustischen Hinweistöne eingestellt werden, da alle Hinweistexte ausgeschaltet sind.</string>
         <!-- end settings fragment d  -->
 
@@ -1162,10 +1165,14 @@
 
         <string name="exchangeServiceNotificationTextNewConnectBookMessage">Neue Nachrichten im Übergabebuch</string>
         <string name="exchangeServiceNotificationTextNewEventOurArrangement">Neues in den Absprachen</string>
+        <string name="exchangeServiceNotificationTextNewEventOurArrangementEvaluationSet">Jetzt können Sie die Absprachen in dem Zeitraum von %1$d Stunden bewerten.</string>
+        <string name="exchangeServiceNotificationTextNewEventOurArrangementEvaluationPause">Der Bewertungszeitraum von %1$d Stunden für die Absprachen ist abgelaufen. Der nächste Bewertungszeitraum beginnt in %2$d Stunden.</string>
         <string name="exchangeServiceNotificationTextNewEventOurGoals">Neues in den Zielen</string>
+        <string name="exchangeServiceNotificationTextNewEventOurGoalsEvaluationSet">Jetzt können Sie die Ziele in dem Zeitraum von %1$d Stunden bewerten.</string>
+        <string name="exchangeServiceNotificationTextNewEventOurGoalsEvaluationPause">Der Bewertungszeitraum von %1$d Stunden für die Ziele ist abgelaufen. Der nächste Bewertungszeitraum beginnt in %2$d Stunden.</string>
 
 
-    <!-- End Service Exchange Service -->
+        <!-- End Service Exchange Service -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 

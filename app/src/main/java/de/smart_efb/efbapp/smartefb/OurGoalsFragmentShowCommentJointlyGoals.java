@@ -93,6 +93,8 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
             Intent startServiceIntent = new Intent(fragmentShowCommentJointlyGoalsContext, ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
+            startServiceIntent.putExtra("dbid",0L);
+            startServiceIntent.putExtra("receiverBroadcast","");
             // start service
             fragmentShowCommentJointlyGoalsContext.startService(startServiceIntent);
         }

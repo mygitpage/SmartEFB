@@ -60,6 +60,8 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
             Intent startServiceIntent = new Intent(getApplicationContext(), ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
+            startServiceIntent.putExtra("dbid",0L);
+            startServiceIntent.putExtra("receiverBroadcast","");
             // start service
             getApplicationContext().startService(startServiceIntent);
         }

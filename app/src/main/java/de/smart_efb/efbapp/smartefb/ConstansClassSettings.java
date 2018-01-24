@@ -68,6 +68,9 @@ class ConstansClassSettings {
     static final String namePrefsNotificationVisualSignal_OurGoal = "notificationVisualSignal_OurGoal";
     static final String namePrefsNotificationVisualSignal_OurGoalEvaluation = "notificationVisualSignal_OurGoalEvaluation";
     static final String namePrefsNotificationVisualSignal_Message = "notificationVisualSignal_Message";
+    static final String namePrefsNotificationVisualSignal_RememberMeeting = "notificationVisualSignal_RememberMeeting";
+    static final String namePrefsNotificationVisualSignal_RememberSuggestion = "notificationVisualSignal_RememberSuggestion";
+
     
     // Setting for acoustics notification
     static final String namePrefsNotificationAcousticSignal_ConnectBook = "notificationAcousticSignal_ConnectBook";
@@ -76,6 +79,8 @@ class ConstansClassSettings {
     static final String namePrefsNotificationAcousticSignal_OurGoal = "notificationAcousticSignal_OurGoal";
     static final String namePrefsNotificationAcousticSignal_OurGoalEvaluation = "notificationAcousticSignal_OurGoalEvaluation";
     static final String namePrefsNotificationAcousticSignal_Message = "notificationAcousticSignal_Message";
+    static final String namePrefsNotificationAcousticSignal_RememberMeeting = "notificationAcousticSignal_RememberMeeting";
+    static final String namePrefsNotificationAcousticSignal_RememberSuggestion = "notificationAcousticSignal_RememberSuggestion";
 
 
 

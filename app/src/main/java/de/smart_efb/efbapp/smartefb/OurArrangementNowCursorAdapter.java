@@ -94,9 +94,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                 TextView tmpGapToBottom = (TextView) view.findViewById(R.id.borderToBottomOfDisplayWhenNeeded);
                 tmpGapToBottom.setVisibility(View.VISIBLE);
             }
-
         }
-
     }
 
 

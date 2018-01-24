@@ -84,6 +84,8 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
             Intent startServiceIntent = new Intent(fragmentSuggestionFromClientContext, ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
+            startServiceIntent.putExtra("dbid",0L);
+            startServiceIntent.putExtra("receiverBroadcast","");
             // start service
             fragmentSuggestionFromClientContext.startService(startServiceIntent);
         }

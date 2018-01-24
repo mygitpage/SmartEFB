@@ -46,6 +46,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
     // shared prefs for the evaluate jointly goals
     SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
     // DB-Id of jointly goal to evaluate
     int jointlyGoalServerDbIdToEvaluate = 0;
@@ -125,6 +126,8 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
             Intent startServiceIntent = new Intent(fragmentEvaluateJointlyGoalsContext, ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
+            startServiceIntent.putExtra("dbid",0L);
+            startServiceIntent.putExtra("receiverBroadcast","");
             // start service
             fragmentEvaluateJointlyGoalsContext.startService(startServiceIntent);
         }
@@ -166,6 +169,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsCommentShareEnable","0");
                 String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsCommentShareDisable","0");
                 String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsCommentCountComment","0");
+                String tmpUpdateEvaluationLink = intentExtras.getString("UpdateJointlyEvaluationLink");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
@@ -223,6 +227,11 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
+                else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
+                    // set new start point for evaluation timer in view
+                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, System.currentTimeMillis());
+                    prefsEditor.commit();
+                }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1")) {
 
                     // goal settings change
@@ -247,6 +256,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
         // init the prefs
         prefs = fragmentEvaluateJointlyGoalsContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentEvaluateJointlyGoalsContext.MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
         //get current block id of jointly goals
         currentBlockIdOfJointlyGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0");
@@ -473,6 +483,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                     Intent startServiceIntent = new Intent(fragmentEvaluateJointlyGoalsContext, ExchangeServiceEfb.class);
                     startServiceIntent.putExtra("com","send_evaluation_result_goal");
                     startServiceIntent.putExtra("dbid",tmpDbId);
+                    startServiceIntent.putExtra("receiverBroadcast","");
                     fragmentEvaluateJointlyGoalsContext.startService(startServiceIntent);
 
                     // build and send intent to next evaluation jointly goal or back to OurGoalsJointlyGoalsNow

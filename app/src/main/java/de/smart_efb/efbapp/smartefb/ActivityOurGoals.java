@@ -32,7 +32,6 @@ import java.util.Calendar;
  */
 public class ActivityOurGoals extends AppCompatActivity {
 
-
     // Set subtitle first time
     Boolean setSubtitleFirstTime = false;
 
@@ -115,8 +114,8 @@ public class ActivityOurGoals extends AppCompatActivity {
         // init our goals
         initOurGoals();
 
-        // init alarm manager
-        setAlarmManagerOurGoals ();
+        // init start point for our goals evaluation
+        setOurGoalsEvaluationStartPoint();
 
         // find viewpager in view
         viewPagerOurGoals = (ViewPager) findViewById(R.id.viewPagerOurGoals);
@@ -847,21 +846,9 @@ public class ActivityOurGoals extends AppCompatActivity {
     }
 
 
-    // set alarmmanager for evaluation time
-    void setAlarmManagerOurGoals () {
+    // set start point for our goals evaluation time
+    void setOurGoalsEvaluationStartPoint () {
 
-        PendingIntent pendingIntentOurGoalsEvaluate;
-
-        // get all jointly goals with the same block id
-        Cursor cursor = myDb.getAllJointlyRowsOurGoals(currentBlockIdOfJointlyGoals, "equalBlockId");
-
-        if (cursor.getCount() > 0) {
-
-            // get reference to alarm manager
-            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-            // create intent for backcall to broadcast receiver
-            Intent evaluateAlarmIntent = new Intent(ActivityOurGoals.this, AlarmReceiverOurGoals.class);
 
             // get start time and end time for evaluation
             Long startEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
@@ -873,9 +860,7 @@ public class ActivityOurGoals extends AppCompatActivity {
 
             Long tmpSystemTimeInMills = System.currentTimeMillis();
             int tmpEvalutePaAcTime = evaluateActivTime * 1000;
-            String tmpIntentExtra = "evaluate";
-            String tmpChangeDbEvaluationStatus = "set";
-            Long tmpStartPeriod = 0L;
+
 
             // get calendar and init
             Calendar calendar = Calendar.getInstance();
@@ -886,62 +871,24 @@ public class ActivityOurGoals extends AppCompatActivity {
                 calendar.setTimeInMillis(startEvaluationDate);
 
                 do {
-                    tmpStartPeriod = calendar.getTimeInMillis();
+
                     calendar.add(Calendar.SECOND, evaluateActivTime);
-                    tmpIntentExtra = "evaluate";
-                    tmpChangeDbEvaluationStatus = "set";
+
+
                     tmpEvalutePaAcTime = evaluateActivTime * 1000; // make mills-seconds
                     if (calendar.getTimeInMillis() < tmpSystemTimeInMills) {
-                        tmpStartPeriod = calendar.getTimeInMillis();
+
                         calendar.add(Calendar.SECOND, evaluatePauseTime);
-                        tmpIntentExtra = "pause";
-                        tmpChangeDbEvaluationStatus = "delete";
+
                         tmpEvalutePaAcTime = evaluatePauseTime * 1000; // make mills-seconds
                     }
                 } while (calendar.getTimeInMillis() < tmpSystemTimeInMills);
 
-                if (tmpChangeDbEvaluationStatus.equals("delete")) {
-                    // update table ourGoals in db -> delete evaluation possible
-                    myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""), "delete");
-                } else {
 
-                    if (cursor != null) {
-
-                        cursor.moveToFirst();
-
-                        do {
-
-                            if (tmpStartPeriod > cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME))) {
-                                myDb.changeStatusEvaluationPossibleOurGoals(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)), "set");
-                            } else {
-                                myDb.changeStatusEvaluationPossibleOurGoals(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)), "delete");
-                            }
-                        } while (cursor.moveToNext());
-                    }
-                }
-
-                // put extras to intent -> "evaluate" or "delete"
-                evaluateAlarmIntent.putExtra("evaluateState", tmpIntentExtra);
-
-                // create call (pending intent) for alarm manager
-                pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(ActivityOurGoals.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 // set new start point for evaluation timer in view fragment now for evaluation link
                 prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, (calendar.getTimeInMillis() - tmpEvalutePaAcTime));
                 prefsEditor.commit();
-
-                // set alarm
-                manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurGoalsEvaluate);
-
-            } else { // delete alarm - it is out of time
-
-                // update table ourGoals in db -> evaluation disable
-                myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""), "delete");
-                // crealte pending intent
-                pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(ActivityOurGoals.this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-                // delete alarm
-                manager.cancel(pendingIntentOurGoalsEvaluate);
-            }
         }
     }
 

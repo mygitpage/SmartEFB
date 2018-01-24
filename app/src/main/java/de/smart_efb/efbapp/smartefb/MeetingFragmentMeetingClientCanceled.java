@@ -101,6 +101,8 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
             Intent startServiceIntent = new Intent(fragmentClientCanceledMeetingContext, ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
+            startServiceIntent.putExtra("dbid",0L);
+            startServiceIntent.putExtra("receiverBroadcast","");
             // start service
             fragmentClientCanceledMeetingContext.startService(startServiceIntent);
         }
@@ -340,6 +342,7 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
                         Intent startServiceIntent = new Intent(fragmentClientCanceledMeetingContext, ExchangeServiceEfb.class);
                         startServiceIntent.putExtra("com","send_meeting_data");
                         startServiceIntent.putExtra("dbid",clientCanceledMeetingId);
+                        startServiceIntent.putExtra("receiverBroadcast","");
                         fragmentClientCanceledMeetingContext.startService(startServiceIntent);
 
                         // build intent to go back to meetingOverview

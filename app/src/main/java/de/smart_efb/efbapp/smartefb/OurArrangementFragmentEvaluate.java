@@ -46,6 +46,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
     // shared prefs for the evaluate arrangement
     SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
     // DB-Id of arrangement to evaluate
     int arrangementServerDbIdToEvaluate = 0;
@@ -120,6 +121,8 @@ public class OurArrangementFragmentEvaluate extends Fragment {
             Intent startServiceIntent = new Intent(fragmentEvaluateContext, ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
+            startServiceIntent.putExtra("dbid",0L);
+            startServiceIntent.putExtra("receiverBroadcast","");
             // start service
             fragmentEvaluateContext.startService(startServiceIntent);
         }
@@ -161,6 +164,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 String tmpExtraOurArrangementCommentShareEnable = intentExtras.getString("OurArrangementSettingsCommentShareEnable","0");
                 String tmpExtraOurArrangementCommentShareDisable = intentExtras.getString("OurArrangementSettingsCommentShareDisable","0");
                 String tmpExtraOurArrangementResetCommentCountComment = intentExtras.getString("OurArrangementSettingsCommentCountComment","0");
+                String tmpUpdateEvaluationLink = intentExtras.getString("UpdateEvaluationLink");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
@@ -214,10 +218,16 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
+                else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
+                    // set new start point for evaluation timer in view
+                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis());
+                    prefsEditor.commit();
+                }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
                     // arrangement settings have change -> refresh view
                     refreshView = true;
                 }
+
 
                 if (refreshView) {
                     // refresh fragments view
@@ -237,6 +247,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         // init the prefs
         prefs = fragmentEvaluateContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentEvaluateContext.MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
         // get choosen arrangement
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToEvaluate);
@@ -461,6 +472,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     Intent startServiceIntent = new Intent(fragmentEvaluateContext, ExchangeServiceEfb.class);
                     startServiceIntent.putExtra("com","send_evaluation_result_arrangement");
                     startServiceIntent.putExtra("dbid",tmpDbId);
+                    startServiceIntent.putExtra("receiverBroadcast","");
                     fragmentEvaluateContext.startService(startServiceIntent);
 
                     // build and send intent to next evaluation arrangement or back to OurArrangementNow
