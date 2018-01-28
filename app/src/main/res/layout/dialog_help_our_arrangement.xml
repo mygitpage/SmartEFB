@@ -115,6 +115,26 @@
             android:paddingBottom="5dp"
             android:visibility="gone"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:background="@android:color/darker_gray"/>
+
+        <TextView
+            android:id="@+id/textViewDialogOurArrangementSettingsInvolvedPerson"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="left"
+            android:text="@string/textDialogOurArrangementSettingsLinkToInvolvedPerson"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"/>
+
     </LinearLayout>
 
 </ScrollView>

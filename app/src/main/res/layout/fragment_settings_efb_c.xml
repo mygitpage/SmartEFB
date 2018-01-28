@@ -51,6 +51,35 @@
             android:background="@drawable/list_element_style">
 
             <TextView
+                android:id="@+id/settingsEfbFragmentCLinksHeadine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/settingsEfbFragmentCLinksHeadineText"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/settingsEfbFragmentCLinksText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="@string/settingsEfbFragmentCLinksText"
+            android:gravity="left"
+            android:paddingBottom="20dp"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style">
+
+            <TextView
                 android:id="@+id/settingsEfbFragmentCHelpForAppHeadine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

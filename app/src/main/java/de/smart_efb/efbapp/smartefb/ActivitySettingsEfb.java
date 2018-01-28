@@ -253,7 +253,17 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             // notify view pager adapter that data change
             settingsEfbViewPagerAdapter.notifyDataSetChanged();
 
-        } else if (command.equals("show_connect_sucsessfull")) { // Show tab 0 -> connection sucsessfull, connect with server
+        } else if (command.equals("show_involved_person")) { // Show tab 0 -> involved person
+
+            // set correct subtitle
+            String tmpSubtitleText = ActivitySettingsEfb.this.getSubtitleForTabZero();
+            setSettingsToolbarSubtitle(tmpSubtitleText);
+
+            // notify view pager adapter that data change
+            settingsEfbViewPagerAdapter.notifyDataSetChanged();
+
+        }
+        else if (command.equals("show_connect_sucsessfull")) { // Show tab 0 -> connection sucsessfull, connect with server
 
             // set correct subtitle
             String tmpSubtitleText = ActivitySettingsEfb.this.getSubtitleForTabZero();

@@ -150,6 +150,9 @@
         <!-- Alarm receiver for our arrangement -->
         <receiver android:name=".AlarmReceiverOurArrangement"/>
 
+        <!-- Alarm receiver for meeting -->
+        <receiver android:name=".AlarmReceiverMeeting"/>
+
         <!-- Alarm receiver for exchange service -->
         <receiver
             android:name=".AlarmReceiverExchangeAndEventService"

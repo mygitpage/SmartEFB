@@ -55,6 +55,7 @@
             <string name="textDialogConnectBookSettingsMessageMaxLetters">\nEine Nachricht darf maximal %1d Zeichen enthalten.</string>
             <string name="textDialogConnectBookSettingsInfoTextReadByCoach">Alle in der Funktion Übergabe geschriebenen Nachrichten können von Ihrer Beraterin/ Ihrem Berater gelesen und kommentiert werden.</string>
             <string name="textDialogConnectBookSettingsInfoTextContactCoach">Sollten Sie Fragen oder Änderungswünsche zu diesen Einstellungen haben, wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.</string>
+            <string name="textDialogConnectBookSettingsLinkToInvolvedPerson">Die an dem Chat im Übergabebuch beteiligten Personen finden Sie <a href="smart.efb.deeplink://linkin/settings?com=show_involved_person">hier</a>.</string>
         <!-- End connect book dialog settings -->
 
         <!-- connect book dialog no more messages -->
@@ -158,7 +159,9 @@
 
         <!-- settings fragment c  -->
             <string name="settingsEfbFragmentCDataPrivacyHeadineText">Datenschutz</string>
-            <string name="settingsEfbFragmentCDataPrivacyText">Personenbezogene Daten werden in der App nur gespeichert, sofern Sie oder Ihre Beraterinnen oder Berater diese über die App-Funktionen oder das Backend (Übergabebuch, Absprachen, Ziele, Kommentare, Nachrichten, etc.) eingeben.\nDie Beratungsfälle werden mit einer eindeutigen Nummer (Fallnummer) gekennzeichent, die eine Verknüpfug mit der Papierakte Ihrer Beraterinnen und Berater zulässt.\nDie Pin-Nummer zur Verbindungsherstellung zwischen App und Backend dient zum erstmaligen Austausch und wird durch eine lange eindeutige Zeichenkette ersetzt. Anhand dieser Zeichenkette ist Ihre App eindeutig durch den Server zu erkennen. Diese Zeichenkette enthält keine personenbezogenen Merkmale und entsteht durch einen Zufallsprozess. Die Kommunikation zwischen App und Server ist durch eine Verschlüsselung geschützt.</string>
+            <string name="settingsEfbFragmentCDataPrivacyText">Personenbezogene Daten werden in der App nur gespeichert, sofern Sie oder Ihre Beraterinnen oder Berater diese über die App-Funktionen oder das Backend (Übergabebuch, Absprachen, Ziele, Kommentare, Nachrichten, etc.) eingeben. Eine weitergehende elektronische Verarbeitung findet nicht statt.\nDie Beratungsfälle werden mit einer eindeutigen Nummer (Fallnummer) gekennzeichent, die eine Verknüpfug mit der Papierakte Ihrer Beraterinnen und Berater zulässt.\nDie Pin-Nummer zur Verbindungsherstellung zwischen App und Backend dient zum erstmaligen Austausch und wird durch eine lange eindeutige Zeichenkette ersetzt. Anhand dieser Zeichenkette ist Ihre App eindeutig durch den Server zu erkennen. Diese Zeichenkette enthält keine personenbezogenen Merkmale und entsteht durch einen Zufallsprozess. Die Kommunikation zwischen App und Server ist durch eine Verschlüsselung geschützt.\nIm Rahmen des Projektes findet eine wissenschaftliche Befragung und Auswertung statt. Die verwendeten Fragebögen lassen keine Rückschlüsse auf bestimmte Personen zu und sind daher anonym.\n</string>
+            <string name="settingsEfbFragmentCLinksHeadineText">Externe Verlinkungen</string>
+            <string name="settingsEfbFragmentCLinksText">Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.</string>
             <string name="settingsEfbFragmentCHelpForAppHeadineText">Weitere Fragen zur App</string>
             <string name="settingsEfbFragmentCHelpForAppText">Wenn Sie weitere Fragen zur App haben, schauen Sie bitte <a href="smart.efb.deeplink://linkin/faq?com=show_section2">hier</a> nach.</string>
         <!-- end settings fragment c  -->
@@ -475,6 +478,7 @@
             <string name="textDialogOurArrangementSettingsSketchCommentDelaytimeNoDelay">\nDie Einschätzungen werden ohne Verzögerungszeit zugestellt (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogOurArrangementSettingsSketchCommentDelaytimeSingular">\nDie Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogOurArrangementSettingsSketchCommentDelaytimePlural">\nDie Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurArrangementSettingsLinkToInvolvedPerson">Die Personen, die Kommentare und Einschätzungen schreiben und lesen können, finden Sie <a href="smart.efb.deeplink://linkin/settings?com=show_involved_person">hier</a>.</string>
         <!-- End our arrangement dialog settings -->
 
         <!-- our arrangement dialog no more messages -->
@@ -571,6 +575,8 @@
             <string name="textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimeNoDelay">\nDie Einschätzungen werden ohne Verzögerungszeit zugestellt (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimeSingular">\nDie Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimePlural">\nDie Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
+            <string name="textDialogOurGoalsSettingsLinkToInvolvedPerson">Die Personen, die Kommentare und Einschätzungen schreiben und lesen können, finden Sie <a href="smart.efb.deeplink://linkin/settings?com=show_involved_person">hier</a>.</string>
+
         <!-- end our goals dialog settings -->
 
 
@@ -1063,6 +1069,13 @@
 
 
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Activity Alarm Receiver Meeting Start -->
+
+        <string name="alarmReceiverMotificationSubTextRemember15Min">%1$s um %2$s in %3$s</string>
+    <!-- Activity Alarm Receiver Meeting End -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Activity EmergencyHelp -->
 
         <!-- emergency help -->
@@ -1107,11 +1120,13 @@
         <string name="timeTableIntroTextComputeValueExplainPoint3">Die wahrgenommenen Fortschritte in der Beratung sollten Sie mit Ihrer Beraterin/ Ihrem Berater diskutieren.</string>
         <string name="timeTableIntroTextComputeValueExplainPoint4">Eine Angabe der Anzahl an Beratungsterminen kann Ihnen Ihre Beraterin/ Ihr Berater leider nicht nennen, da die Fortschritte in den einzelnen Beratungstreffen sehr unterschiedlich sein können. Daher wird der Fortschritt in Prozent angegeben.</string>
         <string name="timeTableIntroTextComputeValueExplainPoint5">Bei Fragen sprechen Sie bitte Ihre Beraterin/ Ihren Berater an. Vielen Dank.</string>
-
-
-
     <!-- end timetable -->
 
+    <!-- help dialog -->
+        <string name="textDialogTimeTableCloseDialog">Schließen</string>
+        <string name="textDialogTimeTableTitleDialog">Hinweise zum Zeitplan/ Beratungsstand</string>
+        <string name="textDialogTimeTableIntro">Hier finden Sie eine Angabe, die Sie darüber informiert, wie weit Ihre Beratung bereits fortgeschritten ist. Der angegebene Wert wir anhand der genannten Kriterien in gemeinsamen Gesprächen zwischen Ihnen und Ihrer Beraterin/ Ihrem Berater festgelegt. Wenn Sie Fragen haben, wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.</string>
+    <!-- End help dialog -->
     <!-- Activity TimeTable -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 

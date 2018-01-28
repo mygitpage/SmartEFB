@@ -51,6 +51,18 @@
             android:paddingLeft="5dp"/>
 
         <TextView
+            android:id="@+id/textViewDialogConnectBookSettingsInvolvedPerson"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="left"
+            android:text="@string/textDialogConnectBookSettingsLinkToInvolvedPerson"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"/>
+
+        <TextView
             android:id="@+id/textViewDialogConnectBookSettingsContactCoach"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -23,9 +23,6 @@ package de.smart_efb.efbapp.smartefb;
    // meeting client comment suggestion on off to prefs
    static final String namePrefsMeeting_ClientCommentSuggestion_OnOff ="meetingClientCommentSuggestionOnOff";
 
-   // meeting client wake up time for meetings, etc.
-   static final int namePrefsMeeting_wakeUpTimeMeetingNotification = 60; // in seconds
-
    // meeting number of letters for canceled meeting reason
    static final int namePrefsMaxLettersCanceledMeetingReason = 600;
 

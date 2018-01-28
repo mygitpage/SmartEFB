@@ -288,17 +288,6 @@ public class ActivityPrevention extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
     // help dialog
     void createHelpDialog () {
 

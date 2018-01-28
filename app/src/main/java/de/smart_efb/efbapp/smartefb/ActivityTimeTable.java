@@ -2,17 +2,22 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +39,9 @@ public class ActivityTimeTable extends AppCompatActivity {
     private TextView txtAuthorAndDate;
     private ProgressBar progressBar;
 
+    // reference to dialog time table information
+    AlertDialog alertDialogTimeTable;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +59,9 @@ public class ActivityTimeTable extends AppCompatActivity {
 
         // set progress value
         setTimeTableValue ();
+
+        // create help dialog
+        createHelpDialog();
 
         // first ask to server for new data, when case is not closed!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
@@ -162,6 +173,53 @@ public class ActivityTimeTable extends AppCompatActivity {
         }
     };
 
+
+    // help dialog
+    void createHelpDialog () {
+
+        Button tmpHelpButtonSettings = (Button) findViewById(R.id.helpTimeTable);
+
+        // add button listener to question mark in activity settings efb (toolbar)
+        tmpHelpButtonSettings.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                LayoutInflater dialogInflater;
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityTimeTable.this);
+
+                // Get the layout inflater
+                dialogInflater = (LayoutInflater) ActivityTimeTable.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                // inflate and get the view
+                View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_timetable, null);
+
+                // get string ressources
+                String tmpTextCloseDialog = ActivityTimeTable.this.getResources().getString(R.string.textDialogTimeTableCloseDialog);
+                String tmpTextTitleDialog = ActivityTimeTable.this.getResources().getString(R.string.textDialogTimeTableTitleDialog);
+
+                // build the dialog
+                builder.setView(dialogSettings)
+
+                        // Add close button
+                        .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                alertDialogTimeTable.cancel();
+                            }
+                        })
+
+                        // add title
+                        .setTitle(tmpTextTitleDialog);
+
+                // and create
+                alertDialogTimeTable = builder.create();
+
+                // and show the dialog
+                builder.show();
+            }
+        });
+    }
 
     private void updateActivityView () {
 

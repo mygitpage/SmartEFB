@@ -39,7 +39,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     private static final String DATABASE_TABLE_INVOLVED_PERSON = "involvedPersonTable";
 
     // Track DB version if a new version of your app changes the format.
-    private static final int DATABASE_VERSION = 46;
+    private static final int DATABASE_VERSION = 47;
 
     // Common column names
     public static final String KEY_ROWID = "_id";
@@ -405,6 +405,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     static final String MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR = "meeting_creation_author";
     static final String MEETING_SUGGESTION_MEETING_KEY_STATUS = "status"; // 0=ready to send, 1=meeting/suggestion send, 4=external message
     static final String MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST = "new_mett_suggest"; // 1=new meeting/ suggestion
+    static final String MEETING_SUGGESTION_KEY_REMEMBER_POINT = "remember_point"; //
+
+
+
 
     // All keys from table in a String
     static final String[] MEETING_SUGGESTION_MEETING_ALL_KEYS = new String[]{KEY_ROWID, MEETING_SUGGESTION_KEY_DATE1, MEETING_SUGGESTION_KEY_DATE2, MEETING_SUGGESTION_KEY_DATE3, MEETING_SUGGESTION_KEY_DATE4, MEETING_SUGGESTION_KEY_DATE5, MEETING_SUGGESTION_KEY_DATE6,
@@ -414,7 +418,7 @@ public class DBAdapter extends SQLiteOpenHelper {
             MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR, MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME, MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TEXT, MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT, MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR,
             MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME, MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE, MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE, MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME, MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT, MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR, MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE,
             MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT, MEETING_SUGGESTION_KEY_MEETING_SERVER_ID, MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME, MEETING_SUGGESTION_KEY_MEETING_KATEGORIE, MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME,
-            MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR, MEETING_SUGGESTION_MEETING_KEY_STATUS, MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST};
+            MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR, MEETING_SUGGESTION_MEETING_KEY_STATUS, MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST, MEETING_SUGGESTION_KEY_REMEMBER_POINT};
 
 
     // SQL String to create find meeting table
@@ -466,7 +470,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME + " INTEGER not null, "
                     + MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR + " STRING not null, "
                     + MEETING_SUGGESTION_MEETING_KEY_STATUS + " INTEGER DEFAULT 0, "
-                    + MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST + " INTEGER DEFAULT 0 "
+                    + MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST + " INTEGER DEFAULT 0, "
+                    + MEETING_SUGGESTION_KEY_REMEMBER_POINT + " INTEGER DEFAULT 0 "
                     + ");";
 
 
@@ -590,7 +595,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Destroy table Meeting and Suggestion
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_INVOLVED_PERSON);
-
 
         // Recreate new database:
         onCreate(_db);
@@ -2433,8 +2437,6 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-
-
     // Change an existing suggestion from client with client suggestion
     boolean updateSuggestionFromClient(Long meeting_id, long suggestionTime, String suggestionAuthor, String suggestionText, int status) {
 
@@ -2502,14 +2504,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         Cursor c = db.query(true, DATABASE_TABLE_MEETING_SUGGESTION, MEETING_SUGGESTION_MEETING_ALL_KEYS,
                 where, null, null, null, null, null);
 
-
         if (c != null) {
             c.moveToFirst();
         }
 
         // return how many
         return c.getCount();
-
     }
 
 
@@ -2543,9 +2543,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Insert it into the database.
         return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
     }
-
-
-
 
 
     // Return all meeting/ suggestion from the database
@@ -2603,7 +2600,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         return c;
-
     }
 
 
@@ -2625,7 +2621,87 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         return c;
+    }
 
+
+    // Return all meeting/ suggestion from the database to remember
+    Cursor getAllRowsRememberMeetingsAndSuggestion(String function, Long nowTime) {
+
+        String where = "";
+        String sort = "";
+
+
+        Long delta_15min_lowerLimit = 13L * 60L * 1000L; // 13 min in mills
+        Long delta_15min_upperLimit = 17L * 60L * 1000L; // 17 min in mills
+
+        Long delta_120min_lowerLimit = 118L * 60L * 1000L; // 118 min in mills
+        Long delta_120min_upperLimit = 122L * 60L * 1000L; // 122 min in mills
+
+        Long delta_1440min_lowerLimit = (24L * 60L * 60L * 1000L) - (2L * 60L * 1000L); // 1438 (24h) min in mills
+        Long delta_1440min_upperLimit = 24L * 60L * 60L * 1000L + (2L * 60L * 1000L); // 1442 (24h) min in mills
+
+
+
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        switch (function) {
+
+
+
+
+            case "remember_meeting_15min":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">" + nowTime + delta_15min_lowerLimit + " AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + nowTime + delta_15min_upperLimit + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0";
+                sort = MEETING_SUGGESTION_KEY_DATE1 + " ASC";
+                break;
+
+            case "remember_meeting_120min":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">" + nowTime + delta_120min_lowerLimit + " AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + nowTime + delta_120min_upperLimit + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0";
+                sort = MEETING_SUGGESTION_KEY_DATE1 + " ASC";
+                break;
+
+            case "remember_meeting_1440min":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">" + nowTime + delta_1440min_lowerLimit + " AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + nowTime + delta_1440min_upperLimit + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0";
+                sort = MEETING_SUGGESTION_KEY_DATE1 + " ASC";
+                break;
+
+
+
+
+
+
+
+            case "remember_suggestion":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">=" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "=''";
+                sort = MEETING_SUGGESTION_KEY_DATE1 + " ASC";
+                break;
+
+
+            // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            // SQL bitte ueberarbeiten !!!!!!!!!!!!!!!!
+            case "remember_client_suggestion_begin":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + ">" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "=''";
+                sort = MEETING_SUGGESTION_KEY_DATE1 + " ASC";
+                break;
+
+
+
+
+
+            default:
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">=" + nowTime;
+                sort = MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_DATE1 + " DESC";
+                break;
+        }
+
+        Cursor c = db.query(true, DATABASE_TABLE_MEETING_SUGGESTION, MEETING_SUGGESTION_MEETING_ALL_KEYS,
+                where, null, null, null, sort, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
     }
 
 

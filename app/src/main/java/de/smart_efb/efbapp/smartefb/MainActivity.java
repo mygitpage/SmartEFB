@@ -210,29 +210,26 @@ public class MainActivity extends AppCompatActivity {
 
         prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds,15); //
         prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds,15); //
-
         prefsEditor.commit();
 
 
-
-        // start exchange service with intent, when case is open!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+
+            // start exchange service with intent, when case is open!
             setAlarmForExchangeService();
-        }
 
-        // start check meeting alarm manager, when function meeting is on and case is not closed
-        if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false) && !prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
-            setAlarmForMeetingNotification();
-        }
-
-        // start check our arrangement alarm manager, when function our arrangement is on and case is not closed
-        if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false) && !prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
-            setAlarmManagerForOurArrangementEvaluation();
-        }
-
-        // start check our goals alarm manager, when function our goals is on and case is not closed
-        if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false) && !prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
-            setAlarmManagerForOurGoalsEvaluation();
+            // start check meeting remember alarm manager, when function meeting is on and case is not closed
+            if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false)) {
+                setAlarmManagerForRememberMeeting();
+            }
+            // start check our arrangement alarm manager, when function our arrangement is on and case is not closed
+            if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false)) {
+                setAlarmManagerForOurArrangementEvaluation();
+            }
+            // start check our goals alarm manager, when function our goals is on and case is not closed
+            if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false)) {
+                setAlarmManagerForOurGoalsEvaluation();
+            }
         }
 
         // init array show elements
@@ -553,37 +550,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // set alarm manager to start every wakeUpTimeMeetingNotification seconds the service to check for meetings, etc.
-    public void setAlarmForMeetingNotification () {
-
-        // get calendar and init
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-
-        // set calendar object with seconds
-        calendar.add(Calendar.SECOND, ConstansClassMeeting.namePrefsMeeting_wakeUpTimeMeetingNotification);
-        int tmpAlarmTime = ConstansClassMeeting.namePrefsMeeting_wakeUpTimeMeetingNotification * 1000; // make mills-seconds
-
-        // make intent for alarm receiver
-        Intent startIntentService = new Intent (getApplicationContext(), AlarmReceiverMeeting.class);
-
-        // make pending intent
-        final PendingIntent pIntentService = PendingIntent.getBroadcast(this, 0, startIntentService, PendingIntent.FLAG_UPDATE_CURRENT );
-
-        // get alarm manager service
-        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-
-        // set alarm manager to call exchange receiver
-        try {
-            alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpAlarmTime, pIntentService);
-        }
-        catch (NullPointerException e) {
-            // do nothing
-        }
-    }
-
-
-
     // set alarmmanager for our arrangement evaluation time
     void setAlarmManagerForOurArrangementEvaluation () {
 
@@ -776,9 +742,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // set alarmmanager for remember meeting
+    void setAlarmManagerForRememberMeeting () {
 
+        PendingIntent pendingIntentRememberMeeting;
 
+        Long firstStartRememberMeeting = System.currentTimeMillis() + 2000; // first start point for meeting remember function
+        Long repeatingMeetingRemember = 60L * 60L * 1000L; // one hour
 
+        // get reference to alarm manager
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        // create intent for backcall to broadcast receiver
+        Intent rememberMeetingAlarmIntent = new Intent(this, AlarmReceiverMeeting.class);
+
+        // create call (pending intent) for alarm manager
+        pendingIntentRememberMeeting = PendingIntent.getBroadcast(this, 0, rememberMeetingAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // set alarm
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstStartRememberMeeting, repeatingMeetingRemember, pendingIntentRememberMeeting);
+    }
 
 
     // inner class grid view adapter

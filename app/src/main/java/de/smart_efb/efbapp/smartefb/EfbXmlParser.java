@@ -5099,7 +5099,7 @@ public class EfbXmlParser {
                                         returnMap.put("TimeTableNewValue", "1");
                                     }
                                 }
-                                else { // time table is off -> set value to default
+                                else if (!tmpTimeTableOnOff) { // time table is off -> set value to default
                                     prefsEditor.putInt(ConstansClassTimeTable.namePrefsTimeTableValue, 0); // set value for time table
                                     prefsEditor.putString(ConstansClassTimeTable.namePrefsTimeTableModifiedAuthor, ""); // set author name for time table
                                     prefsEditor.putLong(ConstansClassTimeTable.namePrefsTimeTableModifiedDate, 0); // set change date for time table

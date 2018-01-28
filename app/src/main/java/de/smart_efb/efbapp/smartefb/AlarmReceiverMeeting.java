@@ -7,11 +7,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
 import java.util.Calendar;
 
@@ -22,24 +24,129 @@ import java.util.Calendar;
 public class AlarmReceiverMeeting extends BroadcastReceiver {
 
 
-        // evaluate pause time and active time (get from prefs)
-        int evaluatePauseTime = 0;
-        int evaluateActivTime = 0;
+    // reference to the DB
+    DBAdapter myDb;
 
-        // reference to the DB
-        DBAdapter myDb;
+    // shared prefs for the comment goals
+    SharedPreferences prefs;
 
-        // shared prefs for the comment goals
-        SharedPreferences prefs;
+    // Pending intent for alarm manager
+    PendingIntent pendingIntentMeeting;
 
-        // Pending intent for alarm manager
-        PendingIntent pendingIntentOurGoalsEvaluate;
 
-        // intent for this alarm receiver
-        Intent evaluateAlarmIntent;
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+
+        String notificationContentTitle;
+        Intent notificationIntent;
+        Intent  mainActivityIntent;
+        PendingIntent contentPendingIntent;
+        TaskStackBuilder stackBuilder;
+
+        String meetingTextIn15Min = "";
+        String lineFeed = "";
+
+        // init the DB
+        myDb = new DBAdapter(context);
+
+        // get notification manager
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // get alarm tone
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        // new notification builder
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+        // set basic things to all notifications
+        mBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.notification_large_appicon));
+        mBuilder.setSmallIcon(R.drawable.notification_smile);
+        mBuilder.setAutoCancel(true);
+
+        // needed for back stack -> start main activity after pressing back
+        mainActivityIntent = new Intent(context, MainActivity.class);
+        mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+
+
+
+
+
+
+
+
+        Log.d ("ALARM REMEMBER MEET->", "REMEMBER!!!!!!");
+
+
+
+
+
+
+        Long nowTime = System.currentTimeMillis();
+
+        Cursor rememberMeeting_15min = myDb.getAllRowsRememberMeetingsAndSuggestion("remember_meeting_15min", nowTime);
+
+        if (rememberMeeting_15min != null && rememberMeeting_15min.getCount() > 0) {
+
+
+            Log.d("ALARM REMEMBER MEET->", "Meeting found!!!");
+
+            rememberMeeting_15min.moveToFirst();
+
+            do {
+
+
+                String tmpMeetingNotificationText15 = String.format(context.getResources().getString(R.string.alarmReceiverMotificationSubTextRemember15Min), EfbHelperClass.timestampToDateFormat(rememberMeeting_15min.getLong(rememberMeeting_15min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(rememberMeeting_15min.getLong(rememberMeeting_15min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "HH:mm"), rememberMeeting_15min.getString(rememberMeeting_15min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE1)));
+                meetingTextIn15Min += tmpMeetingNotificationText15 + lineFeed;
+                lineFeed = "\n";
+
+
+                Log.d ("ALARM REMEMBER MEET->", "IN DER DO-SCHLEIFE");
+
+
+
+                //Long meetingDate = rememberMeeting_15min.getLong(rememberMeeting_15min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1));
+
+
+
+
+
+
+
+
+
+            } while (rememberMeeting_15min.moveToNext());
+
+            // reset line feed
+            lineFeed = "";
+
+
+
+
+            Log.d("ALARM REMEMBER MEET->", "Result:"+meetingTextIn15Min);
+
+
+            //int kategorie = rememberMeeting.getInt(rememberMeeting.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_KATEGORIE));
+            /*
+            if (nowTime + fiveMinutes > meetingDate) {
+
+
+                    Log.d ("ALARM MEETING", "Notification Meet:"+EfbHelperClass.timestampToDateFormat(rememberMeeting.getLong(rememberMeeting.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "dd.MM.yyyy"));
+
+
+                }
+             */
+
+
+
+
+
+
+
+        }
+
+
+
 
 
             /*
