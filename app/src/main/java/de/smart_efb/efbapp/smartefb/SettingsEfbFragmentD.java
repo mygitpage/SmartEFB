@@ -1,5 +1,7 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -452,6 +454,8 @@ public class SettingsEfbFragmentD extends Fragment {
                         checkBoxValue = true;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberMeeting, true);
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, true);
+                        // start alarm receiver for remember meeting
+                        setAlarmManagerForRememberMeeting();
                     }
                     prefsEditor.commit();
                     break;
@@ -588,17 +592,36 @@ public class SettingsEfbFragmentD extends Fragment {
                     prefsEditor.commit();
                     break;
 
-
-
-
-
-
-
             }
 
 
         }
     }
+
+
+
+    // set alarmmanager for remember meeting; same function in MainActivity and EfbXmlParser!
+    void setAlarmManagerForRememberMeeting () {
+
+        PendingIntent pendingIntentRememberMeeting;
+
+        Long firstStartRememberMeeting = System.currentTimeMillis() + 1000; // start point for meeting remember function
+        Long repeatingMeetingRemember = 60L * 60L * 1000L; // one hour
+
+        // get reference to alarm manager
+        AlarmManager manager = (AlarmManager) fragmentContextD.getSystemService(Context.ALARM_SERVICE);
+
+        // create intent for backcall to broadcast receiver
+        Intent rememberMeetingAlarmIntent = new Intent(fragmentContextD, AlarmReceiverMeeting.class);
+
+        // create call (pending intent) for alarm manager
+        pendingIntentRememberMeeting = PendingIntent.getBroadcast(fragmentContextD, 0, rememberMeetingAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // set alarm
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstStartRememberMeeting, repeatingMeetingRemember, pendingIntentRememberMeeting);
+    }
+
+
 
 
 

@@ -742,12 +742,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // set alarmmanager for remember meeting
+    // set alarmmanager for remember meeting; ; same function in EfbXmlParser to start Alarm when new meeting/ suggestion comes in!
     void setAlarmManagerForRememberMeeting () {
 
         PendingIntent pendingIntentRememberMeeting;
 
-        Long firstStartRememberMeeting = System.currentTimeMillis() + 2000; // first start point for meeting remember function
+        Long firstStartRememberMeeting = System.currentTimeMillis() + 1000; // first start point for meeting remember function
         Long repeatingMeetingRemember = 60L * 60L * 1000L; // one hour
 
         // get reference to alarm manager

@@ -30,244 +30,269 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
     // shared prefs for the comment goals
     SharedPreferences prefs;
 
-    // Pending intent for alarm manager
-    PendingIntent pendingIntentMeeting;
+    // array for names of meeting places
+    String  meetingPlaceNames[] = new String[3];
+
+    // the context
+    Context mContext;
 
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        String notificationContentTitle;
-        Intent notificationIntent;
-        Intent  mainActivityIntent;
-        PendingIntent contentPendingIntent;
-        TaskStackBuilder stackBuilder;
 
-        String meetingTextIn15Min = "";
+        Log.d("MEETING ALARM ->", "IN ALARM RECEIVER!");
+
+        mContext = context;
+        
+        Intent  mainActivityIntent;
+        
+        String meetingTextIn15Min = ""; // 15 minutes
+        String meetingTextIn120Min = ""; // 2 hours
+        String meetingTextIn1440Min = ""; // 24 hours
         String lineFeed = "";
 
+        // init array for meeting places
+        meetingPlaceNames = mContext.getResources().getStringArray(R.array.placesNameForMeetingArray);
+
         // init the DB
-        myDb = new DBAdapter(context);
+        myDb = new DBAdapter(mContext);
+
+        // open sharedPrefs
+        prefs = mContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, mContext.MODE_PRIVATE);
 
         // get notification manager
-        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
 
         // get alarm tone
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         // new notification builder
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
         // set basic things to all notifications
-        mBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.notification_large_appicon));
+        mBuilder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.notification_large_appicon));
         mBuilder.setSmallIcon(R.drawable.notification_smile);
         mBuilder.setAutoCancel(true);
 
         // needed for back stack -> start main activity after pressing back
-        mainActivityIntent = new Intent(context, MainActivity.class);
+        mainActivityIntent = new Intent(mContext, MainActivity.class);
         mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-
-
-
-
-
-
-
-
-        Log.d ("ALARM REMEMBER MEET->", "REMEMBER!!!!!!");
-
-
-
-
-
-
+        // set now time for db request
         Long nowTime = System.currentTimeMillis();
 
-        Cursor rememberMeeting_15min = myDb.getAllRowsRememberMeetingsAndSuggestion("remember_meeting_15min", nowTime);
+        // check notification for meeting on?
+        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberMeeting, true)) {
 
-        if (rememberMeeting_15min != null && rememberMeeting_15min.getCount() > 0) {
+            // check meeting in 15 minutes
+            Cursor rememberMeeting_15min = myDb.getAllRowsRememberMeetingsAndSuggestion("remember_meeting_15min", nowTime);
+            if (rememberMeeting_15min != null && rememberMeeting_15min.getCount() > 0) {
 
-
-            Log.d("ALARM REMEMBER MEET->", "Meeting found!!!");
-
-            rememberMeeting_15min.moveToFirst();
-
-            do {
+                Log.d("MEETING ALARM ->", "IN 15 Min Meeting!");
 
 
-                String tmpMeetingNotificationText15 = String.format(context.getResources().getString(R.string.alarmReceiverMotificationSubTextRemember15Min), EfbHelperClass.timestampToDateFormat(rememberMeeting_15min.getLong(rememberMeeting_15min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(rememberMeeting_15min.getLong(rememberMeeting_15min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "HH:mm"), rememberMeeting_15min.getString(rememberMeeting_15min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE1)));
-                meetingTextIn15Min += tmpMeetingNotificationText15 + lineFeed;
-                lineFeed = "\n";
+                rememberMeeting_15min.moveToFirst();
+                do {
+                    String tmpMeetingNotificationText15 = String.format(mContext.getResources().getString(R.string.alarmReceiverMotificationSubTextRemember15Min), EfbHelperClass.timestampToDateFormat(rememberMeeting_15min.getLong(rememberMeeting_15min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(rememberMeeting_15min.getLong(rememberMeeting_15min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "HH:mm"), meetingPlaceNames[rememberMeeting_15min.getInt(rememberMeeting_15min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE1))]);
+                    meetingTextIn15Min += tmpMeetingNotificationText15 + lineFeed;
+                    lineFeed = "\n";
+                    // update meeting remember status
+                    myDb.updateStatusRememberMeetingAndSuggestion(rememberMeeting_15min.getLong(rememberMeeting_15min.getColumnIndex(DBAdapter.KEY_ROWID)), 15); // 0 = no remember so far; 5 = remember 24 h; 10 = remember 2 hours; 15 = remember 15 minutes
+                } while (rememberMeeting_15min.moveToNext());
+                // reset line feed
+                lineFeed = "";
+            }
+
+            // check meeting in 120 minutes
+            Cursor rememberMeeting_120min = myDb.getAllRowsRememberMeetingsAndSuggestion("remember_meeting_120min", nowTime);
+            if (rememberMeeting_120min != null && rememberMeeting_120min.getCount() > 0) {
+
+                Log.d("MEETING ALARM ->", "IN 120 Min Meeting!");
+
+                rememberMeeting_120min.moveToFirst();
+                do {
+                    String tmpMeetingNotificationText120 = String.format(mContext.getResources().getString(R.string.alarmReceiverMotificationSubTextRemember120Min), EfbHelperClass.timestampToDateFormat(rememberMeeting_120min.getLong(rememberMeeting_120min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(rememberMeeting_120min.getLong(rememberMeeting_120min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "HH:mm"), meetingPlaceNames[rememberMeeting_120min.getInt(rememberMeeting_120min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE1))]);
+                    meetingTextIn120Min += tmpMeetingNotificationText120 + lineFeed;
+                    lineFeed = "\n";
+                    // update meeting remember status
+                    myDb.updateStatusRememberMeetingAndSuggestion(rememberMeeting_120min.getLong(rememberMeeting_15min.getColumnIndex(DBAdapter.KEY_ROWID)), 10); // 0 = no remember so far; 5 = remember 24 h; 10 = remember 2 hours; 15 = remember 15 minutes
+                } while (rememberMeeting_120min.moveToNext());
+                // reset line feed
+                lineFeed = "";
+            }
+
+            // check meeting in 1440 minutes; 24hours!
+            Cursor rememberMeeting_1440min = myDb.getAllRowsRememberMeetingsAndSuggestion("remember_meeting_1440min", nowTime);
+            if (rememberMeeting_1440min != null && rememberMeeting_1440min.getCount() > 0) {
+
+                Log.d("MEETING ALARM ->", "IN 1440 Min Meeting!");
+
+                rememberMeeting_1440min.moveToFirst();
+                do {
+                    String tmpMeetingNotificationText1440 = String.format(mContext.getResources().getString(R.string.alarmReceiverMotificationSubTextRemember1440Min), EfbHelperClass.timestampToDateFormat(rememberMeeting_1440min.getLong(rememberMeeting_1440min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(rememberMeeting_1440min.getLong(rememberMeeting_1440min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "HH:mm"), meetingPlaceNames[rememberMeeting_1440min.getInt(rememberMeeting_1440min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE1))]);
+                    meetingTextIn1440Min += tmpMeetingNotificationText1440 + lineFeed;
+                    lineFeed = "\n";
+                    // update meeting remember status
+                    myDb.updateStatusRememberMeetingAndSuggestion(rememberMeeting_1440min.getLong(rememberMeeting_15min.getColumnIndex(DBAdapter.KEY_ROWID)), 5); // 0 = no remember so far; 5 = remember 24 h; 10 = remember 2 hours; 15 = remember 15 minutes
+                } while (rememberMeeting_1440min.moveToNext());
+                // reset line feed
+                lineFeed = "";
+            }
 
 
-                Log.d ("ALARM REMEMBER MEET->", "IN DER DO-SCHLEIFE");
+            // check next wakeup for alarm receiver
+            Cursor rememberMeeting_nextWakeUp = myDb.getAllRowsRememberMeetingsAndSuggestion("remember_meeting_next_wakeup", nowTime);
+            if (rememberMeeting_nextWakeUp != null && rememberMeeting_nextWakeUp.getCount() > 0) {
+
+                Log.d("MEETING ALARM ->", "Next WakeUp Point");
+
+                rememberMeeting_nextWakeUp.moveToFirst();
+                do {
+                    Log.d("MEETING ALARM ->","Next WakeUp:"+ rememberMeeting_nextWakeUp.getLong(rememberMeeting_nextWakeUp.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)));
+
+                } while (rememberMeeting_nextWakeUp.moveToNext());
+
+            }
 
 
+            // notification meeting in 15 minutes
+            if (meetingTextIn15Min.length() > 0) {
+                notificationMeetingIn15Minutes(meetingTextIn15Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+            }
 
-                //Long meetingDate = rememberMeeting_15min.getLong(rememberMeeting_15min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1));
+            // notification meeting in 120 minutes
+            if (meetingTextIn120Min.length() > 0) {
+                notificationMeetingIn120Minutes(meetingTextIn120Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+            }
 
-
-
-
-
-
-
-
-
-            } while (rememberMeeting_15min.moveToNext());
-
-            // reset line feed
-            lineFeed = "";
-
-
-
-
-            Log.d("ALARM REMEMBER MEET->", "Result:"+meetingTextIn15Min);
-
-
-            //int kategorie = rememberMeeting.getInt(rememberMeeting.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_KATEGORIE));
-            /*
-            if (nowTime + fiveMinutes > meetingDate) {
-
-
-                    Log.d ("ALARM MEETING", "Notification Meet:"+EfbHelperClass.timestampToDateFormat(rememberMeeting.getLong(rememberMeeting.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "dd.MM.yyyy"));
-
-
-                }
-             */
-
-
-
-
-
+            // notification meeting in 1440 minutes; 24 hours
+            if (meetingTextIn1440Min.length() > 0) {
+                notificationMeetingIn1440Minutes(meetingTextIn1440Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+            }
 
 
         }
 
+        // close db connection
+        myDb.close();
 
 
-
-
-            /*
-
-
-            String notificationContentTitle;
-            Intent notificationIntent;
-            Intent  mainActivityIntent;
-            PendingIntent contentPendingIntent;
-            TaskStackBuilder stackBuilder;
-
-            // get notifocation manager
-            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-            // get alarm tone
-            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-            // new notification builder
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
-            // set basic things to all notifications
-            mBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.notification_large_appicon));
-            mBuilder.setSmallIcon(R.drawable.notification_smile);
-            mBuilder.setAutoCancel(true);
-
-            // needed for back stack -> start main activity after pressing back
-            mainActivityIntent = new Intent(context, MainActivity.class);
-            mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-            // init the DB
-            myDb = new DBAdapter(context);
-
-            // init the prefs
-            prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
-
-            // alarm time from the prefs
-            int tmpAlarmTime = 0;
-
-
-            // get alarmManager
-            AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-            // get calendar and init
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-
-            // create new intent for pending intent to send and receive
-            evaluateAlarmIntent = new Intent(context, de.smart_efb.efbapp.smartefb.AlarmReceiverOurGoals.class);
-
-
-
-
-                // crealte pending intent
-                pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                // set alarm manager
-                manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpAlarmTime, pendingIntentOurGoalsEvaluate);
-
-                // check notification when our goals evaluation time change
-                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoalEvaluation, false)) {
-
-                    // get our arrangement notification string
-                    notificationContentTitle = context.getResources().getString(R.string.exchangeServiceNotificationTextNewEventOurGoals);
-
-                    // set intent/ pending intent to start our goals
-                    notificationIntent = new Intent(context, ActivityOurGoals.class);
-                    notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-                    // generate back stack for pending intent and add main activity
-                    stackBuilder = TaskStackBuilder.create(context);
-                    stackBuilder.addParentStack(MainActivity.class);
-                    stackBuilder.addNextIntent(mainActivityIntent);
-
-                    // add intent for connect book
-                    stackBuilder.addNextIntent(notificationIntent);
-
-                    // generate pending intent
-                    contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                    // set notofication attributes
-                    mBuilder.setContentTitle(notificationContentTitle);
-                    mBuilder.setContentIntent(contentPendingIntent);
-                    // sound on/off for connect book?
-                    if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, true)) {
-                        mBuilder.setSound(alarmSound);
-                    }
-
-                    String subTitleNotification = "";
-                    int evaluationPeriod = evaluatePauseTime / 3600; // make hours from seconds
-                    int evaluationActivePeriod = evaluateActivTime / 3600; // make hours from seconds;
-
-                    switch (evaluateState) {
-                        case "evaluate":
-                            subTitleNotification = context.getResources().getString(R.string.exchangeServiceNotificationTextNewEventOurGoalsEvaluationPause);
-                            subTitleNotification = String.format(subTitleNotification, evaluationActivePeriod, evaluationPeriod);
-                            break;
-                        case "pause":
-                            subTitleNotification = context.getResources().getString(R.string.exchangeServiceNotificationTextNewEventOurGoalsEvaluationSet);
-                            subTitleNotification = String.format(subTitleNotification, evaluationPeriod);
-                            break;
-                    }
-
-                    // show long text in notification
-                    mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(subTitleNotification));
-                    mBuilder.setContentText(subTitleNotification);
-
-                    // show notification
-                    mNotificationManager.notify(104, mBuilder.build());
-                }
-
-
-
-            // close db connection
-            myDb.close();
-*/
-
-                /*
-
-            // send intent to receiver in OurGoalsFragmentJointlyGoalsNow to update listView OurGoals (when active)
-            Intent tmpIntent = new Intent();
-            tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
-            tmpIntent.putExtra("UpdateJointlyEvaluationLink","1");
-            context.sendBroadcast(tmpIntent);
-            */
-        }
     }
+    
+    
+    
+    void notificationMeetingIn15Minutes (String meetingTextIn15Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+        // get meeting remember notification string
+        String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverMotificationHeadlineTextRemember15Min);
+
+        // set intent/ pending intent to start meeting
+        Intent notificationIntent = new Intent(mContext, ActivityMeeting.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        // generate back stack for pending intent and add main activity
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(mContext);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(mainActivityIntent);
+
+        // add intent for meeting
+        stackBuilder.addNextIntent(notificationIntent);
+
+        // generate pending intent
+        PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // set notification attributes
+        mBuilder.setContentTitle(notificationContentTitle);
+        mBuilder.setContentIntent(contentPendingIntent);
+        // sound on/off for meeting?
+        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, true)) {
+            mBuilder.setSound(alarmSound);
+        }
+
+        // show long text in notification
+        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(meetingTextIn15Min));
+        mBuilder.setContentText(meetingTextIn15Min);
+
+        // show notification
+        mNotificationManager.notify(201, mBuilder.build());
+    }
+
+
+
+    void notificationMeetingIn120Minutes (String meetingTextIn120Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+        // get meeting remember notification string
+        String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverMotificationHeadlineTextRemember120Min);
+
+        // set intent/ pending intent to start meeting
+        Intent notificationIntent = new Intent(mContext, ActivityMeeting.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        // generate back stack for pending intent and add main activity
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(mContext);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(mainActivityIntent);
+
+        // add intent for meeting
+        stackBuilder.addNextIntent(notificationIntent);
+
+        // generate pending intent
+        PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // set notification attributes
+        mBuilder.setContentTitle(notificationContentTitle);
+        mBuilder.setContentIntent(contentPendingIntent);
+        // sound on/off for meeting?
+        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, true)) {
+            mBuilder.setSound(alarmSound);
+        }
+
+        // show long text in notification
+        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(meetingTextIn120Min));
+        mBuilder.setContentText(meetingTextIn120Min);
+
+        // show notification
+        mNotificationManager.notify(202, mBuilder.build());
+    }
+
+
+    void notificationMeetingIn1440Minutes (String meetingTextIn1440Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+        // get meeting remember notification string
+        String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverMotificationHeadlineTextRemember1440Min);
+
+        // set intent/ pending intent to start meeting
+        Intent notificationIntent = new Intent(mContext, ActivityMeeting.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        // generate back stack for pending intent and add main activity
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(mContext);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(mainActivityIntent);
+
+        // add intent for meeting
+        stackBuilder.addNextIntent(notificationIntent);
+
+        // generate pending intent
+        PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // set notification attributes
+        mBuilder.setContentTitle(notificationContentTitle);
+        mBuilder.setContentIntent(contentPendingIntent);
+        // sound on/off for meeting?
+        if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, true)) {
+            mBuilder.setSound(alarmSound);
+        }
+
+        // show long text in notification
+        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(meetingTextIn1440Min));
+        mBuilder.setContentText(meetingTextIn1440Min);
+
+        // show notification
+        mNotificationManager.notify(203, mBuilder.build());
+    }
+    
+    
+    
+    
+    
+    
+}

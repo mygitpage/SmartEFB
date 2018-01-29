@@ -2558,7 +2558,7 @@ public class DBAdapter extends SQLiteOpenHelper {
             case "future_meeting":
                 Long canceledMeetingTimeBorder = nowTime - ConstansClassMeeting.showDifferentTimeForCanceledMeeting;
                 where = "(" + MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">=" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0) OR (" + MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">=" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME + ">" + canceledMeetingTimeBorder + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=1)";
-                sort = MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_DATE1 + " ASC";
+                sort = MEETING_SUGGESTION_KEY_MEETING_CANCELED + " ASC, " + MEETING_SUGGESTION_KEY_DATE1 + " ASC";
                 break;
             case "future_suggestion":
                 where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">=" + nowTime;
@@ -2643,6 +2643,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         switch (function) {
@@ -2651,17 +2652,22 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
             case "remember_meeting_15min":
-                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">" + nowTime + delta_15min_lowerLimit + " AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + nowTime + delta_15min_upperLimit + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0";
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">" + (nowTime + delta_15min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + (nowTime + delta_15min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=15";
                 sort = MEETING_SUGGESTION_KEY_DATE1 + " ASC";
                 break;
 
             case "remember_meeting_120min":
-                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">" + nowTime + delta_120min_lowerLimit + " AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + nowTime + delta_120min_upperLimit + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0";
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">" + (nowTime + delta_120min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + (nowTime + delta_120min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=10";
                 sort = MEETING_SUGGESTION_KEY_DATE1 + " ASC";
                 break;
 
             case "remember_meeting_1440min":
-                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">" + nowTime + delta_1440min_lowerLimit + " AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + nowTime + delta_1440min_upperLimit + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0";
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">" + (nowTime + delta_1440min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + (nowTime + delta_1440min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=5";
+                sort = MEETING_SUGGESTION_KEY_DATE1 + " ASC";
+                break;
+
+            case "remember_meeting_next_wakeup":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">=" + (nowTime + delta_15min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=15";
                 sort = MEETING_SUGGESTION_KEY_DATE1 + " ASC";
                 break;
 
@@ -2669,28 +2675,14 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-
-
-            case "remember_suggestion":
-                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">=" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "=''";
-                sort = MEETING_SUGGESTION_KEY_DATE1 + " ASC";
-                break;
-
-
-            // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            // SQL bitte ueberarbeiten !!!!!!!!!!!!!!!!
-            case "remember_client_suggestion_begin":
-                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + ">" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "=''";
-                sort = MEETING_SUGGESTION_KEY_DATE1 + " ASC";
-                break;
 
 
 
 
 
             default:
-                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">=" + nowTime;
-                sort = MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_DATE1 + " DESC";
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">" + (nowTime - delta_15min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + (nowTime + delta_15min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0";
+                sort = MEETING_SUGGESTION_KEY_DATE1 + " ASC";
                 break;
         }
 
@@ -2702,6 +2694,23 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         return c;
+    }
+
+
+    // update remember status of meeting/ suggestion with rowId
+    // remember points are: 0 = no remember so far; 5 = remember 24 h; 10 = remember 2 hours; 15 = remember 15 minutes
+    boolean updateStatusRememberMeetingAndSuggestion(Long rowId, int status) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId ;
+
+        // Create row with new status
+        ContentValues newValues = new ContentValues();
+        newValues.put(MEETING_SUGGESTION_KEY_REMEMBER_POINT, status);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
     }
 
 

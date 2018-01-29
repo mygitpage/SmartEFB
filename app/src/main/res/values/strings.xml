@@ -1071,7 +1071,15 @@
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Activity Alarm Receiver Meeting Start -->
 
+        <string name="alarmReceiverMotificationHeadlineTextRemember15Min">Nächster Beratungstermin in 15 Minuten!</string>
         <string name="alarmReceiverMotificationSubTextRemember15Min">%1$s um %2$s in %3$s</string>
+        <string name="alarmReceiverMotificationHeadlineTextRemember120Min">Nächster Beratungstermin in 2 Stunden!</string>
+        <string name="alarmReceiverMotificationSubTextRemember120Min">%1$s um %2$s in %3$s</string>
+        <string name="alarmReceiverMotificationHeadlineTextRemember1440Min">Nächster Beratungstermin in 24 Stunden!</string>
+        <string name="alarmReceiverMotificationSubTextRemember1440Min">%1$s um %2$s in %3$s</string>
+
+
+
     <!-- Activity Alarm Receiver Meeting End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 

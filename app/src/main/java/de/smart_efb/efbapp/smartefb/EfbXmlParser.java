@@ -1,6 +1,9 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.util.Log;
@@ -4132,6 +4135,10 @@ public class EfbXmlParser {
                                         }
                                         break;
                                 }
+
+                                // start alarm receiver meeting -> check remember meeting or suggestion
+                                setAlarmManagerForRememberMeeting ();
+
                             }
                         }
                         parseAnymore = false;
@@ -4149,6 +4156,32 @@ public class EfbXmlParser {
             e.printStackTrace();
         }
     }
+
+
+    // set alarmmanager for remember meeting; same function in MainActivity and fragment SettingEfbFragementD!
+    void setAlarmManagerForRememberMeeting () {
+
+        PendingIntent pendingIntentRememberMeeting;
+
+        Long firstStartRememberMeeting = System.currentTimeMillis() + 1000; // start point for meeting remember function
+        Long repeatingMeetingRemember = 60L * 60L * 1000L; // one hour
+
+        // get reference to alarm manager
+        AlarmManager manager = (AlarmManager) xmlContext.getSystemService(Context.ALARM_SERVICE);
+
+        // create intent for backcall to broadcast receiver
+        Intent rememberMeetingAlarmIntent = new Intent(xmlContext, AlarmReceiverMeeting.class);
+
+        // create call (pending intent) for alarm manager
+        pendingIntentRememberMeeting = PendingIntent.getBroadcast(xmlContext, 0, rememberMeetingAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // set alarm
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstStartRememberMeeting, repeatingMeetingRemember, pendingIntentRememberMeeting);
+    }
+
+
+
+
 
     //
     // End read meeting -----------------------------------------------------------------------------------
