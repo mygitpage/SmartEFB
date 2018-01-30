@@ -1078,9 +1078,19 @@
         <string name="alarmReceiverMotificationHeadlineTextRemember1440Min">Nächster Beratungstermin in 24 Stunden!</string>
         <string name="alarmReceiverMotificationSubTextRemember1440Min">%1$s um %2$s in %3$s</string>
 
+        <string name="alarmReceiverMotificationHeadlineTextSuggestionEndIn15Min">Vorschlagszeitraum endet in 15 Minuten!</string>
+        <string name="alarmReceiverMotificationSubTextSuggestionEndIn15Min">Der Vorschlagszeitraum für eine Antwort auf die Terminvorschläge Ihrer Beraterin/ Ihres Beraters endet am %1$s um %2$s Uhr</string>
+        <string name="alarmReceiverMotificationHeadlineTextSuggestionEndIn120Min">Vorschlagszeitraum endet in 2 Stunden!</string>
+        <string name="alarmReceiverMotificationSubTextSuggestionEndIn120Min">Der Vorschlagszeitraum für eine Antwort auf die Terminvorschläge Ihrer Beraterin/ Ihres Beraters endet am %1$s um %2$s Uhr</string>
+        <string name="alarmReceiverMotificationHeadlineTextSuggestionEndIn1440Min">Vorschlagszeitraum endet in 24 Stunden!</string>
+        <string name="alarmReceiverMotificationSubTextSuggestionEndIn1440Min">Der Vorschlagszeitraum für eine Antwort auf die Terminvorschläge Ihrer Beraterin/ Ihres Beraters endet am %1$s um %2$s Uhr</string>
 
 
-    <!-- Activity Alarm Receiver Meeting End -->
+        <string name="alarmReceiverMotificationHeadlineTextClientSuggestionStartIn15Min">Ihr Vorschlagszeitraum beginnt in 15 Minuten!</string>
+        <string name="alarmReceiverMotificationSubTextClientSuggestionStartIn15Min">Der Vorschlagszeitraum für Ihre Terminvorschläge beginnt am %1$s um %2$s Uhr und endet am %3$s um %4$s Uhr</string>
+
+
+        <!-- Activity Alarm Receiver Meeting End -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->

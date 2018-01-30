@@ -469,6 +469,8 @@ public class SettingsEfbFragmentD extends Fragment {
                         checkBoxValue = true;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberSuggestion, true);
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true);
+                        // start alarm receiver for remember meeting
+                        setAlarmManagerForRememberMeeting();
                     }
                     prefsEditor.commit();
                     break;

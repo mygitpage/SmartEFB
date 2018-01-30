@@ -2673,6 +2673,35 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
+            case "remember_suggestion_end_15min":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">" + (nowTime + delta_15min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + "<" + (nowTime + delta_15min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "='' AND "+ MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=15";
+                sort =  MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + " ASC";
+                break;
+
+            case "remember_suggestion_end_120min":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">" + (nowTime + delta_120min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + "<" + (nowTime + delta_120min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "='' AND "+ MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=10";
+                sort =  MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + " ASC";
+                break;
+
+            case "remember_suggestion_end_1440min":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">" + (nowTime + delta_1440min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + "<" + (nowTime + delta_1440min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "='' AND "+ MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=5";
+                sort =  MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + " ASC";
+                break;
+
+
+            case "remember_suggestion_next_wakeup":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">" + (nowTime + delta_15min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "='' AND "+ MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=15";
+                sort =  MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + " ASC";
+                break;
+
+            case "remember_client_suggestion_start_15min":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + ">" + (nowTime + delta_15min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + ">" + (nowTime + delta_15min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT + "='' AND "+ MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=15";
+                sort =  MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + " ASC";
+                break;
+
+
+
+
 
 
 
