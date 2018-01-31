@@ -66,6 +66,10 @@ public class EfbXmlParser {
         returnMap.put("SendSuccessfull", "0");
         returnMap.put("SendNotSuccessfull", "0");
 
+        returnMap.put("AskForTimeSuccessfull","0");
+        returnMap.put("ServerTimeInMills", "");
+
+
         returnMap.put("ConnectBook", "0");
         returnMap.put("ConnectBookSettings", "0");
         returnMap.put("ConnectBookSettingsClientName", "0");
@@ -229,6 +233,9 @@ public class EfbXmlParser {
         String tmpClientId = "";
         String tmpMainOrder = "";
         String tmpErrorText = "";
+        String tmpActualAppVersion = "";
+        String tmpContactId = "";
+        String tmpServerTime = "";
 
         try {
 
@@ -264,6 +271,35 @@ public class EfbXmlParser {
                                 }
                             }
                             break;
+
+                        case ConstansClassXmlParser.xmlNameForMain_ActualAppVersion: // xml data error text
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) {
+                                if (xpp.getText().trim().length() > 0) { // check if app version text from xml > 0
+                                    tmpActualAppVersion = xpp.getText().trim(); // copy app version text
+                                }
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMain_ContactId: // xml data contact id
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) {
+                                if (xpp.getText().trim().length() > 0) { // check if contact id from xml > 0
+                                    tmpContactId = xpp.getText().trim(); // copy contact id text
+                                }
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMain_ServerTime: // xml data server time
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) {
+                                if (xpp.getText().trim().length() > 0) { // check if server time from xml > 0
+                                    tmpServerTime = xpp.getText().trim(); // copy server time text, must change to LONG!
+                                }
+                            }
+                            break;
+
+
                     }
                 }
                 else if (eventType == XmlPullParser.END_DOCUMENT) {
@@ -318,6 +354,13 @@ public class EfbXmlParser {
                         returnMap.put("Error", "1");
                         returnMap.put("ErrorText", tmpErrorText);
 
+                        readMoreXml = false;
+                    }
+                    else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForSendToServer_AskForTime) && tmpServerTime.length() > 0) {
+
+                        // set server time to return map
+                        returnMap.put("AskForTimeSuccessfull","1");
+                        returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
                         readMoreXml = false;
                     }
                 }
@@ -4164,7 +4207,7 @@ public class EfbXmlParser {
         PendingIntent pendingIntentRememberMeeting;
 
         Long firstStartRememberMeeting = System.currentTimeMillis() + 1000; // start point for meeting remember function
-        Long repeatingMeetingRemember = 60L * 60L * 1000L; // one hour
+        Long repeatingMeetingRemember = 24L * 60L * 60L * 1000L; // one day
 
         // get reference to alarm manager
         AlarmManager manager = (AlarmManager) xmlContext.getSystemService(Context.ALARM_SERVICE);

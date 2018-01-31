@@ -26,6 +26,10 @@ class ConstansClassSettings {
     // connection timeout for connection that is read in millisec
     static final int connectionReadTimeOut = 15000;
 
+
+    // URL ask server for time
+    static final String urlConnectionSendAskForTimeToServer = "http://192.168.178.28/index.php?com=exchange&subcom=asktime";
+
     // URL first connect to server
     static final String urlFirstConnectToServer = "http://192.168.178.28/index.php?com=exchange&subcom=establish";
 

@@ -186,6 +186,23 @@ public class ActivityMeeting extends AppCompatActivity {
             }
 
         });
+
+        // check for intent on start time
+        // Extras from intent that holds data
+        Bundle intentExtras = null;
+        // intent
+        Intent intent = getIntent();
+
+        if (intent != null) { // intent set?
+            // get the link data from the extra
+            intentExtras = intent.getExtras();
+            if (intentExtras != null && intentExtras.getString("com") != null) { // extra data set?
+                if (intentExtras.getString("com").equals("show_meeting") || intentExtras.getString("com").equals("show_client_suggestion") || intentExtras.getString("com").equals("show_suggestion")) { // execute only command show_meeting, show_client_suggestion or show_suggestion (comes from notification
+                    // get command and execute it
+                    executeIntentCommand(intentExtras.getString("com"), 0L);
+                }
+            }
+        }
     }
 
     
@@ -296,11 +313,25 @@ public class ActivityMeeting extends AppCompatActivity {
     }
 
 
-
     // execute the commands that comes from link or intend
     public void executeIntentCommand (String command, Long meetingId) {
 
-        if (command.equals("comment_from_client")) { // Show fragment client comment a meeting
+        if (command.equals("show_meeting")) {
+            // set tab 1 (Meeting)
+            TabLayout.Tab tab = tabLayoutMeeting.getTabAt(0);
+            tab.select();
+        }
+        else if (command.equals("show_client_suggestion")) {
+            // set tab 1 (client suggestion)
+            TabLayout.Tab tab = tabLayoutMeeting.getTabAt(1);
+            tab.select();
+        }
+        else if (command.equals("show_suggestion")) {
+            // set tab 2 (client suggestion)
+            TabLayout.Tab tab = tabLayoutMeeting.getTabAt(2);
+            tab.select();
+        }
+        else if (command.equals("comment_from_client")) { // Show fragment client comment a meeting
 
             //set fragment in tab zero to comment
             meetingViewPagerAdapter.setFragmentTabZero("comment_from_client");

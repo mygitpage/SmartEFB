@@ -748,7 +748,7 @@ public class MainActivity extends AppCompatActivity {
         PendingIntent pendingIntentRememberMeeting;
 
         Long firstStartRememberMeeting = System.currentTimeMillis() + 1000; // first start point for meeting remember function
-        Long repeatingMeetingRemember = 60L * 60L * 1000L; // one hour
+        Long repeatingMeetingRemember = 24L * 60L * 60L * 1000L; // one day
 
         // get reference to alarm manager
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

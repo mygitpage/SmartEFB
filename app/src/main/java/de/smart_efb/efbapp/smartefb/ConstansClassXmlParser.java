@@ -24,6 +24,17 @@ class ConstansClassXmlParser {
     // xml name for element main client pin
     static final String xmlNameForMainClientPin = "clientpin";
 
+    // xml name for element main actual app version (versus local app version of the installed app)
+    static final String xmlNameForMain_ActualAppVersion = "actual_app_version";
+
+    // xml name for element main contact id
+    static final String xmlNameForMain_ContactId = "contactid";
+
+    // xml name for element main contact id
+    static final String xmlNameForMain_ServerTime = "server_time";
+
+
+
 
 
     //
@@ -735,6 +746,9 @@ class ConstansClassXmlParser {
 
     // xml name for send ask new data from server
     static final String xmlNameForSendToServer_AskNewData = "asknewdata";
+
+    // xml name for send ask server for time
+    static final String xmlNameForSendToServer_AskForTime = "asktime";
 
     // xml name for send now comment of arrangement to server
     static final String xmlNameForSendToServer_CommentArrangement = "sendarrangementcomment";

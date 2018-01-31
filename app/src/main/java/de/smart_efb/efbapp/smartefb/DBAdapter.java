@@ -2625,11 +2625,12 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return all meeting/ suggestion from the database to remember
+    // values for MEETING_SUGGESTION_KEY_REMEMBER_POINT : 0 = no remember so far; 5 = remember 24 h; 10 = remember 2 hours; 15 = remember 15 minutes (for meeting, coach suggestion and start client suggestion)
+    // values for MEETING_SUGGESTION_KEY_REMEMBER_POINT : 0 = no remember so far; 20 = remember 24 h; 25 = remember 2 hours; 30 = remember 15 minutes (for end client suggestion)
     Cursor getAllRowsRememberMeetingsAndSuggestion(String function, Long nowTime) {
 
         String where = "";
         String sort = "";
-
 
         Long delta_15min_lowerLimit = 13L * 60L * 1000L; // 13 min in mills
         Long delta_15min_upperLimit = 17L * 60L * 1000L; // 17 min in mills
@@ -2640,16 +2641,9 @@ public class DBAdapter extends SQLiteOpenHelper {
         Long delta_1440min_lowerLimit = (24L * 60L * 60L * 1000L) - (2L * 60L * 1000L); // 1438 (24h) min in mills
         Long delta_1440min_upperLimit = 24L * 60L * 60L * 1000L + (2L * 60L * 1000L); // 1442 (24h) min in mills
 
-
-
-
-
         SQLiteDatabase db = this.getWritableDatabase();
 
         switch (function) {
-
-
-
 
             case "remember_meeting_15min":
                 where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">" + (nowTime + delta_15min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + (nowTime + delta_15min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=15";
@@ -2671,8 +2665,6 @@ public class DBAdapter extends SQLiteOpenHelper {
                 sort = MEETING_SUGGESTION_KEY_DATE1 + " ASC";
                 break;
 
-
-
             case "remember_suggestion_end_15min":
                 where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">" + (nowTime + delta_15min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + "<" + (nowTime + delta_15min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "='' AND "+ MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=15";
                 sort =  MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + " ASC";
@@ -2688,26 +2680,50 @@ public class DBAdapter extends SQLiteOpenHelper {
                 sort =  MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + " ASC";
                 break;
 
-
             case "remember_suggestion_next_wakeup":
                 where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">" + (nowTime + delta_15min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "='' AND "+ MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=15";
                 sort =  MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + " ASC";
                 break;
 
             case "remember_client_suggestion_start_15min":
-                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + ">" + (nowTime + delta_15min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + ">" + (nowTime + delta_15min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT + "='' AND "+ MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=15";
-                sort =  MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + " ASC";
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + ">" + (nowTime + delta_15min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + "<" + (nowTime + delta_15min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT + "='' AND " + MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=15";
+                sort =  MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + " ASC";
                 break;
 
+            case "remember_client_suggestion_start_120min":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + ">" + (nowTime + delta_120min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + "<" + (nowTime + delta_120min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT + "='' AND "+ MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=10";
+                sort =  MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + " ASC";
+                break;
 
+            case "remember_client_suggestion_start_1440min":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + ">" + (nowTime + delta_1440min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + "<" + (nowTime + delta_1440min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT + "='' AND "+ MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=5";
+                sort =  MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + " ASC";
+                break;
 
+            case "remember_client_suggestion_next_wakeup":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + ">" + (nowTime + delta_15min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT + "='' AND " + MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=15";
+                sort =  MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + " ASC";
+                break;
 
+            case "remember_client_suggestion_end_15min":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + ">" + (nowTime + delta_15min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + "<" + (nowTime + delta_15min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT + "='' AND " + MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=30";
+                sort =  MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + " ASC";
+                break;
 
+            case "remember_client_suggestion_end_120min":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + ">" + (nowTime + delta_120min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + "<" + (nowTime + delta_120min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT + "='' AND "+ MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=25";
+                sort =  MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + " ASC";
+                break;
 
+            case "remember_client_suggestion_end_1440min":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + ">" + (nowTime + delta_1440min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + "<" + (nowTime + delta_1440min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT + "='' AND "+ MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=20";
+                sort =  MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + " ASC";
+                break;
 
-
-
-
+            case "remember_client_suggestion_end_wakeup":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + ">" + (nowTime + delta_15min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT + "='' AND " + MEETING_SUGGESTION_KEY_REMEMBER_POINT + "!=30";
+                sort =  MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + " ASC";
+                break;
 
             default:
                 where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + ">" + (nowTime - delta_15min_lowerLimit) + " AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + (nowTime + delta_15min_upperLimit) + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0";

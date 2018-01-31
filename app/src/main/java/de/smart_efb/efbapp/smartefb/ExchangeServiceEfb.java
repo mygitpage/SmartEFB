@@ -623,137 +623,154 @@ import java.util.Map;
 
                     Log.d("Exchange Service", "Network on in send now");
 
-                    // get comment from db
-                    Cursor commentData = myDb.getOneRowOurArrangementComment(dbId);
+
 
                     // get client id from prefs
                     String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
 
-                    // generate xml output text
-                    XmlSerializer xmlSerializer = Xml.newSerializer();
-                    StringWriter writer = new StringWriter();
-                    try {
+                    // get server time from server
+                    Long serverTime = askServerForTime(tmpClientId, "");
 
-                        xmlSerializer.setOutput(writer);
 
-                        //Start Document
-                        xmlSerializer.startDocument("UTF-8", true);
-                        xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
+                    Log.d("EXCHANGE -->", "ServerTime:"+serverTime);
 
-                        // Open Tag
-                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
-                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
 
-                        // start tag main order -> send comment and client id
-                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
-                        xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_CommentArrangement);
-                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+                    if (serverTime > 0) {
 
-                        // start tag client id
-                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
-                        xmlSerializer.text(tmpClientId);
-                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                        // get comment from db
+                        Cursor commentData = myDb.getOneRowOurArrangementComment(dbId);
 
-                        // end tag main
-                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
-                        // build xml tag for comment with data
-                        buildCommentNowXmlTagWithData (xmlSerializer, commentData);
-
-                        // end tag smartEfb
-                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
-
-                        xmlSerializer.endDocument();
-
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    // and send xml text to server
-                    try {
-                        // prepair data to send
-                        String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
-
-                        Log.d("Send","XMLCODE="+textparam);
-
-                        // set url and parameters
-                        URL scripturl = new URL(ConstansClassSettings.urlConnectionSendNewCommentArrangementToServer);
-                        HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
-
-                        // set timeout for connection
-                        connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
-                        connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
-
-                        connection.setDoOutput(true);
-                        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                        connection.setRequestMethod("POST");
-                        connection.setFixedLengthStreamingMode(textparam.getBytes().length);
-
-                        // generate output stream and send
-                        OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
-                        contentWriter.write(textparam);
-                        contentWriter.flush();
-
-                        contentWriter.close();
-
-                        // get answer from input
-                        InputStream answerInputStream = connection.getInputStream();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
-                        StringBuilder stringBuilder = new StringBuilder();
-
-                        // convert input stream to string
-                        String currentRow;
+                        // generate xml output text
+                        XmlSerializer xmlSerializer = Xml.newSerializer();
+                        StringWriter writer = new StringWriter();
                         try {
-                            while ((currentRow = reader.readLine()) != null) {
-                                stringBuilder.append(currentRow);
-                                stringBuilder.append("\n");
-                            }
+
+                            xmlSerializer.setOutput(writer);
+
+                            //Start Document
+                            xmlSerializer.startDocument("UTF-8", true);
+                            xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
+
+                            // Open Tag
+                            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+                            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                            // start tag main order -> send comment and client id
+                            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+                            xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_CommentArrangement);
+                            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+
+                            // start tag client id
+                            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                            xmlSerializer.text(tmpClientId);
+                            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+
+                            // end tag main
+                            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                            // build xml tag for comment with data
+                            buildCommentNowXmlTagWithData(xmlSerializer, commentData);
+
+                            // end tag smartEfb
+                            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+
+                            xmlSerializer.endDocument();
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
 
-                        Log.d("Comment Send", "Antwort:"+stringBuilder.toString().trim());
+                        // and send xml text to server
+                        try {
+                            // prepair data to send
+                            String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
 
-                        // call xml parser with input
-                        EfbXmlParser xmlparser = new EfbXmlParser(context);
-                        returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
+                            Log.d("Send", "XMLCODE=" + textparam);
 
-                        // close input stream and disconnect
-                        answerInputStream.close();
-                        connection.disconnect();
+                            // set url and parameters
+                            URL scripturl = new URL(ConstansClassSettings.urlConnectionSendNewCommentArrangementToServer);
+                            HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
+
+                            // set timeout for connection
+                            connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
+                            connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
+
+                            connection.setDoOutput(true);
+                            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                            connection.setRequestMethod("POST");
+                            connection.setFixedLengthStreamingMode(textparam.getBytes().length);
+
+                            // generate output stream and send
+                            OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
+                            contentWriter.write(textparam);
+                            contentWriter.flush();
+
+                            contentWriter.close();
+
+                            // get answer from input
+                            InputStream answerInputStream = connection.getInputStream();
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
+                            StringBuilder stringBuilder = new StringBuilder();
+
+                            // convert input stream to string
+                            String currentRow;
+                            try {
+                                while ((currentRow = reader.readLine()) != null) {
+                                    stringBuilder.append(currentRow);
+                                    stringBuilder.append("\n");
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            Log.d("Comment Send", "Antwort:" + stringBuilder.toString().trim());
+
+                            // call xml parser with input
+                            EfbXmlParser xmlparser = new EfbXmlParser(context);
+                            returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
+
+                            // close input stream and disconnect
+                            answerInputStream.close();
+                            connection.disconnect();
 
 
-                        if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
-                            myDb.updateStatusOurArrangementComment (dbId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                            if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
+                                myDb.updateStatusOurArrangementComment(dbId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
 
-                            // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
-                            Intent tmpIntent = translateMapToIntent (returnMap);
-                            tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageCommentSendSuccessfull));
-                            tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
-                            context.sendBroadcast(tmpIntent);
-                        }
-                        else { // send not successfull
-                            // send information broadcast to receiver that sending was not successefull
+                                // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
+                                Intent tmpIntent = translateMapToIntent(returnMap);
+                                tmpIntent.putExtra("Message", context.getResources().getString(R.string.toastMessageCommentSendSuccessfull));
+                                tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                                context.sendBroadcast(tmpIntent);
+                            } else { // send not successfull
+                                // send information broadcast to receiver that sending was not successefull
+                                String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                                String command = "";
+                                sendIntentBroadcastSendingNotSuccessefull(message, command);
+                            }
+
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                            // send information broadcast to receiver that sending not successfull
                             String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
                             String command = "";
-                            sendIntentBroadcastSendingNotSuccessefull (message, command);
+                            sendIntentBroadcastSendingNotSuccessefull(message, command);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            // send information broadcast to receiver that sending not successfull
+                            String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                            String command = "";
+                            sendIntentBroadcastSendingNotSuccessefull(message, command);
+                        } catch (XmlPullParserException e) {
+                            e.printStackTrace();
                         }
-
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
+                    }
+                    else { // no server time available -> same result -> inform user
                         // send information broadcast to receiver that sending not successfull
-                        String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                        String message = context.getResources().getString(R.string.toastMessageCommentNotSendSuccessfullNoNetwork);
                         String command = "";
                         sendIntentBroadcastSendingNotSuccessefull (message, command);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        // send information broadcast to receiver that sending not successfull
-                        String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
-                        String command = "";
-                        sendIntentBroadcastSendingNotSuccessefull (message, command);
-                    } catch (XmlPullParserException e) {
-                        e.printStackTrace();
                     }
                 }
                 else { // no network enable -> try to send comment to server later
@@ -2146,6 +2163,134 @@ import java.util.Map;
         }
 
 
+
+
+        public Long askServerForTime (String tmpClientId, String tmpContactId) {
+
+            Map<String, String> returnMap;
+
+            // generate ask for time question for server
+            XmlSerializer xmlSerializer = Xml.newSerializer();
+            StringWriter writer = new StringWriter();
+            try {
+
+                xmlSerializer.setOutput(writer);
+
+                //Start Document
+                xmlSerializer.startDocument("UTF-8", true);
+                xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
+
+                // Open Tag
+                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                // start tag main order -> send comment and client id
+                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+                xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_AskForTime);
+                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+
+                // start tag client id
+                if (tmpClientId.length() > 0) {
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.text(tmpClientId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                }
+
+                // start tag contact id -> no client id available!
+                if (tmpContactId.length() > 0) {
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                    xmlSerializer.text(tmpContactId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                }
+
+                // end tag main
+                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                // end tag smartEfb
+                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+
+                xmlSerializer.endDocument();
+
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // and send xml text to server
+            try {
+                // prepair data to send
+                String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
+
+                Log.d("ASK Time ->","XMLCODE="+textparam);
+
+                // set url and parameters
+                URL scripturl = new URL(ConstansClassSettings.urlConnectionSendAskForTimeToServer);
+                HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
+
+                // set timeout for connection
+                connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
+                connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
+
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                connection.setRequestMethod("POST");
+                connection.setFixedLengthStreamingMode(textparam.getBytes().length);
+
+                // generate output stream and send
+                OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
+                contentWriter.write(textparam);
+                contentWriter.flush();
+
+                contentWriter.close();
+
+                // get answer from input
+                InputStream answerInputStream = connection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
+                StringBuilder stringBuilder = new StringBuilder();
+
+                // convert input stream to string
+                String currentRow;
+                try {
+                    while ((currentRow = reader.readLine()) != null) {
+                        stringBuilder.append(currentRow);
+                        stringBuilder.append("\n");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Log.d("ASK TIME -> ", "Antwort:"+stringBuilder.toString().trim());
+
+                // call xml parser with input
+                EfbXmlParser xmlparser = new EfbXmlParser(context);
+                returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
+
+                // close input stream and disconnect
+                answerInputStream.close();
+                connection.disconnect();
+
+                if (returnMap.get("AskForTimeSuccessfull").equals("1")) { // ask for time successfull
+                    // return server time in mills
+                    return Long.valueOf(returnMap.get("ServerTimeInMills"))*1000; // make mills!!!
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            }
+
+            return 0L; // no time from server available!
+        }
+
+
+
+
+
         @Override
         public void onDestroy() {
             super.onDestroy();
@@ -2314,9 +2459,6 @@ import java.util.Map;
 
 
     public void buildCommentSketchXmlTagWithData(XmlSerializer xmlSerializer, Cursor commentData) {
-
-
-        Log.d("Exchange Build Sketch", "Kommentartext: " + commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT));
 
         try {
 
