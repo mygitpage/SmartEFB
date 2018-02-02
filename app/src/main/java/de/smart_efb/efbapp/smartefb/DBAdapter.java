@@ -39,7 +39,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     private static final String DATABASE_TABLE_INVOLVED_PERSON = "involvedPersonTable";
 
     // Track DB version if a new version of your app changes the format.
-    private static final int DATABASE_VERSION = 47;
+    private static final int DATABASE_VERSION = 48;
 
     // Common column names
     public static final String KEY_ROWID = "_id";
@@ -88,6 +88,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     static final String OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME = "author_name";
     static final String OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME = "comment_time";
     static final String OUR_ARRANGEMENT_COMMENT_KEY_UPLOAD_TIME = "upload_time";
+    static final String OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME = "local_time";
     static final String OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID = "blockid";
     static final String OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY = "new_entry";
     static final String OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME = "arrangement_time";
@@ -95,7 +96,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     static final String OUR_ARRANGEMENT_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
 
     // All keys from table app settings in a String
-    static final String[] OUR_ARRANGEMENT_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_COMMENT_KEY_UPLOAD_TIME, OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_COMMENT_KEY_STATUS};
+    static final String[] OUR_ARRANGEMENT_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_COMMENT_KEY_UPLOAD_TIME, OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME, OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_COMMENT_KEY_STATUS};
 
     // SQL String to create our arrangement comment table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_COMMENT =
@@ -104,6 +105,7 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME + " STRING not null, "
                     + OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " INTEGER not null, "
                     + OUR_ARRANGEMENT_COMMENT_KEY_UPLOAD_TIME + " INTEGER not null, "
+                    + OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME + " INTEGER not null, "
                     + OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID + " TEXT not null, "
                     + OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
                     + OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME + " INTEGER not null, "
@@ -1109,8 +1111,9 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, comment);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, authorName);
-        initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, commentTime);
+        initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, commentTime); // first insert of local and write time is same value -> after send to server write time is set to server time
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_UPLOAD_TIME, upload_time);
+        initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME, commentTime);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID, blockid);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME, currentDateOfArrangement);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT, serverId);
@@ -1130,15 +1133,28 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return all comments from the database for arrangement with  server id = id (table ourArrangementComment)
     // the result is sorted by DESC
-    Cursor getAllRowsOurArrangementComment(int serverId) {
+    Cursor getAllRowsOurArrangementComment(int serverId, String sortSequence) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         // data filter
         String where = OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT + "=" + serverId;
 
-        // sort string
-        String sort = OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " DESC";
+        // get sort string
+        String sort = "";
+        switch (sortSequence) {
+            case "ascending":
+                sort = OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " ASC";
+                break;
+            case "descending":
+                sort = OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " DESC";
+                break;
+            default:
+                sort = OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " DESC";
+                break;
+        }
+
+
 
         Cursor c = db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
                 where, null, null, null, sort, null);
@@ -1221,9 +1237,9 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // update status comment in table ourArrangementComment
+    // update status comment and write of comment (with server time) in table ourArrangementComment
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Comment
-    boolean updateStatusOurArrangementComment(Long rowId, int status) {
+    boolean updateStatusOurArrangementComment(Long rowId, int status, Long serverTime) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1232,6 +1248,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Create row status with status
         ContentValues newValues = new ContentValues();
         newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_STATUS, status);
+        newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, serverTime);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null) != 0;

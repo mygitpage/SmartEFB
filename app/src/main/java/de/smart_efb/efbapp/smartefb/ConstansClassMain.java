@@ -12,6 +12,9 @@ class ConstansClassMain {
     // app version number of local installation
     static final String namePrefsNumberAppVersion = "smartEfbAppNumberVersion";
 
+    // last contact time in mills with server -> this time comes from server!
+    static final String namePrefsLastContactTimeToServerInMills = "lastContactTimeToServer";
+
     // prefs name for the prefs main name
     static final String namePrefsMainNamePrefs = "smartEfbSettings";
 

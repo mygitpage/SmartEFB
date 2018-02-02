@@ -83,9 +83,6 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
 
         // init the prefs
         prefs = contextForActivity.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, contextForActivity.MODE_PRIVATE);
-
-
-
     }
 
 
@@ -127,9 +124,7 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
                 TextView textCommentSharingIsDisable = (TextView) view.findViewById(R.id.commentSharingIsDisable);
                 textCommentSharingIsDisable.setVisibility (View.VISIBLE);
             }
-
         }
-
 
         // generate onclicklistener for Button "zurueck zu den Absprachen"
         if (cursor.isLast()) {
@@ -146,10 +141,31 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.putExtra("com","show_arrangement_now");
                     contextForActivity.startActivity(intent);
-
                 }
             });
 
+
+            // generate link for sort sequence change
+            TextView textViewChangeSortSequence = (TextView) view.findViewById(R.id.linkToChangeSortSequenceOfCommentList);
+            Uri.Builder commentLinkBuilder = new Uri.Builder();
+            commentLinkBuilder.scheme("smart.efb.deeplink")
+                    .authority("linkin")
+                    .path("ourarrangement")
+                    .appendQueryParameter("db_id", Integer.toString(arrangementDbIdToShow))
+                    .appendQueryParameter("arr_num", Integer.toString(arrangementNumberInListView))
+                    .appendQueryParameter("eval_next", Boolean.toString(false))
+                    .appendQueryParameter("com", "change_sort_sequence_arrangement_comment");
+
+            String tmpLinkTextChangeSortSequence;
+            if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending").equals("descending")) {
+                tmpLinkTextChangeSortSequence = context.getResources().getString(context.getResources().getIdentifier("ourArrangementShowCommentLinkChangeSortSequenceOfArrangementCommentDescending", "string", context.getPackageName()));
+            }
+            else {
+                tmpLinkTextChangeSortSequence = context.getResources().getString(context.getResources().getIdentifier("ourArrangementShowCommentLinkChangeSortSequenceOfArrangementCommentAscending", "string", context.getPackageName()));
+            }
+            Spanned tmpSortLink = Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + tmpLinkTextChangeSortSequence + "</a>");
+            textViewChangeSortSequence.setText(tmpSortLink);
+            textViewChangeSortSequence.setMovementMethod(LinkMovementMethod.getInstance());
 
             // textview for max comments, count comments and max letters
             TextView textViewMaxAndCount = (TextView) view.findViewById(R.id.infoShowCommentMaxAndCount);
@@ -197,9 +213,7 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
 
             // show info text
             textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextCommentMaxLetters + " " +tmpInfoTextDelaytimeSingluarPluaral);
-
         }
-
     }
 
 
@@ -210,21 +224,35 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
 
         final Context context = mContext;
 
+        Log.d("CURSOR ADAP ->", "Count:"+countCommentHeadlineNumber);
+
         if (cursor.isFirst() && cursor.getCount() > 1) { // listview for first element, when cursor has more then one element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment_first, parent, false);
             countCommentHeadlineNumber = 1;
+
+            Log.d("CURSOR ADAP ->", "FIRST Count:"+countCommentHeadlineNumber);
         }
         else if (cursor.isFirst() && cursor.getCount() == 1) { // listview for first element, when cursor has only one element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment_firstandlast, parent, false);
+
+
+
             countCommentHeadlineNumber++;
+
+            Log.d("CURSOR ADAP ->", "ONLY ONE Count:"+countCommentHeadlineNumber);
         }
         else if (cursor.isLast()) { // listview for last element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment_last, parent, false);
             countCommentHeadlineNumber++;
+
+            Log.d("CURSOR ADAP ->", "LAST Count:"+countCommentHeadlineNumber);
+
         }
         else { // listview for "normal" element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment, parent, false);
             countCommentHeadlineNumber++;
+
+            Log.d("CURSOR ADAP ->", "NORMAL Count:"+countCommentHeadlineNumber);
         }
 
         // set comment information to the view
@@ -232,7 +260,12 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
         TextView textViewShowActualCommentHeadline = (TextView) inflatedView.findViewById(R.id.actualCommentInfoText);
         String actualCommentHeadline = context.getResources().getString(R.string.showCommentHeadlineWithNumber) + " " + countCommentHeadlineNumber;
         if (cursor.isFirst()) { // set text newest comment
-            actualCommentHeadline = actualCommentHeadline + " " + context.getResources().getString(R.string.showCommentHeadlineWithNumberExtraNewest);
+            if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending").equals("descending")) {
+                actualCommentHeadline = actualCommentHeadline + " " + context.getResources().getString(R.string.showCommentHeadlineWithNumberExtraNewest);
+            }
+            else {
+                actualCommentHeadline = actualCommentHeadline + " " + context.getResources().getString(R.string.showCommentHeadlineWithNumberExtraOldest);
+            }
         }
         textViewShowActualCommentHeadline.setText(actualCommentHeadline);
 
@@ -252,8 +285,8 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
         if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
             tmpAuthorName = context.getResources().getString(R.string.ourArrangementShowCommentPersonalAuthorName);
         }
-        String commentDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");;
-        String commentTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "HH:mm");;
+        String commentDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");;
+        String commentTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME)), "HH:mm");;
         String tmpTextAuthorNameLastActualComment = String.format(context.getResources().getString(R.string.ourArrangementShowCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
         tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
@@ -268,44 +301,50 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
         } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 1) {
             // textview for status 1 of the last actual comment
 
-
             // check, sharing of comments enable?
             if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) == 1) {
 
-                // set textview visible
-                tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
+                if ( System.currentTimeMillis() > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L)) { // check system time is in past!
+                    // set textview visible
+                    tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
 
-                // calculate run time for timer in MILLISECONDS!!!
-                Long nowTime = System.currentTimeMillis();
-                Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
-                Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from miutes
-                Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
-                // start the timer with the calculated milliseconds
-                if (runTimeForTimer > 0) {
-                    new CountDownTimer(runTimeForTimer, 1000) {
-                        public void onTick(long millisUntilFinished) {
-                            // gernate count down timer
-                            String FORMAT = "%02d:%02d:%02d";
-                            String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendDelayInfo);
-                            String tmpTime = String.format(FORMAT,
-                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                            // put count down to string
-                            String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
-                            // and show
-                            tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
-                        }
+                    // calculate run time for timer in MILLISECONDS!!!
+                    Long nowTime = System.currentTimeMillis();
+                    Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME));
+                    Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from minutes
+                    Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
+                    // start the timer with the calculated milliseconds
+                    if (runTimeForTimer > 0) {
+                        new CountDownTimer(runTimeForTimer, 1000) {
+                            public void onTick(long millisUntilFinished) {
+                                // gernate count down timer
+                                String FORMAT = "%02d:%02d:%02d";
+                                String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendDelayInfo);
+                                String tmpTime = String.format(FORMAT,
+                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                // put count down to string
+                                String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                                // and show
+                                tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
+                            }
 
-                        public void onFinish() {
-                            // count down is over -> show
-                            String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
-                            tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
-                        }
-                    }.start();
+                            public void onFinish() {
+                                // count down is over -> show
+                                String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+                                tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                            }
+                        }.start();
 
-                } else {
-                    // no count down anymore -> show send successfull
+                    } else {
+                        // no count down anymore -> show send successfull
+                        String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+                        tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                    }
+                }
+                else { // system time is in past! -> Show Text: Comment send successfull!
+                    tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
                     String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
                     tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
                 }
@@ -314,6 +353,10 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
 
                 String tmpTextSendInfoLastActualComment = "";
                 tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
+
+                Log.d("COMMENT ARR-->", "ChangeTime:"+prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementCommentShareChangeTime, 0) + " ++ "+cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)));
+
+
                 if (prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementCommentShareChangeTime, 0) < cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME))) {
                     // show send successfull, but no sharing
                     tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementCommentSendInfoSharingDisable);

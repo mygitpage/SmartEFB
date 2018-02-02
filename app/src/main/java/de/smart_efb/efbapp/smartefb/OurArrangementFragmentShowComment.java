@@ -38,6 +38,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
     // shared prefs for the settings
     SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
@@ -73,6 +74,10 @@ public class OurArrangementFragmentShowComment extends Fragment {
     public void onViewCreated (View view, @Nullable Bundle saveInstanceState) {
 
         super.onViewCreated(view, saveInstanceState);
+
+
+        Log.d("Show Comment ->", "VIEW CREATED!");
+
 
         fragmentShowCommentContext = getActivity().getApplicationContext();
 
@@ -123,6 +128,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
         // init the prefs
         prefs = fragmentShowCommentContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentShowCommentContext.MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
@@ -163,6 +169,9 @@ public class OurArrangementFragmentShowComment extends Fragment {
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
+                // sort sequence of list view changed
+                String tmpSortSequenceChange = intentExtras.getString("changeSortSequenceOfListView", "0");
+
 
                 if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
                     // case close! -> show toast
@@ -228,6 +237,21 @@ public class OurArrangementFragmentShowComment extends Fragment {
                     // arrangement settings have change -> refresh view
                     updateListView = true;
                 }
+                else if (tmpSortSequenceChange.equals("1")) {
+
+                    Log.d("SHOW COMMENT -->", "SORT CHANGE!!!!!!");
+
+                    if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending").equals("descending")) {
+                        prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "ascending");
+                    }
+                    else {
+                        prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending");
+                    }
+                    prefsEditor.commit();
+
+                    // list view sort sequence have change -> refresh view
+                    updateListView = true;
+                }
 
                 // update the list view because data has change?
                 if (updateListView) {
@@ -241,6 +265,8 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
     // update the list view with now comments
     public void updateListView () {
+
+        Log.d("Show Comment ->", "UPDATE!");
 
         if (listViewShowComments != null) {
             listViewShowComments.destroyDrawingCache();
@@ -277,18 +303,14 @@ public class OurArrangementFragmentShowComment extends Fragment {
     public void displayActualCommentSet () {
 
         // get the data (all comments from an arrangement) from DB
-        Cursor cursorComments = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToShow);
+        Cursor cursorComments = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToShow, prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending"));
 
         // get the data (the choosen arrangement) from the DB
         Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToShow);
 
-
-
-        Log.d("Fragment ARR SHOW COM", "DISPLAY SHARING."+prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0));
-
-
-
         if (cursorComments.getCount() > 0 && choosenArrangement.getCount() > 0 && listViewShowComments != null) {
+
+
 
             // new dataadapter with custom constructor for show comments now
             showCommentCursorAdapter = new OurArrangementShowCommentCursorAdapter(
@@ -300,7 +322,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
                     commentLimitationBorder,
                     choosenArrangement);
 
-            // Assign adapter to ListVie
+            // Assign adapter to ListView
             listViewShowComments.setAdapter(showCommentCursorAdapter);
         }
     }

@@ -250,7 +250,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToComment);
 
         // get all comments for choosen arrangement
-        cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToComment);
+        cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToComment, "decending");
 
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentNowCommentText", "string", fragmentNowCommentContext.getPackageName())) + " " + arrangementNumberInListView;

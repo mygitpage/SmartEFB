@@ -41,6 +41,9 @@ public class EfbXmlParser {
     // return information for change
     Map<String, String> returnMap;
 
+    // server time global
+    Long globalServerTime = 0L; // time comes from server with main header from xml (in mills)
+
 
     EfbXmlParser(Context tmpXmlContext) {
 
@@ -322,6 +325,15 @@ public class EfbXmlParser {
                             // delete all content from db tables (init process)
                             myDb.initDeleteAllContentFromTables();
 
+                            if (tmpServerTime.length() > 0) {
+                                globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
+                                returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
+                                returnMap.put("AskForTimeSuccessfull", "1");
+                            }
+                            else {
+                                returnMap.put("ServerTimeInMills", "");
+                                returnMap.put("AskForTimeSuccessfull","0");
+                            }
                             returnMap.put("ClientId", tmpClientId);
                             returnMap.put("MainOrder", "init");
                             returnMap.put("ConnectionStatus", "3");
@@ -330,6 +342,15 @@ public class EfbXmlParser {
                             readMoreXml = false;
                     }
                     else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Receive_Ok_Send)) { // data send and now receive data
+                        if (tmpServerTime.length() > 0) {
+                            globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
+                            returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
+                            returnMap.put("AskForTimeSuccessfull", "1");
+                        }
+                        else {
+                            returnMap.put("ServerTimeInMills", "");
+                            returnMap.put("AskForTimeSuccessfull","0");
+                        }
                         returnMap.put("ClientId", tmpClientId);
                         returnMap.put("SendSuccessfull", "1");
                         readMoreXml = false;
@@ -348,6 +369,15 @@ public class EfbXmlParser {
                         prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 1); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
                         prefsEditor.commit();
 
+                        if (tmpServerTime.length() > 0) {
+                            globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
+                            returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
+                            returnMap.put("AskForTimeSuccessfull", "1");
+                        }
+                        else {
+                            returnMap.put("ServerTimeInMills", "");
+                            returnMap.put("AskForTimeSuccessfull","0");
+                        }
                         returnMap.put("ClientId", "");
                         returnMap.put("MainOrder", "error");
                         returnMap.put("ConnectionStatus", "1");
@@ -359,6 +389,7 @@ public class EfbXmlParser {
                     else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForSendToServer_AskForTime) && tmpServerTime.length() > 0) {
 
                         // set server time to return map
+                        globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
                         returnMap.put("AskForTimeSuccessfull","1");
                         returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
                         readMoreXml = false;
@@ -1691,12 +1722,12 @@ public class EfbXmlParser {
                                 }
 
                                 // update comment max/count of arrangements?
-                                if (tmpArrangementCommentOnOff && tmpCommentMaxComment > 0 && tmpCommentMaxLetters > 0 && tmpCommentDelaytime >= 0 && tmpCommentCountCommentSinceTime > 0 && tmpCommentShare >= 0) {
+                                if (globalServerTime > 0 && tmpArrangementCommentOnOff && tmpCommentMaxComment > 0 && tmpCommentMaxLetters > 0 && tmpCommentDelaytime >= 0 && tmpCommentCountCommentSinceTime > 0 && tmpCommentShare >= 0) {
 
                                     // set new share value to prefs and set returnMap
                                     if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) != tmpCommentShare ) {
                                         prefsEditor.putInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, tmpCommentShare); // write new share value to prefs
-                                        prefsEditor.putLong(ConstansClassOurArrangement.namePrefsArrangementCommentShareChangeTime, System.currentTimeMillis());
+                                        prefsEditor.putLong(ConstansClassOurArrangement.namePrefsArrangementCommentShareChangeTime, globalServerTime);
 
                                         if (tmpCommentShare == 1) { // sharing is enable; 1-> sharing comments; 0-> not sharing
                                             returnMap.put("OurArrangementSettingsCommentShareEnable","1");

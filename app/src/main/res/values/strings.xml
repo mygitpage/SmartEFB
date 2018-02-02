@@ -320,13 +320,16 @@
             <string name="showArrangementIntroText">Absprache</string>
             <string name="showCommentHeadlineWithNumber">Kommentar</string>
             <string name="showCommentHeadlineWithNumberExtraNewest">(Aktuellster)</string>
+            <string name="showCommentHeadlineWithNumberExtraOldest">(Ältester)</string>
             <string name="ourArrangementBackLinkToArrangementFromShowComment">Zurück zu den aktuellen Absprachen</string>
-            <string name="ourArrangementShowCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+            <string name="ourArrangementShowCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphone-Zeit).</string>
             <string name="ourArrangementShowCommentSendInfo">Der Kommentar wurde noch nicht gesendet.</string>
             <string name="ourArrangementShowCommentSendDelayInfo">Der Kommentar wurde gesendet und wird in %1$s zugestellt.</string>
             <string name="ourArrangementShowCommentSendSuccsessfullInfo">Der Kommentar wurde gesendet.</string>
             <string name="ourArrangementShowCommentLinkToCommentAnArrangement">Absprache %1$d kommentieren</string>
             <string name="ourArrangementShowCommentPersonalAuthorName">Ihnen</string>
+            <string name="ourArrangementShowCommentLinkChangeSortSequenceOfArrangementCommentAscending">Kommentare aufsteigend sortieren (Jüngster zu erst)</string>
+            <string name="ourArrangementShowCommentLinkChangeSortSequenceOfArrangementCommentDescending">Kommentare absteigend sortieren (Ältester zu erst)</string>
         <!-- End String Fragment show comment -->
 
         <!-- String Fragment evaluate arrangement -->
@@ -479,6 +482,7 @@
             <string name="textDialogOurArrangementSettingsSketchCommentDelaytimeSingular">\nDie Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogOurArrangementSettingsSketchCommentDelaytimePlural">\nDie Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogOurArrangementSettingsLinkToInvolvedPerson">Die Personen, die Kommentare und Einschätzungen schreiben und lesen können, finden Sie <a href="smart.efb.deeplink://linkin/settings?com=show_involved_person">hier</a>.</string>
+            <string name="textDialogOurArrangementSettingsExplainCommentSortText">Die Liste der Kommentare wird anhand einer zentralen Zeit sortiert. Hier kann es zu Widersprüchen zu Ihrer lokalen Smartphone-Zeit kommen, die bei den einzelnen Kommentaren angezeigt wird.</string>
         <!-- End our arrangement dialog settings -->
 
         <!-- our arrangement dialog no more messages -->

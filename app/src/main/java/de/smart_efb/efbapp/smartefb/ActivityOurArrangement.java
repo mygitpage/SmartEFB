@@ -287,9 +287,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // set correct subtitle in toolbar in tab zero
             toolbar.setSubtitle(arraySubTitleText[4]);
 
-
-
-        } else if (command.equals("comment_an_arrangement")) { // Show fragment comment arrangement
+        }  else if (command.equals("comment_an_arrangement")) { // Show fragment comment arrangement
 
             // set global varibales
             arrangementServerDbIdFromLink = tmpServerDbId;
@@ -517,7 +515,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         Button tmpHelpButtonOurArrangement = (Button) findViewById(R.id.helpOurArrangementNow);
 
-
         // add button listener to question mark in activity OurArrangement (toolbar)
         tmpHelpButtonOurArrangement.setOnClickListener(new View.OnClickListener() {
 
@@ -711,6 +708,12 @@ public class ActivityOurArrangement extends AppCompatActivity {
                             tmpTxtSketchArrangement4 = "";
                             tmpTxtSketchArrangement5 = "";
                         }
+
+                        // check sketch comment sharing disable/ enable -> in case of disable -> show text
+                        if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShare, 0) != 1) {
+                            TextView tmpdialogTextViewNoSharing = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSketchCommentSharingDisable);
+                            tmpdialogTextViewNoSharing.setVisibility(View.VISIBLE);
+                        }
                     }
                     else {
                         tmpTxtSketchArrangement1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentArrangementDisable);
@@ -720,14 +723,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
                         tmpTxtSketchArrangement5 = "";
                     }
                     tmpTxtSketchArrangementSum = tmpTxtSketchArrangement + " " + tmpTxtSketchArrangement1 + " " + tmpTxtSketchArrangement2 + " " + tmpTxtSketchArrangement3  + tmpTxtSketchArrangement4 + tmpTxtSketchArrangement5;
-
-                    // check sketch comment sharing disable/ enable -> in case of disable -> show text
-                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShare, 0) != 1) {
-                        TextView tmpdialogTextViewNoSharing = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSketchCommentSharingDisable);
-                        tmpdialogTextViewNoSharing.setVisibility(View.VISIBLE);
-
-                    }
-
                 }
                 else {
                     tmpTxtSketchArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchArrangementDisable);

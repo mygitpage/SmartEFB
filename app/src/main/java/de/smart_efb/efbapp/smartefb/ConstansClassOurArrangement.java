@@ -104,6 +104,10 @@ class ConstansClassOurArrangement {
     // true -> Now arragement are updated; false -> no update
     static final String namePrefsSignalNowArrangementUpdate = "signalNowArrangementUpdated";
 
+    // sort sequence of arrangement comment list-> "decending" or "ascending"
+    static final String namePrefsSortSequenceOfArrangementCommentList = "arrangementCommentSortSequence";
+
+
     // default time for active and pause time in evaluation arrangement (time in seconds)
     static final int defaultTimeForActiveAndPauseEvaluationArrangement = 43200; // this is 12 hours
 
