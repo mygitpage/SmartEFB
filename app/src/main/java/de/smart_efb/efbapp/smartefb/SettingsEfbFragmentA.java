@@ -445,6 +445,18 @@ public class SettingsEfbFragmentA extends Fragment {
                     textViewInvolvedPersonPrecenseText.setVisibility(View.VISIBLE);
                 }
             }
+
+            // show last contact time to server, when set!
+            if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                LinearLayout linearLayoutLastContactContainer = (LinearLayout) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerLastContactTimeToServer);
+                linearLayoutLastContactContainer.setVisibility(View.VISIBLE);
+                TextView textViewBorderLastContactTime = (TextView) viewFragmentConnectToServer.findViewById(R.id.borderBetweenInvolvedPersonAndLastContactTime);
+                textViewBorderLastContactTime.setVisibility(View.VISIBLE);
+                TextView textViewLastContactTime = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerLastContactTimeToServerTimeText);
+                String lastContactString = String.format(viewFragmentConnectToServer.getResources().getString(R.string.settingsSendingToServerLastContactTimeTimeText), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, System.currentTimeMillis()), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, System.currentTimeMillis()), "HH:mm"));
+                textViewLastContactTime.setText(lastContactString);
+                textViewLastContactTime.setVisibility(View.VISIBLE);
+            }
         }
     }
 

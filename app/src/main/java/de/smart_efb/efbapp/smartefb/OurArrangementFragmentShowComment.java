@@ -75,10 +75,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
         super.onViewCreated(view, saveInstanceState);
 
-
-        Log.d("Show Comment ->", "VIEW CREATED!");
-
-
         fragmentShowCommentContext = getActivity().getApplicationContext();
 
         // call getter function in ActivityOurArrangment
@@ -157,8 +153,10 @@ public class OurArrangementFragmentShowComment extends Fragment {
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
-                // check intent order
 
+                Log.d("SHOW COMMENT -->", "BROADCAST EMPFNAGEN!");
+
+                // check intent order
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
                 String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
                 String tmpExtraOurArrangementNowComment = intentExtras.getString("OurArrangementNowComment","0");
@@ -166,12 +164,13 @@ public class OurArrangementFragmentShowComment extends Fragment {
                 String tmpExtraOurArrangementCommentShareEnable = intentExtras.getString("OurArrangementSettingsCommentShareEnable","0");
                 String tmpExtraOurArrangementCommentShareDisable = intentExtras.getString("OurArrangementSettingsCommentShareDisable","0");
                 String tmpExtraOurArrangementResetCommentCountComment = intentExtras.getString("OurArrangementSettingsCommentCountComment","0");
+                String tmpExtraOurArrangementCommentSendInBackgroundRefreshView = intentExtras.getString("OurArrangementCommentSendInBackgroundRefreshView","0");
+
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
                 // sort sequence of list view changed
                 String tmpSortSequenceChange = intentExtras.getString("changeSortSequenceOfListView", "0");
-
 
                 if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
                     // case close! -> show toast
@@ -238,9 +237,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
                     updateListView = true;
                 }
                 else if (tmpSortSequenceChange.equals("1")) {
-
-                    Log.d("SHOW COMMENT -->", "SORT CHANGE!!!!!!");
-
                     if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending").equals("descending")) {
                         prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "ascending");
                     }
@@ -250,6 +246,13 @@ public class OurArrangementFragmentShowComment extends Fragment {
                     prefsEditor.commit();
 
                     // list view sort sequence have change -> refresh view
+                    updateListView = true;
+                }
+                else if (tmpExtraOurArrangementCommentSendInBackgroundRefreshView != null &&  tmpExtraOurArrangementCommentSendInBackgroundRefreshView.equals("1")) {
+
+                    Log.d("SHOW Comment-->", "Braodcast erhalten! UI!");
+
+                    // comment send in background -> refresh view
                     updateListView = true;
                 }
 

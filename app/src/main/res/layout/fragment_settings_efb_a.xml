@@ -177,11 +177,63 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
-            android:paddingBottom="15dp"
             android:textColor="@color/colorPrimaryDark"
             android:gravity="center"
             android:visibility="gone"/>
 
+        <TextView
+            android:id="@+id/borderBetweenInvolvedPersonAndLastContactTime"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style"
+            android:id="@+id/settingsConnectToServerLastContactTimeToServer"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/settingsConnectToServerLastContactTimeToServerHeadlineText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:text="@string/settingsSendingToServerLastContactTimeToServerHeadlineText"
+                android:layout_marginLeft="3dp"/>
+
+            <TextView
+                android:id="@+id/settingsConnectToServerLastContactTimeToServerHeadlineExplainText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/settingsSendingToServerLastContactTimeToServerHeadlineExplainText"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/settingsConnectToServerLastContactTimeToServerTimeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"/>
 
         <!-- Start Error section -->
         <TextView

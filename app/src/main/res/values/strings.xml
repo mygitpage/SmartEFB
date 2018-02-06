@@ -3,6 +3,8 @@
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- app strings -->
 
+
+
         <!-- App name -->
             <string name="app_name">Smart<b>EFB</b></string>
         <!-- End app name -->
@@ -120,11 +122,15 @@
             <string name="settingsConnectToServerErrorPostIntroText">Bitte teilen Sie diesen Fehlertext Ihrer Beraterin/ Ihrem Berater mit. Kehren Sie anschließend zum Hauptmenü zurück und versuchen Sie es noch einmal.</string>
             <string name="settingsSendingToServerDialogInfoText">Daten senden</string>
             <string name="hintTextCaseCloseIntroText">Der Fall wurde von Ihrer Beraterin/ Ihrem Berater abgeschlossen. Daher werden keine weiteren Nachrichten, Kommentare, etc. gesendet oder empfangen. Wenn Sie möchten, können Sie die App deinstallieren. Beachten Sie aber, dass dann der gesamte Kommunikationsverlauf gelöscht wird.</string>
-        <string name="settingsSendingToServerInvolvedPersonHeadlineText">Beteiligte an dieser App-Beratung</string>
-        <string name="settingsConnectToServerInvolvedPersonHeadlineExplainText">Hier finden Sie die Namen der Beraterinnen und Berater und Klienten, die an der Kommunikation über die App teilnehmen (Stand: %1$s Uhr)</string>
-        <string name="functionStringForCoach">(BeraterIn)</string>
-    <string name="settingsConnectToServerInvolvedPersonPresenceHeadlineText">Verfügbarkeit Ihrer Beraterinnen und Berater</string>
-    <string name="settingsConnectToServerInvolvedPersonPresenceExplainText">Ihre Beraterinnen und Berater können in der Regel zu den unten angegebenen Zeiten auf Nachrichten, Kommentare oder andere Ereignisse in der App-Beratung reagieren.</string>
+            <string name="settingsSendingToServerInvolvedPersonHeadlineText">Beteiligte an dieser App-Beratung</string>
+            <string name="settingsConnectToServerInvolvedPersonHeadlineExplainText">Hier finden Sie die Namen der Beraterinnen und Berater und Klienten, die an der Kommunikation über die App teilnehmen (Stand: %1$s Uhr)</string>
+            <string name="functionStringForCoach">(BeraterIn)</string>
+            <string name="settingsConnectToServerInvolvedPersonPresenceHeadlineText">Verfügbarkeit Ihrer Beraterinnen und Berater</string>
+            <string name="settingsConnectToServerInvolvedPersonPresenceExplainText">Ihre Beraterinnen und Berater können in der Regel zu den unten angegebenen Zeiten auf Nachrichten, Kommentare oder andere Ereignisse in der App-Beratung reagieren.</string>
+            <string name="settingsSendingToServerLastContactTimeToServerHeadlineText">Letzter Serverkontakt</string>
+            <string name="settingsSendingToServerLastContactTimeToServerHeadlineExplainText">Die App fragt regelmäßig beim Server nach neuen Nachrichten, Absprachen, Kommentaren, etc. an oder liefert von Ihnen geschriebene Nachrichten, Kommentare, etc. ab. Hier sehen Sie, zu welchem Zeitpunkt der letzte Kontakt stattfand.</string>
+            <string name="settingsSendingToServerLastContactTimeTimeText">%1$s um %2$s Uhr</string>
+
         <!-- End Fragment settings a (connect to server) -->
 
         <!-- Subtitle under Title Settings -->
@@ -299,7 +305,7 @@
             <string name="lastActualCommentText">Aktuellster Kommentar zur Absprache</string>
             <string name="lastActualCommentTextNoCommentAvailabel">Keine Kommentare vorhanden</string>
             <string name="lastActualCommentTextNoCommentAvailabelFirstAuthor">Werden Sie erster Autor eines Kommentares</string>
-            <string name="ourArrangementCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+            <string name="ourArrangementCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
             <string name="ourArrangementCommentLinkToShowAllCommentsPlural">%1$d weitere Kommentare vorhanden</string>
             <string name="ourArrangementCommentLinkToShowAllCommentsSingular">%1$d weiterer Kommentar vorhanden</string>
             <string name="ourArrangementCommentLinkToShowAllCommentsNotAvailable">Keine weiteren Kommentare vorhanden</string>
@@ -322,14 +328,15 @@
             <string name="showCommentHeadlineWithNumberExtraNewest">(Aktuellster)</string>
             <string name="showCommentHeadlineWithNumberExtraOldest">(Ältester)</string>
             <string name="ourArrangementBackLinkToArrangementFromShowComment">Zurück zu den aktuellen Absprachen</string>
-            <string name="ourArrangementShowCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphone-Zeit).</string>
+            <string name="ourArrangementShowCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+            <string name="ourArrangementShowCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourArrangementShowCommentSendInfo">Der Kommentar wurde noch nicht gesendet.</string>
             <string name="ourArrangementShowCommentSendDelayInfo">Der Kommentar wurde gesendet und wird in %1$s zugestellt.</string>
             <string name="ourArrangementShowCommentSendSuccsessfullInfo">Der Kommentar wurde gesendet.</string>
             <string name="ourArrangementShowCommentLinkToCommentAnArrangement">Absprache %1$d kommentieren</string>
             <string name="ourArrangementShowCommentPersonalAuthorName">Ihnen</string>
-            <string name="ourArrangementShowCommentLinkChangeSortSequenceOfArrangementCommentAscending">Kommentare aufsteigend sortieren (Jüngster zu erst)</string>
-            <string name="ourArrangementShowCommentLinkChangeSortSequenceOfArrangementCommentDescending">Kommentare absteigend sortieren (Ältester zu erst)</string>
+            <string name="ourArrangementShowCommentLinkChangeSortSequenceOfArrangementCommentAscending">Kommentare absteigend sortieren (Jüngster zu erst)</string>
+            <string name="ourArrangementShowCommentLinkChangeSortSequenceOfArrangementCommentDescending">Kommentare aufsteigend sortieren (Ältester zu erst)</string>
         <!-- End String Fragment show comment -->
 
         <!-- String Fragment evaluate arrangement -->

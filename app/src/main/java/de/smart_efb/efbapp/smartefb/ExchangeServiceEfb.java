@@ -20,7 +20,6 @@ import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.util.Xml;
 
-import org.apache.http.conn.ConnectTimeoutException;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
 
@@ -32,10 +31,8 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -115,8 +112,6 @@ import java.util.Map;
                 Boolean send_debetable_goals_comment_info = false;
                 Boolean send_connect_book_messages_result_info = false;
                 Boolean send_meeting_data_result_info = false;
-
-                Long serverTime = 0L; // holds the server time that comes from server
 
                 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -315,26 +310,30 @@ import java.util.Map;
                             EfbXmlParser xmlparser = new EfbXmlParser(context);
                             returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
 
+                            //++++++++++++++++ db status update section +++++++++++++++++++++++++++++++++
 
-                            // get server time from server answer!
-                            if (returnMap.get("ServerTimeInMills").length() > 0 && returnMap.get("AskForTimeSuccessfull").equals("1")) {
-                                serverTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; //make mills!
-
-                                // save last contact time with server in prefs
-                                prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, serverTime);
-                                prefsEditor.commit();
+                            // set global server time for comments, messages, etc.
+                            Long globalServerTime = 0L;
+                            if (returnMap.get("AskForTimeSuccessfull").equals("1") && returnMap.get("ServerTimeInMills").length() > 0) {
+                                globalServerTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; // make global server time in mills
                             }
 
-
-                            //++++++++++++++++ db status update section +++++++++++++++++++++++++++++++++
+                            // build intent to update ui for user
+                            Intent tmpIntentUpdateUiForUser = new Intent();
+                            tmpIntentUpdateUiForUser.setAction("ACTIVITY_STATUS_UPDATE");
 
                             // set status of now comment to 1 -> send successfull
                             if (allCommentsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_now_comment_info && serverTime > 0) {
+                                if (returnMap.get("SendSuccessfull").equals("1") && send_now_comment_info) {
                                     allCommentsReadyToSend.moveToFirst();
                                     do {
-                                        myDb.updateStatusOurArrangementComment(allCommentsReadyToSend.getLong(allCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1, serverTime); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                        Long rowId = allCommentsReadyToSend.getLong(allCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                        myDb.updateStatusOurArrangementComment(rowId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                        if (globalServerTime > 0) {myDb.updateWriteTimeOurArrangementComment(rowId, globalServerTime); } // update write time for comment with server time
                                     } while (allCommentsReadyToSend.moveToNext());
+                                    // intent for our arrangement comment -> refresh list view
+                                    tmpIntentUpdateUiForUser.putExtra("OurArrangementCommentSendInBackgroundRefreshView", "1"); // refresh list view in our arranement comment
+                                    Log.d("Exchange-->", "Comment update refresh ui!");
                                 }
                             }
 
@@ -396,11 +395,8 @@ import java.util.Map;
                                         myDb.updateStatusConnectBookMessage(allConnectBookMessagesReadyToSend.getLong(allConnectBookMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of message to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
                                     } while (allConnectBookMessagesReadyToSend.moveToNext());
 
-                                    // send intent to connect book activity -> refresh list view
-                                    Intent tmpIntent = new Intent();
-                                    tmpIntent.putExtra("ConnectBookMessageNewOrSend", "1"); // refresh list view in connect book messages
-                                    tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
-                                    context.sendBroadcast(tmpIntent);
+                                    // intent for connect book activity -> refresh list view
+                                    tmpIntentUpdateUiForUser.putExtra("ConnectBookMessageNewOrSend", "1"); // refresh list view in connect book messages
                                 }
                             }
 
@@ -414,10 +410,6 @@ import java.util.Map;
                                 }
                             }
 
-                            // show notification when needed
-                            setNotificationToScreen(returnMap);
-
-
                             //++++++++++++++++ end db status update section +++++++++++++++++++++++++++++++++
 
                             // close input stream and disconnect
@@ -426,11 +418,19 @@ import java.util.Map;
 
                             // check is app visible and in foreground -> only then send brodcast to receiver!
                             if (EfbLifecycle.isApplicationVisible() && EfbLifecycle.isApplicationInForeground()) {
+
+                                // send broadcast for update ui for user
+                                context.sendBroadcast(tmpIntentUpdateUiForUser);
+
                                 // send intent to broadcast receiver -> the receiver looks for relevant data in intent
-                                Intent tmpIntent = translateMapToIntent(returnMap);
+                                Intent tmpIntent;
+                                tmpIntent = translateMapToIntent(returnMap);
                                 tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
                                 context.sendBroadcast(tmpIntent);
                             }
+
+                            // show notification when needed
+                            setNotificationToScreen(returnMap);
 
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
@@ -629,8 +629,6 @@ import java.util.Map;
             // the task
             public void run() {
 
-                Long serverTime = 0L; // holds the server time that comes from server
-
                 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
@@ -737,17 +735,8 @@ import java.util.Map;
                         answerInputStream.close();
                         connection.disconnect();
 
-                        // get server time from server answer!
-                        if (returnMap.get("ServerTimeInMills").length() > 0 && returnMap.get("AskForTimeSuccessfull").equals("1")) {
-                            serverTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; //make mills!
-                        }
-
-                        if (returnMap.get("SendSuccessfull").equals("1") && serverTime > 0) { // send successfull with server time?
-                            myDb.updateStatusOurArrangementComment(dbId, 1, serverTime); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-
-                            // save last contact time with server in prefs
-                            prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, serverTime);
-                            prefsEditor.commit();
+                        if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull with server time?
+                            myDb.updateStatusOurArrangementComment(dbId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
 
                             // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
                             Intent tmpIntent = translateMapToIntent(returnMap);
@@ -2434,9 +2423,9 @@ import java.util.Map;
                 xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_AuthorName);
 
                 // start tag comment time
-                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentTime);
-                xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
-                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentTime);
+                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentLocaleTime);
+                xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME))/1000)); // this is the local smartphone time; server puts his time self! // convert millis to timestamp
+                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentLocaleTime);
 
                 // start tag arrangement time
                 xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_DateOfArrangement);

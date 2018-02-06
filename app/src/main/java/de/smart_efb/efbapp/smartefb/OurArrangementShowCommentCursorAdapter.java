@@ -224,35 +224,24 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
 
         final Context context = mContext;
 
-        Log.d("CURSOR ADAP ->", "Count:"+countCommentHeadlineNumber);
+        // set row id of comment from db for timer update
+        final Long rowIdForUpdate = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
 
         if (cursor.isFirst() && cursor.getCount() > 1) { // listview for first element, when cursor has more then one element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment_first, parent, false);
             countCommentHeadlineNumber = 1;
-
-            Log.d("CURSOR ADAP ->", "FIRST Count:"+countCommentHeadlineNumber);
         }
         else if (cursor.isFirst() && cursor.getCount() == 1) { // listview for first element, when cursor has only one element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment_firstandlast, parent, false);
-
-
-
             countCommentHeadlineNumber++;
-
-            Log.d("CURSOR ADAP ->", "ONLY ONE Count:"+countCommentHeadlineNumber);
         }
         else if (cursor.isLast()) { // listview for last element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment_last, parent, false);
             countCommentHeadlineNumber++;
-
-            Log.d("CURSOR ADAP ->", "LAST Count:"+countCommentHeadlineNumber);
-
         }
         else { // listview for "normal" element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_comment, parent, false);
             countCommentHeadlineNumber++;
-
-            Log.d("CURSOR ADAP ->", "NORMAL Count:"+countCommentHeadlineNumber);
         }
 
         // set comment information to the view
@@ -287,7 +276,9 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
         }
         String commentDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");;
         String commentTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME)), "HH:mm");;
-        String tmpTextAuthorNameLastActualComment = String.format(context.getResources().getString(R.string.ourArrangementShowCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
+        String tmpTextAuthorNameLastActualComment = "";
+        tmpTextAuthorNameLastActualComment = String.format(context.getResources().getString(R.string.ourArrangementShowCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
+        if (cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 4) {tmpTextAuthorNameLastActualComment = String.format(context.getResources().getString(R.string.ourArrangementShowCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
         tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
         // textview for status 0 of the last actual comment
@@ -303,18 +294,19 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
 
             // check, sharing of comments enable?
             if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) == 1) {
-
-                if ( System.currentTimeMillis() > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L)) { // check system time is in past!
+                Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
+                Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from minutes
+                Long maxTimerTime = writeTimeComment+delayTime;
+                if ( maxTimerTime > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0) ) { // check system time is in past!
                     // set textview visible
                     tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
 
                     // calculate run time for timer in MILLISECONDS!!!
                     Long nowTime = System.currentTimeMillis();
-                    Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME));
-                    Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from minutes
-                    Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
+                    Long localeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME));
+                    Long runTimeForTimer = delayTime - (nowTime - localeTimeComment);
                     // start the timer with the calculated milliseconds
-                    if (runTimeForTimer > 0) {
+                    if (runTimeForTimer > 0 && runTimeForTimer <= delayTime) {
                         new CountDownTimer(runTimeForTimer, 1000) {
                             public void onTick(long millisUntilFinished) {
                                 // gernate count down timer
@@ -334,6 +326,7 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
                                 // count down is over -> show
                                 String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
                                 tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                                myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                             }
                         }.start();
 
@@ -341,33 +334,32 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
                         // no count down anymore -> show send successfull
                         String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
                         tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                        myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                     }
                 }
                 else { // system time is in past! -> Show Text: Comment send successfull!
                     tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
                     String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
                     tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                    myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                 }
             }
             else { // sharing of comments is disable! -> show text
 
                 String tmpTextSendInfoLastActualComment = "";
                 tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
-
-                Log.d("COMMENT ARR-->", "ChangeTime:"+prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementCommentShareChangeTime, 0) + " ++ "+cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)));
-
-
                 if (prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementCommentShareChangeTime, 0) < cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME))) {
                     // show send successfull, but no sharing
                     tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementCommentSendInfoSharingDisable);
+                    myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                 }
                 else {
                     // show send successfull
                     tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+                    myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                 }
                 tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
             }
-
         }
 
         // show actual comment
@@ -414,7 +406,6 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
         }
 
         return inflatedView;
-
     }
 
 

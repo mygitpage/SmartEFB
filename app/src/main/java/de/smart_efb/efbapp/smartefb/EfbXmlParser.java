@@ -5,14 +5,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
-import android.util.Log;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -71,7 +69,6 @@ public class EfbXmlParser {
 
         returnMap.put("AskForTimeSuccessfull","0");
         returnMap.put("ServerTimeInMills", "");
-
 
         returnMap.put("ConnectBook", "0");
         returnMap.put("ConnectBookSettings", "0");
@@ -327,10 +324,16 @@ public class EfbXmlParser {
 
                             if (tmpServerTime.length() > 0) {
                                 globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
+
+                                // save last contact time with server in prefs
+                                prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
+                                prefsEditor.commit();
+
                                 returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
                                 returnMap.put("AskForTimeSuccessfull", "1");
                             }
                             else {
+                                globalServerTime = 0L;
                                 returnMap.put("ServerTimeInMills", "");
                                 returnMap.put("AskForTimeSuccessfull","0");
                             }
@@ -344,10 +347,16 @@ public class EfbXmlParser {
                     else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Receive_Ok_Send)) { // data send and now receive data
                         if (tmpServerTime.length() > 0) {
                             globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
+
+                            // save last contact time with server in prefs
+                            prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
+                            prefsEditor.commit();
+
                             returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
                             returnMap.put("AskForTimeSuccessfull", "1");
                         }
                         else {
+                            globalServerTime = 0L;
                             returnMap.put("ServerTimeInMills", "");
                             returnMap.put("AskForTimeSuccessfull","0");
                         }
@@ -371,10 +380,16 @@ public class EfbXmlParser {
 
                         if (tmpServerTime.length() > 0) {
                             globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
+
+                            // save last contact time with server in prefs
+                            prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
+                            prefsEditor.commit();
+
                             returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
                             returnMap.put("AskForTimeSuccessfull", "1");
                         }
                         else {
+                            globalServerTime = 0L;
                             returnMap.put("ServerTimeInMills", "");
                             returnMap.put("AskForTimeSuccessfull","0");
                         }
@@ -390,6 +405,11 @@ public class EfbXmlParser {
 
                         // set server time to return map
                         globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
+
+                        // save last contact time with server in prefs
+                        prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
+                        prefsEditor.commit();
+
                         returnMap.put("AskForTimeSuccessfull","1");
                         returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
                         readMoreXml = false;
@@ -695,7 +715,7 @@ public class EfbXmlParser {
         // tmp data for database insert
         String tmpCommentText = "";
         String tmpAuthorName = "";
-        Long tmpCommentTime = 0L;
+        Long tmpLocalCommentTime = 0L;
         String tmpBlockId = "";
         Long tmpArrangementTime = 0L;
         Long tmpUploadTime = 0L;
@@ -748,11 +768,11 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentTime:
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentLocaleTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get commentTime text
                                 if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
-                                    tmpCommentTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+                                    tmpLocalCommentTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
                                 } else {
                                     error = true;
                                 }
@@ -814,25 +834,25 @@ public class EfbXmlParser {
                         if (!error) {
 
                             // our arrangement now comment order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpBlockId.length() > 0) {
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpLocalCommentTime > 0 && globalServerTime > 0&& tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpBlockId.length() > 0) {
                                 // set upload time on smartphone for commeent
                                 tmpUploadTime = System.currentTimeMillis();
 
                                 // insert new comment in DB
-                                myDb.insertRowOurArrangementComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpArrangementTime, 4, tmpServerIdArrangement);
+                                myDb.insertRowOurArrangementComment(tmpCommentText, tmpAuthorName,  globalServerTime, tmpUploadTime, tmpLocalCommentTime, tmpBlockId, true, tmpArrangementTime, 4, tmpServerIdArrangement, 1);
 
                                 // refresh activity ourarrangement and fragment now comment
                                 returnMap.put("OurArrangement", "1");
                                 returnMap.put("OurArrangementNowComment", "1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpBlockId.length() > 0) {
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpLocalCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpBlockId.length() > 0) {
                                 // now comment order -> update
 
                                 // set upload time on smartphone for commeent
                                 tmpUploadTime = System.currentTimeMillis();
 
                                 // insert new comment in DB
-                                myDb.insertRowOurArrangementComment(tmpCommentText, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpArrangementTime, 4, tmpServerIdArrangement);
+                                myDb.insertRowOurArrangementComment(tmpCommentText, tmpAuthorName, globalServerTime, tmpUploadTime, tmpLocalCommentTime, tmpBlockId, true, tmpArrangementTime, 4, tmpServerIdArrangement, 1);
 
                                 // refresh activity ourarrangement and fragment now comment
                                 returnMap.put("OurArrangement", "1");
@@ -5052,6 +5072,8 @@ public class EfbXmlParser {
                             else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // involved person order -> update?
 
                                 if (tmpInvolvedPersonName.length() > 0 && tmpInvolvedPersonFunction.length() > 0 && tmpInvolvedPersonModifiedTime > 0) {
+                                    // delete all content from db table
+                                    myDb.deleteTableInvolvedPerson();
 
                                     // insert follow person
                                     int newEntry = 1; // entry is new!

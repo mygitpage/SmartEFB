@@ -150,6 +150,8 @@ public class OurArrangementFragmentNowComment extends Fragment {
                 String tmpExtraOurArrangementCommentShareEnable = intentExtras.getString("OurArrangementSettingsCommentShareEnable","0");
                 String tmpExtraOurArrangementCommentShareDisable = intentExtras.getString("OurArrangementSettingsCommentShareDisable","0");
                 String tmpExtraOurArrangementResetCommentCountComment = intentExtras.getString("OurArrangementSettingsCommentCountComment","0");
+                String tmpExtraOurArrangementCommentSendInBackgroundRefreshView = intentExtras.getString("OurArrangementCommentSendInBackgroundRefreshView","0");
+
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
@@ -219,6 +221,10 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     // arrangement settings has change -> refresh fragments view
                     refreshView = true;
                 }
+                else if (tmpExtraOurArrangementCommentSendInBackgroundRefreshView != null &&  tmpExtraOurArrangementCommentSendInBackgroundRefreshView.equals("1")) {
+                    // comment send in background -> refresh view
+                    refreshView = true;
+                }
 
                 if (refreshView) {
                     refreshFragmentView ();
@@ -260,6 +266,9 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
     // build the view for the fragment
     private void buildFragmentNowCommentView () {
+
+        // set row id of comment from db for timer update
+        final Long rowIdForUpdate = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID));
 
         //textview for the comment intro
         TextView textCommentNumberIntro = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementCommentNumberIntro);
@@ -319,8 +328,8 @@ public class OurArrangementFragmentNowComment extends Fragment {
                 tmpAuthorName = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentPersonalAuthorName);
             }
 
-            String commentDate = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");
-            String commentTime = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)), "HH:mm");
+            String commentDate = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");
+            String commentTime = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME)), "HH:mm");
             String tmpTextAuthorNameLastActualComment = String.format(fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
             tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
@@ -332,56 +341,60 @@ public class OurArrangementFragmentNowComment extends Fragment {
                 tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
                 tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
 
-            } else if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 1) {
-                // textview for status 1 of the last actual comment
+            } else if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 1) { // textview for status 1 of the last actual comment
 
-
-                Log.d("Fragment ARR COMMENT", "VOR IF SHARING."+prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0));
-
-
-                // check, sharing of comments enable?
+                // check, sharing of comments enable and timer for comment possible, not finish?
                 if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) == 1) {
+                    // check system time is in past or future?
+                    Long writeTimeComment = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)); // write time is from sever
+                    Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from minutes
+                    Long maxTimerTime = writeTimeComment+delayTime;
+                    if ( maxTimerTime > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0) ) {
+                        // calculate run time for timer in MILLISECONDS!!!
+                        Long nowTime = System.currentTimeMillis();
+                        Long localeTimeComment = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME));
+                        Long runTimeForTimer = delayTime - (nowTime - localeTimeComment);
 
+                        // set textview visible
+                        tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
 
-                    Log.d("Fragment ARR COMMENT", "SHARING."+prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0));
+                        // start the timer with the calculated milliseconds
+                        if (runTimeForTimer > 0 && runTimeForTimer <= delayTime) {
+                            new CountDownTimer(runTimeForTimer, 1000) {
+                                public void onTick(long millisUntilFinished) {
+                                    // gernate count down timer
+                                    String FORMAT = "%02d:%02d:%02d";
+                                    String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendDelayInfo);
+                                    String tmpTime = String.format(FORMAT,
+                                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                    // put count down to string
+                                    String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                                    // and show
+                                    tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
+                                }
 
+                                public void onFinish() {
+                                    // count down is over -> show send successfull
+                                    String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
+                                    tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                                    myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                                }
+                            }.start();
 
-                    // set textview visible
-                    tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
-
-                    // calculate run time for timer in MILLISECONDS!!!
-                    Long nowTime = System.currentTimeMillis();
-                    Long writeTimeComment = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
-                    Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from miutes
-                    Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
-                    // start the timer with the calculated milliseconds
-                    if (runTimeForTimer > 0) {
-                        new CountDownTimer(runTimeForTimer, 1000) {
-                            public void onTick(long millisUntilFinished) {
-                                // gernate count down timer
-                                String FORMAT = "%02d:%02d:%02d";
-                                String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendDelayInfo);
-                                String tmpTime = String.format(FORMAT,
-                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                                // put count down to string
-                                String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
-                                // and show
-                                tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
-                            }
-
-                            public void onFinish() {
-                                // count down is over -> show
-                                String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
-                                tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
-                            }
-                        }.start();
-
-                    } else {
-                        // no count down anymore -> show send successfull
-                        String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
-                        tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                        } else {
+                            // no count down anymore -> show send successfull
+                            String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
+                            tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                            myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                        }
+                    }
+                    else { // system time is in past! -> Show Text: Comment send successfull!
+                            tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
+                            String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
+                            tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                            myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                     }
                 }
                 else { // sharing of comments is disable! -> show text
@@ -390,10 +403,12 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     if (prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementCommentShareChangeTime, 0) < cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME))) {
                         // show send successfull, but no sharing
                         tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendInfoSharingDisable);
+                        myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                     }
                     else {
                         // show send successfull
                         tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+                        myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                     }
                     tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
                 }
@@ -542,13 +557,28 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
                 if (txtInputArrangementComment.getText().toString().length() > 3) {
 
+                    String commentText = txtInputArrangementComment.getText().toString();
+                    String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                    Long commentTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                    if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                        commentTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                    }
+                    Long uploadTime = 0L;
+                    Long localeTime = System.currentTimeMillis();
+                    String blockId = cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID));
+                    Boolean newEntry = false;
+                    Long dateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
+                    int commentStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
+                    int arrangementServerId = cursorChoosenArrangement.getInt(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID));
+                    int timerStatus = 0;
+
                     // insert comment in DB
-                    Long tmpDbId = myDb.insertRowOurArrangementComment(txtInputArrangementComment.getText().toString(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), System.currentTimeMillis(), 0, cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID)), true, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), 0, cursorChoosenArrangement.getInt(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
+                    Long tmpDbId = myDb.insertRowOurArrangementComment(commentText, userName , commentTime, uploadTime, localeTime, blockId, newEntry, dateOfArrangement, commentStatus, arrangementServerId, timerStatus);
 
                     // increment comment count
                     int countCommentSum = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0) + 1;
                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentCountComment, countCommentSum);
-                    prefsEditor.commit();
+                    prefsEditor.apply();
 
                     // send intent to service to start the service and send comment to server!
                     Intent startServiceIntent = new Intent(fragmentNowCommentContext, ExchangeServiceEfb.class);
@@ -561,6 +591,8 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.putExtra("com", "show_arrangement_now");
+                    intent.putExtra("db_id", 0);
+                    intent.putExtra("arr_num", 0);
                     getActivity().startActivity(intent);
 
                 } else {

@@ -11,11 +11,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-import android.widget.Toast;
-
-import java.sql.Struct;
-import java.sql.Timestamp;
 
 
 public class DBAdapter extends SQLiteOpenHelper {
@@ -39,7 +34,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     private static final String DATABASE_TABLE_INVOLVED_PERSON = "involvedPersonTable";
 
     // Track DB version if a new version of your app changes the format.
-    private static final int DATABASE_VERSION = 48;
+    private static final int DATABASE_VERSION = 49;
 
     // Common column names
     public static final String KEY_ROWID = "_id";
@@ -94,9 +89,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     static final String OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME = "arrangement_time";
     static final String OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT = "server_id";
     static final String OUR_ARRANGEMENT_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
+    static final String OUR_ARRANGEMENT_COMMENT_KEY_TIMER_STATUS = "timer_status";
 
     // All keys from table app settings in a String
-    static final String[] OUR_ARRANGEMENT_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_COMMENT_KEY_UPLOAD_TIME, OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME, OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_COMMENT_KEY_STATUS};
+    static final String[] OUR_ARRANGEMENT_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_COMMENT_KEY_UPLOAD_TIME, OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME, OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_COMMENT_KEY_STATUS, OUR_ARRANGEMENT_COMMENT_KEY_TIMER_STATUS};
 
     // SQL String to create our arrangement comment table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_COMMENT =
@@ -110,7 +106,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
                     + OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME + " INTEGER not null, "
                     + OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT + " INTEGER not null, "
-                    + OUR_ARRANGEMENT_COMMENT_KEY_STATUS + " INTEGER DEFAULT 0"
+                    + OUR_ARRANGEMENT_COMMENT_KEY_STATUS + " INTEGER DEFAULT 0, "
+                    + OUR_ARRANGEMENT_COMMENT_KEY_TIMER_STATUS + " INTEGER DEFAULT 0"
                     + ");";
 
     /**********************************************************************************************/
@@ -129,9 +126,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY = "new_entry";
     static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME = "arrangement_time";
     static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
+    static final String OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_TIMER_STATUS = "timer_status";
 
     // All keys from table sketch comment
-    static final String[] OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_UPLOAD_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS};
+    static final String[] OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_UPLOAD_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS, OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_TIMER_STATUS};
 
     // SQL String to create our arrangement sketch comment table
     private static final String DATABASE_CREATE_SQL_OUR_ARRANGEMENT_SKETCH_COMMENT =
@@ -147,7 +145,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT + " INTEGER not null, "
                     + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
                     + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME + " INTEGER not null, "
-                    + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS + " INTEGER DEFAULT 0"
+                    + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS + " INTEGER DEFAULT 0, "
+                    + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_TIMER_STATUS + " INTEGER DEFAULT 0"
                     + ");";
 
     /**********************************************************************************************/
@@ -198,9 +197,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     static final String CHAT_MESSAGE_KEY_UPLOAD_TIME = "upload_time";
     static final String CHAT_MESSAGE_KEY_STATUS = "status";
     static final String CHAT_MESSAGE_KEY_NEW_ENTRY = "new_entry";
+    static final String CHAT_MESSAGE_KEY_TIMER_STATUS = "timer_status";
 
     // All keys from table chat messages in a String
-    static final String[] CHAT_MESSAGE_ALL_KEYS = new String[]{KEY_ROWID, CHAT_MESSAGE_KEY_WRITE_TIME, CHAT_MESSAGE_KEY_AUTHOR_NAME, CHAT_MESSAGE_KEY_MESSAGE, CHAT_MESSAGE_KEY_ROLE, CHAT_MESSAGE_KEY_UPLOAD_TIME, CHAT_MESSAGE_KEY_STATUS, CHAT_MESSAGE_KEY_NEW_ENTRY};
+    static final String[] CHAT_MESSAGE_ALL_KEYS = new String[]{KEY_ROWID, CHAT_MESSAGE_KEY_WRITE_TIME, CHAT_MESSAGE_KEY_AUTHOR_NAME, CHAT_MESSAGE_KEY_MESSAGE, CHAT_MESSAGE_KEY_ROLE, CHAT_MESSAGE_KEY_UPLOAD_TIME, CHAT_MESSAGE_KEY_STATUS, CHAT_MESSAGE_KEY_NEW_ENTRY, CHAT_MESSAGE_KEY_TIMER_STATUS};
 
     // SQL String to create chat-message-table
     private static final String DATABASE_CREATE_SQL_CHAT_MESSAGE =
@@ -211,7 +211,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + CHAT_MESSAGE_KEY_ROLE + " INTEGER not null, "
                     + CHAT_MESSAGE_KEY_UPLOAD_TIME + " INTEGER, "
                     + CHAT_MESSAGE_KEY_STATUS + " INTEGER not null, "
-                    + CHAT_MESSAGE_KEY_NEW_ENTRY + " INTEGER DEFAULT 0"
+                    + CHAT_MESSAGE_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
+                    + CHAT_MESSAGE_KEY_TIMER_STATUS + " INTEGER DEFAULT 0"
                     + ");";
 
     /*************************************************************************************************************************/
@@ -263,9 +264,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME = "goal_time";
     static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL = "server_id";
     static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
+    static final String OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_TIMER_STATUS = "timer_status";
 
     // All keys from table app settings in a String
-    static final String[] OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_UPLOAD_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS};
+    static final String[] OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_UPLOAD_TIME, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS, OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_TIMER_STATUS};
 
     // SQL String to create our goals jointly comment table
     private static final String DATABASE_CREATE_SQL_OUR_GOALS_JOINTLY_GOALS_COMMENT =
@@ -278,7 +280,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
                     + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME + " INTEGER not null, "
                     + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL + " INTEGER not null, "
-                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS + " INTEGER DEFAULT 0"
+                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS + " INTEGER DEFAULT 0, "
+                    + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_TIMER_STATUS + " INTEGER DEFAULT 0"
                     + ");";
 
     /**********************************************************************************************/
@@ -334,9 +337,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY = "new_entry";
     static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME = "goal_time";
     static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS = "status"; // 0=ready to send, 1=message send, 4=external message
+    static final String OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_TIMER_STATUS = "timer_status";
 
     // All keys from table app settings in a String
-    static final String[] OUR_GOALS_DEBETABLE_GOALS_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_UPLOAD_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS};
+    static final String[] OUR_GOALS_DEBETABLE_GOALS_COMMENT_ALL_KEYS = new String[]{KEY_ROWID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_COMMENT, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION1, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION2, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_UPLOAD_TIME, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS, OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_TIMER_STATUS};
 
     // SQL String to create our goals debetable comment table
     private static final String DATABASE_CREATE_SQL_OUR_GOALS_DEBETABLE_GOALS_COMMENT =
@@ -352,7 +356,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID + " INTEGER not null, "
                     + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
                     + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME + " INTEGER not null, "
-                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS + " INTEGER DEFAULT 0"
+                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS + " INTEGER DEFAULT 0, "
+                    + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_TIMER_STATUS + " INTEGER DEFAULT 0"
                     + ");";
 
 
@@ -409,9 +414,6 @@ public class DBAdapter extends SQLiteOpenHelper {
     static final String MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST = "new_mett_suggest"; // 1=new meeting/ suggestion
     static final String MEETING_SUGGESTION_KEY_REMEMBER_POINT = "remember_point"; //
 
-
-
-
     // All keys from table in a String
     static final String[] MEETING_SUGGESTION_MEETING_ALL_KEYS = new String[]{KEY_ROWID, MEETING_SUGGESTION_KEY_DATE1, MEETING_SUGGESTION_KEY_DATE2, MEETING_SUGGESTION_KEY_DATE3, MEETING_SUGGESTION_KEY_DATE4, MEETING_SUGGESTION_KEY_DATE5, MEETING_SUGGESTION_KEY_DATE6,
             MEETING_SUGGESTION_KEY_PLACE1, MEETING_SUGGESTION_KEY_PLACE2, MEETING_SUGGESTION_KEY_PLACE3, MEETING_SUGGESTION_KEY_PLACE4, MEETING_SUGGESTION_KEY_PLACE5, MEETING_SUGGESTION_KEY_PLACE6,
@@ -421,7 +423,6 @@ public class DBAdapter extends SQLiteOpenHelper {
             MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME, MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE, MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE, MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME, MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT, MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR, MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE,
             MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT, MEETING_SUGGESTION_KEY_MEETING_SERVER_ID, MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME, MEETING_SUGGESTION_KEY_MEETING_KATEGORIE, MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME,
             MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR, MEETING_SUGGESTION_MEETING_KEY_STATUS, MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST, MEETING_SUGGESTION_KEY_REMEMBER_POINT};
-
 
     // SQL String to create find meeting table
     private static final String DATABASE_CREATE_SQL_MEETING_SUGGESTION =
@@ -476,8 +477,6 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + MEETING_SUGGESTION_KEY_REMEMBER_POINT + " INTEGER DEFAULT 0 "
                     + ");";
 
-
-
     /**********************************************************************************************/
     /**********************************************************************************************/
     // involved person- column names and numbers
@@ -506,7 +505,6 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + INVOLVED_PERSON_KEY_NEW_ENTRY + " INTEGER DEFAULT 0"
                     + ");";
 
-
     /**********************************************************************************************/
     /************************ End of table definitions **********************************************************************/
 
@@ -517,7 +515,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
         dbContext = context;
-
     }
 
 
@@ -557,7 +554,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Create table involved person
         _db.execSQL(DATABASE_CREATE_SQL_INVOLVED_PERSON);
-
     }
 
 
@@ -865,7 +861,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         String where = OUR_ARRANGEMENT_KEY_SERVER_ID + "=" + serverId;
         return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT, where, null) != 0;
-
     }
 
 
@@ -885,7 +880,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         String where = OUR_ARRANGEMENT_KEY_BLOCK_ID + "='" + blockId + "' AND " + OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=" + tmpStatus;
 
         return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT, where, null) != 0;
-
     }
 
 
@@ -1103,7 +1097,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Arrangement Comment ******************************************/
 
     // Add a new set of values to ourArrangementComment .
-    long insertRowOurArrangementComment(String comment, String authorName, long commentTime, long upload_time, String blockid, Boolean newEntry, long currentDateOfArrangement, int status, int serverId) {
+    long insertRowOurArrangementComment(String comment, String authorName, long commentTime, long upload_time, long localeTime, String blockid, Boolean newEntry, long currentDateOfArrangement, int status, int serverId, int timerStatus) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1111,13 +1105,14 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_COMMENT, comment);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME, authorName);
-        initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, commentTime); // first insert of local and write time is same value -> after send to server write time is set to server time
+        initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, commentTime);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_UPLOAD_TIME, upload_time);
-        initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME, commentTime);
+        initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME, localeTime);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID, blockid);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME, currentDateOfArrangement);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT, serverId);
         initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_STATUS, status);
+        initialValues.put(OUR_ARRANGEMENT_COMMENT_KEY_TIMER_STATUS, timerStatus);
 
         // is it a new entry?
         if (newEntry) {
@@ -1153,8 +1148,6 @@ public class DBAdapter extends SQLiteOpenHelper {
                 sort = OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " DESC";
                 break;
         }
-
-
 
         Cursor c = db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
                 where, null, null, null, sort, null);
@@ -1214,7 +1207,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         String where = OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID + "='" + blockId + "'";
 
         return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, where, null) != 0;
-
     }
 
 
@@ -1239,7 +1231,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status comment and write of comment (with server time) in table ourArrangementComment
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Comment
-    boolean updateStatusOurArrangementComment(Long rowId, int status, Long serverTime) {
+    boolean updateStatusOurArrangementComment(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1248,7 +1240,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Create row status with status
         ContentValues newValues = new ContentValues();
         newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_STATUS, status);
-        newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, serverTime);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null) != 0;
@@ -1274,6 +1265,38 @@ public class DBAdapter extends SQLiteOpenHelper {
         return c;
     }
 
+
+    // update status of timer for comment
+    // 0= timer can run; 1= timer finish!
+    boolean updateTimerStatusOurArrangementComment(Long rowId, int timerStatus) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row status with status
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_TIMER_STATUS, timerStatus);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null) != 0;
+    }
+
+
+    // update write time for comment from locale time to server time in table ourArrangementComment
+    boolean updateWriteTimeOurArrangementComment(Long rowId, Long writeTimeFromServer) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row write time from server
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, writeTimeFromServer);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null) != 0;
+    }
 
     /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Comment ***************************************/
     /****************************************************************************************************************************/

@@ -169,8 +169,8 @@ class ConstansClassXmlParser {
             // xml name for element our arrangement now comment author name
             static final String xmlNameForOurArrangement_NowComment_AuthorName = "ourarrangement_nowcomment_authorname";
 
-            // xml name for element our arrangement now comment time
-            static final String xmlNameForOurArrangement_NowComment_CommentTime = "ourarrangement_nowcomment_commenttime";
+            // xml name for element our arrangement now comment locale time
+            static final String xmlNameForOurArrangement_NowComment_CommentLocaleTime = "ourarrangement_nowcomment_commentlocaletime";
 
             // xml name for element our arrangement now comment date of arrangement to comment
             static final String xmlNameForOurArrangement_NowComment_DateOfArrangement = "ourarrangement_nowcomment_dateofarrangement";
