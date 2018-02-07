@@ -153,9 +153,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
-
-                Log.d("SHOW COMMENT -->", "BROADCAST EMPFNAGEN!");
-
                 // check intent order
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
                 String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
@@ -250,8 +247,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
                 }
                 else if (tmpExtraOurArrangementCommentSendInBackgroundRefreshView != null &&  tmpExtraOurArrangementCommentSendInBackgroundRefreshView.equals("1")) {
 
-                    Log.d("SHOW Comment-->", "Braodcast erhalten! UI!");
-
                     // comment send in background -> refresh view
                     updateListView = true;
                 }
@@ -312,8 +307,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
         Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToShow);
 
         if (cursorComments.getCount() > 0 && choosenArrangement.getCount() > 0 && listViewShowComments != null) {
-
-
 
             // new dataadapter with custom constructor for show comments now
             showCommentCursorAdapter = new OurArrangementShowCommentCursorAdapter(

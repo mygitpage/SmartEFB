@@ -144,7 +144,6 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
                 }
             });
 
-
             // generate link for sort sequence change
             TextView textViewChangeSortSequence = (TextView) view.findViewById(R.id.linkToChangeSortSequenceOfCommentList);
             Uri.Builder commentLinkBuilder = new Uri.Builder();
@@ -204,7 +203,6 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
             else {
                 tmpInfoTextDelaytimeSingluarPluaral = context.getString(R.string.infoTextNowCommentDelaytimePlural);
                 tmpInfoTextDelaytimeSingluarPluaral = String.format(tmpInfoTextDelaytimeSingluarPluaral, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0));
-
             }
 
             // generate text comment max letters
@@ -297,7 +295,7 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
                 Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
                 Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from minutes
                 Long maxTimerTime = writeTimeComment+delayTime;
-                if ( maxTimerTime > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0) ) { // check system time is in past!
+                if ( maxTimerTime > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0) && cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_TIMER_STATUS)) == 0) { // check system time is in past and timer status is run!
                     // set textview visible
                     tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
 
@@ -337,7 +335,7 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
                         myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                     }
                 }
-                else { // system time is in past! -> Show Text: Comment send successfull!
+                else { // system time is in past or timer status is stop! -> Show Text: Comment send successfull!
                     tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
                     String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
                     tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
@@ -351,14 +349,13 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
                 if (prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementCommentShareChangeTime, 0) < cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME))) {
                     // show send successfull, but no sharing
                     tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementCommentSendInfoSharingDisable);
-                    myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                 }
                 else {
                     // show send successfull
                     tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
-                    myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                 }
                 tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
             }
         }
 

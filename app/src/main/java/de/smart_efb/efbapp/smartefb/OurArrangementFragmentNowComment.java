@@ -256,7 +256,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToComment);
 
         // get all comments for choosen arrangement
-        cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToComment, "decending");
+        cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToComment, "descending");
 
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentNowCommentText", "string", fragmentNowCommentContext.getPackageName())) + " " + arrangementNumberInListView;
@@ -266,9 +266,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
     // build the view for the fragment
     private void buildFragmentNowCommentView () {
-
-        // set row id of comment from db for timer update
-        final Long rowIdForUpdate = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID));
 
         //textview for the comment intro
         TextView textCommentNumberIntro = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementCommentNumberIntro);
@@ -305,6 +302,9 @@ public class OurArrangementFragmentNowComment extends Fragment {
         // some comments for arrangement available?
         if (cursorArrangementAllComments.getCount() > 0) {
 
+            // set row id of comment from db for timer update
+            final Long rowIdForUpdate = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID));
+
             //textview for the last actual comment intro
             TextView textLastActualCommentIntro = (TextView) viewFragmentNowComment.findViewById(R.id.lastActualCommentInfoText);
             textLastActualCommentIntro.setText(this.getResources().getString(R.string.lastActualCommentText));
@@ -331,6 +331,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
             String commentDate = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");
             String commentTime = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME)), "HH:mm");
             String tmpTextAuthorNameLastActualComment = String.format(fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
+            if (cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 4) {tmpTextAuthorNameLastActualComment = String.format(getResources().getString(R.string.ourArrangementShowCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
             tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
             // textview for status 0 of the last actual comment
@@ -349,7 +350,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     Long writeTimeComment = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME)); // write time is from sever
                     Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from minutes
                     Long maxTimerTime = writeTimeComment+delayTime;
-                    if ( maxTimerTime > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0) ) {
+                    if ( maxTimerTime > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0) && cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_TIMER_STATUS)) == 0) { // check system time is in past and timer status is run!
                         // calculate run time for timer in MILLISECONDS!!!
                         Long nowTime = System.currentTimeMillis();
                         Long localeTimeComment = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME));
@@ -390,11 +391,12 @@ public class OurArrangementFragmentNowComment extends Fragment {
                             myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                         }
                     }
-                    else { // system time is in past! -> Show Text: Comment send successfull!
-                            tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
-                            String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
-                            tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
-                            myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                    else {
+                        // system time is in past or timer status is stop! -> Show Text: Comment send successfull!
+                        tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
+                        String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
+                        tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                        myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                     }
                 }
                 else { // sharing of comments is disable! -> show text
@@ -403,14 +405,13 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     if (prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementCommentShareChangeTime, 0) < cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME))) {
                         // show send successfull, but no sharing
                         tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendInfoSharingDisable);
-                        myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                     }
                     else {
                         // show send successfull
                         tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
-                        myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                     }
                     tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                    myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                 }
             }
 
@@ -593,10 +594,11 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     intent.putExtra("com", "show_arrangement_now");
                     intent.putExtra("db_id", 0);
                     intent.putExtra("arr_num", 0);
+                    intent.putExtra("eval_next", false);
                     getActivity().startActivity(intent);
 
-                } else {
-
+                }
+                else {
                     TextView tmpErrorTextView = (TextView) viewFragmentNowComment.findViewById(R.id.errorInputArrangementComment);
                     tmpErrorTextView.setVisibility(View.VISIBLE);
                 }
@@ -614,6 +616,8 @@ public class OurArrangementFragmentNowComment extends Fragment {
                 Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.putExtra("com","show_arrangement_now");
+                intent.putExtra("db_id", 0);
+                intent.putExtra("arr_num", 0);
                 getActivity().startActivity(intent);
 
             }

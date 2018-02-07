@@ -218,7 +218,7 @@ public class OurArrangementFragmentNow extends Fragment {
                     updateListView = true;
 
                     // settings have change -> check AlarmManger for Evaluation to switch on
-                    ((MainActivity) getActivity()).setAlarmManagerForOurArrangementEvaluation();
+                    ((ActivityOurArrangement) getActivity()).setAlarmManagerForOurArrangementEvaluation();
                 }
 
                     // update the list view because data has change?

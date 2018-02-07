@@ -107,6 +107,9 @@ class ConstansClassOurArrangement {
     // sort sequence of arrangement comment list-> "decending" or "ascending"
     static final String namePrefsSortSequenceOfArrangementCommentList = "arrangementCommentSortSequence";
 
+    // sort sequence of arrangement sketch comment list-> "decending" or "ascending"
+    static final String namePrefsSortSequenceOfArrangementSketchCommentList = "arrangementSketchCommentSortSequence";
+
 
     // default time for active and pause time in evaluation arrangement (time in seconds)
     static final int defaultTimeForActiveAndPauseEvaluationArrangement = 43200; // this is 12 hours

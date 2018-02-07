@@ -332,8 +332,7 @@ import java.util.Map;
                                         if (globalServerTime > 0) {myDb.updateWriteTimeOurArrangementComment(rowId, globalServerTime); } // update write time for comment with server time
                                     } while (allCommentsReadyToSend.moveToNext());
                                     // intent for our arrangement comment -> refresh list view
-                                    tmpIntentUpdateUiForUser.putExtra("OurArrangementCommentSendInBackgroundRefreshView", "1"); // refresh list view in our arranement comment
-                                    Log.d("Exchange-->", "Comment update refresh ui!");
+                                    tmpIntentUpdateUiForUser.putExtra("OurArrangementCommentSendInBackgroundRefreshView", "1"); // refresh list view in our arrangement comment
                                 }
                             }
 
@@ -342,8 +341,12 @@ import java.util.Map;
                                 if (returnMap.get("SendSuccessfull").equals("1") && send_sketch_comment_info) {
                                     allSketchCommentsReadyToSend.moveToFirst();
                                     do {
+                                        Long rowId = allSketchCommentsReadyToSend.getLong(allSketchCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
                                         myDb.updateStatusOurArrangementSketchComment(allSketchCommentsReadyToSend.getLong(allSketchCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                        if (globalServerTime > 0) {myDb.updateWriteTimeOurArrangementSketchComment(rowId, globalServerTime); } // update write time for sketch comment with server time
                                     } while (allSketchCommentsReadyToSend.moveToNext());
+                                    // intent for our arrangement sketch comment -> refresh list view
+                                    tmpIntentUpdateUiForUser.putExtra("OurArrangementSketchCommentSendInBackgroundRefreshView", "1"); // refresh list view in our arrangement sketch comment
                                 }
                             }
 
@@ -372,8 +375,12 @@ import java.util.Map;
                                 if (returnMap.get("SendSuccessfull").equals("1") && send_jointly_goals_comment_info) {
                                     allJointlyGoalsCommentsReadyToSend.moveToFirst();
                                     do {
+                                        Long rowId = allJointlyGoalsCommentsReadyToSend.getLong(allJointlyGoalsCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
                                         myDb.updateStatusOurGoalsJointlyGoalsComment(allJointlyGoalsCommentsReadyToSend.getLong(allJointlyGoalsCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                        if (globalServerTime > 0) {myDb.updateWriteTimeOurGoalsJointlyComment(rowId, globalServerTime); } // update write time for jointly comment with server time
                                     } while (allJointlyGoalsCommentsReadyToSend.moveToNext());
+                                    // intent for our goals jointly comment -> refresh list view
+                                    tmpIntentUpdateUiForUser.putExtra("OurGoalsJointlyCommentSendInBackgroundRefreshView", "1"); // refresh list view in our goals jointly comment
                                 }
                             }
 
@@ -382,8 +389,19 @@ import java.util.Map;
                                 if (returnMap.get("SendSuccessfull").equals("1") && send_debetable_goals_comment_info) {
                                     allDebetableCommentsReadyToSend.moveToFirst();
                                     do {
+                                        Long rowId = allDebetableCommentsReadyToSend.getLong(allDebetableCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
                                         myDb.updateStatusOurGoalsDebetableComment(allDebetableCommentsReadyToSend.getLong(allDebetableCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of debetable comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+
+
+                                        //if (globalServerTime > 0) {myDb.updateWriteTimeOurGoalsDebetableComment(rowId, globalServerTime); } // update write time for debetable comment with server time
+
+
+
+
                                     } while (allDebetableCommentsReadyToSend.moveToNext());
+                                    // intent for our goals debetable comment -> refresh list view
+                                    tmpIntentUpdateUiForUser.putExtra("OurGoalsDebetableCommentSendInBackgroundRefreshView", "1"); // refresh list view in our goals debetable comment
                                 }
                             }
 
@@ -2474,9 +2492,9 @@ import java.util.Map;
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_AuthorName);
 
             // start tag comment time
-            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentTime);
-            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
-            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentTime);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentLocaleTime);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_LOCAL_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentLocaleTime);
 
             // start tag sketch arrangement time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_DateOfArrangement);
@@ -2701,9 +2719,9 @@ import java.util.Map;
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_AuthorName);
 
             // start tag comment time
-            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_CommentTime);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_CommentLocaleTime);
             xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
-            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_CommentTime);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_CommentLocaleTime);
 
             // start tag goal time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_DateOfJointlyGoal);

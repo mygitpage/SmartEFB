@@ -407,9 +407,11 @@
             <string name="ourArrangementSketchCommentAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
             <string name="lastActualSketchCommentText">Aktuellste Einschätzung zum Entwurf</string>
             <string name="ourArrangementSketchCommentPersonalAuthorName">Ihnen</string>
-            <string name="ourArrangementSketchCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+            <string name="ourArrangementSketchCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+            <string name="ourArrangementSketchCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourArrangementSketchCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
             <string name="ourArrangementSketchCommentSendSuccsessfullInfo">Die Einschätzung wurde gesendet.</string>
+            <string name="ourArrangementSketchCommentSendInfoSharingDisable">Die Einschätzung wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
             <string name="ourArrangementSketchCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
             <string name="ourArrangementSketchCommentLinkToShowAllCommentsSingular">%1$d weitere Einschätzung vorhanden</string>
             <string name="ourArrangementSketchCommentLinkToShowAllCommentsPlural">%1$d weitere Einschätzungen vorhanden</string>
@@ -428,8 +430,10 @@
             <string name="btnAbortShowSketchComment">Zurück zu den aktuellen Entwürfen</string>
             <string name="showSketchCommentHeadlineWithNumber">Einschätzung</string>
             <string name="showSketchCommentHeadlineWithNumberExtraNewest">(Aktuellste)</string>
+            <string name="showSketchCommentHeadlineWithNumberExtraOldest">(Älteste)</string>
             <string name="ourArrangementBackLinkToSketchArrangementFromShowSketchComment">Zurück zu den aktuellen Entwürfen</string>
-            <string name="ourArrangementShowSketchCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+            <string name="ourArrangementShowSketchCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+            <string name="ourArrangementShowSketchCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourArrangementShowSketchCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
             <string name="ourArrangementShowSketchCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
             <string name="ourArrangementShowSketchCommentSendSuccsessfullInfo">Die Einschätzung wurde gesendet.</string>
@@ -437,6 +441,8 @@
             <string name="ourArrangementShowSketchCommentPersonalAuthorName">Ihnen</string>
             <string name="textOurArrangementShowSketchCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Absprachenentwurf abgegeben: &lt;b>%1$s&lt;/b></string>
             <string name="textOurArrangementShowSketchCommentActualResultStructQuestionFromCoach">Die Einschätzung wurde ohne Zustimmungswert von Ihrer Beraterin/ Ihrem Berater geschrieben</string>
+            <string name="ourArrangementShowCommentLinkChangeSortSequenceOfArrangementSketchCommentAscending">Einschätzungen absteigend sortieren (Jüngste zu erst)</string>
+            <string name="ourArrangementShowCommentLinkChangeSortSequenceOfArrangementSketchCommentDescending">Einschätzungen aufsteigend sortieren (Älteste zu erst)</string>
         <!-- End String Fragment show sketch comment -->
 
 
@@ -489,7 +495,7 @@
             <string name="textDialogOurArrangementSettingsSketchCommentDelaytimeSingular">\nDie Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogOurArrangementSettingsSketchCommentDelaytimePlural">\nDie Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogOurArrangementSettingsLinkToInvolvedPerson">Die Personen, die Kommentare und Einschätzungen schreiben und lesen können, finden Sie <a href="smart.efb.deeplink://linkin/settings?com=show_involved_person">hier</a>.</string>
-            <string name="textDialogOurArrangementSettingsExplainCommentSortText">Die Liste der Kommentare wird anhand einer zentralen Zeit sortiert. Hier kann es zu Widersprüchen zu Ihrer lokalen Smartphone-Zeit kommen, die bei den einzelnen Kommentaren angezeigt wird.</string>
+            <string name="textDialogOurArrangementSettingsExplainCommentSortText">Die Liste der Kommentare und Einschätzungen wird anhand einer zentralen Zeit sortiert. Hier kann es zu Widersprüchen zu Ihrer lokalen Smartphonezeit kommen, die bei den einzelnen Kommentaren oder Einschätzungen angezeigt wird.</string>
         <!-- End our arrangement dialog settings -->
 
         <!-- our arrangement dialog no more messages -->
@@ -631,7 +637,8 @@
             <string name="lastActualJointlyCommentTextNoCommentAvailabel">Keine Kommentare vorhanden</string>
             <string name="lastActualJointlyCommentTextNoCommentAvailabelFirstAuthor">Werden Sie erster Autor eines Kommentares</string>
             <string name="ourGoalsJointlyCommentPersonalAuthorName">Ihnen</string>
-            <string name="ourGoalsJointlyCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+            <string name="ourGoalsJointlyCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+            <string name="ourGoalsJointlyCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourGoalsJointlyCommentSendInfo">Der Kommentar wurde noch nicht gesendet.</string>
             <string name="ourGoalsJointlyCommentSendDelayInfo">Der Kommentar wurde gesendet und wird in %1$s zugestellt.</string>
             <string name="ourGoalsJointlyCommentSendSuccsessfullInfo">Der Kommentar wurde gesendet.</string>

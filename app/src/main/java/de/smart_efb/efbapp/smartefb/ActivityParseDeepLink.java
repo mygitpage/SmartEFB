@@ -62,6 +62,12 @@ public class ActivityParseDeepLink extends Activity {
                 tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
                 this.sendBroadcast(tmpIntent);
             }
+            else if (tmpCommand != null && tmpCommand.equals("change_sort_sequence_arrangement_sketch_comment")) {
+                Intent tmpIntent = new Intent();
+                tmpIntent.putExtra("changeSortSequenceOfListViewSketchComment", "1"); // refresh list view in activity/fragement
+                tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                this.sendBroadcast(tmpIntent);
+            }
             else {
                 // Launch our arrangement
                 Intent intent = new Intent(this, ActivityOurArrangement.class);

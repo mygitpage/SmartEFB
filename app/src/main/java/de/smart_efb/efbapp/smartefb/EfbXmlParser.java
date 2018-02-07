@@ -317,7 +317,7 @@ public class EfbXmlParser {
                             prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 3); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
                             // write last error messages to prefs
                             prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
-                            prefsEditor.commit();
+                            prefsEditor.apply();
 
                             // delete all content from db tables (init process)
                             myDb.initDeleteAllContentFromTables();
@@ -327,7 +327,7 @@ public class EfbXmlParser {
 
                                 // save last contact time with server in prefs
                                 prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
-                                prefsEditor.commit();
+                                prefsEditor.apply();
 
                                 returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
                                 returnMap.put("AskForTimeSuccessfull", "1");
@@ -350,7 +350,7 @@ public class EfbXmlParser {
 
                             // save last contact time with server in prefs
                             prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
-                            prefsEditor.commit();
+                            prefsEditor.apply();
 
                             returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
                             returnMap.put("AskForTimeSuccessfull", "1");
@@ -376,14 +376,14 @@ public class EfbXmlParser {
                         prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText);
                         // set connection status to error
                         prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 1); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
-                        prefsEditor.commit();
+                        prefsEditor.apply();
 
                         if (tmpServerTime.length() > 0) {
                             globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
 
                             // save last contact time with server in prefs
                             prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
-                            prefsEditor.commit();
+                            prefsEditor.apply();
 
                             returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
                             returnMap.put("AskForTimeSuccessfull", "1");
@@ -408,7 +408,7 @@ public class EfbXmlParser {
 
                         // save last contact time with server in prefs
                         prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
-                        prefsEditor.commit();
+                        prefsEditor.apply();
 
                         returnMap.put("AskForTimeSuccessfull","1");
                         returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
@@ -657,7 +657,7 @@ public class EfbXmlParser {
                                 // signal now arragenemt is updated
                                 prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, true);
 
-                                prefsEditor.commit();
+                                prefsEditor.apply();
 
                                 // refresh activity ourarrangement and fragement now
                                 returnMap.put("OurArrangement", "1");
@@ -834,7 +834,7 @@ public class EfbXmlParser {
                         if (!error) {
 
                             // our arrangement now comment order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpLocalCommentTime > 0 && globalServerTime > 0&& tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpBlockId.length() > 0) {
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpLocalCommentTime > 0 && globalServerTime > 0 && tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpBlockId.length() > 0) {
                                 // set upload time on smartphone for commeent
                                 tmpUploadTime = System.currentTimeMillis();
 
@@ -845,7 +845,7 @@ public class EfbXmlParser {
                                 returnMap.put("OurArrangement", "1");
                                 returnMap.put("OurArrangementNowComment", "1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpLocalCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpBlockId.length() > 0) {
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpLocalCommentTime > 0 && globalServerTime > 0 && tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpBlockId.length() > 0) {
                                 // now comment order -> update
 
                                 // set upload time on smartphone for commeent
@@ -1044,7 +1044,7 @@ public class EfbXmlParser {
                                 // signal sketch arragenemt is updated
                                 prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, true);
 
-                                prefsEditor.commit();
+                                prefsEditor.apply();
 
                                 // refresh activity ourarrangement and fragement sketch
                                 returnMap.put("OurArrangement", "1");
@@ -1104,7 +1104,7 @@ public class EfbXmlParser {
         int tmpResultQuestionB = 0;
         int tmpResultQuestionC = 0;
         String tmpAuthorName = "";
-        Long tmpCommentTime = 0L;
+        Long tmpCommentLocalTime = 0L;
         Long tmpUploadTime = 0L;
         Long tmpArrangementTime = 0L;
         String tmpOrder = "";
@@ -1205,11 +1205,11 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentTime:
+                        case ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_CommentLocaleTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get commentTime text
-                                if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
-                                    tmpCommentTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
+                                if (xpp.getText().trim().length() > 0) { // check if commentLocalTime from xml > 0
+                                    tmpCommentLocalTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
                                 }
                                 else {
                                     error = true;
@@ -1278,27 +1278,27 @@ public class EfbXmlParser {
                         if (!error) {
 
                             // our arrangement sketch comment order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpBlockId.length() > 0) {
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentLocalTime > 0 && globalServerTime > 0 && tmpArrangementTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpCommentLocalTime > 0 && tmpServerIdArrangement >= 0 && tmpBlockId.length() > 0) {
 
                                 // set upload time on smartphone for commeent; value from server is not needed
                                 tmpUploadTime = System.currentTimeMillis();
 
                                 // insert new comment in DB
-                                myDb.insertRowOurArrangementSketchComment(tmpCommentText, tmpResultQuestionA, tmpResultQuestionB, tmpResultQuestionC, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpArrangementTime, 4, tmpServerIdArrangement);
+                                myDb.insertRowOurArrangementSketchComment(tmpCommentText, tmpResultQuestionA, tmpResultQuestionB, tmpResultQuestionC, tmpAuthorName, globalServerTime, tmpCommentLocalTime, tmpUploadTime, tmpBlockId, true, tmpArrangementTime, 4, tmpServerIdArrangement, 1);
 
                                 // refresh activity ourarrangement and fragment sketch comment
                                 returnMap.put("OurArrangement","1");
                                 returnMap.put("OurArrangementSketchComment","1");
 
                             }
-                            else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpArrangementTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpCommentTime > 0 && tmpServerIdArrangement >= 0 && tmpBlockId.length() > 0) {
+                            else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentLocalTime > 0 && globalServerTime > 0 && tmpArrangementTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpCommentLocalTime > 0 && tmpServerIdArrangement >= 0 && tmpBlockId.length() > 0) {
                                 // our arrangement sketch comment order -> update?
 
                                 // set upload time on smartphone for comment; value from server is not needed
                                 tmpUploadTime = System.currentTimeMillis();
 
                                 // insert new comment in DB
-                                myDb.insertRowOurArrangementSketchComment(tmpCommentText, tmpResultQuestionA, tmpResultQuestionB, tmpResultQuestionC, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpArrangementTime, 4, tmpServerIdArrangement);
+                                myDb.insertRowOurArrangementSketchComment(tmpCommentText, tmpResultQuestionA, tmpResultQuestionB, tmpResultQuestionC, tmpAuthorName, globalServerTime, tmpCommentLocalTime, tmpUploadTime, tmpBlockId, true, tmpArrangementTime, 4, tmpServerIdArrangement, 1);
 
                                 // refresh activity ourarrangement and fragment sketch comment
                                 returnMap.put("OurArrangement","1");
@@ -1717,7 +1717,7 @@ public class EfbXmlParser {
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, tmpArrangementOnOff); // turn function our arrangement on/off
                                 prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, tmpArrangementSketchOnOff); // turn function our arrangement sketch on/off
                                 prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, tmpArrangementOldOnOff); // turn function our arrangement old on/off
-                                prefsEditor.commit();
+                                prefsEditor.apply();
 
                                 // update evaluation of arrangements?
                                 if (tmpArrangementEvaluationOnOff && tmpEvaluatePauseTime > 0 && tmpEvaluateActiveTime > 0 && tmpEvaluateStartDate > 0 && tmpEvaluateEndDate > 0) {
@@ -1728,14 +1728,14 @@ public class EfbXmlParser {
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, tmpEvaluateActiveTime);
                                     prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, tmpEvaluateStartDate);
                                     prefsEditor.putLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, tmpEvaluateEndDate);
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
 
                                     // something change in evaluation process
                                     returnMap.put("OurArrangementSettingsEvaluationProcess","1");
                                 }
                                 else { // turn function arrangement evaluation off
                                     prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, tmpArrangementEvaluationOnOff); // turn function off
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
                                     // something change in evaluation process
                                     returnMap.put("OurArrangementSettingsEvaluationProcess","1");
 
@@ -1771,14 +1771,14 @@ public class EfbXmlParser {
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, tmpCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters, tmpCommentMaxLetters);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, tmpCommentDelaytime);
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
 
                                     // something change in arrangement comment process
                                     returnMap.put("OurArrangementSettingsCommentProcess","1");
                                 }
                                 else { // turn function arrangement comment off
                                     prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, tmpArrangementCommentOnOff); // turn function on
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
 
                                     // something change in arrangement comment process
                                     returnMap.put("OurArrangementSettingsCommentProcess","1");
@@ -1813,14 +1813,14 @@ public class EfbXmlParser {
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,tmpSketchCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime,tmpSketchCommentDelaytime);
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters,tmpSketchCommentMaxLetters);
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
 
                                     // something change in sketch arragement comment process
                                     returnMap.put("OurArrangementSettingsSketchCommentProcess","1");
                                 }
                                 else { // turn function arrangement sketch comment off
                                     prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowLinkCommentSketchArrangement, tmpArrangementSketchCommentOnOff); // turn function on
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
                                     // something change in sketch arragement comment process
                                     returnMap.put("OurArrangementSettingsSketchCommentProcess","1");
                                 }
@@ -2088,7 +2088,7 @@ public class EfbXmlParser {
                                 // signal jointly goals are updated
                                 prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalJointlyGoalsUpdate, true);
 
-                                prefsEditor.commit();
+                                prefsEditor.apply();
 
                                 // refresh activity ourgoals and fragement jointly goals
                                 returnMap.put("OurGoals", "1");
@@ -2148,7 +2148,7 @@ public class EfbXmlParser {
         // tmp data for database insert
         String tmpCommentText = "";
         String tmpAuthorName = "";
-        Long tmpCommentTime = 0L;
+        Long tmpCommentLocalTime = 0L;
         String tmpBlockId = "";
         Long tmpGoalTime = 0L;
         Long tmpUploadTime = 0L;
@@ -2207,11 +2207,11 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_CommentTime:
+                        case ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_CommentLocaleTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get commentTime text
-                                if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
-                                    tmpCommentTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
+                                if (xpp.getText().trim().length() > 0) { // check if commentLocaleTime from xml > 0
+                                    tmpCommentLocalTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
                                 }
                                 else {
                                     error = true;
@@ -2277,25 +2277,25 @@ public class EfbXmlParser {
                         if (!error) {
 
                             // our goals jointly comment order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpServerIdGoal >= 0 && tmpGoalTime > 0 && tmpBlockId.length() > 0) {
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && globalServerTime > 0 && tmpCommentLocalTime > 0 && tmpServerIdGoal >= 0 && tmpGoalTime > 0 && tmpBlockId.length() > 0) {
 
-                                // set upload time on smartphone for commeent
+                                // set upload time on smartphone for jointly comment
                                 tmpUploadTime = System.currentTimeMillis();
 
                                 // insert new comment in DB
-                                myDb.insertRowOurGoalJointlyGoalComment (tmpCommentText, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpGoalTime, 4, tmpServerIdGoal);
+                                myDb.insertRowOurGoalJointlyGoalComment (tmpCommentText, tmpAuthorName, globalServerTime, tmpCommentLocalTime, tmpUploadTime, tmpBlockId, true, tmpGoalTime, 4, tmpServerIdGoal, 1);
 
                                 // refresh activity ourgoals and fragment jointly comment
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsJointlyComment","1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpServerIdGoal >= 0 && tmpGoalTime > 0 && tmpBlockId.length() > 0) { // our goals jointly comment order -> update entry?
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && globalServerTime > 0 && tmpCommentLocalTime > 0 && tmpServerIdGoal >= 0 && tmpGoalTime > 0 && tmpBlockId.length() > 0) { // our goals jointly comment order -> update entry?
 
-                                // set upload time on smartphone for commeent
+                                // set upload time on smartphone for jointly comment
                                 tmpUploadTime = System.currentTimeMillis();
 
                                 // insert new comment in DB
-                                myDb.insertRowOurGoalJointlyGoalComment (tmpCommentText, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpGoalTime, 4, tmpServerIdGoal);
+                                myDb.insertRowOurGoalJointlyGoalComment (tmpCommentText, tmpAuthorName, globalServerTime, tmpCommentLocalTime, tmpUploadTime, tmpBlockId, true, tmpGoalTime, 4, tmpServerIdGoal, 1);
 
                                 // refresh activity ourgoals and fragment jointly comment
                                 returnMap.put ("OurGoals","1");
@@ -2305,7 +2305,6 @@ public class EfbXmlParser {
 
                                 // delete all comments for all current jointly goals with the blockId
                                 myDb.deleteAllRowsOurJointlyGoalsComment (tmpBlockId);
-
                             }
                        }
                         parseAnymore = false;
@@ -2744,7 +2743,7 @@ public class EfbXmlParser {
                                 // signal debetable goals are updated
                                 prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalDebetableGoalsUpdate, true);
 
-                                prefsEditor.commit();
+                                prefsEditor.apply();
 
                                 // refresh activity ourgoals and fragement debetable goal now
                                 returnMap.put ("OurGoals","1");
@@ -3170,7 +3169,7 @@ public class EfbXmlParser {
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, tmpGoalsOnOff); // turn function our goals on/off
                                 prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, tmpGoalsDebetableOnOff); // turn function our goals debetable on/off
                                 prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkOldGoals, tmpGoalsOldOnOff); // turn function our goals old on/off
-                                prefsEditor.commit();
+                                prefsEditor.apply();
 
                                 // update evaluation of jointly goals?
                                 if (tmpGoalsEvaluationOnOff && tmpJointlyEvaluatePauseTime > 0 && tmpJointlyEvaluateActiveTime > 0 && tmpJointlyEvaluateStartDate > 0 && tmpJointlyEvaluateEndDate > 0) {
@@ -3181,14 +3180,14 @@ public class EfbXmlParser {
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, tmpJointlyEvaluateActiveTime);
                                     prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, tmpJointlyEvaluateStartDate);
                                     prefsEditor.putLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, tmpJointlyEvaluateEndDate);
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
                                     // something change in evaluation process
                                     returnMap.put ("OurGoalsSettingsEvaluationProcess","1");
                                 }
                                 else { // turn function our goals evaluation off
                                     // write data to prefs
                                     prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, tmpGoalsEvaluationOnOff); // turn function off
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
                                     // something change in evaluation process
                                     returnMap.put ("OurGoalsSettingsEvaluationProcess","1");
                                 }
@@ -3222,14 +3221,14 @@ public class EfbXmlParser {
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, tmpJointlyCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyLetters, tmpJointlyCommentMaxLetters);
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsJointlyCommentDelaytime, tmpCommentDelaytime);
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
                                     // something change in jointly goals comment process
                                     returnMap.put ("OurGoalsSettingsCommentProcess","1");
                                 }
                                 else { // turn function our goals jointly comment off
                                     // write data to prefs
                                     prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, tmpGoalsJointlyCommentOnOff); // turn function off
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
                                     // something change in jointly goals comment process
                                     returnMap.put ("OurGoalsSettingsCommentProcess","1");
                                 }
@@ -3264,14 +3263,14 @@ public class EfbXmlParser {
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment,tmpDebetableCommentMaxComment);
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableLetters,tmpDebetableCommentMaxLetters);
                                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsDebetableCommentDelaytime,tmpDebetableCommentDelaytime);
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
                                     // something change in debetable goals comment process
                                     returnMap.put ("OurGoalsSettingsDebetableCommentProcess","1");
                                 }
                                 else { // turn function our goals debetable comment off
                                     // write data to prefs
                                     prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentDebetableGoals, tmpGoalsDebetableCommentOnOff); // turn function off
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
                                     // something change in debetable goals comment process
                                     returnMap.put ("OurGoalsSettingsDebetableCommentProcess","1");
                                 }
@@ -3503,7 +3502,7 @@ public class EfbXmlParser {
                                 // write data meeting client comment suggestion on off to prefs
                                 prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, tmpMeetingClientCommentSuggestionOnOff);
 
-                                prefsEditor.commit();
+                                prefsEditor.apply();
 
                                 // refresh activity meeting because settings have change
                                 returnMap.put ("Meeting","1");
@@ -4640,7 +4639,7 @@ public class EfbXmlParser {
 
                                 // in every case -> write data connect book on off to prefs
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_ConnectBook, tmpConnectBookOnOff);
-                                prefsEditor.commit();
+                                prefsEditor.apply();
 
                                 // write send delay time, max letters and max messages to prefs when all set
                                 if (tmpConnectBookOnOff && tmpDelayTime >= 0 && tmpMaxLetters >= 0 && tmpMaxMessages >= 0) {
@@ -4654,7 +4653,7 @@ public class EfbXmlParser {
                                     // get normal timestamp with day, month and year (hour, minute, seconds and millseconds are zero)
                                     Long startTimestamp = EfbHelperClass.timestampToNormalDayMonthYearDate(System.currentTimeMillis());
                                     prefsEditor.putLong(ConstansClassConnectBook.namePrefsConnectCountMessagesResetTime, startTimestamp);
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
 
                                     // something change in message and delay settings
                                     returnMap.put("ConnectBookSettingsMessageAndDelay", "1");
@@ -4665,7 +4664,7 @@ public class EfbXmlParser {
 
                                     // write data to prefs
                                     prefsEditor.putString(ConstansClassConnectBook.namePrefsConnectBookUserName, tmpClientName);
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
 
                                     // something change in meeting status
                                     returnMap.put("ConnectBookSettingsClientName", "1");
@@ -4871,7 +4870,7 @@ public class EfbXmlParser {
                                     prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 0); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
                                     // write last error messages to prefs
                                     prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
 
                                     // refresh app beause case is close
                                     returnMap.put("Case_close","1");
@@ -4881,7 +4880,7 @@ public class EfbXmlParser {
                                     prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Faq, tmpFaqOnOff); // turn function faq on/off
                                     prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_EmergencyHelp, tmpEmergencyOnOff); // turn function emergency help on/off
                                     prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Settings, tmpSettingsOnOff); // turn function settings on/off
-                                    prefsEditor.commit();
+                                    prefsEditor.apply();
                                 }
 
                                 // refresh activity settings because settings have change
@@ -5072,8 +5071,6 @@ public class EfbXmlParser {
                             else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // involved person order -> update?
 
                                 if (tmpInvolvedPersonName.length() > 0 && tmpInvolvedPersonFunction.length() > 0 && tmpInvolvedPersonModifiedTime > 0) {
-                                    // delete all content from db table
-                                    myDb.deleteTableInvolvedPerson();
 
                                     // insert follow person
                                     int newEntry = 1; // entry is new!
@@ -5234,7 +5231,7 @@ public class EfbXmlParser {
                                     prefsEditor.putLong(ConstansClassTimeTable.namePrefsTimeTableModifiedDate, 0); // set change date for time table
                                 }
 
-                                prefsEditor.commit();
+                                prefsEditor.apply();
 
                                 // refresh activity time table because settings have change
                                 returnMap.put("TimeTable","1");
@@ -5270,7 +5267,7 @@ public class EfbXmlParser {
         // set connection status to error
         //prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 1);
         
-        prefsEditor.commit();
+        prefsEditor.apply();
         
     }
 

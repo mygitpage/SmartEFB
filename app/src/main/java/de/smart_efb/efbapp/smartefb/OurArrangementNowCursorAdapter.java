@@ -256,7 +256,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false)) {
 
             // get from DB  all comments for choosen arrangement (getCount)
-            Cursor cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)), "decending");
+            Cursor cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)), "descending");
             // generate the number of comments to show
             String tmpCountComments;
             int tmpIntCountComments = cursorArrangementAllComments.getCount();

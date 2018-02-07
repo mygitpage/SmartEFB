@@ -167,6 +167,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 String tmpExtraOurArrangementSketchCommentShareEnable = intentExtras.getString("OurArrangementSettingsSketchCommentShareEnable","0");
                 String tmpExtraOurArrangementSketchCommentShareDisable = intentExtras.getString("OurArrangementSettingsSketchCommentShareDisable","0");
                 String tmpExtraOurArrangementResetSketchCommentCountComment = intentExtras.getString("OurArrangementSettingsSketchCommentCountComment","0");
+                String tmpExtraOurArrangementSketchCommentSendInBackgroundRefreshView = intentExtras.getString("OurArrangementSketchCommentSendInBackgroundRefreshView","0");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
@@ -236,6 +237,10 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     // arrangement settings have change -> refresh view
                     refreshView = true;
                 }
+                else if (tmpExtraOurArrangementSketchCommentSendInBackgroundRefreshView != null &&  tmpExtraOurArrangementSketchCommentSendInBackgroundRefreshView.equals("1")) {
+                    // comment send in background -> refresh view
+                    refreshView = true;
+                }
 
                 if (refreshView) {
                     refreshFragmentView();
@@ -270,7 +275,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         cursorChoosenSketchArrangement = myDb.getRowSketchOurArrangement(sketchArrangementServerDbIdToComment);
 
         // get all comments for choosen sketch arrangement
-        cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(sketchArrangementServerDbIdToComment);
+        cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(sketchArrangementServerDbIdToComment, "descending");
 
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
         String tmpSubtitle = String.format(getResources().getString(getResources().getIdentifier("subtitleFragmentSketchCommentText", "string", fragmentSketchCommentContext.getPackageName())), sketchArrangementNumberInListView);
@@ -313,6 +318,9 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         // some comments for arrangement available?
         if (cursorSketchArrangementAllComments.getCount() > 0) {
 
+            // set row id of comment from db for timer update
+            final Long rowIdForUpdate = cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID));
+
             //textview for the last actual comment intro
             TextView textLastActualSketchCommentIntro = (TextView) viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentInfoText);
             textLastActualSketchCommentIntro.setText(this.getResources().getString(R.string.lastActualSketchCommentText));
@@ -335,9 +343,10 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
                 tmpAuthorName = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentPersonalAuthorName);
             }
-            String commentDate = EfbHelperClass.timestampToDateFormat(cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");;
-            String commentTime = EfbHelperClass.timestampToDateFormat(cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME)), "HH:mm");;
+            String commentDate = EfbHelperClass.timestampToDateFormat(cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");;
+            String commentTime = EfbHelperClass.timestampToDateFormat(cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_LOCAL_TIME)), "HH:mm");;
             String tmpTextAuthorNameLastActualComment = String.format(fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
+            if (cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS)) == 4) {tmpTextAuthorNameLastActualComment = String.format(getResources().getString(R.string.ourArrangementSketchCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
             tmpTextViewAuthorNameLastActualSketchComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
             // textview for status 0 of the last actual comment
@@ -353,43 +362,57 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
                 // check, sharing of sketch comments enable?
                 if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShare, 0) == 1) {
-
-                    // set textview visible
-                    tmpTextViewSendInfoLastActualSketchComment.setVisibility(View.VISIBLE);
-
-                    // calculate run time for timer in MILLISECONDS!!!
-                    Long nowTime = System.currentTimeMillis();
-                    Long writeTimeComment = cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME));
+                    // check system time is in past or future?
+                    Long writeTimeComment = cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME)); // write time is from sever
                     Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime, 0) * 60000; // make milliseconds from miutes
-                    Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
-                    // start the timer with the calculated milliseconds
-                    if (runTimeForTimer > 0) {
-                        new CountDownTimer(runTimeForTimer, 1000) {
-                            public void onTick(long millisUntilFinished) {
-                                // gernate count down timer
-                                String FORMAT = "%02d:%02d:%02d";
-                                String tmpTextSendInfoLastActualComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentSendDelayInfo);
-                                String tmpTime = String.format(FORMAT,
-                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                                // put count down to string
-                                String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
-                                // and show
-                                tmpTextViewSendInfoLastActualSketchComment.setText(tmpCountdownTimerString);
-                            }
+                    Long maxTimerTime = writeTimeComment+delayTime;
+                    if ( maxTimerTime > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0) && cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_TIMER_STATUS)) == 0) {
+                        // calculate run time for timer in MILLISECONDS!!!
+                        Long nowTime = System.currentTimeMillis();
+                        Long localeTimeComment = cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_LOCAL_TIME));
+                        Long runTimeForTimer = delayTime - (nowTime - localeTimeComment);
 
-                            public void onFinish() {
-                                // count down is over -> show
-                                String tmpTextSendInfoLastActualComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentSendSuccsessfullInfo);
-                                tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
-                            }
-                        }.start();
+                        // set textview visible
+                        tmpTextViewSendInfoLastActualSketchComment.setVisibility(View.VISIBLE);
 
-                    } else {
-                        // no count down anymore -> show send successfull
+                        // start the timer with the calculated milliseconds
+                        if (runTimeForTimer > 0 && runTimeForTimer <= delayTime) {
+                            new CountDownTimer(runTimeForTimer, 1000) {
+                                public void onTick(long millisUntilFinished) {
+                                    // gernate count down timer
+                                    String FORMAT = "%02d:%02d:%02d";
+                                    String tmpTextSendInfoLastActualComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentSendDelayInfo);
+                                    String tmpTime = String.format(FORMAT,
+                                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                    // put count down to string
+                                    String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                                    // and show
+                                    tmpTextViewSendInfoLastActualSketchComment.setText(tmpCountdownTimerString);
+                                }
+
+                                public void onFinish() {
+                                    // count down is over -> show
+                                    String tmpTextSendInfoLastActualComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentSendSuccsessfullInfo);
+                                    tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
+                                    myDb.updateTimerStatusOurArrangementSketchComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                                }
+                            }.start();
+
+                        } else {
+                            // no count down anymore -> show send successfull
+                            String tmpTextSendInfoLastActualComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentSendSuccsessfullInfo);
+                            tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
+                            myDb.updateTimerStatusOurArrangementSketchComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                        }
+                    }
+                    else {
+                        // system time is in past or timer status is stop! -> Show Text: Comment send successfull!
+                        tmpTextViewSendInfoLastActualSketchComment.setVisibility(View.VISIBLE);
                         String tmpTextSendInfoLastActualComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentSendSuccsessfullInfo);
                         tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
+                        myDb.updateTimerStatusOurArrangementSketchComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                     }
                 }
                 else { // sharing of sketch comments is disable! -> show text
@@ -397,13 +420,14 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     tmpTextViewSendInfoLastActualSketchComment.setVisibility(View.VISIBLE);
                     if (prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShareChangeTime, 0) < cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME))) {
                         // show send successfull, but no sharing
-                        tmpTextSendInfoLastActualSketchComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementCommentSendInfoSharingDisable);
+                        tmpTextSendInfoLastActualSketchComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentSendInfoSharingDisable);
                     }
                     else {
                         // show send successfull
-                        tmpTextSendInfoLastActualSketchComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+                        tmpTextSendInfoLastActualSketchComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentSendSuccsessfullInfo);
                     }
                     tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualSketchComment);
+                    myDb.updateTimerStatusOurArrangementSketchComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                 }
             }
 
@@ -601,14 +625,28 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 // check for errors?
                 if (sketchCommentNoError) {
 
+                    String commentText = txtInputSketchArrangementComment.getText().toString();
+                    String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                    Long commentTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                    if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                        commentTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                    }
+                    Long uploadTime = 0L;
+                    Long localeTime = System.currentTimeMillis();
+                    String blockId = cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID));
+                    Boolean newEntry = false;
+                    Long dateOfSketchArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement , System.currentTimeMillis());
+                    int commentStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
+                    int sketchArrangementServerId = cursorChoosenSketchArrangement.getInt(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID));
+                    int timerStatus = 0;
+
                     // insert comment for sketch arrangement in DB
-                    Long tmpDbId = myDb.insertRowOurArrangementSketchComment(txtInputSketchArrangementComment.getText().toString(), structQuestionResultSketchComment, 0, 0, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), System.currentTimeMillis(), 0, cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID)), true, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement , System.currentTimeMillis()), 0, cursorChoosenSketchArrangement.getInt(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
+                    Long tmpDbId = myDb.insertRowOurArrangementSketchComment(commentText, structQuestionResultSketchComment, 0, 0,userName, localeTime, commentTime, uploadTime, blockId, newEntry, dateOfSketchArrangement, commentStatus, sketchArrangementServerId, timerStatus);
 
                     // increment sketch comment count
                     int countSketchCommentSum = prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0) + 1;
                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, countSketchCommentSum);
                     prefsEditor.commit();
-
 
                     // send intent to service to start the service and send comment to server!
                     Intent startServiceIntent = new Intent(fragmentSketchCommentContext, ExchangeServiceEfb.class);
@@ -621,6 +659,9 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.putExtra("com","show_sketch_arrangement");
+                    intent.putExtra("db_id", 0);
+                    intent.putExtra("arr_num", 0);
+                    intent.putExtra("eval_next", false);
                     getActivity().startActivity(intent);
                 }
             }

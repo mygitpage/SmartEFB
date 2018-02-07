@@ -297,6 +297,9 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         // some comments for goal available?
         if (cursorGoalAllComments.getCount() > 0) {
 
+            // set row id of jointly comment from db for timer update
+            final Long rowIdForUpdate = cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.KEY_ROWID));
+
             //textview for the last actual comment intro
             TextView textLastActualCommentIntro = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.lastActualCommentInfoText);
             textLastActualCommentIntro.setText(this.getResources().getString(R.string.lastActualJointlyCommentText));
@@ -320,9 +323,10 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                 tmpAuthorName = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentPersonalAuthorName);
             }
 
-            String commentDate = EfbHelperClass.timestampToDateFormat(cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");;
-            String commentTime = EfbHelperClass.timestampToDateFormat(cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME)), "HH:mm");;
+            String commentDate = EfbHelperClass.timestampToDateFormat(cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");;
+            String commentTime = EfbHelperClass.timestampToDateFormat(cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME)), "HH:mm");;
             String tmpTextAuthorNameLastActualComment = String.format(fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
+            if (cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS)) == 4) {tmpTextAuthorNameLastActualComment = String.format(getResources().getString(R.string.ourGoalsJointlyCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
             tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
             // textview for status 0 of the last actual comment
@@ -339,42 +343,59 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                 // check, sharing of comments enable?
                 if (prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentShare, 0) == 1) {
 
-                    // set textview visible
-                    tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
 
-                    // calculate run time for timer in MILLISECONDS!!!
-                    Long nowTime = System.currentTimeMillis();
-                    Long writeTimeComment = cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME));
+
+                    // check system time is in past or future?
+                    Long writeTimeComment = cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME)); // write time is from sever
                     Integer delayTime = prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentDelaytime, 0) * 60000; // make milliseconds from minutes
-                    Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
-                    // start the timer with the calculated milliseconds
-                    if (runTimeForTimer > 0) {
-                        new CountDownTimer(runTimeForTimer, 1000) {
-                            public void onTick(long millisUntilFinished) {
-                                // gernate count down timer
-                                String FORMAT = "%02d:%02d:%02d";
-                                String tmpTextSendInfoLastActualComment = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentSendDelayInfo);
-                                String tmpTime = String.format(FORMAT,
-                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                                // put count down to string
-                                String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
-                                // and show
-                                tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
-                            }
+                    Long maxTimerTime = writeTimeComment+delayTime;
+                    if ( maxTimerTime > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0) && cursorGoalAllComments.getInt(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_TIMER_STATUS)) == 0) { // check system time is in past and timer status is run!
+                        // calculate run time for timer in MILLISECONDS!!!
+                        Long nowTime = System.currentTimeMillis();
+                        Long localeTimeComment = cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME));
+                        Long runTimeForTimer = delayTime - (nowTime - localeTimeComment);
 
-                            public void onFinish() {
-                                // count down is over -> show
-                                String tmpTextSendInfoLastActualComment = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentSendSuccsessfullInfo);
-                                tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
-                            }
-                        }.start();
+                        // set textview visible
+                        tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
 
-                    } else {
-                        // no count down anymore -> show send successfull
+                        // start the timer with the calculated milliseconds
+                        if (runTimeForTimer > 0 && runTimeForTimer <= delayTime) {
+                            new CountDownTimer(runTimeForTimer, 1000) {
+                                public void onTick(long millisUntilFinished) {
+                                    // gernate count down timer
+                                    String FORMAT = "%02d:%02d:%02d";
+                                    String tmpTextSendInfoLastActualComment = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentSendDelayInfo);
+                                    String tmpTime = String.format(FORMAT,
+                                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                    // put count down to string
+                                    String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                                    // and show
+                                    tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
+                                }
+
+                                public void onFinish() {
+                                    // count down is over -> show
+                                    String tmpTextSendInfoLastActualComment = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentSendSuccsessfullInfo);
+                                    tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                                    myDb.updateTimerStatusOurGoalsJointlyComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                                }
+                            }.start();
+
+                        } else {
+                            // no count down anymore -> show send successfull
+                            String tmpTextSendInfoLastActualComment = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentSendSuccsessfullInfo);
+                            tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                            myDb.updateTimerStatusOurGoalsJointlyComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                        }
+                    }
+                    else {
+                        // system time is in past or timer status is stop! -> Show Text: Comment send successfull!
+                        tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
                         String tmpTextSendInfoLastActualComment = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentSendSuccsessfullInfo);
                         tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                        myDb.updateTimerStatusOurGoalsJointlyComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                     }
                 }
                 else { // sharing of comments is disable! -> show text
@@ -389,6 +410,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                         tmpTextSendInfoLastActualComment = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentSendSuccsessfullInfo);
                     }
                     tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                    myDb.updateTimerStatusOurGoalsJointlyComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                 }
             }
 
@@ -534,8 +556,23 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
                 if (txtInputGoalComment.getText().toString().length() > 3) {
 
+                    String commentText = txtInputGoalComment.getText().toString();
+                    String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                    Long commentTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                    if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                        commentTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                    }
+                    Long uploadTime = 0L;
+                    Long localeTime = System.currentTimeMillis();
+                    String blockId = cursorChoosenGoal.getString(cursorChoosenGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID));
+                    Boolean newEntry = false;
+                    Long dateOfJointlyGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis());
+                    int commentStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
+                    int jointlyGoalsServerId = cursorChoosenGoal.getInt(cursorChoosenGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID));
+                    int timerStatus = 0;
+
                     // insert comment in DB
-                    Long tmpDbId = myDb.insertRowOurGoalJointlyGoalComment(txtInputGoalComment.getText().toString(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), System.currentTimeMillis(), 0, cursorChoosenGoal.getString(cursorChoosenGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID)), true, prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), 0, cursorChoosenGoal.getInt(cursorChoosenGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)));
+                    Long tmpDbId = myDb.insertRowOurGoalJointlyGoalComment(commentText, userName, commentTime, localeTime, uploadTime, blockId, newEntry, dateOfJointlyGoals, commentStatus, jointlyGoalsServerId, timerStatus);
 
                     // increment comment count
                     int countCommentSum = prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0) + 1;

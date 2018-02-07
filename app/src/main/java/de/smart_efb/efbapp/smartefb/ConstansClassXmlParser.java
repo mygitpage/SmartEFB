@@ -206,8 +206,8 @@ class ConstansClassXmlParser {
             // xml name for element our arrangement sketch comment author name
             static final String xmlNameForOurArrangement_SketchComment_AuthorName = "ourarrangement_sketchcomment_authorname";
 
-            // xml name for element our arrangement sketch comment time
-            static final String xmlNameForOurArrangement_SketchComment_CommentTime = "ourarrangement_sketchcomment_commenttime";
+            // xml name for element our arrangement sketch comment locale time
+            static final String xmlNameForOurArrangement_SketchComment_CommentLocaleTime = "ourarrangement_sketchcomment_commentlocaletime";
 
             // xml name for element our arrangement sketch comment date of arrangement to comment
             static final String xmlNameForOurArrangement_SketchComment_DateOfArrangement = "ourarrangement_sketchcomment_dateofarrangement";
@@ -446,8 +446,8 @@ class ConstansClassXmlParser {
             // xml name for element our goals jointly comment author name
             static final String xmlNameForOurGoals_JointlyComment_AuthorName = "ourgoals_jointlycomment_authorname";
 
-            // xml name for element our goals jointly comment time
-            static final String xmlNameForOurGoals_JointlyComment_CommentTime = "ourgoals_jointlycomment_commenttime";
+            // xml name for element our goals jointly comment locale time
+            static final String xmlNameForOurGoals_JointlyComment_CommentLocaleTime = "ourgoals_jointlycomment_commentlocaletime";
 
             // xml name for element our goals jointly comment id goal (on all smartphones must be the same!)
             static final String xmlNameForOurGoals_JointlyComment_ServerGoalId = "ourgoals_jointlycomment_serverid";

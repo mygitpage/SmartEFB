@@ -551,6 +551,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // set alarmmanager for our arrangement evaluation time
+    // same function in our arrangement activtiy!!!!!!!!
     void setAlarmManagerForOurArrangementEvaluation () {
 
         PendingIntent pendingIntentOurArrangementEvaluate;
@@ -648,6 +649,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // set alarmmanager for our goals evaluation time
+    // same function in our goals activtiy!!!!!!!!
     void setAlarmManagerForOurGoalsEvaluation () {
 
         PendingIntent pendingIntentOurGoalsEvaluate;

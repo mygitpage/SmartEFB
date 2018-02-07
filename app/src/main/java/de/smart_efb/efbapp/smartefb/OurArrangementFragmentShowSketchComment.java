@@ -35,6 +35,7 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
 
     // shared prefs for the settings
     SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
@@ -137,9 +138,12 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
                 String tmpExtraOurArrangementSketchCommentShareEnable = intentExtras.getString("OurArrangementSettingsSketchCommentShareEnable","0");
                 String tmpExtraOurArrangementSketchCommentShareDisable = intentExtras.getString("OurArrangementSettingsSketchCommentShareDisable","0");
                 String tmpExtraOurArrangementResetSketchCommentCountComment = intentExtras.getString("OurArrangementSettingsSketchCommentCountComment","0");
+                String tmpExtraOurArrangementSketchCommentSendInBackgroundRefreshView = intentExtras.getString("OurArrangementSketchCommentSendInBackgroundRefreshView","0");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
+                // sort sequence of list view changed
+                String tmpSortSequenceChangeSketchList = intentExtras.getString("changeSortSequenceOfListViewSketchComment", "0");
 
                 if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
                     // case close! -> show toast
@@ -202,8 +206,24 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
                     //update view
                     updateListView = true;
                 }
+                else if (tmpSortSequenceChangeSketchList.equals("1")) {
+                    if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchCommentList, "descending").equals("descending")) {
+                        prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchCommentList, "ascending");
+                    }
+                    else {
+                        prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchCommentList, "descending");
+                    }
+                    prefsEditor.commit();
+
+                    // list view sort sequence have change -> refresh view
+                    updateListView = true;
+                }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
                     // arrangement settings have change -> refresh view
+                    updateListView = true;
+                }
+                else if (tmpExtraOurArrangementSketchCommentSendInBackgroundRefreshView != null &&  tmpExtraOurArrangementSketchCommentSendInBackgroundRefreshView.equals("1")) {
+                    // sketch comment send in background -> refresh view
                     updateListView = true;
                 }
 
@@ -237,6 +257,8 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
 
         // init the prefs
         prefs = fragmentShowSketchCommentContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentShowSketchCommentContext.MODE_PRIVATE);
+        prefsEditor = prefs.edit();
+
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
 
@@ -270,7 +292,7 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
     public void displayActualCommentSet () {
 
         // get the data (all comments from an sketch arrangement) from DB
-        Cursor cursor = myDb.getAllRowsOurArrangementSketchComment(sketchArrangementServerDbIdToShow);
+        Cursor cursor = myDb.getAllRowsOurArrangementSketchComment(sketchArrangementServerDbIdToShow, prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchCommentList, "descending"));
 
         // get the data (the choosen sketch arrangement) from the DB
         Cursor choosenArrangement = myDb.getRowSketchOurArrangement(sketchArrangementServerDbIdToShow);
@@ -278,18 +300,21 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
         // find the listview
         listViewShowSketchComment = (ListView) viewFragmentShowSketchComment.findViewById(R.id.listOurArrangementShowSketchComment);
 
-        // new dataadapter with custom constructor
-        showSketchCommentCursorAdapter = new OurArrangementShowSketchCommentCursorAdapter(
-                getActivity(),
-                cursor,
-                0,
-                sketchArrangementServerDbIdToShow,
-                sketchArrangementNumberInListView,
-                commentLimitationBorder,
-                choosenArrangement);
+        if (cursor != null && choosenArrangement != null && listViewShowSketchComment != null) {
 
-        // Assign adapter to ListView
-        listViewShowSketchComment.setAdapter(showSketchCommentCursorAdapter);
+            // new dataadapter with custom constructor
+            showSketchCommentCursorAdapter = new OurArrangementShowSketchCommentCursorAdapter(
+                    getActivity(),
+                    cursor,
+                    0,
+                    sketchArrangementServerDbIdToShow,
+                    sketchArrangementNumberInListView,
+                    commentLimitationBorder,
+                    choosenArrangement);
+
+            // Assign adapter to ListView
+            listViewShowSketchComment.setAdapter(showSketchCommentCursorAdapter);
+        }
     }
 
 }

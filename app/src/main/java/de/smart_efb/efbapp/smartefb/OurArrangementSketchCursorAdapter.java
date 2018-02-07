@@ -161,7 +161,7 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
             }
 
             // get from DB  all comments for choosen sketch arrangement (getCount)
-            Cursor cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
+            Cursor cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)), "descending");
             // generate the number of comments to show
             String tmpCountAssessments;
             int tmpIntCountComments = cursorSketchArrangementAllComments.getCount();

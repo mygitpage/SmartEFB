@@ -222,7 +222,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                     updateListView = true;
 
                     // settings have change -> check AlarmManger for Evaluation to switch on
-                    ((MainActivity) getActivity()).setAlarmManagerForOurGoalsEvaluation();
+                    ((ActivityOurGoals) getActivity()).setAlarmManagerForOurGoalsEvaluation();
                 }
 
                 // update the list view because data has change?

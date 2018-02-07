@@ -86,9 +86,6 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
 
         // init the prefs
         prefs = contextForActivity.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, contextForActivity.MODE_PRIVATE);
-
-
-
     }
 
 
@@ -130,9 +127,7 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
             // show choosen arrangement
             TextView textViewShowChoosenArrangement = (TextView) view.findViewById(R.id.choosenSketchArrangement);
             textViewShowChoosenArrangement.setText(choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT)));
-
         }
-
 
         // generate onclicklistener for Button "zurueck zu den entwuerfen"
         if (cursor.isLast()) {
@@ -149,10 +144,31 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.putExtra("com","show_sketch_arrangement");
                     contextForActivity.startActivity(intent);
-
                 }
             });
 
+            // generate link for sort sequence change
+            TextView textViewChangeSortSequence = (TextView) view.findViewById(R.id.linkToChangeSortSequenceOfCommentList);
+            Uri.Builder commentLinkBuilder = new Uri.Builder();
+            commentLinkBuilder.scheme("smart.efb.deeplink")
+                    .authority("linkin")
+                    .path("ourarrangement")
+                    .appendQueryParameter("db_id", Integer.toString(arrangementDbIdToShow))
+                    .appendQueryParameter("arr_num", Integer.toString(arrangementNumberInListView))
+                    .appendQueryParameter("eval_next", Boolean.toString(false))
+                    .appendQueryParameter("com", "change_sort_sequence_arrangement_sketch_comment");
+
+            String tmpLinkTextChangeSortSequence;
+            if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchCommentList, "descending").equals("descending")) {
+                tmpLinkTextChangeSortSequence = context.getResources().getString(context.getResources().getIdentifier("ourArrangementShowCommentLinkChangeSortSequenceOfArrangementSketchCommentDescending", "string", context.getPackageName()));
+            }
+            else {
+                tmpLinkTextChangeSortSequence = context.getResources().getString(context.getResources().getIdentifier("ourArrangementShowCommentLinkChangeSortSequenceOfArrangementSketchCommentAscending", "string", context.getPackageName()));
+            }
+            Spanned tmpSortLink = Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + tmpLinkTextChangeSortSequence + "</a>");
+            textViewChangeSortSequence.setText(tmpSortLink);
+            textViewChangeSortSequence.setMovementMethod(LinkMovementMethod.getInstance());
+            
 
             // textview for max comments and count comments
             TextView textViewMaxAndCount = (TextView) view.findViewById(R.id.infoSketchCommentMaxAndCount);
@@ -200,9 +216,7 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
 
             // show info text
             textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextSketchCommentMaxLetters + " " + tmpInfoTextDelaytimeSingluarPluaral);
-
         }
-
     }
 
 
@@ -212,6 +226,9 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
         View inflatedView;
 
         final Context context = mContext;
+
+        // set row id of comment from db for timer update
+        final Long rowIdForUpdate = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
 
         if (cursor.isFirst() && cursor.getCount() > 1) { // listview for first element, when cursor has more then one element
             inflatedView = cursorInflater.inflate(R.layout.list_our_arrangement_show_sketch_comment_first, parent, false);
@@ -230,13 +247,17 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
             countCommentHeadlineNumber++;
         }
 
-
         // set sketch comment information to the view
         // set sketch comment headline
         TextView textViewShowActualSketchCommentHeadline = (TextView) inflatedView.findViewById(R.id.actualSketchCommentInfoText);
         String actualCommentHeadline = context.getResources().getString(R.string.showSketchCommentHeadlineWithNumber) + " " + countCommentHeadlineNumber;
         if (cursor.isFirst()) { // set text newest comment
-            actualCommentHeadline = actualCommentHeadline + " " + context.getResources().getString(R.string.showSketchCommentHeadlineWithNumberExtraNewest);
+            if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchCommentList, "descending").equals("descending")) {
+                actualCommentHeadline = actualCommentHeadline + " " + context.getResources().getString(R.string.showSketchCommentHeadlineWithNumberExtraNewest);
+            }
+            else {
+                actualCommentHeadline = actualCommentHeadline + " " + context.getResources().getString(R.string.showSketchCommentHeadlineWithNumberExtraOldest);
+            }
         }
         textViewShowActualSketchCommentHeadline.setText(actualCommentHeadline);
 
@@ -256,9 +277,12 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
         if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
             tmpAuthorName = context.getResources().getString(R.string.ourArrangementShowSketchCommentPersonalAuthorName);
         }
-        String commentDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");;
-        String commentTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME)), "HH:mm");;
-        String tmpTextAuthorNameLastActualComment = String.format(context.getResources().getString(R.string.ourArrangementShowSketchCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
+        String commentDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");;
+        String commentTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_LOCAL_TIME)), "HH:mm");;
+        String tmpTextAuthorNameLastActualComment = "";
+        tmpTextAuthorNameLastActualComment = String.format(context.getResources().getString(R.string.ourArrangementShowSketchCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
+        if (cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS)) == 4) {tmpTextAuthorNameLastActualComment = String.format(context.getResources().getString(R.string.ourArrangementShowSketchCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
+
         tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
         // textview for status 0 of the last actual comment
@@ -274,53 +298,62 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
 
             // check, sharing of sketch comments enable?
             if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShare, 0) == 1) {
-
-                // set textview visible
-                tmpTextViewSendInfoLastActualSketchComment.setVisibility(View.VISIBLE);
-
-                // calculate run time for timer in MILLISECONDS!!!
-                Long nowTime = System.currentTimeMillis();
-                Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME));
+                // check system time is in past or future?
+                Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME)); // write time is from sever
                 Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentDelaytime, 0) * 60000; // make milliseconds from miutes
-                Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
-                // start the timer with the calculated milliseconds
-                if (runTimeForTimer > 0) {
-                    new CountDownTimer(runTimeForTimer, 1000) {
-                        public void onTick(long millisUntilFinished) {
-                            // gernate count down timer
-                            String FORMAT = "%02d:%02d:%02d";
-                            String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowSketchCommentSendDelayInfo);
-                            String tmpTime = String.format(FORMAT,
-                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                            // put count down to string
-                            String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
-                            // and show
-                            tmpTextViewSendInfoLastActualSketchComment.setText(tmpCountdownTimerString);
-                        }
+                Long maxTimerTime = writeTimeComment+delayTime;
+                if ( maxTimerTime > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0) && cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_TIMER_STATUS)) == 0) { // check system time is in past and timer status is run!) {
+                    // calculate run time for timer in MILLISECONDS!!!
+                    Long nowTime = System.currentTimeMillis();
+                    Long localeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_LOCAL_TIME));
+                    Long runTimeForTimer = delayTime - (nowTime - localeTimeComment);
 
-                        public void onFinish() {
-                            // count down is over -> show
-                            String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowSketchCommentSendSuccsessfullInfo);
-                            tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
-                        }
-                    }.start();
+                    // set textview visible
+                    tmpTextViewSendInfoLastActualSketchComment.setVisibility(View.VISIBLE);
 
-                } else {
-                    // no count down anymore -> show send successfull
+                    // start the timer with the calculated milliseconds
+                    if (runTimeForTimer > 0 && runTimeForTimer <= delayTime) {
+                        new CountDownTimer(runTimeForTimer, 1000) {
+                            public void onTick(long millisUntilFinished) {
+                                // gernate count down timer
+                                String FORMAT = "%02d:%02d:%02d";
+                                String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowSketchCommentSendDelayInfo);
+                                String tmpTime = String.format(FORMAT,
+                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                // put count down to string
+                                String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                                // and show
+                                tmpTextViewSendInfoLastActualSketchComment.setText(tmpCountdownTimerString);
+                            }
+
+                            public void onFinish() {
+                                // count down is over -> show
+                                String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowSketchCommentSendSuccsessfullInfo);
+                                tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
+                                myDb.updateTimerStatusOurArrangementSketchComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                            }
+                        }.start();
+
+                    } else {
+                        // no count down anymore -> show send successfull
+                        String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowSketchCommentSendSuccsessfullInfo);
+                        tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
+                        myDb.updateTimerStatusOurArrangementSketchComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                    }
+                }
+                else {
+                    // system time is in past or timer status is stop! -> Show Text: Comment send successfull!
+                    tmpTextViewSendInfoLastActualSketchComment.setVisibility(View.VISIBLE);
                     String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourArrangementShowSketchCommentSendSuccsessfullInfo);
                     tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualComment);
+                    myDb.updateTimerStatusOurArrangementSketchComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                 }
             }
             else { // sharing of sketch comments is disable! -> show text
                 String tmpTextSendInfoLastActualSketchComment = "";
                 tmpTextViewSendInfoLastActualSketchComment.setVisibility(View.VISIBLE);
-
-
-                Log.d ("+++++ Zeitenvergleich:", "Prefs:"+prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShareChangeTime, 0)+" < "+cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME)));
-
-
                 if (prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShareChangeTime, 0) < cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME))) {
                     // show send successfull, but no sharing
                     tmpTextSendInfoLastActualSketchComment = context.getResources().getString(R.string.ourArrangementCommentSendInfoSharingDisable);
@@ -330,6 +363,7 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
                     tmpTextSendInfoLastActualSketchComment = context.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
                 }
                 tmpTextViewSendInfoLastActualSketchComment.setText(tmpTextSendInfoLastActualSketchComment);
+                myDb.updateTimerStatusOurArrangementSketchComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
             }
         }
 
@@ -389,7 +423,6 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
         }
 
         return inflatedView;
-
     }
 
 

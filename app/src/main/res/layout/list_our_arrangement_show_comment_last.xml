@@ -145,8 +145,7 @@
         android:textSize="14dp"
         android:textColor="@color/colorPrimaryDark"
         android:gravity="center"
-        android:paddingBottom="25dp"
-        android:paddingTop="35dp"/>
+        android:paddingBottom="25dp"/>
 
 </LinearLayout>
 
