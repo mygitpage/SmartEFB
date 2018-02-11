@@ -252,24 +252,14 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
             linkEvaluateAnGoal.setVisibility(View.GONE);
         }
 
-
         // Show link for comment a goal and to show all comments for a goal
         TextView linkCommentAGoal = (TextView) inflatedView.findViewById(R.id.linkCommentAGoal);
         TextView linkShowCommentOfGoal = (TextView) inflatedView.findViewById(R.id.linkToShowCommentsOfGoals);
 
         if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, false)) {
 
-           
             // get from DB  all comments for choosen goal (getCount)
-            Cursor cursorGoalAllComments = myDb.getAllRowsOurGoalsJointlyGoalsComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)));
-
-
-
-            Log.d("+++ Now Jointly Goal", "Server ID Goal:" + cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)) );
-
-            Log.d("+++ Now Jointly Goal", "Anzahl Kommentare zum Goal:" + cursorGoalAllComments.getCount() );
-
-
+            Cursor cursorGoalAllComments = myDb.getAllRowsOurGoalsJointlyGoalsComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)), "descending");
 
             // generate the number of comments to show
             String tmpCountComments;

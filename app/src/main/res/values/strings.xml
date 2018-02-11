@@ -657,12 +657,16 @@
             <string name="btnAbortJointlyGoalsShowComment">Zurück zu den gemeinsamen Zielen</string>
             <string name="showJointlyGoalsCommentHeadlineWithNumber">Kommentar</string>
             <string name="showJointlyGoalsCommentHeadlineWithNumberExtraNewest">(Aktuellster)</string>
+    <string name="showJointlyGoalsCommentHeadlineWithNumberExtraOldest">(Ältester)</string>
             <string name="ourJointlyGoalsShowCommentPersonalAuthorName">Ihnen</string>
-            <string name="ourJointlyGoalsShowCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+            <string name="ourJointlyGoalsShowCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+    <string name="ourJointlyGoalsShowCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourJointlyGoalsShowCommentSendInfo">Der Kommentar wurde noch nicht gesendet.</string>
             <string name="ourJointlyGoalsShowCommentSendDelayInfo">Der Kommentar wurde gesendet und wird in %1$s zugestellt.</string>
             <string name="ourJointlyGoalsShowCommentSendSuccsessfullInfo">Der Kommentar wurde gesendet.</string>
             <string name="ourJointlyGoalsShowCommentLinkToCommentAGoal">Ziel %1$d kommentieren</string>
+    <string name="ourGoalsShowJointlyCommentLinkChangeSortSequenceOfJointlyCommentAscending">Kommentare absteigend sortieren (Jüngster zu erst)</string>
+    <string name="ourGoalsShowJointlyCommentLinkChangeSortSequenceOfJointlyCommentDescending">Kommentare aufsteigend sortieren (Ältester zu erst)</string>
         <!-- End show comment jointly goals -->
 
 
@@ -708,6 +712,11 @@
                 <string name="ourGoalsDebetableGoalsIntroTextPlural">Ihre BeraterInnen haben am %1$s folgende strittigen Ziele eingestellt.</string>
                 <string name="ourGoalsDebetableGoalsIntroTextChangeTo">Ihre BeraterInnen haben am %1s die folgenden strittigen Ziele, vielleicht mit einigen Änderungen, als gemeinsame Ziele gespeichert.</string>
                 <string name="ourGoalsDebetableGoalsAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
+
+
+
+
+
                 <string name="infoTextNumberOfDebetableCommentsPossiblePlural">(%1$d verbleiben)</string>
                 <string name="infoTextNumberOfDebetableCommentsPossibleSingular">(%1$d verbleibt)</string>
                 <string name="infoTextNumberOfDebetableCommentsPossibleNoMore">(Alle aufgebraucht)</string>
@@ -743,7 +752,11 @@
             <string name="textOurGoalsDebetableCommentActualResultStructQuestionFromCoach">Die Einschätzung wurde ohne Zustimmungswert von Ihrer Beraterin/ Ihrem Berater geschrieben</string>
             <string name="textOurGoalsDebetableGoalsCommentNoSharing">Die Einschätzungen werden im Moment nicht zugestellt!</string>
             <string name="ourGoalsDebetableCommentPersonalAuthorName">Ihnen</string>
-            <string name="ourGoalsDebetableCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+
+            <string name="ourGoalsDebetableCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+            <string name="ourGoalsDebetableCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+
+
             <string name="ourGoalsDebetableCommentAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
             <string name="ourGoalsDebetableCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
             <string name="ourGoalsDebetableCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
@@ -762,13 +775,16 @@
             <string name="toastMessageDebetableCommentSendSuccessfull">Die Einschätzung wurde gesendet!</string>
             <string name="toastMessageeDebetableCommentSendNotSuccessfull">Die Einschätzung wurde noch nicht gesendet!</string>
             <string name="toastMessageeDebetableCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
+
         <!-- End fragment debetable goals comment -->
 
 
         <!-- Fragment show comment debetable goals -->
             <string name="showDebetableCommentHeadlineWithNumber">Einschätzung</string>
             <string name="showDebetableCommentHeadlineWithNumberExtraNewest">(Aktuellste)</string>
-            <string name="ourGoalsShowDebetableCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+    <string name="showDebetableCommentHeadlineWithNumberExtraOldest">(Älteste)</string>
+            <string name="ourGoalsShowDebetableCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+    <string name="ourGoalsShowDebetableCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourGoalsShowDebetableCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
             <string name="ourGoalsShowDebetableCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
             <string name="ourGoalsShowDebetableCommentSendSuccsessfullInfo">Die Einschätzung wurde gesendet.</string>
@@ -781,6 +797,8 @@
             <string name="infoTextNumberOfShowDebetableCommentsPossibleNoBorder">(Keine Begrenzung)</string>
             <string name="ourGoalsShowDdebetableCommentLinkToCommentAGoal">Strittiges Ziel %1$d einschätzen</string>
             <string name="btnAbortShowDebetableComment">Zurück zu den strittigen Zielen</string>
+    <string name="ourGoalsShowDebetableCommentLinkChangeSortSequenceOfDebetableCommentAscending">Einschätzungen absteigend sortieren (Jüngste zu erst)</string>
+    <string name="ourGoalsShowDebetableCommentLinkChangeSortSequenceOfDebetableCommentDescending">Einschätzungen aufsteigend sortieren (Älteste zu erst)</string>
         <!-- End fragment show comment debetable goals -->
 
 

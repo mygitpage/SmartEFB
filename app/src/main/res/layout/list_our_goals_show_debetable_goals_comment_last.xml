@@ -120,6 +120,33 @@
         android:layout_gravity="center_horizontal"
         android:padding="10dp"/>
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="25dp">
+
+        <TextView
+            android:id="@+id/linkToChangeSortSequenceOfCommentList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/borderBetweenGoal3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_color"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"/>
+
     <TextView
         android:id="@+id/infoDebetableCommentMaxAndCount"
         android:layout_width="wrap_content"
@@ -127,8 +154,7 @@
         android:textSize="14dp"
         android:textColor="@color/colorPrimaryDark"
         android:gravity="center"
-        android:paddingBottom="25dp"
-        android:paddingTop="35dp"/>
+        android:paddingBottom="25dp"/>
 
 
 </LinearLayout>

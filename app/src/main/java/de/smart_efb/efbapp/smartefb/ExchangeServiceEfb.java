@@ -391,14 +391,7 @@ import java.util.Map;
                                     do {
                                         Long rowId = allDebetableCommentsReadyToSend.getLong(allDebetableCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
                                         myDb.updateStatusOurGoalsDebetableComment(allDebetableCommentsReadyToSend.getLong(allDebetableCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of debetable comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-
-
-
-                                        //if (globalServerTime > 0) {myDb.updateWriteTimeOurGoalsDebetableComment(rowId, globalServerTime); } // update write time for debetable comment with server time
-
-
-
-
+                                        if (globalServerTime > 0) {myDb.updateWriteTimeOurGoalsDebetableComment(rowId, globalServerTime); } // update write time for debetable comment with server time
                                     } while (allDebetableCommentsReadyToSend.moveToNext());
                                     // intent for our goals debetable comment -> refresh list view
                                     tmpIntentUpdateUiForUser.putExtra("OurGoalsDebetableCommentSendInBackgroundRefreshView", "1"); // refresh list view in our goals debetable comment
@@ -749,12 +742,21 @@ import java.util.Map;
                         EfbXmlParser xmlparser = new EfbXmlParser(context);
                         returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
 
+                        // set global server time for comments, messages, etc.
+                        Long globalServerTime = 0L;
+                        if (returnMap.get("AskForTimeSuccessfull").equals("1") && returnMap.get("ServerTimeInMills").length() > 0) {
+                            globalServerTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; // make global server time in mills
+                        }
+
                         // close input stream and disconnect
                         answerInputStream.close();
                         connection.disconnect();
 
                         if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull with server time?
                             myDb.updateStatusOurArrangementComment(dbId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                            // update write time of comment with server time
+                            if (globalServerTime > 0) {myDb.updateWriteTimeOurArrangementComment(dbId, globalServerTime); } // update write time for comment with server time
 
                             // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
                             Intent tmpIntent = translateMapToIntent(returnMap);
@@ -942,12 +944,21 @@ import java.util.Map;
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
                     returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
 
+                    // set global server time for comments, messages, etc.
+                    Long globalServerTime = 0L;
+                    if (returnMap.get("AskForTimeSuccessfull").equals("1") && returnMap.get("ServerTimeInMills").length() > 0) {
+                        globalServerTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; // make global server time in mills
+                    }
+
                     // close input stream and disconnect
                     answerInputStream.close();
                     connection.disconnect();
 
                     if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
                         myDb.updateStatusOurArrangementSketchComment (dbId, 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                        // update write time of sketch comment in db
+                        if (globalServerTime > 0) {myDb.updateWriteTimeOurArrangementSketchComment(dbId, globalServerTime); } // update write time for sketch comment with server time
 
                         // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
                         Intent tmpIntent = translateMapToIntent (returnMap);
@@ -1135,8 +1146,17 @@ import java.util.Map;
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
                     returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
 
+                    // set global server time for comments, messages, etc.
+                    Long globalServerTime = 0L;
+                    if (returnMap.get("AskForTimeSuccessfull").equals("1") && returnMap.get("ServerTimeInMills").length() > 0) {
+                        globalServerTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; // make global server time in mills
+                    }
+
                     if (returnMap.get("SendSuccessfull").equals("1")) {
                         myDb.updateStatusOurArrangementEvaluation (dbId, 1); // set status of evaluation to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                        // set result time of evaluationresult to server time
+                        if (globalServerTime > 0) {myDb.updateWriteTimeOurArrangementEvaluationResult(dbId, globalServerTime);; } // update evaluation result time with server time
                     }
 
                     // close input stream and disconnect
@@ -1328,12 +1348,21 @@ import java.util.Map;
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
                     returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
 
+                    // set global server time for comments, messages, etc.
+                    Long globalServerTime = 0L;
+                    if (returnMap.get("AskForTimeSuccessfull").equals("1") && returnMap.get("ServerTimeInMills").length() > 0) {
+                        globalServerTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; // make global server time in mills
+                    }
+
                     // close input stream and disconnect
                     answerInputStream.close();
                     connection.disconnect();
 
                     if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
                         myDb.updateStatusOurGoalsJointlyGoalsComment (dbId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                        // update write time of jointly comment in db
+                        if (globalServerTime > 0) {myDb.updateWriteTimeOurGoalsJointlyComment(dbId, globalServerTime); } // update write time for jointly comment with server time
 
                         // send intent to receiver in OurGoalsFragmentJointlyGoals to update listView OurGoals (when active)
                         Intent tmpIntent = translateMapToIntent (returnMap);
@@ -1695,12 +1724,21 @@ import java.util.Map;
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
                     returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
 
+                    // set global server time for comments, messages, etc.
+                    Long globalServerTime = 0L;
+                    if (returnMap.get("AskForTimeSuccessfull").equals("1") && returnMap.get("ServerTimeInMills").length() > 0) {
+                        globalServerTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; // make global server time in mills
+                    }
+
                     // close input stream and disconnect
                     answerInputStream.close();
                     connection.disconnect();
 
                     if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
                         myDb.updateStatusOurGoalsDebetableComment (dbId, 1); // set status of debetable comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                        // update write time of debetable comment in db
+                        if (globalServerTime > 0) {myDb.updateWriteTimeOurGoalsDebetableComment(dbId, globalServerTime); } // update write time for debetable comment with server time
 
                         // send intent to receiver in OurGoalsFragmentDebetableComment to update listView OurGoals (when active)
                         Intent tmpIntent = translateMapToIntent (returnMap);
@@ -2558,9 +2596,9 @@ import java.util.Map;
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_AuthorName);
     
             // start tag evaluate result time
-            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_ResultTime);
-            xmlSerializer.text(String.valueOf(evaluationData.getLong(evaluationData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME))/1000)); // convert millis to timestamp
-            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_ResultTime);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_LocaleTime);
+            xmlSerializer.text(String.valueOf(evaluationData.getLong(evaluationData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_EVALUATE_KEY_LOCAL_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_LocaleTime);
     
             // start tag evaluate arrangement time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_DateOfArrangement);
@@ -2720,7 +2758,7 @@ import java.util.Map;
 
             // start tag comment time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_CommentLocaleTime);
-            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME))/1000)); // convert millis to timestamp
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyComment_CommentLocaleTime);
 
             // start tag goal time
@@ -2770,9 +2808,9 @@ import java.util.Map;
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_AuthorName);
 
             // start tag comment time
-            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_CommentTime);
-            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
-            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_CommentTime);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_CommentLocaleTime);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_LOCAL_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_CommentLocaleTime);
 
             // start tag debetable goal time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_DateOfDebetableGoal);

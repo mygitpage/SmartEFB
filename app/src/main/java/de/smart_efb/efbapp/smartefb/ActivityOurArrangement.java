@@ -778,7 +778,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
 
         // set alarm manager when current time is between start date and end date and evaluation is enable
-        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) && System.currentTimeMillis() >= prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, 0) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
             calendar.setTimeInMillis(startEvaluationDate);
             do {
                 calendar.add(Calendar.SECOND, evaluateActivTime);

@@ -86,8 +86,6 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
 
         // init the prefs
         prefs = contextForActivity.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, contextForActivity.MODE_PRIVATE);
-
-
     }
 
 
@@ -129,7 +127,6 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
             // show choosen goal
             TextView textViewShowChoosenDebetableGoal = (TextView) view.findViewById(R.id.choosenDebetableGoal);
             textViewShowChoosenDebetableGoal.setText(choosenDebetableGoal.getString(choosenDebetableGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL)));
-
         }
 
         // generate onclicklistener for Button "zurueck zu den strittigen zielen"
@@ -149,6 +146,28 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
                     contextForActivity.startActivity(intent);
                 }
             });
+
+            // generate link for sort sequence change
+            TextView textViewChangeSortSequence = (TextView) view.findViewById(R.id.linkToChangeSortSequenceOfCommentList);
+            Uri.Builder commentLinkBuilder = new Uri.Builder();
+            commentLinkBuilder.scheme("smart.efb.deeplink")
+                    .authority("linkin")
+                    .path("ourgoals")
+                    .appendQueryParameter("db_id", Integer.toString(debetableGoalDbIdToShow))
+                    .appendQueryParameter("arr_num", Integer.toString(debetableGoalNumberInListView))
+                    .appendQueryParameter("eval_next", Boolean.toString(false))
+                    .appendQueryParameter("com", "change_sort_sequence_debetable_goal_comment");
+
+            String tmpLinkTextChangeSortSequence;
+            if (prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "descending").equals("descending")) {
+                tmpLinkTextChangeSortSequence = context.getResources().getString(context.getResources().getIdentifier("ourGoalsShowDebetableCommentLinkChangeSortSequenceOfDebetableCommentDescending", "string", context.getPackageName()));
+            }
+            else {
+                tmpLinkTextChangeSortSequence = context.getResources().getString(context.getResources().getIdentifier("ourGoalsShowDebetableCommentLinkChangeSortSequenceOfDebetableCommentAscending", "string", context.getPackageName()));
+            }
+            Spanned tmpSortLink = Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + tmpLinkTextChangeSortSequence + "</a>");
+            textViewChangeSortSequence.setText(tmpSortLink);
+            textViewChangeSortSequence.setMovementMethod(LinkMovementMethod.getInstance());
 
             // textview for max comments and count comments
             TextView textViewMaxAndCount = (TextView) view.findViewById(R.id.infoDebetableCommentMaxAndCount);
@@ -187,7 +206,6 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
             else {
                 tmpInfoTextDelaytimeSingluarPluaral = context.getString(R.string.infoTextDebetableCommentDelaytimePlural);
                 tmpInfoTextDelaytimeSingluarPluaral = String.format(tmpInfoTextDelaytimeSingluarPluaral, prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentDelaytime, 0));
-
             }
 
             // generate text comment max letters
@@ -206,6 +224,9 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
         View inflatedView;
 
         final Context context = mContext;
+
+        // set row id of comment from db for timer update
+        final Long rowIdForUpdate = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
 
         if (cursor.isFirst() && cursor.getCount() > 1) { // listview for first element, when cursor has more then one element
             inflatedView = cursorInflater.inflate(R.layout.list_our_goals_show_debetable_goals_comment_first, parent, false);
@@ -229,7 +250,12 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
         TextView textViewShowActualDebetableCommentHeadline = (TextView) inflatedView.findViewById(R.id.actualDebetableCommentInfoText);
         String actualCommentHeadline = context.getResources().getString(R.string.showDebetableCommentHeadlineWithNumber) + " " + countCommentHeadlineNumber;
         if (cursor.isFirst()) { // set text newest comment
-            actualCommentHeadline = actualCommentHeadline + " " + context.getResources().getString(R.string.showDebetableCommentHeadlineWithNumberExtraNewest);
+            if (prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "descending").equals("descending")) {
+                actualCommentHeadline = actualCommentHeadline + " " + context.getResources().getString(R.string.showDebetableCommentHeadlineWithNumberExtraNewest);
+            }
+            else {
+                actualCommentHeadline = actualCommentHeadline + " " + context.getResources().getString(R.string.showDebetableCommentHeadlineWithNumberExtraOldest);
+            }
         }
         textViewShowActualDebetableCommentHeadline.setText(actualCommentHeadline);
 
@@ -249,9 +275,10 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
         if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
             tmpAuthorName = context.getResources().getString(R.string.ourGoalsDebetableCommentPersonalAuthorName);
         }
-        String commentDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");;
-        String commentTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME)), "HH:mm");;
+        String commentDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");;
+        String commentTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_LOCAL_TIME)), "HH:mm");;
         String tmpTextAuthorNameLastActualComment = String.format(context.getResources().getString(R.string.ourGoalsShowDebetableCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
+        if (cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS)) == 4) {tmpTextAuthorNameLastActualComment = String.format(context.getResources().getString(R.string.ourGoalsShowDebetableCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
         tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
         // textview for status 0 of the last actual comment
@@ -267,43 +294,56 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
 
             // check, sharing of debetable comments enable?
             if (prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentShare, 0) == 1) {
-
-                // set textview visible
-                tmpTextViewSendInfoLastActualDebetableComment.setVisibility(View.VISIBLE);
-
-                // calculate run time for timer in MILLISECONDS!!!
-                Long nowTime = System.currentTimeMillis();
                 Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME));
-                Integer delayTime = prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentDelaytime, 0) * 60000; // make milliseconds from miutes
-                Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
-                // start the timer with the calculated milliseconds
-                if (runTimeForTimer > 0) {
-                    new CountDownTimer(runTimeForTimer, 1000) {
-                        public void onTick(long millisUntilFinished) {
-                            // gernate count down timer
-                            String FORMAT = "%02d:%02d:%02d";
-                            String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourGoalsShowDebetableCommentSendDelayInfo);
-                            String tmpTime = String.format(FORMAT,
-                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                            // put count down to string
-                            String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
-                            // and show
-                            tmpTextViewSendInfoLastActualDebetableComment.setText(tmpCountdownTimerString);
-                        }
+                Integer delayTime = prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentDelaytime, 0) * 60000; // make milliseconds from minutes
+                Long maxTimerTime = writeTimeComment+delayTime;
+                if ( maxTimerTime > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0) && cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_TIMER_STATUS)) == 0) { // check system time is in past and timer status is run!
 
-                        public void onFinish() {
-                            // count down is over -> show
-                            String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourGoalsShowDebetableCommentSendSuccsessfullInfo);
-                            tmpTextViewSendInfoLastActualDebetableComment.setText(tmpTextSendInfoLastActualComment);
-                        }
-                    }.start();
+                    // calculate run time for timer in MILLISECONDS!!!
+                    Long nowTime = System.currentTimeMillis();
+                    Long localeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_LOCAL_TIME));
+                    Long runTimeForTimer = delayTime - (nowTime - localeTimeComment);
 
-                } else {
-                    // no count down anymore -> show send successfull
+                    // set textview visible
+                    tmpTextViewSendInfoLastActualDebetableComment.setVisibility(View.VISIBLE);
+
+                    // start the timer with the calculated milliseconds
+                    if (runTimeForTimer > 0 && runTimeForTimer <= delayTime) {
+                        new CountDownTimer(runTimeForTimer, 1000) {
+                            public void onTick(long millisUntilFinished) {
+                                // gernate count down timer
+                                String FORMAT = "%02d:%02d:%02d";
+                                String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourGoalsShowDebetableCommentSendDelayInfo);
+                                String tmpTime = String.format(FORMAT,
+                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                // put count down to string
+                                String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                                // and show
+                                tmpTextViewSendInfoLastActualDebetableComment.setText(tmpCountdownTimerString);
+                            }
+
+                            public void onFinish() {
+                                // count down is over -> show
+                                String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourGoalsShowDebetableCommentSendSuccsessfullInfo);
+                                tmpTextViewSendInfoLastActualDebetableComment.setText(tmpTextSendInfoLastActualComment);
+                                myDb.updateTimerStatusOurGoalsDebetableComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                            }
+                        }.start();
+
+                    } else {
+                        // no count down anymore -> show send successfull
+                        String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourGoalsShowDebetableCommentSendSuccsessfullInfo);
+                        tmpTextViewSendInfoLastActualDebetableComment.setText(tmpTextSendInfoLastActualComment);
+                        myDb.updateTimerStatusOurGoalsDebetableComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                    }
+                }
+                else { // system time is in past or timer status is stop! -> Show Text: Comment send successfull!
+                    tmpTextViewSendInfoLastActualDebetableComment.setVisibility(View.VISIBLE);
                     String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourGoalsShowDebetableCommentSendSuccsessfullInfo);
                     tmpTextViewSendInfoLastActualDebetableComment.setText(tmpTextSendInfoLastActualComment);
+                    myDb.updateTimerStatusOurGoalsDebetableComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                 }
             }
             else { // sharing of debetable comments is disable! -> show text
@@ -319,6 +359,7 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
                     tmpTextSendInfoLastActualDebetableComment = context.getResources().getString(R.string.ourGoalsShowDebetableCommentSendSuccsessfullInfo);
                 }
                 tmpTextViewSendInfoLastActualDebetableComment.setText(tmpTextSendInfoLastActualDebetableComment);
+                myDb.updateTimerStatusOurGoalsDebetableComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
             }
         }
 

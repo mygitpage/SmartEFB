@@ -16,6 +16,7 @@ import android.text.Html;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -219,9 +220,11 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     toast.show();
                 }
                 else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
-                    // set new start point for evaluation timer in view
-                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis());
-                    prefsEditor.commit();
+                    // set new start point for evaluation timer in view, when current time is bigger then last start point
+                    if (System.currentTimeMillis() >= prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, 0)) {
+                        prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis());
+                        prefsEditor.commit();
+                    }
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
                     // arrangement settings have change -> refresh view
@@ -445,68 +448,102 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     txtInputEvaluateResultComment = inputEvaluateResultComment.getText().toString();
                 }
 
-                if (evaluateNoError) {
+                // get start time and end time for evaluation
+                Long startEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis());
+                Long endEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis());
 
-                    // insert comment in DB
-                    Long tmpDbId = myDb.insertRowOurArrangementEvaluate(arrangementServerDbIdToEvaluate, prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), 0, prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()), cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID)));
+                // check evaluation on, system time between start- and end date and system time >= last start point
+                if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) && System.currentTimeMillis() < endEvaluationDate && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() >= prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, 0)) { // evaluation on/off?
 
-                    // delete status evaluation possible for arrangement
-                    myDb.changeStatusEvaluationPossibleOurArrangement(arrangementServerDbIdToEvaluate, "delete");
+                    Log.d("Fragment Evaluation-->", "nach start point");
 
-                    // change last evaluation time point for choosen goal
-                    myDb.setEvaluationTimePointForArrangement(arrangementServerDbIdToEvaluate);
+                    if (evaluateNoError) {
 
-                    // When last evaluation show toast, because textView is not visible -> new fragment
-                    if (nextArrangementServerDbIdToEvaluate == 0 ) {
-                        String messageThankYouForEvaluation = fragmentEvaluateContext.getResources().getString(R.string.evaluateResultSuccsesfulySend);
-                        Toast toast = Toast.makeText(fragmentEvaluateContext, messageThankYouForEvaluation, Toast.LENGTH_LONG);
-                        TextView vt = (TextView) toast.getView().findViewById(android.R.id.message);
-                        if( vt != null) vt.setGravity(Gravity.CENTER);
-                        toast.show();
-                    }
+                        Long tmpCurrentDateofArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
+                        Long localeTime = System.currentTimeMillis();
+                        Long resultTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                        if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                            resultTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                        }
+                        String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                        int resultStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
+                        Long tmpStartEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, 0);
+                        Long tmpEndEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, 0);
+                        String blockId = cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID));
 
-                    // reset evaluate results
-                    resetEvaluateResult ();
+                        // insert evaluation result in DB
+                        Long tmpDbId = myDb.insertRowOurArrangementEvaluate(arrangementServerDbIdToEvaluate, tmpCurrentDateofArrangement, evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, localeTime, resultTime, userName, resultStatus, tmpStartEvaluationDate, tmpEndEvaluationDate, blockId);
 
-                    // send intent to service to start the service and send evaluationresult to server!
-                    Intent startServiceIntent = new Intent(fragmentEvaluateContext, ExchangeServiceEfb.class);
-                    startServiceIntent.putExtra("com","send_evaluation_result_arrangement");
-                    startServiceIntent.putExtra("dbid",tmpDbId);
-                    startServiceIntent.putExtra("receiverBroadcast","");
-                    fragmentEvaluateContext.startService(startServiceIntent);
+                        // delete status evaluation possible for arrangement
+                        myDb.changeStatusEvaluationPossibleOurArrangement(arrangementServerDbIdToEvaluate, "delete");
 
-                    // build and send intent to next evaluation arrangement or back to OurArrangementNow
-                    if (nextArrangementServerDbIdToEvaluate != 0) { // is there another arrangement to evaluate?
+                        // change last evaluation time point for choosen goal
+                        myDb.setEvaluationTimePointForArrangement(arrangementServerDbIdToEvaluate);
 
-                        Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.putExtra("com","evaluate_an_arrangement");
-                        intent.putExtra("db_id", nextArrangementServerDbIdToEvaluate);
-                        intent.putExtra("arr_num", nextArrangementListPositionToEvaluate);
-                        intent.putExtra("eval_next", true );
+                        // When last evaluation show toast, because textView is not visible -> new fragment
+                        if (nextArrangementServerDbIdToEvaluate == 0) {
+                            String messageThankYouForEvaluation = fragmentEvaluateContext.getResources().getString(R.string.evaluateResultSuccsesfulySend);
+                            Toast toast = Toast.makeText(fragmentEvaluateContext, messageThankYouForEvaluation, Toast.LENGTH_LONG);
+                            TextView vt = (TextView) toast.getView().findViewById(android.R.id.message);
+                            if (vt != null) vt.setGravity(Gravity.CENTER);
+                            toast.show();
+                        }
 
-                        getActivity().startActivity(intent);
+                        // reset evaluate results
+                        resetEvaluateResult();
+
+                        // send intent to service to start the service and send evaluationresult to server!
+                        Intent startServiceIntent = new Intent(fragmentEvaluateContext, ExchangeServiceEfb.class);
+                        startServiceIntent.putExtra("com", "send_evaluation_result_arrangement");
+                        startServiceIntent.putExtra("dbid", tmpDbId);
+                        startServiceIntent.putExtra("receiverBroadcast", "");
+                        fragmentEvaluateContext.startService(startServiceIntent);
+
+                        // build and send intent to next evaluation arrangement or back to OurArrangementNow
+                        if (nextArrangementServerDbIdToEvaluate != 0) { // is there another arrangement to evaluate?
+
+                            Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            intent.putExtra("com", "evaluate_an_arrangement");
+                            intent.putExtra("db_id", nextArrangementServerDbIdToEvaluate);
+                            intent.putExtra("arr_num", nextArrangementListPositionToEvaluate);
+                            intent.putExtra("eval_next", true);
+
+                            getActivity().startActivity(intent);
+
+                        } else {
+                            // no arrangement to evaluate anymore! -> go back to OurArrangementNowFragment
+                            Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            intent.putExtra("com", "show_arrangement_now");
+                            intent.putExtra("db_id", 0);
+                            intent.putExtra("arr_num", 0);
+                            intent.putExtra("eval_next", false);
+                            getActivity().startActivity(intent);
+                        }
 
                     } else {
-                        // no arrangement to evaluate anymore! -> go back to OurArrangementNowFragment
-                        Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.putExtra("com","show_arrangement_now");
-                        intent.putExtra("eval_next", false );
-                        getActivity().startActivity(intent);
-                    }
 
-                } else {
-
-                    // Hide text "Danke fuer Bewertung..." when is error occurs and text is shown?
-                    if (evaluateNextArrangement) {
-                        TextView textViewThankAndEvaluateNext = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateThankAndNextEvaluation);
-                        textViewThankAndEvaluateNext.setVisibility(View.GONE);
-                        TextView textViewBorderBetweenThankAndEvaluateNext = (TextView) viewFragmentEvaluate.findViewById(R.id.borderBetweenEvaluation1); // Border between Text and evaluation
-                        textViewBorderBetweenThankAndEvaluateNext.setVisibility(View.GONE);
+                        // Hide text "Danke fuer Bewertung..." when error occurs and text is shown?
+                        if (evaluateNextArrangement) {
+                            TextView textViewThankAndEvaluateNext = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateThankAndNextEvaluation);
+                            textViewThankAndEvaluateNext.setVisibility(View.GONE);
+                            TextView textViewBorderBetweenThankAndEvaluateNext = (TextView) viewFragmentEvaluate.findViewById(R.id.borderBetweenEvaluation1); // Border between Text and evaluation
+                            textViewBorderBetweenThankAndEvaluateNext.setVisibility(View.GONE);
+                        }
+                        // Toast "Evaluate not completly"
+                        Toast.makeText(fragmentEvaluateContext, fragmentEvaluateContext.getResources().getString(R.string.evaluateResultNotCompletely), Toast.LENGTH_SHORT).show();
                     }
-                    // Toast "Evaluate not completly"
-                    Toast.makeText(fragmentEvaluateContext, fragmentEvaluateContext.getResources().getString(R.string.evaluateResultNotCompletely), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    // error system time not in evaluation period -> go back to OurArrangementNowFragment
+                    Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.putExtra("com", "show_arrangement_now");
+                    intent.putExtra("db_id", 0);
+                    intent.putExtra("arr_num", 0);
+                    intent.putExtra("eval_next", false);
+                    getActivity().startActivity(intent);
                 }
             }
         });

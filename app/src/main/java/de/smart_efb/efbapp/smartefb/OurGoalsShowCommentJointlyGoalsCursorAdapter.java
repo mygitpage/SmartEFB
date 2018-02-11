@@ -132,15 +132,34 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
             buttonBackToArrangement.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     Intent intent = new Intent(contextForActivity, ActivityOurGoals.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     intent.putExtra("com","show_jointly_goals_now");
                     contextForActivity.startActivity(intent); 
-
                 }
             });
 
+            // generate link for sort sequence change
+            TextView textViewChangeSortSequence = (TextView) view.findViewById(R.id.linkToChangeSortSequenceOfCommentList);
+            Uri.Builder commentLinkBuilder = new Uri.Builder();
+            commentLinkBuilder.scheme("smart.efb.deeplink")
+                    .authority("linkin")
+                    .path("ourgoals")
+                    .appendQueryParameter("db_id", Integer.toString(jointlyGoalDbIdToShow))
+                    .appendQueryParameter("arr_num", Integer.toString(jointlyGoalNumberInListView))
+                    .appendQueryParameter("eval_next", Boolean.toString(false))
+                    .appendQueryParameter("com", "change_sort_sequence_jointly_goal_comment");
+
+            String tmpLinkTextChangeSortSequence;
+            if (prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "descending").equals("descending")) {
+                tmpLinkTextChangeSortSequence = context.getResources().getString(context.getResources().getIdentifier("ourGoalsShowJointlyCommentLinkChangeSortSequenceOfJointlyCommentDescending", "string", context.getPackageName()));
+            }
+            else {
+                tmpLinkTextChangeSortSequence = context.getResources().getString(context.getResources().getIdentifier("ourGoalsShowJointlyCommentLinkChangeSortSequenceOfJointlyCommentAscending", "string", context.getPackageName()));
+            }
+            Spanned tmpSortLink = Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + tmpLinkTextChangeSortSequence + "</a>");
+            textViewChangeSortSequence.setText(tmpSortLink);
+            textViewChangeSortSequence.setMovementMethod(LinkMovementMethod.getInstance());
 
             // textview for max comments, count comments and max letters
             TextView textViewMaxAndCount = (TextView) view.findViewById(R.id.infoShowCommentMaxAndCount);
@@ -179,7 +198,6 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
             else {
                 tmpInfoTextDelaytimeSingluarPluaral = context.getString(R.string.infoTextJointlyGoalsCommentDelaytimePlural);
                 tmpInfoTextDelaytimeSingluarPluaral = String.format(tmpInfoTextDelaytimeSingluarPluaral, prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentDelaytime, 0));
-
             }
 
             // generate text comment max letters
@@ -188,7 +206,6 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
 
             // show info text
             textViewMaxAndCount.setText(tmpInfoTextMaxSingluarPluaral+tmpInfoTextCountSingluarPluaral+tmpInfoTextCommentMaxLetters + " " +tmpInfoTextDelaytimeSingluarPluaral);
-
         }
     }
 
@@ -199,6 +216,9 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
         View inflatedView;
 
         final Context context = mContext;
+
+        // set row id of comment from db for timer update
+        final Long rowIdForUpdate = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
 
         if (cursor.isFirst() && cursor.getCount() > 1) { // listview for first element, when cursor has more then one element
             inflatedView = cursorInflater.inflate(R.layout.list_our_goals_show_comment_jointly_goal_first, parent, false);
@@ -222,7 +242,12 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
         TextView textViewShowActualCommentHeadline = (TextView) inflatedView.findViewById(R.id.actualCommentInfoText);
         String actualCommentHeadline = context.getResources().getString(R.string.showJointlyGoalsCommentHeadlineWithNumber) + " " + countCommentHeadlineNumber;
         if (cursor.isFirst()) { // set text newest comment
-            actualCommentHeadline = actualCommentHeadline + " " + context.getResources().getString(R.string.showJointlyGoalsCommentHeadlineWithNumberExtraNewest);
+            if (prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "descending").equals("descending")) {
+                actualCommentHeadline = actualCommentHeadline + " " + context.getResources().getString(R.string.showJointlyGoalsCommentHeadlineWithNumberExtraNewest);
+            }
+            else {
+                actualCommentHeadline = actualCommentHeadline + " " + context.getResources().getString(R.string.showJointlyGoalsCommentHeadlineWithNumberExtraOldest);
+            }
         }
         textViewShowActualCommentHeadline.setText(actualCommentHeadline);
 
@@ -242,9 +267,10 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
         if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
             tmpAuthorName = context.getResources().getString(R.string.ourJointlyGoalsShowCommentPersonalAuthorName);
         }
-        String commentDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");;
-        String commentTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME)), "HH:mm");;
+        String commentDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");;
+        String commentTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME)), "HH:mm");;
         String tmpTextAuthorNameLastActualComment = String.format(context.getResources().getString(R.string.ourJointlyGoalsShowCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
+        if (cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS)) == 4) {tmpTextAuthorNameLastActualComment = String.format(context.getResources().getString(R.string.ourJointlyGoalsShowCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
         tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
         // textview for status 0 of the last actual comment
@@ -258,46 +284,58 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
         } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS)) == 1) {
             // textview for status 1 of the last actual comment
 
-
             // check, sharing of comments enable?
             if (prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentShare, 0) == 1) {
-
-                // set textview visible
-                tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
-
-                // calculate run time for timer in MILLISECONDS!!!
-                Long nowTime = System.currentTimeMillis();
                 Long writeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME));
                 Integer delayTime = prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentDelaytime, 0) * 60000; // make milliseconds from miutes
-                Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
-                // start the timer with the calculated milliseconds
-                if (runTimeForTimer > 0) {
-                    new CountDownTimer(runTimeForTimer, 1000) {
-                        public void onTick(long millisUntilFinished) {
-                            // gernate count down timer
-                            String FORMAT = "%02d:%02d:%02d";
-                            String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourJointlyGoalsShowCommentSendDelayInfo);
-                            String tmpTime = String.format(FORMAT,
-                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                            // put count down to string
-                            String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
-                            // and show
-                            tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
-                        }
+                Long maxTimerTime = writeTimeComment+delayTime;
+                if ( maxTimerTime > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0) && cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_TIMER_STATUS)) == 0) { // check system time is in past and timer status is run!
 
-                        public void onFinish() {
-                            // count down is over -> show
-                            String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourJointlyGoalsShowCommentSendSuccsessfullInfo);
-                            tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
-                        }
-                    }.start();
+                    // calculate run time for timer in MILLISECONDS!!!
+                    Long nowTime = System.currentTimeMillis();
+                    Long localeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME));
+                    Long runTimeForTimer = delayTime - (nowTime - localeTimeComment);
 
-                } else {
-                    // no count down anymore -> show send successfull
+                    // set textview visible
+                    tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
+
+                    // start the timer with the calculated milliseconds
+                    if (runTimeForTimer > 0 && runTimeForTimer <= delayTime) {
+                        new CountDownTimer(runTimeForTimer, 1000) {
+                            public void onTick(long millisUntilFinished) {
+                                // gernate count down timer
+                                String FORMAT = "%02d:%02d:%02d";
+                                String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourJointlyGoalsShowCommentSendDelayInfo);
+                                String tmpTime = String.format(FORMAT,
+                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                // put count down to string
+                                String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                                // and show
+                                tmpTextViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
+                            }
+
+                            public void onFinish() {
+                                // count down is over -> show
+                                String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourJointlyGoalsShowCommentSendSuccsessfullInfo);
+                                tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                                myDb.updateTimerStatusOurGoalsJointlyComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                            }
+                        }.start();
+
+                    } else {
+                        // no count down anymore -> show send successfull
+                        String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourJointlyGoalsShowCommentSendSuccsessfullInfo);
+                        tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                        myDb.updateTimerStatusOurGoalsJointlyComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                    }
+                }
+                else { // system time is in past or timer status is stop! -> Show Text: Comment send successfull!
+                    tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
                     String tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourJointlyGoalsShowCommentSendSuccsessfullInfo);
                     tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                    myDb.updateTimerStatusOurGoalsJointlyComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                 }
             }
             else { // sharing of comments is disable! -> show text
@@ -313,8 +351,8 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
                     tmpTextSendInfoLastActualComment = context.getResources().getString(R.string.ourJointlyGoalsShowCommentSendSuccsessfullInfo);
                 }
                 tmpTextViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                myDb.updateTimerStatusOurGoalsJointlyComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
             }
-
         }
 
         // show actual comment
@@ -361,7 +399,6 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
         }
 
         return inflatedView;
-
     }
 
 
@@ -373,11 +410,11 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
         return getCount();
     }
 
+
     @Override
     public int getItemViewType (int position) {
 
         return position;
     }
-
 
 }

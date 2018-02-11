@@ -205,13 +205,13 @@ public class OurArrangementFragmentNow extends Fragment {
                     toast.show();
                 }
                 else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
-                    // evaluationperiod has change -> update view
-
-                    updateListView = true;
-
-                    // set new start point for evaluation timer in view
-                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis());
-                    prefsEditor.commit();
+                    // evaluationperiod has change -> update view, only when current time is bigger than last start point
+                    if (System.currentTimeMillis() >= prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, 0)) {
+                        updateListView = true;
+                        // set new start point for evaluation timer in view
+                        prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis());
+                        prefsEditor.commit();
+                    }
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
                     // arrangement settings have change -> refresh view

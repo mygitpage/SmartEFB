@@ -151,7 +151,7 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
             }
 
             // get from DB  all comments for choosen debetable goal (getCount)
-            Cursor cursorDebetableGoalsAllComments = myDb.getAllRowsOurGoalsDebetableGoalsComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)));
+            Cursor cursorDebetableGoalsAllComments = myDb.getAllRowsOurGoalsDebetableGoalsComment(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)), "descending");
             // generate the number of comments to show
             String tmpCountAssessments;
             int tmpIntCountComments = cursorDebetableGoalsAllComments.getCount();

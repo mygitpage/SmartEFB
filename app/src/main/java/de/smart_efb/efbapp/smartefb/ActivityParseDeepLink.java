@@ -55,7 +55,7 @@ public class ActivityParseDeepLink extends Activity {
             tmpNumberinListView = Integer.parseInt(deepLink.getQueryParameter("arr_num"));
             tmpEvalNext = Boolean.parseBoolean(deepLink.getQueryParameter("eval_next"));
 
-            // send braodcast or intent?
+            // send broadcast or intent?
             if (tmpCommand != null && tmpCommand.equals("change_sort_sequence_arrangement_comment")) {
                 Intent tmpIntent = new Intent();
                 tmpIntent.putExtra("changeSortSequenceOfListView", "1"); // refresh list view in activity/fragement
@@ -85,14 +85,29 @@ public class ActivityParseDeepLink extends Activity {
             tmpNumberinListView = Integer.parseInt(deepLink.getQueryParameter("arr_num"));
             tmpEvalNext = Boolean.parseBoolean(deepLink.getQueryParameter("eval_next"));
 
-            // Launch our goals
-            Intent intent = new Intent(this, ActivityOurGoals.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            intent.putExtra("com",tmpCommand);
-            intent.putExtra("db_id",tmpDbId);
-            intent.putExtra("arr_num",tmpNumberinListView);
-            intent.putExtra("eval_next",tmpEvalNext);
-            startActivity(intent);
+            // send broadcast or intent?
+            if (tmpCommand != null && tmpCommand.equals("change_sort_sequence_jointly_goal_comment")) {
+                Intent tmpIntent = new Intent();
+                tmpIntent.putExtra("changeSortSequenceOfListViewJointlyComment", "1"); // refresh list view in activity/fragement
+                tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                this.sendBroadcast(tmpIntent);
+            }
+            else if (tmpCommand != null && tmpCommand.equals("change_sort_sequence_debetable_goal_comment")) {
+                Intent tmpIntent = new Intent();
+                tmpIntent.putExtra("changeSortSequenceOfListViewDebetableComment", "1"); // refresh list view in activity/fragement
+                tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                this.sendBroadcast(tmpIntent);
+            }
+            else {
+                // Launch our goals
+                Intent intent = new Intent(this, ActivityOurGoals.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("com", tmpCommand);
+                intent.putExtra("db_id", tmpDbId);
+                intent.putExtra("arr_num", tmpNumberinListView);
+                intent.putExtra("eval_next", tmpEvalNext);
+                startActivity(intent);
+            }
 
         } else if (MEETING.equals(path)) {
 

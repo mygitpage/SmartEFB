@@ -1526,7 +1526,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Arrangement Evaluate ******************************************/
 
     // Add a new set of values to ourArrangementEvaluate .
-    long insertRowOurArrangementEvaluate(int serverId, long currentDateOfArrangement, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName, int status, long startEvaluationTime, long endEvaluationTime, String blockId) {
+    long insertRowOurArrangementEvaluate(int serverId, long currentDateOfArrangement, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long localeTime, long resultTime, String userName, int status, long startEvaluationTime, long endEvaluationTime, String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1541,6 +1541,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4, resultQuestion4);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS, resultRemarks);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, resultTime);
+        initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_LOCAL_TIME, localeTime);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME, startEvaluationTime);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME, endEvaluationTime);
         initialValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME, userName);
@@ -1548,7 +1549,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Insert it into the database.
         return db.insert(DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE, null, initialValues);
-
     }
 
 
@@ -1619,10 +1619,24 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         newValues.put(OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME, System.currentTimeMillis());
 
-
         // Insert it into the database.
         return db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null) != 0;
+    }
 
+
+    // update write time for evaluation result from locale time to server time in table ourArrangementEvaluationResult
+    boolean updateWriteTimeOurArrangementEvaluationResult(Long rowId, Long writeTimeFromServer) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row evaluationresult time from server
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, writeTimeFromServer);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE, newValues, where, null) != 0;
     }
 
 
@@ -1986,15 +2000,26 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return all comments from the database for jointly goals with serverGoalId = id (table ourGoalsJointlyGoalsComment)
     // the result is sorted by DESC
-    Cursor getAllRowsOurGoalsJointlyGoalsComment(int serverGoalId) {
+    Cursor getAllRowsOurGoalsJointlyGoalsComment(int serverGoalId, String sortSequence) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         // data filter
         String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL + "=" + serverGoalId;
 
-        // sort string
-        String sort = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
+        // get sort string
+        String sort = "";
+        switch (sortSequence) {
+            case "ascending":
+                sort = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " ASC";
+                break;
+            case "descending":
+                sort = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
+                break;
+            default:
+                sort = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
+                break;
+        }
 
         Cursor c = db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
                 where, null, null, null, sort, null);
@@ -2192,7 +2217,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         return c;
-
     }
 
 
@@ -2255,7 +2279,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Goals Debetable Goals Comment ******************************************/
 
     // Add a new set of values to ourGoalsDebetableGoalsComment .
-    long insertRowOurGoalsDebetableGoalsComment(String comment, int question_a, int question_b, int question_c, String authorName, long commentTime, long upload_time, String blockid, Boolean newEntry, long currentDateOfDebetableGoal, int status, int serverId) {
+    long insertRowOurGoalsDebetableGoalsComment(String comment, int question_a, int question_b, int question_c, String authorName, long commentTime, long commentLocaleTime, long upload_time, String blockid, Boolean newEntry, long currentDateOfDebetableGoal, int status, int serverId, int timerStatus) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2267,11 +2291,13 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_RESULT_QUESTION3, question_c);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME, authorName);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, commentTime);
+        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_LOCAL_TIME, commentLocaleTime);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_UPLOAD_TIME, upload_time);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID, blockid);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME, currentDateOfDebetableGoal);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS, status);
         initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID, serverId);
+        initialValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_TIMER_STATUS, timerStatus);
 
         // is it a new entry?
         if (newEntry) {
@@ -2282,21 +2308,31 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Insert it into the database.
         return db.insert(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, null, initialValues);
-
     }
 
 
     // Return all comments from the database for debetable goal with serverGoalId = id (table ourGoalsDebetableGoalsComment)
     // the result is sorted by DESC
-    Cursor getAllRowsOurGoalsDebetableGoalsComment(int serverGoalId) {
+    Cursor getAllRowsOurGoalsDebetableGoalsComment(int serverGoalId, String sortSequence) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         // data filter
         String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID + "=" + serverGoalId;
 
-        // sort string
-        String sort = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
+        // get sort string
+        String sort = "";
+        switch (sortSequence) {
+            case "ascending":
+                sort = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " ASC";
+                break;
+            case "descending":
+                sort = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
+                break;
+            default:
+                sort = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
+                break;
+        }
 
         Cursor c = db.query(true, DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, OUR_GOALS_DEBETABLE_GOALS_COMMENT_ALL_KEYS,
                 where, null, null, null, sort, null);
@@ -2306,7 +2342,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         return c;
-
     }
 
 
@@ -2314,7 +2349,6 @@ public class DBAdapter extends SQLiteOpenHelper {
     int getCountAllNewEntryOurGoalsDebetableGoalsComment(long currentDateOfGoal) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-
 
         // new_entry = 1 (true)?
         String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY + "=1 AND " + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_GOAL_TIME + "=" + currentDateOfGoal;
@@ -2327,7 +2361,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // return how many
         return c.getCount();
-
     }
 
 
@@ -2392,7 +2425,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID + "='" + blockId + "'";
 
         return db.delete(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, where, null) != 0;
-
     }
 
 
@@ -2413,6 +2445,39 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // return cursor
         return c;
+    }
+
+
+    // update status of timer for comment
+    // 0= timer can run; 1= timer finish!
+    boolean updateTimerStatusOurGoalsDebetableComment(Long rowId, int timerStatus) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row status with status
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_TIMER_STATUS, timerStatus);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null) != 0;
+    }
+
+
+    // update write time for debetable comment from locale time to server time in table ourGoalsJointlyComment
+    boolean updateWriteTimeOurGoalsDebetableComment(Long rowId, Long writeTimeFromServer) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row write time from server
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, writeTimeFromServer);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null) != 0;
     }
 
     /********************************* End!! TABLES FOR FUNCTION: Our Goals Debetable Goals Comment ***************************************/

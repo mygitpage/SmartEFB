@@ -2348,7 +2348,7 @@ public class EfbXmlParser {
         int tmpResultQuestionB = 0;
         int tmpResultQuestionC = 0;
         String tmpAuthorName = "";
-        Long tmpCommentTime = 0L;
+        Long tmpCommentLocaleTime = 0L;
         int tmpGoalId = 0;
         Long tmpGoalTime = 0L;
         String tmpOrder = "";
@@ -2453,11 +2453,11 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_CommentTime:
+                        case ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_CommentLocaleTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get commentTime text
-                                if (xpp.getText().trim().length() > 0) { // check if commentTime from xml > 0
-                                    tmpCommentTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
+                                if (xpp.getText().trim().length() > 0) { // check if commentLocaleTime from xml > 0
+                                    tmpCommentLocaleTime = Long.valueOf(xpp.getText().trim()) * 1000; // make Long from xml-text in milliseconds!!!!!
                                 }
                                 else {
                                     error = true;
@@ -2525,25 +2525,25 @@ public class EfbXmlParser {
                         // check all data for arrangement now correct?
                         if (!error) {
                             // our goals debetable comment order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpGoalTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpServerIdGoal >= 0 && tmpBlockId.length() > 0) {
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && globalServerTime > 0 && tmpCommentLocaleTime > 0 && tmpGoalTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpServerIdGoal >= 0 && tmpBlockId.length() > 0) {
 
                                 // set upload time on smartphone for comment; value from server is not needed
                                 tmpUploadTime = System.currentTimeMillis();
 
                                  // insert new comment in DB
-                                myDb.insertRowOurGoalsDebetableGoalsComment(tmpCommentText, tmpResultQuestionA, tmpResultQuestionB, tmpResultQuestionC, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpGoalTime, 4, tmpServerIdGoal);
+                                myDb.insertRowOurGoalsDebetableGoalsComment(tmpCommentText, tmpResultQuestionA, tmpResultQuestionB, tmpResultQuestionC, tmpAuthorName, globalServerTime, tmpCommentLocaleTime, tmpUploadTime, tmpBlockId, true, tmpGoalTime, 4, tmpServerIdGoal, 1);
 
                                 // refresh activity ourgoals and fragment debetable comment
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsDebetableComment","1");
 
-                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentTime > 0 && tmpGoalTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpServerIdGoal >= 0 && tmpBlockId.length() > 0) {
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && globalServerTime > 0 && tmpCommentLocaleTime > 0 && tmpGoalTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpServerIdGoal >= 0 && tmpBlockId.length() > 0) {
 
                                 // set upload time on smartphone for comment; value from server is not needed
                                 tmpUploadTime = System.currentTimeMillis();
 
                                 // insert new comment in DB
-                                myDb.insertRowOurGoalsDebetableGoalsComment(tmpCommentText, tmpResultQuestionA, tmpResultQuestionB, tmpResultQuestionC, tmpAuthorName, tmpCommentTime, tmpUploadTime, tmpBlockId, true, tmpGoalTime, 4, tmpServerIdGoal);
+                                myDb.insertRowOurGoalsDebetableGoalsComment(tmpCommentText, tmpResultQuestionA, tmpResultQuestionB, tmpResultQuestionC, tmpAuthorName, globalServerTime, tmpCommentLocaleTime, tmpUploadTime, tmpBlockId, true, tmpGoalTime, 4, tmpServerIdGoal, 1);
 
                                 // refresh activity ourgoals and fragment debetable comment
                                 returnMap.put ("OurGoals","1");

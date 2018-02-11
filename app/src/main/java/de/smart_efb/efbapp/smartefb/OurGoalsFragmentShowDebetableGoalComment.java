@@ -33,6 +33,7 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
 
     // shared prefs for the settings
     SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
     // the current date of debetable goal -> the other are old (look at tab old)
     long currentDateOfDebetableGoal;
@@ -135,9 +136,12 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
                 String tmpExtraOurGoalsCommentShareDisable= intentExtras.getString("OurGoalsSettingsDebetableCommentShareDisable","0");
                 String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsDebetableCommentShareEnable","0");
                 String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsDebetableCommentCountComment","0");
+                String tmpExtraOurGoalsDebetableCommentSendInBackgroundRefreshView = intentExtras.getString("OurGoalsDebetableCommentSendInBackgroundRefreshView","0");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
+                // sort sequence of list view changed
+                String tmpSortSequenceChange = intentExtras.getString("changeSortSequenceOfListViewDebetableComment", "0");
 
                 if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
                     // case close! -> show toast
@@ -200,9 +204,26 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
                     // refresh fragments view
                     refreshView = true;
                 }
+                else if (tmpSortSequenceChange.equals("1")) {
+                    if (prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "descending").equals("descending")) {
+                        prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "ascending");
+                    }
+                    else {
+                        prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "descending");
+                    }
+                    prefsEditor.commit();
+
+                    // list view sort sequence have change -> refresh view
+                    refreshView = true;
+                }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1")) {
 
                     // goal settings change
+                    refreshView = true;
+                }
+                else if (tmpExtraOurGoalsDebetableCommentSendInBackgroundRefreshView != null &&  tmpExtraOurGoalsDebetableCommentSendInBackgroundRefreshView.equals("1")) {
+
+                    // jointly comment send in background -> refresh view
                     refreshView = true;
                 }
 
@@ -237,6 +258,8 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
 
         // init the prefs
         prefs = fragmentShowDebetableGoalCommentContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentShowDebetableGoalCommentContext.MODE_PRIVATE);
+        prefsEditor = prefs.edit();
+
         //get current date of debetable goal
         currentDateOfDebetableGoal = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis());
 
@@ -270,7 +293,7 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
     public void displayActualCommentSet () {
 
         // get the data (all comments for an debetable goal) from DB
-        Cursor cursor = myDb.getAllRowsOurGoalsDebetableGoalsComment(debetableServerDbIdToShow);
+        Cursor cursor = myDb.getAllRowsOurGoalsDebetableGoalsComment(debetableServerDbIdToShow, prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "descending"));
 
         // get the data (the choosen debetable goal) from the DB
         Cursor choosenDebetableGoal = myDb.getDebetableRowOurGoals(debetableServerDbIdToShow);

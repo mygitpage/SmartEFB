@@ -146,71 +146,36 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false)) { // evaluation on/off?
             // evaluation timezone expired?
-            if (System.currentTimeMillis() < prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis())) {
 
-                // make link to evaluate arrangement, when evaluation is possible for this arrangement
-                if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE)) == 1) {
-                    final Uri.Builder evaluateLinkBuilder = new Uri.Builder();
-                    evaluateLinkBuilder.scheme("smart.efb.deeplink")
-                            .authority("linkin")
-                            .path("ourarrangement")
-                            .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID))))
-                            .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition() + 1))
-                            .appendQueryParameter("com", "evaluate_an_arrangement");
+            // get start time and end time for evaluation
+            Long startEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis());
+            Long endEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis());
 
-                    final String tmpLinkTextForEvaluationActive = context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateStringNextPassivPeriod", "string", context.getPackageName()));
-                    final String tmpTextEvaluationModulSwitchOnOff = context.getResources().getString(R.string.ourArrangementEvaluateTextEvaluationModulSwitchOff);
+            // check if current time between borders start- and end evaluation period
+            if (System.currentTimeMillis() < endEvaluationDate && System.currentTimeMillis() > startEvaluationDate ) {
+                // check if current time bigger than last start point
+                if (System.currentTimeMillis() >= prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, 0)) {
 
-                    // show time until next evaluation period
-                    // calculate run time for timer in MILLISECONDS!!!
-                    Long nowTime = System.currentTimeMillis();
-                    Integer pausePeriod = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, 0) * 1000; // make milliseconds from seconds
-                    Long runTimeForTimer = pausePeriod - (nowTime - prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis()));
-                    // start the timer with the calculated milliseconds
-                    if (runTimeForTimer > 0) {
-                        new CountDownTimer(runTimeForTimer, 1000) {
-                            public void onTick(long millisUntilFinished) {
-                                // gernate count down timer
-                                String FORMAT = "%02d:%02d:%02d";
-                                String tmpTime = String.format(FORMAT,
-                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                                // put count down to string
-                                String tmpCountdownTimerString = String.format(tmpLinkTextForEvaluationActive, tmpTime);
-                                // generate link for output
-                                Spanned tmpCountdownTimerLink = Html.fromHtml("<a href=\"" + evaluateLinkBuilder.build().toString() + "\">" + tmpCountdownTimerString + "</a>");
+                    // make link to evaluate arrangement, when evaluation is possible for this arrangement
+                    if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE)) == 1) {
+                        final Uri.Builder evaluateLinkBuilder = new Uri.Builder();
+                        evaluateLinkBuilder.scheme("smart.efb.deeplink")
+                                .authority("linkin")
+                                .path("ourarrangement")
+                                .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID))))
+                                .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition() + 1))
+                                .appendQueryParameter("com", "evaluate_an_arrangement");
 
-                                // and set to textview
-                                linkEvaluateAnArrangement.setText(tmpCountdownTimerLink);
-                                linkEvaluateAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
-                            }
+                        final String tmpLinkTextForEvaluationActive = context.getResources().getString(context.getResources().getIdentifier("ourArrangementEvaluateStringNextPassivPeriod", "string", context.getPackageName()));
+                        final String tmpTextEvaluationModulSwitchOnOff = context.getResources().getString(R.string.ourArrangementEvaluateTextEvaluationModulSwitchOff);
 
-                            public void onFinish() {
-                                // change text to evaluation modul will switch off!
-                                linkEvaluateAnArrangement.setText(tmpTextEvaluationModulSwitchOnOff);
-                            }
-                        }.start();
-                    }
-
-                } else { // link is not possible, pause period, so do it with text
-
-                    final String tmpTextNextEvaluationPeriod = context.getResources().getString(R.string.ourArrangementEvaluateStringNextActivePeriod);
-                    final String tmpTextEvaluationModulSwitchOnOff = context.getResources().getString(R.string.ourArrangementEvaluateTextEvaluationModulSwitchOn);
-                    final String tmpTextEvaluationArrangementAlreadyEvaluated = context.getResources().getString(R.string.ourArrangementEvaluateTextArrangementAlreadyEvaluated);
-
-                    // show time until next evaluation period
-                    // calculate run time for timer in MILLISECONDS!!!
-                    Long nowTime = System.currentTimeMillis();
-                    Integer pausePeriod = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 0) * 1000; // make milliseconds from seconds
-                    Long runTimeForTimer = pausePeriod - (nowTime - prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis()));
-                    Long endPointEval = runTimeForTimer + nowTime;
-                    Long startPointEval = endPointEval - pausePeriod;
-
-                    if (cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME)) < startPointEval) {
-
+                        // show time until next evaluation period
+                        // calculate run time for timer in MILLISECONDS!!!
+                        Long nowTime = System.currentTimeMillis();
+                        Integer pausePeriod = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, 0) * 1000; // make milliseconds from seconds
+                        Long runTimeForTimer = pausePeriod - (nowTime - prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis()));
                         // start the timer with the calculated milliseconds
-                        if (runTimeForTimer > 0) {
+                        if (runTimeForTimer > 0 && runTimeForTimer <= pausePeriod) {
                             new CountDownTimer(runTimeForTimer, 1000) {
                                 public void onTick(long millisUntilFinished) {
                                     // gernate count down timer
@@ -220,24 +185,75 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                                             TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
                                             TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
                                     // put count down to string
-                                    Spanned tmpCountdownTimerString = Html.fromHtml(String.format(tmpTextNextEvaluationPeriod, tmpTime));
+                                    String tmpCountdownTimerString = String.format(tmpLinkTextForEvaluationActive, tmpTime);
+                                    // generate link for output
+                                    Spanned tmpCountdownTimerLink = Html.fromHtml("<a href=\"" + evaluateLinkBuilder.build().toString() + "\">" + tmpCountdownTimerString + "</a>");
 
                                     // and set to textview
-                                    linkEvaluateAnArrangement.setText(tmpCountdownTimerString);
+                                    linkEvaluateAnArrangement.setText(tmpCountdownTimerLink);
                                     linkEvaluateAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
                                 }
 
                                 public void onFinish() {
-                                    // change text to evaluation modul will switch on!
+                                    // change text to evaluation modul will switch off!
                                     linkEvaluateAnArrangement.setText(tmpTextEvaluationModulSwitchOnOff);
                                 }
                             }.start();
+                        } else { // error in timer -> hide timer text
+                            linkEvaluateAnArrangement.setVisibility(View.GONE);
+                        }
+
+                    } else { // link is not possible, pause period, so do it with text
+
+                        final String tmpTextNextEvaluationPeriod = context.getResources().getString(R.string.ourArrangementEvaluateStringNextActivePeriod);
+                        final String tmpTextEvaluationModulSwitchOnOff = context.getResources().getString(R.string.ourArrangementEvaluateTextEvaluationModulSwitchOn);
+                        final String tmpTextEvaluationArrangementAlreadyEvaluated = context.getResources().getString(R.string.ourArrangementEvaluateTextArrangementAlreadyEvaluated);
+
+                        // show time until next evaluation period
+                        // calculate run time for timer in MILLISECONDS!!!
+                        Long nowTime = System.currentTimeMillis();
+                        Integer pausePeriod = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 0) * 1000; // make milliseconds from seconds
+                        Long runTimeForTimer = pausePeriod - (nowTime - prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis()));
+                        Long endPointEval = runTimeForTimer + nowTime;
+                        Long startPointEval = endPointEval - pausePeriod;
+
+                        if (cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME)) < startPointEval) {
+
+                            // start the timer with the calculated milliseconds
+                            if (runTimeForTimer > 0 && runTimeForTimer <= pausePeriod) {
+                                new CountDownTimer(runTimeForTimer, 1000) {
+                                    public void onTick(long millisUntilFinished) {
+                                        // gernate count down timer
+                                        String FORMAT = "%02d:%02d:%02d";
+                                        String tmpTime = String.format(FORMAT,
+                                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                        // put count down to string
+                                        Spanned tmpCountdownTimerString = Html.fromHtml(String.format(tmpTextNextEvaluationPeriod, tmpTime));
+
+                                        // and set to textview
+                                        linkEvaluateAnArrangement.setText(tmpCountdownTimerString);
+                                        linkEvaluateAnArrangement.setMovementMethod(LinkMovementMethod.getInstance());
+                                    }
+
+                                    public void onFinish() {
+                                        // change text to evaluation modul will switch on!
+                                        linkEvaluateAnArrangement.setText(tmpTextEvaluationModulSwitchOnOff);
+                                    }
+                                }.start();
+                            } else { // error in timer -> hide timer text
+                                linkEvaluateAnArrangement.setVisibility(View.GONE);
+                            }
+                        } else {
+                            // change text to evaluation
+                            linkEvaluateAnArrangement.setText(tmpTextEvaluationArrangementAlreadyEvaluated);
                         }
                     }
-                    else {
-                        // change text to evaluation
-                        linkEvaluateAnArrangement.setText(tmpTextEvaluationArrangementAlreadyEvaluated);
-                    }
+                }
+                else { // error current time is not bigger than last start point -> show evaluation modul will be switched on
+                    String tmpEvaluationErrorModulSwitchedOn = context.getResources().getString(R.string.ourArrangementEvaluateTextEvaluationModulSwitchOn);
+                    linkEvaluateAnArrangement.setText(tmpEvaluationErrorModulSwitchedOn);
                 }
             }
             else { // evaluation time expired!

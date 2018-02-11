@@ -37,6 +37,7 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
 
     // shared prefs for the settings
     SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
     // the current date of jointly goals -> the other are old (look at tab old)
     long currentDateOfJointlyGoals;
@@ -121,6 +122,7 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
 
         // init the prefs
         prefs = fragmentShowCommentJointlyGoalsContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentShowCommentJointlyGoalsContext.MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
         //get current date of goal
         currentDateOfJointlyGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis());
@@ -158,9 +160,12 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
                 String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsCommentShareEnable","0");
                 String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsCommentShareDisable","0");
                 String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsCommentCountComment","0");
+                String tmpExtraOurGoalsJointlyCommentSendInBackgroundRefreshView = intentExtras.getString("OurGoalsJointlyCommentSendInBackgroundRefreshView","0");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
+                // sort sequence of list view changed
+                String tmpSortSequenceChange = intentExtras.getString("changeSortSequenceOfListViewJointlyComment", "0");
 
                 if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
                     // case close! -> show toast
@@ -223,9 +228,26 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
                     // update the view
                     updateListView = true;
                 }
+                else if (tmpSortSequenceChange.equals("1")) {
+                    if (prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "descending").equals("descending")) {
+                        prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "ascending");
+                    }
+                    else {
+                        prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "descending");
+                    }
+                    prefsEditor.commit();
+
+                    // list view sort sequence have change -> refresh view
+                    updateListView = true;
+                }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1")) {
 
                     // goal settings change
+                    updateListView = true;
+                }
+                else if (tmpExtraOurGoalsJointlyCommentSendInBackgroundRefreshView != null &&  tmpExtraOurGoalsJointlyCommentSendInBackgroundRefreshView.equals("1")) {
+
+                    // jointly comment send in background -> refresh view
                     updateListView = true;
                 }
 
@@ -275,7 +297,7 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
     public void displayActualCommentSet () {
 
         // get the data (all comments from an jointly goals) from DB
-        Cursor cursorComments = myDb.getAllRowsOurGoalsJointlyGoalsComment(jointlyGoalDbIdToShow);
+        Cursor cursorComments = myDb.getAllRowsOurGoalsJointlyGoalsComment(jointlyGoalDbIdToShow, prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "descending"));
 
         // get the data (the choosen jointly goal) from the DB
         Cursor choosenJointlyGoal = myDb.getJointlyRowOurGoals(jointlyGoalDbIdToShow);

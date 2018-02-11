@@ -167,6 +167,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                 String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsDebetableCommentShareDisable","0");
                 String tmpExtraOurGoalsCommentShareEnable= intentExtras.getString("OurGoalsSettingsDebetableCommentShareEnable","0");
                 String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsDebetableCommentCountComment","0");
+                String tmpExtraOurGoalsDebetableCommentSendInBackgroundRefreshView = intentExtras.getString("OurGoalsDebetableCommentSendInBackgroundRefreshView","0");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
@@ -234,8 +235,11 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                     refreshView = true;
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1")) {
-
                     // goal settings change
+                    refreshView = true;
+                }
+                else if (tmpExtraOurGoalsDebetableCommentSendInBackgroundRefreshView != null &&  tmpExtraOurGoalsDebetableCommentSendInBackgroundRefreshView.equals("1")) {
+                    // debetable comment send in background -> refresh view
                     refreshView = true;
                 }
 
@@ -266,7 +270,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         cursorChoosenDebetableGoals = myDb.getDebetableRowOurGoals(debetableGoalsServerDbIdToComment);
 
         // get all comments for choosen debetable goal
-        cursorDebetableGoalAllComments = myDb.getAllRowsOurGoalsDebetableGoalsComment(debetableGoalsServerDbIdToComment);
+        cursorDebetableGoalAllComments = myDb.getAllRowsOurGoalsDebetableGoalsComment(debetableGoalsServerDbIdToComment, "descending");
 
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
         String tmpSubtitle = String.format(getResources().getString(getResources().getIdentifier("ourGoalsSubtitleDebetableGoalsComment", "string", fragmentDebetableGoalsContext.getPackageName())), debetableGoalNumberInListView);
@@ -313,6 +317,9 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         // some comments for goals available?
         if (cursorDebetableGoalAllComments.getCount() > 0) {
 
+            // set row id of jointly comment from db for timer update
+            final Long rowIdForUpdate = cursorDebetableGoalAllComments.getLong(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.KEY_ROWID));
+
             //textview for the last actual comment intro
             TextView textLastActualDebetableCommentIntro = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.lastActualDebetableCommentInfoText);
             textLastActualDebetableCommentIntro.setText(this.getResources().getString(R.string.showDebetableGoalCommentIntroText));
@@ -335,9 +342,10 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
             if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
                 tmpAuthorName = fragmentDebetableGoalsContext.getResources().getString(R.string.ourGoalsDebetableCommentPersonalAuthorName);
             }
-            String commentDate = EfbHelperClass.timestampToDateFormat(cursorDebetableGoalAllComments.getLong(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME)), "dd.MM.yyyy");;
-            String commentTime = EfbHelperClass.timestampToDateFormat(cursorDebetableGoalAllComments.getLong(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME)), "HH:mm");;
+            String commentDate = EfbHelperClass.timestampToDateFormat(cursorDebetableGoalAllComments.getLong(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");;
+            String commentTime = EfbHelperClass.timestampToDateFormat(cursorDebetableGoalAllComments.getLong(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_LOCAL_TIME)), "HH:mm");;
             String tmpTextAuthorNameLastActualComment = String.format(fragmentDebetableGoalsContext.getResources().getString(R.string.ourGoalsDebetableCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
+            if (cursorDebetableGoalAllComments.getLong(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS)) == 4) {tmpTextAuthorNameLastActualComment = String.format(getResources().getString(R.string.ourGoalsDebetableCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
             tmpTextViewAuthorNameLastActualDebetableComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
             // textview for status 0 of the last actual comment
@@ -354,42 +362,57 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                 // check, sharing of debetable comments enable?
                 if (prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentShare, 0) == 1) {
 
-                    // set textview visible
-                    tmpTextViewSendInfoLastActualDebetableComment.setVisibility(View.VISIBLE);
+                    // check system time is in past or future?
+                    Long writeTimeComment = cursorDebetableGoalAllComments.getLong(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME)); // write time is from sever
+                    Integer delayTime = prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentDelaytime, 0) * 60000; // make milliseconds from minutes
+                    Long maxTimerTime = writeTimeComment+delayTime;
+                    if ( maxTimerTime > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0) && cursorDebetableGoalAllComments.getInt(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_TIMER_STATUS)) == 0) { // check system time is in past and timer status is run!
+                        // calculate run time for timer in MILLISECONDS!!!
+                        Long nowTime = System.currentTimeMillis();
+                        Long localeTimeComment = cursorDebetableGoalAllComments.getLong(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_LOCAL_TIME));
+                        Long runTimeForTimer = delayTime - (nowTime - localeTimeComment);
 
-                    // calculate run time for timer in MILLISECONDS!!!
-                    Long nowTime = System.currentTimeMillis();
-                    Long writeTimeComment = cursorDebetableGoalAllComments.getLong(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME));
-                    Integer delayTime = prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentDelaytime, 0) * 60000; // make milliseconds from miutes
-                    Long runTimeForTimer = delayTime - (nowTime - writeTimeComment);
-                    // start the timer with the calculated milliseconds
-                    if (runTimeForTimer > 0) {
-                        new CountDownTimer(runTimeForTimer, 1000) {
-                            public void onTick(long millisUntilFinished) {
-                                // gernate count down timer
-                                String FORMAT = "%02d:%02d:%02d";
-                                String tmpTextSendInfoLastActualComment = fragmentDebetableGoalsContext.getResources().getString(R.string.ourGoalsDebetableCommentSendDelayInfo);
-                                String tmpTime = String.format(FORMAT,
-                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                                // put count down to string
-                                String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
-                                // and show
-                                tmpTextViewSendInfoLastActualDebetableComment.setText(tmpCountdownTimerString);
-                            }
+                        // set textview visible
+                        tmpTextViewSendInfoLastActualDebetableComment.setVisibility(View.VISIBLE);
 
-                            public void onFinish() {
-                                // count down is over -> show
-                                String tmpTextSendInfoLastActualComment = fragmentDebetableGoalsContext.getResources().getString(R.string.ourGoalsDebetableCommentSendSuccsessfullInfo);
-                                tmpTextViewSendInfoLastActualDebetableComment.setText(tmpTextSendInfoLastActualComment);
-                            }
-                        }.start();
+                        // start the timer with the calculated milliseconds
+                        if (runTimeForTimer > 0 && runTimeForTimer <= delayTime) {
+                            new CountDownTimer(runTimeForTimer, 1000) {
+                                public void onTick(long millisUntilFinished) {
+                                    // gernate count down timer
+                                    String FORMAT = "%02d:%02d:%02d";
+                                    String tmpTextSendInfoLastActualComment = fragmentDebetableGoalsContext.getResources().getString(R.string.ourGoalsDebetableCommentSendDelayInfo);
+                                    String tmpTime = String.format(FORMAT,
+                                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                    // put count down to string
+                                    String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                                    // and show
+                                    tmpTextViewSendInfoLastActualDebetableComment.setText(tmpCountdownTimerString);
+                                }
 
-                    } else {
-                        // no count down anymore -> show send successfull
+                                public void onFinish() {
+                                    // count down is over -> show
+                                    String tmpTextSendInfoLastActualComment = fragmentDebetableGoalsContext.getResources().getString(R.string.ourGoalsDebetableCommentSendSuccsessfullInfo);
+                                    tmpTextViewSendInfoLastActualDebetableComment.setText(tmpTextSendInfoLastActualComment);
+                                    myDb.updateTimerStatusOurGoalsDebetableComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                                }
+                            }.start();
+
+                        } else {
+                            // no count down anymore -> show send successfull
+                            String tmpTextSendInfoLastActualComment = fragmentDebetableGoalsContext.getResources().getString(R.string.ourGoalsDebetableCommentSendSuccsessfullInfo);
+                            tmpTextViewSendInfoLastActualDebetableComment.setText(tmpTextSendInfoLastActualComment);
+                            myDb.updateTimerStatusOurGoalsDebetableComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                        }
+                    }
+                    else {
+                        // system time is in past or timer status is stop! -> Show Text: Comment send successfull!
+                        tmpTextViewSendInfoLastActualDebetableComment.setVisibility(View.VISIBLE);
                         String tmpTextSendInfoLastActualComment = fragmentDebetableGoalsContext.getResources().getString(R.string.ourGoalsDebetableCommentSendSuccsessfullInfo);
                         tmpTextViewSendInfoLastActualDebetableComment.setText(tmpTextSendInfoLastActualComment);
+                        myDb.updateTimerStatusOurGoalsDebetableComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                     }
                 }
                 else { // sharing of debetable comments is disable! -> show text
@@ -404,6 +427,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                         tmpTextSendInfoLastActualDebetableComment = fragmentDebetableGoalsContext.getResources().getString(R.string.ourGoalsDebetableCommentSendSuccsessfullInfo);
                     }
                     tmpTextViewSendInfoLastActualDebetableComment.setText(tmpTextSendInfoLastActualDebetableComment);
+                    myDb.updateTimerStatusOurGoalsDebetableComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
                 }
             }
 
@@ -599,8 +623,23 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
 
                 if (debetableGoalCommentNoError) {
 
+                    String commentText = txtInputDebetableCommentComment.getText().toString();
+                    String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                    Long commentTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                    if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                        commentTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                    }
+                    Long uploadTime = 0L;
+                    Long localeTime = System.currentTimeMillis();
+                    String blockId = cursorChoosenDebetableGoals.getString(cursorChoosenDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID));
+                    Boolean newEntry = false;
+                    Long dateOfDebetableGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis());
+                    int commentStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
+                    int debetableGoalsServerId = cursorChoosenDebetableGoals.getInt(cursorChoosenDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID));
+                    int timerStatus = 0;
+
                     // insert comment in DB
-                    Long tmpDbId = myDb.insertRowOurGoalsDebetableGoalsComment(txtInputDebetableCommentComment.getText().toString(), structQuestionResultDebetableGoalComment, 0, 0, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), System.currentTimeMillis(), 0, cursorChoosenDebetableGoals.getString(cursorChoosenDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID)), true, prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis()), 0, cursorChoosenDebetableGoals.getInt(cursorChoosenDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)));
+                    Long tmpDbId = myDb.insertRowOurGoalsDebetableGoalsComment(commentText, structQuestionResultDebetableGoalComment, 0, 0, userName, commentTime,  localeTime, uploadTime, blockId, newEntry, dateOfDebetableGoals, commentStatus, debetableGoalsServerId, timerStatus);
 
                     // increment debetable goal comment count
                     int countDebetableGoalsCommentSum = prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment,0) + 1;

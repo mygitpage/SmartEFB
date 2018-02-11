@@ -243,7 +243,7 @@ class ConstansClassXmlParser {
             static final String xmlNameForOurArrangement_Evaluate_ResultQuestionD = "ourarrangement_evaluate_resultquestion_d";
 
             // xml name for element our arrangement evalute result time
-            static final String xmlNameForOurArrangement_Evaluate_ResultTime = "ourarrangement_evaluate_resulttime";
+            static final String xmlNameForOurArrangement_Evaluate_LocaleTime = "ourarrangement_evaluate_localetime";
 
             // xml name for element our arrangement evalute start time
             static final String xmlNameForOurArrangement_Evaluate_StartTime = "ourarrangement_evaluate_starttime";
@@ -484,7 +484,7 @@ class ConstansClassXmlParser {
             static final String xmlNameForOurGoals_DebetableComment_AuthorName = "ourgoals_debetablecomment_authorname";
 
             // xml name for element our goals debetable comment time
-            static final String xmlNameForOurGoals_DebetableComment_CommentTime = "ourgoals_debetablecomment_commenttime";
+            static final String xmlNameForOurGoals_DebetableComment_CommentLocaleTime = "ourgoals_debetablecomment_commentlocaletime";
 
             // xml name for element our goals debetable comment date of debetable goal to comment
             static final String xmlNameForOurGoals_DebetableComment_DateOfDebetableGoal = "ourgoals_debetablecomment_dateofgoal";

@@ -153,6 +153,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                 String tmpExtraOurGoalsCommentShareEnable = intentExtras.getString("OurGoalsSettingsCommentShareDisable","0");
                 String tmpExtraOurGoalsCommentShareDisable = intentExtras.getString("OurGoalsSettingsCommentShareEnable","0");
                 String tmpExtraOurGoalsResetCommentCountComment = intentExtras.getString("OurGoalsSettingsCommentCountComment","0");
+                String tmpExtraOurGoalsJointlyCommentSendInBackgroundRefreshView = intentExtras.getString("OurGoalsJointlyCommentSendInBackgroundRefreshView","0");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
@@ -224,6 +225,10 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     // goal settings change
                     refreshView = true;
                 }
+                else if (tmpExtraOurGoalsJointlyCommentSendInBackgroundRefreshView != null &&  tmpExtraOurGoalsJointlyCommentSendInBackgroundRefreshView.equals("1")) {
+                    // debetable comment send in background -> refresh view
+                    refreshView = true;
+                }
 
                 if (refreshView) {
                     // refresh fragments view
@@ -249,7 +254,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         cursorChoosenGoal = myDb.getJointlyRowOurGoals(goalServerDbIdToComment);
 
         // get all comments for choosen jointly goals
-        cursorGoalAllComments = myDb.getAllRowsOurGoalsJointlyGoalsComment(goalServerDbIdToComment);
+        cursorGoalAllComments = myDb.getAllRowsOurGoalsJointlyGoalsComment(goalServerDbIdToComment, "descending");
 
         // Set correct subtitle in Activity -> "Ziel ... kommentieren"
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleJointlyGoalsComment", "string", fragmentCommentContextJointlyGoals.getPackageName()));
@@ -342,9 +347,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
                 // check, sharing of comments enable?
                 if (prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentShare, 0) == 1) {
-
-
-
                     // check system time is in past or future?
                     Long writeTimeComment = cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME)); // write time is from sever
                     Integer delayTime = prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentDelaytime, 0) * 60000; // make milliseconds from minutes
