@@ -201,34 +201,37 @@ public class MainActivity extends AppCompatActivity {
 
         // for testing
         //prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,0); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
-        //prefsEditor.commit();
+        //prefsEditor.apply();
 
 
         // for testing evaluation or arrangement
         prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds,180); //
         prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds,180); //
 
-        prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds,15); //
-        prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds,15); //
+        prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds,180); //
+        prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds,180); //
         prefsEditor.apply();
 
 
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
 
+            // new alarm manager service for start all needed alarms
+            EfbSetAlarmManager efbSetAlarmManager = new EfbSetAlarmManager(this);
+
             // start exchange service with intent, when case is open!
-            setAlarmForExchangeService();
+            efbSetAlarmManager.setAlarmForExchangeService();
 
             // start check meeting remember alarm manager, when function meeting is on and case is not closed
             if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false)) {
-                setAlarmManagerForRememberMeeting();
+                efbSetAlarmManager.setAlarmManagerForRememberMeeting();
             }
             // start check our arrangement alarm manager, when function our arrangement is on and case is not closed
             if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false)) {
-                setAlarmManagerForOurArrangementEvaluation();
+                efbSetAlarmManager.setAlarmManagerForOurArrangementEvaluation();
             }
             // start check our goals alarm manager, when function our goals is on and case is not closed
             if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false)) {
-                setAlarmManagerForOurGoalsEvaluation();
+                efbSetAlarmManager.setAlarmManagerForOurGoalsEvaluation();
             }
         }
 
@@ -356,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
         //prefsEditor.putInt(ConstansClassMain.namePrefsNumberAppVersion, 1);
 
 
-        //prefsEditor.commit();
+        //prefsEditor.apply();
 
 
 
@@ -517,252 +520,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return tmpNew;
-    }
-
-
-    // set alarm manager to start every wakeUpTimeExchangeService seconds the service to check server for new data
-    public void setAlarmForExchangeService () {
-
-        // get calendar and init
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-
-        // set calendar object with seconds
-        calendar.add(Calendar.SECOND, ConstansClassMain.wakeUpTimeExchangeService);
-        int tmpAlarmTime = ConstansClassMain.wakeUpTimeExchangeService * 1000; // make mills-seconds
-
-        // make intent for alarm receiver
-        Intent startIntentService = new Intent (getApplicationContext(), AlarmReceiverExchangeAndEventService.class);
-
-        // make pending intent
-        final PendingIntent pIntentService = PendingIntent.getBroadcast(this, 0, startIntentService, PendingIntent.FLAG_UPDATE_CURRENT );
-
-        // get alarm manager service
-        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-
-        // set alarm manager to call exchange receiver
-        try {
-            alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpAlarmTime, pIntentService);
-        }
-        catch (NullPointerException e) {
-            // do nothing
-        }
-    }
-
-
-    // set alarmmanager for our arrangement evaluation time
-    // same function in our arrangement activtiy!!!!!!!!
-    void setAlarmManagerForOurArrangementEvaluation () {
-
-        PendingIntent pendingIntentOurArrangementEvaluate;
-
-        // get all arrangements with the same block id
-        Cursor cursor = myDb.getAllRowsCurrentOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""), "equalBlockId");
-
-        if (cursor.getCount() > 0) {
-
-            // get reference to alarm manager
-            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-            // create intent for backcall to broadcast receiver
-            Intent evaluateAlarmIntent = new Intent(this, AlarmReceiverOurArrangement.class);
-
-            // get evaluate pause time and active time
-            int evaluatePauseTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, ConstansClassOurArrangement.defaultTimeForActiveAndPauseEvaluationArrangement); // default value 43200 is 12 hours
-            int evaluateActivTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, ConstansClassOurArrangement.defaultTimeForActiveAndPauseEvaluationArrangement); // default value 43200 is 12 hours
-
-            // get start time and end time for evaluation
-            Long startEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis());
-            Long endEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis());
-
-            Long tmpSystemTimeInMills = System.currentTimeMillis();
-            int tmpEvalutePaAcTime = evaluateActivTime * 1000;
-            String tmpIntentExtra = "evaluate";
-            String tmpChangeDbEvaluationStatus = "set";
-            Long tmpStartPeriod = 0L;
-
-            // get calendar and init
-            Calendar calendar = Calendar.getInstance();
-
-            // set alarm manager when current time is between start date and end date and evaluation is enable
-            if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) &&  System.currentTimeMillis() >= prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, 0) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
-
-                calendar.setTimeInMillis(startEvaluationDate);
-
-                do {
-                    tmpStartPeriod = calendar.getTimeInMillis();
-                    calendar.add(Calendar.SECOND, evaluateActivTime);
-                    tmpIntentExtra = "evaluate";
-                    tmpChangeDbEvaluationStatus = "set";
-                    tmpEvalutePaAcTime = evaluateActivTime * 1000; // make mills-seconds
-                    if (calendar.getTimeInMillis() < tmpSystemTimeInMills) {
-                        tmpStartPeriod = calendar.getTimeInMillis();
-                        calendar.add(Calendar.SECOND, evaluatePauseTime);
-                        tmpIntentExtra = "pause";
-                        tmpChangeDbEvaluationStatus = "delete";
-                        tmpEvalutePaAcTime = evaluatePauseTime * 1000; // make mills-seconds
-                    }
-                } while (calendar.getTimeInMillis() < tmpSystemTimeInMills);
-
-                if (tmpChangeDbEvaluationStatus.equals("delete")) {
-                    // update table ourArrangement in db -> delete evaluation possible
-                    myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""), "delete");
-                }
-                else {
-
-                    if (cursor != null) {
-
-                        cursor.moveToFirst();
-
-                        do {
-
-                            if (tmpStartPeriod > cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME))) {
-                                myDb.changeStatusEvaluationPossibleOurArrangement(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)), "set");
-                            } else {
-                                myDb.changeStatusEvaluationPossibleOurArrangement(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)), "delete");
-                            }
-                        } while (cursor.moveToNext());
-                    }
-                }
-
-                // put extras to intent -> "evaluate" or "delete"
-                evaluateAlarmIntent.putExtra("evaluateState", tmpIntentExtra);
-
-                // create call (pending intent) for alarm manager
-                pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(this, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                // set alarm
-                manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurArrangementEvaluate);
-            }
-            else { // delete alarm - it is out of time
-
-                // update table ourArrangement in db -> evaluation disable
-                myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""), "delete");
-                // create pending intent
-                pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-                // delete alarm
-                manager.cancel(pendingIntentOurArrangementEvaluate);
-            }
-        }
-    }
-
-
-
-    // set alarmmanager for our goals evaluation time
-    // same function in our goals activtiy!!!!!!!!
-    void setAlarmManagerForOurGoalsEvaluation () {
-
-        PendingIntent pendingIntentOurGoalsEvaluate;
-
-        // get all jointly goals with the same block id
-        Cursor cursor = myDb.getAllJointlyRowsOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""), "equalBlockId");
-
-        if (cursor.getCount() > 0) {
-
-            // get reference to alarm manager
-            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-            // create intent for backcall to broadcast receiver
-            Intent evaluateAlarmIntent = new Intent(this, AlarmReceiverOurGoals.class);
-
-            // get start time and end time for evaluation
-            Long startEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
-            Long endEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
-
-            // get evaluate pause time and active time in seconds
-            int evaluatePauseTime = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, ConstansClassOurGoals.defaultTimeForActiveAndPauseEvaluationJointlyGoals); // default value 43200 is 12 hours
-            int evaluateActivTime = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, ConstansClassOurGoals.defaultTimeForActiveAndPauseEvaluationJointlyGoals); // default value 43200 is 12 hours
-
-            Long tmpSystemTimeInMills = System.currentTimeMillis();
-            int tmpEvalutePaAcTime = evaluateActivTime * 1000;
-            String tmpIntentExtra = "evaluate";
-            String tmpChangeDbEvaluationStatus = "set";
-            Long tmpStartPeriod = 0L;
-
-            // get calendar and init
-            Calendar calendar = Calendar.getInstance();
-
-            // set alarm manager when current time is between start date and end date and evaluation is enable
-            if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
-
-                calendar.setTimeInMillis(startEvaluationDate);
-
-                do {
-                    tmpStartPeriod = calendar.getTimeInMillis();
-                    calendar.add(Calendar.SECOND, evaluateActivTime);
-                    tmpIntentExtra = "evaluate";
-                    tmpChangeDbEvaluationStatus = "set";
-                    tmpEvalutePaAcTime = evaluateActivTime * 1000; // make mills-seconds
-                    if (calendar.getTimeInMillis() < tmpSystemTimeInMills) {
-                        tmpStartPeriod = calendar.getTimeInMillis();
-                        calendar.add(Calendar.SECOND, evaluatePauseTime);
-                        tmpIntentExtra = "pause";
-                        tmpChangeDbEvaluationStatus = "delete";
-                        tmpEvalutePaAcTime = evaluatePauseTime * 1000; // make mills-seconds
-                    }
-                } while (calendar.getTimeInMillis() < tmpSystemTimeInMills);
-
-                if (tmpChangeDbEvaluationStatus.equals("delete")) {
-                    // update table ourGoals in db -> delete evaluation possible
-                    myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""), "delete");
-                } else {
-
-                    if (cursor != null) {
-
-                        cursor.moveToFirst();
-
-                        do {
-
-                            if (tmpStartPeriod > cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME))) {
-                                myDb.changeStatusEvaluationPossibleOurGoals(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)), "set");
-                            } else {
-                                myDb.changeStatusEvaluationPossibleOurGoals(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)), "delete");
-                            }
-                        } while (cursor.moveToNext());
-                    }
-                }
-
-                // put extras to intent -> "evaluate" or "delete"
-                evaluateAlarmIntent.putExtra("evaluateState", tmpIntentExtra);
-
-                // create call (pending intent) for alarm manager
-                pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(this, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                // set alarm
-                manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurGoalsEvaluate);
-
-            } else { // delete alarm - it is out of time
-
-                // update table ourGoals in db -> evaluation disable
-                myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""), "delete");
-                // crealte pending intent
-                pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-                // delete alarm
-                manager.cancel(pendingIntentOurGoalsEvaluate);
-            }
-        }
-    }
-
-
-    // set alarmmanager for remember meeting; ; same function in EfbXmlParser to start Alarm when new meeting/ suggestion comes in!
-    void setAlarmManagerForRememberMeeting () {
-
-        PendingIntent pendingIntentRememberMeeting;
-
-        Long firstStartRememberMeeting = System.currentTimeMillis() + 1000; // first start point for meeting remember function
-        Long repeatingMeetingRemember = 24L * 60L * 60L * 1000L; // one day
-
-        // get reference to alarm manager
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-        // create intent for backcall to broadcast receiver
-        Intent rememberMeetingAlarmIntent = new Intent(this, AlarmReceiverMeeting.class);
-
-        // create call (pending intent) for alarm manager
-        pendingIntentRememberMeeting = PendingIntent.getBroadcast(this, 0, rememberMeetingAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // set alarm
-        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstStartRememberMeeting, repeatingMeetingRemember, pendingIntentRememberMeeting);
     }
 
 
@@ -929,7 +686,7 @@ public class MainActivity extends AppCompatActivity {
                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_Message, true);
 
                     // write init to prefs
-                    prefsEditor.commit();
+                    prefsEditor.apply();
 
                     // no break between case!
                 case 1: // update one -> put new inits here
@@ -945,7 +702,7 @@ public class MainActivity extends AppCompatActivity {
 
             // write app version to prefs
             prefsEditor.putInt(ConstansClassMain.namePrefsNumberAppVersion, ConstansClassMain.actualAppVersionNumber);
-            prefsEditor.commit();
+            prefsEditor.apply();
         }
     }
 

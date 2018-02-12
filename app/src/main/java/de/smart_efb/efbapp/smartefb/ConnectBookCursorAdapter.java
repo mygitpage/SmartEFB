@@ -41,9 +41,6 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
 
-    // reference to the DB
-    private DBAdapter myDb;
-
 
     // Default constructor
     public ConnectBookCursorAdapter(Context context, Cursor cursor, int flags) {
@@ -57,10 +54,6 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
         // init the prefs
         prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
         prefsEditor = prefs.edit();
-
-        // init the DB
-        myDb = new DBAdapter(context);
-
     }
 
 
@@ -104,16 +97,15 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
             }
 
             showMessageGroupFirstDateChange = false;
-
         }
-
-
-
     }
 
 
     @Override
     public View newView(Context mContext, Cursor cursor, ViewGroup parent) {
+
+        // init the DB
+        DBAdapter myDb = new DBAdapter(mContext);
 
         // inflate view
         View inflatedView;
@@ -131,7 +123,6 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
         // role and write time of previous element of cursor
         int rolePrevoius = -1;
         long writeTimePrevoius = 0;
-
 
         // go to previous element only when it is not first
         if (!cursor.isFirst()) {
@@ -225,7 +216,6 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
             showMessageGroupFirstDateChange = true;
         }
 
-
         // set timer only, when right view is current view
         if (rightViewCurrent ) {
 
@@ -296,7 +286,6 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
 
         }
 
-
         // show message text
         TextView textViewMessage = (TextView) inflatedView.findViewById(R.id.txtMsg);
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_MESSAGE));
@@ -313,6 +302,9 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
         String tmpAuthorandDate = context.getResources().getString(R.string.textConnectBookMessageAuthorAndDate);
         tmpAuthorandDate = String.format(tmpAuthorandDate, cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy,HH:mm"), tmpNewMessage);
         textViewAuthor.setText(Html.fromHtml(tmpAuthorandDate));
+
+        // close DB connection
+        myDb.close();
 
         return inflatedView;
     }

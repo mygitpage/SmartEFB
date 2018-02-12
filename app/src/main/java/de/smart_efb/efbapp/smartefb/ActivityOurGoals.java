@@ -195,17 +195,14 @@ public class ActivityOurGoals extends AppCompatActivity {
 
                 // call viewpager
                 viewPagerOurGoals.setCurrentItem(tab.getPosition());
-
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
     }
@@ -251,10 +248,7 @@ public class ActivityOurGoals extends AppCompatActivity {
             // get command and execute it
             executeIntentCommand (intentExtras.getString("com"), tmpDbId, tmpNumberinListView, tmpEvalNext);
         }
-
     }
-
-
 
 
     // execute the commands that comes from link or intend
@@ -284,8 +278,6 @@ public class ActivityOurGoals extends AppCompatActivity {
 
             // set correct subtitle in toolbar in tab zero
             toolbarOurGoals.setSubtitle(arraySubTitleText[4]);
-
-
 
         } else if (command.equals("comment_an_jointly_goal")) { // Show fragment comment jointly goal
 
@@ -399,7 +391,6 @@ public class ActivityOurGoals extends AppCompatActivity {
 
             // set correct subtitle in toolbar in tab one
             toolbarOurGoals.setSubtitle(arraySubTitleText[7]);
-
         }
         else { // Show fragment jointly goals now -> Tab ZERO
 
@@ -423,9 +414,7 @@ public class ActivityOurGoals extends AppCompatActivity {
 
             // set correct subtitle in toolbar in tab zero
             toolbarOurGoals.setSubtitle(arraySubTitleText[0]);
-
         }
-
     }
 
     // init the activity Our Goals
@@ -477,10 +466,7 @@ public class ActivityOurGoals extends AppCompatActivity {
 
         // create help dialog in OurGoals
         createHelpDialog();
-
     }
-
-
 
 
     // help dialog
@@ -619,9 +605,7 @@ public class ActivityOurGoals extends AppCompatActivity {
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurGoalsDebetableGoalsSettings);
                 String tmpTxtDebetablGoalSum, tmpTxtDebetableGoal, tmpTxtDebetableGoal1, tmpTxtDebetableGoal2, tmpTxtDebetableGoal3, tmpTxtDebetableGoal4, tmpTxtDebetableGoal5;
                 if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false)) {
-
                     tmpTxtDebetableGoal = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsEnable);
-
 
                     // comment debetable goals?
                     if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentDebetableGoals, false)) {
@@ -663,7 +647,6 @@ public class ActivityOurGoals extends AppCompatActivity {
                             tmpTxtDebetableGoal4 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentMaxLetters);
                             tmpTxtDebetableGoal4 = String.format(tmpTxtDebetableGoal4, prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableLetters,0));
 
-
                             // show delaytime for comments
                             switch (prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentDelaytime, 0)) {
                                 case 0:
@@ -677,8 +660,6 @@ public class ActivityOurGoals extends AppCompatActivity {
                                     tmpTxtDebetableGoal5 = String.format(tmpTxtDebetableGoal5, prefs.getInt(ConstansClassOurGoals.namePrefsDebetableCommentDelaytime,0));
                                     break;
                             }
-
-
                         }
                         else {
                             tmpTxtDebetableGoal3 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentNumberOff);
@@ -739,102 +720,6 @@ public class ActivityOurGoals extends AppCompatActivity {
 
             }
         });
-    }
-
-
-    // set alarmmanager for our goals evaluation time
-    // same function in main activtiy!!!!!!!!
-    void setAlarmManagerForOurGoalsEvaluation () {
-
-        PendingIntent pendingIntentOurGoalsEvaluate;
-
-        // get all jointly goals with the same block id
-        Cursor cursor = myDb.getAllJointlyRowsOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""), "equalBlockId");
-
-        if (cursor.getCount() > 0) {
-
-            // get reference to alarm manager
-            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-            // create intent for backcall to broadcast receiver
-            Intent evaluateAlarmIntent = new Intent(this, AlarmReceiverOurGoals.class);
-
-            // get start time and end time for evaluation
-            Long startEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
-            Long endEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
-
-            // get evaluate pause time and active time in seconds
-            int evaluatePauseTime = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, ConstansClassOurGoals.defaultTimeForActiveAndPauseEvaluationJointlyGoals); // default value 43200 is 12 hours
-            int evaluateActivTime = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, ConstansClassOurGoals.defaultTimeForActiveAndPauseEvaluationJointlyGoals); // default value 43200 is 12 hours
-
-            Long tmpSystemTimeInMills = System.currentTimeMillis();
-            int tmpEvalutePaAcTime = evaluateActivTime * 1000;
-            String tmpIntentExtra = "evaluate";
-            String tmpChangeDbEvaluationStatus = "set";
-            Long tmpStartPeriod = 0L;
-
-            // get calendar and init
-            Calendar calendar = Calendar.getInstance();
-
-            // set alarm manager when current time is between start date and end date and evaluation is enable
-            if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
-
-                calendar.setTimeInMillis(startEvaluationDate);
-
-                do {
-                    tmpStartPeriod = calendar.getTimeInMillis();
-                    calendar.add(Calendar.SECOND, evaluateActivTime);
-                    tmpIntentExtra = "evaluate";
-                    tmpChangeDbEvaluationStatus = "set";
-                    tmpEvalutePaAcTime = evaluateActivTime * 1000; // make mills-seconds
-                    if (calendar.getTimeInMillis() < tmpSystemTimeInMills) {
-                        tmpStartPeriod = calendar.getTimeInMillis();
-                        calendar.add(Calendar.SECOND, evaluatePauseTime);
-                        tmpIntentExtra = "pause";
-                        tmpChangeDbEvaluationStatus = "delete";
-                        tmpEvalutePaAcTime = evaluatePauseTime * 1000; // make mills-seconds
-                    }
-                } while (calendar.getTimeInMillis() < tmpSystemTimeInMills);
-
-                if (tmpChangeDbEvaluationStatus.equals("delete")) {
-                    // update table ourGoals in db -> delete evaluation possible
-                    myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""), "delete");
-                } else {
-
-                    if (cursor != null) {
-
-                        cursor.moveToFirst();
-
-                        do {
-
-                            if (tmpStartPeriod > cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME))) {
-                                myDb.changeStatusEvaluationPossibleOurGoals(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)), "set");
-                            } else {
-                                myDb.changeStatusEvaluationPossibleOurGoals(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID)), "delete");
-                            }
-                        } while (cursor.moveToNext());
-                    }
-                }
-
-                // put extras to intent -> "evaluate" or "delete"
-                evaluateAlarmIntent.putExtra("evaluateState", tmpIntentExtra);
-
-                // create call (pending intent) for alarm manager
-                pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(this, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                // set alarm
-                manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurGoalsEvaluate);
-
-            } else { // delete alarm - it is out of time
-
-                // update table ourGoals in db -> evaluation disable
-                myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""), "delete");
-                // crealte pending intent
-                pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-                // delete alarm
-                manager.cancel(pendingIntentOurGoalsEvaluate);
-            }
-        }
     }
 
 
@@ -932,13 +817,11 @@ public class ActivityOurGoals extends AppCompatActivity {
             toolbarOurGoals.setSubtitle(subtitleText);
             setSubtitleFirstTime = false;
         }
-
     }
 
 
     // set start point for our goals evaluation time
     void setOurGoalsEvaluationStartPoint () {
-
 
             // get start time and end time for evaluation
             Long startEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
@@ -951,37 +834,26 @@ public class ActivityOurGoals extends AppCompatActivity {
             Long tmpSystemTimeInMills = System.currentTimeMillis();
             int tmpEvalutePaAcTime = evaluateActivTime * 1000;
 
-
             // get calendar and init
             Calendar calendar = Calendar.getInstance();
 
             // set alarm manager when current time is between start date and end date and evaluation is enable
-            if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
-
+            if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false) && System.currentTimeMillis() >= prefs.getLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, 0) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
                 calendar.setTimeInMillis(startEvaluationDate);
-
                 do {
-
                     calendar.add(Calendar.SECOND, evaluateActivTime);
-
-
                     tmpEvalutePaAcTime = evaluateActivTime * 1000; // make mills-seconds
                     if (calendar.getTimeInMillis() < tmpSystemTimeInMills) {
-
                         calendar.add(Calendar.SECOND, evaluatePauseTime);
-
                         tmpEvalutePaAcTime = evaluatePauseTime * 1000; // make mills-seconds
                     }
                 } while (calendar.getTimeInMillis() < tmpSystemTimeInMills);
 
-
-
                 // set new start point for evaluation timer in view fragment now for evaluation link
                 prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, (calendar.getTimeInMillis() - tmpEvalutePaAcTime));
-                prefsEditor.commit();
+                prefsEditor.apply();
         }
     }
-
 
 
     // set correct tab zero title with information new entry and color change
@@ -991,7 +863,6 @@ public class ActivityOurGoals extends AppCompatActivity {
 
         tabLayoutOurGoals.getTabAt(0).setText(tabTitleTextTabZero + infoTextNewEntryPostFixTabZeroTitle);
         ActivityOurGoals.this.setUnsetTextColorSignalNewTabZero(infoNewEntryOnTabZero);
-
     }
 
 
@@ -1002,7 +873,6 @@ public class ActivityOurGoals extends AppCompatActivity {
 
         tabLayoutOurGoals.getTabAt(1).setText(tabTitleTextTabOne + infoTextNewEntryPostFixTabOneTitle);
         ActivityOurGoals.this.setUnsetTextColorSignalNewTabOne(infoNewEntryOnTabOne);
-
     }
 
 
@@ -1018,7 +888,6 @@ public class ActivityOurGoals extends AppCompatActivity {
             infoNewEntryOnTabZero = false;
             infoTextNewEntryPostFixTabZeroTitle = "";
         }
-
     }
 
 
@@ -1034,7 +903,6 @@ public class ActivityOurGoals extends AppCompatActivity {
             infoNewEntryOnTabOne = false;
             infoTextNewEntryPostFixTabOneTitle = "";
         }
-
     }
 
     // set/ unset textcolor for tab title on tab zero
@@ -1060,7 +928,6 @@ public class ActivityOurGoals extends AppCompatActivity {
                 ((TextView) tabViewCild).setTextColor(tmpTextColor);
             }
         }
-
     }
 
     // set/ unset textcolor for tab title on tab one
@@ -1086,11 +953,7 @@ public class ActivityOurGoals extends AppCompatActivity {
                 ((TextView) tabViewCild).setTextColor(tmpTextColor);
             }
         }
-
-
     }
-
-
 
 
     // check prefs for update jointly and debetable goals or only jointly goals or only debetable goals?
@@ -1101,7 +964,7 @@ public class ActivityOurGoals extends AppCompatActivity {
             // set signal jointly goals and debetable goals are update to false; because user is informed by dialog!
             prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalJointlyGoalsUpdate, false);
             prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalDebetableGoalsUpdate, false);
-            prefsEditor.commit();
+            prefsEditor.apply();
 
             // show dialog jointly and debetable goals change
             alertDialogGoalsChange("jointlyDebetable");
@@ -1110,7 +973,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         else if (prefs.getBoolean(ConstansClassOurGoals.namePrefsSignalJointlyGoalsUpdate, false) && fragmentName.equals("jointly")) {
             // set signal goals are update to false; because user is informed by dialog!
             prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalJointlyGoalsUpdate, false);
-            prefsEditor.commit();
+            prefsEditor.apply();
 
             // show dialog jointly and debetable goals change
             alertDialogGoalsChange("jointly");
@@ -1118,7 +981,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         } else if (prefs.getBoolean(ConstansClassOurGoals.namePrefsSignalDebetableGoalsUpdate, false) && fragmentName.equals("debetable")) {
             // set signal sketch goals are update to false; because user is informed by dialog!
             prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalDebetableGoalsUpdate, false);
-            prefsEditor.commit();
+            prefsEditor.apply();
 
             // show dialog jointly and debetable goals change
             alertDialogGoalsChange("debetable");
@@ -1173,7 +1036,6 @@ public class ActivityOurGoals extends AppCompatActivity {
                 infoTextForChange = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableJointlyGoalsChangeInfoText);
                 textViewGoals.setText(infoTextForChange);
                 break;
-
         }
 
         // build the dialog
@@ -1194,21 +1056,13 @@ public class ActivityOurGoals extends AppCompatActivity {
 
         // and show the dialog
         builder.show();
-
     }
-    
-    
-    
-    
-    
-
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-
 
             case android.R.id.home:
                 onBackPressed();
@@ -1218,8 +1072,6 @@ public class ActivityOurGoals extends AppCompatActivity {
         }
 
     }
-
-
 
 
 }

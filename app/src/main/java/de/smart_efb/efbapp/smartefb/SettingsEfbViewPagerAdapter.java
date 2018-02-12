@@ -2,7 +2,6 @@ package de.smart_efb.efbapp.smartefb;
 
 
 
-
 /**
  * Created by ich on 20.06.16.
  */

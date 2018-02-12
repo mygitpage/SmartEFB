@@ -579,7 +579,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     // increment comment count
                     int countCommentSum = prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0) + 1;
                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, countCommentSum);
-                    prefsEditor.commit();
+                    prefsEditor.apply();
 
                     // send intent to service to start the service and send comment to server!
                     Intent startServiceIntent = new Intent(fragmentCommentContextJointlyGoals, ExchangeServiceEfb.class);

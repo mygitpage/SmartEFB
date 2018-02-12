@@ -213,7 +213,7 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
                     else {
                         prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchCommentList, "descending");
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
 
                     // list view sort sequence have change -> refresh view
                     updateListView = true;

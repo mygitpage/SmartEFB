@@ -36,9 +36,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
     // context for cursor adapter
     Context meetingSuggestionOverviewCursorAdapterContext;
 
-    // reference to the DB
-    DBAdapter myDb;
-
     // array of meeting places names (only 3 possible-> 0=nothing; 1=Werder(Havel); 2=Bad Belzig)
     String  meetingPlaceNames[] = new String[3];
 
@@ -59,9 +56,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
 
         meetingSuggestionOverviewCursorAdapterContext = context;
 
-        // init the DB
-        myDb = new DBAdapter(context);
-
         // open sharedPrefs
         prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
 
@@ -80,6 +74,9 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
 
     @Override
     public View newView(Context mContext, Cursor mCursor, ViewGroup parent) {
+
+        // init the DB
+        final DBAdapter myDb = new DBAdapter(mContext);
 
         final View inflatedView;
 
@@ -393,8 +390,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             // show info text for suggestion input for user
             TextView textViewClientSuggestionInfoTextForUser = (TextView) inflatedView.findViewById(R.id.suggestionFromClientAtLeastInfoText);
             textViewClientSuggestionInfoTextForUser.setVisibility(View.VISIBLE);
-
-
         }
 
         // we are not in timezone -> show count down timer
@@ -461,6 +456,9 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             TextView suggestionFromClientShowInputSuggestionHintText = (TextView) inflatedView.findViewById(R.id.suggestionFromClientInputSuggestionHintText);
             suggestionFromClientShowInputSuggestionHintText.setVisibility(View.VISIBLE);
         }
+
+        // close Db connection
+        myDb.close();
 
         return inflatedView;
     }

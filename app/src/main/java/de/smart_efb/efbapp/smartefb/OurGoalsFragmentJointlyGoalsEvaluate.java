@@ -229,8 +229,10 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 }
                 else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
                     // set new start point for evaluation timer in view
-                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, System.currentTimeMillis());
-                    prefsEditor.commit();
+                    if (System.currentTimeMillis() >= prefs.getLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, 0)) {
+                        prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, System.currentTimeMillis());
+                        prefsEditor.apply();
+                    }
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1")) {
 
@@ -456,68 +458,100 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                     txtInputEvaluateResultComment = inputEvaluateResultComment.getText().toString();
                 }
 
-                if (evaluateNoError) {
+                // get start time and end time for evaluation
+                Long startEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
+                Long endEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
 
-                    // insert evaluation result in DB
-                    Long tmpDbId = myDb.insertRowOurGoalsJointlyGoalEvaluate(jointlyGoalServerDbIdToEvaluate, prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, System.currentTimeMillis(), prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), 0, prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), cursorChoosenJointlyGoal.getString(cursorChoosenJointlyGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID)));
+                // check evaluation on, system time between start- and end date and system time >= last start point
+                if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false) && System.currentTimeMillis() < endEvaluationDate && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() >= prefs.getLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, 0)) { // evaluation on/off?
 
-                    // delete status evaluation possible for jointly goal
-                    myDb.changeStatusEvaluationPossibleOurGoals(jointlyGoalServerDbIdToEvaluate, "delete");
+                    if (evaluateNoError) {
 
-                    // change last evaluation time point for choosen goal
-                    myDb.setEvaluationTimePointForGoal(jointlyGoalServerDbIdToEvaluate);
+                        Long tmpCurrentDateofJointlyGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis());
+                        Long localeTime = System.currentTimeMillis();
+                        Long resultTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                        if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                            resultTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                        }
+                        String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                        int resultStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
+                        Long tmpStartEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, 0);
+                        Long tmpEndEvaluationDate =  prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, 0);
+                        String blockId = cursorChoosenJointlyGoal.getString(cursorChoosenJointlyGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID));
 
-                    // When last evaluation show toast, because textView is not visible -> new fragment
-                    if (nextJointlyGoalDbIdToEvaluate == 0 ) {
-                       String tmpEvaluationResultsSendSuccsessfull = fragmentEvaluateJointlyGoalsContext.getString(R.string.evaluateResultJointlyGoalSuccsesfulySend);
-                        Toast toast = Toast.makeText(fragmentEvaluateJointlyGoalsContext, tmpEvaluationResultsSendSuccsessfull, Toast.LENGTH_LONG);
-                        TextView viewToast = (TextView) toast.getView().findViewById(android.R.id.message);
-                        if( v != null) viewToast.setGravity(Gravity.CENTER);
-                        toast.show();
-                    }
+                        // insert evaluation result in DB
+                        Long tmpDbId = myDb.insertRowOurGoalsJointlyGoalEvaluate(jointlyGoalServerDbIdToEvaluate, tmpCurrentDateofJointlyGoals, evaluateResultQuestion1, evaluateResultQuestion2, evaluateResultQuestion3, evaluateResultQuestion4, txtInputEvaluateResultComment, localeTime, resultTime, userName, resultStatus, tmpStartEvaluationDate, tmpEndEvaluationDate, blockId);
 
-                    // reset evaluate results
-                    resetEvaluateResult ();
+                        // delete status evaluation possible for jointly goal
+                        myDb.changeStatusEvaluationPossibleOurGoals(jointlyGoalServerDbIdToEvaluate, "delete");
 
-                    // send intent to service to start the service and send evaluation result to server!
-                    Intent startServiceIntent = new Intent(fragmentEvaluateJointlyGoalsContext, ExchangeServiceEfb.class);
-                    startServiceIntent.putExtra("com","send_evaluation_result_goal");
-                    startServiceIntent.putExtra("dbid",tmpDbId);
-                    startServiceIntent.putExtra("receiverBroadcast","");
-                    fragmentEvaluateJointlyGoalsContext.startService(startServiceIntent);
+                        // change last evaluation time point for choosen goal
+                        myDb.setEvaluationTimePointForGoal(jointlyGoalServerDbIdToEvaluate);
 
-                    // build and send intent to next evaluation jointly goal or back to OurGoalsJointlyGoalsNow
-                    if (nextJointlyGoalDbIdToEvaluate != 0) { // is there another jointly goal to evaluate?
+                        // When last evaluation show toast, because textView is not visible -> new fragment
+                        if (nextJointlyGoalDbIdToEvaluate == 0) {
+                            String tmpEvaluationResultsSendSuccsessfull = fragmentEvaluateJointlyGoalsContext.getString(R.string.evaluateResultJointlyGoalSuccsesfulySend);
+                            Toast toast = Toast.makeText(fragmentEvaluateJointlyGoalsContext, tmpEvaluationResultsSendSuccsessfull, Toast.LENGTH_LONG);
+                            TextView viewToast = (TextView) toast.getView().findViewById(android.R.id.message);
+                            if (v != null) viewToast.setGravity(Gravity.CENTER);
+                            toast.show();
+                        }
 
-                        Intent intent = new Intent(getActivity(), ActivityOurGoals.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.putExtra("com","evaluate_an_jointly_goal");
-                        intent.putExtra("db_id", (int) nextJointlyGoalDbIdToEvaluate);
-                        intent.putExtra("arr_num", (int) nextJointlyGoalListPositionToEvaluate);
-                        intent.putExtra("eval_next", true );
+                        // reset evaluate results
+                        resetEvaluateResult();
 
-                        getActivity().startActivity(intent);
+                        // send intent to service to start the service and send evaluation result to server!
+                        Intent startServiceIntent = new Intent(fragmentEvaluateJointlyGoalsContext, ExchangeServiceEfb.class);
+                        startServiceIntent.putExtra("com", "send_evaluation_result_goal");
+                        startServiceIntent.putExtra("dbid", tmpDbId);
+                        startServiceIntent.putExtra("receiverBroadcast", "");
+                        fragmentEvaluateJointlyGoalsContext.startService(startServiceIntent);
+
+                        // build and send intent to next evaluation jointly goal or back to OurGoalsJointlyGoalsNow
+                        if (nextJointlyGoalDbIdToEvaluate != 0) { // is there another jointly goal to evaluate?
+
+                            Intent intent = new Intent(getActivity(), ActivityOurGoals.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            intent.putExtra("com", "evaluate_an_jointly_goal");
+                            intent.putExtra("db_id", (int) nextJointlyGoalDbIdToEvaluate);
+                            intent.putExtra("arr_num", (int) nextJointlyGoalListPositionToEvaluate);
+                            intent.putExtra("eval_next", true);
+
+                            getActivity().startActivity(intent);
+
+                        } else {
+                            // no jointly goal to evaluate anymore! -> go back to OurGoalsFragmentJointlyGoalsNow
+                            Intent intent = new Intent(getActivity(), ActivityOurGoals.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            intent.putExtra("com", "show_jointly_goals_now");
+                            intent.putExtra("db_id", 0);
+                            intent.putExtra("arr_num", 0);
+                            intent.putExtra("eval_next", false);
+                            getActivity().startActivity(intent);
+                        }
 
                     } else {
-                        // no jointly goal to evaluate anymore! -> go back to OurGoalsFragmentJointlyGoalsNow
-                        Intent intent = new Intent(getActivity(), ActivityOurGoals.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.putExtra("com","show_jointly_goals_now");
-                        intent.putExtra("eval_next", false );
-                        getActivity().startActivity(intent);
-                    }
 
-                } else {
-
-                    // Hide text "Danke fuer Bewertung..." when is error occurs and text is shown?
-                    if (evaluateNextJointlyGoal) {
-                        TextView textViewThankAndEvaluateNext = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.evaluateThankAndNextEvaluation);
-                        textViewThankAndEvaluateNext.setVisibility(View.GONE);
-                        TextView textViewBorderBetweenThankAndEvaluateNext = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.borderBetweenEvaluation1);
-                        textViewBorderBetweenThankAndEvaluateNext.setVisibility(View.GONE);
+                        // Hide text "Danke fuer Bewertung..." when is error occurs and text is shown?
+                        if (evaluateNextJointlyGoal) {
+                            TextView textViewThankAndEvaluateNext = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.evaluateThankAndNextEvaluation);
+                            textViewThankAndEvaluateNext.setVisibility(View.GONE);
+                            TextView textViewBorderBetweenThankAndEvaluateNext = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.borderBetweenEvaluation1);
+                            textViewBorderBetweenThankAndEvaluateNext.setVisibility(View.GONE);
+                        }
+                        // Toast "Evaluate not completly"
+                        Toast.makeText(fragmentEvaluateJointlyGoalsContext, fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.evaluateJointlyGoalResultNotCompletely), Toast.LENGTH_SHORT).show();
                     }
-                    // Toast "Evaluate not completly"
-                    Toast.makeText(fragmentEvaluateJointlyGoalsContext, fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.evaluateJointlyGoalResultNotCompletely), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    // error system time not in evaluation period -> go back to OurGoalsJointlyGoalsNowFragment
+                    Intent intent = new Intent(getActivity(), ActivityOurGoals.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.putExtra("com", "show_jointly_goals_now");
+                    intent.putExtra("db_id", 0);
+                    intent.putExtra("arr_num", 0);
+                    intent.putExtra("eval_next", false);
+                    getActivity().startActivity(intent);
                 }
             }
         });

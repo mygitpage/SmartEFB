@@ -50,9 +50,6 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
     // shared prefs for the comment arrangement
     SharedPreferences prefs;
 
-    // reference to the DB
-    private DBAdapter myDb;
-
     // count headline number for sketch comments
     int countCommentHeadlineNumber = 0;
 
@@ -77,9 +74,6 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
 
         // set choosen arrangement
         choosenArrangement = arrangement;
-
-        // init the DB
-        myDb = new DBAdapter(context);
 
         // init array for text description of scales levels
         evaluateSketchCommentScalesLevel = context.getResources().getStringArray(R.array.evaluateSketchCommentScalesLevel);
@@ -222,6 +216,9 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
 
     @Override
     public View newView(Context mContext, Cursor cursor, ViewGroup parent) {
+
+        // init the DB
+        final DBAdapter myDb = new DBAdapter(mContext);
 
         View inflatedView;
 
@@ -421,6 +418,9 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
         else {
             linkToCommentAnArrangement.setVisibility(View.GONE);
         }
+
+        // close DB connection
+        myDb.close();
 
         return inflatedView;
     }

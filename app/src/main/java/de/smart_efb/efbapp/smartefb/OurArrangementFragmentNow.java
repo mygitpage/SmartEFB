@@ -210,18 +210,22 @@ public class OurArrangementFragmentNow extends Fragment {
                         updateListView = true;
                         // set new start point for evaluation timer in view
                         prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis());
-                        prefsEditor.commit();
+                        prefsEditor.apply();
                     }
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
                     // arrangement settings have change -> refresh view
                     updateListView = true;
 
-                    // settings have change -> check AlarmManger for Evaluation to switch on
-                    ((ActivityOurArrangement) getActivity()).setAlarmManagerForOurArrangementEvaluation();
+                    // new alarm manager service for start all needed alarms
+                    EfbSetAlarmManager efbSetAlarmManager = new EfbSetAlarmManager(context);
+                    // start check our arrangement alarm manager, when function our arrangement is on
+                    if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false)) {
+                        efbSetAlarmManager.setAlarmManagerForOurArrangementEvaluation();
+                    }
                 }
 
-                    // update the list view because data has change?
+                // update the list view because data has change?
                 if (updateListView) {
                     updateListView();
                 }

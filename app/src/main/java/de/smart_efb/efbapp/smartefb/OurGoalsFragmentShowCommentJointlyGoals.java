@@ -235,7 +235,7 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
                     else {
                         prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "descending");
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
 
                     // list view sort sequence have change -> refresh view
                     updateListView = true;

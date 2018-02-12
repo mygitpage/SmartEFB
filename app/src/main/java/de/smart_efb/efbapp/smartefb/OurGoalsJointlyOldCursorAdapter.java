@@ -17,9 +17,6 @@ public class OurGoalsJointlyOldCursorAdapter extends CursorAdapter {
     // hold layoutInflater
     private LayoutInflater cursorInflater;
 
-    // reference to the DB
-    private DBAdapter myDb;
-
     // actual jointly goal date, which is "at work"
     long actualJointlyGoalsDate = 0;
 
@@ -36,9 +33,6 @@ public class OurGoalsJointlyOldCursorAdapter extends CursorAdapter {
         super(context, cursor, flags);
 
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // init the DB
-        myDb = new DBAdapter(context);
     }
 
 

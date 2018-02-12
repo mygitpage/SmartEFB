@@ -239,7 +239,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
                     else {
                         prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending");
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
 
                     // list view sort sequence have change -> refresh view
                     updateListView = true;

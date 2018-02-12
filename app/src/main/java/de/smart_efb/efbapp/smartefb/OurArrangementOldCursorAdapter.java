@@ -18,9 +18,6 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
     // hold layoutInflater
     private LayoutInflater cursorInflater;
 
-    // reference to the DB
-    private DBAdapter myDb;
-
     // actual arrangement date, which is "at work"
     long actualArrangementDate = 0;
 
@@ -36,9 +33,6 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
         super(context, cursor, flags);
 
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // init the DB
-        myDb = new DBAdapter(context);
     }
 
 
@@ -57,7 +51,6 @@ public class OurArrangementOldCursorAdapter extends CursorAdapter {
         String title = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(title);
     }
-
 
 
     @Override

@@ -36,9 +36,6 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
     // context for cursor adapter
     private Context meetingSuggestionOverviewCursorAdapterContext;
 
-    // reference to the DB
-    private DBAdapter myDb;
-
     // for prefs
     private SharedPreferences prefs;
 
@@ -76,9 +73,6 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         super(context, cursor, flags);
 
         meetingSuggestionOverviewCursorAdapterContext = context;
-
-        // init the DB
-        myDb = new DBAdapter(context);
 
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -131,6 +125,9 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
     @Override
     public View newView(Context mContext, Cursor mCursor, ViewGroup parent) {
 
+        // init the DB
+        final DBAdapter myDb = new DBAdapter(mContext);
+
         final View inflatedView;
 
         Boolean tmpStatusSuggestionCanceled = false;
@@ -143,7 +140,6 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         final Cursor cursor = mCursor;
 
         inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_overview_normal, parent, false);
-
 
         // canceled suggestion
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED)) == 1) {
@@ -553,6 +549,9 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                 }
             });
         }
+
+        // close DB connection
+        myDb.close();
 
         return inflatedView;
     }

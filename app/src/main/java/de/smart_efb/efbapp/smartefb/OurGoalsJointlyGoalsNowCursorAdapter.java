@@ -24,12 +24,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
 
-
     // hold layoutInflater
     private LayoutInflater cursorInflater;
-
-    // reference to the DB
-    private DBAdapter myDb;
 
     //limitation in count comments true-> yes, there is a border; no, there is no border, wirte infitisly comments
     Boolean commentLimitationBorder = true;
@@ -47,9 +43,6 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
         super(context, cursor, flags);
 
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // init the DB
-        myDb = new DBAdapter(context);
 
         // init array for count comments
         numberCountForComments = context.getResources().getStringArray(R.array.ourGoalsCountComments);
@@ -101,6 +94,9 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
+        // init the DB
+        final DBAdapter myDb = new DBAdapter(context);
+
         // link to show jointly goals comments
         Spanned showJointlyGoalsCommentsLinkTmp = null;
         // link to comment an jointly goal
@@ -146,101 +142,114 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
 
         if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false)) { // evaluation on/off?
 
-            // evaluation timezone expired?
-            if (System.currentTimeMillis() < prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis())) {
+            // get start time and end time for evaluation
+            Long startEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
+            Long endEvaluationDate = prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis());
 
-                // make link to evaluate goals, when evaluation is possible for this goal
-                if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE)) == 1) {
+            // check if current time between borders start- and end evaluation period
+            if (System.currentTimeMillis() < endEvaluationDate && System.currentTimeMillis() > startEvaluationDate ) {
 
-                    final Uri.Builder evaluateLinkBuilder = new Uri.Builder();
-                    evaluateLinkBuilder.scheme("smart.efb.deeplink")
-                            .authority("linkin")
-                            .path("ourgoals")
-                            .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID))))
-                            .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition() + 1))
-                            .appendQueryParameter("com", "evaluate_an_jointly_goal");
+                // check if current time bigger than last start point
+                if (System.currentTimeMillis() >= prefs.getLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, 0)) {
 
-                    final String tmpLinkTextForEvaluationActive = context.getResources().getString(context.getResources().getIdentifier("ourGoalsEvaluateStringNextPassivPeriod", "string", context.getPackageName()));
-                    final String tmpTextEvaluationModulSwitchOnOff = context.getResources().getString(R.string.evaluateJointlyGoalEvaluateTextEvaluationModulSwitchOff);
+                    // make link to evaluate goals, when evaluation is possible for this goal
+                    if (cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE)) == 1) {
+                        final Uri.Builder evaluateLinkBuilder = new Uri.Builder();
+                        evaluateLinkBuilder.scheme("smart.efb.deeplink")
+                                .authority("linkin")
+                                .path("ourgoals")
+                                .appendQueryParameter("db_id", Integer.toString(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID))))
+                                .appendQueryParameter("arr_num", Integer.toString(cursor.getPosition() + 1))
+                                .appendQueryParameter("com", "evaluate_an_jointly_goal");
 
-                    // show time until next evaluation period
-                    // calculate run time for timer in MILLISECONDS!!!
-                    Long nowTime = System.currentTimeMillis();
-                    Integer pausePeriod = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, 0) * 1000; // make milliseconds from seconds
-                    Long runTimeForTimer = pausePeriod - (nowTime - prefs.getLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, System.currentTimeMillis()));
-                    // start the timer with the calculated milliseconds
-                    if (runTimeForTimer > 0) {
-                        new CountDownTimer(runTimeForTimer, 1000) {
-                            public void onTick(long millisUntilFinished) {
-                                // generate count down timer
-                                String FORMAT = "%02d:%02d:%02d";
-                                String tmpTime = String.format(FORMAT,
-                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                                // put count down to string
-                                String tmpCountdownTimerString = String.format(tmpLinkTextForEvaluationActive, tmpTime);
-                                // generate link for output
-                                Spanned tmpCountdownTimerLink = Html.fromHtml("<a href=\"" + evaluateLinkBuilder.build().toString() + "\">" + tmpCountdownTimerString + "</a>");
+                        final String tmpLinkTextForEvaluationActive = context.getResources().getString(context.getResources().getIdentifier("ourGoalsEvaluateStringNextPassivPeriod", "string", context.getPackageName()));
+                        final String tmpTextEvaluationModulSwitchOnOff = context.getResources().getString(R.string.evaluateJointlyGoalEvaluateTextEvaluationModulSwitchOff);
 
-                                // and set to textview
-                                linkEvaluateAnGoal.setText(tmpCountdownTimerLink);
-                                linkEvaluateAnGoal.setMovementMethod(LinkMovementMethod.getInstance());
-                            }
-
-                            public void onFinish() {
-                                // change text to evaluation modul will switch off!
-                                linkEvaluateAnGoal.setText(tmpTextEvaluationModulSwitchOnOff);
-                            }
-
-                        }.start();
-                    }
-
-                } else { // link is not possible, pause period, so do it with text
-
-                    final String tmpTextNextEvaluationPeriod = context.getResources().getString(R.string.ourGoalsEvaluateStringNextActivePeriod);
-                    final String tmpTextEvaluationModulSwitchOnOff = context.getResources().getString(R.string.evaluateJointlyGoalEvaluateTextEvaluationModulSwitchOn);
-                    final String tmpTextEvaluationGoalAlreadyEvaluated = context.getResources().getString(R.string.evaluateJointlyGoalEvaluateTextGoalAlreadyEvaluated);
-
-                    // show time until next evaluation period
-                    // calculate run time for timer in MILLISECONDS!!!
-                    Long nowTime = System.currentTimeMillis();
-                    Integer pausePeriod = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, 0) * 1000; // make milliseconds from seconds
-                    Long runTimeForTimer = pausePeriod - (nowTime - prefs.getLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, System.currentTimeMillis()));
-                    Long endPointEval = runTimeForTimer + nowTime;
-                    Long startPointEval = endPointEval - pausePeriod;
-
-                    if (cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME)) < startPointEval) {
-
+                        // show time until next evaluation period
+                        // calculate run time for timer in MILLISECONDS!!!
+                        Long nowTime = System.currentTimeMillis();
+                        Integer pausePeriod = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, 0) * 1000; // make milliseconds from seconds
+                        Long runTimeForTimer = pausePeriod - (nowTime - prefs.getLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, System.currentTimeMillis()));
                         // start the timer with the calculated milliseconds
-                        if (runTimeForTimer > 0) {
+                        if (runTimeForTimer > 0 && runTimeForTimer <= pausePeriod) {
                             new CountDownTimer(runTimeForTimer, 1000) {
                                 public void onTick(long millisUntilFinished) {
-                                    // gernate count down timer
+                                    // generate count down timer
                                     String FORMAT = "%02d:%02d:%02d";
                                     String tmpTime = String.format(FORMAT,
                                             TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
                                             TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
                                             TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
                                     // put count down to string
-                                    Spanned tmpCountdownTimerString = Html.fromHtml(String.format(tmpTextNextEvaluationPeriod, tmpTime));
+                                    String tmpCountdownTimerString = String.format(tmpLinkTextForEvaluationActive, tmpTime);
+                                    // generate link for output
+                                    Spanned tmpCountdownTimerLink = Html.fromHtml("<a href=\"" + evaluateLinkBuilder.build().toString() + "\">" + tmpCountdownTimerString + "</a>");
 
                                     // and set to textview
-                                    linkEvaluateAnGoal.setText(tmpCountdownTimerString);
+                                    linkEvaluateAnGoal.setText(tmpCountdownTimerLink);
                                     linkEvaluateAnGoal.setMovementMethod(LinkMovementMethod.getInstance());
                                 }
 
                                 public void onFinish() {
-                                    // change text to evaluation modul will switch on!
+                                    // change text to evaluation modul will switch off!
                                     linkEvaluateAnGoal.setText(tmpTextEvaluationModulSwitchOnOff);
                                 }
                             }.start();
+                        } else { // error in timer -> hide timer text
+                            linkEvaluateAnGoal.setVisibility(View.GONE);
+                        }
+
+                    } else { // link is not possible, pause period, so do it with text
+
+                        final String tmpTextNextEvaluationPeriod = context.getResources().getString(R.string.ourGoalsEvaluateStringNextActivePeriod);
+                        final String tmpTextEvaluationModulSwitchOnOff = context.getResources().getString(R.string.evaluateJointlyGoalEvaluateTextEvaluationModulSwitchOn);
+                        final String tmpTextEvaluationGoalAlreadyEvaluated = context.getResources().getString(R.string.evaluateJointlyGoalEvaluateTextGoalAlreadyEvaluated);
+
+                        // show time until next evaluation period
+                        // calculate run time for timer in MILLISECONDS!!!
+                        Long nowTime = System.currentTimeMillis();
+                        Integer pausePeriod = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, 0) * 1000; // make milliseconds from seconds
+                        Long runTimeForTimer = pausePeriod - (nowTime - prefs.getLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, System.currentTimeMillis()));
+                        Long endPointEval = runTimeForTimer + nowTime;
+                        Long startPointEval = endPointEval - pausePeriod;
+
+                        if (cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME)) < startPointEval) {
+
+                            // start the timer with the calculated milliseconds
+                            if (runTimeForTimer > 0 && runTimeForTimer <= pausePeriod) {
+                                new CountDownTimer(runTimeForTimer, 1000) {
+                                    public void onTick(long millisUntilFinished) {
+                                        // generate count down timer
+                                        String FORMAT = "%02d:%02d:%02d";
+                                        String tmpTime = String.format(FORMAT,
+                                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                        // put count down to string
+                                        Spanned tmpCountdownTimerString = Html.fromHtml(String.format(tmpTextNextEvaluationPeriod, tmpTime));
+
+                                        // and set to textview
+                                        linkEvaluateAnGoal.setText(tmpCountdownTimerString);
+                                        linkEvaluateAnGoal.setMovementMethod(LinkMovementMethod.getInstance());
+                                    }
+
+                                    public void onFinish() {
+                                        // change text to evaluation modul will switch on!
+                                        linkEvaluateAnGoal.setText(tmpTextEvaluationModulSwitchOnOff);
+                                    }
+                                }.start();
+                            } else { // error in timer -> hide timer text
+                                linkEvaluateAnGoal.setVisibility(View.GONE);
+                            }
+                        } else {
+                            // change text to evaluation
+                            linkEvaluateAnGoal.setText(tmpTextEvaluationGoalAlreadyEvaluated);
                         }
                     }
-                    else {
-                        // change text to evaluation
-                        linkEvaluateAnGoal.setText(tmpTextEvaluationGoalAlreadyEvaluated);
-                    }
+                }
+                else { // error current time is not bigger than last start point -> show evaluation modul will be switched on
+                    String tmpEvaluationErrorModulSwitchedOn = context.getResources().getString(R.string.evaluateJointlyGoalEvaluateTextEvaluationModulSwitchOn);
+                    linkEvaluateAnGoal.setText(tmpEvaluationErrorModulSwitchedOn);
                 }
             }
             else { // evaluation time expired!
@@ -342,6 +351,8 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
             linkShowCommentOfGoal.setVisibility(View.GONE);
         }
 
+        // close DB connection
+        myDb.close();
 
         return inflatedView;
     }

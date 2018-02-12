@@ -2677,9 +2677,9 @@ import java.util.Map;
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_AuthorName);
 
             // start tag evaluate result time
-            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultTime);
-            xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME))/1000)); // convert millis to timestamp
-            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_ResultTime);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_LocaleTime);
+            xmlSerializer.text(String.valueOf(evaluationResultData.getLong(evaluationResultData.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_LOCAL_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_LocaleTime);
 
             // start tag evaluate arrangement time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurGoals_JointlyEvaluate_DateOfGoal);

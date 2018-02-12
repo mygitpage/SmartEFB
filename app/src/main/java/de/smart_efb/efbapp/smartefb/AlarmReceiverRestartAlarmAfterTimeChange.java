@@ -5,7 +5,11 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import java.util.Calendar;
+import android.content.SharedPreferences;
+import android.util.Log;
+
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by ich on 09.02.2018.
@@ -13,58 +17,37 @@ import java.util.Calendar;
 
 public class AlarmReceiverRestartAlarmAfterTimeChange extends BroadcastReceiver {
 
+    // point to shared preferences
+    SharedPreferences prefs;
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        // Restart Exchange timer after time change (same code look mainActivity)
-        // get calendar and init
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
+        Log.d("TIME CHANGE-->", "Starte Alarm Service!");
 
-        // set calendar object with seconds
-        calendar.add(Calendar.SECOND, ConstansClassMain.wakeUpTimeExchangeService);
-        int tmpAlarmTime = ConstansClassMain.wakeUpTimeExchangeService * 1000; // make mills-seconds
+        // get the shared preferences
+        prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
 
-        // make intent for alarm receiver
-        Intent startIntentService = new Intent (context.getApplicationContext(), AlarmReceiverExchangeAndEventService.class);
+        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
 
-        // make pending intent
-        final PendingIntent pIntentService = PendingIntent.getBroadcast(context, 0, startIntentService, PendingIntent.FLAG_UPDATE_CURRENT );
+            // new alarm manager service for start all needed alarms
+            EfbSetAlarmManager efbSetAlarmManager = new EfbSetAlarmManager(context);
 
-        // get alarm manager service
-        AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            // start exchange service with intent, when case is open!
+            efbSetAlarmManager.setAlarmForExchangeService();
 
-        // set alarm manager to call exchange receiver
-        try {
-            alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpAlarmTime, pIntentService);
+            // start check meeting remember alarm manager, when function meeting is on and case is not closed
+            if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false)) {
+                efbSetAlarmManager.setAlarmManagerForRememberMeeting();
+            }
+            // start check our arrangement alarm manager, when function our arrangement is on and case is not closed
+            if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false)) {
+                efbSetAlarmManager.setAlarmManagerForOurArrangementEvaluation();
+            }
+            // start check our goals alarm manager, when function our goals is on and case is not closed
+            if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false)) {
+                efbSetAlarmManager.setAlarmManagerForOurGoalsEvaluation();
+            }
         }
-        catch (NullPointerException e) {
-            // do nothing
-        }
-
-        // Restart meeting timer after time change (same code look mainActivity)
-        PendingIntent pendingIntentRememberMeeting;
-
-        Long firstStartRememberMeeting = System.currentTimeMillis() + 1000; // first start point for meeting remember function
-        Long repeatingMeetingRemember = 24L * 60L * 60L * 1000L; // one day
-
-        // get reference to alarm manager
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        // create intent for backcall to broadcast receiver
-        Intent rememberMeetingAlarmIntent = new Intent(context, AlarmReceiverMeeting.class);
-
-        // create call (pending intent) for alarm manager
-        pendingIntentRememberMeeting = PendingIntent.getBroadcast(context, 0, rememberMeetingAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // set alarm
-        try {
-            manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstStartRememberMeeting, repeatingMeetingRemember, pendingIntentRememberMeeting);
-        }
-        catch (NullPointerException e) {
-            // do nothing
-        }
-
     }
-
 }

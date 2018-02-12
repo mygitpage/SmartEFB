@@ -390,7 +390,7 @@ public class SettingsEfbFragmentD extends Fragment {
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_ConnectBook, true);
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true); // acoustic signal to true
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
                     break;
 
                 case "our_arrangement":
@@ -403,7 +403,7 @@ public class SettingsEfbFragmentD extends Fragment {
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangement, true);
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, true); // acoustic signal to true
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
                     break;
 
                 case "our_arrangement_evaluation":
@@ -416,7 +416,7 @@ public class SettingsEfbFragmentD extends Fragment {
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangementEvaluation, true);
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, true);
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
                     break;
 
                 case "our_goal":
@@ -429,7 +429,7 @@ public class SettingsEfbFragmentD extends Fragment {
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoal, true);
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, true);
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
                     break;
 
                 case "our_goal_evaluation":
@@ -442,7 +442,7 @@ public class SettingsEfbFragmentD extends Fragment {
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoalEvaluation, true);
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, true);
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
                     break;
 
                 case "remember_meeting":
@@ -457,7 +457,7 @@ public class SettingsEfbFragmentD extends Fragment {
                         // start alarm receiver for remember meeting
                         setAlarmManagerForRememberMeeting();
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
                     break;
 
                 case "remember_suggestion":
@@ -472,7 +472,7 @@ public class SettingsEfbFragmentD extends Fragment {
                         // start alarm receiver for remember meeting
                         setAlarmManagerForRememberMeeting();
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
                     break;
 
             }
@@ -519,7 +519,7 @@ public class SettingsEfbFragmentD extends Fragment {
                         checkBoxValue = true;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true);
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
                     break;
 
                 case "our_arrangement":
@@ -531,7 +531,7 @@ public class SettingsEfbFragmentD extends Fragment {
                         checkBoxValue = true;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, true);
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
                     break;
 
                 case "our_arrangement_evaluation":
@@ -543,7 +543,7 @@ public class SettingsEfbFragmentD extends Fragment {
                         checkBoxValue = true;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, true);
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
                     break;
 
                 case "our_goal":
@@ -555,7 +555,7 @@ public class SettingsEfbFragmentD extends Fragment {
                         checkBoxValue = true;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, true);
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
                     break;
 
                 case "our_goal_evaluation":
@@ -567,7 +567,7 @@ public class SettingsEfbFragmentD extends Fragment {
                         checkBoxValue = true;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, true);
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
                     break;
 
                 case "remember_meeting":
@@ -579,7 +579,7 @@ public class SettingsEfbFragmentD extends Fragment {
                         checkBoxValue = true;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, true);
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
                     break;
 
                 case "remember_suggestion":

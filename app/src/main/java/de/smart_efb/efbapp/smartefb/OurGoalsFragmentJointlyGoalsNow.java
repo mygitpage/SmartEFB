@@ -208,21 +208,25 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
 
                 }
                 else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
-                    // evaluationperiod has change -> update view
-
-                    updateListView = true;
-
-                    // set new start point for evaluation timer in view
-                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, System.currentTimeMillis());
-                    prefsEditor.commit();
+                    // evaluationperiod has change -> update view, only when current time is bigger than last start point
+                    if (System.currentTimeMillis() >= prefs.getLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, 0)) {
+                        updateListView = true;
+                        // set new start point for evaluation timer in view
+                        prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, System.currentTimeMillis());
+                        prefsEditor.apply();
+                    }
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1")) {
 
                     // goal settings change
                     updateListView = true;
 
-                    // settings have change -> check AlarmManger for Evaluation to switch on
-                    ((ActivityOurGoals) getActivity()).setAlarmManagerForOurGoalsEvaluation();
+                    // new alarm manager service for start all needed alarms
+                    EfbSetAlarmManager efbSetAlarmManager = new EfbSetAlarmManager(context);
+                    // start check our goals alarm manager, when function our goals is on
+                    if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false)) {
+                        efbSetAlarmManager.setAlarmManagerForOurGoalsEvaluation();
+                    }
                 }
 
                 // update the list view because data has change?

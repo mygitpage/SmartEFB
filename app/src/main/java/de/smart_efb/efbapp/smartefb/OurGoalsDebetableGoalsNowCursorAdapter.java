@@ -25,9 +25,6 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
     // hold layoutInflater
     private LayoutInflater cursorInflater;
 
-    // reference to the DB
-    private DBAdapter myDb;
-
     //limitation in count comments true-> yes, there is a border; no, there is no border
     Boolean commentLimitationBorder;
 
@@ -44,9 +41,6 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
         super(context, cursor, flags);
 
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // init the DB
-        myDb = new DBAdapter(context);
 
         // init array for count comments
         numberCountForAssessments = context.getResources().getStringArray(R.array.ourGoalsDebetableGoalsCountAssessments);
@@ -87,6 +81,9 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
+
+        // init the DB
+        final DBAdapter myDb = new DBAdapter(context);
 
         View inflatedView;
 
@@ -208,6 +205,9 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
             linkShowDebetableCommentOfGoal.setText(showCommentsLinkTmp);
             linkShowDebetableCommentOfGoal.setMovementMethod(LinkMovementMethod.getInstance());
         }
+
+        // close DB connection
+        myDb.close();
 
         return inflatedView;
     }

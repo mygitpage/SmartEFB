@@ -47,9 +47,6 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
     // the chossen arrangement to show the comments
     Cursor choosenArrangement;
 
-    // reference to the DB
-    private DBAdapter myDb;
-
     // shared prefs for the comment arrangement
     SharedPreferences prefs;
 
@@ -77,9 +74,6 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
 
         // set choosen arrangement
         choosenArrangement = arrangement;
-
-        // init the DB
-        myDb = new DBAdapter(context);
 
         // init the prefs
         prefs = contextForActivity.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, contextForActivity.MODE_PRIVATE);
@@ -217,6 +211,9 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context mContext, Cursor cursor, ViewGroup parent) {
+
+        // init the DB
+        final DBAdapter myDb = new DBAdapter(mContext);
 
         View inflatedView;
 
@@ -401,6 +398,9 @@ public class OurArrangementShowCommentCursorAdapter extends CursorAdapter {
         else {
             linkToCommentAnArrangement.setVisibility(View.GONE);
         }
+
+        // close DB connection
+        myDb.close();
 
         return inflatedView;
     }

@@ -26,9 +26,6 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
     // hold layoutInflater
     private LayoutInflater cursorInflater;
 
-    // reference to the DB
-    private DBAdapter myDb;
-
     // number for count comments for arrangement (12 numbers!)
     private String[] numberCountForAssessments = new String [12];
 
@@ -39,17 +36,12 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
     SharedPreferences prefs;
 
 
-
-
     // Default constructor
     public OurArrangementSketchCursorAdapter (Context context, Cursor cursor, int flags) {
 
         super(context, cursor, flags);
 
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // init the DB
-        myDb = new DBAdapter(context);
 
         // init array for count comments
         numberCountForAssessments = context.getResources().getStringArray(R.array.ourArrangementCountAssessments);
@@ -94,6 +86,9 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
+
+        // init the DB
+        final DBAdapter myDb = new DBAdapter(context);
 
         View inflatedView;
 
@@ -218,14 +213,13 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
             }
             linkShowSketchCommentOfArrangement.setText(showCommentsLinkTmp);
             linkShowSketchCommentOfArrangement.setMovementMethod(LinkMovementMethod.getInstance());
-
         }
 
+        // close DB connection
+        myDb.close();
 
         return inflatedView;
-
     }
-
 
 
     // Turn off view recycling in listview, because there are different views (first, normal, last)

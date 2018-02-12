@@ -21,18 +21,11 @@ import android.widget.TextView;
 
 public class MeetingOverviewCursorAdapter extends CursorAdapter {
 
-
-
-
     // hold layoutInflater
     private LayoutInflater cursorInflater;
 
     // context for cursor adapter
     Context meetingSuggestionOverviewCursorAdapterContext;
-
-
-    // reference to the DB
-    DBAdapter myDb;
 
     // array of meeting places names (only 3 possible-> 0=nothing; 1=Werder(Havel); 2=Bad Belzig)
     String  meetingPlaceNames[] = new String[3];
@@ -48,29 +41,26 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
 
         meetingSuggestionOverviewCursorAdapterContext = context;
 
-        // init the DB
-        myDb = new DBAdapter(context);
-
         // open sharedPrefs
         prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
 
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         meetingPlaceNames = context.getResources().getStringArray(R.array.placesNameForMeetingArray);
-
     }
 
 
     @Override
     public void bindView(View view, final Context context, Cursor cursor) {
 
-
     }
-
 
 
     @Override
     public View newView(Context mContext, Cursor cursor, ViewGroup parent) {
+
+        // init the DB
+        DBAdapter myDb = new DBAdapter(mContext);
 
         View inflatedView;
 
@@ -213,8 +203,10 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
             tmpLinearLayoutHintMeetingIsCanceled.setVisibility(View.VISIBLE);
         }
 
-            return inflatedView;
+        // close DB connection
+        myDb.close();
 
+        return inflatedView;
     }
 
 

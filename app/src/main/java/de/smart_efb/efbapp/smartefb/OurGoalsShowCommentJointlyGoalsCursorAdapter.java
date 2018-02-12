@@ -41,9 +41,6 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
     // cursor for the choosen goal
     Cursor choosenJointlyGoal;
 
-    // reference to the DB
-    private DBAdapter myDb;
-
     // shared prefs for the comment jointly goals
     SharedPreferences prefs;
 
@@ -72,9 +69,6 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
 
         // set choosen jointly goal text
         choosenJointlyGoal = goal;
-
-        // init the DB
-        myDb = new DBAdapter(context);
 
         // init the prefs
         prefs = contextForActivity.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, contextForActivity.MODE_PRIVATE);
@@ -212,6 +206,9 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
 
     @Override
     public View newView(Context mContext, Cursor cursor, ViewGroup parent) {
+
+        // init the DB
+        final DBAdapter myDb = new DBAdapter(mContext);
 
         View inflatedView;
 
@@ -397,6 +394,9 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
         else {
             linkToCommentAGoal.setVisibility(View.GONE);
         }
+
+        // close DB connection
+        myDb.close();
 
         return inflatedView;
     }

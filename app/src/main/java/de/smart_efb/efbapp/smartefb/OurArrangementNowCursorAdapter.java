@@ -26,9 +26,6 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
     // hold layoutInflater
     private LayoutInflater cursorInflater;
 
-    // reference to the DB
-    private DBAdapter myDb;
-
     //limitation in count comments true-> yes, there is a border; no, there is no border
     Boolean commentLimitationBorder;
 
@@ -45,9 +42,6 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
         super(context, cursor, flags);
 
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // init the DB
-        myDb = new DBAdapter(context);
 
         // init array for count comments
         numberCountForComments = context.getResources().getStringArray(R.array.ourArrangementCountComments);
@@ -100,6 +94,9 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
+
+        // init the DB
+        DBAdapter myDb = new DBAdapter(context);
 
         View inflatedView;
 
@@ -223,7 +220,7 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
                             if (runTimeForTimer > 0 && runTimeForTimer <= pausePeriod) {
                                 new CountDownTimer(runTimeForTimer, 1000) {
                                     public void onTick(long millisUntilFinished) {
-                                        // gernate count down timer
+                                        // generate count down timer
                                         String FORMAT = "%02d:%02d:%02d";
                                         String tmpTime = String.format(FORMAT,
                                                 TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
@@ -355,7 +352,8 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
             linkShowCommentOfArrangement.setVisibility(View.GONE);
         }
 
-
+        // close DB connection
+        myDb.close();
 
         return inflatedView;
 

@@ -223,7 +223,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     // set new start point for evaluation timer in view, when current time is bigger then last start point
                     if (System.currentTimeMillis() >= prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, 0)) {
                         prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis());
-                        prefsEditor.commit();
+                        prefsEditor.apply();
                     }
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
@@ -454,8 +454,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
                 // check evaluation on, system time between start- and end date and system time >= last start point
                 if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) && System.currentTimeMillis() < endEvaluationDate && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() >= prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, 0)) { // evaluation on/off?
-
-                    Log.d("Fragment Evaluation-->", "nach start point");
 
                     if (evaluateNoError) {
 

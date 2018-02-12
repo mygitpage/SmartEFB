@@ -50,9 +50,6 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
     // shared prefs for the debetable comments
     SharedPreferences prefs;
 
-    // reference to the DB
-    private DBAdapter myDb;
-
     // count headline number for debetable comments
     int countCommentHeadlineNumber = 0;
 
@@ -77,9 +74,6 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
 
         // set choosen debetable goal
         choosenDebetableGoal = currentGoal;
-
-        // init the DB
-        myDb = new DBAdapter(context);
 
         // init array for text description of scales levels
         evaluateDebetableGoalCommentScalesLevel = context.getResources().getStringArray(R.array.debetableGoalsCommentScalesLevel);
@@ -220,6 +214,9 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
 
     @Override
     public View newView(Context mContext, Cursor cursor, ViewGroup parent) {
+
+        // init the DB
+        final DBAdapter myDb = new DBAdapter(mContext);
 
         View inflatedView;
 
@@ -417,6 +414,9 @@ public class OurGoalShowDebetableGoalCommentCursorAdapter extends CursorAdapter 
         else {
             linkToCommentAGoal.setVisibility(View.GONE);
         }
+
+        // close DB connection
+        myDb.close();
 
         return inflatedView;
     }

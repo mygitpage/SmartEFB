@@ -2177,7 +2177,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Our Goals Jointly Goals Evaluate ******************************************/
 
     // Add a new set of values to ourGoalsJointlyGoalsEvaluate .
-    long insertRowOurGoalsJointlyGoalEvaluate(int serverGoalId, long currentDateOfGoal, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long resultTime, String userName, int status, long startEvaluationTime, long endEvaluationTime, String blockId) {
+    long insertRowOurGoalsJointlyGoalEvaluate(int serverGoalId, long currentDateOfGoal, int resultQuestion1, int resultQuestion2, int resultQuestion3, int resultQuestion4, String resultRemarks, long localeTime, long resultTime, String userName, int status, long startEvaluationTime, long endEvaluationTime, String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2192,6 +2192,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_QUESTION4, resultQuestion4);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_REMARKS, resultRemarks);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME, resultTime);
+        initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_LOCAL_TIME, localeTime);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME, startEvaluationTime);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME, endEvaluationTime);
         initialValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_USERNAME, userName);
@@ -2267,6 +2268,22 @@ public class DBAdapter extends SQLiteOpenHelper {
         ContentValues newValues = new ContentValues();
 
         newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME, System.currentTimeMillis());
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null) != 0;
+    }
+
+
+    // update write time for evaluation result from locale time to server time in table ourGoalsJointlyGoalsEvaluationResult
+    boolean updateWriteTimeOurGoalsEvaluationResult(Long rowId, Long writeTimeFromServer) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row evaluationresult time from server
+        ContentValues newValues = new ContentValues();
+        newValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME, writeTimeFromServer);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null) != 0;

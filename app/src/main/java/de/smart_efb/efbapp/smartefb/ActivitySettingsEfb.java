@@ -350,8 +350,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         connectingStatus = tmpConnectionStatus;
 
         prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,tmpConnectionStatus); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
-
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
 
 
@@ -367,8 +366,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
         randomNumberForConnection = tmpRandomNumber;
 
         prefsEditor.putInt(ConstansClassSettings.namePrefsRandomNumberForConnection,tmpRandomNumber);
-
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
 
 
@@ -386,8 +384,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
     public void deleteLastErrorText () {
 
         prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
-
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
 
 

@@ -411,7 +411,7 @@ class ConstansClassXmlParser {
             static final String xmlNameForOurGoals_JointlyEvaluate_ResultQuestionD = "ourgoals_evaluate_resultquestion_d";
 
             // xml name for element our goals evalute result time
-            static final String xmlNameForOurGoals_JointlyEvaluate_ResultTime = "ourgoals_evaluate_resulttime";
+            static final String xmlNameForOurGoals_JointlyEvaluate_LocaleTime = "ourgoals_evaluate_localetime";
 
             // xml name for element our goals evalute start time
             static final String xmlNameForOurGoals_JointlyEvaluate_StartTime = "ourgoals_evaluate_starttime";

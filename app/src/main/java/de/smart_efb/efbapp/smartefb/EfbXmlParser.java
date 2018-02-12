@@ -1724,12 +1724,14 @@ public class EfbXmlParser {
 
                                     // write data to prefs
                                     prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, tmpArrangementEvaluationOnOff); // turn function on
-                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, tmpEvaluatePauseTime);
-                                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, tmpEvaluateActiveTime);
-                                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, tmpEvaluateStartDate);
-                                    prefsEditor.putLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, tmpEvaluateEndDate);
-                                    prefsEditor.apply();
-
+                                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds,0) != tmpEvaluatePauseTime || prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds,0) != tmpEvaluateActiveTime || prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills,0) != tmpEvaluateStartDate || prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills,0) != tmpEvaluateEndDate) {
+                                        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, tmpEvaluatePauseTime);
+                                        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, tmpEvaluateActiveTime);
+                                        prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, tmpEvaluateStartDate);
+                                        prefsEditor.putLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, tmpEvaluateEndDate);
+                                        prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis()); // evaluation settings have change -> set new start point for evaluation
+                                        prefsEditor.apply();
+                                    }
                                     // something change in evaluation process
                                     returnMap.put("OurArrangementSettingsEvaluationProcess","1");
                                 }
@@ -3176,11 +3178,14 @@ public class EfbXmlParser {
 
                                     // write data to prefs
                                     prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, tmpGoalsEvaluationOnOff); // turn function on
-                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, tmpJointlyEvaluatePauseTime);
-                                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, tmpJointlyEvaluateActiveTime);
-                                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, tmpJointlyEvaluateStartDate);
-                                    prefsEditor.putLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, tmpJointlyEvaluateEndDate);
-                                    prefsEditor.apply();
+                                    if (prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds,0) != tmpJointlyEvaluatePauseTime || prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds,0) !=  tmpJointlyEvaluateActiveTime || prefs.getLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills,0) != tmpJointlyEvaluateStartDate || prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills,0) != tmpJointlyEvaluateEndDate) {
+                                        prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, tmpJointlyEvaluatePauseTime);
+                                        prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, tmpJointlyEvaluateActiveTime);
+                                        prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartDateJointlyGoalsEvaluationInMills, tmpJointlyEvaluateStartDate);
+                                        prefsEditor.putLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, tmpJointlyEvaluateEndDate);
+                                        prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, System.currentTimeMillis()); // evaluation settings have change -> set new start point for evaluation
+                                        prefsEditor.apply();
+                                    }
                                     // something change in evaluation process
                                     returnMap.put ("OurGoalsSettingsEvaluationProcess","1");
                                 }
@@ -4868,6 +4873,11 @@ public class EfbXmlParser {
                                     prefsEditor.putString(ConstansClassSettings.namePrefsClientId, "");
                                     // set connection status to connect to server
                                     prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 0); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
+
+                                    // switch evaluation moduls from arrangement and goals off
+                                    prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false);
+                                    prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false);
+
                                     // write last error messages to prefs
                                     prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
                                     prefsEditor.apply();

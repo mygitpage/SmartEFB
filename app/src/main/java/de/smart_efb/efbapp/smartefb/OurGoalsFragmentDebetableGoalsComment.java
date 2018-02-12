@@ -644,7 +644,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                     // increment debetable goal comment count
                     int countDebetableGoalsCommentSum = prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment,0) + 1;
                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, countDebetableGoalsCommentSum);
-                    prefsEditor.commit();
+                    prefsEditor.apply();
 
                     // send intent to service to start the service and send comment to server!
                     Intent startServiceIntent = new Intent(fragmentDebetableGoalsContext, ExchangeServiceEfb.class);

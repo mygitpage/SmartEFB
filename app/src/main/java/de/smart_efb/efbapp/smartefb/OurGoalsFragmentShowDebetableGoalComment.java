@@ -211,7 +211,7 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
                     else {
                         prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "descending");
                     }
-                    prefsEditor.commit();
+                    prefsEditor.apply();
 
                     // list view sort sequence have change -> refresh view
                     refreshView = true;

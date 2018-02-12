@@ -791,7 +791,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // set new start point for evaluation timer in view fragment now for evaluation link
             prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, (calendar.getTimeInMillis() - tmpEvalutePaAcTime));
-            prefsEditor.commit();
+            prefsEditor.apply();
         }
     }
 
@@ -909,102 +909,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
-    // set alarmmanager for our arrangement evaluation time
-    // same function in main activtiy!!!!!!!!
-    void setAlarmManagerForOurArrangementEvaluation () {
-
-        PendingIntent pendingIntentOurArrangementEvaluate;
-
-        // get all arrangements with the same block id
-        Cursor cursor = myDb.getAllRowsCurrentOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""), "equalBlockId");
-
-        if (cursor.getCount() > 0) {
-
-            // get reference to alarm manager
-            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-            // create intent for backcall to broadcast receiver
-            Intent evaluateAlarmIntent = new Intent(this, AlarmReceiverOurArrangement.class);
-
-            // get evaluate pause time and active time
-            int evaluatePauseTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, ConstansClassOurArrangement.defaultTimeForActiveAndPauseEvaluationArrangement); // default value 43200 is 12 hours
-            int evaluateActivTime = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, ConstansClassOurArrangement.defaultTimeForActiveAndPauseEvaluationArrangement); // default value 43200 is 12 hours
-
-            // get start time and end time for evaluation
-            Long startEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis());
-            Long endEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis());
-
-            Long tmpSystemTimeInMills = System.currentTimeMillis();
-            int tmpEvalutePaAcTime = evaluateActivTime * 1000;
-            String tmpIntentExtra = "evaluate";
-            String tmpChangeDbEvaluationStatus = "set";
-            Long tmpStartPeriod = 0L;
-
-            // get calendar and init
-            Calendar calendar = Calendar.getInstance();
-
-            // set alarm manager when current time is between start date and end date and evaluation is enable
-            if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false) && System.currentTimeMillis() > startEvaluationDate && System.currentTimeMillis() < endEvaluationDate) {
-
-                calendar.setTimeInMillis(startEvaluationDate);
-
-                do {
-                    tmpStartPeriod = calendar.getTimeInMillis();
-                    calendar.add(Calendar.SECOND, evaluateActivTime);
-                    tmpIntentExtra = "evaluate";
-                    tmpChangeDbEvaluationStatus = "set";
-                    tmpEvalutePaAcTime = evaluateActivTime * 1000; // make mills-seconds
-                    if (calendar.getTimeInMillis() < tmpSystemTimeInMills) {
-                        tmpStartPeriod = calendar.getTimeInMillis();
-                        calendar.add(Calendar.SECOND, evaluatePauseTime);
-                        tmpIntentExtra = "pause";
-                        tmpChangeDbEvaluationStatus = "delete";
-                        tmpEvalutePaAcTime = evaluatePauseTime * 1000; // make mills-seconds
-                    }
-                } while (calendar.getTimeInMillis() < tmpSystemTimeInMills);
-
-                if (tmpChangeDbEvaluationStatus.equals("delete")) {
-                    // update table ourArrangement in db -> delete evaluation possible
-                    myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""), "delete");
-                }
-                else {
-
-                    if (cursor != null) {
-
-                        cursor.moveToFirst();
-
-                        do {
-
-                            if (tmpStartPeriod > cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME))) {
-                                myDb.changeStatusEvaluationPossibleOurArrangement(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)), "set");
-                            } else {
-                                myDb.changeStatusEvaluationPossibleOurArrangement(cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)), "delete");
-                            }
-                        } while (cursor.moveToNext());
-                    }
-                }
-
-                // put extras to intent -> "evaluate" or "delete"
-                evaluateAlarmIntent.putExtra("evaluateState", tmpIntentExtra);
-
-                // create call (pending intent) for alarm manager
-                pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(this, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                // set alarm
-                manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurArrangementEvaluate);
-            }
-            else { // delete alarm - it is out of time
-
-                // update table ourArrangement in db -> evaluation disable
-                myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""), "delete");
-                // create pending intent
-                pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(this, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-                // delete alarm
-                manager.cancel(pendingIntentOurArrangementEvaluate);
-            }
-        }
-    }
-
     // getter for DB-Id of arrangement
     public int getArrangementDbIdFromLink () {
 
@@ -1107,7 +1011,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // set signal arrangements and sketch arrangements are update to false; because user is informed by dialog!
             prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false);
             prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false);
-            prefsEditor.commit();
+            prefsEditor.apply();
 
             // show dialog arrangement and sketch arrangement change
             alertDialogArrangementChange("currentSketch");
@@ -1116,7 +1020,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         else if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false) && fragmentName.equals("now")) {
             // set signal arrangements are update to false; because user is informed by dialog!
             prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false);
-            prefsEditor.commit();
+            prefsEditor.apply();
 
             // show dialog arrangement change
             alertDialogArrangementChange("current");
@@ -1124,7 +1028,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         } else if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false) && fragmentName.equals("sketch")) {
             // set signal sketch arrangements are update to false; because user is informed by dialog!
             prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false);
-            prefsEditor.commit();
+            prefsEditor.apply();
 
             // show dialog arrangement change
             alertDialogArrangementChange("sketch");

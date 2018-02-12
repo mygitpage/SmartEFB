@@ -219,7 +219,7 @@ public class ActivityConnectBook extends AppCompatActivity {
                         // add current number of send messages and write to prefs
                         tmpCountCurrentMessages++;
                         prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, tmpCountCurrentMessages);
-                        prefsEditor.commit();
+                        prefsEditor.apply();
 
                         // send intent to service to start the service and send message to server!
                         Intent startServiceIntent = new Intent(contextOfConnectBook, ExchangeServiceEfb.class);

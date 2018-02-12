@@ -234,7 +234,7 @@ public class ActivityTimeTable extends AppCompatActivity {
 
         // set new value for time table to false
         prefsEditor.putBoolean(ConstansClassTimeTable.namePrefsTimeTableNewValue, false);
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
 
 
