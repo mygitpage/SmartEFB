@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -3569,7 +3570,7 @@ public class EfbXmlParser {
         Long tmpClientSuggestionEndDate = 0L;
 
         String tmpClientVoteAuthor = "";
-        Long tmpClientVoteDate = 0L;
+        Long tmpClientVoteLocaleDate = 0L;
 
         String tmpMeetingFoundFromSuggestionAuthor = "";
         Long tmpMeetingFoundFromSuggestionDate = 0L;
@@ -3953,10 +3954,13 @@ public class EfbXmlParser {
 
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
-                                                Long nowTime = System.currentTimeMillis();
+
+
+                                                Log.d("XML PARSER------->", "CanceledTime ---->"+tmpMeetingSuggestionCoachCanceleTime);
+
 
                                                 // update row in db table
-                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus, "meeting", nowTime);
+                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus);
 
                                                 returnMap.put("MeetingCanceledMeetingByCoach", "1");
                                                 returnMap.put("Meeting", "1");
@@ -3989,31 +3993,50 @@ public class EfbXmlParser {
                                                 array_meetingVote[5] = 0;
 
                                                 tmpClientVoteAuthor = "";
-                                                tmpClientVoteDate = 0L;
+                                                Long tmpClientVoteDate = 0L; // value comes from server -> server time
+                                                tmpClientVoteLocaleDate = 0L;
 
                                                 tmpMeetingFoundFromSuggestionAuthor = "";
                                                 tmpMeetingFoundFromSuggestionDate = 0L;
                                                 int tmpMeetingFoundFromSuggestion = 0; // 0=no meeting found from suggestion; 1=meeting found from suggestion
 
                                                 tmpMeetingSuggestionResponseTime = 0L; // not needed -> its a meeting
+
+                                                Long tmpMeetingSuggestionResponseStartTime = 0L; // value comes from server -> server time
+
+
                                                 tmpMeetingSuggestionCoachCanceleTime = 0L;
                                                 tmpMeetingSuggestionCoachCanceleAuthor = "";
                                                 int tmpMeetingSuggestionCoachCancele = 0; // 0=not canceled; 1 = canceled
                                                 String tmpClientSuggestionText = "";
                                                 String tmpClientSuggestionAuthor = "";
-                                                Long tmpClientSuggestionTime = 0L;
-                                                Long tmpMeetingSuggestionClientCanceleTime = 0L;
+                                                Long tmpClientSuggestionTime = 0L; // value comes from server -> server time
+
+                                                Long tmpClientSuggestionLocaleTime = 0L;
+
+
+                                                Long tmpMeetingSuggestionClientCanceleTime = 0L; // value comes from server -> server time
+
+                                                Long tmpMeetingSuggestionClientCanceleLocaleTime = 0L;
+
                                                 String tmpMeetingSuggestionClientCanceleAuthor = "";
                                                 String tmpMeetingSuggestionClientCanceleText = "";
                                                 int tmpMeetingSuggestionClientCancele = 0; // 0=not canceled; 1 = canceled
                                                 String tmpClientCommentText = "";
                                                 String tmpClientCommentAuthor = "";
-                                                Long tmpClientCommentTime = 0L;
+                                                Long tmpClientCommentTime = 0L; // value comes from server -> server time
+
+                                                Long tmpClientCommentLocaleTime = 0L;
+
                                                 int meetingStatus = 4; // 0=ready to send, 1=meeting/suggestion send, 4=external message
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
 
+                                                int timerStatus = 1; // this is a meeting -> no timer needed
+                                                String updateOrder = "";
+
+
                                                 // insert new data into db
-                                                myDb.insertNewMeetingOrSuggestionDate(array_meetingTime, array_meetingPlace, array_meetingVote, tmpClientVoteAuthor, tmpClientVoteDate, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingFoundFromSuggestionAuthor, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestion, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientSuggestionStartDate, tmpClientSuggestionEndDate, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting);
+                                                myDb.insertNewMeetingOrSuggestionDate(array_meetingTime, array_meetingPlace, array_meetingVote, tmpClientVoteAuthor, tmpClientVoteDate, tmpClientVoteLocaleDate, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionResponseStartTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingFoundFromSuggestionAuthor, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestion, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientSuggestionLocaleTime, tmpClientSuggestionStartDate, tmpClientSuggestionEndDate, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpClientCommentLocaleTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleLocaleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting, timerStatus, updateOrder);
 
                                                 returnMap.put("MeetingNewMeeting", "1");
                                                 returnMap.put("Meeting", "1");
@@ -4027,10 +4050,9 @@ public class EfbXmlParser {
 
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
-                                                Long nowTime = System.currentTimeMillis();
 
                                                 // update row in db table
-                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus, "suggestion", nowTime);
+                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus);
 
                                                 returnMap.put("MeetingCanceledSuggestionByCoach", "1");
                                                 returnMap.put("Meeting", "1");
@@ -4101,7 +4123,10 @@ public class EfbXmlParser {
                                                     array_meetingVote[5] = 0;
 
                                                     tmpClientVoteAuthor = "";
-                                                    tmpClientVoteDate = 0L;
+                                                    Long tmpClientVoteDate = 0L; // value comes from server -> server time
+                                                    tmpClientVoteLocaleDate = 0L;
+
+                                                    Long tmpMeetingSuggestionResponseStartTime = 0L; // value comes from server -> server time
 
                                                     tmpMeetingFoundFromSuggestionAuthor = "";
                                                     tmpMeetingFoundFromSuggestionDate = 0L;
@@ -4113,11 +4138,19 @@ public class EfbXmlParser {
 
                                                     String tmpClientSuggestionText = "";
                                                     String tmpClientSuggestionAuthor = "";
-                                                    Long tmpClientSuggestionTime = 0L;
+                                                    Long tmpClientSuggestionTime = 0L; // value comes from server -> server time
+
+                                                    Long tmpClientSuggestionLocaleTime = 0L;
+
+
                                                     tmpClientSuggestionStartDate = 0L;
                                                     tmpClientSuggestionEndDate = 0L;
 
-                                                    Long tmpMeetingSuggestionClientCanceleTime = 0L;
+                                                    Long tmpMeetingSuggestionClientCanceleTime = 0L; // value comes from server -> server time
+
+                                                    Long tmpMeetingSuggestionClientCanceleLocaleTime = 0L;
+
+
                                                     String tmpMeetingSuggestionClientCanceleAuthor = "";
                                                     String tmpMeetingSuggestionClientCanceleText = "";
 
@@ -4125,13 +4158,18 @@ public class EfbXmlParser {
 
                                                     String tmpClientCommentText = "";
                                                     String tmpClientCommentAuthor = "";
-                                                    Long tmpClientCommentTime = 0L;
+                                                    Long tmpClientCommentTime = 0L; // value comes from server -> server time
+
+                                                    Long tmpClientCommentLocaleTime = 0L;
 
                                                     int meetingStatus = 4; // 0=ready to send, 1=meeting/suggestion send, 4=external message
                                                     int newMeeting = 1; // 1 = new meeting or suggestion
 
+                                                    int timerStatus = 0; // this is a suggestion -> timer needed!
+                                                    String updateOrder = "";
+
                                                     // insert new data into db
-                                                    myDb.insertNewMeetingOrSuggestionDate(array_meetingTime, array_meetingPlace, array_meetingVote, tmpClientVoteAuthor, tmpClientVoteDate, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingFoundFromSuggestionAuthor, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestion, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientSuggestionStartDate, tmpClientSuggestionEndDate, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting);
+                                                    myDb.insertNewMeetingOrSuggestionDate(array_meetingTime, array_meetingPlace, array_meetingVote, tmpClientVoteAuthor, tmpClientVoteDate, tmpClientVoteLocaleDate, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionResponseStartTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingFoundFromSuggestionAuthor, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestion, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientSuggestionLocaleTime, tmpClientSuggestionStartDate, tmpClientSuggestionEndDate, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpClientCommentLocaleTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleLocaleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting, timerStatus, updateOrder);
 
                                                     returnMap.put("MeetingNewSuggestion", "1");
                                                     returnMap.put("Meeting", "1");
@@ -4151,10 +4189,9 @@ public class EfbXmlParser {
 
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
-                                                Long nowTime = System.currentTimeMillis();
 
                                                 // update row in db table
-                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus, "suggestion_from_client", nowTime);
+                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus);
 
                                                 returnMap.put("MeetingCanceledClientSuggestionByCoach", "1");
                                                 returnMap.put("Meeting", "1");
@@ -4198,7 +4235,10 @@ public class EfbXmlParser {
                                                 array_meetingVote[5] = 0;
 
                                                 tmpClientVoteAuthor = "";
-                                                tmpClientVoteDate = 0L;
+                                                Long tmpClientVoteDate = 0L; // value comes from server -> server time
+                                                tmpClientVoteLocaleDate = 0L;
+
+                                                Long tmpMeetingSuggestionResponseStartTime = 0L; // value comes from server -> server time
 
                                                 tmpMeetingFoundFromSuggestionAuthor = "";
                                                 tmpMeetingFoundFromSuggestionDate = 0L;
@@ -4211,8 +4251,10 @@ public class EfbXmlParser {
                                                 String tmpClientSuggestionText = "";
                                                 String tmpClientSuggestionAuthor = "";
                                                 Long tmpClientSuggestionTime = 0L;
+                                                Long tmpClientSuggestionLocaleTime = 0L; // value comes from server -> server time
 
                                                 Long tmpMeetingSuggestionClientCanceleTime = 0L;
+                                                Long tmpMeetingSuggestionClientCanceleLocaleTime = 0L; // value comes from server -> server time
                                                 String tmpMeetingSuggestionClientCanceleAuthor = "";
                                                 String tmpMeetingSuggestionClientCanceleText = "";
                                                 int tmpMeetingSuggestionClientCancele = 0; // 0=not canceled; 1 = canceled
@@ -4220,12 +4262,16 @@ public class EfbXmlParser {
                                                 String tmpClientCommentText = "";
                                                 String tmpClientCommentAuthor = "";
                                                 Long tmpClientCommentTime = 0L;
+                                                Long tmpClientCommentLocaleTime = 0L; // value comes from server -> server time
 
                                                 int meetingStatus = 4; // 0=ready to send, 1=meeting/suggestion send, 4=external message
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
 
+                                                int timerStatus = 0; // this is a client suggestion -> timer needed!
+                                                String updateOrder = "";
+
                                                 // insert new data into db
-                                                myDb.insertNewMeetingOrSuggestionDate(array_meetingTime, array_meetingPlace, array_meetingVote, tmpClientVoteAuthor, tmpClientVoteDate, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingFoundFromSuggestionAuthor, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestion, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientSuggestionStartDate, tmpClientSuggestionEndDate, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting);
+                                                myDb.insertNewMeetingOrSuggestionDate(array_meetingTime, array_meetingPlace, array_meetingVote, tmpClientVoteAuthor, tmpClientVoteDate, tmpClientVoteLocaleDate, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionResponseStartTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingFoundFromSuggestionAuthor, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestion, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientSuggestionLocaleTime, tmpClientSuggestionStartDate, tmpClientSuggestionEndDate, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpClientCommentLocaleTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleLocaleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting, timerStatus, updateOrder);
 
                                                 returnMap.put("MeetingNewInvitationSuggestion", "1");
                                                 returnMap.put("Meeting", "1");
@@ -4351,7 +4397,7 @@ public class EfbXmlParser {
         // tmp data for database insert
         String tmpMessage = "";
         String tmpAuthorName = "";
-        Long tmpMessageTime = 0L;
+        Long tmpMessageLocaleTime = 0L;
         String tmpOrder = "";
         Long tmpUploadTime = 0L;
         int tmpMessageRole = -1;
@@ -4410,11 +4456,11 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-                        case ConstansClassXmlParser.xmlNameForConnectBook_MessageTime:
+                        case ConstansClassXmlParser.xmlNameForConnectBook_MessageLocaleTime:
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get message time text
                                 if (xpp.getText().trim().length() > 0) { // check if message time from xml > 0
-                                    tmpMessageTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
+                                    tmpMessageLocaleTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
                                 }
                                 else {
                                     error = true;
@@ -4453,29 +4499,35 @@ public class EfbXmlParser {
                         // check all data for connect book correct?
                         if (!error) {
                             // connect book message order -> new entry?
-                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageTime > 0 && tmpMessageRole >= 0) {
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageLocaleTime > 0 && tmpMessageRole >= 0) {
 
                                 // set upload time on smartphone for message; value from server is not needed
                                 tmpUploadTime = System.currentTimeMillis();
+                                int messageStatus = 4;
+                                int timerStatus = 0;
+                                Boolean newEntry = true;
 
                                 // put message into db (role: 0= left; 1= right; 2= center)
-                                myDb.insertRowChatMessage(tmpAuthorName, tmpMessageTime, tmpMessage, tmpMessageRole, 4, true, tmpUploadTime);
+                                myDb.insertRowChatMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, timerStatus);
 
                                 // refresh activity connect book
-                                returnMap.put ("ConnectBook","1");
+                                returnMap.put("ConnectBook","1");
                                 returnMap.put("ConnectBookMessageNewOrSend", "1");
 
 
-                            } if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageTime > 0 && tmpMessageRole >= 0) {
+                            } if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageLocaleTime > 0 && tmpMessageRole >= 0) {
 
                                 // set upload time on smartphone for message; value from server is not needed
                                 tmpUploadTime = System.currentTimeMillis();
+                                int messageStatus = 4;
+                                int timerStatus = 0;
+                                Boolean newEntry = true;
 
                                 // put message into db (role: 0= left; 1= right; 2= center)
-                                myDb.insertRowChatMessage(tmpAuthorName, tmpMessageTime, tmpMessage, tmpMessageRole, 4, true, tmpUploadTime);
+                                myDb.insertRowChatMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, timerStatus);
 
                                 // refresh activity connect book
-                                returnMap.put ("ConnectBook","1");
+                                returnMap.put("ConnectBook","1");
                                 returnMap.put("ConnectBookMessageNewOrSend", "1");
 
 

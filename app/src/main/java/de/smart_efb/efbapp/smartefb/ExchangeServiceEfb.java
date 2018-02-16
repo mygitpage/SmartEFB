@@ -355,7 +355,9 @@ import java.util.Map;
                                 if (returnMap.get("SendSuccessfull").equals("1") && send_arrangement_evaluation_result_info) {
                                     allArrangementEvaluationResultsReadyToSend.moveToFirst();
                                     do {
+                                        Long rowId = allArrangementEvaluationResultsReadyToSend.getLong(allArrangementEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
                                         myDb.updateStatusOurArrangementEvaluation(allArrangementEvaluationResultsReadyToSend.getLong(allArrangementEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                        if (globalServerTime > 0) {myDb.updateWriteTimeOurArrangementEvaluationResult(rowId, globalServerTime); } // update write time for sketch comment with server time
                                     } while (allArrangementEvaluationResultsReadyToSend.moveToNext());
                                 }
                             }
@@ -365,7 +367,9 @@ import java.util.Map;
                                 if (returnMap.get("SendSuccessfull").equals("1") && send_goals_evaluation_result_info) {
                                     allGoalsEvaluationResultsReadyToSend.moveToFirst();
                                     do {
+                                        Long rowId = allGoalsEvaluationResultsReadyToSend.getLong(allGoalsEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
                                         myDb.updateStatusOurGoalsEvaluation(allGoalsEvaluationResultsReadyToSend.getLong(allGoalsEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of evaluation result to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                        if (globalServerTime > 0) {myDb.updateWriteTimeOurGoalsEvaluationResult(rowId, globalServerTime); } // update write time for sketch comment with server time
                                     } while (allGoalsEvaluationResultsReadyToSend.moveToNext());
                                 }
                             }
@@ -403,7 +407,9 @@ import java.util.Map;
                                 if (returnMap.get("SendSuccessfull").equals("1") && send_connect_book_messages_result_info) {
                                     allConnectBookMessagesReadyToSend.moveToFirst();
                                     do {
+                                        Long rowId = allConnectBookMessagesReadyToSend.getLong(allConnectBookMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
                                         myDb.updateStatusConnectBookMessage(allConnectBookMessagesReadyToSend.getLong(allConnectBookMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of message to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                        if (globalServerTime > 0) {myDb.updateWriteTimeConnectBookMessage(rowId, globalServerTime); } // update write time for connect book messages with server time
                                     } while (allConnectBookMessagesReadyToSend.moveToNext());
 
                                     // intent for connect book activity -> refresh list view
@@ -416,7 +422,15 @@ import java.util.Map;
                                 if (returnMap.get("SendSuccessfull").equals("1") && send_meeting_data_result_info) {
                                     allMeetingsReadyToSend.moveToFirst();
                                     do {
+
+
                                         myDb.updateStatusMeetingAndSuggestion(allMeetingsReadyToSend.getLong(allMeetingsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of meeting data to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                                        if (globalServerTime > 0) {
+                                            postUpdateMeetingAndSuggestionDataInDB(allMeetingsReadyToSend, globalServerTime, myDb);
+                                        }
+
+
                                     } while (allMeetingsReadyToSend.moveToNext());
                                 }
                             }
@@ -427,7 +441,7 @@ import java.util.Map;
                             answerInputStream.close();
                             connection.disconnect();
 
-                            // check is app visible and in foreground -> only then send brodcast to receiver!
+                            // check is app visible and in foreground -> only then send broadcast to receiver!
                             if (EfbLifecycle.isApplicationVisible() && EfbLifecycle.isApplicationInForeground()) {
 
                                 // send broadcast for update ui for user
@@ -607,9 +621,6 @@ import java.util.Map;
             // id of the data row in db
             private Long dbId;
 
-            // reference to the DB
-            private DBAdapter myDb;
-
             // context of task
             Context context;
 
@@ -629,9 +640,6 @@ import java.util.Map;
                 // context of task
                 this.context = context;
 
-                // init the DB
-                myDb = new DBAdapter(context);
-
                 // init the prefs
                 prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
                 prefsEditor = prefs.edit();
@@ -639,6 +647,9 @@ import java.util.Map;
 
             // the task
             public void run() {
+
+                // init the DB
+                DBAdapter myDb = new DBAdapter(context);
 
                 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -808,9 +819,6 @@ import java.util.Map;
         // id of the data row in db
         private Long dbId;
 
-        // reference to the DB
-        private DBAdapter myDb;
-
         // context of task
         Context context;
 
@@ -830,9 +838,6 @@ import java.util.Map;
             // context of task
             this.context = context;
 
-            // init the DB
-            myDb = new DBAdapter(context);
-
             // init the prefs
             prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
             prefsEditor = prefs.edit();
@@ -841,6 +846,9 @@ import java.util.Map;
 
         // the task
         public void run() {
+
+            // init the DB
+            DBAdapter myDb = new DBAdapter(context);
 
             ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -1010,9 +1018,6 @@ import java.util.Map;
         // id of the data row in db
         private Long dbId;
 
-        // reference to the DB
-        private DBAdapter myDb;
-
         // context of task
         Context context;
 
@@ -1032,9 +1037,6 @@ import java.util.Map;
             // context of task
             this.context = context;
 
-            // init the DB
-            myDb = new DBAdapter(context);
-
             // init the prefs
             prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
             prefsEditor = prefs.edit();
@@ -1042,6 +1044,9 @@ import java.util.Map;
 
         // the task
         public void run() {
+
+            // init the DB
+            DBAdapter myDb = new DBAdapter(context);
 
             ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -1212,9 +1217,6 @@ import java.util.Map;
         // id of the data row in db
         private Long dbId;
 
-        // reference to the DB
-        private DBAdapter myDb;
-
         // context of task
         Context context;
 
@@ -1234,9 +1236,6 @@ import java.util.Map;
             // context of task
             this.context = context;
 
-            // init the DB
-            myDb = new DBAdapter(context);
-
             // init the prefs
             prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
             prefsEditor = prefs.edit();
@@ -1244,6 +1243,9 @@ import java.util.Map;
 
         // the task
         public void run() {
+
+            // init the DB
+            DBAdapter myDb = new DBAdapter(context);
 
             ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -1414,9 +1416,6 @@ import java.util.Map;
         // id of the data row in db
         private Long dbId;
 
-        // reference to the DB
-        private DBAdapter myDb;
-
         // context of task
         Context context;
 
@@ -1436,9 +1435,6 @@ import java.util.Map;
             // context of task
             this.context = context;
 
-            // init the DB
-            myDb = new DBAdapter(context);
-
             // init the prefs
             prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
             prefsEditor = prefs.edit();
@@ -1446,6 +1442,9 @@ import java.util.Map;
 
         // the task
         public void run() {
+
+            // init the DB
+            DBAdapter myDb = new DBAdapter(context);
 
             ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -1542,7 +1541,6 @@ import java.util.Map;
 
                     Log.d("Evaluation Jointly XML", "Content:"+stringBuilder.toString().trim());
 
-
                     // call xml parser with input
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
                     returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
@@ -1588,9 +1586,6 @@ import java.util.Map;
         // id of the data row in db
         private Long dbId;
 
-        // reference to the DB
-        private DBAdapter myDb;
-
         // context of task
         Context context;
 
@@ -1611,9 +1606,6 @@ import java.util.Map;
             // context of task
             this.context = context;
 
-            // init the DB
-            myDb = new DBAdapter(context);
-
             // init the prefs
             prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
             prefsEditor = prefs.edit();
@@ -1621,6 +1613,9 @@ import java.util.Map;
 
         // the task
         public void run() {
+
+            // init the DB
+            DBAdapter myDb = new DBAdapter(context);
 
             ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -1795,9 +1790,6 @@ import java.util.Map;
         // id of the data row in db
         private Long dbId;
 
-        // reference to the DB
-        private DBAdapter myDb;
-
         // context of task
         Context context;
 
@@ -1817,9 +1809,6 @@ import java.util.Map;
             // context of task
             this.context = context;
 
-            // init the DB
-            myDb = new DBAdapter(context);
-
             // init the prefs
             prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
             prefsEditor = prefs.edit();
@@ -1827,6 +1816,9 @@ import java.util.Map;
 
         // the task
         public void run() {
+
+            // init the DB
+            DBAdapter myDb = new DBAdapter(context);
 
             ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -1934,8 +1926,17 @@ import java.util.Map;
                     answerInputStream.close();
                     connection.disconnect();
 
+                    // set global server time for comments, messages, etc.
+                    Long globalServerTime = 0L;
+                    if (returnMap.get("AskForTimeSuccessfull").equals("1") && returnMap.get("ServerTimeInMills").length() > 0) {
+                        globalServerTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; // make global server time in mills
+                    }
+
                     if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
                         myDb.updateStatusConnectBookMessage (dbId, 1); // set status of message to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                        // update write time of debetable comment in db
+                        if (globalServerTime > 0) {myDb.updateWriteTimeConnectBookMessage (dbId, globalServerTime); } // update write time for connect book message with server time
 
                         // send intent to receiver in OurGoalsFragmentDebetableComment to update listView OurGoals (when active)
                         Intent tmpIntent = translateMapToIntent (returnMap);
@@ -1997,9 +1998,6 @@ import java.util.Map;
         // receiver broadcast -> to cancele double show of messages in class meeting
         private String receiverBroadcast;
 
-        // reference to the DB
-        private DBAdapter myDb;
-
         // context of task
         Context context;
 
@@ -2022,9 +2020,6 @@ import java.util.Map;
             // context of task
             this.context = context;
 
-            // init the DB
-            myDb = new DBAdapter(context);
-
             // init the prefs
             prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
             prefsEditor = prefs.edit();
@@ -2032,6 +2027,9 @@ import java.util.Map;
 
         // the task
         public void run() {
+
+            // init the DB
+            DBAdapter myDb = new DBAdapter(context);
 
             ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -2138,9 +2136,25 @@ import java.util.Map;
                     answerInputStream.close();
                     connection.disconnect();
 
+                    // set global server time for comments, messages, etc.
+                    Long globalServerTime = 0L;
+                    if (returnMap.get("AskForTimeSuccessfull").equals("1") && returnMap.get("ServerTimeInMills").length() > 0) {
+                        globalServerTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; // make global server time in mills
+                    }
+
                     if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
 
+                        // update meeting status -> separate from other changes
                         myDb.updateStatusMeetingAndSuggestion (dbId, 1); // set status of meeting to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+
+                        // update some data after sending in meeting db table (like write time,etc.)
+                        if (globalServerTime > 0) {
+                            postUpdateMeetingAndSuggestionDataInDB(meetingData, globalServerTime, myDb);
+                        }
+
+
+
 
                         // send intent to receiver in Meeting to update listView Meeting (when active)
                         String command = "ask_parent_activity";
@@ -2187,6 +2201,34 @@ import java.util.Map;
             stopSelf();
         }
     }
+
+
+    // do some update work in meeting suggestion db table (like write time, etc.)
+    void postUpdateMeetingAndSuggestionDataInDB(Cursor meetingData, Long globalServerTime, DBAdapter myDb) {
+
+        String updateOrder = meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_UPDATE_ORDER));
+
+        Long dbId = meetingData.getLong(meetingData.getColumnIndex(DBAdapter.KEY_ROWID));
+
+
+        Log.d("UPDATE EXCHANGE --->", "++++++ UPDATEORDER: "+updateOrder);
+
+
+
+        if (updateOrder != null && updateOrder.length() > 0) {
+            switch (updateOrder) {
+
+                case "update_client_canceled_server_time":
+
+                    Log.d("UPDATE EXCHANGE --->", "++++++ in CASE UPDATEORDER: "+updateOrder);
+
+                    myDb.postUpdateWriteTimeMeetingSuggestion(dbId, updateOrder, globalServerTime);
+                    break;
+
+            }
+        }
+    }
+
     // +++++++++++++++++++++++++ end task exchange meeting +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -2210,8 +2252,6 @@ import java.util.Map;
 
             return intent;
         }
-
-
 
 
         public Long askServerForTime (String tmpClientId, String tmpContactId) {
@@ -2337,9 +2377,6 @@ import java.util.Map;
         }
 
 
-
-
-
         @Override
         public void onDestroy() {
             super.onDestroy();
@@ -2363,11 +2400,17 @@ import java.util.Map;
 
                 // get command from intent extras
                 String command = intentExtras.getString("com");
+                if (command == null) {command="";}
 
                 // get db id from intent extras
                 Long dbId = intentExtras.getLong("dbid", 0);
-                String receiverBroadcast = intentExtras.getString("receiverBroadcast", ""); // this is needed for double "mystic" messages receives in view pager like suggestion and client suggestion
+                if (dbId == null) { dbId = 0L;}
 
+                // get receiver broadcast
+                String receiverBroadcast = intentExtras.getString("receiverBroadcast", ""); // this is needed for double "mystic" messages receives in view pager like suggestion and client suggestion
+                if (receiverBroadcast == null) {receiverBroadcast = "";}
+
+                // check commands
                 if (command.equals("ask_new_data")) { // Ask server for new data
 
                     // generate new background task
@@ -2874,9 +2917,9 @@ import java.util.Map;
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_AuthorName);
 
             // start tag comment time
-            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForConnectBook_MessageTime);
-            xmlSerializer.text(String.valueOf(messageData.getLong(messageData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME))/1000)); // convert millis to timestamp
-            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_MessageTime);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForConnectBook_MessageLocaleTime);
+            xmlSerializer.text(String.valueOf(messageData.getLong(messageData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_LOCAL_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_MessageLocaleTime);
 
             // end tag connect book message
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_Messages);
@@ -2995,9 +3038,9 @@ import java.util.Map;
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_VoteAuthor);
 
             // start tag meeting/suggestio vote date
-            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_VoteDate);
-            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEDATE))/1000)); // convert millis to times
-            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_VoteDate);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_VoteLocaleDate);
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTELOCALEDATE))/1000)); // convert millis to times
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_VoteLocaleDate);
             
             // start tag meeting/suggestion creation time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CreationTime);
@@ -3015,9 +3058,9 @@ import java.util.Map;
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_SuggestionFromClient_Text);
 
             // start tag meeting/suggestion client suggestion time
-            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_SuggestionFromClient_Time);
-            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME))/1000)); // convert millis to times
-            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_SuggestionFromClient_Time);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_SuggestionFromClient_LocaleTime);
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_LOCALE_TIME))/1000)); // convert millis to times
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_SuggestionFromClient_LocaleTime);
 
             // start tag meeting/suggestion client suggestion author
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_SuggestionFromClient_Author);
@@ -3030,9 +3073,9 @@ import java.util.Map;
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentAuthorName);
 
             // start tag meeting/suggestion client comment time
-            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentTime);
-            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE))/1000)); // convert millis to times
-            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentTime);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentLocaleTime);
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_LOCALE_DATE))/1000)); // convert millis to times
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentLocaleTime);
 
             // start tag meeting/suggestion client comment text
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentText);
@@ -3040,9 +3083,9 @@ import java.util.Map;
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCommentText);
 
             // start tag meeting/suggestion client canceled time
-            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCanceledTime);
-            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME))/1000)); // convert millis to times
-            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCanceledTime);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCanceledLocaleTime);
+            xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_LOCALE_TIME))/1000)); // convert millis to times
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCanceledLocaleTime);
 
             // start tag meeting/suggestion client canceled author name
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_ClientCanceledAuthorName);
@@ -3065,7 +3108,6 @@ import java.util.Map;
         catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
 }

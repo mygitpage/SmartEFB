@@ -114,7 +114,8 @@
             android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"
             android:gravity="center_horizontal"
-            android:paddingBottom="15dp"/>
+            android:paddingBottom="15dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

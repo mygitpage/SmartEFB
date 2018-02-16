@@ -76,8 +76,8 @@ class ConstansClassXmlParser {
     // xml name for element connect book message author name
     static final String xmlNameForConnectBook_AuthorName = "connectbook_authorname";
 
-    // xml name for element connect book message time
-    static final String xmlNameForConnectBook_MessageTime = "connectbook_messagetime";
+    // xml name for element connect book message locale time
+    static final String xmlNameForConnectBook_MessageLocaleTime = "connectbook_messagelocaletime";
 
     // xml name for element connect book message role
     static final String xmlNameForConnectBook_MessageRole = "connectbook_messagerole";
@@ -606,7 +606,7 @@ class ConstansClassXmlParser {
     static final String xmlNameForMeeting_Suggestion_MettingVote5 = "meeting_vote_5";
     static final String xmlNameForMeeting_Suggestion_MettingVote6 = "meeting_vote_6";
     static final String xmlNameForMeeting_Suggestion_VoteAuthor = "meeting_vote_author";
-    static final String xmlNameForMeeting_Suggestion_VoteDate = "meeting_vote_date";
+    static final String xmlNameForMeeting_Suggestion_VoteLocaleDate = "meeting_vote_locale_date";
     static final String xmlNameForMeeting_Meeting_FoundFromSuggestion_Author = "meeting_found_author";
     static final String xmlNameForMeeting_Meeting_FoundFromSuggestion_Date = "meeting_found_date";
     static final String xmlNameForMeeting_Suggestion_AuthorName = "meeting_authorname";
@@ -618,15 +618,15 @@ class ConstansClassXmlParser {
     static final String xmlNameForMeeting_Suggestion_CoachCanceleTime = "meeting_coach_canceled_time";
     static final String xmlNameForMeeting_Suggestion_CoachCanceleAuthor = "meeting_coach_canceled_author";
     static final String xmlNameForMeeting_Suggestion_ClientCommentAuthorName = "meeting_client_comment_authorname";
-    static final String xmlNameForMeeting_Suggestion_ClientCommentTime = "meeting_client_comment_time";
+    static final String xmlNameForMeeting_Suggestion_ClientCommentLocaleTime = "meeting_client_comment_locale_time";
     static final String xmlNameForMeeting_Suggestion_ClientCommentText = "meeting_client_comment_text";
     static final String xmlNameForMeeting_SuggestionFromClient_StartDate = "suggestion_from_client_startdate";
     static final String xmlNameForMeeting_SuggestionFromClient_EndDate = "suggestion_from_client_enddate";
     static final String xmlNameForMeeting_SuggestionFromClient_Author = "suggestion_from_client_authorname";
-    static final String xmlNameForMeeting_SuggestionFromClient_Time = "suggestion_from_client_time";
+    static final String xmlNameForMeeting_SuggestionFromClient_LocaleTime = "suggestion_from_client_locale_time";
     static final String xmlNameForMeeting_SuggestionFromClient_Text = "suggestion_from_client_text";
     static final String xmlNameForMeeting_Suggestion_ClientCanceledAuthorName = "meeting_client_canceled_authorrname";
-    static final String xmlNameForMeeting_Suggestion_ClientCanceledTime = "meeting_client_canceled_time";
+    static final String xmlNameForMeeting_Suggestion_ClientCanceledLocaleTime = "meeting_client_canceled_locale_time";
     static final String xmlNameForMeeting_Suggestion_ClientCanceledText = "meeting_client_canceled_text";
 
     //

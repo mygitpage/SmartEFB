@@ -76,7 +76,6 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
         getActivity().getApplicationContext().registerReceiver(meetingFragmentMeetingClientCanceledBrodcastReceiver, filter);
 
         return viewFragmentClientCanceledMeeting;
-
     }
 
 
@@ -321,14 +320,24 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
 
                     if (txtInputCanceledReason.getText().toString().length() > 3) {
 
-                        // canceled time
-                        Long tmpCanceledTime = System.currentTimeMillis();
-
+                        // canceled locale time
+                        Long tmpCanceledLocaleTime = System.currentTimeMillis();
                         // canceled status
                         int tmpStatus = 0; // not send to server
+                        // user name
+                        String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                        // canceled server time
+                        Long tmpCanceledTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                        if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                            tmpCanceledTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                        }
+                        // canceled comment text
+                        String canceledCommentText = txtInputCanceledReason.getText().toString();
+                        // Update order
+                        String updateOrder = "update_client_canceled_server_time";
 
                         // insert  in DB
-                        myDb.updateMeetingCanceledByClient(clientCanceledMeetingId, tmpCanceledTime, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), txtInputCanceledReason.getText().toString(), tmpStatus);
+                        myDb.updateMeetingCanceledByClient(clientCanceledMeetingId, tmpCanceledLocaleTime, tmpCanceledTime, userName , canceledCommentText, tmpStatus, updateOrder);
 
                         // set successfull message in parent activity -> show in toast, when canceled message is send successfull
                         String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));

@@ -27,9 +27,10 @@
             <string name="buttonSendMessage">SENDEN</string>
             <string name="infoTextCountCurrentMessages">%1$d von %2$d Nachrichten in 24 Stunden</string>
             <string name="textConnectBookMessageAuthorAndDate">%1$s - %2$s &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
+            <string name="textConnectBookMessageAuthorAndDateLocale">%1$s - %2$s (lokal) &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
             <string name="textConnectBookMessageNoSharing">Die Nachrichten werden im Moment nicht zugestellt!</string>
             <string name="textConnectBookMessageNotSendYet">Die Nachricht wurde noch nicht gesendet.</string>
-            <string name="textConnectBookMessageSendDelayInfo">Die Nachricht wurde gesendet und \nwird in %1$s zugestellt.</string>
+            <string name="textConnectBookMessageSendDelayInfo">Die Nachricht wurde gesendet und\nwird in %1$s zugestellt.</string>
             <string name="textConnectBookMessageSendSuccsessfullInfo">Die Nachricht wurde gesendet.</string>
             <string name="textConnectBookMessageSendInfoSharingDisable">Die Nachricht wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
             <string name="toastConnectBookMessageSendSuccessfull">Nachricht gesendet!</string>
@@ -58,6 +59,7 @@
             <string name="textDialogConnectBookSettingsInfoTextReadByCoach">Alle in der Funktion Übergabe geschriebenen Nachrichten können von Ihrer Beraterin/ Ihrem Berater gelesen und kommentiert werden.</string>
             <string name="textDialogConnectBookSettingsInfoTextContactCoach">Sollten Sie Fragen oder Änderungswünsche zu diesen Einstellungen haben, wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.</string>
             <string name="textDialogConnectBookSettingsLinkToInvolvedPerson">Die an dem Chat im Übergabebuch beteiligten Personen finden Sie <a href="smart.efb.deeplink://linkin/settings?com=show_involved_person">hier</a>.</string>
+            <string name="textDialogConnectBookSettingsExplainMessageSortText">Die Liste der Nachrichten wird anhand einer zentralen Zeit sortiert. Hier kann es zu Widersprüchen zu Ihrer lokalen Smartphonezeit kommen, die bei den einzelnen Nachrichten angezeigt wird.</string>
         <!-- End connect book dialog settings -->
 
         <!-- connect book dialog no more messages -->
@@ -593,7 +595,7 @@
             <string name="textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimeSingular">\nDie Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogOurGoalsDebetableGoalsSettingsSketchCommentDelaytimePlural">\nDie Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (sofern eine Internetverbindung besteht).</string>
             <string name="textDialogOurGoalsSettingsLinkToInvolvedPerson">Die Personen, die Kommentare und Einschätzungen schreiben und lesen können, finden Sie <a href="smart.efb.deeplink://linkin/settings?com=show_involved_person">hier</a>.</string>
-
+            <string name="textViewDialogOurGolasSettingsExplainCommentSortText">Die Liste der Kommentare und Einschätzungen wird anhand einer zentralen Zeit sortiert. Hier kann es zu Widersprüchen zu Ihrer lokalen Smartphonezeit kommen, die bei den einzelnen Kommentaren oder Einschätzungen angezeigt wird.</string>
         <!-- end our goals dialog settings -->
 
 
@@ -982,9 +984,9 @@
             <string name="meetingOverviewMeetingCanceledTitleAndNumberText">Abgesagter Termin</string>
             <string name="meetingOverviewCreateMeetingAuthorAndDate">Der Termin wurde von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt.</string>
             <string name="meetingOverviewCreateMeetingAuthorAndDateWithCancele">Der Termin wurde von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt und von &lt;u>%4$s&lt;/u> am %5$s um %6$s Uhr abgesagt.</string>
-            <string name="meetingOverviewClientCanceledMeetingAuthorAndDate">Von Ihnen wurde der Termin am %1$s um %2$s Uhr abgesagt.</string>
-            <string name="meetingOverviewClientCanceledNotSendToServer">Ihre Absage wurde noch nicht zum Server gesendet.</string>
-            <string name="meetingOverviewClientCanceledLinkText">Diesen Termin absagen</string>
+            <string name="meetingOverviewClientCanceledMeetingAuthorAndDate">Von Ihnen wurde der Termin am %1$s um %2$s Uhr (Lokale Smartphonezeit) abgesagt.</string>
+            <string name="meetingOverviewClientCanceledNotSendToServer">Ihre Absage wurde noch nicht gesendet.</string>
+            <string name="meetingOverviewClientCanceledLinkText">Terminabsagewunsch Beraterin/ Berater mitteilen</string>
             <string name="meetingOverviewmeetingCanceledByCoachText">Abgesagt!</string>
             <string name="meetingOverviewDeleteCanceledMeetingLinkText">Diesen abgesagten Termin löschen</string>
             <string name="toastMessageMeetingNewMeeting">Es sind neue Termine eingetroffen!</string>

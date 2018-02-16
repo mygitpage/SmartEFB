@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -213,8 +215,18 @@ public class ActivityConnectBook extends AppCompatActivity {
 
                     if (inputMessage.length() > 0) {
 
+                        Long messageTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                        if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                            messageTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                        }
+                        Long uploadTime = 0L;
+                        Long localeTime = System.currentTimeMillis();
+                        Boolean newEntry = false;
+                        int messageStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
+                        int timerStatus = 0;
+
                         // put message into db (role: 0= left; 1= right; 2= center)
-                        long tmpDbId = myDb.insertRowChatMessage(userNameConnectBook, System.currentTimeMillis(), inputMessage, roleConnectBook, 0, false, System.currentTimeMillis());
+                        long tmpDbId = myDb.insertRowChatMessage(userNameConnectBook, localeTime, messageTime, inputMessage, roleConnectBook,  messageStatus, newEntry, uploadTime, timerStatus);
 
                         // add current number of send messages and write to prefs
                         tmpCountCurrentMessages++;
@@ -436,7 +448,6 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         Button tmpHelpButtonConnectBook = (Button) findViewById(R.id.helpConnectBook);
 
-
         // add button listener to question mark in activity Cconnect Book (toolbar)
         tmpHelpButtonConnectBook.setOnClickListener(new View.OnClickListener() {
 
@@ -490,7 +501,6 @@ public class ActivityConnectBook extends AppCompatActivity {
                 String tmpMaxLettersCount = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsMessageMaxLetters);
                 tmpTxtElement2a = String.format(tmpMaxLettersCount, prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxLetters, 0));
 
-
                 // generate text for delay time
                 if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, 0) > 1) {
                     tmpTxtElement3 = ActivityConnectBook.this.getResources().getString(R.string.textDialogConnectBookSettingsDelayTimePlural);
@@ -532,10 +542,8 @@ public class ActivityConnectBook extends AppCompatActivity {
 
                 // and show the dialog
                 builder.show();
-
             }
         });
-
     }
 
 
@@ -574,10 +582,7 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         // and show the dialog
         builder.show();
-
     }
-
-
 
 
     @Override
@@ -587,15 +592,23 @@ public class ActivityConnectBook extends AppCompatActivity {
 
             case android.R.id.home:
                 onBackPressed();
+
+/*
+                TaskStackBuilder
+                        .create(this)
+                        .addNextIntentWithParentStack(NavUtils.getParentActivityIntent(this))
+                        .startActivities();
+
+*/
+
+
+
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
-
-
-
 
 
 }
