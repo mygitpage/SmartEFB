@@ -12,6 +12,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,6 +140,9 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
         final Cursor cursor = mCursor;
 
+        // set row id of comment from db for timer update
+        final Long rowIdForUpdate = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
+
         inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_overview_normal, parent, false);
 
         // canceled suggestion
@@ -157,6 +161,14 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             // init vote db id for button send
             clientVoteDbId = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
         }
+
+
+        Log.d("SuggestionCurAdap-->","StartResponseTime"+cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_START_TIME)));
+        Log.d("SuggestionCurAdap-->","ResponseTime"+cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME)));
+
+
+
+
 
         // check for normal suggestion -> set intro text to visible
         if (tmpStatusSuggestion) {
@@ -204,8 +216,8 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
         if (tmpStatusVoteSuggestion) { // vote already send
             // set info text with vote info
-            String meetingVoteDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEDATE)), "dd.MM.yyyy");
-            String meetingVoteTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEDATE)), "HH:mm");
+            String meetingVoteDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTELOCALEDATE)), "dd.MM.yyyy");
+            String meetingVoteTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTELOCALEDATE)), "HH:mm");
 
             String tmpTextAuthorNameSuggestionWithVote;
             if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false)) {
@@ -404,30 +416,54 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             placeholderForTicTimerEndDateInText.setText(tmpDateAndTimeForResponse);
             placeholderForTicTimerEndDateInText.setVisibility(View.VISIBLE);
 
-            // show time until next evaluation period
-            // calculate run time for timer in MILLISECONDS!!!
+
             Long nowTime = System.currentTimeMillis();
-            Long runTimeForTimer = cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME)) - nowTime;
-            // start the timer with the calculated milliseconds
-            if (runTimeForTimer > 0) {
-                new CountDownTimer(runTimeForTimer, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        // gernate count down timer
-                        String FORMAT = "%d Stunden %02d Minuten %02d Sekunden";
-                        String tmpTime = String.format(FORMAT,
-                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+            Long tmpStartPointResponseTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_START_TIME));
 
-                        // and set to textview
-                        placeholderForTicTimer.setText(tmpTime);
-                    }
+            Long tmpEndPointResponseTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME));
 
-                    public void onFinish() {
-                        // change text to response time over
-                        placeholderForTicTimer.setText(tmpTextResponseTimeOver);
-                    }
-                }.start();
+            if (nowTime >= tmpStartPointResponseTime && nowTime <= tmpEndPointResponseTime) {
+
+
+                // show time until response point
+                // calculate run time for timer in MILLISECONDS!!!
+
+                Long runTimeForTimer = tmpEndPointResponseTime - nowTime;
+                // start the timer with the calculated milliseconds
+                if (runTimeForTimer > 0) {
+                    new CountDownTimer(runTimeForTimer, 1000) {
+                        public void onTick(long millisUntilFinished) {
+                            // gernate count down timer
+                            String FORMAT = "%d Stunden %02d Minuten %02d Sekunden";
+                            String tmpTime = String.format(FORMAT,
+                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+
+                            // and set to textview
+                            placeholderForTicTimer.setText(tmpTime);
+                        }
+
+                        public void onFinish() {
+
+                            myDb.updateTimerStatusMeetingSuggestion(rowIdForUpdate, 1); // timer status to 1 -> stop timer!
+
+                            // change text to response time over
+                            placeholderForTicTimer.setText(tmpTextResponseTimeOver);
+
+                            // refresh the view -> suggestion is gone -> look DBAdapter
+                            refreshSuggestionView(context);
+
+
+                        }
+                    }.start();
+                }
+            }
+            else {
+
+                myDb.updateTimerStatusMeetingSuggestion(rowIdForUpdate, 1); // timer status to 1 -> stop timer!
+
+
             }
         }
 
@@ -554,6 +590,16 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         myDb.close();
 
         return inflatedView;
+    }
+
+
+    // send broadcast to refresh the view
+    private void refreshSuggestionView (Context context) {
+
+        Intent tmpIntent = new Intent();
+        tmpIntent.putExtra("SuggestionREsponseTimerOverRefreshView", "1");
+        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+        context.sendBroadcast(tmpIntent);
     }
 
 

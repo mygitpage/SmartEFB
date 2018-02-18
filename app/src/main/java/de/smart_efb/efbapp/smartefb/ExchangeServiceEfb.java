@@ -432,6 +432,10 @@ import java.util.Map;
 
 
                                     } while (allMeetingsReadyToSend.moveToNext());
+
+                                    tmpIntentUpdateUiForUser.putExtra("MeetingSendInBackgroundRefreshView", "1"); // refresh view in any meeting fragement
+
+
                                 }
                             }
 

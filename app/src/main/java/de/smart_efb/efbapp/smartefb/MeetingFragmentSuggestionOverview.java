@@ -136,6 +136,8 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpMessage = intentExtras.getString("Message");
                 String tmpReceiverBroadcast = intentExtras.getString("receiverBroadcast", "");
+                String tmpExtraSendInBackgroundRefreshView = intentExtras.getString("MeetingSendInBackgroundRefreshView");
+                String tmpExtraREsponseTimerOverRefreshView = intentExtras.getString("SuggestionREsponseTimerOverRefreshView");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
@@ -227,6 +229,23 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                     // meeting settings change
                     updateListView = true;
                 }
+                else if (tmpExtraSendInBackgroundRefreshView != null && tmpExtraSendInBackgroundRefreshView.equals("1")) {
+
+                    // meeting change -> send in background
+                    updateListView = true;
+                }
+                else if (tmpExtraREsponseTimerOverRefreshView != null &&  tmpExtraREsponseTimerOverRefreshView.equals("1")) {
+
+                    if (dataAdapterListViewSuggestion != null) {
+                        dataAdapterListViewSuggestion.notifyDataSetChanged();
+                    }
+
+                    // suggestion response timer is over -> refresh view
+                    updateListView = true;
+                }
+
+
+
 
                 // update the list view because data has change?
                 if (updateListView) {

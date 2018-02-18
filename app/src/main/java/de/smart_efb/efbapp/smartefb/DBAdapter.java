@@ -2829,7 +2829,7 @@ public class DBAdapter extends SQLiteOpenHelper {
                 sort = MEETING_SUGGESTION_KEY_MEETING_CANCELED + " ASC, " + MEETING_SUGGESTION_KEY_DATE1 + " ASC";
                 break;
             case "future_suggestion":
-                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">=" + nowTime;
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">=" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_START_TIME + "<=" + nowTime + " AND " + MEETING_SUGGESTION_KEY_TIMER_STATUS + "=0";
                 sort = MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " DESC, " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + " DESC";
                 break;
             case "future_suggestion_from_client":
@@ -2845,7 +2845,7 @@ public class DBAdapter extends SQLiteOpenHelper {
                 sort = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + " DESC";
                 break;
             case "suggestion_for_show_attention":
-                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">=" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "='' AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR + "='' AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE + "=0 AND (" + MEETING_SUGGESTION_MEETING_KEY_STATUS + "=0 OR " + MEETING_SUGGESTION_MEETING_KEY_STATUS + "=4)";
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">=" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_START_TIME + "<=" + nowTime + " AND " + MEETING_SUGGESTION_KEY_TIMER_STATUS + "=0  AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + "=0 AND " + MEETING_SUGGESTION_KEY_VOTEAUTHOR + "='' AND " + MEETING_SUGGESTION_KEY_VOTEDATE + "=0 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR + "='' AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE + "=0 AND (" + MEETING_SUGGESTION_MEETING_KEY_STATUS + "=0 OR " + MEETING_SUGGESTION_MEETING_KEY_STATUS + "=4)";
                 sort = MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " DESC, " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + " DESC";
                 break;
 
@@ -3071,11 +3071,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
-
     }
-
-
-
 
 
     boolean postUpdateWriteTimeMeetingSuggestion(Long dbId, String updateOrder, Long globalServerTime) {
@@ -3098,6 +3094,26 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Insert it into the database.
         return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
     }
+
+
+
+    // update status of timer for meeting/suggestion/suggestion from client
+    // 0= timer can run; 1= timer finish!
+    boolean updateTimerStatusMeetingSuggestion (Long rowId, int timerStatus) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create timer status with status
+        ContentValues newValues = new ContentValues();
+        newValues.put(MEETING_SUGGESTION_KEY_TIMER_STATUS, timerStatus);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+    }
+
+
 
 
 

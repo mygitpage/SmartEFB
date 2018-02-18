@@ -3955,10 +3955,6 @@ public class EfbXmlParser {
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
 
-
-                                                Log.d("XML PARSER------->", "CanceledTime ---->"+tmpMeetingSuggestionCoachCanceleTime);
-
-
                                                 // update row in db table
                                                 myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus);
 
@@ -3999,11 +3995,8 @@ public class EfbXmlParser {
                                                 tmpMeetingFoundFromSuggestionAuthor = "";
                                                 tmpMeetingFoundFromSuggestionDate = 0L;
                                                 int tmpMeetingFoundFromSuggestion = 0; // 0=no meeting found from suggestion; 1=meeting found from suggestion
-
                                                 tmpMeetingSuggestionResponseTime = 0L; // not needed -> its a meeting
-
                                                 Long tmpMeetingSuggestionResponseStartTime = 0L; // value comes from server -> server time
-
 
                                                 tmpMeetingSuggestionCoachCanceleTime = 0L;
                                                 tmpMeetingSuggestionCoachCanceleAuthor = "";
@@ -4011,21 +4004,16 @@ public class EfbXmlParser {
                                                 String tmpClientSuggestionText = "";
                                                 String tmpClientSuggestionAuthor = "";
                                                 Long tmpClientSuggestionTime = 0L; // value comes from server -> server time
-
                                                 Long tmpClientSuggestionLocaleTime = 0L;
 
-
                                                 Long tmpMeetingSuggestionClientCanceleTime = 0L; // value comes from server -> server time
-
                                                 Long tmpMeetingSuggestionClientCanceleLocaleTime = 0L;
-
                                                 String tmpMeetingSuggestionClientCanceleAuthor = "";
                                                 String tmpMeetingSuggestionClientCanceleText = "";
                                                 int tmpMeetingSuggestionClientCancele = 0; // 0=not canceled; 1 = canceled
                                                 String tmpClientCommentText = "";
                                                 String tmpClientCommentAuthor = "";
                                                 Long tmpClientCommentTime = 0L; // value comes from server -> server time
-
                                                 Long tmpClientCommentLocaleTime = 0L;
 
                                                 int meetingStatus = 4; // 0=ready to send, 1=meeting/suggestion send, 4=external message
@@ -4033,7 +4021,6 @@ public class EfbXmlParser {
 
                                                 int timerStatus = 1; // this is a meeting -> no timer needed
                                                 String updateOrder = "";
-
 
                                                 // insert new data into db
                                                 myDb.insertNewMeetingOrSuggestionDate(array_meetingTime, array_meetingPlace, array_meetingVote, tmpClientVoteAuthor, tmpClientVoteDate, tmpClientVoteLocaleDate, tmpMeetingSuggestionCreationTime, tmpMeetingSuggestionAuthorName, tmpMeetingSuggestionKategorie, tmpMeetingSuggestionResponseTime, tmpMeetingSuggestionResponseStartTime, tmpMeetingSuggestionCoachHintText, tmpMeetingSuggestionCoachCancele, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, tmpMeetingFoundFromSuggestionAuthor, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestion, tmpMeetingSuggestionDataServerId, tmpClientSuggestionText, tmpClientSuggestionAuthor, tmpClientSuggestionTime, tmpClientSuggestionLocaleTime, tmpClientSuggestionStartDate, tmpClientSuggestionEndDate, tmpClientCommentText, tmpClientCommentAuthor, tmpClientCommentTime, tmpClientCommentLocaleTime, tmpMeetingSuggestionClientCancele, tmpMeetingSuggestionClientCanceleTime, tmpMeetingSuggestionClientCanceleLocaleTime, tmpMeetingSuggestionClientCanceleAuthor, tmpMeetingSuggestionClientCanceleText, meetingStatus, tmpUploadTime, newMeeting, timerStatus, updateOrder);
@@ -4071,8 +4058,8 @@ public class EfbXmlParser {
                                             }
                                             else {
 
-                                                // check suggestion need a response time
-                                                if (tmpMeetingSuggestionResponseTime > 0) {
+                                                // check suggestion need a response time and a start point (server time)
+                                                if (tmpMeetingSuggestionResponseTime > 0 && globalServerTime > 0) {
 
                                                     // init suggestion parameters
                                                     Long tmpUploadTime = System.currentTimeMillis();
@@ -4126,7 +4113,7 @@ public class EfbXmlParser {
                                                     Long tmpClientVoteDate = 0L; // value comes from server -> server time
                                                     tmpClientVoteLocaleDate = 0L;
 
-                                                    Long tmpMeetingSuggestionResponseStartTime = 0L; // value comes from server -> server time
+                                                    Long tmpMeetingSuggestionResponseStartTime = globalServerTime; // value comes from server -> server time
 
                                                     tmpMeetingFoundFromSuggestionAuthor = "";
                                                     tmpMeetingFoundFromSuggestionDate = 0L;
@@ -4139,33 +4126,26 @@ public class EfbXmlParser {
                                                     String tmpClientSuggestionText = "";
                                                     String tmpClientSuggestionAuthor = "";
                                                     Long tmpClientSuggestionTime = 0L; // value comes from server -> server time
-
                                                     Long tmpClientSuggestionLocaleTime = 0L;
-
 
                                                     tmpClientSuggestionStartDate = 0L;
                                                     tmpClientSuggestionEndDate = 0L;
 
                                                     Long tmpMeetingSuggestionClientCanceleTime = 0L; // value comes from server -> server time
-
                                                     Long tmpMeetingSuggestionClientCanceleLocaleTime = 0L;
-
-
                                                     String tmpMeetingSuggestionClientCanceleAuthor = "";
                                                     String tmpMeetingSuggestionClientCanceleText = "";
-
                                                     int tmpMeetingSuggestionClientCancele = 0; // 0=not canceled; 1 = canceled
 
                                                     String tmpClientCommentText = "";
                                                     String tmpClientCommentAuthor = "";
                                                     Long tmpClientCommentTime = 0L; // value comes from server -> server time
-
                                                     Long tmpClientCommentLocaleTime = 0L;
 
                                                     int meetingStatus = 4; // 0=ready to send, 1=meeting/suggestion send, 4=external message
                                                     int newMeeting = 1; // 1 = new meeting or suggestion
 
-                                                    int timerStatus = 0; // this is a suggestion -> timer needed!
+                                                    int timerStatus = 0; // this is a suggestion -> timer needed! =0 timer can run; =1 timer stop!
                                                     String updateOrder = "";
 
                                                     // insert new data into db

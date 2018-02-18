@@ -135,6 +135,8 @@ public class MeetingFragmentMeetingOverview extends Fragment {
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpMessage = intentExtras.getString("Message");
+                String tmpExtraSendInBackgroundRefreshView = intentExtras.getString("MeetingSendInBackgroundRefreshView");
+
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
@@ -210,6 +212,11 @@ public class MeetingFragmentMeetingOverview extends Fragment {
                 else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingSettings != null && tmpExtraMeetingSettings.equals("1")) {
 
                     // meeting settings change
+                    updateListView = true;
+                }
+                else if (tmpExtraSendInBackgroundRefreshView != null && tmpExtraSendInBackgroundRefreshView.equals("1")) {
+
+                    // meeting change -> send in background
                     updateListView = true;
                 }
 
