@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,11 +32,15 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
     // fragment context
     Context fragmentSuggestionContext = null;
 
+    // the fragment
+    Fragment fragmentSuggestionThisFragmentContext;
+
     // reference to the DB
     DBAdapter myDb;
 
     // for prefs
     private SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
     // ListView for meetings and suggestion
     ListView listViewMeetingSuggestion = null;
@@ -48,6 +53,8 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
         viewFragmentSuggestion = layoutInflater.inflate(R.layout.fragment_suggestion_overview, null);
+
+        fragmentSuggestionThisFragmentContext = this;
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
@@ -91,6 +98,7 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
 
         // open sharedPrefs
         prefs = fragmentSuggestionContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentSuggestionContext.MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
         // find the listview for display meetings and suggestion, etc.
         listViewMeetingSuggestion = (ListView) viewFragmentSuggestion.findViewById(R.id.listViewSuggestionDates);
@@ -137,7 +145,7 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                 String tmpMessage = intentExtras.getString("Message");
                 String tmpReceiverBroadcast = intentExtras.getString("receiverBroadcast", "");
                 String tmpExtraSendInBackgroundRefreshView = intentExtras.getString("MeetingSendInBackgroundRefreshView");
-                String tmpExtraREsponseTimerOverRefreshView = intentExtras.getString("SuggestionREsponseTimerOverRefreshView");
+                String tmpExtraResponseTimerOverRefreshView = intentExtras.getString("SuggestionResponseTimerOverRefreshView");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
@@ -158,8 +166,14 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
-                    // update the view
-                    updateListView = true;
+                    // update data adapter
+                    if (dataAdapterListViewSuggestion != null) {dataAdapterListViewSuggestion.notifyDataSetChanged();}
+
+                    // set correct tab one title with information new entry and color change
+                    ((ActivityMeeting) getActivity()).setTabTwoTitleAndColor();
+
+                    // refresh fragment view
+                    refreshFragmentView();
                 }
                 else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraSuggestionCanceledSuggestionByCoach != null && tmpExtraSuggestionCanceledSuggestionByCoach.equals("1")) {
                     // suggestion canceled by coach -> update suggestion view -> show toast and update view
@@ -234,18 +248,14 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                     // meeting change -> send in background
                     updateListView = true;
                 }
-                else if (tmpExtraREsponseTimerOverRefreshView != null &&  tmpExtraREsponseTimerOverRefreshView.equals("1")) {
+                else if (tmpExtraResponseTimerOverRefreshView != null &&  tmpExtraResponseTimerOverRefreshView.equals("1")) {
 
-                    if (dataAdapterListViewSuggestion != null) {
-                        dataAdapterListViewSuggestion.notifyDataSetChanged();
-                    }
+                    // set correct tab one title with information new entry and color change
+                    ((ActivityMeeting) getActivity()).setTabTwoTitleAndColor();
 
-                    // suggestion response timer is over -> refresh view
-                    updateListView = true;
+                    // refresh fragment view
+                    refreshFragmentView();
                 }
-
-
-
 
                 // update the list view because data has change?
                 if (updateListView) {
@@ -269,16 +279,37 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
     }
 
 
+    // refresh the fragments view
+    private void refreshFragmentView () {
+        // refresh fragments view
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(fragmentSuggestionThisFragmentContext).attach(fragmentSuggestionThisFragmentContext).commit();
+    }
+
+
     // show actual suggestion overview
     private void displayActualSuggestionInformation () {
+
+        Cursor cursorMeetingSuggestion;
 
         String tmpSubtitle = "";
 
         // get all suggestion from database in correct order
         Long nowTime = System.currentTimeMillis();
-        Cursor cursorMeetingSuggestion = myDb.getAllRowsMeetingsAndSuggestion("future_suggestion", nowTime);
+        if (nowTime > prefs.getLong(ConstansClassMeeting.namePrefsMeeting_LastStartPointSuggestionTimer, 0L)) {
+            // update last start point for timer of suggestion
+            prefsEditor.putLong(ConstansClassMeeting.namePrefsMeeting_LastStartPointSuggestionTimer, nowTime);
+            prefsEditor.apply();
 
-        if (cursorMeetingSuggestion.getCount() > 0 && listViewMeetingSuggestion != null) {
+            // get all suggestion from db
+            cursorMeetingSuggestion = myDb.getAllRowsMeetingsAndSuggestion("future_suggestion_without_timeborder", nowTime);
+        }
+        else {
+            cursorMeetingSuggestion = null;
+        }
+
+
+        if (cursorMeetingSuggestion != null && cursorMeetingSuggestion.getCount() > 0 && listViewMeetingSuggestion != null) {
 
             // set correct subtitle
             tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleSuggestionOverview", "string", fragmentSuggestionContext.getPackageName()));
@@ -328,6 +359,10 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
             // set no suggestions text visibility gone
             TextView tmpNoSuggestionsText = (TextView) viewFragmentSuggestion.findViewById(R.id.meetingOverviewNoSuggestionAvailable);
             tmpNoSuggestionsText.setVisibility(View.VISIBLE);
+
+            // set list view visibility gone
+            ListView tmpNoListView = (ListView) viewFragmentSuggestion.findViewById(R.id.listViewSuggestionDates);
+            tmpNoListView.setVisibility(View.GONE);
         }
     }
 }

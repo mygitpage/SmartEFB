@@ -23,13 +23,19 @@ package de.smart_efb.efbapp.smartefb;
    // meeting client comment suggestion on off to prefs
    static final String namePrefsMeeting_ClientCommentSuggestion_OnOff ="meetingClientCommentSuggestionOnOff";
 
+  // meeting last start point for timer of suggestion
+  static final String namePrefsMeeting_LastStartPointSuggestionTimer ="meetingStartPointSuggestionTimer";
+
    // meeting number of letters for canceled meeting reason
    static final int namePrefsMaxLettersCanceledMeetingReason = 600;
 
    // suggestion comment max letters
-   static final int namePrefsSuggestionCommentMaxLetters = 200;
+   static final int namePrefsSuggestionCommentMaxLetters = 600;
 
    // suggestion comment max letters
    static final int namePrefsSuggestionFromClientMaxLetters = 600;
+
+    // coach suggestion and client suggestion delta time for view
+    static final Long namePrefsSuggestionDeltaTimeView = 3600000L;
 
 }

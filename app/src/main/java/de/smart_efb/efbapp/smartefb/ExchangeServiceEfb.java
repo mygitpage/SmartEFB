@@ -2229,6 +2229,15 @@ import java.util.Map;
                     myDb.postUpdateWriteTimeMeetingSuggestion(dbId, updateOrder, globalServerTime);
                     break;
 
+                case "update_client_vote_comment_time_voteandcomment":
+                case "update_client_vote_comment_time_onlyvote":
+                case "update_client_vote_comment_time_onlycomment":
+
+                    Log.d("UPDATE EXCHANGE --->", "++++++ in CASE UPDATEORDER: "+updateOrder);
+
+                    myDb.postUpdateWriteTimeMeetingSuggestion(dbId, updateOrder, globalServerTime);
+                    break;
+
             }
         }
     }

@@ -4064,6 +4064,10 @@ public class EfbXmlParser {
                                                     // init suggestion parameters
                                                     Long tmpUploadTime = System.currentTimeMillis();
 
+                                                    // set last start point of timer for suggestion to now time
+                                                    prefsEditor.putLong(ConstansClassMeeting.namePrefsMeeting_LastStartPointSuggestionTimer, tmpUploadTime);
+                                                    prefsEditor.apply();
+
                                                     if (tmpMeetingSuggestionDate1 > 0) {
                                                         array_meetingTime[0] = tmpMeetingSuggestionDate1;
                                                     }
@@ -4135,7 +4139,7 @@ public class EfbXmlParser {
                                                     Long tmpMeetingSuggestionClientCanceleLocaleTime = 0L;
                                                     String tmpMeetingSuggestionClientCanceleAuthor = "";
                                                     String tmpMeetingSuggestionClientCanceleText = "";
-                                                    int tmpMeetingSuggestionClientCancele = 0; // 0=not canceled; 1 = canceled
+                                                    int tmpMeetingSuggestionClientCancele = 0; // 0=not canceled; 1=canceled
 
                                                     String tmpClientCommentText = "";
                                                     String tmpClientCommentAuthor = "";

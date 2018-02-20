@@ -2829,9 +2829,15 @@ public class DBAdapter extends SQLiteOpenHelper {
                 sort = MEETING_SUGGESTION_KEY_MEETING_CANCELED + " ASC, " + MEETING_SUGGESTION_KEY_DATE1 + " ASC";
                 break;
             case "future_suggestion":
-                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">=" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_START_TIME + "<=" + nowTime + " AND " + MEETING_SUGGESTION_KEY_TIMER_STATUS + "=0";
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2 AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">=" + (nowTime-ConstansClassMeeting.namePrefsSuggestionDeltaTimeView) + " AND " + MEETING_SUGGESTION_KEY_TIMER_STATUS + "=0";
                 sort = MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " DESC, " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + " DESC";
                 break;
+
+            case "future_suggestion_without_timeborder":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=2";
+                sort = MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " DESC, " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + " DESC";
+                break;
+
             case "future_suggestion_from_client":
                 where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + ">" + nowTime;
                 sort = MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " DESC, " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + " DESC";
@@ -3043,7 +3049,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    boolean updateSuggestionVoteAndCommentByClient(int tmpResultVote1, int tmpResultVote2, int tmpResultVote3, int tmpResultVote4, int tmpResultVote5, int tmpResultVote6, Long tmpVoteDate, String tmpVoteAuthor, String tmpClientCommentAuthor, Long tmpClientCommentDate,  String tmpClientCommentText, Long clientVoteDbId, int tmpStatus) {
+    boolean updateSuggestionVoteAndCommentByClient(int tmpResultVote1, int tmpResultVote2, int tmpResultVote3, int tmpResultVote4, int tmpResultVote5, int tmpResultVote6, Long tmpVoteDate, Long tmpVoteLocaleDate, String tmpVoteAuthor, String tmpClientCommentAuthor, Long tmpClientCommentDate, Long tmpClientCommentLocaleDate, String tmpClientCommentText, Long clientVoteDbId, int tmpStatus, int timerStatus, String updateOrder) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3061,13 +3067,20 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MEETING_SUGGESTION_KEY_VOTE6, tmpResultVote6);
         newValues.put(MEETING_SUGGESTION_KEY_VOTEAUTHOR, tmpVoteAuthor);
         newValues.put(MEETING_SUGGESTION_KEY_VOTEDATE, tmpVoteDate);
+        newValues.put(MEETING_SUGGESTION_KEY_VOTELOCALEDATE, tmpVoteLocaleDate);
         newValues.put(MEETING_SUGGESTION_MEETING_KEY_STATUS, tmpStatus);
 
         // set client comment suggestion data
         newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE, tmpClientCommentDate);
+        newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_LOCALE_DATE, tmpClientCommentLocaleDate);
         newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR, tmpClientCommentAuthor);
         newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT, tmpClientCommentText);
 
+        // set timer status
+        newValues.put(MEETING_SUGGESTION_KEY_TIMER_STATUS, timerStatus);
+
+        // set timer status
+        newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, updateOrder);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
@@ -3088,6 +3101,22 @@ public class DBAdapter extends SQLiteOpenHelper {
             case "update_client_canceled_server_time":
                 newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME, globalServerTime);
                 newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, "");
+                break;
+            case "update_client_vote_comment_time_voteandcomment":
+                newValues.put(MEETING_SUGGESTION_KEY_VOTEDATE, globalServerTime);
+                newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE, globalServerTime);
+                newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, "");
+                Log.d("Post Update -->++", "Vote and Comment"+globalServerTime);
+                break;
+            case "update_client_vote_comment_time_onlyvote":
+                newValues.put(MEETING_SUGGESTION_KEY_VOTEDATE, globalServerTime);
+                newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, "");
+                Log.d("Post Update -->++", "Only Vote"+globalServerTime);
+                break;
+            case "update_client_vote_comment_time_onlycomment":
+                newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE, globalServerTime);
+                newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, "");
+                Log.d("Post Update -->++", "Only Comment"+globalServerTime);
                 break;
         }
 

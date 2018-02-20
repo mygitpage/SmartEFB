@@ -355,7 +355,7 @@ public class ActivityMeeting extends AppCompatActivity {
             //set fragment in tab two to suggestion from coach
             meetingViewPagerAdapter.setFragmentTabTwo("suggestion_overview");
 
-            // set correct tab one title with information new entry and color change
+            // set correct tab two title with information new entry and color change
             tabTitleTextTabTwo = getResources().getString(getResources().getIdentifier("meetingTabTitle_3", "string", getPackageName()));
             setTabTwoTitleAndColor();
 
@@ -677,7 +677,8 @@ public class ActivityMeeting extends AppCompatActivity {
     }
 
     // set correct tab two title with information new entry and color change
-    private void setTabTwoTitleAndColor () {
+    // call from MeetingFragmentSuggestionOverview!
+    void setTabTwoTitleAndColor () {
 
         ActivityMeeting.this.lookNewEntryOnTabTwo();
 
