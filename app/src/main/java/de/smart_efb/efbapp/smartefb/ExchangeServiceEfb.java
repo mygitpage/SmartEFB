@@ -2238,6 +2238,11 @@ import java.util.Map;
                     myDb.postUpdateWriteTimeMeetingSuggestion(dbId, updateOrder, globalServerTime);
                     break;
 
+
+
+                case "update_suggestion_from_client_server_time":
+                    myDb.postUpdateWriteTimeMeetingSuggestion(dbId, updateOrder, globalServerTime);
+                    break;
             }
         }
     }

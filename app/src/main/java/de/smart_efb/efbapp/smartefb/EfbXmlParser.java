@@ -4197,6 +4197,10 @@ public class EfbXmlParser {
 
                                                 Long tmpUploadTime = System.currentTimeMillis();
 
+                                                // set last start point of timer for suggestion from client to now time
+                                                prefsEditor.putLong(ConstansClassMeeting.namePrefsMeeting_LastStartPointSuggestionFromClientTimer, tmpUploadTime);
+                                                prefsEditor.apply();
+
                                                 array_meetingTime[0] = 0L;
                                                 array_meetingTime[1] = 0L;
                                                 array_meetingTime[2] = 0L;
@@ -4386,7 +4390,6 @@ public class EfbXmlParser {
         Long tmpUploadTime = 0L;
         int tmpMessageRole = -1;
 
-
         try {
             int eventType = xpp.next();
 
@@ -4498,7 +4501,6 @@ public class EfbXmlParser {
                                 returnMap.put("ConnectBook","1");
                                 returnMap.put("ConnectBookMessageNewOrSend", "1");
 
-
                             } if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageLocaleTime > 0 && tmpMessageRole >= 0) {
 
                                 // set upload time on smartphone for message; value from server is not needed
@@ -4514,12 +4516,10 @@ public class EfbXmlParser {
                                 returnMap.put("ConnectBook","1");
                                 returnMap.put("ConnectBookMessageNewOrSend", "1");
 
-
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
 
                                 // delete all messages in connect book
                                 myDb.deleteAllChatMessage ();
-
                             }
                         }
                         parseAnymore = false;

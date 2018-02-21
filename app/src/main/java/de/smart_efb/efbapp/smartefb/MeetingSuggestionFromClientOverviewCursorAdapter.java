@@ -45,10 +45,7 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
     // count down timer for start of period
     CountDownTimer countDownEndTimeFormPeriod;
 
-    // vote db id for send button
-    Long clientDbId;
-
-
+    
     // Own constructor
     public MeetingSuggestionFromClientOverviewCursorAdapter(Context context, Cursor cursor, int flags) {
 
@@ -92,6 +89,9 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
         Boolean tmpSuggestionFromClientCanceled = false;
         Boolean tmpSuggestionFromClientMeetingFound = false;
 
+        // set row id of comment from db for timer update
+        final Long rowIdForUpdate = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
+        
         // get the view
         inflatedView = cursorInflater.inflate(R.layout.list_meeting_suggestion_from_client_overview_normal, parent, false);
 
@@ -109,8 +109,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
         else if (cursor.isFirst() && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)) < tmpNowTime && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)) > tmpNowTime) {
             // in timezone
             tmpInTimezone = true;
-            // init vote db id for button send
-            clientDbId = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
         }
         else {
             // out timezone
@@ -307,30 +305,50 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             placeholderForTicTimerEndDateInText.setText(tmpDateAndTimeForResponse);
             placeholderForTicTimerEndDateInText.setVisibility(View.VISIBLE);
 
-            // show time until enddate is reach
-            // calculate run time for timer in MILLISECONDS!!!
+            // show timer until startdate is reach
             Long nowTime = System.currentTimeMillis();
-            Long runTimeForTimer = cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)) - nowTime;
-            // start the timer with the calculated milliseconds
-            if (runTimeForTimer > 0) {
-                new CountDownTimer(runTimeForTimer, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        // gernate count down timer
-                        String FORMAT = "%d Stunden %02d Minuten %02d Sekunden";
-                        String tmpTime = String.format(FORMAT,
-                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+            Long tmpUploadTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME)); // local upload of suggestion from client
+            Long tmpEndSuggestionFromClientTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE));
+            Long tmpStartSuggestionFromClientTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE));
+            int tmpTimerStatus = cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_TIMER_STATUS)); // =0 timer can run; =1 timer stop
 
-                        // and set to textview
-                        placeholderForTicTimer.setText(tmpTime);
-                    }
+            // check for timer borders
+            if (nowTime >= tmpUploadTime && nowTime <= tmpEndSuggestionFromClientTime && nowTime > tmpStartSuggestionFromClientTime && nowTime > prefs.getLong(ConstansClassMeeting.namePrefsMeeting_LastStartPointSuggestionFromClientTimer, System.currentTimeMillis()) && tmpTimerStatus == 0) {
+                // calculate run time for timer in MILLISECONDS!!!
+                Long runTimeForTimer = tmpEndSuggestionFromClientTime - nowTime;
+                // start the timer with the calculated milliseconds
+                if (runTimeForTimer > 0) {
+                    new CountDownTimer(runTimeForTimer, 1000) {
+                        public void onTick(long millisUntilFinished) {
+                            // gernate count down timer
+                            String FORMAT = "%d Stunden %02d Minuten %02d Sekunden";
+                            String tmpTime = String.format(FORMAT,
+                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
 
-                    public void onFinish() {
-                        // change text to response time over
-                        placeholderForTicTimer.setText(tmpTextResponseTimeOver);
-                    }
-                }.start();
+                            // and set to textview
+                            placeholderForTicTimer.setText(tmpTime);
+                        }
+
+                        public void onFinish() {
+                            // set timer stop!
+                            myDb.updateTimerStatusMeetingSuggestion(rowIdForUpdate, 1); // timer status to 1 -> stop timer!
+
+                            // change text to response time over
+                            placeholderForTicTimer.setText(tmpTextResponseTimeOver);
+
+                            // refresh view
+                            refreshSuggestionFromClientView(context);
+                        }
+                    }.start();
+                }
+            }
+            else {
+                // set timer stop!
+                myDb.updateTimerStatusMeetingSuggestion(rowIdForUpdate, 1); // timer status to 1 -> stop timer!
+                // refresh view
+                refreshSuggestionFromClientView(context);
             }
 
             // hint text from coach?
@@ -342,7 +360,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
 
                 TextView textViewShowHintTextFromCoachBorder = (TextView) inflatedView.findViewById(R.id.suggestionFromClientCoachHintTextBorder);
                 textViewShowHintTextFromCoachBorder.setVisibility(View.VISIBLE);
-
             }
 
             // find send button "Terminvorschlaege senden"
@@ -360,29 +377,40 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                     suggestionFromClientText = txtInputSuggestionFromClient.getText().toString();
 
 
-                    if (suggestionFromClientText.length() > 3 && clientDbId != null && clientDbId > 0) { // too few letters AND vote db id  > 0?
+                    if (suggestionFromClientText.length() > 3 && rowIdForUpdate != null && rowIdForUpdate > 0) { // too few letters AND vote db id  > 0?
 
-                        // canceled time
-                        Long tmpSuggestionDate = System.currentTimeMillis();
+                        // suggestion locale time
+                        Long tmpSuggestionFromClientDate = System.currentTimeMillis();
 
-                        // canceled status
+                        // get server time from locale time or last contact time
+                        Long tmpSuggestionDate = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                        if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                            tmpSuggestionDate = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                        }
+
+                        // status of suggestion data -> 0= not send; 1=send; 4= external
                         int tmpStatus = 0; // not send to server
+                        // timer status -> timer not run =1, because client already vote
+                        int timerStatus = 1;
+
+                        // generate update order
+                        String updateOrder = "update_suggestion_from_client_server_time";
+                        // get user name
+                        String tmpSuggestionFromClientAuthor = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
 
                         // insert  in DB
-                        myDb.updateSuggestionFromClient(clientDbId, tmpSuggestionDate, prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"), suggestionFromClientText, tmpStatus);
+                        myDb.updateSuggestionFromClient(rowIdForUpdate, tmpSuggestionDate, tmpSuggestionFromClientDate, tmpSuggestionFromClientAuthor, suggestionFromClientText, tmpStatus, timerStatus, updateOrder);
 
                         // send intent to service to start the service and send vote suggestion to server!
                         Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
                         startServiceIntent.putExtra("com","send_meeting_data");
-                        startServiceIntent.putExtra("dbid",clientDbId);
+                        startServiceIntent.putExtra("dbid",rowIdForUpdate);
                         startServiceIntent.putExtra("receiverBroadcast", "meetingFragmentSuggestionFromClient");
                         meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
                     }
                     else { // error too few suggestions!
-
                             TextView textViewErrorToFewLettersInClientSuggestion = (TextView) inflatedView.findViewById(R.id.errorInputSuggestionFromClient);
                             textViewErrorToFewLettersInClientSuggestion.setVisibility(View.VISIBLE);
-
                     }
                 }
             });
@@ -405,7 +433,7 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             placeholderForTicTimerAskedFor.setVisibility(View.VISIBLE);
             placeholderForTicTimerAskedFor.setText(tmpAskForText);
 
-            // generate end date
+            // generate start date
             String tmpStartDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)), "dd.MM.yyyy");;
             String tmpStartTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)), "HH:mm");
             String tmpDateAndTimeForResponse = String.format(context.getResources().getString(R.string.suggestionFromClientStartDateAndTimeText), tmpStartDate, tmpStartTime);
@@ -413,33 +441,38 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             placeholderForTicTimerEndStartInText.setText(tmpDateAndTimeForResponse);
             placeholderForTicTimerEndStartInText.setVisibility(View.VISIBLE);
 
-            // show time until enddate is reach
-            // calculate run time for timer in MILLISECONDS!!!
+            // show timer until startdate is reach
             Long nowTime = System.currentTimeMillis();
-            Long runTimeForTimer = cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)) - nowTime;
-            // start the timer with the calculated milliseconds
-            if (runTimeForTimer > 0) {
-                countDownEndTimeFormPeriod = new CountDownTimer(runTimeForTimer, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                        // gernate count down timer
-                        String FORMAT = "%d Stunden %02d Minuten %02d Sekunden";
-                        String tmpTime = String.format(FORMAT,
-                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+            Long tmpUploadTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME)); // local upload of suggestion from client
+            Long tmpEndSuggestionFromClientTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE));
+            Long tmpStartSuggestionFromClientTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE));
+            int tmpTimerStatus = cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_TIMER_STATUS)); // =0 timer can run; =1 timer stop
 
-                        // and set to textview
-                        placeholderForTicTimer.setText(tmpTime);
-                    }
+            // check for timer borders
+            if (nowTime >= tmpUploadTime && nowTime <= tmpEndSuggestionFromClientTime && nowTime <= tmpStartSuggestionFromClientTime && nowTime > prefs.getLong(ConstansClassMeeting.namePrefsMeeting_LastStartPointSuggestionFromClientTimer, System.currentTimeMillis()) && tmpTimerStatus == 0) {
+                // calculate run time for timer in MILLISECONDS!!!
+                Long runTimeForTimer = tmpStartSuggestionFromClientTime - nowTime;
+                // start the timer with the calculated milliseconds
+                if (runTimeForTimer > 0) {
+                    countDownEndTimeFormPeriod = new CountDownTimer(runTimeForTimer, 1000) {
+                        public void onTick(long millisUntilFinished) {
+                            // gernate count down timer
+                            String FORMAT = "%d Stunden %02d Minuten %02d Sekunden";
+                            String tmpTime = String.format(FORMAT,
+                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
 
-                    public void onFinish() {
-                        // send intent to receiver in MeetingFragmentSuggestionFromClient to update list view -> waiting time is over, now client can vote for meetings!
-                        Intent tmpIntent = new Intent();
-                        tmpIntent.putExtra("SuggestionFromClientUpdateListView", "update");
-                        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
-                        context.sendBroadcast(tmpIntent);
-                    }
-                }.start();
+                            // and set to textview
+                            placeholderForTicTimer.setText(tmpTime);
+                        }
+
+                        public void onFinish() {
+                            // refresh the view
+                            refreshSuggestionFromClientView (context);
+                        }
+                    }.start();
+                }
             }
         }
 
@@ -463,6 +496,16 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
         return inflatedView;
     }
 
+
+    // send broadcast to refresh the view
+    private void refreshSuggestionFromClientView (Context context) {
+
+        Intent tmpIntent = new Intent();
+        tmpIntent.putExtra("SuggestionFromClientUpdateListView", "update");
+        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+        context.sendBroadcast(tmpIntent);
+    }
+    
 
     // Turn off view recycling in listview, because there are different views (first, normal)
     // getViewTypeCount(), getItemViewType

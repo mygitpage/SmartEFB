@@ -2631,10 +2631,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = "";
-
-        Log.d("DB Adapter ---->", "CanceledTime:-->"+canceledTime);
-
-
         where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_server_id;
 
         // Create rows data:
@@ -2672,7 +2668,6 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-
     // Change an existing suggestion that a meeting was found by coach
     boolean updateMeetingFoundFromSuggestion(Long meeting_id, long foundTime, String foundAuthor, int newMeeting, int status, String suggestOrSuggestFromClient, Long nowTime) {
 
@@ -2682,13 +2677,13 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         switch (suggestOrSuggestFromClient) {
             case "suggestion":
-                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_id + " AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">" + nowTime;
+                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_id;
                 break;
             case "suggestion_from_client":
-                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_id + " AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + ">" + nowTime;
+                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_id;
                 break;
             default:
-                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_id + " AND " + MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME + ">" + nowTime;
+                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_id;
                 break;
         }
 
@@ -2706,7 +2701,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Change an existing suggestion from client with client suggestion
-    boolean updateSuggestionFromClient(Long meeting_id, long suggestionTime, String suggestionAuthor, String suggestionText, int status) {
+    boolean updateSuggestionFromClient(Long meeting_id, long suggestionTime, long suggestionLocaleTime, String suggestionAuthor, String suggestionText, int status, int timerStatus, String updateOrder) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2715,9 +2710,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         // Create rows data:
         ContentValues newValues = new ContentValues();
         newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME, suggestionTime);
+        newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_LOCALE_TIME, suggestionLocaleTime);
         newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR, suggestionAuthor);
         newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT, suggestionText);
         newValues.put(MEETING_SUGGESTION_MEETING_KEY_STATUS, status);
+        newValues.put(MEETING_SUGGESTION_KEY_TIMER_STATUS, timerStatus);
+        newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, updateOrder);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
@@ -2842,6 +2840,16 @@ public class DBAdapter extends SQLiteOpenHelper {
                 where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + ">" + nowTime;
                 sort = MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " DESC, " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + " DESC";
                 break;
+
+            case "future_suggestion_from_client_without_timeborder":
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4";
+                sort = MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " DESC, " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + " DESC";
+                break;
+
+
+
+
+
             case "old_meeting":
                 where = "(" + MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=1 AND " + MEETING_SUGGESTION_KEY_DATE1 + "<" + nowTime + ")";
                 sort = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + " DESC";
@@ -3106,17 +3114,19 @@ public class DBAdapter extends SQLiteOpenHelper {
                 newValues.put(MEETING_SUGGESTION_KEY_VOTEDATE, globalServerTime);
                 newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE, globalServerTime);
                 newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, "");
-                Log.d("Post Update -->++", "Vote and Comment"+globalServerTime);
                 break;
             case "update_client_vote_comment_time_onlyvote":
                 newValues.put(MEETING_SUGGESTION_KEY_VOTEDATE, globalServerTime);
                 newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, "");
-                Log.d("Post Update -->++", "Only Vote"+globalServerTime);
                 break;
             case "update_client_vote_comment_time_onlycomment":
                 newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE, globalServerTime);
                 newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, "");
-                Log.d("Post Update -->++", "Only Comment"+globalServerTime);
+                break;
+
+            case "update_suggestion_from_client_server_time":
+                newValues.put(MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME, globalServerTime);
+                newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, "");
                 break;
         }
 

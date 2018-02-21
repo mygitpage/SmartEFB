@@ -1018,6 +1018,7 @@
             <string name="suggestionOverviewVoteSuggestionTitle">Ihre getroffene Terminauswahl</string>
             <string name="suggestionOverviewFoundMeetingFromSuggestionTitle">Termin gefunden aus Vorschlägen</string>
             <string name="suggestionOverviewActualSuggestionTitle">Aktuelle Terminvorschläge</string>
+    <string name="suggestionOverviewResponseTimeOverSuggestionTitle">Rückmeldezeit abgelaufen</string>
             <string name="meetingOverviewNoSuggestionAvailableText">Es sind keine Terminvorschläge von Ihrer Beraterin/ Ihrem Berater vorhanden oder alle Rückmeldezeiten sind verstrichen.</string>
             <string name="meetingOverviewSuggestionSelectSuggestFromListIntro">Bitte wählen Sie aus den Terminvorschlägen die für Sie passenden aus.</string>
             <string name="meetingOverviewSuggestionAuthorAndDateWithCancele">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt und von &lt;u>%4$s&lt;/u> am %5$s um %6$s Uhr verworfen.</string>
@@ -1028,6 +1029,9 @@
     <string name="meetingOverviewMeetingFoundFromSuggestionAuthorAndDate">Ihre Beraterin/ Ihr Berater (%1$s) hat am  %2$s um %3$s Uhr aus allen Terminvorschlägen einen Termin gefunden. Bitte schauen Sie in den Bereich Termine.</string>
 
             <string name="meetingOverviewSuggestionAuthorAndDate">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt.</string>
+
+    <string name="meetingOverviewSuggestionAuthorAndDateResponseTimeOver">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt. Die Rückmeldezeit ist am %4$s um %5$s Uhr abgelaufen. Sie haben leider keine Rückmeldung gegeben. Bitte setzen Sie sich mit Ihrer Beraterin/ Ihrem Berater in Verbindung.</string>
+
             <string name="meetingOverviewSuggestiondateAndTimeText">%1$s - %2$s Uhr</string>
             <string name="meetingOverviewSuggestionResponseDateAndTimeText">(bis zum %1$s um %2$s Uhr, Beratungsstellenzeit)</string>
             <string name="btnTextSendSuggestionToCoach">Meine Auswahl Senden</string>
@@ -1041,8 +1045,14 @@
             <string name="meetingOverviewSuggestionVoteInfoOrSuggestionCommentTextAtLeastNotSend">Ihre Auswahl von Terminvorschlägen und /oder Ihr Kommentar zu den Vorschlägen wurde bisher noch nicht gesendet! Sobald eine Internetverbindung besteht, wird Ihre Wahl gesendet.</string>
 
     <string name="meetingOverviewSuggestionFoundMeetingInfoTextAtLeast">Ihre Beraterin/ Ihre Berater konnte aus den Terminvorschlägen aller Beteiligten einen Termin finden. Dieser wurde bzw. wird im Bereich Termine zu finden sein.</string>
-            <string name="meetingOverviewSuggestionCanceledInfoTextAtLeast">Ihre Beraterin/ Ihre Berater hat die Terminvorschläge verworfen. Daher können Sie diese nicht mehr auswählen.</string>
-            <string name="suggestionOverviewResponseTimeIsOver">Rückmeldezeit abgelaufen</string>
+            <string name="meetingOverviewSuggestionCanceledInfoTextAtLeast">Ihre Beraterin/ Ihre Berater hat die Terminvorschläge verworfen.</string>
+
+    <string name="meetingOverviewSuggestionResponseTimeOverTextAtLeast">Die Rückmeldezeit ist abgelaufen. Bitte setzen Sie sich mit Ihrer Beraterin/ Ihrem Berater in Verbindung.</string>
+
+
+    <string name="suggestionOverviewResponseTimeIsOver">Rückmeldezeit abgelaufen</string>
+
+    <string name="meetingSuggestionResponseTimeOverText">Rückmeldezeit abgelaufen!</string>
             <string name="suggestionOverviewResponseTimeAskedForIntroText">Rückmeldung erbeten in spätestens</string>
             <string name="suggestionCommentHeadlineText">Ihr Kommentar</string>
             <string name="meetingOverviewSuggestionNoCommentTextAvailable">Es ist für diese Terminvorschläge kein Kommentar vorhanden!</string>

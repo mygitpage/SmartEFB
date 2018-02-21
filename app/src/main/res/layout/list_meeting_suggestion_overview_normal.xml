@@ -108,6 +108,17 @@
         android:gravity="center_horizontal"
         android:visibility="gone"/>
 
+    <TextView
+        android:id="@+id/suggestionResponseTimeOverTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="@color/text_accent_color"
+        android:textStyle="bold"
+        android:text="@string/meetingSuggestionResponseTimeOverText"
+        android:gravity="center_horizontal"
+        android:visibility="gone"/>
+
 
 
     <TextView

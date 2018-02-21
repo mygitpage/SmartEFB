@@ -141,7 +141,7 @@ public class ActivityConnectBook extends AppCompatActivity {
             prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0);
             // set new start time for message count
             prefsEditor.putLong(ConstansClassConnectBook.namePrefsConnectCountMessagesResetTime, (startPointResetTimeMessageCounter + oneDayInMills));
-            prefsEditor.commit();
+            prefsEditor.apply();
         }
     }
 
@@ -269,6 +269,8 @@ public class ActivityConnectBook extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        Log.d("ConnectBook ------>", "OnResume!!!!!!!!!!");
+
         // update listview  on resume
         updateListView();
     }
@@ -360,6 +362,8 @@ public class ActivityConnectBook extends AppCompatActivity {
 
                 } else if (tmpExtraConnectBookMessageNewOrSend != null && tmpExtraConnectBookMessageNewOrSend.equals("1")) {
 
+                    Log.d("ConnectBook ------>", "Braodcast NEW!!!!!!!!!!");
+
                     // new message received or messages send
                     updateListView = true;
 
@@ -405,6 +409,8 @@ public class ActivityConnectBook extends AppCompatActivity {
             listViewConnectBook.destroyDrawingCache();
             listViewConnectBook.setVisibility(ListView.INVISIBLE);
             listViewConnectBook.setVisibility(ListView.VISIBLE);
+
+            Log.d("ConnectBook ------>", "UPDATE LIST VIEW!!!!!!!!!!");
 
             // init the view of activity
             initViewConnectBook();

@@ -26,6 +26,9 @@ package de.smart_efb.efbapp.smartefb;
   // meeting last start point for timer of suggestion
   static final String namePrefsMeeting_LastStartPointSuggestionTimer ="meetingStartPointSuggestionTimer";
 
+    // meeting last start point for timer of suggestion from client
+    static final String namePrefsMeeting_LastStartPointSuggestionFromClientTimer ="meetingStartPointSuggestionFromTimerTimer";
+
    // meeting number of letters for canceled meeting reason
    static final int namePrefsMaxLettersCanceledMeetingReason = 600;
 

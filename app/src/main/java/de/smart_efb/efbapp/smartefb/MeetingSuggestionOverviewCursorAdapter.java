@@ -135,6 +135,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         Boolean tmpStatusVoteSuggestion = false;
         Boolean tmpStatusMeetingFoundFromSuggestion = false;
         Boolean tmpStatusSuggestion = false;
+        Boolean tmpStatusResponseTimeOverSuggestion = false;
 
         final Context context = mContext;
 
@@ -155,14 +156,17 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         } else if ((cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEAUTHOR)).length() > 0 && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTEDATE)) > 0) || (cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR)).length() > 0 && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE)) > 0)) { // suggestion vote or comment send
             // check for vote (vote and/or comment
             tmpStatusVoteSuggestion = true;
+        } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_TIMER_STATUS)) == 1) {
+            // check for normal response time over suggestion
+            tmpStatusResponseTimeOverSuggestion = true;
         } else if (cursor.isFirst()) {
-            // check for normal suggestion
+            // check for normal running suggestion
             tmpStatusSuggestion = true;
             // init vote db id for button send
             clientVoteDbId = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
         }
 
-        // check for normal suggestion -> set intro text to visible
+        // check for normal running suggestion -> set intro text to visible
         if (tmpStatusSuggestion) {
             TextView tmpIntroText = (TextView) inflatedView.findViewById(R.id.meetingIntroInfoText);
             tmpIntroText.setVisibility(View.VISIBLE);
@@ -173,7 +177,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
         // set info text
         String tmpTitleForSuggestion = "";
         TextView tmpTextViewAuthorNameForSuggestion = (TextView) inflatedView.findViewById(R.id.suggestionAuthorAndDate);
-        if (tmpStatusSuggestion) { // for normal suggestion
+        if (tmpStatusSuggestion) { // for normal running suggestion
             String tmpAuthorName = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR));
             String meetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "dd.MM.yyyy");
             String meetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "HH:mm");
@@ -185,6 +189,24 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             // set title "actual suggestion"
             tmpTitleForSuggestion = context.getResources().getString(R.string.suggestionOverviewActualSuggestionTitle);
             tmpTextViewTitleForSuggestion.setText(tmpTitleForSuggestion);
+        }
+        if (tmpStatusResponseTimeOverSuggestion) { // for normal response time over suggestion
+            String tmpAuthorName = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR));
+            String suggestionDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "dd.MM.yyyy");
+            String suggestionTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "HH:mm");
+            String responseDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME)), "dd.MM.yyyy");
+            String responseTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME)), "HH:mm");
+
+            // set info text response time over
+            String tmpTextAuthorNameMeeting = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionAuthorAndDateResponseTimeOver), tmpAuthorName, suggestionDate, suggestionTime, responseDate, responseTime);
+            tmpTextViewAuthorNameForSuggestion.setText(Html.fromHtml(tmpTextAuthorNameMeeting));
+
+            // set title "response time over suggestion"
+            tmpTitleForSuggestion = context.getResources().getString(R.string.suggestionOverviewResponseTimeOverSuggestionTitle);
+            tmpTextViewTitleForSuggestion.setText(tmpTitleForSuggestion);
+
+            TextView tmpTextViewBigHintSuggestionResponseTimeOver = (TextView) inflatedView.findViewById(R.id.suggestionResponseTimeOverTextView);
+            tmpTextViewBigHintSuggestionResponseTimeOver.setVisibility(View.VISIBLE);
         }
         if (tmpStatusSuggestionCanceled) {
             // set info text with canceled info
@@ -295,8 +317,8 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                 // find checkboxes to vote
                 CheckBox tmpSuggestionCheckBox = (CheckBox) inflatedView.findViewById(checkboxVoteSuggestion[t-1]);
 
-                //check if suggestions votes or canceled meeting or found meeting!
-                if (tmpStatusMeetingFoundFromSuggestion || tmpStatusVoteSuggestion || tmpStatusSuggestionCanceled) {
+                //check if suggestions votes or canceled meeting or found meeting or response time over!
+                if (tmpStatusMeetingFoundFromSuggestion || tmpStatusVoteSuggestion || tmpStatusSuggestionCanceled || tmpStatusResponseTimeOverSuggestion) {
 
                     // change of checkbox is not possible
                     tmpSuggestionCheckBox.setClickable(false);
@@ -321,13 +343,13 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             tmpTextViewSuggestionHintText.setVisibility(View.VISIBLE);
         }
 
-        // check for suggestion vote or found meeting or suggestion canceled -> hint send button
-        if (tmpStatusMeetingFoundFromSuggestion || tmpStatusVoteSuggestion || tmpStatusSuggestionCanceled) {
+        // check for suggestion vote or found meeting or suggestion canceled or respone time over -> hint send button
+        if (tmpStatusMeetingFoundFromSuggestion || tmpStatusVoteSuggestion || tmpStatusSuggestionCanceled || tmpStatusResponseTimeOverSuggestion) {
             Button tmpButtonSendSuggestion = (Button) inflatedView.findViewById(R.id.buttonSendSuggestionToCoach);
             tmpButtonSendSuggestion.setVisibility(View.GONE);
 
             // check for suggestion comment text -> show text or hint no text available
-            if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false)) {
+            if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false) && (tmpStatusMeetingFoundFromSuggestion || tmpStatusVoteSuggestion || tmpStatusSuggestionCanceled)) {
                 String tmpSuggestionCommentText = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT));
                 TextView tmpTextViewSuggestionCommentText = (TextView) inflatedView.findViewById(R.id.suggestionCommentTextByClient);
                 TextView tmpTextViewSuggestionCommentHeadline = (TextView) inflatedView.findViewById(R.id.suggestionCommentTextByClientHeadline);
@@ -401,6 +423,13 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             tmpTextViewInfoTextAtLeast.setVisibility(View.VISIBLE);
         }
 
+        // suggestion response time is over
+        if (tmpStatusResponseTimeOverSuggestion) {
+            tmpAtLastMessage = context.getResources().getString(R.string.meetingOverviewSuggestionResponseTimeOverTextAtLeast);
+            tmpTextViewInfoTextAtLeast.setText(tmpAtLastMessage);
+            tmpTextViewInfoTextAtLeast.setVisibility(View.VISIBLE);
+        }
+
         // count down timer for response time -> only normal suggestion
         if (tmpStatusSuggestion) {
 
@@ -452,18 +481,18 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                             myDb.updateTimerStatusMeetingSuggestion(rowIdForUpdate, 1); // timer status to 1 -> stop timer!
                             // change text to response time over
                             placeholderForTicTimer.setText(tmpTextResponseTimeOver);
+                            // refresh view
+                            refreshSuggestionView (context);
 
                         }
                     }.start();
                 }
             }
             else {
-
-                if (tmpTimerStatus == 0) {
-                    // set timer stop!
-                    myDb.updateTimerStatusMeetingSuggestion(rowIdForUpdate, 1); // timer status to 1 -> stop timer!
-                }
-
+                // set timer stop!
+                myDb.updateTimerStatusMeetingSuggestion(rowIdForUpdate, 1); // timer status to 1 -> stop timer!
+                // refresh view
+                refreshSuggestionView (context);
             }
         }
 
