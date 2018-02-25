@@ -84,7 +84,8 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
         Long tmpNowTime = System.currentTimeMillis();
 
         Boolean tmpInTimezone = false;
-        Boolean tmpOutTimezone = false;
+        Boolean tmpOutPostTimezone = false;
+        Boolean tmpOutPreTimezone = false;
         Boolean tmpSuggestionFromClientAlreadySend = false;
         Boolean tmpSuggestionFromClientCanceled = false;
         Boolean tmpSuggestionFromClientMeetingFound = false;
@@ -106,13 +107,20 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
         else if (cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR)).length() > 0 && cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT)).length() > 0 && cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME)).length() > 0) {
             tmpSuggestionFromClientAlreadySend = true;
         }
-        else if (cursor.isFirst() && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)) < tmpNowTime && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)) > tmpNowTime) {
+        else if (cursor.isFirst() && cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_TIMER_STATUS)) == 0 && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)) < tmpNowTime && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)) > tmpNowTime) {
             // in timezone
             tmpInTimezone = true;
         }
+        else if (cursor.isFirst() && cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_TIMER_STATUS)) == 0 && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)) > tmpNowTime && cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)) > tmpNowTime) {
+            // out timezone (befor start date)
+            tmpOutPreTimezone = true;
+        }
         else {
-            // out timezone
-            tmpOutTimezone = true;
+            // out timezone (after end date)
+            if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_TIMER_STATUS)) == 0) {
+                myDb.updateTimerStatusMeetingSuggestion(rowIdForUpdate, 1); // timer status to 1 -> stop timer!
+            }
+            tmpOutPostTimezone = true;
         }
 
         // check if entry new?
@@ -125,8 +133,8 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             myDb.deleteStatusNewEntryMeetingAndSuggestion(cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
         }
 
-        // show intro text different in timezone/ out timezone
-        if (tmpInTimezone || tmpOutTimezone) {
+        // show intro text different in timezone/ out pre/post timezone
+        if (cursor.isFirst() && (tmpInTimezone || tmpOutPreTimezone || tmpOutPostTimezone)) {
 
             // show intro text different in timezone/ out timezone
             String actualSuggestionFromClientHeadline = "";
@@ -134,8 +142,11 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             if (tmpInTimezone) {
                 actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientIntroInfoTextInTimezone);
             }
+            else if (tmpOutPreTimezone) {
+                actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientIntroInfoTextOutPreTimezone);
+            }
             else {
-                actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientIntroInfoTextOutTimezone);
+                actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientIntroInfoTextOutPostTimezone);
             }
             textViewSuggestionFromClientIntroText.setText(actualSuggestionFromClientHeadline);
             textViewSuggestionFromClientIntroText.setVisibility(View.VISIBLE);
@@ -166,8 +177,8 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             tmpTextAuthorAndDate = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionFromClientAuthorAndDateMeetingFound), suggestionFromClientMeetingFoundAuthor, suggestionFromClientMeetingFoundDate, suggestionFromClientMeetingFoundTime, suggestionFromClientStartDate, suggestionFromClientStartTime, suggestionFromClientEndDate, suggestionFromClientEndTime);
         }
         else if (tmpSuggestionFromClientAlreadySend) {
-            String suggestionFromClientMeetingSendDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME)), "dd.MM.yyyy");;
-            String suggestionFromClientMeetingSendTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME)), "HH:mm");;
+            String suggestionFromClientMeetingSendDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_LOCALE_TIME)), "dd.MM.yyyy");
+            String suggestionFromClientMeetingSendTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_LOCALE_TIME)), "HH:mm");
             actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientTitleAndNumberTextAlreadySend);
             tmpTextAuthorAndDate = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionFromClientAuthorAndDateAlreadySend), suggestionFromClientMeetingSendDate, suggestionFromClientMeetingSendTime);
         }
@@ -175,9 +186,14 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientTitleAndNumberTextInTimezone);
             tmpTextAuthorAndDate = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionFromClientInTimezone), suggestionFromClientEndDate, suggestionFromClientEndTime, suggestionFromClientStartDate, suggestionFromClientStartTime, suggestionFromClientTimezoneAuthor, suggestionFromClientTimezoneCreationDate, suggestionFromClientTimezoneCreationTime);
         }
-        else { // suggestion from client out timezone
-            actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientTitleAndNumberTextOutTimezone);
-            tmpTextAuthorAndDate = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionFromClientOutTimezone), suggestionFromClientStartDate, suggestionFromClientStartTime, suggestionFromClientEndDate, suggestionFromClientEndTime, suggestionFromClientTimezoneAuthor, suggestionFromClientTimezoneCreationDate, suggestionFromClientTimezoneCreationTime);
+        else if (tmpOutPreTimezone) { // suggestion from client out pre timezone
+            actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientTitleAndNumberTextOutPreTimezone);
+            tmpTextAuthorAndDate = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionFromClientOutPreTimezone), suggestionFromClientStartDate, suggestionFromClientStartTime, suggestionFromClientEndDate, suggestionFromClientEndTime, suggestionFromClientTimezoneAuthor, suggestionFromClientTimezoneCreationDate, suggestionFromClientTimezoneCreationTime);
+        }
+        else {
+            // this is out post timezone
+            actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientTitleAndNumberTextOutPostTimezone);
+            tmpTextAuthorAndDate = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionFromClientOutPostTimezone), suggestionFromClientStartDate, suggestionFromClientStartTime, suggestionFromClientEndDate, suggestionFromClientEndTime);
         }
         textViewSuggestionFromClientTitleAndNumber.setText(actualSuggestionFromClientHeadline);
         textViewSuggestionFromClientAuthorAndDate.setText(Html.fromHtml(tmpTextAuthorAndDate));
@@ -202,6 +218,18 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             }
         }
 
+        // we are post out off timezone
+        if (tmpOutPostTimezone) {
+            TextView textViewSuggestionFromClientPostOutoffTimezone = (TextView) inflatedView.findViewById(R.id.suggestionFromClientPostOutOffTimezone);
+            textViewSuggestionFromClientPostOutoffTimezone.setVisibility(View.VISIBLE);
+
+            if (!cursor.isFirst()) { // show border when not first
+                TextView textViewSuggestionFromClientInvitationCanceledBorder = (TextView) inflatedView.findViewById(R.id.suggestionFromClientBorderBetween);
+                textViewSuggestionFromClientInvitationCanceledBorder.setVisibility(View.VISIBLE);
+            }
+        }
+
+
         // we are in meeting found from client suggestion
         if (tmpSuggestionFromClientMeetingFound) { // suggestion from client canceled
 
@@ -222,8 +250,8 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             }
         }
 
-        // we are in meeting found from suggestion, in canceled suggestion or suggestion send
-        if (tmpSuggestionFromClientCanceled || tmpSuggestionFromClientMeetingFound || tmpSuggestionFromClientAlreadySend) {
+        // we are in meeting found from suggestion, in canceled suggestion or suggestion send or timezone post out
+        if (tmpSuggestionFromClientCanceled || tmpSuggestionFromClientMeetingFound || tmpOutPostTimezone) {
 
             // set link to delete suggestion entry, because canceled or meeting found from suggestion
             TextView tmpTextViewClientDeleteEntry = (TextView) inflatedView.findViewById(R.id.suggestionFromClientDeleteEntryLink);
@@ -420,8 +448,8 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             textViewClientSuggestionInfoTextForUser.setVisibility(View.VISIBLE);
         }
 
-        // we are not in timezone -> show count down timer
-        if (tmpOutTimezone && cursor.isFirst()) {
+        // we are in pre timezone (out but pre) -> show count down timer
+        if (tmpOutPreTimezone && cursor.isFirst()) {
 
             // get text view for timer place and set visible
             final TextView placeholderForTicTimer = (TextView) inflatedView.findViewById(R.id.suggestionFromClientEndDateTicTimer);
@@ -473,6 +501,11 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                         }
                     }.start();
                 }
+            }
+            else {
+                String timerProblemText = context.getResources().getString(R.string.suggestionFromClientTimerProblemText);
+                placeholderForTicTimer.setText(timerProblemText);
+
             }
         }
 

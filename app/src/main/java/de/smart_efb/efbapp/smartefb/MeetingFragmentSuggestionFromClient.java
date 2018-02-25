@@ -274,21 +274,19 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
         // check is function on
         if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientSuggestion_OnOff, false)) {
 
-            // get all suggestion from client from database in correct order
             Long nowTime = System.currentTimeMillis();
-            if (nowTime > prefs.getLong(ConstansClassMeeting.namePrefsMeeting_LastStartPointSuggestionFromClientTimer, 0L)) {
-                // update last start point for timer of suggestion from client
-                prefsEditor.putLong(ConstansClassMeeting.namePrefsMeeting_LastStartPointSuggestionFromClientTimer, nowTime);
-                prefsEditor.apply();
 
-                // get all suggestion from client from database in correct order
-                cursorMeetingSuggestionFromClient = myDb.getAllRowsMeetingsAndSuggestion("future_suggestion_from_client_without_timeborder", nowTime);
-            }
-            else {
-                cursorMeetingSuggestionFromClient = null;
-            }
+            // get all suggestion from client from database in correct order
+            cursorMeetingSuggestionFromClient = myDb.getAllRowsMeetingsAndSuggestion("future_suggestion_from_client_without_timeborder", nowTime);
 
             if (cursorMeetingSuggestionFromClient != null && cursorMeetingSuggestionFromClient.getCount() > 0 && listViewMeetingSuggestionFromClient != null) {
+
+                // check time border
+                if (nowTime > prefs.getLong(ConstansClassMeeting.namePrefsMeeting_LastStartPointSuggestionFromClientTimer, 0L)) {
+                    // update last start point for timer of suggestion from client
+                    prefsEditor.putLong(ConstansClassMeeting.namePrefsMeeting_LastStartPointSuggestionFromClientTimer, nowTime);
+                    prefsEditor.apply();
+                }
 
                 // set correct subtitle
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleSuggestionFromClientOverview", "string", fragmentSuggestionFromClientContext.getPackageName()));
@@ -317,9 +315,8 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
 
                 // Assign adapter to ListView
                 listViewMeetingSuggestionFromClient.setAdapter(dataAdapterListViewSuggestionFromClient);
-
-            } else {
-
+            }
+            else {
                 // set correct subtitle
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleSuggestionFromClientOverviewNoSuggestion", "string", fragmentSuggestionFromClientContext.getPackageName()));
                 ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle(tmpSubtitle, "suggestion_from_client");
@@ -328,6 +325,7 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
                 TextView tmpNoSuggestionsText = (TextView) viewFragmentSuggestionFromCLient.findViewById(R.id.meetingOverviewNoSuggestionFromClientAvailable);
                 tmpNoSuggestionsText.setVisibility(View.VISIBLE);
             }
+
         }
         else {
 

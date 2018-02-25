@@ -2626,7 +2626,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Change an existing meeting to canceled by coach
-    boolean updateMeetingCanceledByCoach(Long meeting_server_id, Long canceledTime, String canceledAuthor, int newMeeting, int status) {
+    boolean updateMeetingCanceledByCoach(Long meeting_server_id, Long canceledTime, String canceledAuthor, int newMeeting, int status, int timerStatus, String updateOrder) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2640,6 +2640,8 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR, canceledAuthor);
         newValues.put(MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST, newMeeting);
         newValues.put(MEETING_SUGGESTION_MEETING_KEY_STATUS, status);
+        newValues.put(MEETING_SUGGESTION_KEY_TIMER_STATUS, timerStatus);
+        newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, updateOrder);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
@@ -2669,23 +2671,12 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Change an existing suggestion that a meeting was found by coach
-    boolean updateMeetingFoundFromSuggestion(Long meeting_id, long foundTime, String foundAuthor, int newMeeting, int status, String suggestOrSuggestFromClient, Long nowTime) {
+    boolean updateMeetingFoundFromSuggestion(Long meeting_id, long foundTime, String foundAuthor, int newMeeting, int status, int timerStatus, String updateOrder) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = "";
-
-        switch (suggestOrSuggestFromClient) {
-            case "suggestion":
-                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_id;
-                break;
-            case "suggestion_from_client":
-                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_id;
-                break;
-            default:
-                where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_id;
-                break;
-        }
+        where = MEETING_SUGGESTION_KEY_MEETING_SERVER_ID + "=" + meeting_id;
 
         // Create rows data:
         ContentValues newValues = new ContentValues();
@@ -2694,6 +2685,8 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_AUTHOR, foundAuthor);
         newValues.put(MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST, newMeeting);
         newValues.put(MEETING_SUGGESTION_MEETING_KEY_STATUS, status);
+        newValues.put(MEETING_SUGGESTION_KEY_TIMER_STATUS, timerStatus);
+        newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, updateOrder);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
@@ -2864,7 +2857,7 @@ public class DBAdapter extends SQLiteOpenHelper {
                 break;
 
             case "client_suggestion_for_show_attention":
-                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + "<" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + ">" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + "=0 AND (" + MEETING_SUGGESTION_MEETING_KEY_STATUS + "=0 OR " + MEETING_SUGGESTION_MEETING_KEY_STATUS + "=4)";
+                where = MEETING_SUGGESTION_KEY_MEETING_KATEGORIE + "=4 AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE + "<" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE + ">" + nowTime + " AND " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + "=0 AND " + MEETING_SUGGESTION_KEY_TIMER_STATUS + "=0 AND " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + "=0 AND (" + MEETING_SUGGESTION_MEETING_KEY_STATUS + "=0 OR " + MEETING_SUGGESTION_MEETING_KEY_STATUS + "=4)";
                 sort = MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME + " DESC, " + MEETING_SUGGESTION_KEY_MEETING_CANCELED + " DESC, " + MEETING_SUGGESTION_KEY_SUGGESTION_FOUND + " DESC";
                 break;
 

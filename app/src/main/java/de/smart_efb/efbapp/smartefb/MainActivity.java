@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
+        //finish();
         overridePendingTransition(0, 0);
         startActivity(intent);
         overridePendingTransition(0, 0);

@@ -29,5 +29,8 @@ class ConstansClassConnectBook {
     // prefs name for connect book message counter reset time
     static final String namePrefsConnectCountMessagesResetTime = "connectBookMessageCounterResetTime";
 
+    // prefs name for connect book message counter last reset locale time
+    static final String namePrefsConnectCountMessagesLastResetLocaleTime = "connectBookMessageCounterLastResetLocaleTime";
+
 
 }

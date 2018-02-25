@@ -3955,8 +3955,11 @@ public class EfbXmlParser {
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
 
+                                                int timerStatus = 1; // 1 = timer can not run
+                                                String updateOrder = ""; // nothing to update
+
                                                 // update row in db table
-                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus);
+                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus, timerStatus, updateOrder);
 
                                                 returnMap.put("MeetingCanceledMeetingByCoach", "1");
                                                 returnMap.put("Meeting", "1");
@@ -4038,8 +4041,11 @@ public class EfbXmlParser {
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
 
+                                                int timerStatus = 1; // 1 = timer can not run
+                                                String updateOrder = ""; // nothing to update
+
                                                 // update row in db table
-                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus);
+                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus, timerStatus, updateOrder);
 
                                                 returnMap.put("MeetingCanceledSuggestionByCoach", "1");
                                                 returnMap.put("Meeting", "1");
@@ -4048,10 +4054,12 @@ public class EfbXmlParser {
 
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
-                                                Long nowTime = System.currentTimeMillis();
+
+                                                int timerStatus = 1; // 1 = timer can not run
+                                                String updateOrder = ""; // nothing to update
 
                                                 // update row in db table
-                                                myDb.updateMeetingFoundFromSuggestion(tmpMeetingSuggestionDataServerId, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestionAuthor, newMeeting, meetingStatus, "suggestion", nowTime);
+                                                myDb.updateMeetingFoundFromSuggestion(tmpMeetingSuggestionDataServerId, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestionAuthor, newMeeting, meetingStatus, timerStatus, updateOrder);
 
                                                 returnMap.put("MeetingFoundFromSuggestion", "1");
                                                 returnMap.put("Meeting", "1");
@@ -4174,8 +4182,11 @@ public class EfbXmlParser {
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
 
+                                                int timerStatus = 1; // 1 = timer can not run
+                                                String updateOrder = ""; // nothing to update
+
                                                 // update row in db table
-                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus);
+                                                myDb.updateMeetingCanceledByCoach(tmpMeetingSuggestionDataServerId, tmpMeetingSuggestionCoachCanceleTime, tmpMeetingSuggestionCoachCanceleAuthor, newMeeting, meetingStatus, timerStatus, updateOrder);
 
                                                 returnMap.put("MeetingCanceledClientSuggestionByCoach", "1");
                                                 returnMap.put("Meeting", "1");
@@ -4185,10 +4196,12 @@ public class EfbXmlParser {
 
                                                 int meetingStatus = 4; // comes from external
                                                 int newMeeting = 1; // 1 = new meeting or suggestion
-                                                Long nowTime = System.currentTimeMillis();
+
+                                                int timerStatus = 1; // 1 = timer can not run
+                                                String updateOrder = ""; // nothing to update
 
                                                 // update row in db table
-                                                myDb.updateMeetingFoundFromSuggestion(tmpMeetingSuggestionDataServerId, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestionAuthor, newMeeting, meetingStatus, "suggestion_from_client", nowTime);
+                                                myDb.updateMeetingFoundFromSuggestion(tmpMeetingSuggestionDataServerId, tmpMeetingFoundFromSuggestionDate, tmpMeetingFoundFromSuggestionAuthor, newMeeting, meetingStatus, timerStatus, updateOrder);
 
                                                 returnMap.put("MeetingFoundFromClientSuggestion", "1");
                                                 returnMap.put("Meeting", "1");
@@ -4269,8 +4282,9 @@ public class EfbXmlParser {
                                 }
 
                                 // start alarm receiver meeting -> check remember meeting or suggestion
-                                setAlarmManagerForRememberMeeting ();
-
+                                // new alarm manager service for start all needed alarms
+                                EfbSetAlarmManager efbSetAlarmManager = new EfbSetAlarmManager(xmlContext);
+                                efbSetAlarmManager.setAlarmManagerForRememberMeeting();
                             }
                         }
                         parseAnymore = false;
@@ -4289,36 +4303,9 @@ public class EfbXmlParser {
         }
     }
 
-
-    // set alarmmanager for remember meeting; same function in MainActivity and fragment SettingEfbFragementD!
-    void setAlarmManagerForRememberMeeting () {
-
-        PendingIntent pendingIntentRememberMeeting;
-
-        Long firstStartRememberMeeting = System.currentTimeMillis() + 1000; // start point for meeting remember function
-        Long repeatingMeetingRemember = 24L * 60L * 60L * 1000L; // one day
-
-        // get reference to alarm manager
-        AlarmManager manager = (AlarmManager) xmlContext.getSystemService(Context.ALARM_SERVICE);
-
-        // create intent for backcall to broadcast receiver
-        Intent rememberMeetingAlarmIntent = new Intent(xmlContext, AlarmReceiverMeeting.class);
-
-        // create call (pending intent) for alarm manager
-        pendingIntentRememberMeeting = PendingIntent.getBroadcast(xmlContext, 0, rememberMeetingAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // set alarm
-        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstStartRememberMeeting, repeatingMeetingRemember, pendingIntentRememberMeeting);
-    }
-
-
-
-
-
     //
     // End read meeting -----------------------------------------------------------------------------------
     //
-
 
 
     //
@@ -4694,6 +4681,7 @@ public class EfbXmlParser {
                                     // get normal timestamp with day, month and year (hour, minute, seconds and millseconds are zero)
                                     Long startTimestamp = EfbHelperClass.timestampToNormalDayMonthYearDate(System.currentTimeMillis());
                                     prefsEditor.putLong(ConstansClassConnectBook.namePrefsConnectCountMessagesResetTime, startTimestamp);
+                                    prefsEditor.putLong(ConstansClassConnectBook.namePrefsConnectCountMessagesLastResetLocaleTime, 0L);
                                     prefsEditor.apply();
 
                                     // something change in message and delay settings
@@ -5259,7 +5247,7 @@ public class EfbXmlParser {
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_TimeTable, tmpTimeTableOnOff); // turn function time table on/off
 
                                 // get old time table value for nothing change check
-                                int tmpOldTimeTableValue = prefs.getInt(ConstansClassTimeTable.namePrefsTimeTableValue, tmpTimeTableValue); // get old value for time table
+                                int tmpOldTimeTableValue = prefs.getInt(ConstansClassTimeTable.namePrefsTimeTableValue, 0); // get old value for time table
 
                                 if (tmpTimeTableOnOff && tmpTimeTableValue >= 0 && tmpAuthorName.length() > 0 && tmpChangeTime > 0) { // change time table value?
                                     // check for value change!

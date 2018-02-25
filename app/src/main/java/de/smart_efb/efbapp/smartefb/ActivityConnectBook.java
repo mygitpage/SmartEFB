@@ -135,13 +135,25 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         // check -> 24 h over? -> reset message counter
         Long startPointResetTimeMessageCounter = prefs.getLong(ConstansClassConnectBook.namePrefsConnectCountMessagesResetTime, 0);
-        if (System.currentTimeMillis() > startPointResetTimeMessageCounter + oneDayInMills) {
+        Long lastResetLocaleTimeMessageCounter = prefs.getLong(ConstansClassConnectBook.namePrefsConnectCountMessagesLastResetLocaleTime, 0);
+        Long tmpNowTime = System.currentTimeMillis();
+        if ( tmpNowTime > (startPointResetTimeMessageCounter + oneDayInMills) && tmpNowTime > lastResetLocaleTimeMessageCounter) {
 
             // set message counter to zero
             prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0);
             // set new start time for message count
             prefsEditor.putLong(ConstansClassConnectBook.namePrefsConnectCountMessagesResetTime, (startPointResetTimeMessageCounter + oneDayInMills));
+            // set last reset locale time to prefs
+            prefsEditor.putLong(ConstansClassConnectBook.namePrefsConnectCountMessagesLastResetLocaleTime, tmpNowTime);
             prefsEditor.apply();
+        }
+        else { // go back in time is not allowed
+            if (tmpNowTime < lastResetLocaleTimeMessageCounter) {
+                // set message counter to max messages
+                int tmpMaxMessages = prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxMessages, 500);
+                prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, tmpMaxMessages);
+                prefsEditor.apply();
+            }
         }
     }
 
@@ -417,6 +429,8 @@ public class ActivityConnectBook extends AppCompatActivity {
 
             // init listview for messages
             displayMessageSet ();
+
+
         }
     }
 
@@ -425,7 +439,7 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         Intent intent = getIntent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
+        // finish();
         startActivity(intent);
     }
     
@@ -598,16 +612,6 @@ public class ActivityConnectBook extends AppCompatActivity {
 
             case android.R.id.home:
                 onBackPressed();
-
-/*
-                TaskStackBuilder
-                        .create(this)
-                        .addNextIntentWithParentStack(NavUtils.getParentActivityIntent(this))
-                        .startActivities();
-
-*/
-
-
 
                 return true;
 

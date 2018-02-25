@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -106,13 +107,28 @@ public class ActivityTimeTable extends AppCompatActivity {
         String author = prefs.getString(ConstansClassTimeTable.namePrefsTimeTableModifiedAuthor, ""); // get author name for time table
         Long timeTableDate = prefs.getLong(ConstansClassTimeTable.namePrefsTimeTableModifiedDate, 0); // get change date for time table
 
-        // check variables
-        if (txtProgress != null && progressBar != null && txtAuthorAndDate != null && timeTableDate > 0 && author.length() > 0) {
 
-            // build date and author string
-            String timeTableChangeDate = EfbHelperClass.timestampToDateFormat(timeTableDate, "dd.MM.yyyy");;
-            String timeTableChangeTime = EfbHelperClass.timestampToDateFormat(timeTableDate, "HH:mm");;
-            String tmpTextAuthorNameAndDate = String.format(this.getResources().getString(R.string.timeTableChangeAuthorNameWithDate), author, timeTableChangeDate, timeTableChangeTime);
+        Log.d("TimeTable-->", "Date:"+timeTableDate+" ++ Author:"+author.length()+" ++ " );
+
+
+        // check variables
+        if (txtProgress != null && progressBar != null && txtAuthorAndDate != null) {
+
+            String timeTableChangeDate;
+            String timeTableChangeTime;
+            String tmpTextAuthorNameAndDate;
+
+            if (timeTableDate > 0 && author.length() > 0) {
+                // build date and author string
+                timeTableChangeDate = EfbHelperClass.timestampToDateFormat(timeTableDate, "dd.MM.yyyy");
+                timeTableChangeTime = EfbHelperClass.timestampToDateFormat(timeTableDate, "HH:mm");
+                tmpTextAuthorNameAndDate = String.format(this.getResources().getString(R.string.timeTableChangeAuthorNameWithDate), author, timeTableChangeDate, timeTableChangeTime);
+            }
+            else { // no timetable value available
+                timeTableValue = 0;
+                tmpTextAuthorNameAndDate = this.getResources().getString(R.string.timeTableChangeNoValuetoday);
+            }
+
             txtAuthorAndDate.setText(Html.fromHtml(tmpTextAuthorNameAndDate));
 
             // set textfield
@@ -225,7 +241,7 @@ public class ActivityTimeTable extends AppCompatActivity {
 
         Intent intent = getIntent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
+        //finish();
         startActivity(intent);
     }
 

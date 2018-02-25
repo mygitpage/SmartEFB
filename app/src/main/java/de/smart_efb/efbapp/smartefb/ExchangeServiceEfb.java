@@ -2151,14 +2151,10 @@ import java.util.Map;
                         // update meeting status -> separate from other changes
                         myDb.updateStatusMeetingAndSuggestion (dbId, 1); // set status of meeting to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
 
-
                         // update some data after sending in meeting db table (like write time,etc.)
                         if (globalServerTime > 0) {
                             postUpdateMeetingAndSuggestionDataInDB(meetingData, globalServerTime, myDb);
                         }
-
-
-
 
                         // send intent to receiver in Meeting to update listView Meeting (when active)
                         String command = "ask_parent_activity";

@@ -29,7 +29,7 @@
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="de.smart_efb.efbapp.smartefb.MainActivity" />
 
         </activity>
 
@@ -41,7 +41,7 @@
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="de.smart_efb.efbapp.smartefb.MainActivity" />
         </activity>
 
         <!-- Activity Our Goals -->
@@ -52,7 +52,7 @@
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="de.smart_efb.efbapp.smartefb.MainActivity" />
         </activity>
 
         <!-- Activity Message -->
@@ -76,7 +76,7 @@
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="de.smart_efb.efbapp.smartefb.MainActivity" />
         </activity>
 
         <!-- Activity Time Table -->
@@ -87,7 +87,7 @@
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="de.smart_efb.efbapp.smartefb.MainActivity" />
         </activity>
 
         <!-- Activity Prevetion -->
@@ -98,7 +98,7 @@
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="de.smart_efb.efbapp.smartefb.MainActivity" />
         </activity>
 
         <!-- Activity FAQ -->
@@ -109,7 +109,7 @@
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="de.smart_efb.efbapp.smartefb.MainActivity" />
         </activity>
 
         <!-- Activity Emergency Help -->
@@ -120,7 +120,7 @@
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="de.smart_efb.efbapp.smartefb.MainActivity" />
         </activity>
 
         <!-- Activity Settings -->
@@ -131,7 +131,7 @@
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="de.smart_efb.efbapp.smartefb.MainActivity" />
         </activity>
 
         <!-- Dispatcher activity for deep links -->

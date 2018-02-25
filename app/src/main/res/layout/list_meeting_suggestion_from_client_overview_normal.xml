@@ -75,6 +75,19 @@
 
     </LinearLayout>
 
+    <!-- info post out off timezone -->
+    <TextView
+        android:id="@+id/suggestionFromClientPostOutOffTimezone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="@color/text_accent_color"
+        android:gravity="center"
+        android:paddingTop="15dp"
+        android:visibility="gone"
+        android:text="@string/suggestionFromClientPostOutOffTimezoneText"/>
+    <!-- end info post out off timezone -->
+
     <!-- info canceled suggestion from client -->
     <TextView
         android:id="@+id/suggestionFromClientCanceledInvitationText"
