@@ -24,20 +24,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.Toast;
 
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by ich on 07.06.16.
@@ -53,7 +40,6 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
     // reference to viewpageradapter
     SettingsEfbViewPagerAdapter settingsEfbViewPagerAdapter;
-
 
     // shared prefs for the app
     SharedPreferences prefs;
@@ -277,6 +263,19 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             // set correct subtitle
             String tmpSubtitleText = ActivitySettingsEfb.this.getSubtitleForTabZero();
             setSettingsToolbarSubtitle(tmpSubtitleText);
+
+            // notify view pager adapter that data change
+            settingsEfbViewPagerAdapter.notifyDataSetChanged();
+
+        } else if (command.equals("generate_new_connection_number")) { // Show tab 0 -> new connection number (Pin-Number new)
+
+            // set correct subtitle
+            String tmpSubtitleText = ActivitySettingsEfb.this.getSubtitleForTabZero();
+            setSettingsToolbarSubtitle(tmpSubtitleText);
+
+            // generate new random number and set
+            int tmpNumber = EfbHelperClass.randomNumber(ConstansClassSettings.randomNumberForConnectionMin, ConstansClassSettings.randomNumberForConnectionMax);
+            setRandomNumberForConnection(tmpNumber);
 
             // notify view pager adapter that data change
             settingsEfbViewPagerAdapter.notifyDataSetChanged();

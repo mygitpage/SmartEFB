@@ -15,17 +15,44 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
-        <TextView
-            android:id="@+id/hintTextCaseCloseIntro"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/layoutHolderHintTextCaseClose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:textColor="@color/text_accent_color"
-            android:textStyle="bold"
-            android:gravity="left"
-            android:paddingBottom="15dp"
-            android:visibility="gone"
-            android:text="@string/hintTextCaseCloseIntroText"/>
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/list_element_style">
+
+                <TextView
+                    android:id="@+id/hintTextCaseCloseIntroHeadline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:text="@string/hintTextCaseCloseIntroTextHeadline"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="3dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/hintTextCaseCloseIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/text_accent_color"
+                android:gravity="left"
+                android:paddingLeft="10dp"
+                android:paddingBottom="15dp"
+                android:text="@string/hintTextCaseCloseIntroText"/>
+
+        </LinearLayout>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -310,7 +337,18 @@
             android:layout_marginRight="5dp"
             android:padding="10dp"
             android:visibility="gone"
-            android:layout_marginBottom="15dp"/>
+            android:layout_marginBottom="30dp"/>
+
+        <TextView
+            android:id="@+id/settingsEfbALinkGenerateNewConnectionNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:visibility="gone"
+            android:paddingBottom="30dp"/>
 
     </LinearLayout>
 

@@ -14,15 +14,15 @@ import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
 
-
 /**
- * Created by ich on 31.03.16.
+ * Created by ich on 26.02.2018.
  */
-public class ConnectBookCursorAdapter extends CursorAdapter {
+
+public class MessageCursorAdapter extends CursorAdapter {
 
     private LayoutInflater cursorInflater;
 
-    private Context connectBookCursorAdapterContext;
+    private Context messageCursorAdapterContext;
 
     // previous date string of cursor element
     private String previousDateString = "";
@@ -38,11 +38,11 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
 
 
     // Default constructor
-    public ConnectBookCursorAdapter(Context context, Cursor cursor, int flags) {
+    public MessageCursorAdapter(Context context, Cursor cursor, int flags) {
 
         super(context, cursor, flags);
 
-        connectBookCursorAdapterContext = context;
+        messageCursorAdapterContext = context;
 
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -107,10 +107,10 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
 
         // set row id of comment from db for timer update
         final Long rowIdForUpdate = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
-        
+
         // rightViewCurrent: true -> current right view is new View; false-> other view ist new View
         Boolean rightViewCurrent = false;
-        
+
         // role and write time of current element of cursor
         int role = cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_ROLE));
         long writeTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME));
@@ -142,10 +142,10 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
             switch (role) {
                 case 0:
                     if (role == rolePrevoius) {
-                         inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_nextleft, parent, false);
+                        inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_nextleft, parent, false);
                     }
                     else {
-                         inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_left, parent, false);
+                        inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_left, parent, false);
                     }
                     break;
                 case 1:
@@ -153,7 +153,7 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
                         inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_nextright, parent, false);
                     }
                     else {
-                         inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_right, parent, false);
+                        inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_right, parent, false);
                     }
                     rightViewCurrent = true;
                     break;

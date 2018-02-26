@@ -7,7 +7,7 @@ class ConstansClassMain {
 
 
     // actual app version
-    static final int actualAppVersionNumber = 1; // increment these number with ervery new version
+    static final int actualAppVersionNumber = 1; // increment these number with every new version
 
     // app version number of local installation
     static final String namePrefsNumberAppVersion = "smartEfbAppNumberVersion";

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.Xml;
@@ -63,10 +65,6 @@ public class SettingsEfbFragmentA extends Fragment {
 
     // reference to the DB
     DBAdapter myDb;
-
-    // minimum and maximum for random number to connect to server
-    static int randomNumberForConnectionMin = 10000;
-    static int randomNumberForConnectionMax = 99999;
 
     // the connecting status (0=not connected, 1=no network, try again, 2= connection error, 3=connected)
     int connectingStatus = 0;
@@ -201,8 +199,13 @@ public class SettingsEfbFragmentA extends Fragment {
 
         // show hint text case close
         if (prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
-            TextView textViewCaseCloseHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.hintTextCaseCloseIntro);
-            textViewCaseCloseHeadlineText.setVisibility(View.VISIBLE);
+
+
+            LinearLayout linearLayoutCaseCloseTextHolder = (LinearLayout) viewFragmentConnectToServer.findViewById(R.id.layoutHolderHintTextCaseClose);
+            linearLayoutCaseCloseTextHolder.setVisibility(View.VISIBLE);
+
+            //TextView textViewCaseCloseHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.hintTextCaseCloseIntro);
+            //textViewCaseCloseHeadlineText.setVisibility(View.VISIBLE);
         }
 
         // connecting status 0 -> not connected to server
@@ -219,8 +222,34 @@ public class SettingsEfbFragmentA extends Fragment {
             textViewConnectToServerIntroText.setText(tmpTextIntroText);
             textViewConnectToServerIntroText.setVisibility(View.VISIBLE);
 
-            // generate and show random number for connecting
-            randomNumberForConnection = EfbHelperClass.randomNumber(randomNumberForConnectionMin, randomNumberForConnectionMax);
+
+            // generate new connection number (5 digits)
+            TextView tmpTextViewGenerateNewConnectionNumber = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsEfbALinkGenerateNewConnectionNumber);
+
+            final Uri.Builder newConnectionNumberLinkBuilder = new Uri.Builder();
+            newConnectionNumberLinkBuilder.scheme("smart.efb.deeplink")
+                    .authority("linkin")
+                    .path("settings")
+                    .appendQueryParameter("com", "generate_new_connection_number");
+
+            String tmpLinkTextNewConnectionNumber = fragmentConnectToServerContext.getResources().getString(R.string.settingsGenerateNewConnectionNumberText);
+
+            // generate link for output
+            Spanned tmpLinkNewConnectionNumber = Html.fromHtml("<a href=\"" + newConnectionNumberLinkBuilder.build().toString() + "\">" + tmpLinkTextNewConnectionNumber + "</a>");
+
+            // and set to textview
+            tmpTextViewGenerateNewConnectionNumber.setVisibility(View.VISIBLE);
+            tmpTextViewGenerateNewConnectionNumber.setText(tmpLinkNewConnectionNumber);
+            tmpTextViewGenerateNewConnectionNumber.setMovementMethod(LinkMovementMethod.getInstance());
+
+            // get random connection number from parent
+            randomNumberForConnection = ((ActivitySettingsEfb)getActivity()).getRandomNumberForConnection();
+            // check random number == 0?
+            if (randomNumberForConnection == 0) {
+                // first generate random number
+                int tmpNumber = EfbHelperClass.randomNumber(ConstansClassSettings.randomNumberForConnectionMin, ConstansClassSettings.randomNumberForConnectionMax);
+                ((ActivitySettingsEfb)getActivity()).setRandomNumberForConnection(tmpNumber);
+            }
 
             TextView textViewRandomNumberText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingConnectToServerKeyNumber);
             textViewRandomNumberText.setVisibility(View.VISIBLE);
@@ -240,9 +269,6 @@ public class SettingsEfbFragmentA extends Fragment {
             tmpButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    // call setter-methode setRandomNumberForConnection in ActivitySettingsEfb to set random number
-                    ((ActivitySettingsEfb)getActivity()).setRandomNumberForConnection(randomNumberForConnection);
 
                     if (efbHelperConnectionClass.internetAvailable()) {
 

@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -127,12 +128,10 @@ public class MainActivity extends AppCompatActivity {
                             mainContext.startActivity(intent);
                             break;
                         case 3: // grid "nachrichten"
-                            /*
-                            intent = new Intent(getApplicationContext(), ActivityMeeting.class);
+                            intent = new Intent(getApplicationContext(), ActivityMessage.class);
                             intent.putExtra("position", position);
                             intent.putExtra("title", mainMenueElementTitle[position]);
                             mainContext.startActivity(intent);
-                            */
                             break;
                         case 4: // grid "termine"
                             intent = new Intent(getApplicationContext(), ActivityMeeting.class);
@@ -210,6 +209,12 @@ public class MainActivity extends AppCompatActivity {
 
         prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds,180); //
         prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds,180); //
+
+
+        // set function message on
+        prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, true); // turn function message on
+
+
         prefsEditor.apply();
 
 
@@ -272,6 +277,9 @@ public class MainActivity extends AppCompatActivity {
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
+
+
+                Log.d("Main --->", "Broadcast bekommen!");
 
                 // check intent order
                 // new connect book message
@@ -645,6 +653,9 @@ public class MainActivity extends AppCompatActivity {
                     prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false); // turn function our goals debetable off
                     prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkOldGoals, false); // turn function our goals old off
 
+                    // set function message on
+                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, true); // turn function message on
+
                     // set function time table off
                     prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_TimeTable, false); // turn function time table off
 
@@ -653,9 +664,6 @@ public class MainActivity extends AppCompatActivity {
                     prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientSuggestion_OnOff, false); // turn function meeting client suggestion off
                     prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCanceleMeeting_OnOff, false); // turn function meeting client canceled meeting off
                     prefsEditor.putBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false); // turn function meeting client comment suggestion off
-
-                    // set function message off
-                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, false); // turn function message off
 
                     // function to switch on
                     prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Prevention, true); // turn function prevention on

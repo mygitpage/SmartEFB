@@ -4902,6 +4902,12 @@ public class EfbXmlParser {
                                     prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false);
                                     prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkEvaluateJointlyGoals, false);
 
+                                    // set conection random (Pin) number to 0
+                                    prefsEditor.putInt(ConstansClassSettings.namePrefsRandomNumberForConnection,0);
+
+                                    // set function message on
+                                    prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, true); // turn function message on
+
                                     // write last error messages to prefs
                                     prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
                                     prefsEditor.apply();
@@ -5266,6 +5272,10 @@ public class EfbXmlParser {
                                 }
 
                                 prefsEditor.apply();
+
+
+                                Log.d("XML---->", "TimeTable update!");
+
 
                                 // refresh activity time table because settings have change
                                 returnMap.put("TimeTable","1");

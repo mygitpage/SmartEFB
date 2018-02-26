@@ -56,7 +56,6 @@
         </activity>
 
         <!-- Activity Message -->
-        <!--
         <activity
             android:name=".ActivityMessage"
             android:label="@string/mainMenueElementId_4"
@@ -66,7 +65,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        -->
 
         <!-- Activity Meeting -->
         <activity

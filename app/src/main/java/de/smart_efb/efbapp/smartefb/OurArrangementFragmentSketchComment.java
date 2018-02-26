@@ -603,66 +603,80 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 Boolean sketchCommentNoError = true;
                 TextView tmpErrorTextView;
 
-                // check result struct question
-                tmpErrorTextView = (TextView) viewFragmentSketchComment.findViewById(R.id.errorStructQuestionForCommentSketchArrangement);
-                if ( structQuestionResultSketchComment == 0 && tmpErrorTextView != null) {
-                    sketchCommentNoError = false;
-                    tmpErrorTextView.setVisibility(View.VISIBLE);
+                if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
 
-                } else if (tmpErrorTextView != null) {
-                    tmpErrorTextView.setVisibility(View.GONE);
-                }
+                    // check result struct question
+                    tmpErrorTextView = (TextView) viewFragmentSketchComment.findViewById(R.id.errorStructQuestionForCommentSketchArrangement);
+                    if (structQuestionResultSketchComment == 0 && tmpErrorTextView != null) {
+                        sketchCommentNoError = false;
+                        tmpErrorTextView.setVisibility(View.VISIBLE);
 
-                // comment textfield -> insert new comment
-                tmpErrorTextView = (TextView) viewFragmentSketchComment.findViewById(R.id.errorFreeQuestionForCommentSketchArrangement);
-                if (txtInputSketchArrangementComment.getText().toString().length() < 3 && tmpErrorTextView != null) {
-                    sketchCommentNoError = false;
-                    tmpErrorTextView.setVisibility(View.VISIBLE);
-                } else if (tmpErrorTextView != null) {
-                    tmpErrorTextView.setVisibility(View.GONE);
-                }
-
-                // check for errors?
-                if (sketchCommentNoError) {
-
-                    String commentText = txtInputSketchArrangementComment.getText().toString();
-                    String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
-                    Long commentTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
-                    if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
-                        commentTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                    } else if (tmpErrorTextView != null) {
+                        tmpErrorTextView.setVisibility(View.GONE);
                     }
-                    Long uploadTime = 0L;
-                    Long localeTime = System.currentTimeMillis();
-                    String blockId = cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID));
-                    Boolean newEntry = false;
-                    Long dateOfSketchArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement , System.currentTimeMillis());
-                    int commentStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
-                    int sketchArrangementServerId = cursorChoosenSketchArrangement.getInt(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID));
-                    int timerStatus = 0;
 
-                    // insert comment for sketch arrangement in DB
-                    Long tmpDbId = myDb.insertRowOurArrangementSketchComment(commentText, structQuestionResultSketchComment, 0, 0,userName, localeTime, commentTime, uploadTime, blockId, newEntry, dateOfSketchArrangement, commentStatus, sketchArrangementServerId, timerStatus);
+                    // comment textfield -> insert new comment
+                    tmpErrorTextView = (TextView) viewFragmentSketchComment.findViewById(R.id.errorFreeQuestionForCommentSketchArrangement);
+                    if (txtInputSketchArrangementComment.getText().toString().length() < 3 && tmpErrorTextView != null) {
+                        sketchCommentNoError = false;
+                        tmpErrorTextView.setVisibility(View.VISIBLE);
+                    } else if (tmpErrorTextView != null) {
+                        tmpErrorTextView.setVisibility(View.GONE);
+                    }
 
-                    // increment sketch comment count
-                    int countSketchCommentSum = prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0) + 1;
-                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, countSketchCommentSum);
-                    prefsEditor.commit();
+                    // check for errors?
+                    if (sketchCommentNoError) {
 
-                    // send intent to service to start the service and send comment to server!
-                    Intent startServiceIntent = new Intent(fragmentSketchCommentContext, ExchangeServiceEfb.class);
-                    startServiceIntent.putExtra("com","send_sketch_comment_arrangement");
-                    startServiceIntent.putExtra("dbid",tmpDbId);
-                    startServiceIntent.putExtra("receiverBroadcast","");
-                    fragmentSketchCommentContext.startService(startServiceIntent);
+                        String commentText = txtInputSketchArrangementComment.getText().toString();
+                        String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                        Long commentTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                        if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                            commentTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                        }
+                        Long uploadTime = 0L;
+                        Long localeTime = System.currentTimeMillis();
+                        String blockId = cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID));
+                        Boolean newEntry = false;
+                        Long dateOfSketchArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis());
+                        int commentStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
+                        int sketchArrangementServerId = cursorChoosenSketchArrangement.getInt(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID));
+                        int timerStatus = 0;
 
-                    // build intent to get back to OurArrangementFragmentSketchArrangement
-                    Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent.putExtra("com","show_sketch_arrangement");
-                    intent.putExtra("db_id", 0);
-                    intent.putExtra("arr_num", 0);
-                    intent.putExtra("eval_next", false);
-                    getActivity().startActivity(intent);
+                        // insert comment for sketch arrangement in DB
+                        Long tmpDbId = myDb.insertRowOurArrangementSketchComment(commentText, structQuestionResultSketchComment, 0, 0, userName, localeTime, commentTime, uploadTime, blockId, newEntry, dateOfSketchArrangement, commentStatus, sketchArrangementServerId, timerStatus);
+
+                        // increment sketch comment count
+                        int countSketchCommentSum = prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0) + 1;
+                        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, countSketchCommentSum);
+                        prefsEditor.commit();
+
+                        // send intent to service to start the service and send comment to server!
+                        Intent startServiceIntent = new Intent(fragmentSketchCommentContext, ExchangeServiceEfb.class);
+                        startServiceIntent.putExtra("com", "send_sketch_comment_arrangement");
+                        startServiceIntent.putExtra("dbid", tmpDbId);
+                        startServiceIntent.putExtra("receiverBroadcast", "");
+                        fragmentSketchCommentContext.startService(startServiceIntent);
+
+                        // build intent to get back to OurArrangementFragmentSketchArrangement
+                        Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.putExtra("com", "show_sketch_arrangement");
+                        intent.putExtra("db_id", 0);
+                        intent.putExtra("arr_num", 0);
+                        intent.putExtra("eval_next", false);
+                        getActivity().startActivity(intent);
+                    }
+                }
+                else {
+                    // delete text in edittextfield
+                    txtInputSketchArrangementComment.setText("");
+
+                    // case is closed -> show toast
+                    String textCaseClose = fragmentSketchCommentContext.getString(R.string.toastOurArrangementSketchCommentCaseCloseToastText);
+                    Toast toast = Toast.makeText(fragmentSketchCommentContext, textCaseClose, Toast.LENGTH_LONG);
+                    TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) viewMessage.setGravity(Gravity.CENTER);
+                    toast.show();
                 }
             }
         });

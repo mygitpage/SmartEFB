@@ -556,48 +556,62 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (txtInputGoalComment.getText().toString().length() > 3) {
+                if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
 
-                    String commentText = txtInputGoalComment.getText().toString();
-                    String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
-                    Long commentTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
-                    if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
-                        commentTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                    if (txtInputGoalComment.getText().toString().length() > 3) {
+
+                        String commentText = txtInputGoalComment.getText().toString();
+                        String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                        Long commentTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                        if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                            commentTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                        }
+                        Long uploadTime = 0L;
+                        Long localeTime = System.currentTimeMillis();
+                        String blockId = cursorChoosenGoal.getString(cursorChoosenGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID));
+                        Boolean newEntry = false;
+                        Long dateOfJointlyGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis());
+                        int commentStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
+                        int jointlyGoalsServerId = cursorChoosenGoal.getInt(cursorChoosenGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID));
+                        int timerStatus = 0;
+
+                        // insert comment in DB
+                        Long tmpDbId = myDb.insertRowOurGoalJointlyGoalComment(commentText, userName, commentTime, localeTime, uploadTime, blockId, newEntry, dateOfJointlyGoals, commentStatus, jointlyGoalsServerId, timerStatus);
+
+                        // increment comment count
+                        int countCommentSum = prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0) + 1;
+                        prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, countCommentSum);
+                        prefsEditor.apply();
+
+                        // send intent to service to start the service and send comment to server!
+                        Intent startServiceIntent = new Intent(fragmentCommentContextJointlyGoals, ExchangeServiceEfb.class);
+                        startServiceIntent.putExtra("com", "send_jointly_comment_goal");
+                        startServiceIntent.putExtra("dbid", tmpDbId);
+                        startServiceIntent.putExtra("receiverBroadcast", "");
+                        fragmentCommentContextJointlyGoals.startService(startServiceIntent);
+
+                        // build intent to get back to OurGoalsFragmentJointlyGoals
+                        Intent intent = new Intent(getActivity(), ActivityOurGoals.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.putExtra("com", "show_jointly_goals_now");
+                        getActivity().startActivity(intent);
+
+                    } else {
+
+                        TextView tmpErrorTextView = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.errorInputJointlyGoalComment);
+                        tmpErrorTextView.setVisibility(View.VISIBLE);
                     }
-                    Long uploadTime = 0L;
-                    Long localeTime = System.currentTimeMillis();
-                    String blockId = cursorChoosenGoal.getString(cursorChoosenGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID));
-                    Boolean newEntry = false;
-                    Long dateOfJointlyGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis());
-                    int commentStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
-                    int jointlyGoalsServerId = cursorChoosenGoal.getInt(cursorChoosenGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID));
-                    int timerStatus = 0;
+                }
+                else {
+                    // delete text in edittextfield
+                    txtInputGoalComment.setText("");
 
-                    // insert comment in DB
-                    Long tmpDbId = myDb.insertRowOurGoalJointlyGoalComment(commentText, userName, commentTime, localeTime, uploadTime, blockId, newEntry, dateOfJointlyGoals, commentStatus, jointlyGoalsServerId, timerStatus);
-
-                    // increment comment count
-                    int countCommentSum = prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0) + 1;
-                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, countCommentSum);
-                    prefsEditor.apply();
-
-                    // send intent to service to start the service and send comment to server!
-                    Intent startServiceIntent = new Intent(fragmentCommentContextJointlyGoals, ExchangeServiceEfb.class);
-                    startServiceIntent.putExtra("com","send_jointly_comment_goal");
-                    startServiceIntent.putExtra("dbid",tmpDbId);
-                    startServiceIntent.putExtra("receiverBroadcast","");
-                    fragmentCommentContextJointlyGoals.startService(startServiceIntent);
-
-                    // build intent to get back to OurGoalsFragmentJointlyGoals
-                    Intent intent = new Intent(getActivity(), ActivityOurGoals.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent.putExtra("com","show_jointly_goals_now");
-                    getActivity().startActivity(intent);
-
-                } else {
-
-                    TextView tmpErrorTextView = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.errorInputJointlyGoalComment);
-                    tmpErrorTextView.setVisibility(View.VISIBLE);
+                    // case is closed -> show toast
+                    String textCaseClose = fragmentCommentContextJointlyGoals.getString(R.string.toastJointlyGoalsCommentCaseCloseToastText);
+                    Toast toast = Toast.makeText(fragmentCommentContextJointlyGoals, textCaseClose, Toast.LENGTH_LONG);
+                    TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) viewMessage.setGravity(Gravity.CENTER);
+                    toast.show();
                 }
 
             }

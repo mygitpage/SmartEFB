@@ -602,62 +602,76 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                 Boolean debetableGoalCommentNoError = true;
                 TextView tmpErrorTextView;
 
-                // check result struct question
-                tmpErrorTextView = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.errorStructQuestionForCommentDebetableGoal);
-                if ( structQuestionResultDebetableGoalComment == 0 && tmpErrorTextView != null) {
-                    debetableGoalCommentNoError = false;
-                    tmpErrorTextView.setVisibility(View.VISIBLE);
+                if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
 
-                } else if (tmpErrorTextView != null) {
-                    tmpErrorTextView.setVisibility(View.GONE);
-                }
+                    // check result struct question
+                    tmpErrorTextView = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.errorStructQuestionForCommentDebetableGoal);
+                    if (structQuestionResultDebetableGoalComment == 0 && tmpErrorTextView != null) {
+                        debetableGoalCommentNoError = false;
+                        tmpErrorTextView.setVisibility(View.VISIBLE);
 
-                // comment textfield -> insert new comment
-                tmpErrorTextView = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.errorInputDebeableGoalComment);
-                if (txtInputDebetableCommentComment.getText().toString().length() < 3 && tmpErrorTextView != null) {
-                    debetableGoalCommentNoError = false;
-                    tmpErrorTextView.setVisibility(View.VISIBLE);
-                } else if (tmpErrorTextView != null) {
-                    tmpErrorTextView.setVisibility(View.GONE);
-                }
-
-                if (debetableGoalCommentNoError) {
-
-                    String commentText = txtInputDebetableCommentComment.getText().toString();
-                    String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
-                    Long commentTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
-                    if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
-                        commentTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                    } else if (tmpErrorTextView != null) {
+                        tmpErrorTextView.setVisibility(View.GONE);
                     }
-                    Long uploadTime = 0L;
-                    Long localeTime = System.currentTimeMillis();
-                    String blockId = cursorChoosenDebetableGoals.getString(cursorChoosenDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID));
-                    Boolean newEntry = false;
-                    Long dateOfDebetableGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis());
-                    int commentStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
-                    int debetableGoalsServerId = cursorChoosenDebetableGoals.getInt(cursorChoosenDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID));
-                    int timerStatus = 0;
 
-                    // insert comment in DB
-                    Long tmpDbId = myDb.insertRowOurGoalsDebetableGoalsComment(commentText, structQuestionResultDebetableGoalComment, 0, 0, userName, commentTime,  localeTime, uploadTime, blockId, newEntry, dateOfDebetableGoals, commentStatus, debetableGoalsServerId, timerStatus);
+                    // comment textfield -> insert new comment
+                    tmpErrorTextView = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.errorInputDebeableGoalComment);
+                    if (txtInputDebetableCommentComment.getText().toString().length() < 3 && tmpErrorTextView != null) {
+                        debetableGoalCommentNoError = false;
+                        tmpErrorTextView.setVisibility(View.VISIBLE);
+                    } else if (tmpErrorTextView != null) {
+                        tmpErrorTextView.setVisibility(View.GONE);
+                    }
 
-                    // increment debetable goal comment count
-                    int countDebetableGoalsCommentSum = prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment,0) + 1;
-                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, countDebetableGoalsCommentSum);
-                    prefsEditor.apply();
+                    if (debetableGoalCommentNoError) {
 
-                    // send intent to service to start the service and send comment to server!
-                    Intent startServiceIntent = new Intent(fragmentDebetableGoalsContext, ExchangeServiceEfb.class);
-                    startServiceIntent.putExtra("com","send_debetable_comment_goal");
-                    startServiceIntent.putExtra("dbid",tmpDbId);
-                    startServiceIntent.putExtra("receiverBroadcast","");
-                    fragmentDebetableGoalsContext.startService(startServiceIntent);
+                        String commentText = txtInputDebetableCommentComment.getText().toString();
+                        String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                        Long commentTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                        if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                            commentTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                        }
+                        Long uploadTime = 0L;
+                        Long localeTime = System.currentTimeMillis();
+                        String blockId = cursorChoosenDebetableGoals.getString(cursorChoosenDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID));
+                        Boolean newEntry = false;
+                        Long dateOfDebetableGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis());
+                        int commentStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
+                        int debetableGoalsServerId = cursorChoosenDebetableGoals.getInt(cursorChoosenDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID));
+                        int timerStatus = 0;
 
-                    // build intent to get back to OurGoalsFragmentDebetableNow
-                    Intent intent = new Intent(getActivity(), ActivityOurGoals.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent.putExtra("com","show_debetable_goals_now");
-                    getActivity().startActivity(intent);
+                        // insert comment in DB
+                        Long tmpDbId = myDb.insertRowOurGoalsDebetableGoalsComment(commentText, structQuestionResultDebetableGoalComment, 0, 0, userName, commentTime, localeTime, uploadTime, blockId, newEntry, dateOfDebetableGoals, commentStatus, debetableGoalsServerId, timerStatus);
+
+                        // increment debetable goal comment count
+                        int countDebetableGoalsCommentSum = prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, 0) + 1;
+                        prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, countDebetableGoalsCommentSum);
+                        prefsEditor.apply();
+
+                        // send intent to service to start the service and send comment to server!
+                        Intent startServiceIntent = new Intent(fragmentDebetableGoalsContext, ExchangeServiceEfb.class);
+                        startServiceIntent.putExtra("com", "send_debetable_comment_goal");
+                        startServiceIntent.putExtra("dbid", tmpDbId);
+                        startServiceIntent.putExtra("receiverBroadcast", "");
+                        fragmentDebetableGoalsContext.startService(startServiceIntent);
+
+                        // build intent to get back to OurGoalsFragmentDebetableNow
+                        Intent intent = new Intent(getActivity(), ActivityOurGoals.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.putExtra("com", "show_debetable_goals_now");
+                        getActivity().startActivity(intent);
+                    }
+                }
+                else {
+                    // delete text in edittextfield
+                    txtInputDebetableCommentComment.setText("");
+
+                    // case is closed -> show toast
+                    String textCaseClose = fragmentDebetableGoalsContext.getString(R.string.toastDebetableGoalsCommentCaseCloseToastText);
+                    Toast toast = Toast.makeText(fragmentDebetableGoalsContext, textCaseClose, Toast.LENGTH_LONG);
+                    TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if (v != null) viewMessage.setGravity(Gravity.CENTER);
+                    toast.show();
                 }
             }
         });
