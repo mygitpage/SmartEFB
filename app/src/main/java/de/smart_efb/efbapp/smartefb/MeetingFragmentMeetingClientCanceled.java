@@ -318,52 +318,67 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    if (txtInputCanceledReason.getText().toString().length() > 3) {
+                    // check case close
+                    if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
 
-                        // canceled locale time
-                        Long tmpCanceledLocaleTime = System.currentTimeMillis();
-                        // canceled status
-                        int tmpStatus = 0; // not send to server
-                        // user name
-                        String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
-                        // canceled server time
-                        Long tmpCanceledTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
-                        if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
-                            tmpCanceledTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                        if (txtInputCanceledReason.getText().toString().length() > 3) {
+
+                            // canceled locale time
+                            Long tmpCanceledLocaleTime = System.currentTimeMillis();
+                            // canceled status
+                            int tmpStatus = 0; // not send to server
+                            // user name
+                            String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                            // canceled server time
+                            Long tmpCanceledTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                            if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                                tmpCanceledTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                            }
+                            // canceled comment text
+                            String canceledCommentText = txtInputCanceledReason.getText().toString();
+                            // Update order
+                            String updateOrder = "update_client_canceled_server_time";
+
+                            // insert  in DB
+                            myDb.updateMeetingCanceledByClient(clientCanceledMeetingId, tmpCanceledLocaleTime, tmpCanceledTime, userName, canceledCommentText, tmpStatus, updateOrder);
+
+                            // set successfull message in parent activity -> show in toast, when canceled message is send successfull
+                            String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
+                            ((ActivityMeeting) getActivity()).setSuccessefullMessageForSending(tmpSuccessfullMessage);
+
+                            // set not successfull message in parent activity -> show in toast, when canceled message is send not successfull
+                            String tmpNotSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientNotSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
+                            ((ActivityMeeting) getActivity()).setNotSuccessefullMessageForSending(tmpNotSuccessfullMessage);
+
+                            // send intent to service to start the service and send canceled meeting to server!
+                            Intent startServiceIntent = new Intent(fragmentClientCanceledMeetingContext, ExchangeServiceEfb.class);
+                            startServiceIntent.putExtra("com", "send_meeting_data");
+                            startServiceIntent.putExtra("dbid", clientCanceledMeetingId);
+                            startServiceIntent.putExtra("receiverBroadcast", "");
+                            fragmentClientCanceledMeetingContext.startService(startServiceIntent);
+
+                            // build intent to go back to meetingOverview
+                            Intent intent = new Intent(getActivity(), ActivityMeeting.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            intent.putExtra("com", "meeting_overview");
+                            getActivity().startActivity(intent);
+
+                        } else {
+
+                            TextView tmpErrorTextView = (TextView) viewFragmentClientCanceledMeeting.findViewById(R.id.errorInputMeetingCanceled);
+                            tmpErrorTextView.setVisibility(View.VISIBLE);
                         }
-                        // canceled comment text
-                        String canceledCommentText = txtInputCanceledReason.getText().toString();
-                        // Update order
-                        String updateOrder = "update_client_canceled_server_time";
+                    }
+                    else {
+                        // delete text in edittextfield
+                        txtInputCanceledReason.setText("");
 
-                        // insert  in DB
-                        myDb.updateMeetingCanceledByClient(clientCanceledMeetingId, tmpCanceledLocaleTime, tmpCanceledTime, userName , canceledCommentText, tmpStatus, updateOrder);
-
-                        // set successfull message in parent activity -> show in toast, when canceled message is send successfull
-                        String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
-                        ((ActivityMeeting) getActivity()).setSuccessefullMessageForSending (tmpSuccessfullMessage);
-
-                        // set not successfull message in parent activity -> show in toast, when canceled message is send not successfull
-                        String tmpNotSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageMeetingCanceledMeetingByClientNotSuccessfullSend", "string", fragmentClientCanceledMeetingContext.getPackageName()));
-                        ((ActivityMeeting) getActivity()).setNotSuccessefullMessageForSending (tmpNotSuccessfullMessage);
-
-                        // send intent to service to start the service and send canceled meeting to server!
-                        Intent startServiceIntent = new Intent(fragmentClientCanceledMeetingContext, ExchangeServiceEfb.class);
-                        startServiceIntent.putExtra("com","send_meeting_data");
-                        startServiceIntent.putExtra("dbid",clientCanceledMeetingId);
-                        startServiceIntent.putExtra("receiverBroadcast","");
-                        fragmentClientCanceledMeetingContext.startService(startServiceIntent);
-
-                        // build intent to go back to meetingOverview
-                        Intent intent = new Intent(getActivity(), ActivityMeeting.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.putExtra("com", "meeting_overview");
-                        getActivity().startActivity(intent);
-
-                    } else {
-
-                        TextView tmpErrorTextView = (TextView) viewFragmentClientCanceledMeeting.findViewById(R.id.errorInputMeetingCanceled);
-                        tmpErrorTextView.setVisibility(View.VISIBLE);
+                        // case is closed -> show toast
+                        String textCaseClose = fragmentClientCanceledMeetingContext.getString(R.string.toastMeetingCanceledByClientCaseCloseToastText);
+                        Toast toast = Toast.makeText(fragmentClientCanceledMeetingContext, textCaseClose, Toast.LENGTH_LONG);
+                        TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+                        if (v != null) viewMessage.setGravity(Gravity.CENTER);
+                        toast.show();
                     }
                 }
             });

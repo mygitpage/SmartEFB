@@ -13,6 +13,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.concurrent.TimeUnit;
 
@@ -569,74 +571,86 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                             tmpClientCommentText = txtInputSuggestionComment.getText().toString();
                         }
 
-                        if ((countListViewElementVote >= minNumberOfVotes || tmpClientCommentText.length() > 3) && clientVoteDbId != null && clientVoteDbId > 0) { // too little suggestions or to few comment letters AND vote db id  > 0?
+                        // check case close
+                        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
 
-                            Boolean tmpVoteSelected = false;
-                            Boolean tmpCommentSelected = false;
+                            if ((countListViewElementVote >= minNumberOfVotes || tmpClientCommentText.length() > 3) && clientVoteDbId != null && clientVoteDbId > 0) { // too little suggestions or to few comment letters AND vote db id  > 0?
 
-                            // get server time from locale time or last contact time
-                            Long tmpServerTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
-                            if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
-                                tmpServerTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                                Boolean tmpVoteSelected = false;
+                                Boolean tmpCommentSelected = false;
+
+                                // get server time from locale time or last contact time
+                                Long tmpServerTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                                if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                                    tmpServerTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                                }
+
+                                // status of suggestion data -> 0= not send; 1=send; 4= external
+                                int tmpStatus = 0; // not send to server
+                                // timer status -> timer not run =1, because client already vote
+                                int timerStatus = 1;
+
+                                // set comment author and date
+                                String tmpClientCommentAuthor = "";
+                                Long tmpClientCommentDate = 0L;
+                                Long tmpClientCommentLocaleDate = 0L;
+                                if (tmpClientCommentText.length() > 3) {
+                                    tmpClientCommentAuthor = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                                    tmpClientCommentLocaleDate = System.currentTimeMillis();
+                                    tmpClientCommentDate = tmpServerTime;
+                                    tmpCommentSelected = true;
+                                }
+
+                                // set vote author and date
+                                String tmpVoteAuthor = "";
+                                Long tmpVoteDate = 0L;
+                                Long tmpVoteLocaleDate = 0L;
+                                if (countListViewElementVote >= minNumberOfVotes) {
+                                    tmpVoteLocaleDate = System.currentTimeMillis();
+                                    tmpVoteDate = tmpServerTime;
+                                    tmpVoteAuthor = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                                    tmpVoteSelected = true;
+                                }
+
+                                // generate update order
+                                String updateOrder;
+                                if (tmpCommentSelected && tmpVoteSelected) {
+                                    updateOrder = "update_client_vote_comment_time_voteandcomment";
+                                } else if (!tmpCommentSelected && tmpVoteSelected) {
+                                    updateOrder = "update_client_vote_comment_time_onlyvote";
+                                } else {
+                                    updateOrder = "update_client_vote_comment_time_onlycomment";
+                                }
+
+                                // insert  in DB
+                                myDb.updateSuggestionVoteAndCommentByClient(checkBoxSuggestionsValues[1], checkBoxSuggestionsValues[2], checkBoxSuggestionsValues[3], checkBoxSuggestionsValues[4], checkBoxSuggestionsValues[5], checkBoxSuggestionsValues[6], tmpVoteDate, tmpVoteLocaleDate, tmpVoteAuthor, tmpClientCommentAuthor, tmpClientCommentDate, tmpClientCommentLocaleDate, tmpClientCommentText, clientVoteDbId, tmpStatus, timerStatus, updateOrder);
+
+                                // send intent to service to start the service and send vote suggestion to server!
+                                Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
+                                startServiceIntent.putExtra("com", "send_meeting_data");
+                                startServiceIntent.putExtra("dbid", clientVoteDbId);
+                                startServiceIntent.putExtra("receiverBroadcast", "meetingFragmentSuggestionOverview");
+                                meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
+                            } else { // error too little suggestions!
+
+                                // show error message in view
+                                if (countListViewElementVote < minNumberOfVotes) {
+                                    TextView textViewTooLittleSuggestionChoosen = (TextView) inflatedView.findViewById(R.id.suggestionErrorToFewSuggestionsChoosen);
+                                    textViewTooLittleSuggestionChoosen.setVisibility(View.VISIBLE);
+                                }
+                                if (tmpClientCommentText.length() < 4 && prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false)) {
+                                    TextView textViewToFewLettersInComment = (TextView) inflatedView.findViewById(R.id.errorInputSuggestionComment);
+                                    textViewToFewLettersInComment.setVisibility(View.VISIBLE);
+                                }
                             }
-
-                            // status of suggestion data -> 0= not send; 1=send; 4= external
-                            int tmpStatus = 0; // not send to server
-                            // timer status -> timer not run =1, because client already vote
-                            int timerStatus = 1;
-
-                            // set comment author and date
-                            String tmpClientCommentAuthor = "";
-                            Long tmpClientCommentDate = 0L;
-                            Long tmpClientCommentLocaleDate = 0L;
-                            if (tmpClientCommentText.length() > 3) {
-                                tmpClientCommentAuthor = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
-                                tmpClientCommentLocaleDate = System.currentTimeMillis();
-                                tmpClientCommentDate = tmpServerTime;
-                                tmpCommentSelected = true;
-                            }
-
-                            // set vote author and date
-                            String tmpVoteAuthor = "";
-                            Long tmpVoteDate = 0L;
-                            Long tmpVoteLocaleDate = 0L;
-                            if (countListViewElementVote >= minNumberOfVotes) {
-                                tmpVoteLocaleDate = System.currentTimeMillis();
-                                tmpVoteDate = tmpServerTime;
-                                tmpVoteAuthor = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
-                                tmpVoteSelected = true;
-                            }
-
-                            // generate update order
-                            String updateOrder;
-                            if (tmpCommentSelected && tmpVoteSelected) {
-                                updateOrder = "update_client_vote_comment_time_voteandcomment";
-                            } else if (!tmpCommentSelected && tmpVoteSelected) {
-                                updateOrder = "update_client_vote_comment_time_onlyvote";
-                            } else {
-                                updateOrder = "update_client_vote_comment_time_onlycomment";
-                            }
-
-                            // insert  in DB
-                            myDb.updateSuggestionVoteAndCommentByClient(checkBoxSuggestionsValues[1], checkBoxSuggestionsValues[2], checkBoxSuggestionsValues[3], checkBoxSuggestionsValues[4], checkBoxSuggestionsValues[5], checkBoxSuggestionsValues[6], tmpVoteDate, tmpVoteLocaleDate, tmpVoteAuthor, tmpClientCommentAuthor, tmpClientCommentDate, tmpClientCommentLocaleDate, tmpClientCommentText, clientVoteDbId, tmpStatus, timerStatus, updateOrder);
-
-                            // send intent to service to start the service and send vote suggestion to server!
-                            Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
-                            startServiceIntent.putExtra("com", "send_meeting_data");
-                            startServiceIntent.putExtra("dbid", clientVoteDbId);
-                            startServiceIntent.putExtra("receiverBroadcast", "meetingFragmentSuggestionOverview");
-                            meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
-                        } else { // error too little suggestions!
-
-                            // show error message in view
-                            if (countListViewElementVote < minNumberOfVotes) {
-                                TextView textViewTooLittleSuggestionChoosen = (TextView) inflatedView.findViewById(R.id.suggestionErrorToFewSuggestionsChoosen);
-                                textViewTooLittleSuggestionChoosen.setVisibility(View.VISIBLE);
-                            }
-                            if (tmpClientCommentText.length() < 4 && prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false)) {
-                                TextView textViewToFewLettersInComment = (TextView) inflatedView.findViewById(R.id.errorInputSuggestionComment);
-                                textViewToFewLettersInComment.setVisibility(View.VISIBLE);
-                            }
+                        }
+                        else {
+                            // case is closed -> show toast
+                            String textCaseClose = context.getString(R.string.toastMessageSuggestionFromClientCaseCloseToastText);
+                            Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                            TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+                            if (v != null) viewMessage.setGravity(Gravity.CENTER);
+                            toast.show();
                         }
                     }
                 });

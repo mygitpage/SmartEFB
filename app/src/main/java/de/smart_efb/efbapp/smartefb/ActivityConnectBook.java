@@ -450,7 +450,6 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         Intent intent = getIntent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        // finish();
         startActivity(intent);
     }
     

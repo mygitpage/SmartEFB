@@ -15,6 +15,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,6 +26,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by ich on 13.03.2017.
@@ -40,8 +45,14 @@ public class ActivityPrevention extends AppCompatActivity {
 
     View preventionView;
 
+    // context of activity
+    Context contextPrevention;
+
     // for prefs
     private SharedPreferences prefs;
+
+    // expand text list
+    String expandTextList = "";
 
 
     @Override
@@ -52,6 +63,8 @@ public class ActivityPrevention extends AppCompatActivity {
         setContentView(R.layout.activity_efb_prevention);
 
         preventionView = this.findViewById(android.R.id.content);
+
+        contextPrevention = this;
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
@@ -64,18 +77,18 @@ public class ActivityPrevention extends AppCompatActivity {
         createHelpDialog();
 
         // show prevention view
-        displayPreventionView();
+        displayPreventionView("", "");
 
         // first ask to server for new data, when case is not closed!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
             // send intent to service to start the service
-            Intent startServiceIntent = new Intent(getApplicationContext(), ExchangeServiceEfb.class);
+            Intent startServiceIntent = new Intent(contextPrevention, ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
             startServiceIntent.putExtra("dbid",0L);
             startServiceIntent.putExtra("receiverBroadcast","");
             // start service
-            getApplicationContext().startService(startServiceIntent);
+            contextPrevention.startService(startServiceIntent);
         }
 
         // check for intent on start time
@@ -88,8 +101,16 @@ public class ActivityPrevention extends AppCompatActivity {
             // get the link data from the extra
             intentExtras = intent.getExtras();
             if (intentExtras != null && intentExtras.getString("com") != null) { // extra data set?
+
+                String tmpExpandTextList = "";
+                String tmpLinkTextHash = "";
+                if (intentExtras.getString("expand_text_list") != null && intentExtras.getString("expand_text_list").length() > 0 && intentExtras.getString("link_text_hash") != null && intentExtras.getString("link_text_hash").length() > 0) {
+                    tmpExpandTextList = intentExtras.getString("expand_text_list");
+                    tmpLinkTextHash = intentExtras.getString("link_text_hash");
+                }
+
                 // get command and execute it
-                executeIntentCommand(intentExtras.getString("com"));
+                executeIntentCommand (intentExtras.getString("com"), tmpExpandTextList, tmpLinkTextHash);
             }
         }
 
@@ -118,17 +139,37 @@ public class ActivityPrevention extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         // open sharedPrefs
-        prefs =  getApplicationContext().getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, getApplicationContext().MODE_PRIVATE);
+        prefs =  getApplicationContext().getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, contextPrevention.MODE_PRIVATE);
     }
 
 
 
 
-    void displayPreventionView () {
+    void displayPreventionView (String tmpExpandTextList, String tmpLinkTextHash) {
 
         TextView tmpLinkToVideo;
 
+        String tmpText;
+
+        TextView textViewExplain;
+
+        Bundle returnBundle;
+
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        // get depression intro text
+        tmpText = contextPrevention.getString(R.string.preventionDepressionExplainText);
+        textViewExplain = (TextView) preventionView.findViewById(R.id.preventionDepressionExplain);
+        returnBundle = checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList, tmpLinkTextHash);
+        if (returnBundle.getBoolean("generate")) {
+            Spanned tmpLinkText = makeLinkForMoreOrLessText (returnBundle.getString("substring"), expandTextList, returnBundle.getString("hash_value"));
+            textViewExplain.setText(tmpLinkText);
+            textViewExplain.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        else {
+            textViewExplain.setText(tmpText);
+        }
+
         // get button show video depression
         Button buttonShowVideoDepression = (Button) preventionView.findViewById(R.id.buttonShowVideoDepression);
 
@@ -136,7 +177,6 @@ public class ActivityPrevention extends AppCompatActivity {
         buttonShowVideoDepression.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // play video
                 String idVideo = "1UiA32Qv4yE";
                 sendIntentForYouTubeVideo(idVideo);
@@ -144,6 +184,22 @@ public class ActivityPrevention extends AppCompatActivity {
         });
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+        tmpText = contextPrevention.getString(R.string.preventionMediaCompetenceExplainText1);
+        textViewExplain = (TextView) preventionView.findViewById(R.id.preventionMediaCompetenceExplain1);
+        returnBundle = checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList, tmpLinkTextHash);
+        if (returnBundle.getBoolean("generate")) {
+            Spanned tmpLinkText = makeLinkForMoreOrLessText (returnBundle.getString("substring"), expandTextList, returnBundle.getString("hash_value"));
+            textViewExplain.setText(tmpLinkText);
+            textViewExplain.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        else {
+            textViewExplain.setText(tmpText);
+        }
+
+
+
         // get button show video pain
         Button buttonShowVideoPain = (Button) preventionView.findViewById(R.id.buttonShowVideoPain);
 
@@ -175,6 +231,122 @@ public class ActivityPrevention extends AppCompatActivity {
 
 
     }
+
+
+
+
+
+
+
+    Bundle checkAndGenerateMoreOrLessStringLink (String textString, String tmpExpandTextList, String tmpLinkTextHash) {
+
+        Bundle bundle = new Bundle();
+
+        final String MD5 = "MD5";
+
+        String subString = "";
+
+        if (textString.length() > ConstansClassMain.maxLessOrMoreStringLetters) {
+            bundle.putBoolean("generate", true);
+
+
+
+            Log.d("CheckMoreOrLess---->", "List:"+tmpExpandTextList+" +++ Hash:"+tmpLinkTextHash);
+
+
+
+            // generate hash value of string
+            bundle.putString("hash_value", "");
+            String hashValue = "";
+            try {
+                // Create MD5 Hash
+                MessageDigest digest = java.security.MessageDigest.getInstance(MD5);
+                digest.update(textString.getBytes());
+                byte messageDigest[] = digest.digest();
+
+                // Create Hex String
+                StringBuilder hexString = new StringBuilder();
+                for (byte aMessageDigest : messageDigest) {
+                    String h = Integer.toHexString(0xFF & aMessageDigest);
+                    while (h.length() < 2)
+                        h = "0" + h;
+                    hexString.append(h);
+                }
+
+                Log.d("Generate HASH -->", "Value:"+hexString.toString());
+
+                hashValue = hexString.toString();
+                bundle.putString("hash_value", hashValue);
+
+
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+
+
+
+
+            // generate sub string for output
+            if (tmpExpandTextList.contains(tmpLinkTextHash+";") && hashValue.equals(tmpLinkTextHash+";")) {
+                subString = textString;
+
+            }
+            else {
+                subString = textString.substring(0, textString.indexOf(" ", ConstansClassMain.maxLessOrMoreStringLetters));
+                subString = subString + "...";
+            }
+            bundle.putString("substring", subString);
+
+
+
+
+
+
+
+        }
+        else {
+            bundle.putBoolean("generate", false);
+        }
+
+        return bundle;
+    }
+
+
+
+
+    Spanned makeLinkForMoreOrLessText (String subText, String tmpExpandTextList, String tmpLinkTextHash) {
+
+        final Uri.Builder linkLessOrMoreTextLinkBuilder = new Uri.Builder();
+        linkLessOrMoreTextLinkBuilder.scheme("smart.efb.deeplink")
+                .authority("linkin")
+                .path("prevention")
+                .appendQueryParameter("expand_text_list", tmpExpandTextList)
+                .appendQueryParameter("com", "less_or_more_text")
+                .appendQueryParameter("link_text_hash", tmpLinkTextHash);
+
+        String linkLessOrMoreTextString = "";
+        String linkLessTextString = contextPrevention.getResources().getString(R.string.preventionLinkTextLess);
+        String linkMoreTextString = contextPrevention.getResources().getString(R.string.preventionLinkTextMore);
+
+        linkLessOrMoreTextString = linkMoreTextString;
+        if (tmpExpandTextList.contains(tmpLinkTextHash+";")) {
+            linkLessOrMoreTextString = linkLessTextString;
+        }
+
+        // generate link for output
+        Spanned linkMoreOrLess = Html.fromHtml(subText + "\n<a href=\"" + linkLessOrMoreTextLinkBuilder.build().toString() + "\"><b>" + linkLessOrMoreTextString + "</b></a>");
+
+        return linkMoreOrLess;
+    }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -244,14 +416,21 @@ public class ActivityPrevention extends AppCompatActivity {
 
         if (intentExtras != null) {
 
+            String tmpExpandTextList = "";
+            String tmpLinkTextHash = "";
+            if (intentExtras.getString("expand_text_list") != null && intentExtras.getString("expand_text_list").length() >= 0 && intentExtras.getString("link_text_hash") != null && intentExtras.getString("link_text_hash").length() > 0) {
+                tmpExpandTextList = intentExtras.getString("expand_text_list");
+                tmpLinkTextHash = intentExtras.getString("link_text_hash");
+            }
+
             // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"));
+            executeIntentCommand (intentExtras.getString("com"), tmpExpandTextList, tmpLinkTextHash);
         }
     }
 
 
     // execute the commands that comes from link or intend
-    public void executeIntentCommand (String command) {
+    public void executeIntentCommand (String command, String tmpExpandTextList, String tmpLinkTextHash) {
 
         if (command.equals("open_link_medienquiz_schau_hin")) {
 
@@ -281,6 +460,35 @@ public class ActivityPrevention extends AppCompatActivity {
                 toast.show();
             }
         }
+        else if (command.equals("less_or_more_text")) {
+
+            if (tmpExpandTextList.contains(tmpLinkTextHash+";")) {
+                tmpExpandTextList = tmpExpandTextList.replace(tmpLinkTextHash+";", "");
+
+                Log.d("NewIntentHashList", "REPLACE!!!!");
+            }
+            else {
+
+                Log.d("NewIntentHashList", "CONCAT!!!!");
+
+                tmpExpandTextList = tmpExpandTextList.concat(tmpLinkTextHash+";");
+            }
+
+            expandTextList = tmpExpandTextList;
+
+
+            Log.d("Prevention####>", "List:"+tmpExpandTextList);
+
+
+            // show prevention view
+            displayPreventionView(tmpExpandTextList, tmpLinkTextHash);
+
+        }
+
+
+
+
+
 
 
 

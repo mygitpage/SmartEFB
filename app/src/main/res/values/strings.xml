@@ -40,7 +40,7 @@
             <string name="toastConnectBookMessageSettingsSharingEnable">Die Nachrichten werden wieder zugestellt!</string>
             <string name="toastConnectBookMessageSettingsSharingDisable">Die Nachrichten werden im Momentan nicht mehr zugestellt!</string>
             <string name="toastConnectBookToLessLettersMessageInput">Ihre Nachricht muss aus mindestens einem Zeichen bestehen!</string>
-    <string name="toastConnectBookCaseCloseToastText">Der Fall ist abgeschlossen! Nachrichten werden nicht mehr gesendet!</string>
+            <string name="toastConnectBookCaseCloseToastText">Der Fall ist abgeschlossen! Nachrichten werden nicht mehr gesendet!</string>
         <!-- End String Activity Connect Book -->
 
         <!-- connect book dialog settings -->
@@ -119,19 +119,15 @@
             <string name="settingsConnectToServerDialogNoInternetHeadline">Keine Internetverbindung</string>
             <string name="settingsConnectToServerDialogNoInternetInfoText">Es besteht keine Verbindung zum Internet. Bitte verbinden Sie sich und versuchen Sie es noch einmal.</string>
             <string name="settingsConnectToServerDialogOkButton">Ok</string>
-
-    <string name="settingsGenerateNewConnectionNumberText">Neue Pin-Nummer erzeugen</string>
-
+            <string name="settingsGenerateNewConnectionNumberText">Neue Pin-Nummer erzeugen</string>
             <string name="settingsConnectToServerHeadingNoInternetOrError">Keine Internetverbindung oder Fehler</string>
             <string name="settingsConnectToServerIntroTextNoInternetOrError">Es besteht keine Verbindung mit dem Internet oder es ist ein Kommunikationsfehler aufgetreten. Bitte kontrollieren Sie Ihre Verbindung zum Internet und versuchen Sie sich erneut mit dem Server zu verbinden. Bei Fragen kann Ihnen gerne Ihre Beraterin/ Ihr Berater helfen.\n\nIhre Pin-Nummer ist gleich geblieben.</string>
             <string name="settingsConnectToServerErrorPreIntroText">Während der Kommunikation mit dem Server ist ein Fehler aufgetreten. Folgender Fehlertext wurde übermittelt:</string>
             <string name="settingsConnectToServerErrorPostIntroText">Bitte teilen Sie diesen Fehlertext Ihrer Beraterin/ Ihrem Berater mit. Kehren Sie anschließend zum Hauptmenü zurück und versuchen Sie es noch einmal.</string>
             <string name="settingsSendingToServerDialogInfoText">Daten senden</string>
             <string name="hintTextCaseCloseIntroText">Der Fall wurde von Ihrer Beraterin/ Ihrem Berater abgeschlossen. Daher werden keine weiteren Nachrichten, Kommentare, etc. gesendet oder empfangen.\nSie können die App deinstallieren, verlieren dann aber auch den gesamten Kommunikationsverlauf.</string>
-
-        <string name="hintTextCaseCloseIntroTextHeadline">Fall abgeschlossen</string>
-
-        <string name="settingsSendingToServerInvolvedPersonHeadlineText">Beteiligte an dieser App-Beratung</string>
+            <string name="hintTextCaseCloseIntroTextHeadline">Fall abgeschlossen</string>
+            <string name="settingsSendingToServerInvolvedPersonHeadlineText">Beteiligte an dieser App-Beratung</string>
             <string name="settingsConnectToServerInvolvedPersonHeadlineExplainText">Hier finden Sie die Namen der Beraterinnen und Berater und Klienten, die an der Kommunikation über die App teilnehmen (Stand: %1$s Uhr)</string>
             <string name="functionStringForCoach">(BeraterIn)</string>
             <string name="settingsConnectToServerInvolvedPersonPresenceHeadlineText">Verfügbarkeit Ihrer Beraterinnen und Berater</string>
@@ -328,7 +324,7 @@
             <string name="ourArrangementCommentPersonalAuthorName">Ihnen</string>
             <string name="textOurArrangementCommentNoSharing">Die Kommentare werden im Moment nicht zugestellt!</string>
             <string name="ourArrangementCommentSendInfoSharingDisable">Der Kommentar wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
-    <string name="toastOurArrangementCommentCaseCloseToastText">Der Fall ist abgeschlossen! Kommentare werden nicht mehr gesendet!</string>
+            <string name="toastOurArrangementCommentCaseCloseToastText">Der Fall ist abgeschlossen! Kommentare werden nicht mehr gesendet!</string>
         <!-- End String Fragment comment -->
 
         <!-- String Fragment show comment -->
@@ -434,7 +430,7 @@
             <string name="textOurArrangementSketchCommentActualResultStructQuestion">Mit der Einschätzung wurde folgende Zustimmung zum Absprachenentwurf abgegeben: &lt;b>%1$s&lt;/b></string>
             <string name="textOurArrangementSketchCommentActualResultStructQuestionFromCoach">Die Einschätzung wurde ohne Zustimmungswert von Ihrer Beraterin/ Ihrem Berater geschrieben</string>
             <string name="textOurArrangementSketchCommentNoSharing">Die Einschätzungen werden im Moment nicht zugestellt!</string>
-    <string name="toastOurArrangementSketchCommentCaseCloseToastText">Der Fall ist abgeschlossen! Einschätzungen werden nicht mehr gesendet!</string>
+            <string name="toastOurArrangementSketchCommentCaseCloseToastText">Der Fall ist abgeschlossen! Einschätzungen werden nicht mehr gesendet!</string>
         <!-- End fragment comment sketch arrangement -->
 
         <!-- String Fragment show sketch comment -->
@@ -662,7 +658,7 @@
             <string name="infoTextJointlyCommentDelaytimePlural">die Kommentare werden mit einer Verzögerungszeit von %1$d Minuten weitergeleitet (wenn eine Internetverbindung besteht)</string>
             <string name="textOurGoalsJointlyCommentNoSharing">Die Kommentare werden im Moment nicht weitergeleitet!</string>
             <string name="ourJointlyGoalsCommentSendInfoSharingDisable">Der Kommentar wurde gesendet. Wird aber im Moment nicht weitergeleitet!</string>
-    <string name="toastJointlyGoalsCommentCaseCloseToastText">Der Fall ist abgeschlossen! Kommentare werden nicht mehr gesendet!</string>
+            <string name="toastJointlyGoalsCommentCaseCloseToastText">Der Fall ist abgeschlossen! Kommentare werden nicht mehr gesendet!</string>
 
     <!-- End comment jointly goals -->
 
@@ -670,16 +666,16 @@
             <string name="btnAbortJointlyGoalsShowComment">Zurück zu den gemeinsamen Zielen</string>
             <string name="showJointlyGoalsCommentHeadlineWithNumber">Kommentar</string>
             <string name="showJointlyGoalsCommentHeadlineWithNumberExtraNewest">(Aktuellster)</string>
-    <string name="showJointlyGoalsCommentHeadlineWithNumberExtraOldest">(Ältester)</string>
+            <string name="showJointlyGoalsCommentHeadlineWithNumberExtraOldest">(Ältester)</string>
             <string name="ourJointlyGoalsShowCommentPersonalAuthorName">Ihnen</string>
             <string name="ourJointlyGoalsShowCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
-    <string name="ourJointlyGoalsShowCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+            <string name="ourJointlyGoalsShowCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourJointlyGoalsShowCommentSendInfo">Der Kommentar wurde noch nicht gesendet.</string>
             <string name="ourJointlyGoalsShowCommentSendDelayInfo">Der Kommentar wurde gesendet und wird in %1$s zugestellt.</string>
             <string name="ourJointlyGoalsShowCommentSendSuccsessfullInfo">Der Kommentar wurde gesendet.</string>
             <string name="ourJointlyGoalsShowCommentLinkToCommentAGoal">Ziel %1$d kommentieren</string>
-    <string name="ourGoalsShowJointlyCommentLinkChangeSortSequenceOfJointlyCommentAscending">Kommentare absteigend sortieren (Jüngster zu erst)</string>
-    <string name="ourGoalsShowJointlyCommentLinkChangeSortSequenceOfJointlyCommentDescending">Kommentare aufsteigend sortieren (Ältester zu erst)</string>
+            <string name="ourGoalsShowJointlyCommentLinkChangeSortSequenceOfJointlyCommentAscending">Kommentare absteigend sortieren (Jüngster zu erst)</string>
+            <string name="ourGoalsShowJointlyCommentLinkChangeSortSequenceOfJointlyCommentDescending">Kommentare aufsteigend sortieren (Ältester zu erst)</string>
         <!-- End show comment jointly goals -->
 
 
@@ -760,11 +756,8 @@
             <string name="textOurGoalsDebetableCommentActualResultStructQuestionFromCoach">Die Einschätzung wurde ohne Zustimmungswert von Ihrer Beraterin/ Ihrem Berater geschrieben</string>
             <string name="textOurGoalsDebetableGoalsCommentNoSharing">Die Einschätzungen werden im Moment nicht zugestellt!</string>
             <string name="ourGoalsDebetableCommentPersonalAuthorName">Ihnen</string>
-
             <string name="ourGoalsDebetableCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
             <string name="ourGoalsDebetableCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
-
-
             <string name="ourGoalsDebetableCommentAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
             <string name="ourGoalsDebetableCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
             <string name="ourGoalsDebetableCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
@@ -783,16 +776,16 @@
             <string name="toastMessageDebetableCommentSendSuccessfull">Die Einschätzung wurde gesendet!</string>
             <string name="toastMessageeDebetableCommentSendNotSuccessfull">Die Einschätzung wurde noch nicht gesendet!</string>
             <string name="toastMessageeDebetableCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
-    <string name="toastDebetableGoalsCommentCaseCloseToastText">Der Fall ist abgeschlossen! Einschätzungen werden nicht mehr gesendet!</string>
+            <string name="toastDebetableGoalsCommentCaseCloseToastText">Der Fall ist abgeschlossen! Einschätzungen werden nicht mehr gesendet!</string>
         <!-- End fragment debetable goals comment -->
 
 
         <!-- Fragment show comment debetable goals -->
             <string name="showDebetableCommentHeadlineWithNumber">Einschätzung</string>
             <string name="showDebetableCommentHeadlineWithNumberExtraNewest">(Aktuellste)</string>
-    <string name="showDebetableCommentHeadlineWithNumberExtraOldest">(Älteste)</string>
+            <string name="showDebetableCommentHeadlineWithNumberExtraOldest">(Älteste)</string>
             <string name="ourGoalsShowDebetableCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
-    <string name="ourGoalsShowDebetableCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
+            <string name="ourGoalsShowDebetableCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourGoalsShowDebetableCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
             <string name="ourGoalsShowDebetableCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
             <string name="ourGoalsShowDebetableCommentSendSuccsessfullInfo">Die Einschätzung wurde gesendet.</string>
@@ -805,8 +798,8 @@
             <string name="infoTextNumberOfShowDebetableCommentsPossibleNoBorder">(Keine Begrenzung)</string>
             <string name="ourGoalsShowDdebetableCommentLinkToCommentAGoal">Strittiges Ziel %1$d einschätzen</string>
             <string name="btnAbortShowDebetableComment">Zurück zu den strittigen Zielen</string>
-    <string name="ourGoalsShowDebetableCommentLinkChangeSortSequenceOfDebetableCommentAscending">Einschätzungen absteigend sortieren (Jüngste zu erst)</string>
-    <string name="ourGoalsShowDebetableCommentLinkChangeSortSequenceOfDebetableCommentDescending">Einschätzungen aufsteigend sortieren (Älteste zu erst)</string>
+            <string name="ourGoalsShowDebetableCommentLinkChangeSortSequenceOfDebetableCommentAscending">Einschätzungen absteigend sortieren (Jüngste zu erst)</string>
+            <string name="ourGoalsShowDebetableCommentLinkChangeSortSequenceOfDebetableCommentDescending">Einschätzungen aufsteigend sortieren (Älteste zu erst)</string>
         <!-- End fragment show comment debetable goals -->
 
 
@@ -1017,6 +1010,7 @@
             <string name="meetingCanceledByClientHintText1">Diese Absage sehen nur Ihre Beraterin/ Ihr Berater. Ausschließlich diese können den Termin offiziell absagen! So lange der Termin nicht offiziell abgesagt wurde, gilt dieser!</string>
             <string name="btnSendCanceledReason">Termin absagen</string>
             <string name="btnAbortCanceledMeeting">Abbrechen</string>
+            <string name="toastMeetingCanceledByClientCaseCloseToastText">Der Fall ist abgeschlossen! Terminabsagewünsche werden nicht mehr gesendet!</string>
         <!-- end fragment meeting canceled by client -->
 
         <!-- fragment suggestion overview -->
@@ -1024,20 +1018,16 @@
             <string name="suggestionOverviewVoteSuggestionTitle">Ihre getroffene Terminauswahl</string>
             <string name="suggestionOverviewFoundMeetingFromSuggestionTitle">Termin gefunden aus Vorschlägen</string>
             <string name="suggestionOverviewActualSuggestionTitle">Aktuelle Terminvorschläge</string>
-    <string name="suggestionOverviewResponseTimeOverSuggestionTitle">Rückmeldezeit abgelaufen</string>
+            <string name="suggestionOverviewResponseTimeOverSuggestionTitle">Rückmeldezeit abgelaufen</string>
             <string name="meetingOverviewNoSuggestionAvailableText">Es sind keine Terminvorschläge von Ihrer Beraterin/ Ihrem Berater vorhanden oder alle Rückmeldezeiten sind verstrichen.</string>
             <string name="meetingOverviewSuggestionSelectSuggestFromListIntro">Bitte wählen Sie aus den Terminvorschlägen die für Sie passenden aus.</string>
             <string name="meetingOverviewSuggestionAuthorAndDateWithCancele">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt und von &lt;u>%4$s&lt;/u> am %5$s um %6$s Uhr verworfen.</string>
             <string name="meetingOverviewSuggestionAuthorAndDateVote">Ihre Auswahl an Terminvorschlägen vom %1$s um %2$s Uhr (Lokale Smartphonezeit) wurde zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
             <string name="meetingOverviewSuggestionAuthorAndDateVoteAndOrComment">Ihre Auswahl an Terminvorschlägen und/oder Ihr Kommentar vom %1$s um %2$s Uhr (Lokale Smartphonezeit) wurde zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
-    <string name="meetingOverviewSuggestionAuthorAndDateVoteNotSend">Ihre Auswahl an Terminvorschlägen wurde am %1$s um %2$s Uhr (Lokale Smartphonezeit) gespeichert, aber noch nicht gesendet.</string>
-
-    <string name="meetingOverviewMeetingFoundFromSuggestionAuthorAndDate">Ihre Beraterin/ Ihr Berater (%1$s) hat am  %2$s um %3$s Uhr aus allen Terminvorschlägen einen Termin gefunden. Bitte schauen Sie in den Bereich Termine.</string>
-
+            <string name="meetingOverviewSuggestionAuthorAndDateVoteNotSend">Ihre Auswahl an Terminvorschlägen wurde am %1$s um %2$s Uhr (Lokale Smartphonezeit) gespeichert, aber noch nicht gesendet.</string>
+            <string name="meetingOverviewMeetingFoundFromSuggestionAuthorAndDate">Ihre Beraterin/ Ihr Berater (%1$s) hat am  %2$s um %3$s Uhr aus allen Terminvorschlägen einen Termin gefunden. Bitte schauen Sie in den Bereich Termine.</string>
             <string name="meetingOverviewSuggestionAuthorAndDate">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt.</string>
-
-    <string name="meetingOverviewSuggestionAuthorAndDateResponseTimeOver">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt. Die Rückmeldezeit ist am %4$s um %5$s Uhr abgelaufen. Sie haben leider keine Rückmeldung gegeben. Bitte setzen Sie sich mit Ihrer Beraterin/ Ihrem Berater in Verbindung.</string>
-
+            <string name="meetingOverviewSuggestionAuthorAndDateResponseTimeOver">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt. Die Rückmeldezeit ist am %4$s um %5$s Uhr abgelaufen. Sie haben leider keine Rückmeldung gegeben. Bitte setzen Sie sich mit Ihrer Beraterin/ Ihrem Berater in Verbindung.</string>
             <string name="meetingOverviewSuggestiondateAndTimeText">%1$s - %2$s Uhr</string>
             <string name="meetingOverviewSuggestionResponseDateAndTimeText">(bis zum %1$s um %2$s Uhr, Beratungsstellenzeit)</string>
             <string name="btnTextSendSuggestionToCoach">Meine Auswahl Senden</string>
@@ -1049,23 +1039,17 @@
             <string name="meetingOverviewSuggestionVoteInfoTextAtLeast">Ihre Auswahl von Terminvorschlägen wurde bereits zu Ihrer Beraterin/ Ihrem Berater geschickt. Daher sind Änderungen nicht mehr möglich.</string>
             <string name="meetingOverviewSuggestionVoteInfoOrSuggestionCommentTextAtLeast">Ihre Auswahl von Terminvorschlägen und /oder Ihr Kommentar zu den Vorschlägen wurde zu Ihrer Beraterin/ Ihrem Berater geschickt. Daher sind Änderungen nicht mehr möglich.</string>
             <string name="meetingOverviewSuggestionVoteInfoOrSuggestionCommentTextAtLeastNotSend">Ihre Auswahl von Terminvorschlägen und /oder Ihr Kommentar zu den Vorschlägen wurde bisher noch nicht gesendet! Sobald eine Internetverbindung besteht, wird Ihre Wahl gesendet.</string>
-
-    <string name="meetingOverviewSuggestionFoundMeetingInfoTextAtLeast">Ihre Beraterin/ Ihre Berater konnte aus den Terminvorschlägen aller Beteiligten einen Termin finden. Dieser wurde bzw. wird im Bereich Termine zu finden sein.</string>
+            <string name="meetingOverviewSuggestionFoundMeetingInfoTextAtLeast">Ihre Beraterin/ Ihre Berater konnte aus den Terminvorschlägen aller Beteiligten einen Termin finden. Dieser wurde bzw. wird im Bereich Termine zu finden sein.</string>
             <string name="meetingOverviewSuggestionCanceledInfoTextAtLeast">Ihre Beraterin/ Ihre Berater hat die Terminvorschläge verworfen.</string>
-
-    <string name="meetingOverviewSuggestionResponseTimeOverTextAtLeast">Die Rückmeldezeit ist abgelaufen. Bitte setzen Sie sich mit Ihrer Beraterin/ Ihrem Berater in Verbindung.</string>
-
-
-    <string name="suggestionOverviewResponseTimeIsOver">Rückmeldezeit abgelaufen</string>
-
-    <string name="meetingSuggestionResponseTimeOverText">Rückmeldezeit abgelaufen!</string>
+            <string name="meetingOverviewSuggestionResponseTimeOverTextAtLeast">Die Rückmeldezeit ist abgelaufen. Bitte setzen Sie sich mit Ihrer Beraterin/ Ihrem Berater in Verbindung.</string>
+            <string name="suggestionOverviewResponseTimeIsOver">Rückmeldezeit abgelaufen</string>
+            <string name="meetingSuggestionResponseTimeOverText">Rückmeldezeit abgelaufen!</string>
             <string name="suggestionOverviewResponseTimeAskedForIntroText">Rückmeldung erbeten in spätestens</string>
             <string name="suggestionCommentHeadlineText">Ihr Kommentar</string>
             <string name="meetingOverviewSuggestionNoCommentTextAvailable">Es ist für diese Terminvorschläge kein Kommentar vorhanden!</string>
             <string name="errorInputSuggestionComment">Bitte kontrollieren Sie Ihren Kommentar. Er ist zu kurz oder enthält nicht erlaubte Zeichen.</string>
             <string name="suggestionCommentHintText">Sie können Vorschläge auswählen und/oder hier einen Kommentar schreiben</string>
             <string name="suggestionOverviewLinkTextDeleteSuggestionEntry">Den obigen Eintrag löschen</string>
-
             <string name="toastMessageSuggestionOverviewNewSuggestion">Es sind neue Terminvorschläge von Ihrer Beraterin/ Ihrem Berater eingetroffen!</string>
             <string name="toastMessageSuggestionOverviewCanceledSuggestionByCoach">Es wurden die Berater-Terminvorschläge durch Ihre Beraterin/ Ihren Berater abgesagt!</string>
             <string name="toastMessageSuggestionOverviewMeetingFoundByCoach">Es wurde aus den Terminvorschlägen ein gemeinsamer Termin gefunden!</string>
@@ -1073,19 +1057,19 @@
             <string name="toastMessageSuggestionOverviewVoteByClientNotSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen konnte nicht gesendet werden!</string>
             <string name="toastMessageSuggestionOverviewVoteAndCommentByClientSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen und/ oder Ihr Kommentar wurden erfolgreich gesendet!</string>
             <string name="toastMessageSuggestionOverviewVoteAndCommentByClientNotSuccessfullSend">Ihre Auswahl aus den Terminvorschlägen und/ oder Ihr Kommentar konnten nicht gesendet werden!</string>
+            <string name="toastMessageSuggestionOverviewCaseCloseToastText">Der Fall ist abgeschlossen! Terminvorschläge werden nicht mehr gesendet!</string>
         <!-- end fragment suggestion overview -->
 
         <!-- fragment suggestion from client -->
             <string name="meetingOverviewNoSuggestionFromClientAvailableText">Es liegen keine Terminvorschläge von Ihnen vor.</string>
-    <string name="meetingOverviewNoSuggestionFromClientAvailableTimeProblemText">Die Systemzeit wurde verändert. Daher wird der Vorschlagszeitraum nicht korrekt angezeigt. Bitte korregieren Sie die Systemzeit.</string>
+            <string name="meetingOverviewNoSuggestionFromClientAvailableTimeProblemText">Die Systemzeit wurde verändert. Daher wird der Vorschlagszeitraum nicht korrekt angezeigt. Bitte korregieren Sie die Systemzeit.</string>
             <string name="meetingOverviewSuggestionFromClientFunctionOffText">Die Funktion steht im Moment nicht zur Verfügung.</string>
             <string name="meetingOverviewSuggestionFromClientIntroInfoTextInTimezone">Bitte geben Sie Ihre Terminvorschläge ein</string>
             <string name="meetingOverviewSuggestionFromClientIntroInfoTextOutPreTimezone">Demnächst hier Ihre Terminvorschläge abgeben</string>
-    <string name="meetingOverviewSuggestionFromClientIntroInfoTextOutPostTimezone">Ihre abgegebenen Terminvorschläge</string>
+            <string name="meetingOverviewSuggestionFromClientIntroInfoTextOutPostTimezone">Ihre abgegebenen Terminvorschläge</string>
             <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextInTimezone">Ihr Terminvorschlag</string>
             <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextOutPreTimezone">Demnächst</string>
-    <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextOutPostTimezone">Abgabezeitraum abgelaufen</string>
-
+            <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextOutPostTimezone">Abgabezeitraum abgelaufen</string>
             <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextCanceled">Zeitraum abgesagt</string>
             <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextFoundMeeting">Termin gefunden</string>
             <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextAlreadySend">Terminvorschläge gesendet</string>
@@ -1094,10 +1078,7 @@
             <string name="meetingOverviewSuggestionFromClientAuthorAndDateAlreadySend">Ihre Terminvorschläge wurden am %1$s um %2$s Uhr (Lokale Smartphonezeit) zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
             <string name="meetingOverviewSuggestionFromClientInTimezone">Bitte geben Sie bis zum %1$s um %2$s Uhr (Beratungsstellenzeit) Ihre Terminvorschläge ab. Der Terminvorschlagszeitraum begann am %3$s um %4$s Uhr und wurde von &lt;u>%5$s&lt;/u> am %6$s um %7$s Uhr erstellt.</string>
             <string name="meetingOverviewSuggestionFromClientOutPreTimezone">Ab dem %1$s um %2$s Uhr können Sie bis zum %3$s um %4$s Uhr (Beratungsstellenzeit) Ihre Terminvorschläge abgeben. Der Terminvorschlagszeitraum wurde von &lt;u>%5$s&lt;/u> am %6$s um %7$s Uhr erstellt.</string>
-
-    <string name="meetingOverviewSuggestionFromClientOutPostTimezone">Der Abgabezeitraum für Terminvorschläge ist abgelaufen (vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr, Beratungsstellenzeit). Sie haben leider keine Terminvorschläge abgegeben. Bitte setzen Sie sich mit Ihrer Beraterin/ Ihrem Berater in Verbindung.</string>
-
-
+            <string name="meetingOverviewSuggestionFromClientOutPostTimezone">Der Abgabezeitraum für Terminvorschläge ist abgelaufen (vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr, Beratungsstellenzeit). Sie haben leider keine Terminvorschläge abgegeben. Bitte setzen Sie sich mit Ihrer Beraterin/ Ihrem Berater in Verbindung.</string>
             <string name="suggestionFromClientHintText">Bitte geben Sie Ihre Terminvorschläge ein</string>
             <string name="suggestionFromClientEndDateTimeAskedForIntroText">Terminvorschläge erbeten in spätestens</string>
             <string name="suggestionFromClientTimeIsOver">Zeitraum abgelaufen</string>
@@ -1105,14 +1086,12 @@
             <string name="suggestionFromClientButtonSendToCoach">Terminvorschläge senden</string>
             <string name="suggestionFromClientStartDateAndTimeText">(Am %1$s um %2$s Uhr, Beratungsstellenzeit)</string>
             <string name="suggestionFromClientStartDateTimeAskedForIntroText">Demnächst Terminvorschläge abgeben in</string>
-    <string name="suggestionFromClientTimerProblemText">Systemzeit wurde verändert. Zeitraum unklar.</string>
+            <string name="suggestionFromClientTimerProblemText">Systemzeit wurde verändert. Zeitraum unklar.</string>
             <string name="suggestionFromClientAllreadySendInputSuggestionHintText">Ihre Terminvorschläge wurden zu Ihrer Beraterin/ Ihrem Berater gesendet. Diese wird versuchen aus allen Vorschlägen einen gemeinsamen Termin zu finden.</string>
             <string name="suggestionFromClientTimezoneCanceledByCoach">Vorschlagszeitraum abgesagt</string>
             <string name="suggestionFromClientMeetingFoundByCoachText">Termin gefunden</string>
-
-    <string name="suggestionFromClientPostOutOffTimezoneText">Vorschlagszeitraum abgelaufen</string>
-
-    <string name="errorInputClientSuggestion">Bitte kontrollieren Sie Ihre Vorschläge. Sie sind zu kurz oder enthalten nicht erlaubte Zeichen.</string>
+            <string name="suggestionFromClientPostOutOffTimezoneText">Vorschlagszeitraum abgelaufen</string>
+            <string name="errorInputClientSuggestion">Bitte kontrollieren Sie Ihre Vorschläge. Sie sind zu kurz oder enthalten nicht erlaubte Zeichen.</string>
             <string name="suggestionFromClientInputInfoTextForUser">Sie können nur einmal Vorschläge unterbreiten. Bitte geben Sie mindestens zwei Terminvorschläge mit Datum, Uhrzeit und Ort (Beratungsstelle in Werder oder Bad Belzig) an. Danke.</string>
             <string name="suggestionFromClientLinkTextDeleteSuggestionEntry">Den obigen Eintrag löschen</string>
             <string name="toastMessageSuggestionFromClientNewInvitation">Sie können neue Terminvorschläge an Ihre Beraterin/ Ihren Berater schicken!</string>
@@ -1120,6 +1099,7 @@
             <string name="toastMessageSuggestionFromClientMeetingFoundByCoach">Es wurde aus Ihren Terminvorschlägen ein gemeinsamer Termin gefunden!</string>
             <string name="toastMessageSuggestionFromClientByClientSuccessfullSend">Ihre Terminvorschläge wurden erfolgreich gesendet!</string>
             <string name="toastMessageSuggestionFromClientByClientNotSuccessfullSend">Ihre Terminvorschläge konnten nicht gesendet werden!</string>
+            <string name="toastMessageSuggestionFromClientCaseCloseToastText">Der Fall ist abgeschlossen! Terminvorschläge werden nicht mehr gesendet!</string>
         <!-- end fragment suggestion from client -->
 
         <!-- Subtitle under Title Meeting -->
@@ -1129,7 +1109,7 @@
             <string name="meetingSubtitleSuggestionOverviewNoSuggestion">Keine Vorschläge vom Berater</string>
             <string name="meetingSubtitleSuggestionFromClientOverview">Terminvorschläge von Ihnen</string>
             <string name="meetingSubtitleSuggestionFromClientOverviewNoSuggestion">Keine Vorschläge von Ihnen</string>
-    <string name="meetingSubtitleSuggestionFromClientOverviewNoSuggestionTimeProblem">Probleme mit der Systemzeit</string>
+            <string name="meetingSubtitleSuggestionFromClientOverviewNoSuggestionTimeProblem">Probleme mit der Systemzeit</string>
             <string name="meetingSubtitleSuggestionFromClientOverviewFunctionNotPossible">Funktion nicht möglich</string>
             <string name="meetingSubtitleMeetingSuggestionOverviewOld">Vergangene Termine</string>
             <string name="meetingSubtitleMeetingSuggestionOverviewOldNotAvailable">Keine vergangenen Termine vorhanden</string>
@@ -1234,43 +1214,34 @@
 
 
     <!-- prevention -->
-
         <string name="textPreventionNothingThere">Zurzeit liegen keine Präventionsinhalte vor.</string>
-
-    <string name="preventionDepressionHeadlineText">Depression</string>
-    <string name="preventionDepressionExplainText">Ein interessantes Video (\"Ich hatte einen schwarzen Hund\") zur Entstehung, Auswirkungen und Hilfsmöglichkeiten bei einer Depression. Der direkte Link zum Youtube-Video lautet: https://www.youtube.com/watch?v=1UiA32Qv4yE</string>
-    <string name="preventionDepressionLinkToVideo">Video anschauen</string>
-
-    <string name="preventionPainHeadlineText">Schmerz</string>
-    <string name="preventionPainExplainText">Spannendes Viedeo für Eltern und Kinder: Wie kann man Schmerzen verstehen, die keine körperliche Ursache haben und wie kann man damit umgehen. Den Schmerz verstehen - und was zu tun ist in 10 Minuten, vom deutschen Kinderschmerzzentrum. Der direkte Link zum Youtube-Video lautet: https://www.youtube.com/watch?v=KpJfixYgBrw </string>
-
-    <string name="preventionMediaCompetenceHeadlineText">Medienkompetenz</string>
-    <string name="preventionMediaCompetenceExplainText1">Mit dem neuen SCHAU HIN!-Medienquiz können Eltern zusammen mit ihrem Kind das eigene Wissen zu Internet, TV, mobilen Geräten, sozialen Netzwerken und Games testen und damit ihre Medienkompetenz spielerisch stärken (vom Bundesministerium für Familien, Senioren, Frauen und Jugend).</string>
-    <string name="preventionMediaCompetenceExplainText1Link"><a href="smart.efb.deeplink://linkin/prevention?com=open_link_medienquiz_schau_hin">Medienquiz Schau hin</a></string>
-
-    <string name="preventionMediaCompetenceExplainText2">Kompetente und kritische Nutzung von Medien. Im Auftrage der Europäischen Kommission</string>
-    <string name="preventionMediaCompetenceExplainText2Link"><a href="smart.efb.deeplink://linkin/prevention?com=open_link_klicksafe">Klicksafe</a></string>
+        <string name="preventionDepressionHeadlineText">Depression</string>
+        <string name="preventionDepressionExplainText">Ein interessantes Video (\"Ich hatte einen schwarzen Hund\") zur Entstehung, Auswirkungen und Hilfsmöglichkeiten bei einer Depression. Der direkte Link zum Youtube-Video lautet: https://www.youtube.com/watch?v=1UiA32Qv4yE</string>
+        <string name="preventionDepressionLinkToVideo">Video anschauen</string>
+        <string name="preventionPainHeadlineText">Schmerz</string>
+        <string name="preventionPainExplainText">Spannendes Viedeo für Eltern und Kinder: Wie kann man Schmerzen verstehen, die keine körperliche Ursache haben und wie kann man damit umgehen. Den Schmerz verstehen - und was zu tun ist in 10 Minuten, vom deutschen Kinderschmerzzentrum. Der direkte Link zum Youtube-Video lautet: https://www.youtube.com/watch?v=KpJfixYgBrw </string>
+        <string name="preventionMediaCompetenceHeadlineText">Medienkompetenz</string>
+        <string name="preventionMediaCompetenceExplainText1">Mit dem neuen SCHAU HIN!-Medienquiz können Eltern zusammen mit ihrem Kind das eigene Wissen zu Internet, TV, mobilen Geräten, sozialen Netzwerken und Games testen und damit ihre Medienkompetenz spielerisch stärken (vom Bundesministerium für Familien, Senioren, Frauen und Jugend).</string>
+        <string name="preventionMediaCompetenceExplainText1Link"><a href="smart.efb.deeplink://linkin/prevention?com=open_link_medienquiz_schau_hin">Medienquiz Schau hin</a></string>
+        <string name="preventionMediaCompetenceExplainText2">Kompetente und kritische Nutzung von Medien. Im Auftrage der Europäischen Kommission</string>
+        <string name="preventionMediaCompetenceExplainText2Link"><a href="smart.efb.deeplink://linkin/prevention?com=open_link_klicksafe">Klicksafe</a></string>
+        <string name="btnPreventionShowVideo">Video anschauen</string>
+        <string name="toastNoLinkGoalFound">Es wurde keine App zum öffnen der Inhalte gefunden!</string>
 
 
-
-
-    <string name="btnPreventionShowVideo">Video anschauen</string>
-    <string name="toastNoLinkGoalFound">Es wurde keine App zum öffnen der Inhalte gefunden!</string>
+    <string name="preventionLinkTextLess">[Weniger]</string>
+    <string name="preventionLinkTextMore">[Mehr]</string>
 
     <!-- end prevention -->
 
     <!-- help dialog -->
-    <string name="textDialogPreventionCloseDialog">Schließen</string>
-    <string name="textDialogPreventionTitleDialog">Hinweise zum Präventionsbereich</string>
-    <string name="textDialogPreventionIntro">Im Präventionsbereich</string>
+        <string name="textDialogPreventionCloseDialog">Schließen</string>
+        <string name="textDialogPreventionTitleDialog">Hinweise zum Präventionsbereich</string>
+        <string name="textDialogPreventionIntro">Im Präventionsbereich</string>
     <!-- End help dialog -->
 
     <!-- Activity Prevention -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-
-
-
 
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Service Exchange Service -->

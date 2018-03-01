@@ -13,6 +13,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.concurrent.TimeUnit;
 
@@ -404,41 +406,55 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                     EditText txtInputSuggestionFromClient = (EditText) inflatedView.findViewById(R.id.inputSuggestionFromClientText);
                     suggestionFromClientText = txtInputSuggestionFromClient.getText().toString();
 
+                    // check case close
+                    if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
 
-                    if (suggestionFromClientText.length() > 3 && rowIdForUpdate != null && rowIdForUpdate > 0) { // too few letters AND vote db id  > 0?
+                        if (suggestionFromClientText.length() > 3 && rowIdForUpdate != null && rowIdForUpdate > 0) { // too few letters AND vote db id  > 0?
 
-                        // suggestion locale time
-                        Long tmpSuggestionFromClientDate = System.currentTimeMillis();
+                            // suggestion locale time
+                            Long tmpSuggestionFromClientDate = System.currentTimeMillis();
 
-                        // get server time from locale time or last contact time
-                        Long tmpSuggestionDate = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
-                        if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
-                            tmpSuggestionDate = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                            // get server time from locale time or last contact time
+                            Long tmpSuggestionDate = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
+                            if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
+                                tmpSuggestionDate = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
+                            }
+
+                            // status of suggestion data -> 0= not send; 1=send; 4= external
+                            int tmpStatus = 0; // not send to server
+                            // timer status -> timer not run =1, because client already vote
+                            int timerStatus = 1;
+
+                            // generate update order
+                            String updateOrder = "update_suggestion_from_client_server_time";
+                            // get user name
+                            String tmpSuggestionFromClientAuthor = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+
+                            // insert  in DB
+                            myDb.updateSuggestionFromClient(rowIdForUpdate, tmpSuggestionDate, tmpSuggestionFromClientDate, tmpSuggestionFromClientAuthor, suggestionFromClientText, tmpStatus, timerStatus, updateOrder);
+
+                            // send intent to service to start the service and send vote suggestion to server!
+                            Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
+                            startServiceIntent.putExtra("com", "send_meeting_data");
+                            startServiceIntent.putExtra("dbid", rowIdForUpdate);
+                            startServiceIntent.putExtra("receiverBroadcast", "meetingFragmentSuggestionFromClient");
+                            meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
                         }
-
-                        // status of suggestion data -> 0= not send; 1=send; 4= external
-                        int tmpStatus = 0; // not send to server
-                        // timer status -> timer not run =1, because client already vote
-                        int timerStatus = 1;
-
-                        // generate update order
-                        String updateOrder = "update_suggestion_from_client_server_time";
-                        // get user name
-                        String tmpSuggestionFromClientAuthor = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
-
-                        // insert  in DB
-                        myDb.updateSuggestionFromClient(rowIdForUpdate, tmpSuggestionDate, tmpSuggestionFromClientDate, tmpSuggestionFromClientAuthor, suggestionFromClientText, tmpStatus, timerStatus, updateOrder);
-
-                        // send intent to service to start the service and send vote suggestion to server!
-                        Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
-                        startServiceIntent.putExtra("com","send_meeting_data");
-                        startServiceIntent.putExtra("dbid",rowIdForUpdate);
-                        startServiceIntent.putExtra("receiverBroadcast", "meetingFragmentSuggestionFromClient");
-                        meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
-                    }
-                    else { // error too few suggestions!
+                        else { // error too few suggestions!
                             TextView textViewErrorToFewLettersInClientSuggestion = (TextView) inflatedView.findViewById(R.id.errorInputSuggestionFromClient);
                             textViewErrorToFewLettersInClientSuggestion.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    else {
+                        // delete text in edittextfield
+                        txtInputSuggestionFromClient.setText("");
+
+                        // case is closed -> show toast
+                        String textCaseClose = context.getString(R.string.toastMessageSuggestionFromClientCaseCloseToastText);
+                        Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
+                        TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+                        if (v != null) viewMessage.setGravity(Gravity.CENTER);
+                        toast.show();
                     }
                 }
             });
