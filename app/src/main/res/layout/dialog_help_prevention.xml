@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:textSize="14dp"
             android:textColor="@color/text_color"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
-            android:textStyle="bold"
             android:text="@string/textDialogPreventionIntro"
             android:paddingTop="5dp"
             android:paddingBottom="10dp"/>

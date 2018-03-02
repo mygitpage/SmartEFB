@@ -134,6 +134,7 @@ public class ActivityPrevention extends AppCompatActivity {
         toolbarPrevention = (Toolbar) findViewById(R.id.toolbarPrevention);
         setSupportActionBar(toolbarPrevention);
         toolbarPrevention.setTitleTextColor(Color.WHITE);
+        toolbarPrevention.setSubtitle(contextPrevention.getString(R.string.preventionSubtitleActivity));
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -141,8 +142,6 @@ public class ActivityPrevention extends AppCompatActivity {
         // open sharedPrefs
         prefs =  getApplicationContext().getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, contextPrevention.MODE_PRIVATE);
     }
-
-
 
 
     void displayPreventionView (String tmpExpandTextList, String tmpLinkTextHash) {
@@ -156,11 +155,10 @@ public class ActivityPrevention extends AppCompatActivity {
         Bundle returnBundle;
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
         // get depression intro text
         tmpText = contextPrevention.getString(R.string.preventionDepressionExplainText);
         textViewExplain = (TextView) preventionView.findViewById(R.id.preventionDepressionExplain);
-        returnBundle = checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList, tmpLinkTextHash);
+        returnBundle = checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList);
         if (returnBundle.getBoolean("generate")) {
             Spanned tmpLinkText = makeLinkForMoreOrLessText (returnBundle.getString("substring"), expandTextList, returnBundle.getString("hash_value"));
             textViewExplain.setText(tmpLinkText);
@@ -172,7 +170,6 @@ public class ActivityPrevention extends AppCompatActivity {
 
         // get button show video depression
         Button buttonShowVideoDepression = (Button) preventionView.findViewById(R.id.buttonShowVideoDepression);
-
         // set onClick listener send intent to youtube app or browser
         buttonShowVideoDepression.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,11 +181,10 @@ public class ActivityPrevention extends AppCompatActivity {
         });
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
+        // media competence
         tmpText = contextPrevention.getString(R.string.preventionMediaCompetenceExplainText1);
         textViewExplain = (TextView) preventionView.findViewById(R.id.preventionMediaCompetenceExplain1);
-        returnBundle = checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList, tmpLinkTextHash);
+        returnBundle = checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList);
         if (returnBundle.getBoolean("generate")) {
             Spanned tmpLinkText = makeLinkForMoreOrLessText (returnBundle.getString("substring"), expandTextList, returnBundle.getString("hash_value"));
             textViewExplain.setText(tmpLinkText);
@@ -198,11 +194,41 @@ public class ActivityPrevention extends AppCompatActivity {
             textViewExplain.setText(tmpText);
         }
 
+        tmpText = contextPrevention.getString(R.string.preventionMediaCompetenceExplainText2);
+        textViewExplain = (TextView) preventionView.findViewById(R.id.preventionMediaCompetenceExplain2);
+        returnBundle = checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList);
+        if (returnBundle.getBoolean("generate")) {
+            Spanned tmpLinkText = makeLinkForMoreOrLessText (returnBundle.getString("substring"), expandTextList, returnBundle.getString("hash_value"));
+            textViewExplain.setText(tmpLinkText);
+            textViewExplain.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        else {
+            textViewExplain.setText(tmpText);
+        }
 
+        // get textview for Link to media competence medienquiz schaun hin
+        tmpLinkToVideo = (TextView) preventionView.findViewById(R.id.preventionMediaCompetenceLinkToVideo1);
+        tmpLinkToVideo.setMovementMethod(LinkMovementMethod.getInstance());
 
+        // get textview for Link to media competence klicksafe
+        tmpLinkToVideo = (TextView) preventionView.findViewById(R.id.preventionMediaCompetenceLinkToVideo2);
+        tmpLinkToVideo.setMovementMethod(LinkMovementMethod.getInstance());
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // explain pain
+        tmpText = contextPrevention.getString(R.string.preventionPainExplainText);
+        textViewExplain = (TextView) preventionView.findViewById(R.id.preventionPainExplain);
+        returnBundle = checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList);
+        if (returnBundle.getBoolean("generate")) {
+            Spanned tmpLinkText = makeLinkForMoreOrLessText (returnBundle.getString("substring"), expandTextList, returnBundle.getString("hash_value"));
+            textViewExplain.setText(tmpLinkText);
+            textViewExplain.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        else {
+            textViewExplain.setText(tmpText);
+        }
         // get button show video pain
         Button buttonShowVideoPain = (Button) preventionView.findViewById(R.id.buttonShowVideoPain);
-
         // set onClick listener send intent to youtube app or browser
         buttonShowVideoPain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,13 +242,45 @@ public class ActivityPrevention extends AppCompatActivity {
 
 
 
-        // get textview for Link to media competence medienquiz schaun hin
-        tmpLinkToVideo = (TextView) preventionView.findViewById(R.id.preventionMediaCompetenceLinkToVideo1);
+
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // finance help for familiy
+        tmpText = contextPrevention.getString(R.string.preventionFinanceForFamilyExplainText);
+        textViewExplain = (TextView) preventionView.findViewById(R.id.preventionFinanceForFamilyExplain);
+        returnBundle = checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList);
+        if (returnBundle.getBoolean("generate")) {
+            Spanned tmpLinkText = makeLinkForMoreOrLessText (returnBundle.getString("substring"), expandTextList, returnBundle.getString("hash_value"));
+            textViewExplain.setText(tmpLinkText);
+            textViewExplain.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        else {
+            textViewExplain.setText(tmpText);
+        }
+        // get textview for Link to finance help
+        tmpLinkToVideo = (TextView) preventionView.findViewById(R.id.preventionFinanceForFamilyLinkToVideo);
         tmpLinkToVideo.setMovementMethod(LinkMovementMethod.getInstance());
 
-        // get textview for Link to media competence klicksafe
-        tmpLinkToVideo = (TextView) preventionView.findViewById(R.id.preventionMediaCompetenceLinkToVideo2);
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // mobbing
+        tmpText = contextPrevention.getString(R.string.preventionMobbingExplainText1);
+        textViewExplain = (TextView) preventionView.findViewById(R.id.preventionMobbingExplain);
+        returnBundle = checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList);
+        if (returnBundle.getBoolean("generate")) {
+            Spanned tmpLinkText = makeLinkForMoreOrLessText (returnBundle.getString("substring"), expandTextList, returnBundle.getString("hash_value"));
+            textViewExplain.setText(tmpLinkText);
+            textViewExplain.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        else {
+            textViewExplain.setText(tmpText);
+        }
+        // get textview for Link to finance help
+        tmpLinkToVideo = (TextView) preventionView.findViewById(R.id.preventionMobbingLink1ToVideo);
         tmpLinkToVideo.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+
 
 
 
@@ -233,12 +291,8 @@ public class ActivityPrevention extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-    Bundle checkAndGenerateMoreOrLessStringLink (String textString, String tmpExpandTextList, String tmpLinkTextHash) {
+    // generate hash value of string and check for sub or full string output
+    Bundle checkAndGenerateMoreOrLessStringLink (String textString, String tmpExpandTextList) {
 
         Bundle bundle = new Bundle();
 
@@ -248,12 +302,6 @@ public class ActivityPrevention extends AppCompatActivity {
 
         if (textString.length() > ConstansClassMain.maxLessOrMoreStringLetters) {
             bundle.putBoolean("generate", true);
-
-
-
-            Log.d("CheckMoreOrLess---->", "List:"+tmpExpandTextList+" +++ Hash:"+tmpLinkTextHash);
-
-
 
             // generate hash value of string
             bundle.putString("hash_value", "");
@@ -273,36 +321,25 @@ public class ActivityPrevention extends AppCompatActivity {
                     hexString.append(h);
                 }
 
-                Log.d("Generate HASH -->", "Value:"+hexString.toString());
-
                 hashValue = hexString.toString();
                 bundle.putString("hash_value", hashValue);
-
 
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
 
-
-
-
             // generate sub string for output
-            if (tmpExpandTextList.contains(tmpLinkTextHash+";") && hashValue.equals(tmpLinkTextHash+";")) {
+            String tmpHashValue = hashValue + ";";
+            if (tmpExpandTextList.contains(tmpHashValue)) {
                 subString = textString;
-
             }
             else {
-                subString = textString.substring(0, textString.indexOf(" ", ConstansClassMain.maxLessOrMoreStringLetters));
+                int lastSpacePosition = textString.indexOf(" ", ConstansClassMain.maxLessOrMoreStringLetters);
+                if (lastSpacePosition < ConstansClassMain.maxLessOrMoreStringLetters) {lastSpacePosition = ConstansClassMain.maxLessOrMoreStringLetters;}
+                subString = textString.substring(0, lastSpacePosition);
                 subString = subString + "...";
             }
             bundle.putString("substring", subString);
-
-
-
-
-
-
-
         }
         else {
             bundle.putBoolean("generate", false);
@@ -312,8 +349,7 @@ public class ActivityPrevention extends AppCompatActivity {
     }
 
 
-
-
+    // generate more or less link text
     Spanned makeLinkForMoreOrLessText (String subText, String tmpExpandTextList, String tmpLinkTextHash) {
 
         final Uri.Builder linkLessOrMoreTextLinkBuilder = new Uri.Builder();
@@ -338,17 +374,6 @@ public class ActivityPrevention extends AppCompatActivity {
 
         return linkMoreOrLess;
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     void sendIntentForYouTubeVideo(String videoId) {
@@ -460,6 +485,39 @@ public class ActivityPrevention extends AppCompatActivity {
                 toast.show();
             }
         }
+        else if (command.equals("open_link_infotool_family")) {
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.infotool-familie.de/"));
+            try {
+                startActivity(webIntent);
+            }
+            catch (ActivityNotFoundException ex) {
+                String textCaseClose = ActivityPrevention.this.getString(R.string.toastNoLinkGoalFound);
+                Toast toast = Toast.makeText(ActivityPrevention.this, textCaseClose, Toast.LENGTH_LONG);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if( v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
+            }
+        }
+        else if (command.equals("open_link_mobbing_schluss")) {
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://mobbing-schluss-damit.de/kartoffelfilm/cool-faktor-zero"));
+            try {
+                startActivity(webIntent);
+            }
+            catch (ActivityNotFoundException ex) {
+                String textCaseClose = ActivityPrevention.this.getString(R.string.toastNoLinkGoalFound);
+                Toast toast = Toast.makeText(ActivityPrevention.this, textCaseClose, Toast.LENGTH_LONG);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if( v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
+            }
+        }
+
+
+
+
+
+
+
         else if (command.equals("less_or_more_text")) {
 
             if (tmpExpandTextList.contains(tmpLinkTextHash+";")) {
@@ -520,6 +578,9 @@ public class ActivityPrevention extends AppCompatActivity {
                 // get string ressources
                 String tmpTextCloseDialog = ActivityPrevention.this.getResources().getString(R.string.textDialogPreventionCloseDialog);
                 String tmpTextTitleDialog = ActivityPrevention.this.getResources().getString(R.string.textDialogPreventionTitleDialog);
+
+                TextView tmpLinkMail = (TextView) dialogSettings.findViewById(R.id.textViewDialogPreventionIntro);
+                tmpLinkMail.setMovementMethod(LinkMovementMethod.getInstance());
 
                 // build the dialog
                 builder.setView(dialogSettings)

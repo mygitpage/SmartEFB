@@ -142,14 +142,7 @@ public class ActivityParseDeepLink extends Activity {
             if (tmpCommand.equals("less_or_more_text")) {
                 expandTextList = deepLink.getQueryParameter("expand_text_list");
                 linkTextHash = deepLink.getQueryParameter("link_text_hash");
-
-                Log.d("DeepLink-->", "Expand:"+expandTextList);
-                Log.d("DeepLink-->", "HashValue:"+linkTextHash);
-
-
-
             }
-
 
             // Launch prevention
             Intent intent = new Intent(this, ActivityPrevention.class);

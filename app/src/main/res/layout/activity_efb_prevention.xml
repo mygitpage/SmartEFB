@@ -152,7 +152,6 @@
                 android:textSize="14dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textColorLink="@color/colorPrimaryDark"
-                android:text="@string/preventionMediaCompetenceExplainText2"
                 android:gravity="left"
                 android:layout_marginLeft="3dp"
                 android:paddingTop="20dp"/>
@@ -168,8 +167,6 @@
                 android:gravity="right"
                 android:paddingTop="20dp"/>
 
-
-
             <TextView
                 android:id="@+id/borderBetweenSection2"
                 android:layout_width="match_parent"
@@ -179,8 +176,6 @@
                 android:layout_marginRight="40dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"/>
-
-
 
             // prevention pain
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -209,7 +204,6 @@
                 android:textSize="14dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textColorLink="@color/colorPrimaryDark"
-                android:text="@string/preventionPainExplainText"
                 android:gravity="left"
                 android:layout_marginLeft="3dp"/>
 
@@ -226,29 +220,127 @@
                 android:layout_marginLeft="20dp"
                 android:padding="10dp"/>
 
-
-            <!--
             <TextView
-                android:id="@+id/preventionDepressionLinkToVideo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorLink="@color/colorPrimary"
-                android:text="@string/preventionDepressionLinkToVideo"
-                android:gravity="right"
-                android:paddingTop="20dp"/>
-
-            <TextView
-                android:id="@+id/borderBetweenCallNumbers"
+                android:id="@+id/borderBetweenSection3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/colorPrimaryDark"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"/>
--->
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"/>
+
+
+
+            <!-- finance help for family -->
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/list_element_style">
+
+                <TextView
+                    android:id="@+id/preventionFinanceForFamilyHeadline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="@string/preventionFinanceForFamilyHeadlineText"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="3dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/preventionFinanceForFamilyExplain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorLink="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
+
+            <TextView
+                android:id="@+id/preventionFinanceForFamilyLinkToVideo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorLink="@color/colorPrimary"
+                android:text="@string/preventionFinanceForFamilyExplainTextLink"
+                android:gravity="right"
+                android:paddingTop="20dp"/>
+
+            <TextView
+                android:id="@+id/borderBetweenSection4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"/>
+
+
+
+            <!-- mobbing help -->
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/list_element_style">
+
+                <TextView
+                    android:id="@+id/preventionMobbingHeadline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="@string/preventionMobbingHeadlineText"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="3dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/preventionMobbingExplain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorLink="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:layout_marginLeft="3dp"/>
+
+            <TextView
+                android:id="@+id/preventionMobbingLink1ToVideo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorLink="@color/colorPrimary"
+                android:text="@string/preventionMobbingExplainText1Link"
+                android:gravity="right"
+                android:paddingTop="20dp"/>
+
+            <TextView
+                android:id="@+id/borderBetweenSection5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"/>
+
+
+
+
+
+
         </LinearLayout>
 
     </ScrollView>
