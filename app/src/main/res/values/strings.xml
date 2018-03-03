@@ -25,6 +25,7 @@
     <!-- Activity Connect Book -->
         <!-- String Activity Connect Book -->
             <string name="buttonSendMessage">SENDEN</string>
+    <string name="subTitleConnectBook">Austausch zwischen Allen</string>
             <string name="infoTextCountCurrentMessages">%1$d von %2$d Nachrichten in 24 Stunden</string>
             <string name="textConnectBookMessageAuthorAndDate">%1$s - %2$s &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
             <string name="textConnectBookMessageAuthorAndDateLocale">%1$s - %2$s (lokal) &lt;font color=\"#FF0000\">%3$s&lt;/font></string>

@@ -655,6 +655,9 @@ public class MainActivity extends AppCompatActivity {
 
                     // set function message on
                     prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, true); // turn function message on
+                    prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithConnection, false); // give welcome message when connected to server
+                    prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithoutConnection, false); // give welcome message when not connected to server
+                    prefsEditor.putString(ConstansClassMessage.namePrefsMessageWelcomeMessageLast, ""); // last welcome message given to user
 
                     // set function time table off
                     prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_TimeTable, false); // turn function time table off
@@ -674,7 +677,8 @@ public class MainActivity extends AppCompatActivity {
                     // set connection parameter and status
                     prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 0); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
                     prefsEditor.putInt(ConstansClassSettings.namePrefsRandomNumberForConnection, 0); // five digits for connection to server
-                    prefsEditor.putString(ConstansClassSettings.namePrefsClientId, ""); // set smarthpone id to nothing
+                    prefsEditor.putString(ConstansClassSettings.namePrefsClientId, ""); // set client id to nothing
+                    prefsEditor.putString(ConstansClassSettings.namePrefsContactId, ""); // set contact id to nothing
 
 
                     // set visual notification

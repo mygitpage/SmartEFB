@@ -310,40 +310,41 @@ public class EfbXmlParser {
                 } else if (eventType == XmlPullParser.END_TAG && xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain)) {
 
                     if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Init) && tmpClientId.trim().length() > 0) { // init client smartphone
-                            // set case close to false
-                            prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, false);
-                            // write client id to prefs
-                            prefsEditor.putString(ConstansClassSettings.namePrefsClientId, tmpClientId);
-                            // set connection status to connect
-                            prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 3); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
-                            // write last error messages to prefs
-                            prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
+                        // set case close to false
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, false);
+                        // write client id to prefs
+                        prefsEditor.putString(ConstansClassSettings.namePrefsClientId, tmpClientId);
+                        // delete contact id in prefs
+                        prefsEditor.putString(ConstansClassSettings.namePrefsContactId, "");
+                        // set connection status to connect
+                        prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 3); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
+                        // write last error messages to prefs
+                        prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
+                        prefsEditor.apply();
+
+                        // delete all content from db tables (init process)
+                        myDb.initDeleteAllContentFromTables();
+
+                        if (tmpServerTime.length() > 0) {
+                            globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
+                            // save last contact time with server in prefs
+                            prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
                             prefsEditor.apply();
 
-                            // delete all content from db tables (init process)
-                            myDb.initDeleteAllContentFromTables();
-
-                            if (tmpServerTime.length() > 0) {
-                                globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
-
-                                // save last contact time with server in prefs
-                                prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
-                                prefsEditor.apply();
-
-                                returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
-                                returnMap.put("AskForTimeSuccessfull", "1");
-                            }
-                            else {
-                                globalServerTime = 0L;
-                                returnMap.put("ServerTimeInMills", "");
-                                returnMap.put("AskForTimeSuccessfull","0");
-                            }
-                            returnMap.put("ClientId", tmpClientId);
-                            returnMap.put("MainOrder", "init");
-                            returnMap.put("ConnectionStatus", "3");
-                            returnMap.put("Error", "0");
-                            returnMap.put("ErrorText", "");
-                            readMoreXml = false;
+                            returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
+                            returnMap.put("AskForTimeSuccessfull", "1");
+                        }
+                        else {
+                            globalServerTime = 0L;
+                            returnMap.put("ServerTimeInMills", "");
+                            returnMap.put("AskForTimeSuccessfull","0");
+                        }
+                        returnMap.put("ClientId", tmpClientId);
+                        returnMap.put("MainOrder", "init");
+                        returnMap.put("ConnectionStatus", "3");
+                        returnMap.put("Error", "0");
+                        returnMap.put("ErrorText", "");
+                        readMoreXml = false;
                     }
                     else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Receive_Ok_Send)) { // data send and now receive data
                         if (tmpServerTime.length() > 0) {
@@ -4895,6 +4896,8 @@ public class EfbXmlParser {
                                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, true);
                                     // delete client id
                                     prefsEditor.putString(ConstansClassSettings.namePrefsClientId, "");
+                                    // delete contact id
+                                    prefsEditor.putString(ConstansClassSettings.namePrefsContactId, "");
                                     // set connection status to connect to server
                                     prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 0); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
 

@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
+import java.util.UUID;
 
 /**
  * Created by ich on 28.05.16.
@@ -64,6 +65,12 @@ public class EfbHelperClass {
         }
 
         return 0L;
+    }
+
+
+    public static String generateRandomString () {
+
+        return UUID.randomUUID().toString();
     }
 
 }

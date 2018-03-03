@@ -55,8 +55,8 @@ public class MessageCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        long writeTimeNext = cursor.getLong(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME));
-        long writeTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME));
+        long writeTimeNext = cursor.getLong(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_WRITE_TIME));
+        long writeTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_WRITE_TIME));
 
         // show date group at end
         if (showMessageGroupLastDateChange) {
@@ -64,7 +64,7 @@ public class MessageCursorAdapter extends CursorAdapter {
             // go to next element only when it is not last
             if (!cursor.isLast()) {
                 cursor.moveToNext();
-                writeTimeNext = cursor.getLong(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME));
+                writeTimeNext = cursor.getLong(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_WRITE_TIME));
                 cursor.moveToPrevious();
             }
 
@@ -112,8 +112,8 @@ public class MessageCursorAdapter extends CursorAdapter {
         Boolean rightViewCurrent = false;
 
         // role and write time of current element of cursor
-        int role = cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_ROLE));
-        long writeTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME));
+        int role = cursor.getInt(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_ROLE));
+        long writeTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_WRITE_TIME));
 
         // role and write time of previous element of cursor
         int rolePrevoius = -1;
@@ -122,8 +122,8 @@ public class MessageCursorAdapter extends CursorAdapter {
         // go to previous element only when it is not first
         if (!cursor.isFirst()) {
             cursor.moveToPrevious();
-            rolePrevoius = cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_ROLE));
-            writeTimePrevoius = cursor.getLong(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME));
+            rolePrevoius = cursor.getInt(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_ROLE));
+            writeTimePrevoius = cursor.getLong(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_WRITE_TIME));
             cursor.moveToNext();
             previousDateString = EfbHelperClass.timestampToDateFormat(writeTimePrevoius, "dd.MM.yyyy");
         }
@@ -142,24 +142,24 @@ public class MessageCursorAdapter extends CursorAdapter {
             switch (role) {
                 case 0:
                     if (role == rolePrevoius) {
-                        inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_nextleft, parent, false);
+                        inflatedView = cursorInflater.inflate(R.layout.list_item_message_nextleft, parent, false);
                     }
                     else {
-                        inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_left, parent, false);
+                        inflatedView = cursorInflater.inflate(R.layout.list_item_message_left, parent, false);
                     }
                     break;
                 case 1:
                     if (role == rolePrevoius) {
-                        inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_nextright, parent, false);
+                        inflatedView = cursorInflater.inflate(R.layout.list_item_message_nextright, parent, false);
                     }
                     else {
-                        inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_right, parent, false);
+                        inflatedView = cursorInflater.inflate(R.layout.list_item_message_right, parent, false);
                     }
                     rightViewCurrent = true;
                     break;
                 default:
                     // set default view
-                    inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_center, parent, false);
+                    inflatedView = cursorInflater.inflate(R.layout.list_item_message_center, parent, false);
                     break;
             }
 
@@ -216,100 +216,34 @@ public class MessageCursorAdapter extends CursorAdapter {
 
             // textview for status 0 of the last actual message -> message not send yet!
             final TextView tmpTextViewSendInfoLastActualMessage = (TextView) inflatedView.findViewById(R.id.textSendInfoActualMessage);
-            if (cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_STATUS)) == 0) {
+            if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_STATUS)) == 0) {
                 String tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageNotSendYet);
                 tmpTextViewSendInfoLastActualMessage.setVisibility(View.VISIBLE);
                 tmpTextViewSendInfoLastActualMessage.setText(tmpTextSendInfoLastActualMessage);
 
-            } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_STATUS)) == 1) {
+            } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_STATUS)) == 1) {
                 // textview for status 1 of the last actual message -> message send to server 
 
-                // check, sharing of messages enable?
-                if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectMessageShare, 0) == 1) {
 
-                    Long writeTimeMessage = cursor.getLong(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME));
-                    Integer delayTime = prefs.getInt(ConstansClassConnectBook.namePrefsConnectSendDelayTime, 0) * 60000; // make milliseconds from minutes
-                    Long maxTimerTime = writeTimeMessage+delayTime;
-                    if ( maxTimerTime > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0) && cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_TIMER_STATUS)) == 0) { // check system time is in past and timer status is run!
-
-                        // set textview visible
-                        tmpTextViewSendInfoLastActualMessage.setVisibility(View.VISIBLE);
-
-                        // calculate run time for timer in MILLISECONDS!!!
-                        Long nowTime = System.currentTimeMillis();
-                        Long localeTimeComment = cursor.getLong(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_LOCAL_TIME));
-                        Long runTimeForTimer = delayTime - (nowTime - localeTimeComment);
-                        // start the timer with the calculated milliseconds
-                        if (runTimeForTimer > 0 && runTimeForTimer <= delayTime) {
-                            new CountDownTimer(runTimeForTimer, 1000) {
-                                public void onTick(long millisUntilFinished) {
-                                    // generate count down timer
-                                    String FORMAT = "%02d:%02d:%02d";
-                                    String tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageSendDelayInfo);
-                                    String tmpTime = String.format(FORMAT,
-                                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                                    // put count down to string
-                                    String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualMessage, tmpTime);
-                                    // and show
-                                    tmpTextViewSendInfoLastActualMessage.setText(tmpCountdownTimerString);
-                                }
-
-                                public void onFinish() {
-                                    // count down is over -> show
-                                    String tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageSendSuccsessfullInfo);
-                                    tmpTextViewSendInfoLastActualMessage.setText(tmpTextSendInfoLastActualMessage);
-                                    myDb.updateTimerStatusConnectBookMessage(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
-                                }
-                            }.start();
-
-                        } else {
-                            // no count down anymore -> show send successfull
-                            String tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageSendSuccsessfullInfo);
-                            tmpTextViewSendInfoLastActualMessage.setText(tmpTextSendInfoLastActualMessage);
-                            myDb.updateTimerStatusConnectBookMessage(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
-                        }
-                    }
-                    else { // system time is in past or timer status is stop! -> Show Text: Comment send successfull!
-                        tmpTextViewSendInfoLastActualMessage.setVisibility(View.VISIBLE);
-                        String tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageSendSuccsessfullInfo);
-                        tmpTextViewSendInfoLastActualMessage.setText(tmpTextSendInfoLastActualMessage);
-                        myDb.updateTimerStatusConnectBookMessage(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
-                    }
-                } else { // sharing of messages is disable! -> show text
-                    String tmpTextSendInfoLastActualMessage = "";
-                    tmpTextViewSendInfoLastActualMessage.setVisibility(View.VISIBLE);
-
-                    if (prefs.getLong(ConstansClassConnectBook.namePrefsConnectMessageShareChangeTime, 0) < writeTime) {
-                        // show send successfull, but no sharing
-                        tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageSendInfoSharingDisable);
-                    } else {
-                        // show send successfull
-                        tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageSendSuccsessfullInfo);
-                    }
-                    tmpTextViewSendInfoLastActualMessage.setText(tmpTextSendInfoLastActualMessage);
-                    myDb.updateTimerStatusConnectBookMessage(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
-                }
             }
         }
 
         // show message text
         TextView textViewMessage = (TextView) inflatedView.findViewById(R.id.txtMsg);
-        String title = cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_MESSAGE));
+        String title = cursor.getString(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_MESSAGE));
         textViewMessage.setText(title);
 
         // show message author and date with new message
         TextView textViewAuthor = (TextView) inflatedView.findViewById(R.id.lblMsgFrom);
         String tmpNewMessage = "";
         // check if message entry new?
-        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_NEW_ENTRY)) == 1) {
+        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_NEW_ENTRY)) == 1) {
             tmpNewMessage = context.getResources().getString(R.string.newEntryText);
             myDb.deleteStatusNewEntryConnectBookMessage(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
         }
         String tmpAuthorandDate = context.getResources().getString(R.string.textConnectBookMessageAuthorAndDateLocale);
-        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_STATUS)) == 4) {tmpAuthorandDate = context.getResources().getString(R.string.textConnectBookMessageAuthorAndDate);}
-        tmpAuthorandDate = String.format(tmpAuthorandDate, cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_LOCAL_TIME)), "dd.MM.yyyy - HH:mm"), tmpNewMessage);
+        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_STATUS)) == 4) {tmpAuthorandDate = context.getResources().getString(R.string.textConnectBookMessageAuthorAndDate);}
+        tmpAuthorandDate = String.format(tmpAuthorandDate, cursor.getString(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_LOCAL_TIME)), "dd.MM.yyyy - HH:mm"), tmpNewMessage);
         textViewAuthor.setText(Html.fromHtml(tmpAuthorandDate));
 
         // close DB connection

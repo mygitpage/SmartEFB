@@ -33,9 +33,10 @@ public class DBAdapter extends SQLiteOpenHelper {
     private static final String DATABASE_TABLE_MEETING_SUGGESTION = "meetingSuggestion";
     private static final String DATABASE_TABLE_CHAT_MESSAGE = "chatMessageTable";
     private static final String DATABASE_TABLE_INVOLVED_PERSON = "involvedPersonTable";
+    private static final String DATABASE_TABLE_MESSAGE = "messageTable";
 
     // Track DB version if a new version of your app changes the format.
-    private static final int DATABASE_VERSION = 51;
+    private static final int DATABASE_VERSION = 52;
 
     // Common column names
     public static final String KEY_ROWID = "_id";
@@ -405,16 +406,12 @@ public class DBAdapter extends SQLiteOpenHelper {
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED = "meeting_client_canceled"; // 0=not canceled; 1= meeting canceled by client
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_AUTHOR = "meeting_client_canceled_author";
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME = "meeting_client_canceled_time";
-
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_LOCALE_TIME = "meeting_client_canceled_locale_time";
-
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TEXT = "meeting_client_canceled_text";
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TEXT = "meeting_client_suggestion";
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_AUTHOR = "meeting_client_suggestion_author";
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_TIME = "meeting_client_suggestion_time";
-
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_LOCALE_TIME = "meeting_client_suggestion_locale_time";
-
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE = "meeting_client_suggestion_startdate";
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE = "meeting_client_suggestion_enddate";
     static final String MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME = "meeting_response_time";
@@ -425,9 +422,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     static final String MEETING_SUGGESTION_KEY_MEETING_COACH_HINT_TEXT = "meeting_coach_hint";
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_AUTHOR = "meeting_client_comment_author";
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_DATE = "meeting_client_comment_date";
-
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_LOCALE_DATE = "meeting_client_comment_locale_date";
-
     static final String MEETING_SUGGESTION_KEY_MEETING_CLIENT_COMMENT_TEXT = "meeting_client_comment_text";
     static final String MEETING_SUGGESTION_KEY_MEETING_SERVER_ID = "meeting_server_id";
     static final String MEETING_SUGGESTION_KEY_MEETING_UPLOAD_TIME = "meeting_upload_time";
@@ -539,6 +534,38 @@ public class DBAdapter extends SQLiteOpenHelper {
                     + ");";
 
     /**********************************************************************************************/
+    /**********************************************************************************************/
+    // Message - column names and numbers
+    static final String MESSAGE_KEY_WRITE_TIME = "message_time";
+    static final String MESSAGE_KEY_LOCAL_TIME = "local_time";
+    static final String MESSAGE_KEY_AUTHOR_NAME = "author_name";
+    static final String MESSAGE_KEY_MESSAGE = "message";
+    static final String MESSAGE_KEY_ROLE = "role_status";
+    static final String MESSAGE_KEY_UPLOAD_TIME = "upload_time";
+    static final String MESSAGE_KEY_STATUS = "status";
+    static final String MESSAGE_KEY_NEW_ENTRY = "new_entry";
+    static final String MESSAGE_KEY_ANONYMOUS = "anonymous"; //(0= anonymous; 1= not anonymous)
+    static final String MESSAGE_KEY_SOURCE = "source"; //(the source of the message, like arrangement comment, goal comment, etc)
+
+    // All keys from table message in a String
+    static final String[] MESSAGE_ALL_KEYS = new String[]{KEY_ROWID, MESSAGE_KEY_WRITE_TIME, MESSAGE_KEY_LOCAL_TIME, MESSAGE_KEY_AUTHOR_NAME, MESSAGE_KEY_MESSAGE, MESSAGE_KEY_ROLE, MESSAGE_KEY_UPLOAD_TIME, MESSAGE_KEY_STATUS, MESSAGE_KEY_NEW_ENTRY, MESSAGE_KEY_ANONYMOUS, MESSAGE_KEY_SOURCE};
+
+    // SQL String to create message table
+    private static final String DATABASE_CREATE_SQL_MESSAGE =
+            "create table " + DATABASE_TABLE_MESSAGE + " (" + KEY_ROWID + " integer primary key autoincrement, "
+                    + MESSAGE_KEY_WRITE_TIME + " INTEGER not null, "
+                    + MESSAGE_KEY_LOCAL_TIME + " INTEGER not null, "
+                    + MESSAGE_KEY_AUTHOR_NAME + " STRING not null, "
+                    + MESSAGE_KEY_MESSAGE + " TEXT not null, "
+                    + MESSAGE_KEY_ROLE + " INTEGER not null, "
+                    + MESSAGE_KEY_UPLOAD_TIME + " INTEGER, "
+                    + MESSAGE_KEY_STATUS + " INTEGER not null, "
+                    + MESSAGE_KEY_NEW_ENTRY + " INTEGER DEFAULT 0, "
+                    + MESSAGE_KEY_ANONYMOUS + " INTEGER DEFAULT 0, "
+                    + MESSAGE_KEY_SOURCE + " TEXT not null"
+                    + ");";
+
+    /*************************************************************************************************************************/
     /************************ End of table definitions **********************************************************************/
 
 
@@ -587,6 +614,9 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Create table involved person
         _db.execSQL(DATABASE_CREATE_SQL_INVOLVED_PERSON);
+
+        // Create table message
+        _db.execSQL(DATABASE_CREATE_SQL_MESSAGE);
     }
 
 
@@ -626,6 +656,9 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Destroy table Meeting and Suggestion
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_INVOLVED_PERSON);
+
+        // Destroy table Message
+        _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_MESSAGE);
 
         // Recreate new database:
         onCreate(_db);
@@ -3179,16 +3212,29 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // delete all content from table involved person
-    void deleteTableInvolvedPerson () {
+    // Delete a row from the database, by rowId (primary key)
+    boolean deleteRowInvolvedPerson(long rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // delete content from involved person table
-        db.delete(DATABASE_TABLE_INVOLVED_PERSON, null, null);
-
+        String where = KEY_ROWID + "=" + rowId;
+        return db.delete(DATABASE_TABLE_INVOLVED_PERSON, where, null) != 0;
     }
 
+
+    // delete all content from table involved person
+    void deleteTableInvolvedPerson () {
+
+        Cursor c = getInvolvedPerson("all");
+        long rowId = c.getColumnIndexOrThrow(KEY_ROWID);
+
+        if (c != null && c.moveToFirst()) {
+            do {
+                deleteRowInvolvedPerson(c.getLong((int) rowId));
+            } while (c.moveToNext());
+        }
+        c.close();
+    }
 
 
     // Return selected persons with function like coach or client or both
@@ -3229,14 +3275,195 @@ public class DBAdapter extends SQLiteOpenHelper {
         return c;
 
     }
-
-
-
-
-
-
-
     /********************************* End!! TABLES FOR FUNCTION: Involved Person ***************************************/
+
+
+
+
+
+    /********************************* TABLES FOR FUNCTION: Message  ******************************************/
+
+    // Add a new set of values to the database.
+    long insertRowMessage(Long localeTime, long writeTime, String message, int role, int status, Boolean newEntry, long upload_time) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues initialValues = new ContentValues();
+
+        
+        initialValues.put(MESSAGE_KEY_WRITE_TIME, writeTime);
+        initialValues.put(MESSAGE_KEY_LOCAL_TIME, localeTime);
+        initialValues.put(MESSAGE_KEY_MESSAGE, message);
+        initialValues.put(MESSAGE_KEY_ROLE, role); //(role: 0= left; 1= right; 2= center;)
+        initialValues.put(MESSAGE_KEY_STATUS, status);
+        initialValues.put(MESSAGE_KEY_UPLOAD_TIME, upload_time);
+        
+
+
+        // is it a new entry?
+        if (newEntry) {
+            initialValues.put(MESSAGE_KEY_NEW_ENTRY, 1);
+        } else {
+            initialValues.put(MESSAGE_KEY_NEW_ENTRY, 0);
+        }
+
+        // Insert it into the database.
+        return db.insert(DATABASE_TABLE_MESSAGE, null, initialValues);
+
+    }
+
+
+    // Delete a row from the database, by rowId (primary key)
+    boolean deleteRowMessage(long rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+        return db.delete(DATABASE_TABLE_MESSAGE, where, null) != 0;
+    }
+
+
+    void deleteAllMessages() {
+
+        Cursor c = getAllRowsMessages();
+        long rowId = c.getColumnIndexOrThrow(KEY_ROWID);
+
+        if (c.moveToFirst()) {
+            do {
+                deleteRowMessage(c.getLong((int) rowId));
+            } while (c.moveToNext());
+        }
+        c.close();
+    }
+
+
+    // Return all data in the database. messages sorted by write time ASC
+    Cursor getAllRowsMessages() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // sort string
+        String sort = MESSAGE_KEY_WRITE_TIME + " ASC";
+
+        Cursor c = db.query(true, DATABASE_TABLE_MESSAGE, MESSAGE_ALL_KEYS,
+                null, null, null, null, sort, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+    }
+
+    // Get a specific row (by rowId)
+    Cursor getOneRowMessage(long rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        Cursor c = db.query(true, DATABASE_TABLE_MESSAGE, MESSAGE_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        return c;
+    }
+
+
+    // update status message in table message
+    // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external message
+    boolean updateStatusMessage(Long rowId, int status) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row status with status
+        ContentValues newValues = new ContentValues();
+        newValues.put(MESSAGE_KEY_STATUS, status);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_MESSAGE, newValues, where, null) != 0;
+    }
+
+
+    // Get all connect book messages with status = 0 (Ready to send) and role = 1 (own messages)
+    Cursor getAllReadyToSendMessages() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // status = 0 and role = 1
+        String where = MESSAGE_KEY_STATUS + "=0 AND " + MESSAGE_KEY_ROLE + "=1";
+
+        Cursor c = db.query(true, DATABASE_TABLE_MESSAGE, MESSAGE_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        // return cursor
+        return c;
+    }
+
+
+    // Get the number of new rows in message
+    int getCountNewEntryMessage() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = MESSAGE_KEY_NEW_ENTRY + "=1";
+
+        Cursor c = db.query(true, DATABASE_TABLE_MESSAGE, MESSAGE_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+        }
+
+        // return how many
+        return c.getCount();
+    }
+
+
+    // delete status new entry in table message for rowId.
+    boolean deleteStatusNewEntryMessage(int rowId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row new_entry = 0 (not new!)
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(MESSAGE_KEY_NEW_ENTRY, 0);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_MESSAGE, newValues, where, null) != 0;
+    }
+
+
+
+
+    // update write time for message from locale time to server time in table message
+    boolean updateWriteTimeMessage (Long rowId, Long writeTimeFromServer) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String where = KEY_ROWID + "=" + rowId;
+
+        // Create row write time from server
+        ContentValues newValues = new ContentValues();
+        newValues.put(MESSAGE_KEY_WRITE_TIME, writeTimeFromServer);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE_MESSAGE, newValues, where, null) != 0;
+    }
+
+    /********************************* END TABLES FOR FUNCTION: Message  ******************************************/
     /****************************************************************************************************************************/
 
     // delete all content from all tables, call by init process

@@ -280,6 +280,8 @@ public class ActivityPrevention extends AppCompatActivity {
         tmpLinkToVideo.setMovementMethod(LinkMovementMethod.getInstance());
 
 
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //
 
 
 
@@ -542,15 +544,6 @@ public class ActivityPrevention extends AppCompatActivity {
             displayPreventionView(tmpExpandTextList, tmpLinkTextHash);
 
         }
-
-
-
-
-
-
-
-
-
     }
 
 

@@ -51,20 +51,18 @@ public class ActivityMessage extends AppCompatActivity {
     Toolbar toolbar;
     ActionBar actionBar;
 
-    // listview for connect book
+    // listview for message
     ListView listViewMessage;
 
-    // role for the connect book (0= self messages on left side; 1= self messages on the right side;  2= self messages in the middle)
-    int roleMessage = 1; // all self messages on the right side of the display
+    // role for message (0= messages on left side; 1= messages on the right side)
+    int roleMessage = 1; // all messages on the right side of the display
 
     // one day in milliseconds
     final Long oneDayInMills = 86400000L;
 
-    // the users name of the connect book
-    String userNameMessage;
-
+    
     // reference to dialog settings
-    AlertDialog alertDialogSettings;
+    AlertDialog alertDialogMessage;
 
 
     @Override
@@ -80,14 +78,14 @@ public class ActivityMessage extends AppCompatActivity {
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
         this.registerReceiver(messageBroadcastReceiver, filter);
 
-        // init the connect book
+        // init message
         initMessage();
 
         // init the view of activity
         initViewMessage();
 
-        // create help dialog in Connect Book
-        createHelpDialog();
+        // create help dialog in message
+        //createHelpDialog();
 
         // init the ui
         displayMessageSet();
@@ -116,6 +114,8 @@ public class ActivityMessage extends AppCompatActivity {
         //toolbar.setSubtitle("Untertitel");
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        
+        
 
         // init the DB
         myDb = new DBAdapter(getApplicationContext());
@@ -125,47 +125,61 @@ public class ActivityMessage extends AppCompatActivity {
         prefsEditor = prefs.edit();
 
         // init the connect book variables
-        userNameMessage = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+        //userNameMessage = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
 
         // find the listview
         listViewMessage = (ListView) findViewById(R.id.list_view_messages);
 
-        // check -> 24 h over? -> reset message counter
-        Long startPointResetTimeMessageCounter = prefs.getLong(ConstansClassConnectBook.namePrefsConnectCountMessagesResetTime, 0);
-        Long lastResetLocaleTimeMessageCounter = prefs.getLong(ConstansClassConnectBook.namePrefsConnectCountMessagesLastResetLocaleTime, 0);
-        Long tmpNowTime = System.currentTimeMillis();
-        if ( tmpNowTime > (startPointResetTimeMessageCounter + oneDayInMills) && tmpNowTime > lastResetLocaleTimeMessageCounter) {
 
-            // set message counter to zero
-            prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, 0);
-            // set new start time for message count
-            prefsEditor.putLong(ConstansClassConnectBook.namePrefsConnectCountMessagesResetTime, (startPointResetTimeMessageCounter + oneDayInMills));
-            // set last reset locale time to prefs
-            prefsEditor.putLong(ConstansClassConnectBook.namePrefsConnectCountMessagesLastResetLocaleTime, tmpNowTime);
-            prefsEditor.apply();
-        }
-        else { // go back in time is not allowed
-            if (tmpNowTime < lastResetLocaleTimeMessageCounter) {
-                // set message counter to max messages
-                int tmpMaxMessages = prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxMessages, 500);
-                prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, tmpMaxMessages);
-                prefsEditor.apply();
-            }
-        }
+        
     }
 
 
     // init view of activity
     private void initViewMessage() {
 
+
+
+
+
+
+        // check contact id set?
+        if (prefs.getString(ConstansClassSettings.namePrefsContactId, "").length() > 0 && !prefs.getBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithoutConnection, false)) {
+
+            Log.d("Message++*>", "Schreibe Begrüßung!");
+
+
+
+
+        }
+
+
+        // check client id
+        if (prefs.getString(ConstansClassSettings.namePrefsClientId, "").length() > 0 && !prefs.getBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithConnection, false)) {
+
+            Log.d("Message++*>", "Schreibe Erklärung!");
+
+            String tmpRandom = EfbHelperClass.generateRandomString();
+            Log.d("Message++++>", "Random:"+tmpRandom);
+
+        }
+
+
+
+
+
+
         // get max letters for message
         final int maxLettersMessage = prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxLetters, 10);
 
-        // check, sharing messages enable?
-        if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectMessageShare, 0) == 0) {
-            TextView textMessageSharingIsDisable = (TextView) findViewById(R.id.messageSharingIsDisable);
-            textMessageSharingIsDisable.setVisibility (View.VISIBLE);
-        }
+
+
+
+
+
+
+
+
 
         // get textView to count input letters and init it
         final TextView textViewCountLettersMessageEditText = (TextView) findViewById(R.id.countLettersAndMessagesInfoText);
@@ -235,7 +249,7 @@ public class ActivityMessage extends AppCompatActivity {
                         int timerStatus = 0;
 
                         // put message into db (role: 0= left; 1= right; 2= center)
-                        long tmpDbId = myDb.insertRowChatMessage(userNameMessage, localeTime, messageTime, inputMessage, roleMessage,  messageStatus, newEntry, uploadTime, timerStatus);
+                        long tmpDbId = myDb.insertRowMessage(localeTime, messageTime, inputMessage, roleMessage,  messageStatus, newEntry, uploadTime);
 
                         // add current number of send messages and write to prefs
                         tmpCountCurrentMessages++;
@@ -244,7 +258,7 @@ public class ActivityMessage extends AppCompatActivity {
 
                         // send intent to service to start the service and send message to server!
                         Intent startServiceIntent = new Intent(contextMessage, ExchangeServiceEfb.class);
-                        startServiceIntent.putExtra("com", "send_connectbook_message");
+                        startServiceIntent.putExtra("com", "send_current_message");
                         startServiceIntent.putExtra("dbid", tmpDbId);
                         startServiceIntent.putExtra("receiverBroadcast","");
                         contextMessage.startService(startServiceIntent);
@@ -387,17 +401,16 @@ public class ActivityMessage extends AppCompatActivity {
 
         Intent intent = getIntent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        // finish();
         startActivity(intent);
     }
 
 
-    // display connect book messages in listview
+    // display messages in listview
     public void displayMessageSet () {
 
-        Cursor cursor = myDb.getAllRowsChatMessage();
+        Cursor cursor = myDb.getAllRowsMessages();
 
-        if (cursor.getCount() > 0 && listViewMessage != null) {
+        if (cursor != null && cursor.getCount() > 0 && listViewMessage != null) {
 
             // new dataadapter
             dataAdapter = new MessageCursorAdapter(
@@ -498,7 +511,7 @@ public class ActivityMessage extends AppCompatActivity {
                         // Add close button
                         .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                alertDialogSettings.cancel();
+                                alertDialogMessage.cancel();
                             }
                         })
 
@@ -506,7 +519,7 @@ public class ActivityMessage extends AppCompatActivity {
                         .setTitle(tmpTextTitleDialog);
 
                 // and create
-                alertDialogSettings = builder.create();
+                alertDialogMessage = builder.create();
 
                 // and show the dialog
                 builder.show();
@@ -538,7 +551,7 @@ public class ActivityMessage extends AppCompatActivity {
                 // Add close button
                 .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        alertDialogSettings.cancel();
+                        alertDialogMessage.cancel();
                     }
                 })
 
@@ -546,7 +559,7 @@ public class ActivityMessage extends AppCompatActivity {
                 .setTitle(tmpTextTitleDialog);
 
         // and create
-        alertDialogSettings = builder.create();
+        alertDialogMessage = builder.create();
 
         // and show the dialog
         builder.show();

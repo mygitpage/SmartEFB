@@ -116,7 +116,10 @@ public class ActivityConnectBook extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbarConnectBook);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
-        //toolbar.setSubtitle("Untertitel");
+        // set sub title
+        String tmpSubTitle = getResources().getString(R.string.subTitleConnectBook);
+        toolbar.setSubtitle(tmpSubTitle);
+
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
