@@ -6,14 +6,31 @@ package de.smart_efb.efbapp.smartefb;
 
 public class ConstansClassMessage {
 
-    // prefs name for message max letters
-    static final String namePrefsMessageMaxLetters = "messageMaxLetters";
+    // prefs name for message max letters associated with case -> connected to server
+    static final String namePrefsMessageMaxLettersAssociated = "messageMaxLettersAssociated";
 
-    // prefs name for message count current messages
-    static final String namePrefsMessageCountCurrentMessages = "messageCountMessages";
+    // prefs name for message count current messages associated
+    static final String namePrefsMessageCountCurrentAssociated = "messageCountMessagesAssociated";
 
-    // prefs name for message max messages
-    static final String namePrefsMessageMaxMessages = "messageMaxMessages";
+    // prefs name for message max messages associated
+    static final String namePrefsMessageMaxMessageAssociated = "messageMaxMessagesAssociated";
+
+
+    // prefs name for message max letters not associated with case -> not connected to server
+    static final String namePrefsMessageMaxLettersNotAssociated = "messageMaxLettersNotAssociated";
+
+    // prefs name for message count current messages not associated
+    static final String namePrefsMessageCountCurrentNotAssociated = "messageCountMessagesNotAssociated";
+
+    // prefs name for message max messages not associated
+    static final String namePrefsMessageMaxMessageNotAssociated = "messageMaxMessagesNotAssociated";
+
+    // prefs name for stop communication
+    static final String namePrefsMessageStopCommunication = "messageStopCommunication";
+
+
+
+
 
 
 
@@ -29,6 +46,19 @@ public class ConstansClassMessage {
 
     // prefs name for last welcome message given to user
     static final String namePrefsMessageWelcomeMessageLast = "messageWelcomeMessageLast";
+
+
+
+    // prefs name for standard value of max letters not associated
+    static final int namePrefsMessageMaxLettersNotAssociatedStandard = 800;
+
+    // prefs name for standard value of max messages not associated
+    static final int namePrefsMessageMaxMessageNotAssociatedStandard = 100000;
+
+
+
+
+
 
 
 

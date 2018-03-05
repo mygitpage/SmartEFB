@@ -714,6 +714,49 @@ class ConstansClassXmlParser {
     // ++++++++++++++++++++++ End Time Table ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //
 
+    //
+    // ++++++++++++++++++++++ Message ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
+    // xml name for element message
+    static final String xmlNameForMessage = "message";
+
+    // xml name for element message messages
+    static final String xmlNameForMessage_Messages = "message_messages";
+
+    // xml name for element message settings
+    static final String xmlNameForMessage_Settings = "message_settings";
+
+    // xml name for element message turn on/off
+    static final String xmlNameForMessage_TurnOnOff = "message_turnonoff";
+
+    // xml name for element message order
+    static final String xmlNameForMessage_Order = "message_order";
+    
+    // xml name for element message max messages
+    static final String xmlNameForMessage_MaxMessages = "message_settings_maxmessages";
+
+    // xml name for element message max letters
+    static final String xmlNameForMessage_MaxLetters = "message_settings_maxletters";
+
+    // xml name for element message stop communication
+    static final String xmlNameForMessage_StopCommunication = "message_settings_stop";
+
+    // xml name for element message text
+    static final String xmlNameForMessage_MessageText = "message_text";
+
+    // xml name for element message message author name
+    static final String xmlNameForMessage_AuthorName = "message_authorname";
+
+    // xml name for element message message locale time
+    static final String xmlNameForMessage_MessageLocaleTime = "message_localetime";
+
+    // xml name for element message message role
+    static final String xmlNameForMessage_MessageRole = "message_role";
+
+    //
+    // ++++++++++++++++++++++ End Message ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
+
 
     //
     // ++++++++++++++++++++++ Order Definitions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -722,6 +765,22 @@ class ConstansClassXmlParser {
 
     // xml name for element order "new"
     static final String xmlNameForOrder_New = "new";
+
+
+    // xml name for element order "newAssocMessage" -> message with connect to server -> associated
+    static final String xmlNameForOrder_NewAssociatedMessage = "newAssocMessage";
+
+    // xml name for element order "updateAssocMessage" -> message with connect to server -> associated
+    static final String xmlNameForOrder_UpdateAssociatedMessage = "updateAssocMessage";
+
+    // xml name for element order "newNotAssocMessage" -> message without connection to server -> not associated
+    static final String xmlNameForOrder_NewNotAssociatedMessage = "newNotAssocMessage";
+
+    // xml name for element order "updateNotAssocMessage" -> message without connection to server -> not tassociated
+    static final String xmlNameForOrder_UpdateNotAssociatedMessage = "updateNotAssocMessage";
+    
+    
+    
 
     // xml name for element order "delete"
     static final String xmlNameForOrder_Delete = "delete";
@@ -770,6 +829,12 @@ class ConstansClassXmlParser {
 
     // xml name for send connect book message to server
     static final String xmlNameForSendToServer_ConnectBookMessage = "sendconnectbookmessage";
+
+    // xml name for send message to server (associated)
+    static final String xmlNameForSendToServer_MessageAssociated = "sendmessageassociated";
+
+    // xml name for send message to server (not associated)
+    static final String xmlNameForSendToServer_MessageNotAssociated = "sendmessagenotassociated";
 
     // xml name for send meeting data to server
     static final String xmlNameForSendToServer_MeetingData = "sendmeetingdata";

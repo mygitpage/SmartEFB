@@ -3284,21 +3284,20 @@ public class DBAdapter extends SQLiteOpenHelper {
     /********************************* TABLES FOR FUNCTION: Message  ******************************************/
 
     // Add a new set of values to the database.
-    long insertRowMessage(Long localeTime, long writeTime, String message, int role, int status, Boolean newEntry, long upload_time) {
+    long insertRowMessage(String authorName, Long localeTime, long writeTime, String message, int role, int status, Boolean newEntry, long upload_time, int anonymous) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues initialValues = new ContentValues();
 
-        
+        initialValues.put(MESSAGE_KEY_AUTHOR_NAME, authorName);
         initialValues.put(MESSAGE_KEY_WRITE_TIME, writeTime);
         initialValues.put(MESSAGE_KEY_LOCAL_TIME, localeTime);
         initialValues.put(MESSAGE_KEY_MESSAGE, message);
         initialValues.put(MESSAGE_KEY_ROLE, role); //(role: 0= left; 1= right; 2= center;)
         initialValues.put(MESSAGE_KEY_STATUS, status);
         initialValues.put(MESSAGE_KEY_UPLOAD_TIME, upload_time);
-        
-
+        initialValues.put(MESSAGE_KEY_ANONYMOUS, anonymous);
 
         // is it a new entry?
         if (newEntry) {

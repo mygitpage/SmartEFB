@@ -13,7 +13,7 @@
             <string name="editTextInputFilterTextAlphaNumeric">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789ÄäÖöÜüß +-,;.:()§*!=?</string>
         <!-- End Edit Text String Filter Definition -->
 
-        <!-- Text for count comments -->
+        <!-- Text for count of letters in any activity -->
             <string name="infoTextCountLettersForComment">%1$s von %2$d Zeichen</string>
         <!-- End Text for count comments -->
 
@@ -25,7 +25,7 @@
     <!-- Activity Connect Book -->
         <!-- String Activity Connect Book -->
             <string name="buttonSendMessage">SENDEN</string>
-    <string name="subTitleConnectBook">Austausch zwischen Allen</string>
+            <string name="subTitleConnectBook">Austausch zwischen Allen</string>
             <string name="infoTextCountCurrentMessages">%1$d von %2$d Nachrichten in 24 Stunden</string>
             <string name="textConnectBookMessageAuthorAndDate">%1$s - %2$s &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
             <string name="textConnectBookMessageAuthorAndDateLocale">%1$s - %2$s (lokal) &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
@@ -1215,8 +1215,8 @@
 
 
     <!-- prevention -->
-    <string name="preventionSubtitleActivity">Texte, Links und Videos</string>
-    <string name="textPreventionNothingThere">Zurzeit liegen keine Präventionsinhalte vor.</string>
+        <string name="preventionSubtitleActivity">Texte, Links und Videos</string>
+        <string name="textPreventionNothingThere">Zurzeit liegen keine Präventionsinhalte vor.</string>
         <string name="preventionDepressionHeadlineText">Depression</string>
         <string name="preventionDepressionExplainText">Ein interessantes Video (\"Ich hatte einen schwarzen Hund\") zur Entstehung, Auswirkungen und Hilfsmöglichkeiten bei einer Depression. Der direkte Link zum Youtube-Video lautet: https://www.youtube.com/watch?v=1UiA32Qv4yE</string>
         <string name="preventionDepressionLinkToVideo">Video anschauen</string>
@@ -1227,24 +1227,16 @@
         <string name="preventionMediaCompetenceExplainText1Link"><a href="smart.efb.deeplink://linkin/prevention?com=open_link_medienquiz_schau_hin">Medienquiz Schau hin</a></string>
         <string name="preventionMediaCompetenceExplainText2">Kompetente und kritische Nutzung von Medien. Im Auftrage der Europäischen Kommission</string>
         <string name="preventionMediaCompetenceExplainText2Link"><a href="smart.efb.deeplink://linkin/prevention?com=open_link_klicksafe">Klicksafe</a></string>
-
-    <string name="preventionFinanceForFamilyHeadlineText">Finanzhilfen für Familien</string>
-    <string name="preventionFinanceForFamilyExplainText">Das Informationsangebot des Bundesministeriums für Familie, Senioren, Frauen und Jugend dient als erste Anlaufstelle für Familien, um mit wenigen Klicks zu überprüfen, auf welche Familienleistungen Ihre individuelle Familie voraussichtlich Anspruch hat.</string>
-    <string name="preventionFinanceForFamilyExplainTextLink"><a href="smart.efb.deeplink://linkin/prevention?com=open_link_infotool_family">Infotool Familie</a></string>
-
-    <string name="preventionMobbingHeadlineText">Mobbing</string>
-    <string name="preventionMobbingExplainText1">Mobbing schadet allen! Denen, die gemobbt werden. Denen, die dabei zuschauen. Und letztlich sogar den Mobbern selbst. Deshalb muss Mobbing beendet werden -  von allein hört es nämlich nicht auf.\nIn dem Link finden sowohl Betroffene als auch Eltern und Lehrer Hinweise zum Umgang mit Mobbing.</string>
-    <string name="preventionMobbingExplainText1Link"><a href="smart.efb.deeplink://linkin/prevention?com=open_link_mobbing_schluss">Mobbing Schluss damit</a></string>
-
-
-
-    <string name="btnPreventionShowVideo">Video anschauen</string>
+        <string name="preventionFinanceForFamilyHeadlineText">Finanzhilfen für Familien</string>
+        <string name="preventionFinanceForFamilyExplainText">Das Informationsangebot des Bundesministeriums für Familie, Senioren, Frauen und Jugend dient als erste Anlaufstelle für Familien, um mit wenigen Klicks zu überprüfen, auf welche Familienleistungen Ihre individuelle Familie voraussichtlich Anspruch hat.</string>
+        <string name="preventionFinanceForFamilyExplainTextLink"><a href="smart.efb.deeplink://linkin/prevention?com=open_link_infotool_family">Infotool Familie</a></string>
+        <string name="preventionMobbingHeadlineText">Mobbing</string>
+        <string name="preventionMobbingExplainText1">Mobbing schadet allen! Denen, die gemobbt werden. Denen, die dabei zuschauen. Und letztlich sogar den Mobbern selbst. Deshalb muss Mobbing beendet werden -  von allein hört es nämlich nicht auf.\nIn dem Link finden sowohl Betroffene als auch Eltern und Lehrer Hinweise zum Umgang mit Mobbing.</string>
+        <string name="preventionMobbingExplainText1Link"><a href="smart.efb.deeplink://linkin/prevention?com=open_link_mobbing_schluss">Mobbing Schluss damit</a></string>
+        <string name="btnPreventionShowVideo">Video anschauen</string>
         <string name="toastNoLinkGoalFound">Es wurde keine App zum öffnen der Inhalte gefunden!</string>
-
-
-    <string name="preventionLinkTextLess">Weniger...</string>
-    <string name="preventionLinkTextMore">Mehr...</string>
-
+        <string name="preventionLinkTextLess">Weniger...</string>
+        <string name="preventionLinkTextMore">Mehr...</string>
     <!-- end prevention -->
 
     <!-- help dialog -->
@@ -1254,6 +1246,26 @@
     <!-- End help dialog -->
 
     <!-- Activity Prevention -->
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <!-- Activity Message -->
+
+
+    <!-- messages -->
+        <string name="messageNotAssociatedAuthorName">Sie</string>
+    <string name="messageInfoTextCountCurrentMessages">%1$d von %2$d Nachrichten</string>
+        <string name="messageToastErrorMessageToShort">Ihre Nachricht muss aus mindestens drei Zeichen bestehen.</string>
+
+    <string name="toastMessageSendSuccessfull">Nachricht gesendet!</string>
+    <string name="toastMessageSendNotSuccessfull">Nachricht nicht gesendet!</string>
+
+
+
+
+    <!-- end messages -->
+
+    <!-- Activity Message -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->

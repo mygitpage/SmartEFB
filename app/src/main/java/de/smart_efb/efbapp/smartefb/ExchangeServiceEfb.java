@@ -175,6 +175,8 @@ import java.util.Map;
                             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                             xmlSerializer.text(tmpClientId);
                             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
 
                             // end tag main
                             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
@@ -692,6 +694,8 @@ import java.util.Map;
                         xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                         xmlSerializer.text(tmpClientId);
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
 
                         // end tag main
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
@@ -891,6 +895,8 @@ import java.util.Map;
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                     xmlSerializer.text(tmpClientId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
 
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
@@ -1091,6 +1097,8 @@ import java.util.Map;
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                     xmlSerializer.text(tmpClientId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
 
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
@@ -1288,6 +1296,8 @@ import java.util.Map;
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                     xmlSerializer.text(tmpClientId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
 
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
@@ -1485,6 +1495,8 @@ import java.util.Map;
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                     xmlSerializer.text(tmpClientId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
 
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
@@ -1658,6 +1670,8 @@ import java.util.Map;
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                     xmlSerializer.text(tmpClientId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
 
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
@@ -1861,6 +1875,8 @@ import java.util.Map;
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                     xmlSerializer.text(tmpClientId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
 
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
@@ -2070,6 +2086,8 @@ import java.util.Map;
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                     xmlSerializer.text(tmpClientId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
 
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
@@ -2210,31 +2228,18 @@ import java.util.Map;
 
         Long dbId = meetingData.getLong(meetingData.getColumnIndex(DBAdapter.KEY_ROWID));
 
-
-        Log.d("UPDATE EXCHANGE --->", "++++++ UPDATEORDER: "+updateOrder);
-
-
-
         if (updateOrder != null && updateOrder.length() > 0) {
             switch (updateOrder) {
 
                 case "update_client_canceled_server_time":
-
-                    Log.d("UPDATE EXCHANGE --->", "++++++ in CASE UPDATEORDER: "+updateOrder);
-
                     myDb.postUpdateWriteTimeMeetingSuggestion(dbId, updateOrder, globalServerTime);
                     break;
 
                 case "update_client_vote_comment_time_voteandcomment":
                 case "update_client_vote_comment_time_onlyvote":
                 case "update_client_vote_comment_time_onlycomment":
-
-                    Log.d("UPDATE EXCHANGE --->", "++++++ in CASE UPDATEORDER: "+updateOrder);
-
                     myDb.postUpdateWriteTimeMeetingSuggestion(dbId, updateOrder, globalServerTime);
                     break;
-
-
 
                 case "update_suggestion_from_client_server_time":
                     myDb.postUpdateWriteTimeMeetingSuggestion(dbId, updateOrder, globalServerTime);
@@ -2244,6 +2249,261 @@ import java.util.Map;
     }
 
     // +++++++++++++++++++++++++ end task exchange meeting +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
+
+
+
+    // +++++++++++++++++++++++++ task exchange message +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    // send current message to server and get answer from server
+    public class ExchangeTaskSendMessageData implements Runnable {
+
+        // id of the data row in db
+        private Long dbId;
+
+        // context of task
+        Context context;
+
+        // shared prefs
+        SharedPreferences prefs;
+        SharedPreferences.Editor prefsEditor;
+
+        // return information for change
+        Map<String, String> returnMap;
+
+        // Constructor
+        public ExchangeTaskSendMessageData (Context context, Long dbid) {
+
+            // id of the data row in db
+            this.dbId = dbid;
+
+            // context of task
+            this.context = context;
+
+            // init the prefs
+            prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
+            prefsEditor = prefs.edit();
+        }
+
+        // the task
+        public void run() {
+
+            // init the DB
+            DBAdapter myDb = new DBAdapter(context);
+
+            Boolean clientIdSet = false;
+            Boolean contactIdSet = false;
+
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+            if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+
+                Log.d("Ex Service MESSAGE", "Network on in send MESSAGE!");
+
+                // get comment from db
+                Cursor messageData = myDb.getOneRowChatMessage (dbId);
+
+                // get client id from prefs
+                String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
+
+                // get contact id from prefs
+                String tmpContactId = prefs.getString(ConstansClassSettings.namePrefsContactId, "");
+
+                // check for client or contact id
+                if (tmpClientId.length() > 0) {clientIdSet = true;}
+                if (tmpContactId.length() > 0 && !clientIdSet) {contactIdSet = true;}
+
+                // generate xml output text
+                XmlSerializer xmlSerializer = Xml.newSerializer();
+                StringWriter writer = new StringWriter();
+                try {
+
+                    xmlSerializer.setOutput(writer);
+
+                    //Start Document
+                    xmlSerializer.startDocument("UTF-8", true);
+                    xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
+
+                    // Open Tag
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                    // start tag main order -> send associated or not associated message
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+                    if (clientIdSet) {
+                        xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_MessageAssociated);
+                    }
+                    else {
+                        xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_MessageNotAssociated);
+                    }
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+
+                    // check client or contact id set?
+                    if (clientIdSet) {
+                        // start tag client id
+                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                        xmlSerializer.text(tmpClientId);
+                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                        // start empty tag contact id
+                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                    }
+                    else {
+                        // start empty tag client id
+                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                        // start tag contact id
+                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                        xmlSerializer.text(tmpContactId);
+                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                    }
+
+                    // end tag main
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                    // build xml tag for message with data
+                    buildMessageXmlTagWithData (xmlSerializer, messageData, clientIdSet, contactIdSet);
+
+                    // end tag smartEfb
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+
+                    xmlSerializer.endDocument();
+
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // and send xml text to server
+                try {
+                    // prepair data to send
+                    String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
+
+                    // set url and parameters
+                    URL scripturl = new URL(ConstansClassSettings.urlConnectionSendMessageToServer);
+                    HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
+
+                    // set timeout for connection
+                    connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
+                    connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
+
+                    connection.setDoOutput(true);
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    connection.setRequestMethod("POST");
+                    connection.setFixedLengthStreamingMode(textparam.getBytes().length);
+
+                    // generate output stream and send
+                    OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
+                    contentWriter.write(textparam);
+                    contentWriter.flush();
+
+                    contentWriter.close();
+
+                    // get answer from input
+                    InputStream answerInputStream = connection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    // convert input stream to string
+                    String currentRow;
+                    try {
+                        while ((currentRow = reader.readLine()) != null) {
+                            stringBuilder.append(currentRow);
+                            stringBuilder.append("\n");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Log.d("Message XML", "Content:"+stringBuilder.toString().trim());
+
+
+                    // call xml parser with input
+                    EfbXmlParser xmlparser = new EfbXmlParser(context);
+                    returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
+
+                    // close input stream and disconnect
+                    answerInputStream.close();
+                    connection.disconnect();
+
+                    // set global server time for comments, messages, etc.
+                    Long globalServerTime = 0L;
+                    if (returnMap.get("AskForTimeSuccessfull").equals("1") && returnMap.get("ServerTimeInMills").length() > 0) {
+                        globalServerTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; // make global server time in mills
+                    }
+
+                    if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull
+                        myDb.updateStatusMessage (dbId, 1); // set status of message to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                        // update write time of message in db
+                        if (globalServerTime > 0) {myDb.updateWriteTimeMessage (dbId, globalServerTime); } // update write time for message with server time
+
+                        // send intent to receiver in Activity message to update listView (when active)
+                        Intent tmpIntent = translateMapToIntent (returnMap);
+                        tmpIntent.putExtra("Message",context.getResources().getString(R.string.toastMessageSendSuccessfull));
+                        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                        context.sendBroadcast(tmpIntent);
+                    }
+                    else { // send not successfull
+                        // send information broadcast to receiver that sending was not successefull
+                        String message = context.getResources().getString(R.string.toastMessageSendNotSuccessfull);
+                        String command = "";
+                        sendIntentBroadcastSendingNotSuccessefull (message, command);
+                    }
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastConnectBookMessageSendNotSuccessfull);
+                    String command = "";
+                    sendIntentBroadcastSendingNotSuccessefull (message, command);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastConnectBookMessageSendNotSuccessfull);
+                    String command = "";
+                    sendIntentBroadcastSendingNotSuccessefull (message, command);
+
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+
+                }
+            }
+            else { // no network enable -> try to send comment to server later
+                // send information broadcast to receiver that sending not successfull
+                String message = context.getResources().getString(R.string.toastConnectBookMessageSendNoNetwork);
+                String command = "";
+                sendIntentBroadcastSendingNotSuccessefull (message, command);
+            }
+
+            // close db connection
+            myDb.close();
+
+            // stop the task with service
+            stopSelf();
+        }
+    }
+    // +++++++++++++++++++++++++ end task exchange message +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2292,15 +2552,21 @@ import java.util.Map;
                 xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_AskForTime);
                 xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
 
-                // start tag client id
+                // check client or contact id set?
                 if (tmpClientId.length() > 0) {
+                    // start tag client id
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                     xmlSerializer.text(tmpClientId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    // start empty tag contact id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                 }
-
-                // start tag contact id -> no client id available!
-                if (tmpContactId.length() > 0) {
+                else {
+                    // start empty tag client id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    // start tag contact id
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                     xmlSerializer.text(tmpContactId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
@@ -2410,7 +2676,9 @@ import java.util.Map;
             // get data from intent
             intentExtras = intent.getExtras();
 
-            if (intentExtras != null && !this.isRunning && !prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false) && prefs.getInt(ConstansClassSettings.namePrefsConnectingStatus, 0) == 3) {
+            if (intentExtras != null && !this.isRunning && !prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+
+                int tmpCommectionStatus = prefs.getInt(ConstansClassSettings.namePrefsConnectingStatus, 0);
 
                 // get command from intent extras
                 String command = intentExtras.getString("com");
@@ -2434,7 +2702,7 @@ import java.util.Map;
                     // start task
                     this.backgroundThread.start();
 
-                } else if (command.equals("send_now_comment_arrangement") && dbId > 0) { // send new arrangement comment to server
+                } else if (command.equals("send_now_comment_arrangement") && dbId > 0 && tmpCommectionStatus == 3) { // send new arrangement comment to server
 
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendNowCommentArrangement (context, dbId));
@@ -2443,7 +2711,7 @@ import java.util.Map;
                     // start task
                     this.backgroundThread.start();
 
-                } else if (command.equals("send_sketch_comment_arrangement") && dbId > 0) { // send new sketch arrangement comment to server
+                } else if (command.equals("send_sketch_comment_arrangement") && dbId > 0 && tmpCommectionStatus == 3) { // send new sketch arrangement comment to server
 
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendSketchCommentArrangement (context, dbId));
@@ -2452,7 +2720,7 @@ import java.util.Map;
                     // start task
                     this.backgroundThread.start();
 
-                } else if (command.equals("send_evaluation_result_arrangement") && dbId > 0) { // send new evaluation result to server
+                } else if (command.equals("send_evaluation_result_arrangement") && dbId > 0 && tmpCommectionStatus == 3) { // send new evaluation result to server
 
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendEvaluationResultArrangement(context, dbId));
@@ -2461,7 +2729,7 @@ import java.util.Map;
                     // start task
                     this.backgroundThread.start();
 
-                } else if (command.equals("send_jointly_comment_goal") && dbId > 0) { // send jointly goal comment to server
+                } else if (command.equals("send_jointly_comment_goal") && dbId > 0 && tmpCommectionStatus == 3) { // send jointly goal comment to server
 
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendJointlyCommentGoals (context, dbId));
@@ -2470,7 +2738,7 @@ import java.util.Map;
                     // start task
                     this.backgroundThread.start();
 
-                } else if (command.equals("send_evaluation_result_goal") && dbId > 0) { // send jointly goal evaluation result to server
+                } else if (command.equals("send_evaluation_result_goal") && dbId > 0 && tmpCommectionStatus == 3) { // send jointly goal evaluation result to server
 
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendJointlyGoalsEvaluationResult (context, dbId));
@@ -2479,7 +2747,7 @@ import java.util.Map;
                     // start task
                     this.backgroundThread.start();
 
-                }  else if (command.equals("send_debetable_comment_goal") && dbId > 0) { // send debetable comment result to server
+                }  else if (command.equals("send_debetable_comment_goal") && dbId > 0 && tmpCommectionStatus == 3) { // send debetable comment result to server
 
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendDebetableGoalCommentResult (context, dbId));
@@ -2488,7 +2756,7 @@ import java.util.Map;
                     // start task
                     this.backgroundThread.start();
                 
-                } else if (command.equals("send_connectbook_message") && dbId > 0) { // send connect book message to server
+                } else if (command.equals("send_connectbook_message") && dbId > 0 && tmpCommectionStatus == 3) { // send connect book message to server
 
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendConnectBookMessage (context, dbId));
@@ -2497,12 +2765,19 @@ import java.util.Map;
                     // start task
                     this.backgroundThread.start();
 
-                } else if (command.equals("send_meeting_data") && dbId > 0) { // send meeting data to server
-
-                    Log.d("Excange Service", "MEETING DATA !!!!!!!!");
+                } else if (command.equals("send_meeting_data") && dbId > 0 && tmpCommectionStatus == 3) { // send meeting data to server
 
                     // generate new send task
                     this.backgroundThread = new Thread(new ExchangeTaskSendMeetingData (context, dbId, receiverBroadcast));
+                    // task is running
+                    this.isRunning = true;
+                    // start task
+                    this.backgroundThread.start();
+
+                } else if (command.equals("send_current_message") && dbId > 0) { // send current message data to server
+
+                    // generate new send task
+                    this.backgroundThread = new Thread(new ExchangeTaskSendMessageData(context, dbId));
                     // task is running
                     this.isRunning = true;
                     // start task
@@ -2621,7 +2896,7 @@ import java.util.Map;
             xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT)));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment_ServerIdArrangement);
 
-            // end tag comment now arrangement
+            // end tag sketch comment
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_SketchComment);
         }
         catch (IOException e) {
@@ -2899,7 +3174,7 @@ import java.util.Map;
             xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_SERVER_ID)));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment_ServerIdGoal);
 
-            // end tag comment now arrangement
+            // end tag debetable comment
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment);
         }
         catch (IOException e) {
@@ -2930,7 +3205,7 @@ import java.util.Map;
             xmlSerializer.text(messageData.getString(messageData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME)));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_AuthorName);
 
-            // start tag comment time
+            // start tag message locale time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForConnectBook_MessageLocaleTime);
             xmlSerializer.text(String.valueOf(messageData.getLong(messageData.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_LOCAL_TIME))/1000)); // convert millis to timestamp
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForConnectBook_MessageLocaleTime);
@@ -2951,7 +3226,7 @@ import java.util.Map;
             // open meeting data tag
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_And_Suggestions);
 
-            // start tag comment now arrangement order
+            // start tag meeting/ suggestion order
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_Order);
             xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_Update);
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_Order);
@@ -3116,12 +3391,62 @@ import java.util.Map;
             xmlSerializer.text(meetingData.getString(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_SERVER_ID)));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_DataServerId);
 
-            // end tag comment now arrangement
+            // end tag meeting/suggestion
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_And_Suggestions);
         }
         catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+
+
+    public void buildMessageXmlTagWithData (XmlSerializer xmlSerializer, Cursor messageData, Boolean clientIdSet, Boolean contactIdSet) {
+
+        try {
+
+            // open message tag
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMessage_Messages);
+
+            // start tag message order
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMessage_Order);
+            // check associate or not associated message
+            if (clientIdSet) {
+                xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_NewAssociatedMessage);
+            }
+            else {
+                xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_NewNotAssociatedMessage);
+            }
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMessage_Order);
+
+            // start tag message text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMessage_MessageText);
+            xmlSerializer.text(messageData.getString(messageData.getColumnIndex(DBAdapter.MESSAGE_KEY_MESSAGE)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMessage_MessageText);
+
+            // start tag author name text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMessage_AuthorName);
+            xmlSerializer.text(messageData.getString(messageData.getColumnIndex(DBAdapter.MESSAGE_KEY_AUTHOR_NAME)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMessage_AuthorName);
+
+            // start tag message locale time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMessage_MessageLocaleTime);
+            xmlSerializer.text(String.valueOf(messageData.getLong(messageData.getColumnIndex(DBAdapter.MESSAGE_KEY_LOCAL_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMessage_MessageLocaleTime);
+
+            // end tag message
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMessage_Messages);
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
 
 }

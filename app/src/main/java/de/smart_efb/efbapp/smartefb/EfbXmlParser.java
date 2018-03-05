@@ -130,6 +130,14 @@ public class EfbXmlParser {
         returnMap.put("TimeTableNewValue", "0");
         returnMap.put("TimeTableSettings","0");
 
+
+
+        returnMap.put("Message", "0");
+        returnMap.put("MessageSettings", "0");
+        returnMap.put("MessageMessageNewOrSend","0"); // only set in ExchangeService to refresh message view
+
+
+
         returnMap.put("Settings", "0");
         returnMap.put("SettingsOtherMenueItems","0");
         returnMap.put("InvolvedPerson","0");
@@ -198,6 +206,11 @@ public class EfbXmlParser {
                         case ConstansClassXmlParser.xmlNameForSettings_CaseInvolvedPerson:
                             if (masterElementFound) {
                                 readSettingInvolvedPersonTag();
+                            }
+                            break;
+                        case ConstansClassXmlParser.xmlNameForMessage:
+                            if (masterElementFound) {
+                                readMessageTag();
                             }
                             break;
                     }
@@ -4489,7 +4502,7 @@ public class EfbXmlParser {
                                 returnMap.put("ConnectBook","1");
                                 returnMap.put("ConnectBookMessageNewOrSend", "1");
 
-                            } if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageLocaleTime > 0 && tmpMessageRole >= 0) {
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageLocaleTime > 0 && tmpMessageRole >= 0) {
 
                                 // set upload time on smartphone for message; value from server is not needed
                                 tmpUploadTime = System.currentTimeMillis();
@@ -4740,6 +4753,497 @@ public class EfbXmlParser {
 
 
 
+
+
+
+
+
+
+
+
+
+    //
+    // Begin read message -----------------------------------------------------------------------------------
+    //
+
+
+    // read element message
+    private void readMessageTag() {
+
+        Boolean parseAnymore = true;
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                // look for end tag of message
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMessage)) {
+                        parseAnymore = false;
+                    }
+                }
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForMessage_Messages:
+                            readMessageTag_Messages();
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMessage_Settings:
+                            readMessageTag_Settings();
+                            break;
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs(25);
+            e.printStackTrace();
+        } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs(26);
+            e.printStackTrace();
+        }
+    }
+
+
+    // read element message messages
+    private void readMessageTag_Messages() {
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml message tag
+        Boolean error = false;
+
+        // tmp data for database insert
+        String tmpMessage = "";
+        String tmpAuthorName = "";
+        Long tmpMessageLocaleTime = 0L;
+        String tmpOrder = "";
+        Long tmpUploadTime = 0L;
+        int tmpMessageRole = -1;
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForMessage_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateAssociatedMessage)  && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_NewAssociatedMessage) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateNotAssociatedMessage)  && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_NewNotAssociatedMessage)  && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
+                        case ConstansClassXmlParser.xmlNameForMessage_MessageText:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get message text text
+                                if (xpp.getText().trim().length() > 0) { // check if message text from xml > 0
+                                    tmpMessage = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
+                        case ConstansClassXmlParser.xmlNameForMessage_AuthorName:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get authorName text
+                                if (xpp.getText().trim().length() > 0) { // check if authorName from xml > 0
+                                    tmpAuthorName = xpp.getText().trim();
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
+                        case ConstansClassXmlParser.xmlNameForMessage_MessageLocaleTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get message time text
+                                if (xpp.getText().trim().length() > 0) { // check if message time from xml > 0
+                                    tmpMessageLocaleTime = Long.valueOf(xpp.getText().trim())* 1000; // make Long from xml-text in milliseconds!!!!!
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
+                        case ConstansClassXmlParser.xmlNameForMessage_MessageRole:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get message role text
+                                if (xpp.getText().trim().length() >= 0) { // check if message role from xml >= 0
+                                    tmpMessageRole = Integer.valueOf(xpp.getText().trim());
+                                }
+                                else {
+                                    error = true;
+                                }
+                            }
+                            else {
+                                error = true;
+                            }
+                            break;
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
+                }
+
+                // look for end tag of message
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMessage_Messages)) {
+                        // check all data for message correct?
+                        if (!error) {
+                            // message order -> new associated entry?
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_NewAssociatedMessage) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageLocaleTime > 0 && tmpMessageRole >= 0) {
+
+                                // set upload time on smartphone for message; value from server is not needed
+                                tmpUploadTime = System.currentTimeMillis();
+                                int messageStatus = 4;
+                                int anonymous = 1; // not anonymous -> app is connected to server
+
+                                Boolean newEntry = true;
+
+                                // put message into db (role: 0= left; 1= right)
+                                myDb.insertRowMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, anonymous);
+
+                                // refresh activity message
+                                returnMap.put("Message","1");
+                                returnMap.put("MessageMessageNewOrSend", "1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateAssociatedMessage) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageLocaleTime > 0 && tmpMessageRole >= 0) {
+
+                                // set upload time on smartphone for message; value from server is not needed
+                                tmpUploadTime = System.currentTimeMillis();
+                                int messageStatus = 4;
+                                int anonymous = 1; // not anonymous -> app is connected to server
+                                Boolean newEntry = true;
+
+                                // put message into db (role: 0= left; 1= right)
+                                myDb.insertRowChatMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, anonymous);
+
+                                // refresh activity message
+                                returnMap.put("Message","1");
+                                returnMap.put("MessageMessageNewOrSend", "1");
+
+                            }
+                            // message order -> new not associated entry?
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_NewNotAssociatedMessage) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageLocaleTime > 0 && tmpMessageRole >= 0) {
+
+                                // set upload time on smartphone for message; value from server is not needed
+                                tmpUploadTime = System.currentTimeMillis();
+                                int messageStatus = 4;
+                                int anonymous = 0; // anonymous -> app is not connected to server
+                                Boolean newEntry = true;
+
+                                // put message into db (role: 0= left; 1= right)
+                                myDb.insertRowMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, anonymous);
+
+                                // refresh activity message
+                                returnMap.put("Message","1");
+                                returnMap.put("MessageMessageNewOrSend", "1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateNotAssociatedMessage) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageLocaleTime > 0 && tmpMessageRole >= 0) {
+
+                                // set upload time on smartphone for message; value from server is not needed
+                                tmpUploadTime = System.currentTimeMillis();
+                                int messageStatus = 4;
+                                int anonymous = 0; // anonymous -> app is not connected to server
+                                Boolean newEntry = true;
+
+                                // put message into db (role: 0= left; 1= right)
+                                myDb.insertRowChatMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, anonymous);
+
+                                // refresh activity message
+                                returnMap.put("Message","1");
+                                returnMap.put("MessageMessageNewOrSend", "1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
+
+                                // delete all messages in message
+                                myDb.deleteAllMessages ();
+                            }
+                        }
+                        parseAnymore = false;
+                    }
+                }
+            }
+        }
+        catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs(15);
+            e.printStackTrace();
+        } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs(16);
+            e.printStackTrace();
+        }
+    }
+
+
+    // read element message settings
+    private void readMessageTag_Settings() {
+
+        Boolean parseAnymore = true;
+
+        // true -> error occuret while parsing xml message settings tag
+        Boolean error = false;
+
+        // tmp data for prefs
+        Boolean tmpMessageOnOff = false;
+        String tmpOrder = "";
+        int tmpMaxLetters = -1;
+        int tmpMaxMessages = -1;
+        int tmpMessageStopCommunication = -1;
+
+
+        try {
+            int eventType = xpp.next();
+
+            while (parseAnymore) {
+
+                if (eventType == XmlPullParser.START_TAG) {
+                    switch (xpp.getName().trim()) {
+                        case ConstansClassXmlParser.xmlNameForMessage_Order:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get order text
+                                if (xpp.getText().trim().length() > 0) { // check if order from xml > 0
+                                    tmpOrder = xpp.getText().trim();
+                                    if (!tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateAssociatedMessage) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateNotAssociatedMessage) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && !tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
+                                        error = true;
+                                        tmpOrder = "";
+                                    }
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+                        case ConstansClassXmlParser.xmlNameForMessage_TurnOnOff:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get switch meeting turn on/off
+                                if (xpp.getText().trim().length() > 0) { // check if switch from xml > 0
+                                    int tmpSwitchValue = Integer.valueOf(xpp.getText().trim());
+                                    if (tmpSwitchValue == 1) {
+                                        tmpMessageOnOff = true;
+                                    } else {
+                                        tmpMessageOnOff = false;
+                                    }
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+
+                        case ConstansClassXmlParser.xmlNameForMessage_MaxMessages:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get max messages
+                                if (xpp.getText().trim().length() > 0) { // check if max messages from xml > 0
+                                    tmpMaxMessages = Integer.valueOf(xpp.getText().trim());
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+                        case ConstansClassXmlParser.xmlNameForMessage_MaxLetters:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get max letters
+                                if (xpp.getText().trim().length() > 0) { // check if max letters from xml > 0
+                                    tmpMaxLetters = Integer.valueOf(xpp.getText().trim());
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+                        case ConstansClassXmlParser.xmlNameForMessage_StopCommunication:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get share value; 0-> no communication possible; 1-> communication possible
+                                if (xpp.getText().trim().length() >= 0) { // check if value from xml >= 0
+                                    tmpMessageStopCommunication = Integer.valueOf(xpp.getText().trim());
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
+                    }
+                }
+                eventType = xpp.next();
+
+                // Safety abbort end document
+                if (eventType == XmlPullParser.END_DOCUMENT) {
+                    parseAnymore = false;
+                }
+
+                // look for end tag of message settings
+                if (eventType == XmlPullParser.END_TAG) {
+                    if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMessage_Settings)) {
+                        // check all data for message settings correct?
+                        if (!error) {
+                            if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) { // message settings order -> delete?
+
+                                // refresh activity message because settings have change
+                                returnMap.put("Message", "1");
+                                returnMap.put("MessageSettings", "1");
+
+                            } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateAssociatedMessage)) { // message settings order -> update?
+
+                                // in every case -> write data message on off to prefs
+                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, tmpMessageOnOff);
+                                prefsEditor.apply();
+
+                                // write max letters and max messages to prefs when all set
+                                if (tmpMessageOnOff && tmpMaxLetters >= 0 && tmpMaxMessages >= 0) {
+                                    
+                                    prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxLettersAssociated, tmpMaxLetters);
+                                    prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxMessageAssociated, tmpMaxMessages);
+
+                                    if (tmpMessageStopCommunication == 1) {prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false);}
+                                    else {prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, true);}
+
+
+                                    // reset message counter and start time message counter
+                                    prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentAssociated, 0);
+
+                                    // get normal timestamp with day, month and year (hour, minute, seconds and millseconds are zero)
+                                    Long startTimestamp = EfbHelperClass.timestampToNormalDayMonthYearDate(System.currentTimeMillis());
+                                    //prefsEditor.putLong(ConstansClassMessage.namePrefsConnectCountMessagesResetTime, startTimestamp);
+                                    //prefsEditor.putLong(ConstansClassMessage.namePrefsConnectCountMessagesLastResetLocaleTime, 0L);
+                                    prefsEditor.apply();
+
+                                }
+
+
+
+
+                                // refresh activity message because settings have change
+                                returnMap.put("Message", "1");
+                                returnMap.put("MessageSettings", "1");
+                            }
+
+                            else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateNotAssociatedMessage)) { // message settings order -> update?
+
+                                // in every case -> write data message on off to prefs
+                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, tmpMessageOnOff);
+                                prefsEditor.apply();
+
+                                // write max letters and max messages to prefs when all set
+                                if (tmpMessageOnOff && tmpMaxLetters >= 0 && tmpMaxMessages >= 0) {
+
+                                    prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxLettersNotAssociated, tmpMaxLetters);
+                                    prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxMessageNotAssociated, tmpMaxMessages);
+
+                                    if (tmpMessageStopCommunication == 1) {prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false);}
+                                    else {prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, true);}
+
+                                    // reset message counter and start time message counter
+                                    prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, 0);
+
+                                    // get normal timestamp with day, month and year (hour, minute, seconds and millseconds are zero)
+                                    Long startTimestamp = EfbHelperClass.timestampToNormalDayMonthYearDate(System.currentTimeMillis());
+                                    //prefsEditor.putLong(ConstansClassMessage.namePrefsConnectCountMessagesResetTime, startTimestamp);
+                                    //prefsEditor.putLong(ConstansClassMessage.namePrefsConnectCountMessagesLastResetLocaleTime, 0L);
+                                    prefsEditor.apply();
+
+                                }
+
+
+
+
+                                // refresh activity message because settings have change
+                                returnMap.put("Message", "1");
+                                returnMap.put("MessageSettings", "1");
+                            }
+
+
+
+
+
+
+
+                        }
+                        parseAnymore = false;
+                    }
+                }
+            }
+        } catch (XmlPullParserException e) {
+            // set error
+            setErrorMessageInPrefs(27);
+            e.printStackTrace();
+        } catch (IOException e) {
+            // set error
+            setErrorMessageInPrefs(28);
+            e.printStackTrace();
+        }
+
+    }
+
+    //
+    // End read message -----------------------------------------------------------------------------------
+    //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //
     // Begin read settings -----------------------------------------------------------------------------------
     //
@@ -4910,6 +5414,10 @@ public class EfbXmlParser {
 
                                     // set function message on
                                     prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, true); // turn function message on
+                                    prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, 0);
+                                    prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxLettersNotAssociated, ConstansClassMessage.namePrefsMessageMaxLettersNotAssociatedStandard);
+                                    prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxMessageNotAssociated, ConstansClassMessage.namePrefsMessageMaxMessageNotAssociatedStandard);
+
 
                                     // write last error messages to prefs
                                     prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
