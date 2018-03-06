@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/connectBookDateParentFirst"
+        android:id="@+id/messageDateParentFirst"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -21,7 +21,7 @@
             android:background="@drawable/connect_book_date_separator">
 
             <TextView
-                android:id="@+id/connectBookDateTextFirst"
+                android:id="@+id/messageDateTextFirst"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryDark"
@@ -75,7 +75,7 @@
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/connectBookDateParentLast"
+        android:id="@+id/messageDateParentLast"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -90,7 +90,7 @@
             android:background="@drawable/connect_book_date_separator">
 
             <TextView
-                android:id="@+id/connectBookDateTextLast"
+                android:id="@+id/messageDateTextLast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryDark"

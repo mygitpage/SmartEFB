@@ -4933,11 +4933,11 @@ public class EfbXmlParser {
                                 tmpUploadTime = System.currentTimeMillis();
                                 int messageStatus = 4;
                                 int anonymous = 1; // not anonymous -> app is connected to server
-
+                                String source = "message"; // used for future extension
                                 Boolean newEntry = true;
 
                                 // put message into db (role: 0= left; 1= right)
-                                myDb.insertRowMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, anonymous);
+                                myDb.insertRowMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, anonymous, source);
 
                                 // refresh activity message
                                 returnMap.put("Message","1");
@@ -4967,9 +4967,10 @@ public class EfbXmlParser {
                                 int messageStatus = 4;
                                 int anonymous = 0; // anonymous -> app is not connected to server
                                 Boolean newEntry = true;
+                                String source = "message"; // used for future extension
 
                                 // put message into db (role: 0= left; 1= right)
-                                myDb.insertRowMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, anonymous);
+                                myDb.insertRowMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, anonymous, source);
 
                                 // refresh activity message
                                 returnMap.put("Message","1");

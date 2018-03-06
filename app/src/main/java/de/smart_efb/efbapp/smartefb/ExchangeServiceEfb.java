@@ -112,6 +112,7 @@ import java.util.Map;
                 Boolean send_debetable_goals_comment_info = false;
                 Boolean send_connect_book_messages_result_info = false;
                 Boolean send_meeting_data_result_info = false;
+                Boolean send_message_data_result_info = false;
 
                 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -121,38 +122,66 @@ import java.util.Map;
 
                     if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
 
+                        Boolean clientIdSet = false;
+                        Boolean contactIdSet = false;
+
+                        // all cursors for data
+                        Cursor allCommentsReadyToSend = null;
+                        Cursor allSketchCommentsReadyToSend = null;
+                        Cursor allArrangementEvaluationResultsReadyToSend = null;
+                        Cursor allJointlyGoalsCommentsReadyToSend = null;
+                        Cursor allGoalsEvaluationResultsReadyToSend = null;
+                        Cursor allDebetableCommentsReadyToSend = null;
+                        Cursor allConnectBookMessagesReadyToSend = null;
+                        Cursor allMeetingsReadyToSend = null;
+                        Cursor allMessagesReadyToSend = null;
+
                         Log.d("Exchange Service", "Network on in aks new data");
 
                         // get client id from prefs
                         String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
 
+                        // get contact id from prefs
+                        String tmpContactId = prefs.getString(ConstansClassSettings.namePrefsContactId, "");
+
+                        // check for client or contact id
+                        if (tmpClientId.length() > 0) {clientIdSet = true;}
+                        if (tmpContactId.length() > 0 && !clientIdSet) {contactIdSet = true;}
+
                         // generate xml output text
                         XmlSerializer xmlSerializer = Xml.newSerializer();
                         StringWriter writer = new StringWriter();
 
-                        // get all comments with status = 0 -> ready to send
-                        Cursor allCommentsReadyToSend = myDb.getAllReadyToSendComments(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0"));
+                        // check association -> app connect to server -> check all data
+                        if (clientIdSet) {
 
-                        // get all sketch comments with status = 0 -> ready to send
-                        Cursor allSketchCommentsReadyToSend = myDb.getAllReadyToSendSketchComments(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0"));
+                            // get all comments with status = 0 -> ready to send
+                            allCommentsReadyToSend = myDb.getAllReadyToSendComments(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0"));
 
-                        // get all now arrangement evaluation results with status = 0 -> ready to send
-                        Cursor allArrangementEvaluationResultsReadyToSend = myDb.getAllReadyToSendArrangementEvaluationResults();
+                            // get all sketch comments with status = 0 -> ready to send
+                            allSketchCommentsReadyToSend = myDb.getAllReadyToSendSketchComments(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0"));
 
-                        // get all jointly goals comments with status = 0 -> ready to send
-                        Cursor allJointlyGoalsCommentsReadyToSend = myDb.getAllReadyToSendJointlyGoalsComments(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0"));
+                            // get all now arrangement evaluation results with status = 0 -> ready to send
+                            allArrangementEvaluationResultsReadyToSend = myDb.getAllReadyToSendArrangementEvaluationResults();
 
-                        // get all jointly goals evaluation results with status = 0 -> ready to send
-                        Cursor allGoalsEvaluationResultsReadyToSend = myDb.getAllReadyToSendGoalsEvaluationResults();
+                            // get all jointly goals comments with status = 0 -> ready to send
+                            allJointlyGoalsCommentsReadyToSend = myDb.getAllReadyToSendJointlyGoalsComments(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0"));
 
-                        // get all debetable comments with status = 0 -> ready to send
-                        Cursor allDebetableCommentsReadyToSend = myDb.getAllReadyToSendDebetableComments(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfDebetableGoals, "0"));
+                            // get all jointly goals evaluation results with status = 0 -> ready to send
+                            allGoalsEvaluationResultsReadyToSend = myDb.getAllReadyToSendGoalsEvaluationResults();
 
-                        // get all connect book messages with status = 0 and role = 1 (own messages) -> ready to send
-                        Cursor allConnectBookMessagesReadyToSend = myDb.getAllReadyToSendConnectBookMessages();
+                            // get all debetable comments with status = 0 -> ready to send
+                            allDebetableCommentsReadyToSend = myDb.getAllReadyToSendDebetableComments(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfDebetableGoals, "0"));
 
-                        // get all meetings data (meetings, suggestions from client, answers, comments, etc.) with status = 0 -> ready to send
-                        Cursor allMeetingsReadyToSend = myDb.getAllRowsMeetingsAndSuggestion("ready_to_send", 0L); // time is not needed for db-question, so set to zero
+                            // get all connect book messages with status = 0 and role = 1 (own messages) -> ready to send
+                            allConnectBookMessagesReadyToSend = myDb.getAllReadyToSendConnectBookMessages();
+
+                            // get all meetings data (meetings, suggestions from client, answers, comments, etc.) with status = 0 -> ready to send
+                            allMeetingsReadyToSend = myDb.getAllRowsMeetingsAndSuggestion("ready_to_send", 0L); // time is not needed for db-question, so set to zero
+                        }
+
+                        // in every case (associated or not associated) -> get all messages with status = 0 and role = 1 (own messages) -> ready to send
+                        allMessagesReadyToSend = myDb.getAllReadyToSendMessages();
 
                         try {
 
@@ -171,86 +200,113 @@ import java.util.Map;
                             xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_AskNewData);
                             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
 
-                            // start tag client id
-                            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
-                            xmlSerializer.text(tmpClientId);
-                            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
-                            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
-                            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                            // check client or contact id set?
+                            if (clientIdSet) {
+                                // start tag client id
+                                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                                xmlSerializer.text(tmpClientId);
+                                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                                // start empty tag contact id
+                                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                            }
+                            else {
+                                // start empty tag client id
+                                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                                // start tag contact id
+                                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                                xmlSerializer.text(tmpContactId);
+                                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                            }
 
                             // end tag main
                             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
-                            // build xml for all now comments
-                            if (allCommentsReadyToSend != null && allCommentsReadyToSend.getCount() > 0) {
+                            // check association -> app connect to server -> check all data
+                            if (clientIdSet) {
 
-                                do {
-                                    buildCommentNowXmlTagWithData(xmlSerializer, allCommentsReadyToSend);
-                                    send_now_comment_info = true;
-                                } while (allCommentsReadyToSend.moveToNext());
+                                // build xml for all now comments
+                                if (allCommentsReadyToSend != null && allCommentsReadyToSend.getCount() > 0) {
+
+                                    do {
+                                        buildCommentNowXmlTagWithData(xmlSerializer, allCommentsReadyToSend);
+                                        send_now_comment_info = true;
+                                    } while (allCommentsReadyToSend.moveToNext());
+                                }
+
+                                // build xml for all sketch comments
+                                if (allSketchCommentsReadyToSend != null && allSketchCommentsReadyToSend.getCount() > 0) {
+
+                                    do {
+                                        buildCommentSketchXmlTagWithData(xmlSerializer, allSketchCommentsReadyToSend);
+                                        send_sketch_comment_info = true;
+                                    } while (allSketchCommentsReadyToSend.moveToNext());
+                                }
+
+                                // build xml for all arrangement evaluation result
+                                if (allArrangementEvaluationResultsReadyToSend != null && allArrangementEvaluationResultsReadyToSend.getCount() > 0) {
+
+                                    do {
+                                        buildArrangementEvaluationResultXmlTagWithData(xmlSerializer, allArrangementEvaluationResultsReadyToSend);
+                                        send_arrangement_evaluation_result_info = true;
+                                    }
+                                    while (allArrangementEvaluationResultsReadyToSend.moveToNext());
+                                }
+
+                                // build xml for all jointly goals comments
+                                if (allJointlyGoalsCommentsReadyToSend != null && allJointlyGoalsCommentsReadyToSend.getCount() > 0) {
+
+                                    do {
+                                        buildJointlyCommentXmlTagWithData(xmlSerializer, allJointlyGoalsCommentsReadyToSend);
+                                        send_jointly_goals_comment_info = true;
+                                    } while (allJointlyGoalsCommentsReadyToSend.moveToNext());
+                                }
+
+                                // build xml for all goals evaluation result
+                                if (allGoalsEvaluationResultsReadyToSend != null && allGoalsEvaluationResultsReadyToSend.getCount() > 0) {
+
+                                    do {
+                                        buildJointlyGoalsEvaluationResultXmlTagWithData(xmlSerializer, allGoalsEvaluationResultsReadyToSend);
+                                        send_goals_evaluation_result_info = true;
+                                    } while (allGoalsEvaluationResultsReadyToSend.moveToNext());
+                                }
+
+                                // build xml for all debetable goals comments
+                                if (allDebetableCommentsReadyToSend != null && allDebetableCommentsReadyToSend.getCount() > 0) {
+
+                                    do {
+                                        buildCommentDebetableXmlTagWithData(xmlSerializer, allDebetableCommentsReadyToSend);
+                                        send_debetable_goals_comment_info = true;
+                                    } while (allDebetableCommentsReadyToSend.moveToNext());
+                                }
+
+                                // build xml for all connect book messages result
+                                if (allConnectBookMessagesReadyToSend != null && allConnectBookMessagesReadyToSend.getCount() > 0) {
+
+                                    do {
+                                        buildConnectBookMessageXmlTagWithData(xmlSerializer, allConnectBookMessagesReadyToSend);
+                                        send_connect_book_messages_result_info = true;
+                                    } while (allConnectBookMessagesReadyToSend.moveToNext());
+                                }
+
+                                // build xml for all meetings data set result
+                                if (allMeetingsReadyToSend != null && allMeetingsReadyToSend.getCount() > 0) {
+
+                                    do {
+                                        buildMeetingDataXmlTagWithData(xmlSerializer, allMeetingsReadyToSend);
+                                        send_meeting_data_result_info = true;
+                                    } while (allMeetingsReadyToSend.moveToNext());
+                                }
+
                             }
 
-                            // build xml for all sketch comments
-                            if (allSketchCommentsReadyToSend != null && allSketchCommentsReadyToSend.getCount() > 0) {
-
+                            // build in every case (associated or not associated) xml for all messages result
+                            if (allMessagesReadyToSend != null && allMessagesReadyToSend.getCount() > 0) {
                                 do {
-                                    buildCommentSketchXmlTagWithData(xmlSerializer, allSketchCommentsReadyToSend);
-                                    send_sketch_comment_info = true;
-                                } while (allSketchCommentsReadyToSend.moveToNext());
-                            }
-
-                            // build xml for all arrangement evaluation result
-                            if (allArrangementEvaluationResultsReadyToSend != null && allArrangementEvaluationResultsReadyToSend.getCount() > 0) {
-
-                                do {
-                                    buildArrangementEvaluationResultXmlTagWithData(xmlSerializer, allArrangementEvaluationResultsReadyToSend);
-                                    send_arrangement_evaluation_result_info = true;
-                                } while (allArrangementEvaluationResultsReadyToSend.moveToNext());
-                            }
-
-                            // build xml for all jointly goals comments
-                            if (allJointlyGoalsCommentsReadyToSend != null && allJointlyGoalsCommentsReadyToSend.getCount() > 0) {
-
-                                do {
-                                    buildJointlyCommentXmlTagWithData(xmlSerializer, allJointlyGoalsCommentsReadyToSend);
-                                    send_jointly_goals_comment_info = true;
-                                } while (allJointlyGoalsCommentsReadyToSend.moveToNext());
-                            }
-
-                            // build xml for all goals evaluation result
-                            if (allGoalsEvaluationResultsReadyToSend != null && allGoalsEvaluationResultsReadyToSend.getCount() > 0) {
-
-                                do {
-                                    buildJointlyGoalsEvaluationResultXmlTagWithData(xmlSerializer, allGoalsEvaluationResultsReadyToSend);
-                                    send_goals_evaluation_result_info = true;
-                                } while (allGoalsEvaluationResultsReadyToSend.moveToNext());
-                            }
-
-                            // build xml for all debetable goals comments
-                            if (allDebetableCommentsReadyToSend != null && allDebetableCommentsReadyToSend.getCount() > 0) {
-
-                                do {
-                                    buildCommentDebetableXmlTagWithData(xmlSerializer, allDebetableCommentsReadyToSend);
-                                    send_debetable_goals_comment_info = true;
-                                } while (allDebetableCommentsReadyToSend.moveToNext());
-                            }
-
-                            // build xml for all connect book messages result
-                            if (allConnectBookMessagesReadyToSend != null && allConnectBookMessagesReadyToSend.getCount() > 0) {
-
-                                do {
-                                    buildConnectBookMessageXmlTagWithData(xmlSerializer, allConnectBookMessagesReadyToSend);
-                                    send_connect_book_messages_result_info = true;
-                                } while (allConnectBookMessagesReadyToSend.moveToNext());
-                            }
-
-                            // build xml for all meetings data set result
-                            if (allMeetingsReadyToSend != null && allMeetingsReadyToSend.getCount() > 0) {
-
-                                do {
-                                    buildMeetingDataXmlTagWithData(xmlSerializer, allMeetingsReadyToSend);
-                                    send_meeting_data_result_info = true;
-                                } while (allMeetingsReadyToSend.moveToNext());
+                                    buildMessageXmlTagWithData(xmlSerializer, allMessagesReadyToSend, clientIdSet, contactIdSet);
+                                    send_message_data_result_info = true;
+                                } while (allMessagesReadyToSend.moveToNext());
                             }
 
                             // end tag smartEfb
@@ -324,120 +380,147 @@ import java.util.Map;
                             Intent tmpIntentUpdateUiForUser = new Intent();
                             tmpIntentUpdateUiForUser.setAction("ACTIVITY_STATUS_UPDATE");
 
-                            // set status of now comment to 1 -> send successfull
-                            if (allCommentsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_now_comment_info) {
-                                    allCommentsReadyToSend.moveToFirst();
-                                    do {
-                                        Long rowId = allCommentsReadyToSend.getLong(allCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                        myDb.updateStatusOurArrangementComment(rowId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {myDb.updateWriteTimeOurArrangementComment(rowId, globalServerTime); } // update write time for comment with server time
-                                    } while (allCommentsReadyToSend.moveToNext());
-                                    // intent for our arrangement comment -> refresh list view
-                                    tmpIntentUpdateUiForUser.putExtra("OurArrangementCommentSendInBackgroundRefreshView", "1"); // refresh list view in our arrangement comment
+                            // check association -> app is connected to server
+                            if (clientIdSet) {
+
+                                // set status of now comment to 1 -> send successfull
+                                if (allCommentsReadyToSend != null) {
+                                    if (returnMap.get("SendSuccessfull").equals("1") && send_now_comment_info) {
+                                        allCommentsReadyToSend.moveToFirst();
+                                        do {
+                                            Long rowId = allCommentsReadyToSend.getLong(allCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                            myDb.updateStatusOurArrangementComment(rowId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                            if (globalServerTime > 0) {
+                                                myDb.updateWriteTimeOurArrangementComment(rowId, globalServerTime);
+                                            } // update write time for comment with server time
+                                        } while (allCommentsReadyToSend.moveToNext());
+                                        // intent for our arrangement comment -> refresh list view
+                                        tmpIntentUpdateUiForUser.putExtra("OurArrangementCommentSendInBackgroundRefreshView", "1"); // refresh list view in our arrangement comment
+                                    }
                                 }
-                            }
 
-                            // set status of sketch comment to 1 -> send successfull
-                            if (allSketchCommentsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_sketch_comment_info) {
-                                    allSketchCommentsReadyToSend.moveToFirst();
-                                    do {
-                                        Long rowId = allSketchCommentsReadyToSend.getLong(allSketchCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                        myDb.updateStatusOurArrangementSketchComment(allSketchCommentsReadyToSend.getLong(allSketchCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {myDb.updateWriteTimeOurArrangementSketchComment(rowId, globalServerTime); } // update write time for sketch comment with server time
-                                    } while (allSketchCommentsReadyToSend.moveToNext());
-                                    // intent for our arrangement sketch comment -> refresh list view
-                                    tmpIntentUpdateUiForUser.putExtra("OurArrangementSketchCommentSendInBackgroundRefreshView", "1"); // refresh list view in our arrangement sketch comment
+                                // set status of sketch comment to 1 -> send successfull
+                                if (allSketchCommentsReadyToSend != null) {
+                                    if (returnMap.get("SendSuccessfull").equals("1") && send_sketch_comment_info) {
+                                        allSketchCommentsReadyToSend.moveToFirst();
+                                        do {
+                                            Long rowId = allSketchCommentsReadyToSend.getLong(allSketchCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                            myDb.updateStatusOurArrangementSketchComment(allSketchCommentsReadyToSend.getLong(allSketchCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                            if (globalServerTime > 0) {
+                                                myDb.updateWriteTimeOurArrangementSketchComment(rowId, globalServerTime);
+                                            } // update write time for sketch comment with server time
+                                        } while (allSketchCommentsReadyToSend.moveToNext());
+                                        // intent for our arrangement sketch comment -> refresh list view
+                                        tmpIntentUpdateUiForUser.putExtra("OurArrangementSketchCommentSendInBackgroundRefreshView", "1"); // refresh list view in our arrangement sketch comment
+                                    }
                                 }
-                            }
 
-                            // set status of evaluation result for arrangement to 1 -> send successfull
-                            if (allArrangementEvaluationResultsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_arrangement_evaluation_result_info) {
-                                    allArrangementEvaluationResultsReadyToSend.moveToFirst();
-                                    do {
-                                        Long rowId = allArrangementEvaluationResultsReadyToSend.getLong(allArrangementEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                        myDb.updateStatusOurArrangementEvaluation(allArrangementEvaluationResultsReadyToSend.getLong(allArrangementEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {myDb.updateWriteTimeOurArrangementEvaluationResult(rowId, globalServerTime); } // update write time for sketch comment with server time
-                                    } while (allArrangementEvaluationResultsReadyToSend.moveToNext());
-                                }
-                            }
-
-                            // set status of evaluation jointly goal to 1 -> send successfull
-                            if (allGoalsEvaluationResultsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_goals_evaluation_result_info) {
-                                    allGoalsEvaluationResultsReadyToSend.moveToFirst();
-                                    do {
-                                        Long rowId = allGoalsEvaluationResultsReadyToSend.getLong(allGoalsEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                        myDb.updateStatusOurGoalsEvaluation(allGoalsEvaluationResultsReadyToSend.getLong(allGoalsEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of evaluation result to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {myDb.updateWriteTimeOurGoalsEvaluationResult(rowId, globalServerTime); } // update write time for sketch comment with server time
-                                    } while (allGoalsEvaluationResultsReadyToSend.moveToNext());
-                                }
-                            }
-
-                            // set status of jointly goal comment to 1 -> send successfull
-                            if (allJointlyGoalsCommentsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_jointly_goals_comment_info) {
-                                    allJointlyGoalsCommentsReadyToSend.moveToFirst();
-                                    do {
-                                        Long rowId = allJointlyGoalsCommentsReadyToSend.getLong(allJointlyGoalsCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                        myDb.updateStatusOurGoalsJointlyGoalsComment(allJointlyGoalsCommentsReadyToSend.getLong(allJointlyGoalsCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {myDb.updateWriteTimeOurGoalsJointlyComment(rowId, globalServerTime); } // update write time for jointly comment with server time
-                                    } while (allJointlyGoalsCommentsReadyToSend.moveToNext());
-                                    // intent for our goals jointly comment -> refresh list view
-                                    tmpIntentUpdateUiForUser.putExtra("OurGoalsJointlyCommentSendInBackgroundRefreshView", "1"); // refresh list view in our goals jointly comment
-                                }
-                            }
-
-                            // set status of debetable goal comment to 1 -> send successfull
-                            if (allDebetableCommentsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_debetable_goals_comment_info) {
-                                    allDebetableCommentsReadyToSend.moveToFirst();
-                                    do {
-                                        Long rowId = allDebetableCommentsReadyToSend.getLong(allDebetableCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                        myDb.updateStatusOurGoalsDebetableComment(allDebetableCommentsReadyToSend.getLong(allDebetableCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of debetable comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {myDb.updateWriteTimeOurGoalsDebetableComment(rowId, globalServerTime); } // update write time for debetable comment with server time
-                                    } while (allDebetableCommentsReadyToSend.moveToNext());
-                                    // intent for our goals debetable comment -> refresh list view
-                                    tmpIntentUpdateUiForUser.putExtra("OurGoalsDebetableCommentSendInBackgroundRefreshView", "1"); // refresh list view in our goals debetable comment
-                                }
-                            }
-
-                            // set status of connect book messages to 1 -> send successfull
-                            if (allConnectBookMessagesReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_connect_book_messages_result_info) {
-                                    allConnectBookMessagesReadyToSend.moveToFirst();
-                                    do {
-                                        Long rowId = allConnectBookMessagesReadyToSend.getLong(allConnectBookMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                        myDb.updateStatusConnectBookMessage(allConnectBookMessagesReadyToSend.getLong(allConnectBookMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of message to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {myDb.updateWriteTimeConnectBookMessage(rowId, globalServerTime); } // update write time for connect book messages with server time
-                                    } while (allConnectBookMessagesReadyToSend.moveToNext());
-
-                                    // intent for connect book activity -> refresh list view
-                                    tmpIntentUpdateUiForUser.putExtra("ConnectBookMessageNewOrSend", "1"); // refresh list view in connect book messages
-                                }
-                            }
-
-                            // set status of meeting data to 1 -> send successfull
-                            if (allMeetingsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_meeting_data_result_info) {
-                                    allMeetingsReadyToSend.moveToFirst();
-                                    do {
-
-
-                                        myDb.updateStatusMeetingAndSuggestion(allMeetingsReadyToSend.getLong(allMeetingsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of meeting data to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-
-                                        if (globalServerTime > 0) {
-                                            postUpdateMeetingAndSuggestionDataInDB(allMeetingsReadyToSend, globalServerTime, myDb);
+                                // set status of evaluation result for arrangement to 1 -> send successfull
+                                if (allArrangementEvaluationResultsReadyToSend != null) {
+                                    if (returnMap.get("SendSuccessfull").equals("1") && send_arrangement_evaluation_result_info) {
+                                        allArrangementEvaluationResultsReadyToSend.moveToFirst();
+                                        do {
+                                            Long rowId = allArrangementEvaluationResultsReadyToSend.getLong(allArrangementEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                            myDb.updateStatusOurArrangementEvaluation(allArrangementEvaluationResultsReadyToSend.getLong(allArrangementEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                            if (globalServerTime > 0) {
+                                                myDb.updateWriteTimeOurArrangementEvaluationResult(rowId, globalServerTime);
+                                            } // update write time for sketch comment with server time
                                         }
+                                        while (allArrangementEvaluationResultsReadyToSend.moveToNext());
+                                    }
+                                }
 
+                                // set status of evaluation jointly goal to 1 -> send successfull
+                                if (allGoalsEvaluationResultsReadyToSend != null) {
+                                    if (returnMap.get("SendSuccessfull").equals("1") && send_goals_evaluation_result_info) {
+                                        allGoalsEvaluationResultsReadyToSend.moveToFirst();
+                                        do {
+                                            Long rowId = allGoalsEvaluationResultsReadyToSend.getLong(allGoalsEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                            myDb.updateStatusOurGoalsEvaluation(allGoalsEvaluationResultsReadyToSend.getLong(allGoalsEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of evaluation result to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                            if (globalServerTime > 0) {
+                                                myDb.updateWriteTimeOurGoalsEvaluationResult(rowId, globalServerTime);
+                                            } // update write time for sketch comment with server time
+                                        } while (allGoalsEvaluationResultsReadyToSend.moveToNext());
+                                    }
+                                }
 
-                                    } while (allMeetingsReadyToSend.moveToNext());
+                                // set status of jointly goal comment to 1 -> send successfull
+                                if (allJointlyGoalsCommentsReadyToSend != null) {
+                                    if (returnMap.get("SendSuccessfull").equals("1") && send_jointly_goals_comment_info) {
+                                        allJointlyGoalsCommentsReadyToSend.moveToFirst();
+                                        do {
+                                            Long rowId = allJointlyGoalsCommentsReadyToSend.getLong(allJointlyGoalsCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                            myDb.updateStatusOurGoalsJointlyGoalsComment(allJointlyGoalsCommentsReadyToSend.getLong(allJointlyGoalsCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                            if (globalServerTime > 0) {
+                                                myDb.updateWriteTimeOurGoalsJointlyComment(rowId, globalServerTime);
+                                            } // update write time for jointly comment with server time
+                                        } while (allJointlyGoalsCommentsReadyToSend.moveToNext());
+                                        // intent for our goals jointly comment -> refresh list view
+                                        tmpIntentUpdateUiForUser.putExtra("OurGoalsJointlyCommentSendInBackgroundRefreshView", "1"); // refresh list view in our goals jointly comment
+                                    }
+                                }
 
-                                    tmpIntentUpdateUiForUser.putExtra("MeetingSendInBackgroundRefreshView", "1"); // refresh view in any meeting fragement
+                                // set status of debetable goal comment to 1 -> send successfull
+                                if (allDebetableCommentsReadyToSend != null) {
+                                    if (returnMap.get("SendSuccessfull").equals("1") && send_debetable_goals_comment_info) {
+                                        allDebetableCommentsReadyToSend.moveToFirst();
+                                        do {
+                                            Long rowId = allDebetableCommentsReadyToSend.getLong(allDebetableCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                            myDb.updateStatusOurGoalsDebetableComment(allDebetableCommentsReadyToSend.getLong(allDebetableCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of debetable comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                            if (globalServerTime > 0) {
+                                                myDb.updateWriteTimeOurGoalsDebetableComment(rowId, globalServerTime);
+                                            } // update write time for debetable comment with server time
+                                        } while (allDebetableCommentsReadyToSend.moveToNext());
+                                        // intent for our goals debetable comment -> refresh list view
+                                        tmpIntentUpdateUiForUser.putExtra("OurGoalsDebetableCommentSendInBackgroundRefreshView", "1"); // refresh list view in our goals debetable comment
+                                    }
+                                }
 
+                                // set status of connect book messages to 1 -> send successfull
+                                if (allConnectBookMessagesReadyToSend != null) {
+                                    if (returnMap.get("SendSuccessfull").equals("1") && send_connect_book_messages_result_info) {
+                                        allConnectBookMessagesReadyToSend.moveToFirst();
+                                        do {
+                                            Long rowId = allConnectBookMessagesReadyToSend.getLong(allConnectBookMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                            myDb.updateStatusConnectBookMessage(allConnectBookMessagesReadyToSend.getLong(allConnectBookMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of message to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                            if (globalServerTime > 0) {
+                                                myDb.updateWriteTimeConnectBookMessage(rowId, globalServerTime);
+                                            } // update write time for connect book messages with server time
+                                        } while (allConnectBookMessagesReadyToSend.moveToNext());
 
+                                        // intent for connect book activity -> refresh list view
+                                        tmpIntentUpdateUiForUser.putExtra("ConnectBookMessageNewOrSend", "1"); // refresh list view in connect book messages
+                                    }
+                                }
+
+                                // set status of meeting data to 1 -> send successfull
+                                if (allMeetingsReadyToSend != null) {
+                                    if (returnMap.get("SendSuccessfull").equals("1") && send_meeting_data_result_info) {
+                                        allMeetingsReadyToSend.moveToFirst();
+                                        do {
+                                            myDb.updateStatusMeetingAndSuggestion(allMeetingsReadyToSend.getLong(allMeetingsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of meeting data to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                            if (globalServerTime > 0) {
+                                                postUpdateMeetingAndSuggestionDataInDB(allMeetingsReadyToSend, globalServerTime, myDb);
+                                            }
+                                        } while (allMeetingsReadyToSend.moveToNext());
+                                        // intent for meeting activity -> refresh view
+                                        tmpIntentUpdateUiForUser.putExtra("MeetingSendInBackgroundRefreshView", "1"); // refresh view in any meeting fragement
+                                    }
+                                }
+                            }
+
+                            // set status of messages to 1 -> send successfull -> in every case (associated or not associated)
+                            if (allMessagesReadyToSend != null) {
+                                if (returnMap.get("SendSuccessfull").equals("1") && send_message_data_result_info) {
+                                    allMessagesReadyToSend.moveToFirst();
+                                    do {
+                                        Long rowId = allMessagesReadyToSend.getLong(allMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                        myDb.updateStatusMessage(allMessagesReadyToSend.getLong(allMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of message to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                        if (globalServerTime > 0) {myDb.updateWriteTimeMessage(rowId, globalServerTime); } // update write time for messages with server time
+                                    } while (allMessagesReadyToSend.moveToNext());
+
+                                    // intent for message activity -> refresh list view
+                                    tmpIntentUpdateUiForUser.putExtra("MessageNewOrSend", "1"); // refresh list view in message activity
                                 }
                             }
 
@@ -2307,8 +2390,8 @@ import java.util.Map;
 
                 Log.d("Ex Service MESSAGE", "Network on in send MESSAGE!");
 
-                // get comment from db
-                Cursor messageData = myDb.getOneRowChatMessage (dbId);
+                // get message from db
+                Cursor messageData = myDb.getOneRowMessage (dbId);
 
                 // get client id from prefs
                 String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
@@ -2363,6 +2446,7 @@ import java.util.Map;
                         xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                         xmlSerializer.text(tmpContactId);
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+
                     }
 
                     // end tag main
@@ -2380,6 +2464,11 @@ import java.util.Map;
                 catch (IOException e) {
                     e.printStackTrace();
                 }
+
+
+                Log.d("MESSAGE--->", "WRITER:"+writer.toString());
+
+
 
                 // and send xml text to server
                 try {
@@ -3412,6 +3501,7 @@ import java.util.Map;
             // start tag message order
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMessage_Order);
             // check associate or not associated message
+
             if (clientIdSet) {
                 xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_NewAssociatedMessage);
             }
@@ -3437,6 +3527,9 @@ import java.util.Map;
 
             // end tag message
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMessage_Messages);
+
+            Log.d("Builder Data--_>", "ENDE");
+
 
         }
         catch (IOException e) {

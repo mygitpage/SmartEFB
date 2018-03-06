@@ -3,7 +3,6 @@ package de.smart_efb.efbapp.smartefb;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.os.CountDownTimer;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ich on 26.02.2018.
@@ -68,11 +65,11 @@ public class MessageCursorAdapter extends CursorAdapter {
                 cursor.moveToPrevious();
             }
 
-            LinearLayout dateZoneLast = (LinearLayout) view.findViewById(R.id.connectBookDateParentLast);
+            LinearLayout dateZoneLast = (LinearLayout) view.findViewById(R.id.messageDateParentLast);
 
             if (dateZoneLast != null) {
                 dateZoneLast.setVisibility(View.VISIBLE);
-                TextView textViewMessageLast = (TextView) view.findViewById(R.id.connectBookDateTextLast);
+                TextView textViewMessageLast = (TextView) view.findViewById(R.id.messageDateTextLast);
                 textViewMessageLast.setText(EfbHelperClass.timestampToDateFormat(writeTimeNext, "dd.MM.yyyy"));
             }
             showMessageGroupLastDateChange = false;
@@ -81,11 +78,11 @@ public class MessageCursorAdapter extends CursorAdapter {
         // show date group at begin
         if (showMessageGroupFirstDateChange || cursor.isFirst()) {
 
-            LinearLayout dateZoneFirst = (LinearLayout) view.findViewById(R.id.connectBookDateParentFirst);
+            LinearLayout dateZoneFirst = (LinearLayout) view.findViewById(R.id.messageDateParentFirst);
 
             if (dateZoneFirst != null) {
                 dateZoneFirst.setVisibility(View.VISIBLE);
-                TextView textViewMessageFirst = (TextView) view.findViewById(R.id.connectBookDateTextFirst);
+                TextView textViewMessageFirst = (TextView) view.findViewById(R.id.messageDateTextFirst);
                 textViewMessageFirst.setText(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"));
             }
             showMessageGroupFirstDateChange = false;
@@ -128,6 +125,9 @@ public class MessageCursorAdapter extends CursorAdapter {
             previousDateString = EfbHelperClass.timestampToDateFormat(writeTimePrevoius, "dd.MM.yyyy");
         }
 
+        // initial value for inflatedView
+        inflatedView = cursorInflater.inflate(R.layout.list_item_message_right, parent, false);
+
         // last element of cursor?
         if (cursor.isLast()) {
 
@@ -157,10 +157,6 @@ public class MessageCursorAdapter extends CursorAdapter {
                     }
                     rightViewCurrent = true;
                     break;
-                default:
-                    // set default view
-                    inflatedView = cursorInflater.inflate(R.layout.list_item_message_center, parent, false);
-                    break;
             }
 
         } else { // cursor is not last! -> the other elements of cursor
@@ -170,38 +166,34 @@ public class MessageCursorAdapter extends CursorAdapter {
                     if (role == rolePrevoius) {
 
                         if (previousDateString.equals(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"))) {
-                            inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_nextleft, parent, false);
+                            inflatedView = cursorInflater.inflate(R.layout.list_item_message_nextleft, parent, false);
                         } else {
                             showMessageGroupFirstDateChange = true;
-                            inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_left, parent, false);
+                            inflatedView = cursorInflater.inflate(R.layout.list_item_message_left, parent, false);
                         }
                     } else {
                         if (!previousDateString.equals(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"))) {
                             showMessageGroupFirstDateChange = true;
                         }
-                        inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_left, parent, false);
+                        inflatedView = cursorInflater.inflate(R.layout.list_item_message_left, parent, false);
                     }
                     break;
                 case 1:
                     if (role == rolePrevoius) {
 
                         if (previousDateString.equals(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"))) {
-                            inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_nextright, parent, false);
+                            inflatedView = cursorInflater.inflate(R.layout.list_item_message_nextright, parent, false);
                         } else {
                             showMessageGroupFirstDateChange = true;
-                            inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_right, parent, false);
+                            inflatedView = cursorInflater.inflate(R.layout.list_item_message_right, parent, false);
                         }
                     } else {
                         if (!previousDateString.equals(EfbHelperClass.timestampToDateFormat(writeTime, "dd.MM.yyyy"))) {
                             showMessageGroupFirstDateChange = true;
                         }
-                        inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_right, parent, false);
+                        inflatedView = cursorInflater.inflate(R.layout.list_item_message_right, parent, false);
                     }
                     rightViewCurrent = true;
-                    break;
-                default:
-                    // set default view
-                    inflatedView = cursorInflater.inflate(R.layout.list_item_connect_book_center, parent, false);
                     break;
             }
         }
@@ -211,21 +203,23 @@ public class MessageCursorAdapter extends CursorAdapter {
             showMessageGroupFirstDateChange = true;
         }
 
-        // set timer only, when right view is current view
         if (rightViewCurrent ) {
 
             // textview for status 0 of the last actual message -> message not send yet!
             final TextView tmpTextViewSendInfoLastActualMessage = (TextView) inflatedView.findViewById(R.id.textSendInfoActualMessage);
+            String tmpTextSendInfoLastActualMessage;
             if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_STATUS)) == 0) {
-                String tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textConnectBookMessageNotSendYet);
+                tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textMessageNotSendYet);
                 tmpTextViewSendInfoLastActualMessage.setVisibility(View.VISIBLE);
                 tmpTextViewSendInfoLastActualMessage.setText(tmpTextSendInfoLastActualMessage);
-
-            } else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_STATUS)) == 1) {
-                // textview for status 1 of the last actual message -> message send to server 
-
-
             }
+            else if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_STATUS)) == 1) {
+                // textview for status 1 of the last actual message -> message send to server 
+                tmpTextSendInfoLastActualMessage = context.getResources().getString(R.string.textMessageSend);
+                tmpTextViewSendInfoLastActualMessage.setVisibility(View.VISIBLE);
+                tmpTextViewSendInfoLastActualMessage.setText(tmpTextSendInfoLastActualMessage);
+            }
+
         }
 
         // show message text
@@ -239,10 +233,10 @@ public class MessageCursorAdapter extends CursorAdapter {
         // check if message entry new?
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_NEW_ENTRY)) == 1) {
             tmpNewMessage = context.getResources().getString(R.string.newEntryText);
-            myDb.deleteStatusNewEntryConnectBookMessage(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
+            myDb.deleteStatusNewEntryMessage(cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_ROWID)));
         }
-        String tmpAuthorandDate = context.getResources().getString(R.string.textConnectBookMessageAuthorAndDateLocale);
-        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_STATUS)) == 4) {tmpAuthorandDate = context.getResources().getString(R.string.textConnectBookMessageAuthorAndDate);}
+        String tmpAuthorandDate = context.getResources().getString(R.string.textMessageAuthorAndDateLocale);
+        if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_STATUS)) == 4) {tmpAuthorandDate = context.getResources().getString(R.string.textMessageAuthorAndDate);}
         tmpAuthorandDate = String.format(tmpAuthorandDate, cursor.getString(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_LOCAL_TIME)), "dd.MM.yyyy - HH:mm"), tmpNewMessage);
         textViewAuthor.setText(Html.fromHtml(tmpAuthorandDate));
 

@@ -50,11 +50,17 @@ public class ConstansClassMessage {
 
 
     // prefs name for standard value of max letters not associated
-    static final int namePrefsMessageMaxLettersNotAssociatedStandard = 800;
+    static final int namePrefsMessageMaxLettersNotAssociatedStandard = 2000;
 
     // prefs name for standard value of max messages not associated
     static final int namePrefsMessageMaxMessageNotAssociatedStandard = 100000;
 
+
+    // prefs name for standard value of max letters associated
+    static final int namePrefsMessageMaxLettersAssociatedStandard = 800;
+
+    // prefs name for standard value of max messages associated
+    static final int namePrefsMessageMaxMessageAssociatedStandard = 100;
 
 
 

@@ -387,9 +387,6 @@ public class ActivityConnectBook extends AppCompatActivity {
                     updateActivityView = true;
 
                 } else if (tmpExtraConnectBookMessageNewOrSend != null && tmpExtraConnectBookMessageNewOrSend.equals("1")) {
-
-                    Log.d("ConnectBook ------>", "Braodcast NEW!!!!!!!!!!");
-
                     // new message received or messages send
                     updateListView = true;
 

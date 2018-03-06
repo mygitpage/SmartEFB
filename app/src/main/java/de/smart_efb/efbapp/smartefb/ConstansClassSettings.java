@@ -70,7 +70,7 @@ class ConstansClassSettings {
     // URL connection send meeting data to server
     static final String urlConnectionSendMeetingDataToServer = "http://192.168.178.28/index.php?com=exchange&subcom=sendmeetingdata";
 
-    // URL connection send message data to server (associated and not associate)
+    // URL connection send message data to server (associated and not associated)
     static final String urlConnectionSendMessageToServer = "http://192.168.178.28/index.php?com=exchange&subcom=sendmessage";
 
 

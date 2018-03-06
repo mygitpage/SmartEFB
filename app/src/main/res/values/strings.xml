@@ -1253,12 +1253,19 @@
 
 
     <!-- messages -->
+    <string name="messageSubtitleActivity">Austausch nur Sie und BeraterIn</string>
         <string name="messageNotAssociatedAuthorName">Sie</string>
     <string name="messageInfoTextCountCurrentMessages">%1$d von %2$d Nachrichten</string>
         <string name="messageToastErrorMessageToShort">Ihre Nachricht muss aus mindestens drei Zeichen bestehen.</string>
 
     <string name="toastMessageSendSuccessfull">Nachricht gesendet!</string>
     <string name="toastMessageSendNotSuccessfull">Nachricht nicht gesendet!</string>
+
+    <string name="textMessageNotSendYet">Die Nachricht wurde noch nicht gesendet.</string>
+    <string name="textMessageSend">Die Nachricht wurde gesendet.</string>
+
+    <string name="textMessageAuthorAndDate">%1$s - %2$s &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
+    <string name="textMessageAuthorAndDateLocale">%1$s - %2$s (lokal) &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
 
 
 

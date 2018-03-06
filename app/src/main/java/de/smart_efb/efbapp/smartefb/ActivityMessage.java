@@ -111,12 +111,14 @@ public class ActivityMessage extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbarMessage);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
-        //toolbar.setSubtitle("Untertitel");
+
+        // set subtitle
+        String tmpSubtitle = getResources().getString(R.string.messageSubtitleActivity);
+        toolbar.setSubtitle(tmpSubtitle);
+
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         
-        
-
         // init the DB
         myDb = new DBAdapter(getApplicationContext());
 
@@ -124,12 +126,8 @@ public class ActivityMessage extends AppCompatActivity {
         prefs = this.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
-
         // find the listview
         listViewMessage = (ListView) findViewById(R.id.list_view_messages);
-
-
-        
     }
 
 
@@ -146,8 +144,6 @@ public class ActivityMessage extends AppCompatActivity {
         // current count messages
         int tmpCountCurrentMessages = 0;
         
-        
-
         // check contact id and client id
         if (prefs.getString(ConstansClassSettings.namePrefsContactId, "Empty").length() == 0 && prefs.getString(ConstansClassSettings.namePrefsClientId, "Empty").length() == 0) {
             // generate contact id -> client id is not set -> no connection to server and case
@@ -158,8 +154,6 @@ public class ActivityMessage extends AppCompatActivity {
 
             Log.d("Message++++>", "Random:"+tmpRandomContactId);
         }
-
-
 
 
         // check contact id set?
@@ -178,16 +172,11 @@ public class ActivityMessage extends AppCompatActivity {
 
                 }
 
-
-
-
                 prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithoutConnection, true);
                 prefsEditor.putString(ConstansClassMessage.namePrefsMessageWelcomeMessageLast, "");
                 prefsEditor.apply();
 
             }
-
-
 
             // get max letters for message
             maxLettersMessage = prefs.getInt(ConstansClassMessage.namePrefsMessageMaxLettersNotAssociated, ConstansClassMessage.namePrefsMessageMaxLettersNotAssociatedStandard);
@@ -201,11 +190,7 @@ public class ActivityMessage extends AppCompatActivity {
 
             Log.d("Message++*>", "Schreibe Begrüßung!");
 
-
-
-
         }
-
 
         // check client id
         if (prefs.getString(ConstansClassSettings.namePrefsClientId, "").length() > 0 ) {
@@ -223,36 +208,27 @@ public class ActivityMessage extends AppCompatActivity {
             
             Log.d("Message++*>", "Schreibe Erklärung!");
 
-
-
             // get max letters for message, associated with case
-            maxLettersMessage = prefs.getInt(ConstansClassMessage.namePrefsMessageMaxLettersAssociated, 10);
+            maxLettersMessage = prefs.getInt(ConstansClassMessage.namePrefsMessageMaxLettersAssociated, ConstansClassMessage.namePrefsMessageMaxLettersAssociatedStandard);
 
             // get max messages
-            tmpMaxMessages = prefs.getInt(ConstansClassMessage.namePrefsMessageMaxMessageAssociated, 1);
+            tmpMaxMessages = prefs.getInt(ConstansClassMessage.namePrefsMessageMaxMessageAssociated, ConstansClassMessage.namePrefsMessageMaxMessageAssociatedStandard);
 
             // get current count messages
             tmpCountCurrentMessages = prefs.getInt(ConstansClassMessage.namePrefsMessageCountCurrentAssociated, 0);
 
-
         }
 
 
-
-
-
-
-
+        // check communication modus (associated or not associated)
         if ((clientModus && !contactModus) || (!clientModus && contactModus)) {
-
 
             // set max letters for a message
             final int maxLettersMessageFinal = maxLettersMessage;
             // set max messages
             final int tmpMaxMessagesFinal = tmpMaxMessages;
-            
+            // set current count of messages
             final int tmpCountCurrentMessagesFinal = tmpCountCurrentMessages;
-
 
             // get textView to count input letters and init it
             final TextView textViewCountLettersMessageEditText = (TextView) findViewById(R.id.countLettersAndMessagesInfoText);
@@ -274,7 +250,7 @@ public class ActivityMessage extends AppCompatActivity {
 
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     // get count messages 
-                    String tmpInfoTextCountCurrentMessages = getResources().getString(R.string.infoTextCountCurrentMessages);
+                    String tmpInfoTextCountCurrentMessages = getResources().getString(R.string.messageInfoTextCountCurrentMessages);
                     tmpInfoTextCountCurrentMessages = String.format(tmpInfoTextCountCurrentMessages, tmpCountCurrentMessagesFinal, tmpMaxMessagesFinal);
                     // set count letters
                     String tmpInfoTextCountLetters = getResources().getString(R.string.infoTextCountLettersForComment);
@@ -315,25 +291,15 @@ public class ActivityMessage extends AppCompatActivity {
                             int tmpCountCurrent = tmpCountCurrentMessagesFinal + 1;
                             if (clientModus) {
                                 prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentAssociated, tmpCountCurrent);
-
                                 tmpAnonymous = 1; // not anonymous -> app is connected to server
-
-
                                 tmpAuthorName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
-
                             }
                             else {
                                 prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, tmpCountCurrent);
-
                                 tmpAnonymous = 0; // anonymous -> app is not connected to server
-
                                 tmpAuthorName = getResources().getString(R.string.messageNotAssociatedAuthorName);
-
-
                             }
                             prefsEditor.apply();
-
-
 
                             Long messageTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
                             if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
@@ -346,20 +312,18 @@ public class ActivityMessage extends AppCompatActivity {
 
                             // role for message (0= messages on left side; 1= messages on the right side)
                             int roleMessage = 1; // all messages on the right side of the display
+                            String source = "message"; // used for future extension
 
                             // put message into db
-                            long tmpDbId = myDb.insertRowMessage(tmpAuthorName, localeTime, messageTime, inputMessage, roleMessage, messageStatus, newEntry, uploadTime, tmpAnonymous);
+                            long tmpDbId = myDb.insertRowMessage(tmpAuthorName, localeTime, messageTime, inputMessage, roleMessage, messageStatus, newEntry, uploadTime, tmpAnonymous, source);
 
-
-
-                            /*
                             // send intent to service to start the service and send message to server!
                             Intent startServiceIntent = new Intent(contextMessage, ExchangeServiceEfb.class);
                             startServiceIntent.putExtra("com", "send_current_message");
                             startServiceIntent.putExtra("dbid", tmpDbId);
                             startServiceIntent.putExtra("receiverBroadcast", "");
                             contextMessage.startService(startServiceIntent);
-                            */
+
                             // delete text in edittextfield
                             txtInputMsg.setText("");
                         } else {
@@ -380,8 +344,6 @@ public class ActivityMessage extends AppCompatActivity {
                     }
                 }
             });
-
-
         }
     }
 
@@ -429,6 +391,7 @@ public class ActivityMessage extends AppCompatActivity {
                 String tmpSendSuccessefull = intentExtras.getString("SendSuccessfull");
                 String tmpSendNotSuccessefull = intentExtras.getString("SendNotSuccessfull");
                 String tmpMessage = intentExtras.getString("Message");
+                String tmpExtraMessageNewOrSend = intentExtras.getString("MessageNewOrSend","0");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings","0");
                 String tmpCaseClose = intentExtras.getString("Case_close","0");
@@ -459,6 +422,10 @@ public class ActivityMessage extends AppCompatActivity {
                     toast.show();
 
                     // update listview
+                    updateListView = true;
+                }
+                else if (tmpExtraMessageNewOrSend != null && tmpExtraMessageNewOrSend.equals("1")) {
+                    // new message received or messages send
                     updateListView = true;
                 }
             }

@@ -466,7 +466,15 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case 3: // menue item "Nachrichten"
-                    mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                    if (showMainMenueElement[countElements]) { // is element aktiv?
+                        if (myDb.getCountNewEntryMessage() > 0) {
+                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
+                        } else {
+                            mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
+                            ;
+                        }
+                        tmpNew = true;
+                    }
                     break;
 
                 case 4: // menue item "Termine"
