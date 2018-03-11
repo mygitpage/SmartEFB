@@ -674,6 +674,10 @@ public class SettingsEfbFragmentA extends Fragment {
             xmlSerializer.text(clientpin);
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMainClientPin);
 
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+            xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+
             // end tag main
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
@@ -718,6 +722,12 @@ public class SettingsEfbFragmentA extends Fragment {
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
             xmlSerializer.text(clientId);
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+            xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
 
             // end tag main
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);

@@ -5028,6 +5028,7 @@ public class EfbXmlParser {
         int tmpMaxLetters = -1;
         int tmpMaxMessages = -1;
         int tmpMessageStopCommunication = -1;
+        Long tmpMessagesCountCommentSinceTime = 0L;
 
 
         try {
@@ -5107,6 +5108,18 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
+                        case ConstansClassXmlParser.xmlNameForMessage_MessagesCountSinceTime:
+                            eventType = xpp.next();
+                            if (eventType == XmlPullParser.TEXT) { // get count since time;
+                                if (xpp.getText().trim().length() >= 0) { // check if value from xml >= 0
+                                    tmpMessagesCountCommentSinceTime = Long.valueOf(xpp.getText().trim());
+                                } else {
+                                    error = true;
+                                }
+                            } else {
+                                error = true;
+                            }
+                            break;
                     }
                 }
                 eventType = xpp.next();
@@ -5139,23 +5152,20 @@ public class EfbXmlParser {
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxLettersAssociated, tmpMaxLetters);
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxMessageAssociated, tmpMaxMessages);
 
+                                    // check stop sending and set value (for associated and not associated)
                                     if (tmpMessageStopCommunication == 1) {prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false);}
                                     else {prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, true);}
 
+                                    // check if new since time greater then old one, reset count messages associated and set new since time
+                                    if (tmpMessagesCountCommentSinceTime > prefs.getLong(ConstansClassMessage.namePrefsMessagesTimeSinceAssociatedInMills, 0)) {
 
-                                    // reset message counter and start time message counter
-                                    prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentAssociated, 0);
+                                        prefsEditor.putLong(ConstansClassMessage.namePrefsMessagesTimeSinceAssociatedInMills, tmpMessagesCountCommentSinceTime); // write new since time to prefs
+                                        prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentAssociated, 0); // reset count associated messages to 0
 
-                                    // get normal timestamp with day, month and year (hour, minute, seconds and millseconds are zero)
-                                    Long startTimestamp = EfbHelperClass.timestampToNormalDayMonthYearDate(System.currentTimeMillis());
-                                    //prefsEditor.putLong(ConstansClassMessage.namePrefsConnectCountMessagesResetTime, startTimestamp);
-                                    //prefsEditor.putLong(ConstansClassMessage.namePrefsConnectCountMessagesLastResetLocaleTime, 0L);
+                                    }
+
                                     prefsEditor.apply();
-
                                 }
-
-
-
 
                                 // refresh activity message because settings have change
                                 returnMap.put("Message", "1");
@@ -5174,34 +5184,25 @@ public class EfbXmlParser {
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxLettersNotAssociated, tmpMaxLetters);
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxMessageNotAssociated, tmpMaxMessages);
 
+                                    // check stop sending and set value (for associated and not associated)
                                     if (tmpMessageStopCommunication == 1) {prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false);}
                                     else {prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, true);}
 
-                                    // reset message counter and start time message counter
-                                    prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, 0);
+                                    // check if new since time greater then old one, reset count messages not associated and set new since time
+                                    if (tmpMessagesCountCommentSinceTime > prefs.getLong(ConstansClassMessage.namePrefsMessagesTimeSinceNotAssociatedInMills, 0)) {
 
-                                    // get normal timestamp with day, month and year (hour, minute, seconds and millseconds are zero)
-                                    Long startTimestamp = EfbHelperClass.timestampToNormalDayMonthYearDate(System.currentTimeMillis());
-                                    //prefsEditor.putLong(ConstansClassMessage.namePrefsConnectCountMessagesResetTime, startTimestamp);
-                                    //prefsEditor.putLong(ConstansClassMessage.namePrefsConnectCountMessagesLastResetLocaleTime, 0L);
+                                        prefsEditor.putLong(ConstansClassMessage.namePrefsMessagesTimeSinceNotAssociatedInMills, tmpMessagesCountCommentSinceTime); // write new since time to prefs
+                                        prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, 0); // reset count not  associated messages to 0
+
+                                    }
+
                                     prefsEditor.apply();
-
                                 }
-
-
-
 
                                 // refresh activity message because settings have change
                                 returnMap.put("Message", "1");
                                 returnMap.put("MessageSettings", "1");
                             }
-
-
-
-
-
-
-
                         }
                         parseAnymore = false;
                     }

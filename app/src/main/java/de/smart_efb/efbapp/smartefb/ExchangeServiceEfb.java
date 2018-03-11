@@ -220,6 +220,10 @@ import java.util.Map;
                                 xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                             }
 
+                            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+                            xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+                            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+
                             // end tag main
                             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
@@ -780,6 +784,10 @@ import java.util.Map;
                         xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
 
+                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+                        xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+
                         // end tag main
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
@@ -980,6 +988,10 @@ import java.util.Map;
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+                    xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
 
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
@@ -1183,6 +1195,10 @@ import java.util.Map;
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
 
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+                    xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
@@ -1381,6 +1397,10 @@ import java.util.Map;
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+                    xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
 
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
@@ -1581,6 +1601,10 @@ import java.util.Map;
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
 
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+                    xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
@@ -1755,6 +1779,10 @@ import java.util.Map;
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+                    xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
 
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
@@ -1960,6 +1988,10 @@ import java.util.Map;
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+                    xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
 
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
@@ -2171,6 +2203,10 @@ import java.util.Map;
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                     xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+                    xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
 
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
@@ -2449,6 +2485,10 @@ import java.util.Map;
 
                     }
 
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+                    xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+
                     // end tag main
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
@@ -2660,6 +2700,10 @@ import java.util.Map;
                     xmlSerializer.text(tmpContactId);
                     xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                 }
+
+                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+                xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
 
                 // end tag main
                 xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);

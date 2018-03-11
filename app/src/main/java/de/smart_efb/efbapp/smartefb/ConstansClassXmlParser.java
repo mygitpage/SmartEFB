@@ -24,8 +24,11 @@ class ConstansClassXmlParser {
     // xml name for element main client pin
     static final String xmlNameForMainClientPin = "clientpin";
 
-    // xml name for element main actual app version (versus local app version of the installed app)
+    // xml name for element main actual app version (versus local app version of the installed app) -> comes from server
     static final String xmlNameForMain_ActualAppVersion = "actual_app_version";
+
+    // xml name for element main this app version (versus server app version of the installed server) -> comes from app and described the actual installed app version
+    static final String xmlNameForMain_ThisAppVersion = "this_app_version";
 
     // xml name for element main contact id
     static final String xmlNameForMain_ContactId = "contactid";
@@ -734,6 +737,9 @@ class ConstansClassXmlParser {
     
     // xml name for element message max messages
     static final String xmlNameForMessage_MaxMessages = "message_settings_maxmessages";
+
+    // xml name for element message count comment since time
+    static final String xmlNameForMessage_MessagesCountSinceTime = "message_settings_countsincetime";
 
     // xml name for element message max letters
     static final String xmlNameForMessage_MaxLetters = "message_settings_maxletters";

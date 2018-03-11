@@ -12,8 +12,20 @@ public class ConstansClassMessage {
     // prefs name for message count current messages associated
     static final String namePrefsMessageCountCurrentAssociated = "messageCountMessagesAssociated";
 
+    // prefs name for message count current messages associated since time in mills
+    static final String  namePrefsMessagesTimeSinceAssociatedInMills = "messageCountMessagesSinceTimeAssociatedInMills";
+
     // prefs name for message max messages associated
     static final String namePrefsMessageMaxMessageAssociated = "messageMaxMessagesAssociated";
+
+
+
+
+
+
+
+
+
 
 
     // prefs name for message max letters not associated with case -> not connected to server
@@ -21,6 +33,9 @@ public class ConstansClassMessage {
 
     // prefs name for message count current messages not associated
     static final String namePrefsMessageCountCurrentNotAssociated = "messageCountMessagesNotAssociated";
+
+    // prefs name for message count current messages not associated since time in mills
+    static final String  namePrefsMessagesTimeSinceNotAssociatedInMills = "messageCountMessagesSinceTimeNotAssociatedInMills";
 
     // prefs name for message max messages not associated
     static final String namePrefsMessageMaxMessageNotAssociated = "messageMaxMessagesNotAssociated";
