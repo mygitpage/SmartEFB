@@ -65,7 +65,7 @@
                 android:maxEms="15"
                 android:textSize="16dp"
                 android:gravity="left"
-                android:layout_gravity="center"
+                android:layout_gravity="left"
                 android:textColor="@color/black"/>
 
         </LinearLayout>

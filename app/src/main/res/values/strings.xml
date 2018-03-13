@@ -1200,6 +1200,47 @@
         <string name="timeTableIntroTextComputeValueExplainPoint5">Bei Fragen sprechen Sie bitte Ihre Beraterin/ Ihren Berater an. Vielen Dank.</string>
     <!-- end timetable -->
 
+
+
+
+
+    <!-- connect book dialog settings -->
+    <string name="textDialogMessageCloseDialog">Schließen</string>
+    <string name="textDialogMessageTitleDialog">Einstellungen Nachrichten</string>
+
+
+    <string name="textDialogMessageGeneralInfoText">Die Funktion Nachrichten kann auf zwei Arten genutzt werden. Wenn Sie in einen Fall involviert sind, zu erkennen unter Einstellungen/Verbinden und dem Titel Serververbindung hergestellt, dann können Sie über die Nachrichtenfunktion Ihrer Beraterin/ Ihrem Berater persönlich Nachrichten schreiben. Dritte können diese Nachrichten nicht lesen. Wenn Sie in keinem Fall involviert sind, dann können Sie anonym Fragen an eine Beraterin/ einen Berater der Beratungsstelle Lichtblick schicken. Sie erhalten eine entsprechende Antwort. Beispielsweise können Sie auch einen persönlichen Termin vereinbaren.</string>
+
+    <string name="textDialogMessageGeneralInfoTextAssociated">Sie sind in einen Fall involviert und es gelten folgende Einstellungen.</string>
+
+    <string name="textDialogMessageGeneralInfoTextNotAssociated">Sie sind in keinen Fall involviert und es gelten folgende Einstellungen.</string>
+
+
+
+
+
+    <string name="textDialogMessageSettingsIntro">Für die Funktion Nachrichten gelten folgende Einstellungen.</string>
+    <string name="textDialogMessageSettingsMaxMessagesSingular">Sie können maximal %1s Nachricht schreiben.</string>
+    <string name="textDialogMessageSettingsMaxMessagesPlural">Sie können maximal %1$s Nachrichten schreiben.</string>
+    <string name="textDialogMessageSettingsCountCurrentMessagesSingular">Davon haben Sie bereits %1s Nachricht geschrieben.</string>
+    <string name="textDialogMessageSettingsCountCurrentMessagesPlural">Davon haben Sie bereits %1s Nachrichten geschrieben.</string>
+    <string name="textDialogMessageSettingsCountCurrentMessagesNothing">Davon haben Sie bisher noch keine Nachricht geschrieben.</string>
+    <string name="textDialogMessageSettingsCountCurrentMessagesNoMorePossible">Weitere Nachrichten sind somit erst nach Ablauf von 24 Stunden möglich.</string>
+    <string name="textDialogMessageSettingsDelayTimeSingular">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minute weitergeleitet (sofern eine Internetverbindung besteht).</string>
+    <string name="textDialogMessageSettingsDelayTimeSingularZero">\nIhre Nachrichten werden sofort weitergeleitet (Verzögerung %1s Minuten, sofern eine Internetverbindung besteht).</string>
+    <string name="textDialogMessageSettingsDelayTimePlural">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minuten weitergeleitet (sofern eine Internetverbindung besteht).</string>
+    <string name="textDialogMessageSettingsMessageMaxLetters">\nEine Nachricht darf maximal %1d Zeichen enthalten.</string>
+    <string name="textDialogMessageSettingsInfoTextReadByCoach">Alle in der Funktion Übergabe geschriebenen Nachrichten können von Ihrer Beraterin/ Ihrem Berater gelesen und kommentiert werden.</string>
+    <string name="textDialogMessageSettingsInfoTextContactCoach">Sollten Sie Fragen oder Änderungswünsche zu diesen Einstellungen haben, wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.</string>
+    <string name="textDialogMessageSettingsLinkToInvolvedPerson">Die an dem Chat im Übergabebuch beteiligten Personen finden Sie <a href="smart.efb.deeplink://linkin/settings?com=show_involved_person">hier</a>.</string>
+    <!-- End connect book dialog settings -->
+    
+    
+    
+    
+    
+    
+    
     <!-- help dialog -->
         <string name="textDialogTimeTableCloseDialog">Schließen</string>
         <string name="textDialogTimeTableTitleDialog">Hinweise zum Zeitplan/ Beratungsstand</string>
@@ -1267,10 +1308,27 @@
     <string name="textMessageAuthorAndDate">%1$s - %2$s &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
     <string name="textMessageAuthorAndDateLocale">%1$s - %2$s (lokal) &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
 
+        <string name="textMessageStopSendingMessages">Nachrichten können im Moment nicht gesendet werden!</string>
 
+    <string name="toastTextMessageStopSendingMessagesDisable">Nachrichten können im Moment nicht gesendet werden!</string>
+    <string name="toastTextMessageStopSendingMessagesEnable">Nachrichten können wieder gesendet werden!</string>
 
 
     <!-- end messages -->
+
+
+    <!-- message dialog no more messages -->
+    <string name="textDialogMessagesTitleNoMoreMessages">Keine weiteren Nachrichten</string>
+    <string name="textDialogMessagesNoMoreMessages">Sie haben alle möglichen Nachrichten geschrieben.</string>
+    <string name="textDialogMessagesInfoCoach">Bitte wenden Sie sich an Ihre Beraterin/ Ihren Berater. Dieser kann die Anzahl an Nachrichten erhöhen und den Nachrichtenzähler zurücksetzen.</string>
+    <!-- End message dialog no more messages -->
+
+
+
+
+
+
+
 
     <!-- Activity Message -->
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->

@@ -132,9 +132,11 @@ public class EfbXmlParser {
 
 
 
-        returnMap.put("Message", "0");
+        returnMap.put("MessagesMessage", "0");
         returnMap.put("MessageSettings", "0");
-        returnMap.put("MessageMessageNewOrSend","0"); // only set in ExchangeService to refresh message view
+        returnMap.put("MessageMessageNewOrSend","0");
+        returnMap.put("MessageSettingsMessageStopSendingEnable","0");
+        returnMap.put("MessageSettingsMessageStopSendingDisable","0");
 
 
 
@@ -4898,7 +4900,7 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-                        case ConstansClassXmlParser.xmlNameForMessage_MessageRole:
+                        case ConstansClassXmlParser.xmlNameForMessage_MessageRole: // not needed for further operations
                             eventType = xpp.next();
                             if (eventType == XmlPullParser.TEXT) { // get message role text
                                 if (xpp.getText().trim().length() >= 0) { // check if message role from xml >= 0
@@ -4933,6 +4935,7 @@ public class EfbXmlParser {
                                 tmpUploadTime = System.currentTimeMillis();
                                 int messageStatus = 4;
                                 int anonymous = 1; // not anonymous -> app is connected to server
+                                tmpMessageRole = 0; // in ervery case comes from extern -> left side (0= messages on left side; 1= messages on the right side)
                                 String source = "message"; // used for future extension
                                 Boolean newEntry = true;
 
@@ -4940,7 +4943,7 @@ public class EfbXmlParser {
                                 myDb.insertRowMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, anonymous, source);
 
                                 // refresh activity message
-                                returnMap.put("Message","1");
+                                returnMap.put("MessagesMessage","1");
                                 returnMap.put("MessageMessageNewOrSend", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateAssociatedMessage) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageLocaleTime > 0 && tmpMessageRole >= 0) {
@@ -4949,13 +4952,15 @@ public class EfbXmlParser {
                                 tmpUploadTime = System.currentTimeMillis();
                                 int messageStatus = 4;
                                 int anonymous = 1; // not anonymous -> app is connected to server
+                                tmpMessageRole = 0; // in ervery case comes from extern -> left side (0= messages on left side; 1= messages on the right side)
+                                String source = "message"; // used for future extension
                                 Boolean newEntry = true;
 
                                 // put message into db (role: 0= left; 1= right)
-                                myDb.insertRowChatMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, anonymous);
+                                myDb.insertRowMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, anonymous, source);
 
                                 // refresh activity message
-                                returnMap.put("Message","1");
+                                returnMap.put("MessagesMessage","1");
                                 returnMap.put("MessageMessageNewOrSend", "1");
 
                             }
@@ -4966,6 +4971,7 @@ public class EfbXmlParser {
                                 tmpUploadTime = System.currentTimeMillis();
                                 int messageStatus = 4;
                                 int anonymous = 0; // anonymous -> app is not connected to server
+                                tmpMessageRole = 0; // in ervery case comes from extern -> left side (0= messages on left side; 1= messages on the right side)
                                 Boolean newEntry = true;
                                 String source = "message"; // used for future extension
 
@@ -4973,7 +4979,7 @@ public class EfbXmlParser {
                                 myDb.insertRowMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, anonymous, source);
 
                                 // refresh activity message
-                                returnMap.put("Message","1");
+                                returnMap.put("MessagesMessage","1");
                                 returnMap.put("MessageMessageNewOrSend", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateNotAssociatedMessage) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageLocaleTime > 0 && tmpMessageRole >= 0) {
@@ -4982,13 +4988,15 @@ public class EfbXmlParser {
                                 tmpUploadTime = System.currentTimeMillis();
                                 int messageStatus = 4;
                                 int anonymous = 0; // anonymous -> app is not connected to server
+                                tmpMessageRole = 0; // in ervery case comes from extern -> left side (0= messages on left side; 1= messages on the right side)
                                 Boolean newEntry = true;
+                                String source = "message"; // used for future extension
 
                                 // put message into db (role: 0= left; 1= right)
-                                myDb.insertRowChatMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, anonymous);
+                                myDb.insertRowMessage(tmpAuthorName, tmpMessageLocaleTime, globalServerTime, tmpMessage, tmpMessageRole, messageStatus, newEntry, tmpUploadTime, anonymous, source);
 
                                 // refresh activity message
-                                returnMap.put("Message","1");
+                                returnMap.put("MessagesMessage","1");
                                 returnMap.put("MessageMessageNewOrSend", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
@@ -5098,7 +5106,7 @@ public class EfbXmlParser {
                             break;
                         case ConstansClassXmlParser.xmlNameForMessage_StopCommunication:
                             eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { // get share value; 0-> no communication possible; 1-> communication possible
+                            if (eventType == XmlPullParser.TEXT) { // get share value; 0-> communication possible; 1-> no communication possible
                                 if (xpp.getText().trim().length() >= 0) { // check if value from xml >= 0
                                     tmpMessageStopCommunication = Integer.valueOf(xpp.getText().trim());
                                 } else {
@@ -5137,7 +5145,7 @@ public class EfbXmlParser {
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete)) { // message settings order -> delete?
 
                                 // refresh activity message because settings have change
-                                returnMap.put("Message", "1");
+                                returnMap.put("MessagesMessage", "1");
                                 returnMap.put("MessageSettings", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateAssociatedMessage)) { // message settings order -> update?
@@ -5152,23 +5160,27 @@ public class EfbXmlParser {
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxLettersAssociated, tmpMaxLetters);
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxMessageAssociated, tmpMaxMessages);
 
-                                    // check stop sending and set value (for associated and not associated)
-                                    if (tmpMessageStopCommunication == 1) {prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false);}
-                                    else {prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, true);}
+                                    // check stop sending
+                                    if (tmpMessageStopCommunication == 0 && prefs.getBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false)) {
+                                        prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false);
+                                        returnMap.put("MessageSettingsMessageStopSendingEnable", "1");
+                                    }
+                                    else if (tmpMessageStopCommunication == 1 && !prefs.getBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false)) {
+                                        prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, true);
+                                        returnMap.put("MessageSettingsMessageStopSendingDisable", "1");
+                                    }
 
                                     // check if new since time greater then old one, reset count messages associated and set new since time
                                     if (tmpMessagesCountCommentSinceTime > prefs.getLong(ConstansClassMessage.namePrefsMessagesTimeSinceAssociatedInMills, 0)) {
-
                                         prefsEditor.putLong(ConstansClassMessage.namePrefsMessagesTimeSinceAssociatedInMills, tmpMessagesCountCommentSinceTime); // write new since time to prefs
                                         prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentAssociated, 0); // reset count associated messages to 0
-
                                     }
 
                                     prefsEditor.apply();
                                 }
 
                                 // refresh activity message because settings have change
-                                returnMap.put("Message", "1");
+                                returnMap.put("MessagesMessage", "1");
                                 returnMap.put("MessageSettings", "1");
                             }
 
@@ -5184,9 +5196,15 @@ public class EfbXmlParser {
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxLettersNotAssociated, tmpMaxLetters);
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxMessageNotAssociated, tmpMaxMessages);
 
-                                    // check stop sending and set value (for associated and not associated)
-                                    if (tmpMessageStopCommunication == 1) {prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false);}
-                                    else {prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, true);}
+                                    // check stop sending
+                                    if (tmpMessageStopCommunication == 0 && prefs.getBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false)) {
+                                        prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false);
+                                        returnMap.put("MessageSettingsMessageStopSendingEnable", "1");
+                                    }
+                                    else if (tmpMessageStopCommunication == 1 && !prefs.getBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false)) {
+                                        prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, true);
+                                        returnMap.put("MessageSettingsMessageStopSendingDisable", "1");
+                                    }
 
                                     // check if new since time greater then old one, reset count messages not associated and set new since time
                                     if (tmpMessagesCountCommentSinceTime > prefs.getLong(ConstansClassMessage.namePrefsMessagesTimeSinceNotAssociatedInMills, 0)) {
@@ -5200,7 +5218,7 @@ public class EfbXmlParser {
                                 }
 
                                 // refresh activity message because settings have change
-                                returnMap.put("Message", "1");
+                                returnMap.put("MessagesMessage", "1");
                                 returnMap.put("MessageSettings", "1");
                             }
                         }

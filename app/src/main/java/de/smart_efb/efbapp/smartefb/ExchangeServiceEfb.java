@@ -524,7 +524,7 @@ import java.util.Map;
                                     } while (allMessagesReadyToSend.moveToNext());
 
                                     // intent for message activity -> refresh list view
-                                    tmpIntentUpdateUiForUser.putExtra("MessageNewOrSend", "1"); // refresh list view in message activity
+                                    tmpIntentUpdateUiForUser.putExtra("MessageMessageNewOrSend", "1"); // refresh list view in message activity
                                 }
                             }
 

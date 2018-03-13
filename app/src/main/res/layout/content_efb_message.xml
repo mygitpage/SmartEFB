@@ -19,10 +19,10 @@
     </ListView>
 
     <TextView
-        android:id="@+id/messageSharingIsDisable"
+        android:id="@+id/messageStopSending"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/textConnectBookMessageNoSharing"
+        android:text="@string/textMessageStopSendingMessages"
         android:textSize="14dp"
         android:textColor="@color/text_accent_color"
         android:gravity="center"
