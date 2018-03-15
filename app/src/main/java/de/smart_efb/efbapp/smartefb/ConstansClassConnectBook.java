@@ -5,9 +5,6 @@ package de.smart_efb.efbapp.smartefb;
  */
 class ConstansClassConnectBook {
 
-    // prefs name for the user name in connect book
-    static final String namePrefsConnectBookUserName = "userName";
-
     // prefs name for connect book max letters
     static final String namePrefsConnectMaxLetters = "connectBookMaxLetters";
 

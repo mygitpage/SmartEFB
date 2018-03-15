@@ -340,7 +340,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             TextView tmpTextViewAuthorNameLastActualSketchComment = (TextView) viewFragmentSketchComment.findViewById(R.id.textAuthorNameLastActualSketchComment);
             String tmpAuthorName = cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME));
 
-            if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
+            if (tmpAuthorName.equals(prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt"))) {
                 tmpAuthorName = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentPersonalAuthorName);
             }
             String commentDate = EfbHelperClass.timestampToDateFormat(cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");;
@@ -628,7 +628,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     if (sketchCommentNoError) {
 
                         String commentText = txtInputSketchArrangementComment.getText().toString();
-                        String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                        String userName = prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt");
                         Long commentTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
                         if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
                             commentTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!

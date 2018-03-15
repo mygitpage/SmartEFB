@@ -43,16 +43,6 @@ public class ConstansClassMessage {
     // prefs name for stop communication
     static final String namePrefsMessageStopCommunication = "messageStopCommunication";
 
-
-
-
-
-
-
-
-
-
-
     // prefs name for welcome message without connection send
     static final String namePrefsMessageWelcomeMessageWithoutConnection = "messageWelcomeWithoutConnection";
 
@@ -65,10 +55,10 @@ public class ConstansClassMessage {
 
 
     // prefs name for standard value of max letters not associated
-    static final int namePrefsMessageMaxLettersNotAssociatedStandard = 2000;
+    static final int namePrefsMessageMaxLettersNotAssociatedStandard = 1000;
 
     // prefs name for standard value of max messages not associated
-    static final int namePrefsMessageMaxMessageNotAssociatedStandard = 100000;
+    static final int namePrefsMessageMaxMessageNotAssociatedStandard = 10000;
 
 
     // prefs name for standard value of max letters associated

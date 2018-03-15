@@ -73,7 +73,6 @@ public class EfbXmlParser {
 
         returnMap.put("ConnectBook", "0");
         returnMap.put("ConnectBookSettings", "0");
-        returnMap.put("ConnectBookSettingsClientName", "0");
         returnMap.put("ConnectBookSettingsMessageAndDelay", "0");
         returnMap.put("ConnectBookSettingsMessageShareEnable","0");
         returnMap.put("ConnectBookSettingsMessageShareDisable","0");
@@ -4553,7 +4552,6 @@ public class EfbXmlParser {
         // tmp data for prefs
         Boolean tmpConnectBookOnOff = false;
         String tmpOrder = "";
-        String tmpClientName = "";
         int tmpMaxLetters = -1;
         int tmpMaxMessages = -1;
         int tmpDelayTime = -1;
@@ -4592,18 +4590,6 @@ public class EfbXmlParser {
                                     } else {
                                         tmpConnectBookOnOff = false;
                                     }
-                                } else {
-                                    error = true;
-                                }
-                            } else {
-                                error = true;
-                            }
-                            break;
-                        case ConstansClassXmlParser.xmlNameForConnectBook_ClientName:
-                            eventType = xpp.next();
-                            if (eventType == XmlPullParser.TEXT) { //  get client name
-                                if (xpp.getText().trim().length() > 0) { // check if client name from xml > 0
-                                    tmpClientName = xpp.getText().trim();
                                 } else {
                                     error = true;
                                 }
@@ -4702,18 +4688,6 @@ public class EfbXmlParser {
 
                                     // something change in message and delay settings
                                     returnMap.put("ConnectBookSettingsMessageAndDelay", "1");
-                                }
-
-                                // update client name?
-                                if (tmpConnectBookOnOff && tmpClientName.length() > 0) {
-
-                                    // write data to prefs
-                                    prefsEditor.putString(ConstansClassConnectBook.namePrefsConnectBookUserName, tmpClientName);
-                                    prefsEditor.apply();
-
-                                    // something change in meeting status
-                                    returnMap.put("ConnectBookSettingsClientName", "1");
-
                                 }
 
                                 // set new share value to prefs and set returnMap
@@ -5159,6 +5133,9 @@ public class EfbXmlParser {
                                     
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxLettersAssociated, tmpMaxLetters);
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxMessageAssociated, tmpMaxMessages);
+                                    if (tmpMaxMessages < prefs.getInt(ConstansClassMessage.namePrefsMessageCountCurrentAssociated,0)) {
+                                        prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentAssociated, 0); // reset count associated messages to 0
+                                    }
 
                                     // check stop sending
                                     if (tmpMessageStopCommunication == 0 && prefs.getBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false)) {
@@ -5195,6 +5172,9 @@ public class EfbXmlParser {
 
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxLettersNotAssociated, tmpMaxLetters);
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxMessageNotAssociated, tmpMaxMessages);
+                                    if (tmpMaxMessages < prefs.getInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated,0)) {
+                                        prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, 0); // reset count not associated messages to 0
+                                    }
 
                                     // check stop sending
                                     if (tmpMessageStopCommunication == 0 && prefs.getBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false)) {
@@ -5208,10 +5188,8 @@ public class EfbXmlParser {
 
                                     // check if new since time greater then old one, reset count messages not associated and set new since time
                                     if (tmpMessagesCountCommentSinceTime > prefs.getLong(ConstansClassMessage.namePrefsMessagesTimeSinceNotAssociatedInMills, 0)) {
-
                                         prefsEditor.putLong(ConstansClassMessage.namePrefsMessagesTimeSinceNotAssociatedInMills, tmpMessagesCountCommentSinceTime); // write new since time to prefs
-                                        prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, 0); // reset count not  associated messages to 0
-
+                                        prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, 0); // reset count not associated messages to 0
                                     }
 
                                     prefsEditor.apply();
@@ -5243,27 +5221,6 @@ public class EfbXmlParser {
     //
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //
     // Begin read settings -----------------------------------------------------------------------------------
     //
@@ -5283,6 +5240,7 @@ public class EfbXmlParser {
         Boolean tmpEmergencyOnOff = false;
         Boolean tmpSettingsOnOff = false;
         Boolean tmpCaseClose = false;
+        String tmpClientName = "";
 
         // settings order
         String tmpOrder = "";
@@ -5377,7 +5335,19 @@ public class EfbXmlParser {
                                 error = true;
                             }
                             break;
-                         case ConstansClassXmlParser.xmlNameForSettings_CaseClose:
+                        case ConstansClassXmlParser.xmlNameForSettings_ClientName:
+                             eventType = xpp.next();
+                             if (eventType == XmlPullParser.TEXT) { //  get client name
+                                 if (xpp.getText().trim().length() > 0) { // check if client name from xml > 0
+                                     tmpClientName = xpp.getText().trim();
+                                 } else {
+                                     error = true;
+                                 }
+                             } else {
+                                 error = true;
+                             }
+                             break;
+                        case ConstansClassXmlParser.xmlNameForSettings_CaseClose:
                              eventType = xpp.next();
                              if (eventType == XmlPullParser.TEXT) { // get case close
                                  if (xpp.getText().trim().length() > 0) { // check if case close from xml > 0
@@ -5432,12 +5402,15 @@ public class EfbXmlParser {
                                     // set conection random (Pin) number to 0
                                     prefsEditor.putInt(ConstansClassSettings.namePrefsRandomNumberForConnection,0);
 
+                                    // delete client name
+                                    prefsEditor.putString(ConstansClassSettings.namePrefsClientName, "Unbekannt");
+
                                     // set function message on
                                     prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, true); // turn function message on
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, 0);
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxLettersNotAssociated, ConstansClassMessage.namePrefsMessageMaxLettersNotAssociatedStandard);
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxMessageNotAssociated, ConstansClassMessage.namePrefsMessageMaxMessageNotAssociatedStandard);
-
+                                    prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithoutConnection, false);
 
                                     // write last error messages to prefs
                                     prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, "");
@@ -5447,6 +5420,12 @@ public class EfbXmlParser {
                                     returnMap.put("Case_close","1");
                                 }
                                 else {
+                                    // update client name?
+                                    if (tmpClientName.length() > 0 && !prefs.getString(ConstansClassSettings.namePrefsClientName, "x").equals(tmpClientName)) {
+                                        // write data to prefs
+                                        prefsEditor.putString(ConstansClassSettings.namePrefsClientName, tmpClientName);
+                                    }
+
                                     prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Prevention, tmpPreventionOnOff); // turn function prevention on/off
                                     prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Faq, tmpFaqOnOff); // turn function faq on/off
                                     prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_EmergencyHelp, tmpEmergencyOnOff); // turn function emergency help on/off

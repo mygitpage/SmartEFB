@@ -2466,6 +2466,11 @@ import java.util.Map;
 
                     // check client or contact id set?
                     if (clientIdSet) {
+
+
+                        Log.d("Exchange---->", "Client ID!!!!!!!!!");
+
+
                         // start tag client id
                         xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                         xmlSerializer.text(tmpClientId);
@@ -2475,6 +2480,9 @@ import java.util.Map;
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                     }
                     else {
+
+                        Log.d("Exchange---->", "CONTACT ID!!!!!!!!!");
+
                         // start empty tag client id
                         xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
@@ -2534,6 +2542,11 @@ import java.util.Map;
                     contentWriter.flush();
 
                     contentWriter.close();
+
+
+
+
+                    Log.d("Exchange--->", "MESSAGE SEND!");
 
                     // get answer from input
                     InputStream answerInputStream = connection.getInputStream();
@@ -3548,9 +3561,20 @@ import java.util.Map;
 
             if (clientIdSet) {
                 xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_NewAssociatedMessage);
+
+                Log.d("Build XML-->", "WITH CLIENT ID!!!!!!");
+
+
+
             }
             else {
                 xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_NewNotAssociatedMessage);
+
+
+
+                Log.d("Build XML-->", "WITH CONTACT ID!!!!!!");
+
+
             }
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMessage_Order);
 

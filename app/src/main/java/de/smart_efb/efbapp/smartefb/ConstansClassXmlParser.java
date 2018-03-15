@@ -58,9 +58,6 @@ class ConstansClassXmlParser {
     // xml name for element connect book order
     static final String xmlNameForConnectBook_Order = "connectbook_order";
 
-    // xml name for element connect book author name
-    static final String xmlNameForConnectBook_ClientName = "connectbook_clientname";
-
     // xml name for element connect book send delay time
     static final String xmlNameForConnectBook_DelayTime = "connectbook_settings_delaytime";
 
@@ -656,6 +653,9 @@ class ConstansClassXmlParser {
 
         // xml name for element settings settings turn on/off
         static final String xmlNameForSettings_Settings_TurnOnOff = "settings_settings_turnonoff";
+
+        // xml name for element client name
+        static final String xmlNameForSettings_ClientName = "settings_clientname";
 
         // xml name for element settings case close
         static final String xmlNameForSettings_CaseClose ="settings_caseclose";

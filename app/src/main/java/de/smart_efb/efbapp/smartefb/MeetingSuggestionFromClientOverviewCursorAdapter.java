@@ -428,7 +428,7 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                             // generate update order
                             String updateOrder = "update_suggestion_from_client_server_time";
                             // get user name
-                            String tmpSuggestionFromClientAuthor = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                            String tmpSuggestionFromClientAuthor = prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt");
 
                             // insert  in DB
                             myDb.updateSuggestionFromClient(rowIdForUpdate, tmpSuggestionDate, tmpSuggestionFromClientDate, tmpSuggestionFromClientAuthor, suggestionFromClientText, tmpStatus, timerStatus, updateOrder);

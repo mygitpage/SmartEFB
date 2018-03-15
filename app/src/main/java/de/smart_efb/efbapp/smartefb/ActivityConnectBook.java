@@ -131,7 +131,7 @@ public class ActivityConnectBook extends AppCompatActivity {
         prefsEditor = prefs.edit();
 
         // init the connect book variables
-        userNameConnectBook = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+        userNameConnectBook = prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt");
 
         // find the listview
         listViewConnectBook = (ListView) findViewById(R.id.list_view_messages);

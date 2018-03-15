@@ -261,7 +261,7 @@ public class OurGoalsShowCommentJointlyGoalsCursorAdapter extends CursorAdapter 
         // textview for the author and date
         TextView tmpTextViewAuthorNameLastActualComment = (TextView) inflatedView.findViewById(R.id.textAuthorNameActualComment);
         String tmpAuthorName = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME));
-        if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
+        if (tmpAuthorName.equals(prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt"))) {
             tmpAuthorName = context.getResources().getString(R.string.ourJointlyGoalsShowCommentPersonalAuthorName);
         }
         String commentDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");;

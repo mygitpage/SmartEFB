@@ -128,12 +128,19 @@ public class ActivityMessage extends AppCompatActivity {
 
         // find the listview
         listViewMessage = (ListView) findViewById(R.id.list_view_messages);
+
+        // check contact id and client id
+        if (prefs.getString(ConstansClassSettings.namePrefsContactId, "Empty").length() == 0 && prefs.getString(ConstansClassSettings.namePrefsClientId, "Empty").length() == 0) {
+            // generate contact id -> client id is not set -> no connection to server and case
+            String tmpRandomContactId = EfbHelperClass.generateRandomString();
+            prefsEditor.putString(ConstansClassSettings.namePrefsContactId, tmpRandomContactId);
+            prefsEditor.apply();
+        }
     }
 
 
     // init view of activity
     private void initViewMessage() {
-
 
         // max letters for a message
         int maxLettersMessage = 0;
@@ -144,18 +151,6 @@ public class ActivityMessage extends AppCompatActivity {
         // current count messages
         int tmpCountCurrentMessages = 0;
         
-        // check contact id and client id
-        if (prefs.getString(ConstansClassSettings.namePrefsContactId, "Empty").length() == 0 && prefs.getString(ConstansClassSettings.namePrefsClientId, "Empty").length() == 0) {
-            // generate contact id -> client id is not set -> no connection to server and case
-            String tmpRandomContactId = EfbHelperClass.generateRandomString();
-            prefsEditor.putString(ConstansClassSettings.namePrefsContactId, tmpRandomContactId);
-            prefsEditor.apply();
-
-
-            Log.d("Message++++>", "Random:"+tmpRandomContactId);
-        }
-
-
         // check contact id set?
         if (prefs.getString(ConstansClassSettings.namePrefsContactId, "").length() > 0) {
 
@@ -166,16 +161,29 @@ public class ActivityMessage extends AppCompatActivity {
             if (!prefs.getBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithoutConnection, false)) {
 
                 if (prefs.getString(ConstansClassMessage.namePrefsMessageWelcomeMessageLast, "").equals("helloWithConnection")) {
+                    // get author and text of welcome message not associated again
+                    String tmpStoreAuthorName = getResources().getString(R.string.messageAutomaticGeneratedHelloTextAuthorNameNotAssociatedAgain);
+                    String tmpStoreMessageText = getResources().getString(R.string.messageAutomaticGeneratedHelloTextMessageTextNotAssociatedAgain);
+                    int tmpAnonymous = 0;
 
+                    // insert welcome message in db
+                    insertAutomaticHelloMessageByCoaches(tmpStoreAuthorName, tmpStoreMessageText, tmpAnonymous);
+
+                    // possible welcome text with new connection
+                    prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithConnection, false);
                 }
                 else {
+                    // get author and text of first welcome message not associated
+                    String tmpStoreAuthorName = getResources().getString(R.string.messageAutomaticGeneratedHelloTextAuthorNameNotAssociated);
+                    String tmpStoreMessageText = getResources().getString(R.string.messageAutomaticGeneratedHelloTextMessageTextNotAssociated);
+                    int tmpAnonymous = 0;
 
+                    // insert welcome message in db
+                    insertAutomaticHelloMessageByCoaches(tmpStoreAuthorName, tmpStoreMessageText, tmpAnonymous);
                 }
-
                 prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithoutConnection, true);
                 prefsEditor.putString(ConstansClassMessage.namePrefsMessageWelcomeMessageLast, "");
                 prefsEditor.apply();
-
             }
 
             // get max letters for message
@@ -186,10 +194,6 @@ public class ActivityMessage extends AppCompatActivity {
 
             // get current count messages
             tmpCountCurrentMessages = prefs.getInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, 0);
-
-
-            Log.d("Message++*>", "Schreibe Begrüßung!");
-
         }
 
         // check client id
@@ -200,13 +204,18 @@ public class ActivityMessage extends AppCompatActivity {
             
             // insert welcome message in db? -> connected, associated with case
             if (!prefs.getBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithConnection, false)) {
+                // get author and text of welcome message associated
+                String tmpStoreAuthorName = getResources().getString(R.string.messageAutomaticGeneratedHelloTextAuthorNameAssociated);
+                String tmpStoreMessageText = getResources().getString(R.string.messageAutomaticGeneratedHelloTextMessageTextAssociated);
+                int tmpAnonymous = 1;
+
+                // insert welcome message in db
+                insertAutomaticHelloMessageByCoaches(tmpStoreAuthorName, tmpStoreMessageText, tmpAnonymous);
+
                 prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithConnection, true);
                 prefsEditor.putString(ConstansClassMessage.namePrefsMessageWelcomeMessageLast, "helloWithConnection");
                 prefsEditor.apply();
             }
-            
-            
-            Log.d("Message++*>", "Schreibe Erklärung!");
 
             // get max letters for message, associated with case
             maxLettersMessage = prefs.getInt(ConstansClassMessage.namePrefsMessageMaxLettersAssociated, ConstansClassMessage.namePrefsMessageMaxLettersAssociatedStandard);
@@ -216,9 +225,7 @@ public class ActivityMessage extends AppCompatActivity {
 
             // get current count messages
             tmpCountCurrentMessages = prefs.getInt(ConstansClassMessage.namePrefsMessageCountCurrentAssociated, 0);
-
         }
-
 
         // check communication modus (associated or not associated)
         if ((clientModus && !contactModus) || (!clientModus && contactModus)) {
@@ -302,7 +309,7 @@ public class ActivityMessage extends AppCompatActivity {
                                 if (clientModus) {
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentAssociated, tmpCountCurrent);
                                     tmpAnonymous = 1; // not anonymous -> app is connected to server
-                                    tmpAuthorName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                                    tmpAuthorName = prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt");
                                 } else {
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, tmpCountCurrent);
                                     tmpAnonymous = 0; // anonymous -> app is not connected to server
@@ -563,16 +570,9 @@ public class ActivityMessage extends AppCompatActivity {
                 // show help dialog for client modus
                 if (clientModus) {
                     // associated
-
-
-
-
                     TextView tmpDialogTextViewAssociatedOrNot = (TextView) dialogSettings.findViewById(R.id. textViewDialogMessageSettingsGeneralIntroAssociatedOrNot);
                     String tmpTextAssociatedOrNot = ActivityMessage.this.getResources().getString(R.string.textDialogMessageGeneralInfoTextAssociated);
                     tmpDialogTextViewAssociatedOrNot.setText(tmpTextAssociatedOrNot);
-
-
-
 
 
                     // show the settings for message
@@ -581,16 +581,12 @@ public class ActivityMessage extends AppCompatActivity {
 
 
                     // generate text for max messages
-                    if (prefs.getInt(ConstansClassMessage.namePrefsMessageMaxMessageAssociated, 0) > 1) {
+                    if (prefs.getInt(ConstansClassMessage.namePrefsMessageMaxMessageAssociated, ConstansClassMessage.namePrefsMessageMaxMessageAssociatedStandard) > 1) {
                         tmpTxtElement = ActivityMessage.this.getResources().getString(R.string.textDialogMessageSettingsMaxMessagesPlural);
                     } else {
                         tmpTxtElement = ActivityMessage.this.getResources().getString(R.string.textDialogMessageSettingsMaxMessagesSingular);
                     }
-                    tmpTxtElement = String.format(tmpTxtElement, prefs.getInt(ConstansClassMessage.namePrefsMessageMaxMessageAssociated, 0));
-
-
-
-
+                    tmpTxtElement = String.format(tmpTxtElement, prefs.getInt(ConstansClassMessage.namePrefsMessageMaxMessageAssociated, ConstansClassMessage.namePrefsMessageMaxMessageAssociatedStandard));
 
 
                     // generate text for count current messages
@@ -611,25 +607,64 @@ public class ActivityMessage extends AppCompatActivity {
                     }
 
                     String tmpMaxLettersCount = ActivityMessage.this.getResources().getString(R.string.textDialogMessageSettingsMessageMaxLetters);
-                    tmpTxtElement2a = String.format(tmpMaxLettersCount, prefs.getInt(ConstansClassMessage.namePrefsMessageMaxLettersAssociated, 0));
-
-
+                    tmpTxtElement2a = String.format(tmpMaxLettersCount, prefs.getInt(ConstansClassMessage.namePrefsMessageMaxLettersAssociated, ConstansClassMessage.namePrefsMessageMaxLettersAssociatedStandard));
 
                     // set generate text to view
                     tmpdialogTextView.setText(tmpTxtElement + " " + tmpTxtElement1 + " " + tmpTxtElement2 + " " + tmpTxtElement2a);
 
-                    // generate link to involved person (activity settings tab 0)
-                    TextView tmpdialogTextViewLinkToInvolvedPerson = (TextView) dialogSettings.findViewById(R.id.textViewDialogConnectBookSettingsInvolvedPerson);
-                    tmpdialogTextViewLinkToInvolvedPerson.setMovementMethod(LinkMovementMethod.getInstance());
+                    TextView tmpDialogTextViewInfoTextAssociatedReadByCoach = (TextView) dialogSettings.findViewById(R.id.textViewDialogMessageSettingsReadByCoach);
+                    tmpDialogTextViewInfoTextAssociatedReadByCoach.setVisibility(View.VISIBLE);
+
+                    TextView tmpDialogTextViewInfoTextAssociatedContactCoach = (TextView) dialogSettings.findViewById(R.id.textViewDialogMessageSettingsContactCoach);
+                    tmpDialogTextViewInfoTextAssociatedContactCoach.setVisibility(View.VISIBLE);
 
                 }
                 else {
                     //not associated dialog help
+                    TextView tmpDialogTextViewAssociatedOrNot = (TextView) dialogSettings.findViewById(R.id. textViewDialogMessageSettingsGeneralIntroAssociatedOrNot);
+                    String tmpTextAssociatedOrNot = ActivityMessage.this.getResources().getString(R.string.textDialogMessageGeneralInfoTextNotAssociated);
+                    tmpDialogTextViewAssociatedOrNot.setText(tmpTextAssociatedOrNot);
 
 
+                    // show the settings for message
+                    tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogMessageSettings);
+                    String tmpTxtElement, tmpTxtElement1, tmpTxtElement2, tmpTxtElement2a;
 
 
+                    // generate text for max messages
+                    if (prefs.getInt(ConstansClassMessage.namePrefsMessageMaxMessageNotAssociated, ConstansClassMessage.namePrefsMessageMaxMessageNotAssociatedStandard) > 1) {
+                        tmpTxtElement = ActivityMessage.this.getResources().getString(R.string.textDialogMessageSettingsMaxMessagesPlural);
+                    } else {
+                        tmpTxtElement = ActivityMessage.this.getResources().getString(R.string.textDialogMessageSettingsMaxMessagesSingular);
+                    }
+                    tmpTxtElement = String.format(tmpTxtElement, prefs.getInt(ConstansClassMessage.namePrefsMessageMaxMessageNotAssociated, ConstansClassMessage.namePrefsMessageMaxMessageNotAssociatedStandard));
 
+
+                    // generate text for count current messages
+                    if (prefs.getInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, 0) > 1) {
+                        tmpTxtElement1 = ActivityMessage.this.getResources().getString(R.string.textDialogMessageSettingsCountCurrentMessagesPlural);
+                        tmpTxtElement1 = String.format(tmpTxtElement1, prefs.getInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, 0));
+                    } else if (prefs.getInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, 0) == 1) {
+                        tmpTxtElement1 = ActivityMessage.this.getResources().getString(R.string.textDialogMessageSettingsCountCurrentMessagesSingular);
+                        tmpTxtElement1 = String.format(tmpTxtElement1, prefs.getInt(ConstansClassMessage.namePrefsMessageCountCurrentAssociated, 0));
+                    } else {
+                        tmpTxtElement1 = ActivityMessage.this.getResources().getString(R.string.textDialogMessageSettingsCountCurrentMessagesNothing);
+                    }
+
+                    tmpTxtElement2 = "";
+                    if (prefs.getInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, 0) == prefs.getInt(ConstansClassMessage.namePrefsMessageMaxMessageNotAssociated, ConstansClassMessage.namePrefsMessageMaxMessageNotAssociatedStandard)) {
+                        tmpTxtElement2 = ActivityMessage.this.getResources().getString(R.string.textDialogMessageSettingsCountCurrentMessagesNoMorePossible);
+
+                    }
+
+                    String tmpMaxLettersCount = ActivityMessage.this.getResources().getString(R.string.textDialogMessageSettingsMessageMaxLetters);
+                    tmpTxtElement2a = String.format(tmpMaxLettersCount, prefs.getInt(ConstansClassMessage.namePrefsMessageMaxLettersNotAssociated, ConstansClassMessage.namePrefsMessageMaxLettersNotAssociatedStandard));
+
+                    // set generate text to view
+                    tmpdialogTextView.setText(tmpTxtElement + " " + tmpTxtElement1 + " " + tmpTxtElement2 + " " + tmpTxtElement2a);
+
+                    TextView tmpDialogTextViewInfoTextNotAssociated = (TextView) dialogSettings.findViewById(R.id. textViewDialogMessageSettingsHintNotAssociated);
+                    tmpDialogTextViewInfoTextNotAssociated.setVisibility(View.VISIBLE);
 
                 }
 
@@ -639,8 +674,8 @@ public class ActivityMessage extends AppCompatActivity {
 
 
                 // get string ressources
-                String tmpTextCloseDialog = ActivityMessage.this.getResources().getString(R.string.textDialogConnectBookCloseDialog);
-                String tmpTextTitleDialog = ActivityMessage.this.getResources().getString(R.string.textDialogConnectBookTitleDialog);
+                String tmpTextCloseDialog = ActivityMessage.this.getResources().getString(R.string.textDialogMessageCloseDialog);
+                String tmpTextTitleDialog = ActivityMessage.this.getResources().getString(R.string.textDialogMessageTitleDialog);
 
                 // build the dialog
                 builder.setView(dialogSettings)
@@ -701,6 +736,31 @@ public class ActivityMessage extends AppCompatActivity {
         // and show the dialog
         builder.show();
     }
+
+
+
+    void insertAutomaticHelloMessageByCoaches (String authorName, String messageText, int anonymous) {
+
+        Long messageTime = System.currentTimeMillis(); // first insert with local system time
+        Long uploadTime = System.currentTimeMillis();
+        Long localeTime = System.currentTimeMillis();
+        Boolean newEntry = false;
+        int messageStatus = 4; // 0= not send to sever; 1= send to server; 4= external comment
+
+        // role for message (0= messages on left side; 1= messages on the right side)
+        int roleMessage = 0; // all messages on the right side of the display
+        String source = "message"; // used for future extension
+
+        // put message into db
+        long tmpDbId = myDb.insertRowMessage(authorName, localeTime, messageTime, messageText, roleMessage, messageStatus, newEntry, uploadTime, anonymous, source);
+
+    }
+
+
+
+
+
+
 
 
     @Override

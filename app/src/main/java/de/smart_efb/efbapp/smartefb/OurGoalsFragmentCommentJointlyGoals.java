@@ -324,7 +324,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
             TextView tmpTextViewAuthorNameLastActualComment = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.textAuthorNameLastActualComment);
             String tmpAuthorName = cursorGoalAllComments.getString(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME));
 
-            if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
+            if (tmpAuthorName.equals(prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt"))) {
                 tmpAuthorName = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentPersonalAuthorName);
             }
 
@@ -561,7 +561,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     if (txtInputGoalComment.getText().toString().length() > 3) {
 
                         String commentText = txtInputGoalComment.getText().toString();
-                        String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                        String userName = prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt");
                         Long commentTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
                         if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
                             commentTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!

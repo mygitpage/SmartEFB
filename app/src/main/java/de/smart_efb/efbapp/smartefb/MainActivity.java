@@ -197,27 +197,6 @@ public class MainActivity extends AppCompatActivity {
 
         super.onStart();
 
-
-        // for testing
-        //prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus,0); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
-        //prefsEditor.apply();
-
-
-        // for testing evaluation or arrangement
-        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds,180); //
-        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds,180); //
-
-        prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds,180); //
-        prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds,180); //
-
-
-        // set function message on
-        prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, true); // turn function message on
-
-
-        prefsEditor.apply();
-
-
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
 
             // new alarm manager service for start all needed alarms
@@ -277,30 +256,17 @@ public class MainActivity extends AppCompatActivity {
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
-
-
-                Log.d("Main --->", "Broadcast bekommen!");
-
                 // check intent order
                 // new connect book message
                 String tmpExtraConnectBook = intentExtras.getString("ConnectBook","0");
-                //String tmpExtraConnectBookSettings = intentExtras.getString("ConnectBookSettings","0");
-                //String tmpExtraConnectBookMessageNewOrSend = intentExtras.getString("ConnectBookMessageNewOrSend","0");
                 // new time table value
                 String tmpExtraTimeTable = intentExtras.getString("TimeTable","0");
-                //String tmpExtraTimeTableNewValue = intentExtras.getString("TimeTableNewValue","0");
-                //String tmpExtraTimeTableSettings = intentExtras.getString("TimeTableSettings","0");
                 // new meeting/ suggestion
                 String tmpExtraMeeting = intentExtras.getString("Meeting","0");
-                //String tmpExtraSuggestionNewSuggestion = intentExtras.getString("MeetingNewSuggestion","0");
-                //String tmpExtraMeetingNewMeeting = intentExtras.getString("MeetingNewMeeting","0");
-                //String tmpExtraSuggestionFromClientNewInvitation = intentExtras.getString("MeetingNewInvitationSuggestion","0");
-                //String tmpExtraMeetingSettings = intentExtras.getString("MeetingSettings","0");
                 // case is close or other menue items chnage
                 String tmpExtraSettings = intentExtras.getString("Settings","0");
                 //String tmpExtraSettingsOtherMenueItems = intentExtras.getString("SettingsOtherMenueItems","0");
                 String tmpExtraCaseClose = intentExtras.getString("Case_close","0");
-
                 // Settings arrangement change
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
                 //String tmpExtraOurArrangementSettings = intentExtras.getString("OurArrangementSettings","0");
@@ -359,19 +325,6 @@ public class MainActivity extends AppCompatActivity {
 
         // init the DB
         myDb = new DBAdapter(this);
-
-
-
-        // for testing
-        // write app version to prefs
-        //prefsEditor.putInt(ConstansClassMain.namePrefsNumberAppVersion, 1);
-
-
-        //prefsEditor.apply();
-
-
-
-
 
         // check installation status (new or update)
         newOrUpdateInstallation();

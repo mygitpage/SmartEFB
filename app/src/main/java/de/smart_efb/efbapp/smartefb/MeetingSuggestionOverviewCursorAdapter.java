@@ -595,7 +595,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                                 Long tmpClientCommentDate = 0L;
                                 Long tmpClientCommentLocaleDate = 0L;
                                 if (tmpClientCommentText.length() > 3) {
-                                    tmpClientCommentAuthor = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                                    tmpClientCommentAuthor = prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt");
                                     tmpClientCommentLocaleDate = System.currentTimeMillis();
                                     tmpClientCommentDate = tmpServerTime;
                                     tmpCommentSelected = true;
@@ -608,7 +608,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                                 if (countListViewElementVote >= minNumberOfVotes) {
                                     tmpVoteLocaleDate = System.currentTimeMillis();
                                     tmpVoteDate = tmpServerTime;
-                                    tmpVoteAuthor = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                                    tmpVoteAuthor = prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt");
                                     tmpVoteSelected = true;
                                 }
 

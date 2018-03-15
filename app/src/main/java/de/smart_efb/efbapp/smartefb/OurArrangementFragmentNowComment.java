@@ -324,7 +324,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
             TextView tmpTextViewAuthorNameLastActualComment = (TextView) viewFragmentNowComment.findViewById(R.id.textAuthorNameLastActualComment);
             String tmpAuthorName = cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME));
 
-            if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
+            if (tmpAuthorName.equals(prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt"))) {
                 tmpAuthorName = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentPersonalAuthorName);
             }
 
@@ -562,7 +562,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     if (txtInputArrangementComment.getText().toString().length() > 3) {
 
                         String commentText = txtInputArrangementComment.getText().toString();
-                        String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                        String userName = prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt");
                         Long commentTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
                         if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
                             commentTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!

@@ -17,6 +17,9 @@ class ConstansClassSettings {
     // prefs name for contact id (is used when no client id is not set -> user is anonym)
     static final String namePrefsContactId = "contactId";
 
+    // prefs name for client name
+    static final String namePrefsClientName = "clientName";
+
     // prefs name for last error messages
     static final String namePrefsLastErrorMessages = "lastError";
 

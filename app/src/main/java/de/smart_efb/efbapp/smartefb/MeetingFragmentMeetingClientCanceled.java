@@ -328,7 +328,7 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
                             // canceled status
                             int tmpStatus = 0; // not send to server
                             // user name
-                            String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                            String userName = prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt");
                             // canceled server time
                             Long tmpCanceledTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
                             if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {

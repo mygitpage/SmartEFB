@@ -339,7 +339,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
             TextView tmpTextViewAuthorNameLastActualDebetableComment = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.textAuthorNameLastActualDebetableComment);
             String tmpAuthorName = cursorDebetableGoalAllComments.getString(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_AUTHOR_NAME));
 
-            if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
+            if (tmpAuthorName.equals(prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt"))) {
                 tmpAuthorName = fragmentDebetableGoalsContext.getResources().getString(R.string.ourGoalsDebetableCommentPersonalAuthorName);
             }
             String commentDate = EfbHelperClass.timestampToDateFormat(cursorDebetableGoalAllComments.getLong(cursorDebetableGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");;
@@ -626,7 +626,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                     if (debetableGoalCommentNoError) {
 
                         String commentText = txtInputDebetableCommentComment.getText().toString();
-                        String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                        String userName = prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt");
                         Long commentTime = System.currentTimeMillis(); // first insert with local system time; will be replace with server time!
                         if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
                             commentTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!

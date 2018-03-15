@@ -463,7 +463,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                         if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
                             resultTime = prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L); // this is server time, but not actual!
                         }
-                        String userName = prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt");
+                        String userName = prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt");
                         int resultStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
                         Long tmpStartEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, 0);
                         Long tmpEndEvaluationDate = prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, 0);

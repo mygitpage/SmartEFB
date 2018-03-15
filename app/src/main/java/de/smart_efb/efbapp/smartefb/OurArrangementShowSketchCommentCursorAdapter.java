@@ -271,7 +271,7 @@ public class OurArrangementShowSketchCommentCursorAdapter extends CursorAdapter 
         // textview for the author and date
         TextView tmpTextViewAuthorNameLastActualComment = (TextView) inflatedView.findViewById(R.id.textAuthorNameActualSketchComment);
         String tmpAuthorName = cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME));
-        if (tmpAuthorName.equals(prefs.getString(ConstansClassConnectBook.namePrefsConnectBookUserName, "Unbekannt"))) {
+        if (tmpAuthorName.equals(prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt"))) {
             tmpAuthorName = context.getResources().getString(R.string.ourArrangementShowSketchCommentPersonalAuthorName);
         }
         String commentDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");;

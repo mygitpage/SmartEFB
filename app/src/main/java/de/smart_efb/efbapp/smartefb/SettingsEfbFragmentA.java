@@ -245,11 +245,19 @@ public class SettingsEfbFragmentA extends Fragment {
             // get random connection number from parent
             randomNumberForConnection = ((ActivitySettingsEfb)getActivity()).getRandomNumberForConnection();
             // check random number == 0?
+
+            Log.d("Settings A+++>", "PIN:"+randomNumberForConnection);
+
+
             if (randomNumberForConnection == 0) {
                 // first generate random number
                 int tmpNumber = EfbHelperClass.randomNumber(ConstansClassSettings.randomNumberForConnectionMin, ConstansClassSettings.randomNumberForConnectionMax);
                 ((ActivitySettingsEfb)getActivity()).setRandomNumberForConnection(tmpNumber);
+                randomNumberForConnection = tmpNumber;
             }
+
+
+            Log.d("Settings A+++>", "PIN_after:"+randomNumberForConnection);
 
             TextView textViewRandomNumberText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingConnectToServerKeyNumber);
             textViewRandomNumberText.setVisibility(View.VISIBLE);

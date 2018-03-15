@@ -1204,36 +1204,7 @@
 
 
 
-    <!-- connect book dialog settings -->
-    <string name="textDialogMessageCloseDialog">Schließen</string>
-    <string name="textDialogMessageTitleDialog">Einstellungen Nachrichten</string>
 
-
-    <string name="textDialogMessageGeneralInfoText">Die Funktion Nachrichten kann auf zwei Arten genutzt werden. Wenn Sie in einen Fall involviert sind, zu erkennen unter Einstellungen/Verbinden und dem Titel Serververbindung hergestellt, dann können Sie über die Nachrichtenfunktion Ihrer Beraterin/ Ihrem Berater persönlich Nachrichten schreiben. Dritte können diese Nachrichten nicht lesen. Wenn Sie in keinem Fall involviert sind, dann können Sie anonym Fragen an eine Beraterin/ einen Berater der Beratungsstelle Lichtblick schicken. Sie erhalten eine entsprechende Antwort. Beispielsweise können Sie auch einen persönlichen Termin vereinbaren.</string>
-
-    <string name="textDialogMessageGeneralInfoTextAssociated">Sie sind in einen Fall involviert und es gelten folgende Einstellungen.</string>
-
-    <string name="textDialogMessageGeneralInfoTextNotAssociated">Sie sind in keinen Fall involviert und es gelten folgende Einstellungen.</string>
-
-
-
-
-
-    <string name="textDialogMessageSettingsIntro">Für die Funktion Nachrichten gelten folgende Einstellungen.</string>
-    <string name="textDialogMessageSettingsMaxMessagesSingular">Sie können maximal %1s Nachricht schreiben.</string>
-    <string name="textDialogMessageSettingsMaxMessagesPlural">Sie können maximal %1$s Nachrichten schreiben.</string>
-    <string name="textDialogMessageSettingsCountCurrentMessagesSingular">Davon haben Sie bereits %1s Nachricht geschrieben.</string>
-    <string name="textDialogMessageSettingsCountCurrentMessagesPlural">Davon haben Sie bereits %1s Nachrichten geschrieben.</string>
-    <string name="textDialogMessageSettingsCountCurrentMessagesNothing">Davon haben Sie bisher noch keine Nachricht geschrieben.</string>
-    <string name="textDialogMessageSettingsCountCurrentMessagesNoMorePossible">Weitere Nachrichten sind somit erst nach Ablauf von 24 Stunden möglich.</string>
-    <string name="textDialogMessageSettingsDelayTimeSingular">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minute weitergeleitet (sofern eine Internetverbindung besteht).</string>
-    <string name="textDialogMessageSettingsDelayTimeSingularZero">\nIhre Nachrichten werden sofort weitergeleitet (Verzögerung %1s Minuten, sofern eine Internetverbindung besteht).</string>
-    <string name="textDialogMessageSettingsDelayTimePlural">\nIhre Nachrichten werden mit einer Verzögerung von %1s Minuten weitergeleitet (sofern eine Internetverbindung besteht).</string>
-    <string name="textDialogMessageSettingsMessageMaxLetters">\nEine Nachricht darf maximal %1d Zeichen enthalten.</string>
-    <string name="textDialogMessageSettingsInfoTextReadByCoach">Alle in der Funktion Übergabe geschriebenen Nachrichten können von Ihrer Beraterin/ Ihrem Berater gelesen und kommentiert werden.</string>
-    <string name="textDialogMessageSettingsInfoTextContactCoach">Sollten Sie Fragen oder Änderungswünsche zu diesen Einstellungen haben, wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.</string>
-    <string name="textDialogMessageSettingsLinkToInvolvedPerson">Die an dem Chat im Übergabebuch beteiligten Personen finden Sie <a href="smart.efb.deeplink://linkin/settings?com=show_involved_person">hier</a>.</string>
-    <!-- End connect book dialog settings -->
     
     
     
@@ -1313,6 +1284,18 @@
     <string name="toastTextMessageStopSendingMessagesDisable">Nachrichten können im Moment nicht gesendet werden!</string>
     <string name="toastTextMessageStopSendingMessagesEnable">Nachrichten können wieder gesendet werden!</string>
 
+    <string name="messageAutomaticGeneratedHelloTextAuthorNameNotAssociated">BeraterInnen Lichtblick</string>
+    <string name="messageAutomaticGeneratedHelloTextMessageTextNotAssociated">Herzlich willkommen\nim Nachrichtenchat der Erziehungs- und Familienberatungstelle Lichtblick.\nHier können Sie anonym den Beraterinnen und Beratern in der Beratungsstelle Fragen stellen. Sie können beispielsweise auch einen ersten Beratungstermin vereinbaren.\nVersuchen Sie es. Schreiben Sie uns eine Nachricht!</string>
+
+    <string name="messageAutomaticGeneratedHelloTextAuthorNameAssociated">Ihre Beraterin/ Ihr Berater</string>
+    <string name="messageAutomaticGeneratedHelloTextMessageTextAssociated">Herzlich willkommen\nim Nachrichtenchat. Sie sind in einen Fall involviert und können in diesem Chat Ihrer Beraterin/ Ihrem Berater persönlich Nachrichten schicken. Andere Personen können diese Nachrichten nicht lesen.</string>
+
+    <string name="messageAutomaticGeneratedHelloTextAuthorNameNotAssociatedAgain">BeraterInnen Lichtblick</string>
+    <string name="messageAutomaticGeneratedHelloTextMessageTextNotAssociatedAgain">Herzlich willkommen nochmals\nim Nachrichtenchat der Erziehungs- und Familienberatungstelle Lichtblick.\nIhr Fall wurde gescchlossen und damit können Sie Ihrer Beraterin/ Ihrem Berrater keine persönlichen Nachrichten mehr schreiben. Alle Nachrichten, die Sie uns über den Chat schicken, sind nun wieder anonym. Die Beraterin/ der Berater kann nicht erkennen, wer diese Nachricht geschrieben hat.</string>
+
+
+
+
 
     <!-- end messages -->
 
@@ -1324,7 +1307,35 @@
     <!-- End message dialog no more messages -->
 
 
+    <!-- connect book dialog settings -->
+    <string name="textDialogMessageCloseDialog">Schließen</string>
+    <string name="textDialogMessageTitleDialog">Einstellungen Nachrichten</string>
 
+
+    <string name="textDialogMessageGeneralInfoText">Die Funktion Nachrichten kann auf zwei Arten genutzt werden. Wenn Sie in einen Fall involviert sind, zu erkennen unter Einstellungen/Verbinden und dem Titel \"Serververbindung hergestellt\", dann können Sie über die Nachrichtenfunktion Ihrer Beraterin/ Ihrem Berater persönlich Nachrichten schreiben. Dritte können diese Nachrichten nicht lesen.\nWenn Sie in keinen Fall involviert sind, dann können Sie anonym Fragen an eine Beraterin/ einen Berater der Beratungsstelle Lichtblick schicken. Sie erhalten eine entsprechende Antwort. Beispielsweise können Sie auch einen persönlichen Termin vereinbaren.</string>
+
+    <string name="textDialogMessageGeneralInfoTextAssociated">Sie sind in einen Fall involviert und es gelten folgende Einstellungen.</string>
+
+    <string name="textDialogMessageGeneralInfoTextNotAssociated">Sie sind in keinen Fall involviert und es gelten folgende Einstellungen.</string>
+
+
+
+
+
+    <string name="textDialogMessageSettingsIntro">Für die Funktion Nachrichten gelten folgende Einstellungen.</string>
+    <string name="textDialogMessageSettingsMaxMessagesSingular">Sie können maximal %1s Nachricht schreiben.</string>
+    <string name="textDialogMessageSettingsMaxMessagesPlural">Sie können maximal %1$s Nachrichten schreiben.</string>
+    <string name="textDialogMessageSettingsCountCurrentMessagesSingular">Davon haben Sie bereits %1s Nachricht geschrieben.</string>
+    <string name="textDialogMessageSettingsCountCurrentMessagesPlural">Davon haben Sie bereits %1s Nachrichten geschrieben.</string>
+    <string name="textDialogMessageSettingsCountCurrentMessagesNothing">Davon haben Sie bisher noch keine Nachricht geschrieben.</string>
+    <string name="textDialogMessageSettingsCountCurrentMessagesNoMorePossible">Weitere Nachrichten sind somit erst möglich, wenn Ihre Beraterin/ Ihr Berater den Nachrichtenzähler zurücksetzt.</string>
+    <string name="textDialogMessageSettingsMessageMaxLetters">\nEine Nachricht darf maximal %1d Zeichen enthalten.</string>
+    <string name="textDialogMessageSettingsInfoTextReadByCoach">Alle Nachrichten, die Sie schreiben, können nur von Ihrer Braterin/ Ihrem Berater gelesen und beantwortet werden.</string>
+    <string name="textDialogMessageSettingsInfoTextContactCoach">Sollten Sie Fragen oder Änderungswünsche zu diesen Einstellungen haben, wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.</string>
+
+    <string name="textDialogMessageSettingsInfoTextNotAssociated">Ihre Nachrichten werden von einer Beraterin/ einem Berater beantworte. Beachten Sie bitte, dass es, gerade bei \"Erstanfragen\", bis zu drei Werktagen dauern kann, bis Sie eine Antwort erhalten.</string>
+
+    <!-- End connect book dialog settings -->
 
 
 
