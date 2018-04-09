@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +66,9 @@ public class FaqFragmentSection2 extends Fragment {
             // start service
             fragmentFaqSectionTwoContext.startService(startServiceIntent);
         }
+
+        // display the view
+        displayFaqSectionTwoView ("", "");
     }
 
 
@@ -104,6 +109,44 @@ public class FaqFragmentSection2 extends Fragment {
             }
         }
     };
+
+
+
+
+
+    void displayFaqSectionTwoView (String tmpExpandTextList, String tmpLinkTextHash) {
+
+        String tmpText;
+
+        TextView textViewAnswer;
+
+        Bundle returnBundle;
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // get question/ answer set 1 section 2
+        tmpText = fragmentFaqSectionTwoContext.getString(R.string.faq_section2_answer1);
+        textViewAnswer = (TextView) viewFragmentSection2.findViewById(R.id.faq_section2_answer1);
+        returnBundle = ((ActivityFaq) getActivity()).checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList);
+        if (returnBundle.getBoolean("generate")) {
+            String expandTextList = ((ActivityFaq) getActivity()).getExpandTextList();
+            Spanned tmpLinkText = ((ActivityFaq) getActivity()).makeLinkForMoreOrLessText(returnBundle.getString("substring"), expandTextList, returnBundle.getString("hash_value"));
+            textViewAnswer.setText(tmpLinkText);
+            textViewAnswer.setMovementMethod(LinkMovementMethod.getInstance());
+        } else {
+            textViewAnswer.setText(tmpText);
+        }
+
+
+
+
+
+
+
+    }
+
+
+
+
 
 
 }

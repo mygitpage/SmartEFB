@@ -129,10 +129,20 @@ public class ActivityParseDeepLink extends Activity {
             startActivity(intent);
 
         } else if (FAQ.equals(path)) {
-            // Launch settings
+
+            String expandTextList = "";
+            String linkTextHash = "";
+            if (tmpCommand.equals("less_or_more_text")) {
+                expandTextList = deepLink.getQueryParameter("expand_text_list");
+                linkTextHash = deepLink.getQueryParameter("link_text_hash");
+            }
+
+            // Launch faq
             Intent intent = new Intent(this, ActivityFaq.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra("com",tmpCommand);
+            intent.putExtra("expand_text_list",expandTextList);
+            intent.putExtra("link_text_hash",linkTextHash);
             startActivity(intent);
 
         } else if (PREVENTION.equals(path)) {

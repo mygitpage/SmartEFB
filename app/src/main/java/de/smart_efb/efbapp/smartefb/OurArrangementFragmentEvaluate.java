@@ -296,8 +296,8 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         String tmpBeginEvaluatioTime = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), "HH:mm");
         String tmpEndEvaluationDate = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy");
         String tmpEndEvaluatioTime = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()), "HH:mm");
-        int tmpEvaluationPeriodActive = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 3600) / 3600; // make hours from seconds
-        int tmpEvaluationPeriodPassiv = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, 3600) / 3600; // make hours from seconds
+        int tmpEvaluationPeriodActive = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, 3600) / 3600; // make hours from seconds
+        int tmpEvaluationPeriodPassiv = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 3600) / 3600; // make hours from seconds
         String textEvaluationPeriod = String.format(fragmentEvaluateContext.getResources().getString(R.string.ourArrangementEvaluationInfoEvaluationPeriod), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive, tmpEvaluationPeriodPassiv );
         String textEvaluationNoEvaluationPossibleWhenEvaluate = fragmentEvaluateContext.getResources().getString(R.string.ourArrangementEvaluationNoEvaluationPossibleWhenEvaluate);
         textViewEvaluationPeriod.setText(textEvaluationPeriod + " " + textEvaluationNoEvaluationPossibleWhenEvaluate);

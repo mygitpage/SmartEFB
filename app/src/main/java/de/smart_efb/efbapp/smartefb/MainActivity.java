@@ -345,6 +345,23 @@ public class MainActivity extends AppCompatActivity {
             mainMenueElementBackgroundRessourcesAttentionEntry[i] = getResources().getIdentifier(tmpBackgroundRessourcesAttentionEntry[i], "drawable", "de.smart_efb.efbapp.smartefb");
         }
 
+
+
+
+
+        // set short evaluation period activ passiv!!!!!!!! for testing
+        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, 20);
+        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 20);
+        prefsEditor.apply();
+
+
+
+
+
+
+
+
+
         // init array show elements and activ/inactiv sub-functions
         initShowElementArray();
     }

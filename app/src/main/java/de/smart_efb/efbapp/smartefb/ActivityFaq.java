@@ -1,12 +1,10 @@
 package de.smart_efb.efbapp.smartefb;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -14,14 +12,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by ich on 12.08.16.
@@ -37,18 +36,30 @@ public class ActivityFaq extends AppCompatActivity {
     // reference to dialog settings
     AlertDialog alertDialogFaq;
 
+    // context of activity
+    Context contextFaq;
+
+    // expand text list
+    String expandTextList = "";
+
+    // view pager adapter
+    FaqViewPagerAdapter faqViewPagerAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_efb_faq);
 
+        contextFaq = this;
+
         // init activity faq
         initFaq();
 
         // set up viewpager
         viewPagerFaq = (ViewPager) findViewById(R.id.viewPagerFaq);
-        FaqViewPagerAdapter faqViewPagerAdapter = new FaqViewPagerAdapter(getSupportFragmentManager(), this);
+        faqViewPagerAdapter = new FaqViewPagerAdapter(getSupportFragmentManager(), this);
         viewPagerFaq.setAdapter(faqViewPagerAdapter);
 
         tabLayoutFaq = (TabLayout) findViewById(R.id.tabLayoutFaq);
@@ -105,13 +116,17 @@ public class ActivityFaq extends AppCompatActivity {
         // intent
         Intent intent = getIntent();
 
-        if (intent != null) { // intent set?
-            // get the link data from the extra
-            intentExtras = intent.getExtras();
-            if (intentExtras != null && intentExtras.getString("com") != null) { // extra data set?
-                // get command and execute it
-                executeIntentCommand(intentExtras.getString("com"));
+        if (intentExtras != null) {
+
+            String tmpExpandTextList = "";
+            String tmpLinkTextHash = "";
+            if (intentExtras.getString("expand_text_list") != null && intentExtras.getString("expand_text_list").length() >= 0 && intentExtras.getString("link_text_hash") != null && intentExtras.getString("link_text_hash").length() > 0) {
+                tmpExpandTextList = intentExtras.getString("expand_text_list");
+                tmpLinkTextHash = intentExtras.getString("link_text_hash");
             }
+
+            // get command and execute it
+            executeIntentCommand (intentExtras.getString("com"), tmpExpandTextList, tmpLinkTextHash);
         }
     }
 
@@ -150,14 +165,21 @@ public class ActivityFaq extends AppCompatActivity {
 
         if (intentExtras != null) {
 
+            String tmpExpandTextList = "";
+            String tmpLinkTextHash = "";
+            if (intentExtras.getString("expand_text_list") != null && intentExtras.getString("expand_text_list").length() >= 0 && intentExtras.getString("link_text_hash") != null && intentExtras.getString("link_text_hash").length() > 0) {
+                tmpExpandTextList = intentExtras.getString("expand_text_list");
+                tmpLinkTextHash = intentExtras.getString("link_text_hash");
+            }
+
             // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"));
+            executeIntentCommand (intentExtras.getString("com"), tmpExpandTextList, tmpLinkTextHash);
         }
     }
 
 
     // execute the commands that comes from link or intend
-    public void executeIntentCommand (String command) {
+    public void executeIntentCommand (String command, String tmpExpandTextList, String tmpLinkTextHash) {
 
         if (command.equals("show_section1")) { // Show fragment for overview
 
@@ -184,12 +206,129 @@ public class ActivityFaq extends AppCompatActivity {
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(4);
             tab.select();
         }
+
+
+        else if (command.equals("less_or_more_text")) {
+
+            if (tmpExpandTextList.contains(tmpLinkTextHash+";")) {
+                tmpExpandTextList = tmpExpandTextList.replace(tmpLinkTextHash+";", "");
+            }
+            else {
+                tmpExpandTextList = tmpExpandTextList.concat(tmpLinkTextHash+";");
+            }
+
+            expandTextList = tmpExpandTextList;
+
+
+            faqViewPagerAdapter.notifyDataSetChanged();
+
+            // show prevention view
+            //displayPreventionView(tmpExpandTextList, tmpLinkTextHash);
+        }
+
+
+
+
         else { // default is overview
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(0);
             tab.select();
         }
     }
+
+
+
+    // generate hash value of string and check for sub or full string output
+    Bundle checkAndGenerateMoreOrLessStringLink (String textString, String tmpExpandTextList) {
+
+        Bundle bundle = new Bundle();
+
+        final String MD5 = "MD5";
+
+        String subString = "";
+
+        if (textString.length() > ConstansClassMain.maxLessOrMoreStringFaqLetters) {
+            bundle.putBoolean("generate", true);
+
+            // generate hash value of string
+            bundle.putString("hash_value", "");
+            String hashValue = "";
+            try {
+                // Create MD5 Hash
+                MessageDigest digest = java.security.MessageDigest.getInstance(MD5);
+                digest.update(textString.getBytes());
+                byte messageDigest[] = digest.digest();
+
+                // Create Hex String
+                StringBuilder hexString = new StringBuilder();
+                for (byte aMessageDigest : messageDigest) {
+                    String h = Integer.toHexString(0xFF & aMessageDigest);
+                    while (h.length() < 2)
+                        h = "0" + h;
+                    hexString.append(h);
+                }
+
+                hashValue = hexString.toString();
+                bundle.putString("hash_value", hashValue);
+
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+
+            // generate sub string for output
+            String tmpHashValue = hashValue + ";";
+            if (tmpExpandTextList.contains(tmpHashValue)) {
+                subString = textString;
+            }
+            else {
+                int lastSpacePosition = textString.indexOf(" ", ConstansClassMain.maxLessOrMoreStringFaqLetters);
+                if (lastSpacePosition < ConstansClassMain.maxLessOrMoreStringFaqLetters) {lastSpacePosition = ConstansClassMain.maxLessOrMoreStringFaqLetters;}
+                subString = textString.substring(0, lastSpacePosition);
+                subString = subString + "...";
+            }
+            bundle.putString("substring", subString);
+        }
+        else {
+            bundle.putBoolean("generate", false);
+        }
+
+        return bundle;
+    }
+
+
+    // generate more or less link text
+    Spanned makeLinkForMoreOrLessText (String subText, String tmpExpandTextList, String tmpLinkTextHash) {
+
+        final Uri.Builder linkLessOrMoreTextLinkBuilder = new Uri.Builder();
+        linkLessOrMoreTextLinkBuilder.scheme("smart.efb.deeplink")
+                .authority("linkin")
+                .path("faq")
+                .appendQueryParameter("expand_text_list", tmpExpandTextList)
+                .appendQueryParameter("com", "less_or_more_text")
+                .appendQueryParameter("link_text_hash", tmpLinkTextHash);
+
+        String linkLessOrMoreTextString = "";
+        String linkLessTextString = contextFaq.getResources().getString(R.string.preventionLinkTextLess);
+        String linkMoreTextString = contextFaq.getResources().getString(R.string.preventionLinkTextMore);
+
+        linkLessOrMoreTextString = linkMoreTextString;
+        if (tmpExpandTextList.contains(tmpLinkTextHash+";")) {
+            linkLessOrMoreTextString = linkLessTextString;
+        }
+
+        // generate link for output
+        Spanned linkMoreOrLess = Html.fromHtml(subText + "\n<a href=\"" + linkLessOrMoreTextLinkBuilder.build().toString() + "\"><b>" + linkLessOrMoreTextString + "</b></a>");
+
+        return linkMoreOrLess;
+    }
+
+
+    // getter for expand text list
+    public String getExpandTextList () {
+
+        return expandTextList;
+    }
+
 
 
     // help dialog

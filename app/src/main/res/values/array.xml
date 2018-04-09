@@ -15,14 +15,15 @@
         <item>@string/mainMenueElementId_10</item>
     </string-array>
 
+
     // Main menue button color active
     <string-array name="mainMenueElementColor">
         <item>#FF9FAC81</item>
         <item>#FF007188</item>
         <item>#FFD5B40B</item>
-        <item>#FF9EC6C0</item>
-        <item>#FF796776</item>
         <item>#FFED686A</item>
+        <item>#FF796776</item>
+        <item>#FF9EC6C0</item>
         <item>#FF354644</item>
         <item>#FFACAAA4</item>
         <item>#FFFBBE5E</item>
@@ -35,9 +36,9 @@
         <item>#FFCFD5C0</item>
         <item>#FF99C6CF</item>
         <item>#FFEEE19D</item>
-        <item>#FFCEE2DF</item>
-        <item>#FFC9C2C8</item>
         <item>#FFF8C4C3</item>
+        <item>#FFC9C2C8</item>
+        <item>#FFCEE2DF</item>
         <item>#FFAEB5B4</item>
         <item>#FFDEDDDB</item>
         <item>#FFFDDEAE</item>
@@ -99,15 +100,12 @@
     </string-array>
 
 
-
-
     <!-- tab titles for Activity Our Arrangement (these are links, original in strings.xml) -->
     <string-array name="ourArrangementTabTitle">
         <item>@string/ourArrangementTabTitle_1</item>
         <item>@string/ourArrangementTabTitle_2</item>
         <item>@string/ourArrangementTabTitle_3</item>
     </string-array>
-
 
 
     <!-- tab titles for Activity Our Arrangement (these are links, original in strings.xml) -->
@@ -118,8 +116,6 @@
         <item>@string/faqTabTitleSection_4</item>
         <item>@string/faqTabTitleSection_5</item>
     </string-array>
-
-
 
 
     <!-- Our Arrangement count comments -->
@@ -166,14 +162,12 @@
     </string-array>
 
 
-
     <!-- tab titles for Activity Our Goals (these are links, original in strings.xml) -->
     <string-array name="ourGoalsTabTitle">
         <item>@string/ourGoalsTabTitle_1</item>
         <item>@string/ourGoalsTabTitle_2</item>
         <item>@string/ourGoalsTabTitle_3</item>
     </string-array>
-
 
 
     <!-- Our Goals count comments -->
@@ -235,9 +229,6 @@
         <item>@string/meetingTabTitle_3</item>
         <item>@string/meetingTabTitle_4</item>
     </string-array>
-
-
-
 
 
 </resources>

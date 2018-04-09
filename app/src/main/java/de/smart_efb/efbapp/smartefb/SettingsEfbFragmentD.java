@@ -445,6 +445,19 @@ public class SettingsEfbFragmentD extends Fragment {
                     prefsEditor.apply();
                     break;
 
+                case "message":
+                    if (checkBoxValue) {
+                        checkBoxValue = false;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_Message, false);
+                    }
+                    else {
+                        checkBoxValue = true;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_Message, true);
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_Message, true);
+                    }
+                    prefsEditor.apply();
+                    break;
+
                 case "remember_meeting":
                     if (checkBoxValue) {
                         checkBoxValue = false;
@@ -489,10 +502,6 @@ public class SettingsEfbFragmentD extends Fragment {
         }
     }
     
-    
-    
-    
-
 
     // onClickListener for check box acoustics signals
     public class checkBoxSettingAcousticsListener implements View.OnClickListener {
@@ -566,6 +575,18 @@ public class SettingsEfbFragmentD extends Fragment {
                     else {
                         checkBoxValue = true;
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, true);
+                    }
+                    prefsEditor.apply();
+                    break;
+
+                case "message":
+                    if (checkBoxValue) {
+                        checkBoxValue = false;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_Message, false);
+                    }
+                    else {
+                        checkBoxValue = true;
+                        prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_Message, true);
                     }
                     prefsEditor.apply();
                     break;

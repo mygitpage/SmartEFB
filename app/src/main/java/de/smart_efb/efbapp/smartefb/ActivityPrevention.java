@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -113,9 +111,6 @@ public class ActivityPrevention extends AppCompatActivity {
                 executeIntentCommand (intentExtras.getString("com"), tmpExpandTextList, tmpLinkTextHash);
             }
         }
-
-
-
     }
 
 
@@ -240,10 +235,6 @@ public class ActivityPrevention extends AppCompatActivity {
             }
         });
 
-
-
-
-
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // finance help for familiy
         tmpText = contextPrevention.getString(R.string.preventionFinanceForFamilyExplainText);
@@ -260,7 +251,6 @@ public class ActivityPrevention extends AppCompatActivity {
         // get textview for Link to finance help
         tmpLinkToVideo = (TextView) preventionView.findViewById(R.id.preventionFinanceForFamilyLinkToVideo);
         tmpLinkToVideo.setMovementMethod(LinkMovementMethod.getInstance());
-
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // mobbing
@@ -283,13 +273,6 @@ public class ActivityPrevention extends AppCompatActivity {
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //
 
-
-
-
-
-
-
-
     }
 
 
@@ -302,7 +285,7 @@ public class ActivityPrevention extends AppCompatActivity {
 
         String subString = "";
 
-        if (textString.length() > ConstansClassMain.maxLessOrMoreStringLetters) {
+        if (textString.length() > ConstansClassMain.maxLessOrMoreStringPreventionLetters) {
             bundle.putBoolean("generate", true);
 
             // generate hash value of string
@@ -336,8 +319,8 @@ public class ActivityPrevention extends AppCompatActivity {
                 subString = textString;
             }
             else {
-                int lastSpacePosition = textString.indexOf(" ", ConstansClassMain.maxLessOrMoreStringLetters);
-                if (lastSpacePosition < ConstansClassMain.maxLessOrMoreStringLetters) {lastSpacePosition = ConstansClassMain.maxLessOrMoreStringLetters;}
+                int lastSpacePosition = textString.indexOf(" ", ConstansClassMain.maxLessOrMoreStringPreventionLetters);
+                if (lastSpacePosition < ConstansClassMain.maxLessOrMoreStringPreventionLetters) {lastSpacePosition = ConstansClassMain.maxLessOrMoreStringPreventionLetters;}
                 subString = textString.substring(0, lastSpacePosition);
                 subString = subString + "...";
             }
@@ -390,10 +373,6 @@ public class ActivityPrevention extends AppCompatActivity {
     }
 
 
-
-
-
-
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
     private BroadcastReceiver preventionBrodcastReceiver = new BroadcastReceiver() {
 
@@ -424,8 +403,6 @@ public class ActivityPrevention extends AppCompatActivity {
             }
         }
     };
-
-
 
 
     // Look for new intents (with data from putExtra)
@@ -513,36 +490,19 @@ public class ActivityPrevention extends AppCompatActivity {
                 toast.show();
             }
         }
-
-
-
-
-
-
-
         else if (command.equals("less_or_more_text")) {
 
             if (tmpExpandTextList.contains(tmpLinkTextHash+";")) {
                 tmpExpandTextList = tmpExpandTextList.replace(tmpLinkTextHash+";", "");
-
-                Log.d("NewIntentHashList", "REPLACE!!!!");
             }
             else {
-
-                Log.d("NewIntentHashList", "CONCAT!!!!");
-
                 tmpExpandTextList = tmpExpandTextList.concat(tmpLinkTextHash+";");
             }
 
             expandTextList = tmpExpandTextList;
 
-
-            Log.d("Prevention####>", "List:"+tmpExpandTextList);
-
-
             // show prevention view
             displayPreventionView(tmpExpandTextList, tmpLinkTextHash);
-
         }
     }
 

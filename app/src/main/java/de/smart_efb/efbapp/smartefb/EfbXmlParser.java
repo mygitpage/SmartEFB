@@ -5163,12 +5163,8 @@ public class EfbXmlParser {
 
                             else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateNotAssociatedMessage)) { // message settings order -> update?
 
-                                // in every case -> write data message on off to prefs
-                                prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, tmpMessageOnOff);
-                                prefsEditor.apply();
-
                                 // write max letters and max messages to prefs when all set
-                                if (tmpMessageOnOff && tmpMaxLetters >= 0 && tmpMaxMessages >= 0) {
+                                if (tmpMaxLetters >= 0 && tmpMaxMessages >= 0) {
 
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxLettersNotAssociated, tmpMaxLetters);
                                     prefsEditor.putInt(ConstansClassMessage.namePrefsMessageMaxMessageNotAssociated, tmpMaxMessages);

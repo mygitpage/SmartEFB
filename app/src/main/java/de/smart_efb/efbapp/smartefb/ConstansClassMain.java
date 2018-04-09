@@ -63,7 +63,11 @@ class ConstansClassMain {
     // wake up time in secondes for exchange service
     static final int wakeUpTimeExchangeService = 50; // seconds
 
-    // max letters border for more/ less letters in string in activity prevetion/ faq
-    static final int maxLessOrMoreStringLetters = 350;
+    // max letters border for more/ less letters in string in activity prevetion
+    static final int maxLessOrMoreStringPreventionLetters = 350;
+
+    // max letters border for more/ less letters in string in activity/ fragment faq
+    static final int maxLessOrMoreStringFaqLetters = 60;
+
 
 }
