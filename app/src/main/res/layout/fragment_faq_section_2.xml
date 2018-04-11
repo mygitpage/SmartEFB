@@ -73,11 +73,12 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section2_answer2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section2_answer2"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>
@@ -89,8 +90,6 @@
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginBottom="20dp"/>
-
-
 
 
         <!-- FAQ: Wozu brauche ich die Funktion Absprachen? -->
@@ -113,11 +112,12 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section2_answer3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section2_answer3"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>
@@ -151,11 +151,12 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section2_answer4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section2_answer4"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>
@@ -189,16 +190,25 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section2_answer5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section2_answer5"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>
 
-        <!-- FAQ: Welche Daten werden von der App erhoben und wie werden diese übertragen? -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- FAQ: Wozu brauche ich die Funktion Nachrichten? -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -218,11 +228,51 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section2_answer6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section2_answer6"
+            android:textColorLink="@color/colorPrimary"
+            android:text="@string/faq_section2_answer5"
+            android:gravity="left"
+            android:layout_marginLeft="3dp"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_color"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="20dp"/>
+
+        <!-- FAQ: Welche Daten werden von der App erhoben und wie werden diese übertragen? -->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:layout_marginLeft="3dp"
+                android:text="@string/faq_section2_question7"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/faq_section2_answer7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>

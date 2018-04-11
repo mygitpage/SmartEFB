@@ -67,7 +67,7 @@ class ConstansClassMain {
     static final int maxLessOrMoreStringPreventionLetters = 350;
 
     // max letters border for more/ less letters in string in activity/ fragment faq
-    static final int maxLessOrMoreStringFaqLetters = 60;
+    static final int maxLessOrMoreStringFaqLetters = 100;
 
 
 }

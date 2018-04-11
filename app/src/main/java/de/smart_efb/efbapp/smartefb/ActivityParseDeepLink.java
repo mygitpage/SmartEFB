@@ -130,20 +130,31 @@ public class ActivityParseDeepLink extends Activity {
 
         } else if (FAQ.equals(path)) {
 
-            String expandTextList = "";
-            String linkTextHash = "";
+            // check for expand string command
             if (tmpCommand.equals("less_or_more_text")) {
+
+                String expandTextList = "";
+                String linkTextHash = "";
+
                 expandTextList = deepLink.getQueryParameter("expand_text_list");
                 linkTextHash = deepLink.getQueryParameter("link_text_hash");
-            }
 
-            // Launch faq
-            Intent intent = new Intent(this, ActivityFaq.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            intent.putExtra("com",tmpCommand);
-            intent.putExtra("expand_text_list",expandTextList);
-            intent.putExtra("link_text_hash",linkTextHash);
-            startActivity(intent);
+                // send intent to receiver in Activity Faq to update listView
+                Intent tmpIntent = new Intent();
+                tmpIntent.putExtra("less_or_more_text","1");
+                tmpIntent.putExtra("expand_text_list",expandTextList);
+                tmpIntent.putExtra("link_text_hash",linkTextHash);
+                tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                ActivityParseDeepLink.this.sendBroadcast(tmpIntent);
+            }
+            else { // other command to show tab
+
+                // Launch faq
+                Intent intent = new Intent(this, ActivityFaq.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("com", tmpCommand);
+                startActivity(intent);
+            }
 
         } else if (PREVENTION.equals(path)) {
 

@@ -224,14 +224,6 @@ public class ActivityMeeting extends AppCompatActivity {
         // init DB
         myDb = new DBAdapter(getApplicationContext());
 
-
-
-
-        // for developing
-        //myDb.deleteAllRowsMeetingAndSuggestion();
-
-
-
         // delete all meeting/ suggestion mark with new but never show (time expired, etc.)
         Long nowTime = System.currentTimeMillis();
         myDb.deleteStatusNewEntryAllOldMeetingAndSuggestion (nowTime);

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -110,24 +111,22 @@ public class ActivityFaq extends AppCompatActivity {
             }
         });
 
-        // check for intent on start time
+        // check for new intent at activity start
         // Extras from intent that holds data
         Bundle intentExtras = null;
+
         // intent
         Intent intent = getIntent();
 
-        if (intentExtras != null) {
-
-            String tmpExpandTextList = "";
-            String tmpLinkTextHash = "";
-            if (intentExtras.getString("expand_text_list") != null && intentExtras.getString("expand_text_list").length() >= 0 && intentExtras.getString("link_text_hash") != null && intentExtras.getString("link_text_hash").length() > 0) {
-                tmpExpandTextList = intentExtras.getString("expand_text_list");
-                tmpLinkTextHash = intentExtras.getString("link_text_hash");
+        if (intent != null) {
+            // get the link data from URI and from the extra
+            intentExtras = intent.getExtras();
+            if (intentExtras != null && intentExtras.getString("com") != null) {
+                // get command and execute it
+                executeIntentCommand(intentExtras.getString("com"));
             }
-
-            // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"), tmpExpandTextList, tmpLinkTextHash);
         }
+
     }
 
 
@@ -165,73 +164,38 @@ public class ActivityFaq extends AppCompatActivity {
 
         if (intentExtras != null) {
 
-            String tmpExpandTextList = "";
-            String tmpLinkTextHash = "";
-            if (intentExtras.getString("expand_text_list") != null && intentExtras.getString("expand_text_list").length() >= 0 && intentExtras.getString("link_text_hash") != null && intentExtras.getString("link_text_hash").length() > 0) {
-                tmpExpandTextList = intentExtras.getString("expand_text_list");
-                tmpLinkTextHash = intentExtras.getString("link_text_hash");
-            }
-
             // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"), tmpExpandTextList, tmpLinkTextHash);
+            executeIntentCommand (intentExtras.getString("com"));
         }
     }
 
 
     // execute the commands that comes from link or intend
-    public void executeIntentCommand (String command, String tmpExpandTextList, String tmpLinkTextHash) {
+    public void executeIntentCommand (String command) {
 
-        if (command.equals("show_section1")) { // Show fragment for overview
+        if (command != null && command.equals("show_section1")) { // Show fragment for overview
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(0);
             tab.select();
         }
-        else if (command.equals("show_section2")) { // Show fragment for Fragen zur App
+        else if (command != null && command.equals("show_section2")) { // Show fragment for Fragen zur App
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(1);
             tab.select();
         }
-        else if (command.equals("show_section3")) { // Show fragment for Erziehungsberatung
+        else if (command != null && command.equals("show_section3")) { // Show fragment for Erziehungsberatung
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(2);
             tab.select();
         }
-        else if (command.equals("show_section4")) { // Show fragment for Beratungsstellen
+        else if (command != null && command.equals("show_section4")) { // Show fragment for Beratungsstellen
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(3);
             tab.select();
         }
-        else if (command.equals("show_section5")) { // Show fragment for Erziehungsfragen
+        else if (command != null && command.equals("show_section5")) { // Show fragment for Erziehungsfragen
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(4);
-            tab.select();
-        }
-
-
-        else if (command.equals("less_or_more_text")) {
-
-            if (tmpExpandTextList.contains(tmpLinkTextHash+";")) {
-                tmpExpandTextList = tmpExpandTextList.replace(tmpLinkTextHash+";", "");
-            }
-            else {
-                tmpExpandTextList = tmpExpandTextList.concat(tmpLinkTextHash+";");
-            }
-
-            expandTextList = tmpExpandTextList;
-
-
-            faqViewPagerAdapter.notifyDataSetChanged();
-
-            // show prevention view
-            //displayPreventionView(tmpExpandTextList, tmpLinkTextHash);
-        }
-
-
-
-
-        else { // default is overview
-
-            TabLayout.Tab tab = tabLayoutFaq.getTabAt(0);
             tab.select();
         }
     }

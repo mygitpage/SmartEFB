@@ -378,7 +378,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         } else if (command.equals("show_comment_for_sketch_arrangement")) { // Show comments for sketch Arrangments -> TAB ONE
 
-            // set global varibales
+            // set global variables
             arrangementSketchDbIdFromLink = tmpServerDbId;
             arrangementSketchNumberInListView = tmpNumberinListView;
 
