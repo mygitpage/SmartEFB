@@ -5,13 +5,11 @@ package de.smart_efb.efbapp.smartefb;
  * Created by ich on 20.03.16.
  */
 
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 
 public class DBAdapter extends SQLiteOpenHelper {

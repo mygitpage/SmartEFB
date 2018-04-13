@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,7 +71,7 @@ public class FaqFragmentSection2 extends Fragment {
         }
 
         // display the view
-        displayFaqSectionTwoView ("", "");
+        displayFaqSectionTwoView ("");
     }
 
 
@@ -125,14 +124,14 @@ public class FaqFragmentSection2 extends Fragment {
                     expandTextList = tmpExpandTextList;
 
                     // display view of expand text
-                    displayFaqSectionTwoView (tmpExpandTextList, tmpLinkTextHash);
+                    displayFaqSectionTwoView (tmpExpandTextList);
                 }
             }
         }
     };
 
 
-    void displayFaqSectionTwoView (String tmpExpandTextList, String tmpLinkTextHash) {
+    void displayFaqSectionTwoView (String tmpExpandTextList) {
 
         String tmpText;
 
@@ -230,13 +229,7 @@ public class FaqFragmentSection2 extends Fragment {
         } else {
             textViewAnswer.setText(tmpText);
         }
-
-
     }
-
-
-
-
 
 
 }

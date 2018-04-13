@@ -15,7 +15,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
-        <!-- FAQ: Warum sind Schaltflächen inaktiv? -->
+        <!-- FAQ: Mit welchen Fragen kann ich mich an die Erziehungsberatung wenden? -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,11 +35,12 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section3_answer1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section3_answer1"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>
@@ -52,7 +53,7 @@
             android:layout_marginRight="40dp"
             android:layout_marginBottom="20dp"/>
 
-        <!-- FAQ: Wozu brauche ich die Funktion Übergabebuch? -->
+        <!-- FAQ: Termin Zeitrahmen -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,11 +73,12 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section3_answer2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section3_answer2"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>
@@ -90,9 +92,7 @@
             android:layout_marginBottom="20dp"/>
 
 
-
-
-        <!-- FAQ: Wozu brauche ich die Funktion Absprachen? -->
+        <!-- FAQ: Geld Kosten? -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -112,11 +112,12 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section3_answer3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section3_answer3"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>
@@ -130,7 +131,7 @@
             android:layout_marginBottom="20dp"/>
 
 
-        <!-- FAQ: Wozu brauche ich die Funktion Ziele? -->
+        <!-- FAQ: Anonym? -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -150,11 +151,12 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section3_answer4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section3_answer4"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>
@@ -168,7 +170,7 @@
             android:layout_marginBottom="20dp"/>
 
 
-        <!-- FAQ: Wozu brauche ich die Funktion Termine? -->
+        <!-- FAQ: Wer Erziehungsberatung? -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -188,16 +190,17 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section3_answer5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section3_answer5"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>
 
-        <!-- FAQ: Welche Daten werden von der App erhoben und wie werden diese übertragen? -->
+        <!-- FAQ: Dauer Beratung? -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -217,11 +220,12 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section3_answer6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section3_answer6"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>

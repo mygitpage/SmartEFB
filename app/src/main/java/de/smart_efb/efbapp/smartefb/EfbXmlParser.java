@@ -1,16 +1,11 @@
 package de.smart_efb.efbapp.smartefb;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.util.Log;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
@@ -5778,10 +5773,6 @@ public class EfbXmlParser {
                                 }
 
                                 prefsEditor.apply();
-
-
-                                Log.d("XML---->", "TimeTable update!");
-
 
                                 // refresh activity time table because settings have change
                                 returnMap.put("TimeTable","1");

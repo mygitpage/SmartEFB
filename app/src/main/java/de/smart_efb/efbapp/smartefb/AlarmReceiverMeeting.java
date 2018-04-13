@@ -13,10 +13,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
-
 import java.util.Arrays;
-import java.util.Calendar;
+
 
 /**
  * Created by ich on 24.01.2018.
@@ -107,10 +105,6 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
             // check meeting in 15 minutes
             Cursor rememberMeeting_15min = myDb.getAllRowsRememberMeetingsAndSuggestion("remember_meeting_15min", nowTime);
             if (rememberMeeting_15min != null && rememberMeeting_15min.getCount() > 0) {
-
-                Log.d("MEETING ALARM ->", "IN 15 Min Meeting!");
-
-
                 rememberMeeting_15min.moveToFirst();
                 do {
                     String tmpMeetingNotificationText15 = String.format(mContext.getResources().getString(R.string.alarmReceiverNotificationSubTextRemember15Min), EfbHelperClass.timestampToDateFormat(rememberMeeting_15min.getLong(rememberMeeting_15min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(rememberMeeting_15min.getLong(rememberMeeting_15min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "HH:mm"), meetingPlaceNames[rememberMeeting_15min.getInt(rememberMeeting_15min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE1))]);
@@ -126,9 +120,6 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
             // check meeting in 120 minutes
             Cursor rememberMeeting_120min = myDb.getAllRowsRememberMeetingsAndSuggestion("remember_meeting_120min", nowTime);
             if (rememberMeeting_120min != null && rememberMeeting_120min.getCount() > 0) {
-
-                Log.d("MEETING ALARM ->", "IN 120 Min Meeting!");
-
                 rememberMeeting_120min.moveToFirst();
                 do {
                     String tmpMeetingNotificationText120 = String.format(mContext.getResources().getString(R.string.alarmReceiverNotificationSubTextRemember120Min), EfbHelperClass.timestampToDateFormat(rememberMeeting_120min.getLong(rememberMeeting_120min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(rememberMeeting_120min.getLong(rememberMeeting_120min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "HH:mm"), meetingPlaceNames[rememberMeeting_120min.getInt(rememberMeeting_120min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE1))]);
@@ -144,9 +135,6 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
             // check meeting in 1440 minutes; 24hours!
             Cursor rememberMeeting_1440min = myDb.getAllRowsRememberMeetingsAndSuggestion("remember_meeting_1440min", nowTime);
             if (rememberMeeting_1440min != null && rememberMeeting_1440min.getCount() > 0) {
-
-                Log.d("MEETING ALARM ->", "IN 1440 Min Meeting!");
-
                 rememberMeeting_1440min.moveToFirst();
                 do {
                     String tmpMeetingNotificationText1440 = String.format(mContext.getResources().getString(R.string.alarmReceiverNotificationSubTextRemember1440Min), EfbHelperClass.timestampToDateFormat(rememberMeeting_1440min.getLong(rememberMeeting_1440min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(rememberMeeting_1440min.getLong(rememberMeeting_1440min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "HH:mm"), meetingPlaceNames[rememberMeeting_1440min.getInt(rememberMeeting_1440min.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_PLACE1))]);
@@ -158,7 +146,6 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
                 // reset line feed
                 lineFeed = "";
             }
-
 
             // check next wakeup for alarm receiver meeting
             Cursor rememberMeeting_nextWakeUp = myDb.getAllRowsRememberMeetingsAndSuggestion("remember_meeting_next_wakeup", nowTime);
@@ -187,11 +174,9 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
             }
         }
 
-        
         // check notification for suggestion and client suggestion on?
         if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberSuggestion, true)) {
 
-            // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             // check suggestion from coach end time in 15 minutes
             Cursor rememberSuggestionEnd_15min = myDb.getAllRowsRememberMeetingsAndSuggestion("remember_suggestion_end_15min", nowTime);
             if (rememberSuggestionEnd_15min != null && rememberSuggestionEnd_15min.getCount() > 0) {
@@ -259,7 +244,6 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
             if (suggestionEndTextIn1440Min.length() > 0) {
                 notificationCoachSuggestionEndIn1440Minutes(suggestionEndTextIn1440Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
             }
-
 
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             // check client suggestion start time in 15 minutes
@@ -400,14 +384,8 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
             }
         }
 
-
-
         // sort array with next wake up time for alarm manager ascending
         Arrays.sort(nextWakeUp);
-        
-        Log.d("Next WAKE UP->", "Time"+nextWakeUp[0]);
-
-
 
         // set next wake up time for remember meeting/ suggestion
         if (nextWakeUp[0] > 0L && nextWakeUp[0] < noWakeUpPointSetValue) {

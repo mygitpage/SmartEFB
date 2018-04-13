@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,9 +107,6 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
         String meetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "HH:mm");;
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED)) == 1) {
 
-            Log.d("Cursor Adapter ---->", "Canceled Time --->"+cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME)));
-
-
             String tmpCanceledAuthorName = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR));
             String meetingCanceledDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME)), "dd.MM.yyyy");;
             String meetingCanceledTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME)), "HH:mm");;
@@ -134,9 +130,6 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
             }
             tmpTextViewAuthorNameForMeeting.setText(Html.fromHtml(tmpTextAuthorNameMeeting+ " " + tmpTextClientCanceledMeeting));
         }
-
-
-        Log.d("Meeting ---->", "Canceled ServerTime:--->" + cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_CANCELED_TIME)));
 
         // textview for meeting date
         TextView tmpTextViewMeetingDate = (TextView) inflatedView.findViewById(R.id.meetingDate);

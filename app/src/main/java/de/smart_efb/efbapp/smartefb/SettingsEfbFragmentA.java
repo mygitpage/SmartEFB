@@ -19,7 +19,6 @@ import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.util.Xml;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -246,18 +245,12 @@ public class SettingsEfbFragmentA extends Fragment {
             randomNumberForConnection = ((ActivitySettingsEfb)getActivity()).getRandomNumberForConnection();
             // check random number == 0?
 
-            Log.d("Settings A+++>", "PIN:"+randomNumberForConnection);
-
-
             if (randomNumberForConnection == 0) {
                 // first generate random number
                 int tmpNumber = EfbHelperClass.randomNumber(ConstansClassSettings.randomNumberForConnectionMin, ConstansClassSettings.randomNumberForConnectionMax);
                 ((ActivitySettingsEfb)getActivity()).setRandomNumberForConnection(tmpNumber);
                 randomNumberForConnection = tmpNumber;
             }
-
-
-            Log.d("Settings A+++>", "PIN_after:"+randomNumberForConnection);
 
             TextView textViewRandomNumberText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingConnectToServerKeyNumber);
             textViewRandomNumberText.setVisibility(View.VISIBLE);
@@ -580,9 +573,6 @@ public class SettingsEfbFragmentA extends Fragment {
                 // call xml parser with input
                 EfbXmlParser xmlparser = new EfbXmlParser(fragmentConnectToServerContext);
                 returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
-
-                Log.d("First Connect -->","INputStream:"+stringBuilder.toString().trim());
-
 
                 // close input stream and disconnect
                 answerInputStream.close();

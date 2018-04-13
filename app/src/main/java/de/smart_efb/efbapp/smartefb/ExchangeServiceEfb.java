@@ -19,10 +19,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.util.Xml;
-
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +33,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
-/**
+    /**
      * Created by ich on 27.07.2017.
      */
     public class ExchangeServiceEfb extends Service {

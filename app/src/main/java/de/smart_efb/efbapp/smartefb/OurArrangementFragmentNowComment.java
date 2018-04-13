@@ -17,7 +17,6 @@ import android.text.Html;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;

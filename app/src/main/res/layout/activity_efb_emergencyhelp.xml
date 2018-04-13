@@ -246,8 +246,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="30dp"
                 android:textColor="@color/text_accent_color"
+                android:textColorLink="@color/text_accent_color"
                 android:textStyle="bold"
-                android:text="@string/emergencyHelpEmergencyCareOfSoulsEmail"
                 android:gravity="center"
                 android:paddingTop="20dp"/>
 
@@ -297,8 +297,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="30dp"
                 android:textColor="@color/text_accent_color"
+                android:textColorLink="@color/text_accent_color"
                 android:textStyle="bold"
-                android:text="@string/emergencyHelpEmergencyEFBCallEmail"
                 android:gravity="center"
                 android:paddingBottom="40dp"
                 android:paddingTop="20dp"/>

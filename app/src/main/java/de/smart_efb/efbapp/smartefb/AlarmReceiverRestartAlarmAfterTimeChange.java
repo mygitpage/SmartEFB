@@ -1,12 +1,10 @@
 package de.smart_efb.efbapp.smartefb;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 
 import static android.content.Context.MODE_PRIVATE;
@@ -22,8 +20,6 @@ public class AlarmReceiverRestartAlarmAfterTimeChange extends BroadcastReceiver 
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        Log.d("TIME CHANGE-->", "Starte Alarm Service!");
 
         // get the shared preferences
         prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);

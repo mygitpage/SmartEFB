@@ -1,9 +1,5 @@
 package de.smart_efb.efbapp.smartefb;
 
-import android.util.Log;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,7 +21,6 @@ public class EfbHelperClass {
             TimeZone tz = TimeZone.getTimeZone("Europe/Berlin");
             Calendar calendar = Calendar.getInstance(tz);
             calendar.setTimeInMillis(timestamp);
-            //calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
             SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.GERMANY);
             Date currenTimeZone = (Date) calendar.getTime();
 

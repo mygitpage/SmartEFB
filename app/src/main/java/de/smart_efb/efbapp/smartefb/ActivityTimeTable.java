@@ -13,7 +13,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -106,10 +105,6 @@ public class ActivityTimeTable extends AppCompatActivity {
         int timeTableValue = prefs.getInt(ConstansClassTimeTable.namePrefsTimeTableValue, 0); // get value for time table
         String author = prefs.getString(ConstansClassTimeTable.namePrefsTimeTableModifiedAuthor, ""); // get author name for time table
         Long timeTableDate = prefs.getLong(ConstansClassTimeTable.namePrefsTimeTableModifiedDate, 0); // get change date for time table
-
-
-        Log.d("TimeTable-->", "Date:"+timeTableDate+" ++ Author:"+author.length()+" ++ " );
-
 
         // check variables
         if (txtProgress != null && progressBar != null && txtAuthorAndDate != null) {

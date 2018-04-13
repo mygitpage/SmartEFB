@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +30,12 @@ public class FaqFragmentSection5 extends Fragment {
     // shared prefs
     SharedPreferences prefs;
 
+    // expand text list
+    String expandTextList = "";
+
+
     @Override
-    public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
         viewFragmentSection5 = layoutInflater.inflate(R.layout.fragment_faq_section_5, null);
 
@@ -42,14 +48,14 @@ public class FaqFragmentSection5 extends Fragment {
 
 
     @Override
-    public void onViewCreated (View view, @Nullable Bundle saveInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle saveInstanceState) {
 
         super.onViewCreated(view, saveInstanceState);
 
         fragmentFaqSectionFiveContext = getActivity().getApplicationContext();
 
         // open sharedPrefs
-        prefs =  fragmentFaqSectionFiveContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentFaqSectionFiveContext.MODE_PRIVATE);
+        prefs = fragmentFaqSectionFiveContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentFaqSectionFiveContext.MODE_PRIVATE);
 
         // first ask to server for new data, when case is not closed!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
@@ -57,11 +63,14 @@ public class FaqFragmentSection5 extends Fragment {
             Intent startServiceIntent = new Intent(fragmentFaqSectionFiveContext, ExchangeServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
-            startServiceIntent.putExtra("dbid",0L);
-            startServiceIntent.putExtra("receiverBroadcast","");
+            startServiceIntent.putExtra("dbid", 0L);
+            startServiceIntent.putExtra("receiverBroadcast", "");
             // start service
             fragmentFaqSectionFiveContext.startService(startServiceIntent);
         }
+
+        // display the view
+        displayFaqSectionFiveView("");
     }
 
 
@@ -89,6 +98,10 @@ public class FaqFragmentSection5 extends Fragment {
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
+                // expand faq strings
+                String tmpLessOrMoreText = intentExtras.getString("less_or_more_text", "0");
+                String tmpExpandTextList = intentExtras.getString("expand_text_list", "");
+                String tmpLinkTextHash = intentExtras.getString("link_text_hash", "");
 
                 if (tmpSettings != null && tmpSettings.equals("1") && tmpCaseClose != null && tmpCaseClose.equals("1")) {
                     // case close! -> show toast
@@ -98,9 +111,46 @@ public class FaqFragmentSection5 extends Fragment {
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
+                } else if (tmpLessOrMoreText != null && tmpLessOrMoreText.equals("1") && tmpExpandTextList != null && tmpLinkTextHash != null) {
+
+                    if (tmpExpandTextList.contains(tmpLinkTextHash + ";")) {
+                        tmpExpandTextList = tmpExpandTextList.replace(tmpLinkTextHash + ";", "");
+                    } else {
+                        tmpExpandTextList = tmpExpandTextList.concat(tmpLinkTextHash + ";");
+                    }
+
+                    expandTextList = tmpExpandTextList;
+
+                    // display view of expand text
+                    displayFaqSectionFiveView(tmpExpandTextList);
                 }
             }
         }
     };
+
+
+    void displayFaqSectionFiveView(String tmpExpandTextList) {
+
+        String tmpText;
+
+        TextView textViewAnswer;
+
+        Bundle returnBundle;
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // get question/ answer set 1 section 5
+        tmpText = fragmentFaqSectionFiveContext.getString(R.string.faq_section5_answer1);
+        textViewAnswer = (TextView) viewFragmentSection5.findViewById(R.id.faq_section5_answer1);
+        returnBundle = ((ActivityFaq) getActivity()).checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList);
+        if (returnBundle.getBoolean("generate")) {
+            Spanned tmpLinkText = ((ActivityFaq) getActivity()).makeLinkForMoreOrLessText(returnBundle.getString("substring"), expandTextList, returnBundle.getString("hash_value"));
+            textViewAnswer.setText(tmpLinkText);
+            textViewAnswer.setMovementMethod(LinkMovementMethod.getInstance());
+        } else {
+            textViewAnswer.setText(tmpText);
+        }
+
+
+    }
 
 }

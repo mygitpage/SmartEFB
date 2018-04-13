@@ -8,10 +8,14 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -36,6 +40,9 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
     // for prefs
     private SharedPreferences prefs;
 
+    // view
+    View emergencyHelpView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,8 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_efb_emergencyhelp);
+
+        emergencyHelpView = this.findViewById(android.R.id.content);
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
@@ -65,6 +74,9 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
             // start service
             getApplicationContext().startService(startServiceIntent);
         }
+
+        // show some view elements
+        displaySomeViewElements();
     }
 
 
@@ -170,6 +182,33 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
             }
         }
     };
+
+
+    private void displaySomeViewElements () {
+
+        String tmpText = "";
+        TextView textViewOnlineHint;
+        Spanned linkToOnlineConsultation;
+
+        // get link and text for efb online
+        tmpText = ActivityEmergencyHelp.this.getString(R.string.emergencyHelpEmergencyEFBCallEmail);
+        textViewOnlineHint = (TextView) emergencyHelpView.findViewById(R.id.emergencyHelpEmergencyEFBCallEmail);
+        linkToOnlineConsultation = Html.fromHtml(tmpText);
+        textViewOnlineHint.setText(linkToOnlineConsultation);
+        textViewOnlineHint.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+        // get link and text for care our souls mail
+        tmpText = ActivityEmergencyHelp.this.getString(R.string.emergencyHelpEmergencyCareOfSoulsEmail);
+        textViewOnlineHint = (TextView) emergencyHelpView.findViewById(R.id.emergencyHelpEmergencyCareOfSoulsEmail);
+        linkToOnlineConsultation = Html.fromHtml(tmpText);
+        textViewOnlineHint.setText(linkToOnlineConsultation);
+        textViewOnlineHint.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+
+
+    }
 
 
     @Override

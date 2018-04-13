@@ -886,13 +886,13 @@
 
         <!-- Fragment Section Three -->
             <string name="faq_section3_question1">Mit welchen Fragen kann ich mich an eine Erziehungsberatungsstelle wenden?</string>
-            <string name="faq_section3_answer1"></string>
+            <string name="faq_section3_answer1">Das Beratungsspektrum reicht sehr weit. Es wenden sich Familien, Eltern, Jugendliche oder Kinder an uns. </string>
             <string name="faq_section3_question2">Wie schnell erhalte ich einen Termin?</string>
             <string name="faq_section3_answer2"></string>
             <string name="faq_section3_question3">Kostet Erziehungsberatung Geld?</string>
-            <string name="faq_section3_answer3"></string>
+            <string name="faq_section3_answer3">Nein. Die Beratung in der Erziehungs- und Familienberatungsstelle Lichtblick ist für Sie kostenlos. Die Finanzierung geschieht über den Landkreis Potsdam-Mittelmark.</string>
             <string name="faq_section3_question4">Ist die Beratung anonym?</string>
-            <string name="faq_section3_answer4"></string>
+            <string name="faq_section3_answer4">Ja. Sie müssen Ihren Namen nicht mitteilen. Sie können in der Erziehungs- und Familienberatungsstelle Lichtblick einen Beratungstermin vereinbaren, ohne Ihren Namen mitzuteilen. Sie haben auch die Möglichkeit die Onlineberatung unter &lt;br />&lt;a href="https://beratungsstelle-lichtblick.beranet.info/">Online Beratung&lt;/a> zu nutzen.&lt;br /></string>
             <string name="faq_section3_question5">Wer kann sich an eine Erziehungsberatungsstelle wenden?</string>
             <string name="faq_section3_answer5"></string>
             <string name="faq_section3_question6">Wie lange dauert eine Beratung?</string>
@@ -901,18 +901,18 @@
 
         <!-- Fragment Section Four -->
             <string name="faq_section4_question1">Wo finde ich die Erziehungsberatungsstellen?</string>
-            <string name="faq_section4_answer1"></string>
+            <string name="faq_section4_answer1">Die Beratungsstelle Lichtblick hat zwei Standorte im Landkreis Potsdam-Mittelmark, an die Sie sich wenden können:&lt;br />&lt;br />Beratungsstelle Lichtblick&lt;br />Am Bahnhof 11&lt;br />14806 Bad Belzig&lt;br />Tel.: 033841 44 95 22&lt;br />lichtblick.badbelzig@gfb-potsdam.de&lt;br />&lt;br />oder&lt;br />&lt;br />Beratungsstelle Lichtblick&lt;br />Bernhard-Kellermann-Straße 17&lt;br />14542 Werder&lt;br />Tel.: 03327 57 39 31&lt;br />lichtblick.werder@gfb-potsdam.de&lt;br />&lt;br />Wenn Sie eine Beratungsstelle in Ihrer Stadt oder Landkreis suchen, fragen Sie beim örtlichen Jugendamt nach.</string>
             <string name="faq_section4_question2">Wer ist der Träger der Erziehungsberatungsstellen?</string>
-            <string name="faq_section4_answer2"></string>
+            <string name="faq_section4_answer2">Die Erziehungs- und Familienberatungsstellen Lichtblick sind in der Trägerschaft der gemeinnützigen Gesellschaft zur Förderung Brandenburger Kinder und Jugendlicher (GFB). Weitere Informationen finden Sie auf &lt;br />&lt;a href="http://www.gfb-potsdam.de">www.gfb-potsdam.de&lt;/a>&lt;br /></string>
             <string name="faq_section4_question3">Welche Rechtsgrundlage gibt es für die Beratungsstellen?</string>
-            <string name="faq_section4_answer3"></string>
+            <string name="faq_section4_answer3">Die Erziehungsberatung ist eine Pflichtaufgabe des Jugendamtes gemäß §28 SGB 8 (Achtes Sozialgesetzbuch). Das Jugendamt kann diese Aufgaben auf andere Institutionen per Vertrag übertragen. </string>
             <string name="faq_section4_question4">Welchen Qualifikation haben die Beraterinnen und Berater?</string>
-            <string name="faq_section4_answer4"></string>
+            <string name="faq_section4_answer4">In der Erziehungs- und Familienberatungsstelle Lichtblick arbeiten Menschen mit sehr unterschiedlichen Fachrichtungen. Dazu gehören beispielsweise Systemische Einzel-, Paar - und FamilientherapeutIn, Psychologe/ Psychologin oder Kinder- und Jugendlichenpsychotherapeutin.&lt;br />In anderen Erziehungs- und Familienberatungsstellen werden wahrsheinlich andere, gleiche oder ähnliche Fachrichtungen vertreten sein.</string>
 
         <!-- End Fragment Section Four -->
 
         <!-- Fragment Section Five -->
-            <string name="faq_section5_question1">Hat mein Kind eine Lese- Rechtschreibschwäche (LRS)?</string>
+            <string name="faq_section5_question1">Hat mein Kind eine Lese- und Rechtschreibschwäche (LRS)?</string>
             <string name="faq_section5_answer1"></string>
             <string name="faq_section5_question2">Hat mein Kind eine Dyskalkulie?</string>
             <string name="faq_section5_answer2"></string>
@@ -1165,15 +1165,15 @@
             <string name="emergencyHelpFireCallNumber">112</string>
             <string name="emergencyHelpFireCallNumberExplainText">Im Falle eines Brandes wählen Sie die Nummer der Feuerwehr.</string>
             <string name="emergencyHelpEmergencyChildCallText">Kinder- und Jugendnotdienst</string>
-            <string name="emergencyHelpEmergencyChildCallNumber">000000/12345678</string>
-            <string name="emergencyHelpEmergencyChildCallExplainText">Der Kinder- und Jugendnotdienst kann Ihnen bei akuten Krisen im familiären Umfeld, beispielsweise Gewalt, Obdachlosigkeit, etc., helfen.</string>
+            <string name="emergencyHelpEmergencyChildCallNumber">033209 - 20369</string>
+            <string name="emergencyHelpEmergencyChildCallExplainText">Der Kinder- und Jugendnotdienst (Friedrich-Ebert-Straße 31, 14548 Caputh) kann Ihnen bei akuten Krisen im familiären Umfeld, beispielsweise Gewalt, Obdachlosigkeit, etc., helfen. Die angegebene Nummer gilt allerdings nur für den Landkreis Potsdam-Mittelmark. In allen anderen Regonen wählen Sie bitte die 110.</string>
             <string name="emergencyHelpEmergencyCareOfSoulsHeadline">Telefonseelsorge</string>
             <string name="emergencyHelpEmergencyCareOfSoulsExplainText">Bei psychischen Problemen können Sie sich rund um die Uhr telefonisch oder per Email an die Telefonseelsorge wenden.</string>
-            <string name="emergencyHelpEmergencyCareOfSoulsNumber">0800/12345678</string>
-            <string name="emergencyHelpEmergencyCareOfSoulsEmail">seelsorge@seelsorge.de</string>
+            <string name="emergencyHelpEmergencyCareOfSoulsNumber">0800/111 0 111</string>
+            <string name="emergencyHelpEmergencyCareOfSoulsEmail">&lt;a href="https://ts-im-internet.de/">Mail-Beratung&lt;/a></string>
             <string name="emergencyHelpEmergencyEFBCallHeadline">Onlineberatung</string>
-            <string name="emergencyHelpEmergencyEFBCallExplainText">Sie können uns (Erziehungs- und Familienbratungsstelle \"Lichtblick\" zu allen Fragen rund um Erziehungs- und Familienfragen auch per Mail erreichen.</string>
-            <string name="emergencyHelpEmergencyEFBCallEmail">beratung@beratung.de</string>
+            <string name="emergencyHelpEmergencyEFBCallExplainText">Sie können uns (Erziehungs- und Familienbratungsstelle) \"Lichtblick\" zu allen Fragen rund um Erziehungs- und Familienfragen auch Online erreichen.</string>
+            <string name="emergencyHelpEmergencyEFBCallEmail">&lt;a href="https://beratungsstelle-lichtblick.beranet.info/">Online-Beratung&lt;/a></string>
         <!-- end emergency help -->
 
         <!-- help dialog -->

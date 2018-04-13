@@ -15,7 +15,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
-        <!-- FAQ: Warum sind Schaltflächen inaktiv? -->
+        <!-- FAQ: Lese- und Rechtschreibschwaeche -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,11 +35,12 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section5_answer1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section5_answer1"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>
@@ -52,7 +53,7 @@
             android:layout_marginRight="40dp"
             android:layout_marginBottom="20dp"/>
 
-        <!-- FAQ: Wozu brauche ich die Funktion Übergabebuch? -->
+        <!-- FAQ: Dyskalkulie -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,11 +73,12 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section5_answer2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section5_answer2"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>
@@ -89,10 +91,7 @@
             android:layout_marginRight="40dp"
             android:layout_marginBottom="20dp"/>
 
-
-
-
-        <!-- FAQ: Wozu brauche ich die Funktion Absprachen? -->
+        <!-- FAQ: ADHS -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -112,11 +111,12 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section5_answer3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section5_answer3"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>
@@ -130,7 +130,7 @@
             android:layout_marginBottom="20dp"/>
 
 
-        <!-- FAQ: Wozu brauche ich die Funktion Ziele? -->
+        <!-- FAQ: AWVS? -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -150,11 +150,12 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section5_answer4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section5_answer4"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>
@@ -167,7 +168,7 @@
             android:layout_marginRight="40dp"
             android:layout_marginBottom="20dp"/>
 
-        <!-- FAQ: Wozu brauche ich die Funktion Ziele? -->
+        <!-- FAQ: Trennung und Scheidung -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -187,11 +188,12 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/faq_section5_answer5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/colorPrimaryDark"
-            android:text="@string/faq_section5_answer5"
+            android:textColorLink="@color/colorPrimary"
             android:gravity="left"
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>

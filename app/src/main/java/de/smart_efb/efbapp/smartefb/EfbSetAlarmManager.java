@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.util.Log;
-
 import java.util.Calendar;
 import static android.content.Context.MODE_PRIVATE;
 
@@ -27,8 +25,6 @@ public class EfbSetAlarmManager {
     public EfbSetAlarmManager (Context mContext) {
 
         this.context = mContext;
-
-        Log.d("EfbSetAlarmManager -->", "New Object geneaerte!");
 
         // get the shared preferences
         prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);

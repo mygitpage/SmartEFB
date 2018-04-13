@@ -9,14 +9,12 @@ import android.os.CountDownTimer;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-
 import java.util.concurrent.TimeUnit;
 
 /**
