@@ -41,6 +41,9 @@ public class SettingsEfbFragmentD extends Fragment {
     // fragment view
     View viewFragmentD;
 
+    // object for remember meeting
+    EfbSetAlarmManager efbSetAlarmRemeberMeeting;
+
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
@@ -66,6 +69,9 @@ public class SettingsEfbFragmentD extends Fragment {
 
         prefs = fragmentContextD.getSharedPreferences("smartEfbSettings", fragmentContextD.MODE_PRIVATE);
         prefsEditor = prefs.edit();
+
+        // new alarm manager service for remember meeting
+        efbSetAlarmRemeberMeeting = new EfbSetAlarmManager(fragmentContextD);
 
         // show actual view
         displayActualView();
@@ -170,7 +176,6 @@ public class SettingsEfbFragmentD extends Fragment {
             showVisualChekcBox = true;
         }
 
-
         // check our goals on? -> show  notification signal check box for new event in our goals
         if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false)) {
             // get linaer layout and set visible
@@ -240,7 +245,6 @@ public class SettingsEfbFragmentD extends Fragment {
             TextView tmpHintTextNoVisualCheckBox = (TextView) viewFragmentD.findViewById(R.id.textViewInfoNoVisualChekcBoxPossible);
             tmpHintTextNoVisualCheckBox.setVisibility(View.VISIBLE);
         }
-
 
         // show hints for acoustics signals +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         
@@ -349,19 +353,13 @@ public class SettingsEfbFragmentD extends Fragment {
         }
         
 
-        
         if (!showAcousticChekcBox) {
             TextView tmpHintTextNoAcousitcCheckBox = (TextView) viewFragmentD.findViewById(R.id.textViewInfoNoAcousticsChekcBoxPossible);
             tmpHintTextNoAcousitcCheckBox.setVisibility(View.VISIBLE);
         }
-
-
-
     }
 
 
-
-    
     // onClickListener for check box visual signals
     public class checkBoxSettingVisualListener implements View.OnClickListener {
 
@@ -467,7 +465,7 @@ public class SettingsEfbFragmentD extends Fragment {
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberMeeting, true);
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, true);
                         // start alarm receiver for remember meeting
-                        setAlarmManagerForRememberMeeting();
+                        efbSetAlarmRemeberMeeting.setAlarmManagerForRememberMeeting();
                     }
                     prefsEditor.apply();
                     break;
@@ -482,13 +480,12 @@ public class SettingsEfbFragmentD extends Fragment {
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberSuggestion, true);
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true);
                         // start alarm receiver for remember meeting
-                        setAlarmManagerForRememberMeeting();
+                        efbSetAlarmRemeberMeeting.setAlarmManagerForRememberMeeting();
                     }
                     prefsEditor.apply();
                     break;
 
             }
-
 
             // show view
             displayActualView();
@@ -496,8 +493,6 @@ public class SettingsEfbFragmentD extends Fragment {
             // refresh fragments view
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.detach(fragmentSettingsEfbDFragmentContext).attach(fragmentSettingsEfbDFragmentContext).commit();
-
-
         }
     }
     
@@ -613,42 +608,9 @@ public class SettingsEfbFragmentD extends Fragment {
                     }
                     prefsEditor.commit();
                     break;
-
             }
-
-
         }
     }
-
-
-
-    // set alarmmanager for remember meeting; same function in MainActivity and EfbXmlParser!
-    void setAlarmManagerForRememberMeeting () {
-
-        PendingIntent pendingIntentRememberMeeting;
-
-        Long firstStartRememberMeeting = System.currentTimeMillis() + 1000; // start point for meeting remember function
-        Long repeatingMeetingRemember = 24L * 60L * 60L * 1000L; // one day
-
-        // get reference to alarm manager
-        AlarmManager manager = (AlarmManager) fragmentContextD.getSystemService(Context.ALARM_SERVICE);
-
-        // create intent for backcall to broadcast receiver
-        Intent rememberMeetingAlarmIntent = new Intent(fragmentContextD, AlarmReceiverMeeting.class);
-
-        // create call (pending intent) for alarm manager
-        pendingIntentRememberMeeting = PendingIntent.getBroadcast(fragmentContextD, 0, rememberMeetingAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // set alarm
-        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstStartRememberMeeting, repeatingMeetingRemember, pendingIntentRememberMeeting);
-    }
-
-
-
-
-
-
-
 
 
 }
