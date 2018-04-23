@@ -912,8 +912,8 @@
         <!-- End Fragment Section Four -->
 
         <!-- Fragment Section Five -->
-            <string name="faq_section5_question1">Hat mein Kind eine Lese- und Rechtschreibschwäche (LRS)?</string>
-            <string name="faq_section5_answer1"></string>
+            <string name="faq_section5_question1">Hat mein Kind eine Lese- und Rechtschreibschwäche/ Legasthenie (LRS)?</string>
+            <string name="faq_section5_answer1">Diese Frage lässt sich nur durch eine umfassende Untersuchung beantworten. Einige Kinder haben eine vorübergehende Schwäche im Lesen und Schreben lernen. Bei anderen stellt sich diese als dauerhaft dar. Diese Kinder verarbeiten häufig Sinneseindrücke anders und können dadurch Lesen und Schreben nicht bzw. schlechter als der Durchschnitt erlernen. Für die Diagnostik und eine mögliche Therapie sollten Sie eine entsprechende Beratungsstelle aufsuchen. Die Beratungsstelle \"Lichtblick\" kann Ihnen hier weiter helfen.</string>
             <string name="faq_section5_question2">Hat mein Kind eine Dyskalkulie?</string>
             <string name="faq_section5_answer2"></string>
             <string name="faq_section5_question3">Was ist ADHS?</string>
@@ -1172,7 +1172,7 @@
             <string name="emergencyHelpEmergencyCareOfSoulsNumber">0800/111 0 111</string>
             <string name="emergencyHelpEmergencyCareOfSoulsEmail">&lt;a href="https://ts-im-internet.de/">Mail-Beratung&lt;/a></string>
             <string name="emergencyHelpEmergencyEFBCallHeadline">Onlineberatung</string>
-            <string name="emergencyHelpEmergencyEFBCallExplainText">Sie können uns (Erziehungs- und Familienbratungsstelle) \"Lichtblick\" zu allen Fragen rund um Erziehungs- und Familienfragen auch Online erreichen.</string>
+            <string name="emergencyHelpEmergencyEFBCallExplainText">Sie können uns (Erziehungs- und Familienbratungsstelle \"Lichtblick\") zu allen Fragen rund um Erziehung und Familie auch Online erreichen.</string>
             <string name="emergencyHelpEmergencyEFBCallEmail">&lt;a href="https://beratungsstelle-lichtblick.beranet.info/">Online-Beratung&lt;/a></string>
         <!-- end emergency help -->
 
