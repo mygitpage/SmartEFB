@@ -115,5 +115,9 @@ public class SettingsEfbFragmentC extends Fragment {
         // link item link to faq question for app
         TextView textViewConnectedWithServerIntroText = (TextView) contentFragmentC.findViewById(R.id.settingsConnectToServerSucsessfullIntro);
         textViewConnectedWithServerIntroText.setMovementMethod(LinkMovementMethod.getInstance());
+
+        // get textview for Link to data privacy external
+        TextView tmpLinkDataprivacy = (TextView) contentFragmentC.findViewById(R.id.settingsEfbFragmentCDataPrivacyLink);
+        tmpLinkDataprivacy.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

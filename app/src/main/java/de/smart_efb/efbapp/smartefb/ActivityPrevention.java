@@ -428,7 +428,9 @@ public class ActivityPrevention extends AppCompatActivity {
             }
 
             // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"), tmpExpandTextList, tmpLinkTextHash);
+            String tmpCommand = intentExtras.getString("com");
+            if (tmpCommand == null) {tmpCommand = "";}
+            executeIntentCommand (tmpCommand, tmpExpandTextList, tmpLinkTextHash);
         }
     }
 

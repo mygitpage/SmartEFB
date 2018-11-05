@@ -238,6 +238,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         int tmpDbId = 0;
         int tmpNumberinListView = 0;
         Boolean tmpEvalNext = false;
+        String tmpCommand = "";
 
         if (intentExtras != null) {
             // get data that comes with extras
@@ -245,15 +246,15 @@ public class ActivityOurGoals extends AppCompatActivity {
             tmpNumberinListView = intentExtras.getInt("arr_num",0);
             tmpEvalNext = intentExtras.getBoolean("eval_next");
             // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"), tmpDbId, tmpNumberinListView, tmpEvalNext);
+            tmpCommand = intentExtras.getString("com");
+            if (tmpCommand == null) {tmpCommand="";}
+            executeIntentCommand (tmpCommand, tmpDbId, tmpNumberinListView, tmpEvalNext);
         }
     }
 
 
     // execute the commands that comes from link or intend
     public void executeIntentCommand (String command, int tmpDbId, int tmpNumberinListView, Boolean tmpEvalNext) {
-
-        String tmpTabTitle = "";
 
         if (command.equals("show_comment_for_jointly_goal")) { // Show fragment all comments for jointly goal
 
@@ -879,7 +880,7 @@ public class ActivityOurGoals extends AppCompatActivity {
     private void lookNewEntryOnTabZero () {
 
         // look for new entrys in db on tab zero
-        if (myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 || (subfunction_goals_comment && myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 )) {
+        if (myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "jointly") > 0 || (subfunction_goals_comment && myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 )) {
             infoNewEntryOnTabZero = true;
             infoTextNewEntryPostFixTabZeroTitle = " " + this.getResources().getString(R.string.newEntryText);
         }
@@ -894,7 +895,7 @@ public class ActivityOurGoals extends AppCompatActivity {
     private void lookNewEntryOnTabOne () {
 
         // look for new entrys in db on tab one
-        if ((subfunction_goals_debetable && myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0) ||  (subfunction_goals_debetablecomment && myDb.getCountAllNewEntryOurGoalsDebetableGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0)) {
+        if ((subfunction_goals_debetable && myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis()), "debetable") > 0) ||  (subfunction_goals_debetablecomment && myDb.getCountAllNewEntryOurGoalsDebetableGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0)) {
             infoNewEntryOnTabOne = true;
             infoTextNewEntryPostFixTabOneTitle = " "+ this.getResources().getString(R.string.newEntryText);
         }

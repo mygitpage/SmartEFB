@@ -130,7 +130,7 @@
             android:layout_marginBottom="20dp"/>
 
 
-        <!-- FAQ: AWVS? -->
+        <!-- FAQ: AVWS? -->
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -198,14 +198,6 @@
             android:layout_marginLeft="3dp"
             android:layout_marginBottom="20dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"/>
-
-    </LinearLayout>
+     </LinearLayout>
 
 </ScrollView>

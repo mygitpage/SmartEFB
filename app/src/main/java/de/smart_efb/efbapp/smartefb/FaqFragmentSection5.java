@@ -150,7 +150,57 @@ public class FaqFragmentSection5 extends Fragment {
             textViewAnswer.setText(tmpText);
         }
 
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // get question/ answer set 2 section 5
+        tmpText = fragmentFaqSectionFiveContext.getString(R.string.faq_section5_answer2);
+        textViewAnswer = (TextView) viewFragmentSection5.findViewById(R.id.faq_section5_answer2);
+        returnBundle = ((ActivityFaq) getActivity()).checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList);
+        if (returnBundle.getBoolean("generate")) {
+            Spanned tmpLinkText = ((ActivityFaq) getActivity()).makeLinkForMoreOrLessText(returnBundle.getString("substring"), expandTextList, returnBundle.getString("hash_value"));
+            textViewAnswer.setText(tmpLinkText);
+            textViewAnswer.setMovementMethod(LinkMovementMethod.getInstance());
+        } else {
+            textViewAnswer.setText(tmpText);
+        }
 
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // get question/ answer set 3 section 5
+        tmpText = fragmentFaqSectionFiveContext.getString(R.string.faq_section5_answer3);
+        textViewAnswer = (TextView) viewFragmentSection5.findViewById(R.id.faq_section5_answer3);
+        returnBundle = ((ActivityFaq) getActivity()).checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList);
+        if (returnBundle.getBoolean("generate")) {
+            Spanned tmpLinkText = ((ActivityFaq) getActivity()).makeLinkForMoreOrLessText(returnBundle.getString("substring"), expandTextList, returnBundle.getString("hash_value"));
+            textViewAnswer.setText(tmpLinkText);
+            textViewAnswer.setMovementMethod(LinkMovementMethod.getInstance());
+        } else {
+            textViewAnswer.setText(tmpText);
+        }
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // get question/ answer set 4 section 5
+        tmpText = fragmentFaqSectionFiveContext.getString(R.string.faq_section5_answer4);
+        textViewAnswer = (TextView) viewFragmentSection5.findViewById(R.id.faq_section5_answer4);
+        returnBundle = ((ActivityFaq) getActivity()).checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList);
+        if (returnBundle.getBoolean("generate")) {
+            Spanned tmpLinkText = ((ActivityFaq) getActivity()).makeLinkForMoreOrLessText(returnBundle.getString("substring"), expandTextList, returnBundle.getString("hash_value"));
+            textViewAnswer.setText(tmpLinkText);
+            textViewAnswer.setMovementMethod(LinkMovementMethod.getInstance());
+        } else {
+            textViewAnswer.setText(tmpText);
+        }
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // get question/ answer set 5 section 5
+        tmpText = fragmentFaqSectionFiveContext.getString(R.string.faq_section5_answer5);
+        textViewAnswer = (TextView) viewFragmentSection5.findViewById(R.id.faq_section5_answer5);
+        returnBundle = ((ActivityFaq) getActivity()).checkAndGenerateMoreOrLessStringLink(tmpText, tmpExpandTextList);
+        if (returnBundle.getBoolean("generate")) {
+            Spanned tmpLinkText = ((ActivityFaq) getActivity()).makeLinkForMoreOrLessText(returnBundle.getString("substring"), expandTextList, returnBundle.getString("hash_value"));
+            textViewAnswer.setText(tmpLinkText);
+            textViewAnswer.setMovementMethod(LinkMovementMethod.getInstance());
+        } else {
+            textViewAnswer.setText(tmpText);
+        }
     }
 
 }

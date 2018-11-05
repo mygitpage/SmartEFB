@@ -55,10 +55,6 @@ public class ActivityMessage extends AppCompatActivity {
     Boolean contactModus = false; // true-> app is not associated with a case on server -> contact is anonymous
     Boolean clientModus = false; // true-> app is connect with server and associated with a csae
 
-    // one day in milliseconds
-    final Long oneDayInMills = 86400000L;
-
-    
     // reference to dialog settings
     AlertDialog alertDialogMessage;
 

@@ -280,7 +280,7 @@ public class ActivityMeeting extends AppCompatActivity {
         // Extras from intent that holds data
         Bundle intentExtras = null;
 
-        // meeting id for cancele meeting
+        // meeting id for cancle meeting
         Long tmpMeetingId = 0L;
 
         // call super
@@ -295,7 +295,9 @@ public class ActivityMeeting extends AppCompatActivity {
             tmpMeetingId = intentExtras.getLong("meeting_id",0);
 
             // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"), tmpMeetingId);
+            String tmpCommand = intentExtras.getString("com");
+            if (tmpCommand == null) {tmpCommand="";}
+            executeIntentCommand (tmpCommand, tmpMeetingId);
         }
     }
 

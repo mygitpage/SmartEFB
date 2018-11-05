@@ -3,6 +3,8 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -55,8 +57,8 @@ public class EfbXmlParser {
         returnMap = new HashMap<String, String>();
 
         returnMap.put("Error", "0");
+        returnMap.put("ErrorCommunication", "0");
 
-        returnMap.put("MainOrder", "");
         returnMap.put("ErrorText", "");
         returnMap.put("ClientId", "");
         returnMap.put("ConnectionStatus", "0");
@@ -72,6 +74,8 @@ public class EfbXmlParser {
         returnMap.put("ConnectBookSettingsMessageShareEnable","0");
         returnMap.put("ConnectBookSettingsMessageShareDisable","0");
         returnMap.put("ConnectBookMessageNewOrSend","0"); // only set in ExchangeService to refresh connect book view
+        returnMap.put("ConnectBookMainActivityUpdateView", "0");
+        returnMap.put("ConnectBookSettingsMainActivityUpdateView", "0");
 
         returnMap.put("OurArrangement", "0");
         returnMap.put("OurArrangementNow", "0");
@@ -89,6 +93,11 @@ public class EfbXmlParser {
         returnMap.put("OurArrangementSettingsSketchCommentShareDisable","0");
         returnMap.put("OurArrangementSettingsSketchCommentShareEnable","0");
         returnMap.put("OurArrangementSettingsSketchCommentCountComment", "0");
+        returnMap.put("OurArrangementNowMainActivityUpdateView", "0");
+        returnMap.put("OurArrangementNowCommentMainActivityUpdateView", "0");
+        returnMap.put("OurArrangementSketchMainActivityUpdateView", "0");
+        returnMap.put("OurArrangementSketchCommentMainActivityUpdateView", "0");
+        returnMap.put("OurArrangementSettingsMainActivityUpdateView", "0");
 
         returnMap.put("OurGoals", "0");
         returnMap.put("OurGoalsJointlyNow", "0");
@@ -108,6 +117,11 @@ public class EfbXmlParser {
         returnMap.put("OurGoalsSettingsDebetableCommentShareDisable","0");
         returnMap.put("OurGoalsSettingsDebetableCommentShareEnable","0");
         returnMap.put("OurGoalsSettingsDebetableCommentCountComment", "0");
+        returnMap.put("OurGoalsJointlyMainActivityUpdateView", "0");
+        returnMap.put("OurGoalsJointlyCommentMainActivityUpdateView", "0");
+        returnMap.put("OurGoalsDebetableMainActivityUpdateView", "0");
+        returnMap.put("OurGoalsDebetableCommentMainActivityUpdateView", "0");
+        returnMap.put("OurGoalsSettingsMainActivityUpdateView", "0");
 
         returnMap.put("Meeting", "0");
         returnMap.put("MeetingSettings", "0");
@@ -120,24 +134,43 @@ public class EfbXmlParser {
         returnMap.put("MeetingCanceledClientSuggestionByCoach", "0");
         returnMap.put("MeetingFoundFromClientSuggestion", "0");
 
+        returnMap.put("MeetingNewMeetingMainActivityUpdateView", "0");
+        returnMap.put("MeetingCancelMeetingMainActivityUpdateView", "0");
+        returnMap.put("MeetingNewSuggestionMeetingMainActivityUpdateView", "0");
+        returnMap.put("MeetingCancelSuggestionMainActivityUpdateView", "0");
+        returnMap.put("MeetingFoundSuggestionMainActivityUpdateView", "0");
+        returnMap.put("MeetingNewInvitationMainActivityUpdateView", "0");
+        returnMap.put("MeetingInvitationFoundClientMainActivityUpdateView", "0");
+        returnMap.put("MeetingInvitationCancelMainActivityUpdateView", "0");
+        returnMap.put("MeetingSettingMainActivityUpdateView", "0");
+
         returnMap.put("TimeTable", "0");
         returnMap.put("TimeTableNewValue", "0");
         returnMap.put("TimeTableSettings","0");
-
-
+        returnMap.put("TimeTableNewValueMainActivityUpdateView", "0");
+        returnMap.put("TimeTableSettingMainActivityUpdateView","0");
 
         returnMap.put("MessagesMessage", "0");
         returnMap.put("MessageSettings", "0");
         returnMap.put("MessageMessageNewOrSend","0");
         returnMap.put("MessageSettingsMessageStopSendingEnable","0");
         returnMap.put("MessageSettingsMessageStopSendingDisable","0");
-
-
+        returnMap.put("MessagesMessageMainActivityUpdateView","0");
+        returnMap.put("MessagesSettingsMainActivityUpdateView","0");
 
         returnMap.put("Settings", "0");
         returnMap.put("SettingsOtherMenueItems","0");
         returnMap.put("InvolvedPerson","0");
         returnMap.put("Case_close", "0");
+
+        returnMap.put("PreventionPrevention","0");
+        returnMap.put("PreventionSettingMainActivityUpdateView", "0");
+        returnMap.put("FaqFaq","0");
+        returnMap.put("FaqSettingMainActivityUpdateView", "0");
+        returnMap.put("EmergencyEmergency","0");
+        returnMap.put("EmergencySettingMainActivityUpdateView", "0");
+        returnMap.put("SettingSetting","0");
+        returnMap.put("SettingSettingMainActivityUpdateView", "0");
     }
 
 
@@ -334,43 +367,20 @@ public class EfbXmlParser {
                         // delete all content from db tables (init process)
                         myDb.initDeleteAllContentFromTables();
 
-                        if (tmpServerTime.length() > 0) {
-                            globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
-                            // save last contact time with server in prefs
-                            prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
-                            prefsEditor.apply();
+                        // save global server time
+                        saveGlobalServerTime (tmpServerTime);
 
-                            returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
-                            returnMap.put("AskForTimeSuccessfull", "1");
-                        }
-                        else {
-                            globalServerTime = 0L;
-                            returnMap.put("ServerTimeInMills", "");
-                            returnMap.put("AskForTimeSuccessfull","0");
-                        }
                         returnMap.put("ClientId", tmpClientId);
-                        returnMap.put("MainOrder", "init");
                         returnMap.put("ConnectionStatus", "3");
                         returnMap.put("Error", "0");
                         returnMap.put("ErrorText", "");
                         readMoreXml = false;
                     }
                     else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Receive_Ok_Send)) { // data send and now receive data
-                        if (tmpServerTime.length() > 0) {
-                            globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
 
-                            // save last contact time with server in prefs
-                            prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
-                            prefsEditor.apply();
+                        // save global server time
+                        saveGlobalServerTime (tmpServerTime);
 
-                            returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
-                            returnMap.put("AskForTimeSuccessfull", "1");
-                        }
-                        else {
-                            globalServerTime = 0L;
-                            returnMap.put("ServerTimeInMills", "");
-                            returnMap.put("AskForTimeSuccessfull","0");
-                        }
                         returnMap.put("ClientId", tmpClientId);
                         returnMap.put("SendSuccessfull", "1");
                         readMoreXml = false;
@@ -381,7 +391,7 @@ public class EfbXmlParser {
                         readMoreXml = false;
 
                     }
-                    else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Error)) { // Error in main tag
+                    else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Error_Init) && tmpErrorText.length() > 0) { // Error in main tag
 
                         // write last error messages to prefs
                         prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText);
@@ -389,41 +399,24 @@ public class EfbXmlParser {
                         prefsEditor.putInt(ConstansClassSettings.namePrefsConnectingStatus, 1); // 0=connect to server; 1=no network available; 2=connection error; 3=connected
                         prefsEditor.apply();
 
-                        if (tmpServerTime.length() > 0) {
-                            globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
+                        // save global server time
+                        saveGlobalServerTime (tmpServerTime);
 
-                            // save last contact time with server in prefs
-                            prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
-                            prefsEditor.apply();
-
-                            returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
-                            returnMap.put("AskForTimeSuccessfull", "1");
-                        }
-                        else {
-                            globalServerTime = 0L;
-                            returnMap.put("ServerTimeInMills", "");
-                            returnMap.put("AskForTimeSuccessfull","0");
-                        }
                         returnMap.put("ClientId", "");
-                        returnMap.put("MainOrder", "error");
                         returnMap.put("ConnectionStatus", "1");
                         returnMap.put("Error", "1");
                         returnMap.put("ErrorText", tmpErrorText);
 
                         readMoreXml = false;
                     }
-                    else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForSendToServer_AskForTime) && tmpServerTime.length() > 0) {
 
-                        // set server time to return map
-                        globalServerTime = Long.valueOf(tmpServerTime) * 1000; // make mills
+                    else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Error_Communication) && tmpErrorText.length() > 0) {
 
-                        // save last contact time with server in prefs
-                        prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
-                        prefsEditor.apply();
+                        // save global server time
+                        saveGlobalServerTime (tmpServerTime);
 
-                        returnMap.put("AskForTimeSuccessfull","1");
-                        returnMap.put("ServerTimeInMills", tmpServerTime); // this is a string -> must convert to LONG!
-                        readMoreXml = false;
+                        returnMap.put("ErrorCommunication", "1");
+                        returnMap.put("ErrorText", tmpErrorText);
                     }
                 }
 
@@ -437,6 +430,25 @@ public class EfbXmlParser {
             // set error
             setErrorMessageInPrefs(36);
             e.printStackTrace();
+        }
+    }
+
+
+    void saveGlobalServerTime (String serverTimeInMills) {
+
+        if (serverTimeInMills.length() > 0) {
+            globalServerTime = Long.valueOf(serverTimeInMills) * 1000; // make mills
+            // save last contact time with server in prefs
+            prefsEditor.putLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, globalServerTime);
+            prefsEditor.apply();
+
+            returnMap.put("ServerTimeInMills", serverTimeInMills); // this is a string -> must convert to LONG!
+            returnMap.put("AskForTimeSuccessfull", "1");
+        }
+        else {
+            globalServerTime = 0L;
+            returnMap.put("ServerTimeInMills", "");
+            returnMap.put("AskForTimeSuccessfull","0");
         }
     }
 
@@ -647,7 +659,7 @@ public class EfbXmlParser {
                     parseAnymore = false;
                 }
 
-                // look for end tag of ourarrangement now
+                // look for end tag of our arrangement now
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurArrangement_Now)) {
                         // check all data for arrangement now correct?
@@ -670,9 +682,10 @@ public class EfbXmlParser {
 
                                 prefsEditor.apply();
 
-                                // refresh activity ourarrangement and fragement now
+                                // refresh activity our arrangement and fragement now
                                 returnMap.put("OurArrangement", "1");
                                 returnMap.put("OurArrangementNow", "1");
+                                returnMap.put("OurArrangementNowMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpServerId > 0) { // our arrangement order -> delete entry?
 
@@ -691,6 +704,7 @@ public class EfbXmlParser {
                                 // refresh activity ourarrangement and fragement now
                                 returnMap.put("OurArrangement", "1");
                                 returnMap.put("OurArrangementNow", "1");
+                                returnMap.put("OurArrangementNowMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
 
@@ -852,9 +866,10 @@ public class EfbXmlParser {
                                 // insert new comment in DB
                                 myDb.insertRowOurArrangementComment(tmpCommentText, tmpAuthorName,  globalServerTime, tmpUploadTime, tmpLocalCommentTime, tmpBlockId, true, tmpArrangementTime, 4, tmpServerIdArrangement, 1);
 
-                                // refresh activity ourarrangement and fragment now comment
+                                // refresh activity our arrangement and fragment now comment
                                 returnMap.put("OurArrangement", "1");
                                 returnMap.put("OurArrangementNowComment", "1");
+                                returnMap.put("OurArrangementNowCommentMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpLocalCommentTime > 0 && globalServerTime > 0 && tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpBlockId.length() > 0) {
                                 // now comment order -> update
@@ -868,6 +883,7 @@ public class EfbXmlParser {
                                 // refresh activity ourarrangement and fragment now comment
                                 returnMap.put("OurArrangement", "1");
                                 returnMap.put("OurArrangementNowComment", "1");
+                                returnMap.put("OurArrangementNowCommentMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) { // delete all comments; needed by init process
 
@@ -1060,6 +1076,7 @@ public class EfbXmlParser {
                                 // refresh activity ourarrangement and fragement sketch
                                 returnMap.put("OurArrangement", "1");
                                 returnMap.put("OurArrangementSketch", "1");
+                                returnMap.put("OurArrangementSketchMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpServerId > 0) { // our arrangement order -> delete entry?
 
@@ -1078,6 +1095,7 @@ public class EfbXmlParser {
                                 // refresh activity ourarrangement and fragement sketch
                                 returnMap.put("OurArrangement", "1");
                                 returnMap.put("OurArrangementSketch", "1");
+                                returnMap.put("OurArrangementSketchMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
 
@@ -1300,6 +1318,7 @@ public class EfbXmlParser {
                                 // refresh activity ourarrangement and fragment sketch comment
                                 returnMap.put("OurArrangement","1");
                                 returnMap.put("OurArrangementSketchComment","1");
+                                returnMap.put("OurArrangementSketchCommentMainActivityUpdateView", "1");
 
                             }
                             else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpCommentLocalTime > 0 && globalServerTime > 0 && tmpArrangementTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpCommentLocalTime > 0 && tmpServerIdArrangement >= 0 && tmpBlockId.length() > 0) {
@@ -1314,6 +1333,7 @@ public class EfbXmlParser {
                                 // refresh activity ourarrangement and fragment sketch comment
                                 returnMap.put("OurArrangement","1");
                                 returnMap.put("OurArrangementSketchComment","1");
+                                returnMap.put("OurArrangementSketchCommentMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) { // delete all comments for sketch arrangements; needed by init process
 
@@ -1725,6 +1745,11 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // our arrangement settings order -> update?
 
+                                // update main view, only when our arrangement was off and turn to on!
+                                if (!prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false) && tmpArrangementOnOff || prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, false) && !tmpArrangementOnOff) {
+                                    returnMap.put("OurArrangementSettingsMainActivityUpdateView", "1");
+                                }
+
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurArrangement, tmpArrangementOnOff); // turn function our arrangement on/off
                                 prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, tmpArrangementSketchOnOff); // turn function our arrangement sketch on/off
                                 prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, tmpArrangementOldOnOff); // turn function our arrangement old on/off
@@ -1841,7 +1866,7 @@ public class EfbXmlParser {
                                 // refresh activity ourarrangement because settings have change
                                 returnMap.put("OurArrangement","1");
                                 returnMap.put("OurArrangementSettings","1");
-                            }
+                           }
                         }
                         parseAnymore = false;
                     }
@@ -2106,6 +2131,7 @@ public class EfbXmlParser {
                                 // refresh activity ourgoals and fragement jointly goals
                                 returnMap.put("OurGoals", "1");
                                 returnMap.put("OurGoalsJointlyNow", "1");
+                                returnMap.put("OurGoalsJointlyMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpServerId > 0) { // our goal order -> delete entry?
 
@@ -2124,6 +2150,7 @@ public class EfbXmlParser {
                                 // refresh activity ourgoals and fragement jointly goal now
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsJointlyNow","1");
+                                returnMap.put("OurGoalsJointlyMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
 
@@ -2301,6 +2328,7 @@ public class EfbXmlParser {
                                 // refresh activity ourgoals and fragment jointly comment
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsJointlyComment","1");
+                                returnMap.put("OurGoalsJointlyCommentMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && globalServerTime > 0 && tmpCommentLocalTime > 0 && tmpServerIdGoal >= 0 && tmpGoalTime > 0 && tmpBlockId.length() > 0) { // our goals jointly comment order -> update entry?
 
@@ -2313,6 +2341,7 @@ public class EfbXmlParser {
                                 // refresh activity ourgoals and fragment jointly comment
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsJointlyComment","1");
+                                returnMap.put("OurGoalsJointlyCommentMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) { // delete all comments; needed by init process
 
@@ -2531,11 +2560,11 @@ public class EfbXmlParser {
                     parseAnymore = false;
                 }
 
-                // look for end tag of our goals jointly comment
+                // look for end tag of our goals debetable comment
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals_DebetableComment)) {
 
-                        // check all data for arrangement now correct?
+                        // check all data for arrangement debetable comment correct?
                         if (!error) {
                             // our goals debetable comment order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && globalServerTime > 0 && tmpCommentLocaleTime > 0 && tmpGoalTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpServerIdGoal >= 0 && tmpBlockId.length() > 0) {
@@ -2549,6 +2578,7 @@ public class EfbXmlParser {
                                 // refresh activity ourgoals and fragment debetable comment
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsDebetableComment","1");
+                                returnMap.put ("OurGoalsDebetableCommentMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && globalServerTime > 0 && tmpCommentLocaleTime > 0 && tmpGoalTime > 0 && tmpResultQuestionA >= 0 && tmpResultQuestionB >= 0 && tmpResultQuestionC >= 0 && tmpServerIdGoal >= 0 && tmpBlockId.length() > 0) {
 
@@ -2561,6 +2591,7 @@ public class EfbXmlParser {
                                 // refresh activity ourgoals and fragment debetable comment
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsDebetableComment","1");
+                                returnMap.put ("OurGoalsDebetableCommentMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) { // delete all comments for debetable goals; needed by init process
 
@@ -2733,7 +2764,7 @@ public class EfbXmlParser {
                     parseAnymore = false;
                 }
 
-                // look for end tag of ourgoals jointly now
+                // look for end tag of ourgoals debetable now
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurGoals_DebetableNow)) {
                         // check all data for debetable goal now correct?
@@ -2761,6 +2792,7 @@ public class EfbXmlParser {
                                 // refresh activity ourgoals and fragement debetable goal now
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsDebetableNow","1");
+                                returnMap.put ("OurGoalsDebetableMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete) && tmpServerId > 0) { // our goal order -> delete entry?
 
@@ -2779,6 +2811,7 @@ public class EfbXmlParser {
                                 // refresh activity ourgoals and fragement jointly goal now
                                 returnMap.put ("OurGoals","1");
                                 returnMap.put ("OurGoalsDebetableNow","1");
+                                returnMap.put ("OurGoalsDebetableMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All) && tmpBlockId.length() > 0) {
 
@@ -3178,6 +3211,11 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // our goals settings order -> update?
 
+                                // update main view, only when our goals was off and turn to on or vice versa!
+                                if (!prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false) && tmpGoalsOnOff || prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, false) && !tmpGoalsOnOff) {
+                                    returnMap.put("OurGoalsSettingsMainActivityUpdateView", "1");
+                                }
+
                                 // write data to prefs
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_OurGoals, tmpGoalsOnOff); // turn function our goals on/off
                                 prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, tmpGoalsDebetableOnOff); // turn function our goals debetable on/off
@@ -3505,6 +3543,10 @@ public class EfbXmlParser {
 
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // meeting settings order -> update?
+
+                                if (!prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false) && tmpMeetingOnOff || prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false) && !tmpMeetingOnOff) {
+                                    returnMap.put("MeetingSettingMainActivityUpdateView", "1");
+                                }
 
                                 // write data meeting on off to prefs
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, tmpMeetingOnOff);
@@ -3973,7 +4015,7 @@ public class EfbXmlParser {
 
                                                 returnMap.put("MeetingCanceledMeetingByCoach", "1");
                                                 returnMap.put("Meeting", "1");
-
+                                                returnMap.put("MeetingCancelMeetingMainActivityUpdateView", "1");
                                             } else {
 
                                                 // init meeting parameters
@@ -4040,6 +4082,7 @@ public class EfbXmlParser {
 
                                                 returnMap.put("MeetingNewMeeting", "1");
                                                 returnMap.put("Meeting", "1");
+                                                returnMap.put("MeetingNewMeetingMainActivityUpdateView", "1");
                                             }
                                         }
                                         break;
@@ -4059,6 +4102,7 @@ public class EfbXmlParser {
 
                                                 returnMap.put("MeetingCanceledSuggestionByCoach", "1");
                                                 returnMap.put("Meeting", "1");
+                                                returnMap.put("MeetingCancelSuggestionMainActivityUpdateView", "1");
 
                                             } else  if (tmpMeetingFoundFromSuggestionAuthor.length() > 0 && tmpMeetingFoundFromSuggestionDate > 0) {
 
@@ -4073,6 +4117,7 @@ public class EfbXmlParser {
 
                                                 returnMap.put("MeetingFoundFromSuggestion", "1");
                                                 returnMap.put("Meeting", "1");
+                                                returnMap.put("MeetingFoundSuggestionMainActivityUpdateView", "1");
                                             }
                                             else {
 
@@ -4175,6 +4220,7 @@ public class EfbXmlParser {
 
                                                     returnMap.put("MeetingNewSuggestion", "1");
                                                     returnMap.put("Meeting", "1");
+                                                    returnMap.put("MeetingNewSuggestionMeetingMainActivityUpdateView", "1");
                                                 }
                                             }
                                         }
@@ -4200,6 +4246,7 @@ public class EfbXmlParser {
 
                                                 returnMap.put("MeetingCanceledClientSuggestionByCoach", "1");
                                                 returnMap.put("Meeting", "1");
+                                                returnMap.put("MeetingInvitationCancelMainActivityUpdateView", "1");
 
                                             } else  if (tmpMeetingFoundFromSuggestionAuthor.length() > 0 && tmpMeetingFoundFromSuggestionDate > 0) {
                                                 // check if meeting found from invitation for suggestion from client
@@ -4215,6 +4262,7 @@ public class EfbXmlParser {
 
                                                 returnMap.put("MeetingFoundFromClientSuggestion", "1");
                                                 returnMap.put("Meeting", "1");
+                                                returnMap.put("MeetingInvitationFoundClientMainActivityUpdateView", "1");
                                             }
                                             else {
 
@@ -4286,6 +4334,7 @@ public class EfbXmlParser {
 
                                                 returnMap.put("MeetingNewInvitationSuggestion", "1");
                                                 returnMap.put("Meeting", "1");
+                                                returnMap.put("MeetingNewInvitationMainActivityUpdateView", "1");
                                             }
                                         }
                                         break;
@@ -4497,6 +4546,7 @@ public class EfbXmlParser {
                                 // refresh activity connect book
                                 returnMap.put("ConnectBook","1");
                                 returnMap.put("ConnectBookMessageNewOrSend", "1");
+                                returnMap.put("ConnectBookMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageLocaleTime > 0 && tmpMessageRole >= 0) {
 
@@ -4512,6 +4562,7 @@ public class EfbXmlParser {
                                 // refresh activity connect book
                                 returnMap.put("ConnectBook","1");
                                 returnMap.put("ConnectBookMessageNewOrSend", "1");
+                                returnMap.put("ConnectBookMainActivityUpdateView", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
 
@@ -4662,6 +4713,10 @@ public class EfbXmlParser {
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update)) { // connect book settings order -> update?
 
+                                if (!prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_ConnectBook, false) && tmpConnectBookOnOff || prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_ConnectBook, false) && !tmpConnectBookOnOff) {
+                                    returnMap.put("ConnectBookSettingsMainActivityUpdateView", "1");
+                                }
+
                                 // in every case -> write data connect book on off to prefs
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_ConnectBook, tmpConnectBookOnOff);
                                 prefsEditor.apply();
@@ -4721,17 +4776,6 @@ public class EfbXmlParser {
     //
     // End read connect book -----------------------------------------------------------------------------------
     //
-
-
-
-
-
-
-
-
-
-
-
 
     //
     // Begin read message -----------------------------------------------------------------------------------
@@ -4914,6 +4958,7 @@ public class EfbXmlParser {
                                 // refresh activity message
                                 returnMap.put("MessagesMessage","1");
                                 returnMap.put("MessageMessageNewOrSend", "1");
+                                returnMap.put("MessagesMessageMainActivityUpdateView","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateAssociatedMessage) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageLocaleTime > 0 && tmpMessageRole >= 0) {
 
@@ -4931,6 +4976,7 @@ public class EfbXmlParser {
                                 // refresh activity message
                                 returnMap.put("MessagesMessage","1");
                                 returnMap.put("MessageMessageNewOrSend", "1");
+                                returnMap.put("MessagesMessageMainActivityUpdateView","1");
 
                             }
                             // message order -> new not associated entry?
@@ -4950,6 +4996,7 @@ public class EfbXmlParser {
                                 // refresh activity message
                                 returnMap.put("MessagesMessage","1");
                                 returnMap.put("MessageMessageNewOrSend", "1");
+                                returnMap.put("MessagesMessageMainActivityUpdateView","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateNotAssociatedMessage) && tmpMessage.length() > 0 && tmpAuthorName.length() > 0 && tmpMessageLocaleTime > 0 && tmpMessageRole >= 0) {
 
@@ -4967,6 +5014,7 @@ public class EfbXmlParser {
                                 // refresh activity message
                                 returnMap.put("MessagesMessage","1");
                                 returnMap.put("MessageMessageNewOrSend", "1");
+                                returnMap.put("MessagesMessageMainActivityUpdateView","1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Delete_All)) {
 
@@ -5006,7 +5054,6 @@ public class EfbXmlParser {
         int tmpMaxMessages = -1;
         int tmpMessageStopCommunication = -1;
         Long tmpMessagesCountCommentSinceTime = 0L;
-
 
         try {
             int eventType = xpp.next();
@@ -5118,6 +5165,11 @@ public class EfbXmlParser {
                                 returnMap.put("MessageSettings", "1");
 
                             } else if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_UpdateAssociatedMessage)) { // message settings order -> update?
+
+                                // update main view when messages switch on or off
+                                if (!prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, false) && tmpMessageOnOff || prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, false) && !tmpMessageOnOff) {
+                                    returnMap.put("MessagesSettingsMainActivityUpdateView","1");
+                                }
 
                                 // in every case -> write data message on off to prefs
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Message, tmpMessageOnOff);
@@ -5415,6 +5467,30 @@ public class EfbXmlParser {
                                     if (tmpClientName.length() > 0 && !prefs.getString(ConstansClassSettings.namePrefsClientName, "x").equals(tmpClientName)) {
                                         // write data to prefs
                                         prefsEditor.putString(ConstansClassSettings.namePrefsClientName, tmpClientName);
+                                    }
+
+                                     // update main view when prevention is switched on or off
+                                    if (!prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Prevention, false) && tmpPreventionOnOff || prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Prevention, false) && !tmpPreventionOnOff) {
+                                        returnMap.put("PreventionPrevention","1");
+                                        returnMap.put("PreventionSettingMainActivityUpdateView", "1");
+                                    }
+
+                                    // update main view when faq is switched on or off
+                                    if (!prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Faq, false) && tmpFaqOnOff || prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Faq, false) && !tmpFaqOnOff) {
+                                        returnMap.put("FaqFaq","1");
+                                        returnMap.put("FaqSettingMainActivityUpdateView", "1");
+                                    }
+
+                                    // update main view when emergency is switched on or off
+                                    if (!prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_EmergencyHelp, false) && tmpEmergencyOnOff || prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_EmergencyHelp, false) && !tmpEmergencyOnOff) {
+                                        returnMap.put("EmergencyEmergency","0");
+                                        returnMap.put("EmergencySettingMainActivityUpdateView", "0");
+                                    }
+
+                                    // update main view when setting is switched on or off
+                                    if (!prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Settings, false) && tmpSettingsOnOff || prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Settings, false) && !tmpSettingsOnOff) {
+                                        returnMap.put("SettingSetting","0");
+                                        returnMap.put("SettingSettingMainActivityUpdateView", "0");
                                     }
 
                                     prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_Prevention, tmpPreventionOnOff); // turn function prevention on/off
@@ -5750,6 +5826,10 @@ public class EfbXmlParser {
                         if (!error) {
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Update) ) { // settings order -> update?
 
+                                if (!prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_TimeTable, false) && tmpTimeTableOnOff || prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_TimeTable, false) && !tmpTimeTableOnOff) {
+                                    returnMap.put("TimeTableSettingMainActivityUpdateView","1");
+                                }
+
                                 // set time table on/off
                                 prefsEditor.putBoolean(ConstansClassMain.namePrefsMainMenueElementId_TimeTable, tmpTimeTableOnOff); // turn function time table on/off
 
@@ -5764,6 +5844,7 @@ public class EfbXmlParser {
                                         prefsEditor.putLong(ConstansClassTimeTable.namePrefsTimeTableModifiedDate, tmpChangeTime); // set change date for time table
                                         prefsEditor.putBoolean(ConstansClassTimeTable.namePrefsTimeTableNewValue, true); // set new value for time table to true
                                         returnMap.put("TimeTableNewValue", "1");
+                                        returnMap.put("TimeTableNewValueMainActivityUpdateView", "1");
                                     }
                                 }
                                 else if (!tmpTimeTableOnOff) { // time table is off -> set value to default

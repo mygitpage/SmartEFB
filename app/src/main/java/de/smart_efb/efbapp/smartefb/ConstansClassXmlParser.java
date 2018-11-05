@@ -800,8 +800,11 @@ class ConstansClassXmlParser {
     // xml name for element order "init"
     static final String xmlNameForOrder_Init = "init";
 
-    // xml name for element order "init"
-    static final String xmlNameForOrder_Error = "error";
+    // xml name for element order "init error"
+    static final String xmlNameForOrder_Error_Init = "error_init";
+
+    // xml name for element order "init error"
+    static final String xmlNameForOrder_Error_Communication = "error_communication";
 
     // xml name for element order "data"
     static final String xmlNameForOrder_Data = "data";
@@ -811,9 +814,6 @@ class ConstansClassXmlParser {
 
     // xml name for send ask new data from server
     static final String xmlNameForSendToServer_AskNewData = "asknewdata";
-
-    // xml name for send ask server for time
-    static final String xmlNameForSendToServer_AskForTime = "asktime";
 
     // xml name for send now comment of arrangement to server
     static final String xmlNameForSendToServer_CommentArrangement = "sendarrangementcomment";

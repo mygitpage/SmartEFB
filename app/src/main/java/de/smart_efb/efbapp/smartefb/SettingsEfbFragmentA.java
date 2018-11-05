@@ -19,6 +19,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.util.Xml;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -80,6 +81,9 @@ public class SettingsEfbFragmentA extends Fragment {
     // return information for change
     Map<String, String> returnMap;
 
+    // communication error text
+    String errorCommunicationText = "";
+
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
@@ -122,6 +126,7 @@ public class SettingsEfbFragmentA extends Fragment {
             // start service
             fragmentConnectToServerContext.startService(startServiceIntent);
         }
+
     }
 
 
@@ -159,12 +164,18 @@ public class SettingsEfbFragmentA extends Fragment {
             // Extras from intent that holds data
             Bundle intentExtras = null;
 
+            // set global error text communication
+            errorCommunicationText = "";
+
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
 
                 Boolean refreshView = false;
 
+                // get communcation error, when given
+                String tmpErrorCommunication = intentExtras.getString("ErrorCommunication", "0");
+                String tmpErrorCommunicationText = intentExtras.getString("ErrorText", "Test");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
@@ -178,10 +189,18 @@ public class SettingsEfbFragmentA extends Fragment {
                     toast.show();
 
                     refreshView = true;
+
+                } else if (tmpErrorCommunication != null && tmpErrorCommunication.equals("1") && tmpErrorCommunicationText != null && tmpErrorCommunicationText.length() > 0) {
+
+                    // copy error communication text to global
+                    errorCommunicationText = tmpErrorCommunicationText;
+
+                    // update the view
+                    displayActualConnectingInformation ();
                 }
 
                 if (refreshView) {
-                    // call getter-methode getMeetingTimeAndDate in ActivityMeeting to get connection status
+                    // call getter-methode getConnectionStatus in ActivitySettingsEfb to get connection status
                     connectingStatus = ((ActivitySettingsEfb)getActivity()).getConnectingStatus();
 
                     // refresh fragments view
@@ -473,7 +492,7 @@ public class SettingsEfbFragmentA extends Fragment {
                 }
             }
 
-            // show last contact time to server, when set!
+            // show last contact time to server, when set! and connection status, like communication error
             if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
                 LinearLayout linearLayoutLastContactContainer = (LinearLayout) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerLastContactTimeToServer);
                 linearLayoutLastContactContainer.setVisibility(View.VISIBLE);
@@ -483,6 +502,19 @@ public class SettingsEfbFragmentA extends Fragment {
                 String lastContactString = String.format(viewFragmentConnectToServer.getResources().getString(R.string.settingsSendingToServerLastContactTimeTimeText), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, System.currentTimeMillis()), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, System.currentTimeMillis()), "HH:mm"));
                 textViewLastContactTime.setText(lastContactString);
                 textViewLastContactTime.setVisibility(View.VISIBLE);
+
+                // show communication error
+                String lastCommunicationStatusServer;
+                TextView textViewCommunicationStatusServer = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerLastCommunicationStatusServer);
+                if (errorCommunicationText.length() > 0) {
+                    String preErrorCommunicationText = viewFragmentConnectToServer.getResources().getString(R.string.settingsSendingToServerLastCommunicationStatusTextPreErrorText);
+                    lastCommunicationStatusServer = preErrorCommunicationText + " " +errorCommunicationText;
+                }
+                else {
+                    lastCommunicationStatusServer = viewFragmentConnectToServer.getResources().getString(R.string.settingsSendingToServerLastCommunicationStatusTextOk);
+                }
+                textViewCommunicationStatusServer.setText(lastCommunicationStatusServer );
+                textViewCommunicationStatusServer.setVisibility(View.VISIBLE);
             }
         }
     }

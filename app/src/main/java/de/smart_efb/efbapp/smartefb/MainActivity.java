@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -248,26 +249,77 @@ public class MainActivity extends AppCompatActivity {
             // true-> update the main view
             Boolean updateMainView = false;
 
+            // true-> update the main menue background array
+            Boolean updateMainMenueArray = false;
+
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
+
                 // check intent order
                 // new connect book message
                 String tmpExtraConnectBook = intentExtras.getString("ConnectBook","0");
+                String tmpExtraConnectBookMainActivityUpdateView = intentExtras.getString("ConnectBookMainActivityUpdateView","0");
+                String tmpExtraConnectBookSettingsMainActivityUpdateView = intentExtras.getString("ConnectBookSettingsMainActivityUpdateView","0");
+
                 // new time table value
                 String tmpExtraTimeTable = intentExtras.getString("TimeTable","0");
+                String tmpExtraTimeTableSettingMainActivityUpdateView = intentExtras.getString("TimeTableSettingMainActivityUpdateView","0");
+                String tmpExtraTimeTableNewValueMainActivityUpdateView = intentExtras.getString("TimeTableNewValueMainActivityUpdateView","0");
+
                 // new meeting/ suggestion
                 String tmpExtraMeeting = intentExtras.getString("Meeting","0");
+                String tmpExtraMeetingNewMeetingMainActivityUpdateView = intentExtras.getString("MeetingNewMeetingMainActivityUpdateView","0");
+                String tmpExtraMeetingCancelMeetingMainActivityUpdateView = intentExtras.getString("MeetingCancelMeetingMainActivityUpdateView","0");
+                String tmpExtraMeetingNewSuggestionMainActivityUpdateView = intentExtras.getString("MeetingNewSuggestionMeetingMainActivityUpdateView","0");
+                String tmpExtraMeetingCancelSuggestionMainActivityUpdateView = intentExtras.getString("MeetingCancelSuggestionMainActivityUpdateView","0");
+                String tmpExtraMeetingFoundSuggestionMainActivityUpdateView = intentExtras.getString("MeetingFoundSuggestionMainActivityUpdateView","0");
+                String tmpExtraMeetingNewInvitationMainActivityUpdateView = intentExtras.getString("MeetingNewInvitationMainActivityUpdateView","0");
+                String tmpExtraMeetingInvitationFoundClientMainActivityUpdateView = intentExtras.getString("MeetingInvitationFoundClientMainActivityUpdateView","0");
+                String tmpExtraMeetingInvitationCancelMainActivityUpdateView = intentExtras.getString("MeetingInvitationCancelMainActivityUpdateView","0");
+                String tmpExtraMeetingSettingMainActivityUpdateView = intentExtras.getString("MeetingSettingMainActivityUpdateView","0");
+
                 // case is close or other menue items chnage
                 String tmpExtraSettings = intentExtras.getString("Settings","0");
                 //String tmpExtraSettingsOtherMenueItems = intentExtras.getString("SettingsOtherMenueItems","0");
                 String tmpExtraCaseClose = intentExtras.getString("Case_close","0");
-                // Settings arrangement change
+
+                // Settings arrangement or new arrangement change
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
-                //String tmpExtraOurArrangementSettings = intentExtras.getString("OurArrangementSettings","0");
-                // Settings goal change
+                String tmpExtraOurArrangementNowMainActivityUpdateView = intentExtras.getString("OurArrangementNowMainActivityUpdateView","0");
+                String tmpExtraOurArrangementNowCommentMainActivityUpdateView = intentExtras.getString("OurArrangementNowCommentMainActivityUpdateView","0");
+                String tmpExtraOurArrangementSketchMainActivityUpdateView = intentExtras.getString("OurArrangementSketchMainActivityUpdateView","0");
+                String tmpExtraOurArrangementSketchCommentMainActivityUpdateView = intentExtras.getString("OurArrangementSketchCommentMainActivityUpdateView","0");
+                String tmpExtraOurArrangementSettingsMainActivityUpdateView = intentExtras.getString("OurArrangementSettingsMainActivityUpdateView","0");
+
+                // Settings goal or new goals change
                 String tmpExtraOurGoal = intentExtras.getString("OurGoals","0");
-                //String tmpExtraOurGoalSettings = intentExtras.getString("OurGoalsSettings","0");
+                String tmpExtraOurGoalJointlyMainActivityUpdateView = intentExtras.getString("OurGoalsJointlyMainActivityUpdateView","0");
+                String tmpExtraOurGoalJointlyCommentMainActivityUpdateView = intentExtras.getString("OurGoalsJointlyCommentMainActivityUpdateView","0");
+                String tmpExtraOurGoalDebetableMainActivityUpdateView = intentExtras.getString("OurGoalsDebetableMainActivityUpdateView","0");
+                String tmpExtraOurGoalDebetableCommentMainActivityUpdateView = intentExtras.getString("OurGoalsDebetableCommentMainActivityUpdateView","0");
+                String tmpExtraOurGoalSettingsMainActivityUpdateView = intentExtras.getString("OurGoalsSettingsMainActivityUpdateView","0");
+
+                // New Message or Settings in Messages
+                String tmpExtraMessages = intentExtras.getString("MessagesMessage","0");
+                String tmpExtraMessagesMainActivityUpdateView = intentExtras.getString("MessagesMessageMainActivityUpdateView","0");
+                String tmpExtraMessagesSettingsMainActivityUpdateView = intentExtras.getString("MessagesSettingsMainActivityUpdateView","0");
+
+                // prevention set on or off
+                String tmpExtraPrevention = intentExtras.getString("PreventionPrevention","0");
+                String tmpExtraPreventionSettingsMainActivityUpdateView = intentExtras.getString("PreventionSettingMainActivityUpdateView","0");
+
+                // faq set on or off
+                String tmpExtraFaq = intentExtras.getString("FaqFaq","0");
+                String tmpExtraFaqSettingsMainActivityUpdateView = intentExtras.getString("FaqSettingMainActivityUpdateView","0");
+
+                // emergency set on or off
+                String tmpExtraEmergency = intentExtras.getString("EmergencyEmergency","0");
+                String tmpExtraEmergencySettingsMainActivityUpdateView = intentExtras.getString("EmergencySettingMainActivityUpdateView","0");
+
+                // setting set on or off
+                String tmpExtraSetting = intentExtras.getString("SettingSetting","0");
+                String tmpExtraSettingSettingsMainActivityUpdateView = intentExtras.getString("SettingSettingMainActivityUpdateView","0");
 
                 if (tmpExtraSettings != null && tmpExtraSettings.equals("1") && tmpExtraCaseClose != null && tmpExtraCaseClose.equals("1")) {
                     // case close! -> show toast
@@ -279,12 +331,207 @@ public class MainActivity extends AppCompatActivity {
 
                     // refresh view
                     updateMainView = true;
-
                 }
-                else if (tmpExtraConnectBook != null && tmpExtraConnectBook.equals("1") || tmpExtraMeeting != null && tmpExtraMeeting.equals("1") || tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") || tmpExtraOurGoal != null && tmpExtraOurGoal.equals("1") || tmpExtraSettings != null && tmpExtraSettings.equals("1") || tmpExtraTimeTable != null && tmpExtraTimeTable.equals("1")) {
-                    // new update signal for connect book, meeting, our arrangement, our goal, settings, timetable -> refresh activity view
+
+                // update main activity view for arrangement changes
+                if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettingsMainActivityUpdateView != null && tmpExtraOurArrangementSettingsMainActivityUpdateView.equals("1")) {
+
+                    // update main menue background array
+                    updateMainMenueArray = true;
+
+                    // refresh view
                     updateMainView = true;
                 }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNowMainActivityUpdateView != null && tmpExtraOurArrangementNowMainActivityUpdateView.equals("1")) {
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNowCommentMainActivityUpdateView != null && tmpExtraOurArrangementNowCommentMainActivityUpdateView.equals("1")) {
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketchMainActivityUpdateView != null && tmpExtraOurArrangementSketchMainActivityUpdateView.equals("1")) {
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketchCommentMainActivityUpdateView != null && tmpExtraOurArrangementSketchCommentMainActivityUpdateView.equals("1")) {
+                    // refresh view
+                    updateMainView = true;
+                }
+
+                // update main activity view for goals changes
+                if (tmpExtraOurGoal != null && tmpExtraOurGoal.equals("1") && tmpExtraOurGoalSettingsMainActivityUpdateView != null && tmpExtraOurGoalSettingsMainActivityUpdateView.equals("1")) {
+
+                    // update main menue background array
+                    updateMainMenueArray = true;
+
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraOurGoal != null && tmpExtraOurGoal.equals("1") && tmpExtraOurGoalJointlyMainActivityUpdateView != null && tmpExtraOurGoalJointlyMainActivityUpdateView.equals("1")) {
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraOurGoal != null && tmpExtraOurGoal.equals("1") && tmpExtraOurGoalJointlyCommentMainActivityUpdateView != null && tmpExtraOurGoalJointlyCommentMainActivityUpdateView.equals("1")) {
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraOurGoal != null && tmpExtraOurGoal.equals("1") && tmpExtraOurGoalDebetableMainActivityUpdateView != null && tmpExtraOurGoalDebetableMainActivityUpdateView.equals("1")) {
+
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraOurGoal != null && tmpExtraOurGoal.equals("1") && tmpExtraOurGoalDebetableCommentMainActivityUpdateView != null && tmpExtraOurGoalDebetableCommentMainActivityUpdateView.equals("1")) {
+                    // refresh view
+                    updateMainView = true;
+                }
+
+                // update main activity view for messages changes
+                if (tmpExtraMessages != null && tmpExtraMessages.equals("1") && tmpExtraMessagesSettingsMainActivityUpdateView != null && tmpExtraMessagesSettingsMainActivityUpdateView.equals("1")) {
+
+                    // update main menue background array
+                    updateMainMenueArray = true;
+
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraMessages != null && tmpExtraMessages.equals("1") && tmpExtraMessagesMainActivityUpdateView != null && tmpExtraMessagesMainActivityUpdateView.equals("1")) {
+
+                    // refresh view
+                    updateMainView = true;
+                }
+
+                // update main activity view for connect book changes
+                if (tmpExtraConnectBook != null && tmpExtraConnectBook.equals("1") && tmpExtraConnectBookSettingsMainActivityUpdateView != null && tmpExtraConnectBookSettingsMainActivityUpdateView.equals("1")) {
+
+                    // update show elements for menu
+                    initShowElementArray ();
+
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraConnectBook != null && tmpExtraConnectBook.equals("1") && tmpExtraConnectBookMainActivityUpdateView != null && tmpExtraConnectBookMainActivityUpdateView.equals("1")) {
+
+                    // refresh view
+                    updateMainView = true;
+                }
+
+                // update main activity view for meeting changes
+                if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingSettingMainActivityUpdateView != null && tmpExtraMeetingSettingMainActivityUpdateView.equals("1")) {
+
+                    // update main menue background array
+                    updateMainMenueArray = true;
+
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingNewMeetingMainActivityUpdateView != null && tmpExtraMeetingNewMeetingMainActivityUpdateView.equals("1")) {
+
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingCancelMeetingMainActivityUpdateView != null && tmpExtraMeetingCancelMeetingMainActivityUpdateView.equals("1")) {
+
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingNewSuggestionMainActivityUpdateView != null && tmpExtraMeetingNewSuggestionMainActivityUpdateView.equals("1")) {
+
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingCancelSuggestionMainActivityUpdateView != null && tmpExtraMeetingCancelSuggestionMainActivityUpdateView.equals("1")) {
+
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingFoundSuggestionMainActivityUpdateView != null && tmpExtraMeetingFoundSuggestionMainActivityUpdateView.equals("1")) {
+
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingNewInvitationMainActivityUpdateView != null && tmpExtraMeetingNewInvitationMainActivityUpdateView.equals("1")) {
+
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingInvitationFoundClientMainActivityUpdateView != null && tmpExtraMeetingInvitationFoundClientMainActivityUpdateView.equals("1")) {
+
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingInvitationCancelMainActivityUpdateView != null && tmpExtraMeetingInvitationCancelMainActivityUpdateView.equals("1")) {
+
+                    // refresh view
+                    updateMainView = true;
+                }
+
+                // update main activity view for time table
+                if (tmpExtraTimeTable != null && tmpExtraTimeTable.equals("1") && tmpExtraTimeTableSettingMainActivityUpdateView != null && tmpExtraTimeTableSettingMainActivityUpdateView.equals("1")) {
+
+                    // update main menue background array
+                    updateMainMenueArray = true;
+
+                    // refresh view
+                    updateMainView = true;
+                }
+                else if (tmpExtraTimeTable != null && tmpExtraTimeTable.equals("1") && tmpExtraTimeTableNewValueMainActivityUpdateView != null && tmpExtraTimeTableNewValueMainActivityUpdateView.equals("1")) {
+
+                    // refresh view
+                    updateMainView = true;
+                }
+
+                // update main activity view for prevention
+                if (tmpExtraPrevention != null && tmpExtraPrevention.equals("1") && tmpExtraPreventionSettingsMainActivityUpdateView != null && tmpExtraPreventionSettingsMainActivityUpdateView.equals("1")) {
+
+                    // update main menue background array
+                    updateMainMenueArray = true;
+
+                    // refresh view
+                    updateMainView = true;
+                }
+
+                // update main activity view for faq
+                if (tmpExtraFaq != null && tmpExtraFaq.equals("1") && tmpExtraFaqSettingsMainActivityUpdateView != null && tmpExtraFaqSettingsMainActivityUpdateView.equals("1")) {
+
+                    // update main menue background array
+                    updateMainMenueArray = true;
+
+                    // refresh view
+                    updateMainView = true;
+                }
+
+                // update main activity view for emergency
+                if (tmpExtraEmergency != null && tmpExtraEmergency.equals("1") && tmpExtraEmergencySettingsMainActivityUpdateView != null && tmpExtraEmergencySettingsMainActivityUpdateView.equals("1")) {
+
+                    // update main menue background array
+                    updateMainMenueArray = true;
+
+                    // refresh view
+                    updateMainView = true;
+                }
+
+                // update main activity view for emergency
+                if (tmpExtraSetting != null && tmpExtraSetting.equals("1") && tmpExtraSettingSettingsMainActivityUpdateView != null && tmpExtraSettingSettingsMainActivityUpdateView.equals("1")) {
+
+                    // update main menue background array
+                    updateMainMenueArray = true;
+
+                    // refresh view
+                    updateMainView = true;
+                }
+
+
+
+
+
+
+
+            }
+
+            // update show elements for menu
+            if  (updateMainMenueArray) {
+                initShowElementArray ();
             }
 
             // update the main view
@@ -297,9 +544,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateMainView () {
 
+        // check for grid updates
+        if (createMainMenueElementBackgroundRessources()) { // new things in grid?
+            mainMenueGridViewApdapter.notifyDataSetChanged();
+        }
+
         Intent intent = getIntent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        //finish();
         overridePendingTransition(0, 0);
         startActivity(intent);
         overridePendingTransition(0, 0);
@@ -340,23 +591,6 @@ public class MainActivity extends AppCompatActivity {
             mainMenueElementBackgroundRessourcesAttentionEntry[i] = getResources().getIdentifier(tmpBackgroundRessourcesAttentionEntry[i], "drawable", "de.smart_efb.efbapp.smartefb");
         }
 
-
-
-
-
-        // set short evaluation period activ passiv!!!!!!!! for testing
-        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, 20);
-        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 20);
-        prefsEditor.apply();
-
-
-
-
-
-
-
-
-
         // init array show elements and activ/inactiv sub-functions
         initShowElementArray();
     }
@@ -364,6 +598,18 @@ public class MainActivity extends AppCompatActivity {
 
     // init array show elements
     private void initShowElementArray () {
+
+
+        /*
+        // set for debuging -> change time for evaluation arrangement and/ or goals
+        // arrangement evaluation
+        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 360);
+        prefsEditor.putInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, 360);
+        // goals evaluation
+        prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, 360);
+        prefsEditor.putInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, 360);
+        prefsEditor.apply();
+        */
 
         for (int i=0; i<ConstansClassMain.mainMenueNumberOfElements; i++) {
 
@@ -421,7 +667,7 @@ public class MainActivity extends AppCompatActivity {
 
                 case 2: // menue item "Ziele"
                     if (showMainMenueElement[countElements]) { // is element aktiv?
-                        if (myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0 || (subfunction_goals_comment && myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0) || (subfunction_goals_debetable && myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0) || (subfunction_goals_debetablecomment && myDb.getCountAllNewEntryOurGoalsDebetableGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0)) {
+                        if (myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "jointly") > 0 || (subfunction_goals_comment && myDb.getCountAllNewEntryOurGoalsJointlyGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis())) > 0) || (subfunction_goals_debetable && myDb.getCountNewEntryOurGoals(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis()), "debetable") > 0) || (subfunction_goals_debetablecomment && myDb.getCountAllNewEntryOurGoalsDebetableGoalsComment(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis())) > 0)) {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                         } else {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
@@ -653,7 +899,6 @@ public class MainActivity extends AppCompatActivity {
                     prefsEditor.putString(ConstansClassSettings.namePrefsClientId, ""); // set client id to nothing
                     prefsEditor.putString(ConstansClassSettings.namePrefsContactId, ""); // set contact id to nothing
 
-
                     // set visual notification
                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_ConnectBook, false);
                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangement, false);
@@ -675,14 +920,17 @@ public class MainActivity extends AppCompatActivity {
 
                     // no break between case!
                 case 1: // update one -> put new inits here
-
+                    // nothing to do!
                 case 2: // update two
-
+                    // nothing to do!
                 case 3: // update three
-
+                    // nothing to do!
                 case 4: // update four
-
-                case 5: // update five and so on
+                    // nothing to do!
+                case 5: // update five
+                    // nothing to do!
+                case 6: // update six
+                    // nothing to do!
             }
 
             // write app version to prefs

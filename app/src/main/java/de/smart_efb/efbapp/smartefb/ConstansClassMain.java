@@ -6,11 +6,11 @@ package de.smart_efb.efbapp.smartefb;
 class ConstansClassMain {
 
 
-    // actual app version
-    static final int actualAppVersionNumber = 1; // increment these number with every new version
+    // actual app version (set manualy)
+    static final int actualAppVersionNumber = 6; // increment these number with every new version
 
     // locale app version as string
-    static final String localeAppVersionAsString = "1.01"; // app version as a string
+    static final String localeAppVersionAsString = "1.06"; // app version as a string
 
     // app version number of local installation
     static final String namePrefsNumberAppVersion = "smartEfbAppNumberVersion";

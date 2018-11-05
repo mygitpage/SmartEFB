@@ -622,6 +622,12 @@ public class DBAdapter extends SQLiteOpenHelper {
     // on upgrade -> delete the tables when exits
     public void onUpgrade(SQLiteDatabase _db, int oldVersion, int newVersion) {
 
+        // do update work here
+
+
+
+        // only for debbuging
+        /*
         // Destroy table OurArrangementComment
         _db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT);
 
@@ -660,6 +666,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         // Recreate new database:
         onCreate(_db);
+        */
     }
 
 
@@ -1933,13 +1940,24 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Get the number of new rows in goals (new entrys, jointly and debetable) where date is write time -> no older one!
-    int getCountNewEntryOurGoals(long currentDateOfGoals) {
+    int getCountNewEntryOurGoals(long currentDateOfGoals, String jointlyDebetable) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where;
 
-        where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY + "=1 AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + "=" + currentDateOfGoals;
+        switch (jointlyDebetable) {
+            case "jointly": // new entry and jointly goal time
+                where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY + "=1 AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + "=" + currentDateOfGoals;
+                break;
+            case "debetable": // new entry and debetable goal time
+                where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY + "=1 AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME + "=" + currentDateOfGoals;
+                break;
+            default:
+                where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY + "=1 AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + "=" + currentDateOfGoals;
+                break;
+
+        }
 
         Cursor c = db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS,
                 where, null, null, null, null, null);

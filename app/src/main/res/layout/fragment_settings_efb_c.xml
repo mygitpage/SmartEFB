@@ -42,6 +42,46 @@
             android:textColor="@color/colorPrimaryDark"
             android:text="@string/settingsEfbFragmentCDataPrivacyText"
             android:gravity="left"
+            android:paddingBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/settingsEfbFragmentCDataPrivacyLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorLink="@color/colorPrimary"
+            android:text="@string/settingsEfbFragmentCDataPrivacyLinkText"
+            android:gravity="left"
+            android:paddingBottom="20dp"/>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/list_element_style">
+
+            <TextView
+                android:id="@+id/settingsEfbFragmentCDataPrivacyManagerHeadine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/settingsEfbFragmentCDataPrivacyManagerHeadineText"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/settingsEfbFragmentCDataPrivacyManagerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="@string/settingsEfbFragmentCDataPrivacyManagerText"
+            android:gravity="left"
             android:paddingBottom="20dp"/>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -232,6 +232,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         int tmpServerDbId = 0;
         int tmpNumberinListView = 0;
         Boolean tmpEvalNext = false;
+        String tmpCommand = "";
 
         if (intentExtras != null) {
            // get data that comes with extras
@@ -239,15 +240,15 @@ public class ActivityOurArrangement extends AppCompatActivity {
             tmpNumberinListView = intentExtras.getInt("arr_num",0);
             tmpEvalNext = intentExtras.getBoolean("eval_next");
             // get command and execute it
-            executeIntentCommand (intentExtras.getString("com"), tmpServerDbId, tmpNumberinListView, tmpEvalNext);
+            tmpCommand = intentExtras.getString("com");
+            if (tmpCommand == null) {tmpCommand="";}
+            executeIntentCommand (tmpCommand, tmpServerDbId, tmpNumberinListView, tmpEvalNext);
         }
     }
 
 
     // execute the commands that comes from link or intend
     public void executeIntentCommand (String command, int tmpServerDbId, int tmpNumberinListView, Boolean tmpEvalNext) {
-
-        String tmpTabTitle = "";
 
         if (command.equals("show_comment_for_arrangement")) { // Show fragment all comments for arrangement
 

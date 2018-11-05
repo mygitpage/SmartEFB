@@ -262,7 +262,6 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
     }
 
 
-
     // show actual suggestion overview
     private void displayActualSuggestionInformation () {
 
@@ -324,7 +323,6 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
                 TextView tmpNoSuggestionsText = (TextView) viewFragmentSuggestionFromCLient.findViewById(R.id.meetingOverviewNoSuggestionFromClientAvailable);
                 tmpNoSuggestionsText.setVisibility(View.VISIBLE);
             }
-
         }
         else {
 
@@ -339,6 +337,3 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
     }
 
 }
-
-
-

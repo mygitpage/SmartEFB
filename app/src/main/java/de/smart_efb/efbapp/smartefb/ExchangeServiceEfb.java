@@ -538,6 +538,8 @@ import java.util.Map;
                                 // send broadcast for update ui for user
                                 context.sendBroadcast(tmpIntentUpdateUiForUser);
 
+
+
                                 // send intent to broadcast receiver -> the receiver looks for relevant data in intent
                                 Intent tmpIntent;
                                 tmpIntent = translateMapToIntent(returnMap);
@@ -581,7 +583,7 @@ import java.util.Map;
                 // set unique request id
                 int requestID = (int) System.currentTimeMillis();
 
-                // get notifocation manager
+                // get notification manager
                 NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
                 // get alarm tone
@@ -613,7 +615,7 @@ import java.util.Map;
                     stackBuilder.addParentStack(MainActivity.class);
                     stackBuilder.addNextIntent(mainActivityIntent);
 
-                    // add intent for connect book
+                    // add intent for arrangement
                     stackBuilder.addNextIntent(notificationIntent);
 
                     // generate pending intent
@@ -622,7 +624,7 @@ import java.util.Map;
                     // set notofication attributes
                     mBuilder.setContentTitle(notificationContentTitle);
                     mBuilder.setContentIntent(contentPendingIntent);
-                    // sound on/off for connect book?
+                    // sound on/off for arrangement?
                     if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, true)) {
                         mBuilder.setSound(alarmSound);
                     }
@@ -668,7 +670,7 @@ import java.util.Map;
                     // get our goals notification string
                     notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewEventOurGoals);
 
-                    // set intent/ pending intent to start connect book
+                    // set intent/ pending intent to start goals
                     notificationIntent = new Intent(getApplicationContext(), ActivityOurGoals.class);
                     notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
@@ -677,7 +679,7 @@ import java.util.Map;
                     stackBuilder.addParentStack(MainActivity.class);
                     stackBuilder.addNextIntent(mainActivityIntent);
 
-                    // add intent for connect book
+                    // add intent for goals
                     stackBuilder.addNextIntent(notificationIntent);
 
                     // generate pending intent
@@ -686,7 +688,7 @@ import java.util.Map;
                     // set notification attributes
                     mBuilder.setContentTitle(notificationContentTitle);
                     mBuilder.setContentIntent(contentPendingIntent);
-                    // sound on/off for connect book?
+                    // sound on/off for goal?
                     if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, true)) {
                         mBuilder.setSound(alarmSound);
                     }
@@ -694,13 +696,37 @@ import java.util.Map;
                     mNotificationManager.notify(001, mBuilder.build());
                 }
 
-
                 // notification for message
-                // write code here!!!!!!!!!!!!!!
-                // ++++++++++++++++++++++++++++++++++++
+                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_Message, true) && returnMap.get("MessagesMessage").equals("1") && returnMap.get("MessageMessageNewOrSend").equals("1") ) {
 
+                    // get new message notification string
+                    notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewEventMessage);
 
+                    // set intent/ pending intent to start message
+                    notificationIntent = new Intent(getApplicationContext(), ActivityMessage.class);
+                    notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
+                    // generate back stack for pending intent and add main activity
+                    stackBuilder = TaskStackBuilder.create(this);
+                    stackBuilder.addParentStack(MainActivity.class);
+                    stackBuilder.addNextIntent(mainActivityIntent);
+
+                    // add intent for message
+                    stackBuilder.addNextIntent(notificationIntent);
+
+                    // generate pending intent
+                    contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    // set notification attributes
+                    mBuilder.setContentTitle(notificationContentTitle);
+                    mBuilder.setContentIntent(contentPendingIntent);
+                    // sound on/off for message?
+                    if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_Message, true)) {
+                        mBuilder.setSound(alarmSound);
+                    }
+                    // show notification
+                    mNotificationManager.notify(001, mBuilder.build());
+                }
 
             }
         }
@@ -2634,19 +2660,6 @@ import java.util.Map;
     // +++++++++++++++++++++++++ end task exchange message +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     //++++++++++++++++++ END TASK AREA ++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -2664,140 +2677,14 @@ import java.util.Map;
                 }
             }
 
+            // translate "ErrorText" to intent, when given
+            String tmpErrorTextForTranslate = returnMap.get("ErrorText");
+            if (tmpErrorTextForTranslate != null && tmpErrorTextForTranslate.length() > 0) {
+                intent.putExtra("ErrorText",tmpErrorTextForTranslate);
+            }
+
+
             return intent;
-        }
-
-
-        public Long askServerForTime (String tmpClientId, String tmpContactId) {
-
-            Map<String, String> returnMap;
-
-            // generate ask for time question for server
-            XmlSerializer xmlSerializer = Xml.newSerializer();
-            StringWriter writer = new StringWriter();
-            try {
-
-                xmlSerializer.setOutput(writer);
-
-                //Start Document
-                xmlSerializer.startDocument("UTF-8", true);
-                xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
-
-                // Open Tag
-                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
-                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
-
-                // start tag main order -> send comment and client id
-                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
-                xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_AskForTime);
-                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
-
-                // check client or contact id set?
-                if (tmpClientId.length() > 0) {
-                    // start tag client id
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
-                    xmlSerializer.text(tmpClientId);
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
-                    // start empty tag contact id
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
-                }
-                else {
-                    // start empty tag client id
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
-                    // start tag contact id
-                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
-                    xmlSerializer.text(tmpContactId);
-                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
-                }
-
-                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
-                xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
-                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
-
-                // end tag main
-                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
-
-                // end tag smartEfb
-                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
-
-                xmlSerializer.endDocument();
-
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            // and send xml text to server
-            try {
-                // prepair data to send
-                String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
-
-                Log.d("ASK Time ->","XMLCODE="+textparam);
-
-                // set url and parameters
-                URL scripturl = new URL(ConstansClassSettings.urlConnectionSendAskForTimeToServer);
-                HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
-
-                // set timeout for connection
-                connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
-                connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
-
-                connection.setDoOutput(true);
-                connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                connection.setRequestMethod("POST");
-                connection.setFixedLengthStreamingMode(textparam.getBytes().length);
-
-                // generate output stream and send
-                OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
-                contentWriter.write(textparam);
-                contentWriter.flush();
-
-                contentWriter.close();
-
-                // get answer from input
-                InputStream answerInputStream = connection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
-                StringBuilder stringBuilder = new StringBuilder();
-
-                // convert input stream to string
-                String currentRow;
-                try {
-                    while ((currentRow = reader.readLine()) != null) {
-                        stringBuilder.append(currentRow);
-                        stringBuilder.append("\n");
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                Log.d("ASK TIME -> ", "Antwort:"+stringBuilder.toString().trim());
-
-                // call xml parser with input
-                EfbXmlParser xmlparser = new EfbXmlParser(context);
-                returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
-
-                // close input stream and disconnect
-                answerInputStream.close();
-                connection.disconnect();
-
-                if (returnMap.get("AskForTimeSuccessfull").equals("1")) { // ask for time successfull
-                    // return server time in mills
-                    return Long.valueOf(returnMap.get("ServerTimeInMills"))*1000; // make mills!!!
-                }
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
-            }
-
-            return 0L; // no time from server available!
         }
 
 
@@ -3544,8 +3431,6 @@ import java.util.Map;
     }
 
 
-
-
     public void buildMessageXmlTagWithData (XmlSerializer xmlSerializer, Cursor messageData, Boolean clientIdSet, Boolean contactIdSet) {
 
         try {
@@ -3559,20 +3444,9 @@ import java.util.Map;
 
             if (clientIdSet) {
                 xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_NewAssociatedMessage);
-
-                Log.d("Build XML-->", "WITH CLIENT ID!!!!!!");
-
-
-
             }
             else {
                 xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_NewNotAssociatedMessage);
-
-
-
-                Log.d("Build XML-->", "WITH CONTACT ID!!!!!!");
-
-
             }
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMessage_Order);
 
@@ -3593,19 +3467,11 @@ import java.util.Map;
 
             // end tag message
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMessage_Messages);
-
-            Log.d("Builder Data--_>", "ENDE");
-
-
         }
         catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
-
-
 
 
 }

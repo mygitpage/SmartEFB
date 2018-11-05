@@ -18,16 +18,6 @@ public class ConstansClassMessage {
     // prefs name for message max messages associated
     static final String namePrefsMessageMaxMessageAssociated = "messageMaxMessagesAssociated";
 
-
-
-
-
-
-
-
-
-
-
     // prefs name for message max letters not associated with case -> not connected to server
     static final String namePrefsMessageMaxLettersNotAssociated = "messageMaxLettersNotAssociated";
 

@@ -324,28 +324,11 @@
                 android:textColorLink="@color/colorPrimary"
                 android:text="@string/preventionMobbingExplainText1Link"
                 android:gravity="right"
-                android:paddingTop="20dp"/>
-
-            <TextView
-                android:id="@+id/borderBetweenSection5"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorPrimaryDark"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"/>
-
-
-
-
-
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"/>
 
         </LinearLayout>
 
     </ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
-
-
-

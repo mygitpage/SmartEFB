@@ -219,7 +219,6 @@ public class MessageCursorAdapter extends CursorAdapter {
                 tmpTextViewSendInfoLastActualMessage.setVisibility(View.VISIBLE);
                 tmpTextViewSendInfoLastActualMessage.setText(tmpTextSendInfoLastActualMessage);
             }
-
         }
 
         // show message text

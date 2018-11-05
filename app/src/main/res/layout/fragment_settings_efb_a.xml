@@ -260,6 +260,17 @@
             android:gravity="center"
             android:visibility="gone"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/settingsConnectToServerLastCommunicationStatusServer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:visibility="gone"
             android:layout_marginBottom="15dp"/>
 
         <!-- Start Error section -->
