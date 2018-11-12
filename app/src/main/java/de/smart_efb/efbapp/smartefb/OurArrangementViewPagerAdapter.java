@@ -57,7 +57,6 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
         fragArraSketch = new OurArrangementFragmentSketch();
         fragArraSketchComment = new OurArrangementFragmentSketchComment();
         fragArraShowSketchComment = new OurArrangementFragmentShowSketchComment();
-
     }
 
 
@@ -103,17 +102,12 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
                 return new OurArrangementFragmentNow();
 
         }
-
-
-
     }
-
 
 
     @Override
     public int getItemPosition(Object object)
     {
-
         return POSITION_NONE;
 
     }
@@ -128,13 +122,11 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
 
-
         if (position == 0) {
             return ourArrangementTabTitleNames[position];
         }
 
         return ourArrangementTabTitleNames[position];
-
     }
 
 
@@ -159,11 +151,8 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
                 fragmentChooserTabZero = 3;
                 break;
 
-
         }
-
     }
-
 
 
     // set variable for switching between fragments for tab 1
@@ -182,15 +171,8 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
             case "show_comment_for_sketch_arrangement": // set fragment on tab one to OurArrangementFragmentShowSketchComment
                 fragmentChooserTabOne = 2;
                 break;
-
-
-
-
         }
-
     }
-
-
 
 
 }

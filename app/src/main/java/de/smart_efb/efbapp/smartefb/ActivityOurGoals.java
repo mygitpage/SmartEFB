@@ -966,6 +966,10 @@ public class ActivityOurGoals extends AppCompatActivity {
             prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalDebetableGoalsUpdate, false);
             prefsEditor.apply();
 
+            // set correct tab 0 and tab 1 color and text
+            setTabZeroTitleAndColor ();
+            setTabOneTitleAndColor();
+
             // show dialog jointly and debetable goals change
             alertDialogGoalsChange("jointlyDebetable");
 
@@ -975,6 +979,9 @@ public class ActivityOurGoals extends AppCompatActivity {
             prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalJointlyGoalsUpdate, false);
             prefsEditor.apply();
 
+            // set correct tab 0 color and text
+            setTabZeroTitleAndColor ();
+
             // show dialog jointly and debetable goals change
             alertDialogGoalsChange("jointly");
 
@@ -982,6 +989,9 @@ public class ActivityOurGoals extends AppCompatActivity {
             // set signal sketch goals are update to false; because user is informed by dialog!
             prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalDebetableGoalsUpdate, false);
             prefsEditor.apply();
+
+            // set correct tab 1 color and text
+            setTabOneTitleAndColor();
 
             // show dialog jointly and debetable goals change
             alertDialogGoalsChange("debetable");

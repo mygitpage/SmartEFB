@@ -193,13 +193,13 @@ public class MainActivity extends AppCompatActivity {
 
         super.onStart();
 
+        // new alarm manager service for start all needed alarms
+        EfbSetAlarmManager efbSetAlarmManager = new EfbSetAlarmManager(this);
+
+        // start exchange service with intent
+        efbSetAlarmManager.setAlarmForExchangeService();
+
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
-
-            // new alarm manager service for start all needed alarms
-            EfbSetAlarmManager efbSetAlarmManager = new EfbSetAlarmManager(this);
-
-            // start exchange service with intent, when case is open!
-            efbSetAlarmManager.setAlarmForExchangeService();
 
             // start check meeting remember alarm manager, when function meeting is on and case is not closed
             if (prefs.getBoolean(ConstansClassMain.namePrefsMainMenueElementId_Meeting, false)) {
@@ -520,13 +520,6 @@ public class MainActivity extends AppCompatActivity {
                     // refresh view
                     updateMainView = true;
                 }
-
-
-
-
-
-
-
             }
 
             // update show elements for menu
@@ -906,6 +899,8 @@ public class MainActivity extends AppCompatActivity {
                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoal, false);
                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoalEvaluation, false);
                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_Message, false);
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberMeeting, false);
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberSuggestion, false);
                     
                     // set acoustics notification
                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true);
@@ -914,6 +909,8 @@ public class MainActivity extends AppCompatActivity {
                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, true);
                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoalEvaluation, true);
                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_Message, true);
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, true);
+                    prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true);
 
                     // write init to prefs
                     prefsEditor.apply();

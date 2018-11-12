@@ -3341,7 +3341,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     void deleteAllMessages() {
 
-        Cursor c = getAllRowsMessages();
+        Cursor c = getAllRowsMessages("asc");
         long rowId = c.getColumnIndexOrThrow(KEY_ROWID);
 
         if (c.moveToFirst()) {
@@ -3354,12 +3354,20 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return all data in the database. messages sorted by write time ASC
-    Cursor getAllRowsMessages() {
+    Cursor getAllRowsMessages(String sortLevel) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // sort string
-        String sort = MESSAGE_KEY_WRITE_TIME + " ASC";
+        // generate sort string (asc or desc)
+        String sort =  MESSAGE_KEY_WRITE_TIME + " ASC, " + MESSAGE_KEY_LOCAL_TIME + " ASC";
+        switch (sortLevel) {
+            case "asc":
+                sort =  MESSAGE_KEY_WRITE_TIME + " ASC, " + MESSAGE_KEY_LOCAL_TIME + " ASC";
+                break;
+            case "desc":
+                sort =  MESSAGE_KEY_WRITE_TIME + " DESC, " + MESSAGE_KEY_LOCAL_TIME + " DESC";
+                break;
+        }
 
         Cursor c = db.query(true, DATABASE_TABLE_MESSAGE, MESSAGE_ALL_KEYS,
                 null, null, null, null, sort, null);

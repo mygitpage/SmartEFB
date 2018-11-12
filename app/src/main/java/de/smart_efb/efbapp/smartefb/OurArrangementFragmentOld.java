@@ -122,6 +122,7 @@ public class OurArrangementFragmentOld extends Fragment {
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
                 String tmpExtraOurArrangementSettings = intentExtras.getString("OurArrangementSettings","0");
                 String tmpExtraOurArrangementNow = intentExtras.getString("OurArrangementNow","0");
+                String tmpExtraOurArrangementSketch = intentExtras.getString("OurArrangementSketch","0");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
@@ -138,13 +139,13 @@ public class OurArrangementFragmentOld extends Fragment {
 
                     //check arrangement and now arrangement update and show dialog arrangement and now arrangement change
                     ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("now");
-
-                    // go back to fragment now arrangement -> this is my mother!
-                    Intent backIntent = new Intent(getActivity(), ActivityOurArrangement.class);
-                    backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    backIntent.putExtra("com","show_arrangement_now_with_tab_change");
-                    getActivity().startActivity(backIntent);
                 }
+                else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketch != null && tmpExtraOurArrangementSketch.equals("1")) {
+
+                    // check arrangement and sketch arrangement update and show dialog arrangement and sketch arrangement change
+                    ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("sketch");
+                }
+
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
                     // arrangement settigs have change -> refresh view
                     updateView = true;

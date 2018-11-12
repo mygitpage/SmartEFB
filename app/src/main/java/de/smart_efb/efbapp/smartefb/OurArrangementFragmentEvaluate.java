@@ -297,7 +297,25 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         String tmpEndEvaluatioTime = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()), "HH:mm");
         int tmpEvaluationPeriodActive = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluateActiveTimeInSeconds, 3600) / 3600; // make hours from seconds
         int tmpEvaluationPeriodPassiv = prefs.getInt(ConstansClassOurArrangement.namePrefsEvaluatePauseTimeInSeconds, 3600) / 3600; // make hours from seconds
-        String textEvaluationPeriod = String.format(fragmentEvaluateContext.getResources().getString(R.string.ourArrangementEvaluationInfoEvaluationPeriod), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive, tmpEvaluationPeriodPassiv );
+
+        String textEvaluationPeriod = "";
+        if (tmpEvaluationPeriodActive < 2 && tmpEvaluationPeriodPassiv < 2) {
+            // 0 or 1 hour for active and passiv time
+            textEvaluationPeriod = String.format(fragmentEvaluateContext.getResources().getString(R.string.ourArrangementEvaluationInfoEvaluationPeriodSingularSingular), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive);
+        }
+        else if (tmpEvaluationPeriodActive < 2 && tmpEvaluationPeriodPassiv >= 2) {
+            // 0 or 1 hour for active and more than one hour for passiv time
+            textEvaluationPeriod = String.format(fragmentEvaluateContext.getResources().getString(R.string.ourArrangementEvaluationInfoEvaluationPeriodSingularPlural), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive, tmpEvaluationPeriodPassiv);
+        }
+        else if (tmpEvaluationPeriodActive >= 2 && tmpEvaluationPeriodPassiv < 2) {
+            // more than one hour for active  and 0 or 1 hour for passiv time
+            textEvaluationPeriod = String.format(fragmentEvaluateContext.getResources().getString(R.string.ourArrangementEvaluationInfoEvaluationPeriodPluralSingular), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive, tmpEvaluationPeriodPassiv);
+        }
+        else {
+            // more than one hour for active and passiv time
+            textEvaluationPeriod = String.format(fragmentEvaluateContext.getResources().getString(R.string.ourArrangementEvaluationInfoEvaluationPeriodPluralPlural), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive, tmpEvaluationPeriodPassiv);
+        }
+
         String textEvaluationNoEvaluationPossibleWhenEvaluate = fragmentEvaluateContext.getResources().getString(R.string.ourArrangementEvaluationNoEvaluationPossibleWhenEvaluate);
         textViewEvaluationPeriod.setText(textEvaluationPeriod + " " + textEvaluationNoEvaluationPossibleWhenEvaluate);
 

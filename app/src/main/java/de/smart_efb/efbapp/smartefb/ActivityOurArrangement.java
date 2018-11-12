@@ -386,7 +386,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // set correct subtitle in toolbar in tab one
             toolbar.setSubtitle(arraySubTitleText[7]);
         }
-        else if (command.equals("show_arrangement_now_with_tab_change")) { // Change to Tab 0 and show arranement now
+        else if (command.equals("show_arrangement_now_with_tab_change")) { // Change to Tab 0 and show arrangement now
 
             // set global varibales
             arrangementServerDbIdFromLink = tmpServerDbId;
@@ -394,7 +394,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
             evaluateNextArrangement = tmpEvalNext;
 
             // change to Tab 0!!!!
-            viewPagerOurArrangement.setCurrentItem(0);
+            //viewPagerOurArrangement.setCurrentItem(0);
 
             //set fragment in tab zero to comment
             OurArrangementViewPagerAdapter.setFragmentTabZero("show_arrangement_now");
@@ -1001,6 +1001,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
             prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false);
             prefsEditor.apply();
 
+            // set correct tab 0 and tab 1 color and text
+            setTabZeroTitleAndColor ();
+            setTabOneTitleAndColor();
+
             // show dialog arrangement and sketch arrangement change
             alertDialogArrangementChange("currentSketch");
 
@@ -1010,6 +1014,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false);
             prefsEditor.apply();
 
+            // set correct tab 0 color and text
+            setTabZeroTitleAndColor ();
+
             // show dialog arrangement change
             alertDialogArrangementChange("current");
 
@@ -1017,6 +1024,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // set signal sketch arrangements are update to false; because user is informed by dialog!
             prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false);
             prefsEditor.apply();
+
+            // set correct tab 1 color and text
+            setTabOneTitleAndColor();
 
             // show dialog arrangement change
             alertDialogArrangementChange("sketch");

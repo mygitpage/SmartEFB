@@ -310,7 +310,26 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         String tmpEndEvaluatioTime = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsEndDateJointlyGoalsEvaluationInMills, System.currentTimeMillis()), "HH:mm");
         int tmpEvaluationPeriodActive = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsActiveTimeInSeconds, 3600) / 3600; // make hours from seconds
         int tmpEvaluationPeriodPassiv = prefs.getInt(ConstansClassOurGoals.namePrefsEvaluateJointlyGoalsPauseTimeInSeconds, 3600) / 3600; // make hours from seconds
-        String textEvaluationPeriod = String.format(fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.evaluateJointlyGoalInfoEvaluationPeriod), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive, tmpEvaluationPeriodPassiv );
+
+        String textEvaluationPeriod = "";
+        if (tmpEvaluationPeriodActive < 2 && tmpEvaluationPeriodPassiv < 2) {
+            // 0 or 1 hour for active and passiv time
+            textEvaluationPeriod = String.format(fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.evaluateJointlyGoalInfoEvaluationPeriodSingularSingular), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive);
+        }
+        else if (tmpEvaluationPeriodActive < 2 && tmpEvaluationPeriodPassiv >= 2) {
+            // 0 or 1 hour for active and more than one hour for passiv time
+            textEvaluationPeriod = String.format(fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.evaluateJointlyGoalInfoEvaluationPeriodSingularPlural), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive, tmpEvaluationPeriodPassiv);
+        }
+        else if (tmpEvaluationPeriodActive >= 2 && tmpEvaluationPeriodPassiv < 2) {
+            // more than one hour for active  and 0 or 1 hour for passiv time
+            textEvaluationPeriod = String.format(fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.evaluateJointlyGoalInfoEvaluationPeriodPluralSingular), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive, tmpEvaluationPeriodPassiv);
+        }
+        else {
+            // more than one hour for active and passiv time
+            textEvaluationPeriod = String.format(fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.evaluateJointlyGoalInfoEvaluationPeriodPluralPlural), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive, tmpEvaluationPeriodPassiv);
+        }
+
+
         String textEvaluationNoEvaluationPossibleWhenEvaluate = fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.ourGoalsEvaluationNoEvaluationPossibleWhenEvaluate);
         textViewEvaluationPeriod.setText(textEvaluationPeriod + " " + textEvaluationNoEvaluationPossibleWhenEvaluate);
         

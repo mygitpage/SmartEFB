@@ -101,6 +101,12 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // set now time for db request
         Long nowTime = System.currentTimeMillis();
 
+        // init wake up array
+        nextWakeUp[0] = noWakeUpPointSetValue;
+        nextWakeUp[1] = noWakeUpPointSetValue;
+        nextWakeUp[2] = noWakeUpPointSetValue;
+        nextWakeUp[3] = noWakeUpPointSetValue;
+
         // check notification for meeting on?
         if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_RememberMeeting, true)) {
 
@@ -155,11 +161,9 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
             if (rememberMeeting_nextWakeUp != null && rememberMeeting_nextWakeUp.getCount() > 0) {
                 rememberMeeting_nextWakeUp.moveToFirst();
                 nextWakeUp[0] = rememberMeeting_nextWakeUp.getLong(rememberMeeting_nextWakeUp.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1));
-                Log.d("AlarmMeeting-->", "WakeUp0 :"+nextWakeUp[0]);
             }
             else { // no wake up point in suggestion -> set wake up point in far future!
                 nextWakeUp[0] = noWakeUpPointSetValue;
-                Log.d("AlarmMeeting-->", "WakeUp0 ELSE:"+nextWakeUp[0]);
             }
 
             // notification meeting in 15 minutes
@@ -231,11 +235,9 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
             if (rememberSuggestion_nextWakeUp != null && rememberSuggestion_nextWakeUp.getCount() > 0) {
                 rememberSuggestion_nextWakeUp.moveToFirst();
                 nextWakeUp[1] = rememberSuggestion_nextWakeUp.getLong(rememberSuggestion_nextWakeUp.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME));
-                Log.d("AlarmMeeting-->", "WakeUp1 :"+nextWakeUp[1]);
             }
             else { // no wake up point in suggestion -> set wake up point in far future!
                 nextWakeUp[1] = noWakeUpPointSetValue;
-                Log.d("AlarmMeeting-->", "WakeUp1 ELSE:"+nextWakeUp[1]);
             }
             
             // notification coach suggestion ends in 15 minutes
@@ -302,11 +304,9 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
             if (rememberClientSuggestionStart_nextWakeUp != null && rememberClientSuggestionStart_nextWakeUp.getCount() > 0) {
                 rememberClientSuggestionStart_nextWakeUp.moveToFirst();
                 nextWakeUp[2] = rememberClientSuggestionStart_nextWakeUp.getLong(rememberClientSuggestionStart_nextWakeUp.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE));
-                Log.d("AlarmMeeting-->", "WakeUp2 :"+nextWakeUp[2]);
             }
             else { // no wake up point in client start suggestion -> set wake up point in far future!
                 nextWakeUp[2] = noWakeUpPointSetValue;
-                Log.d("AlarmMeeting-->", "WakeUp2 ELSE :"+nextWakeUp[2]);
             }
 
             // notification client start suggestion in 15 minutes
@@ -373,11 +373,9 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
             if (rememberClientSuggestionEnd_nextWakeUp != null && rememberClientSuggestionEnd_nextWakeUp.getCount() > 0) {
                 rememberClientSuggestionEnd_nextWakeUp.moveToFirst();
                 nextWakeUp[3] = rememberClientSuggestionEnd_nextWakeUp.getLong(rememberClientSuggestionEnd_nextWakeUp.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE));
-                Log.d("AlarmMeeting-->", "WakeUp3 :"+nextWakeUp[3]);
             }
             else { // no wake up point in client end suggestion -> set wake up point in far future!
                 nextWakeUp[3] = noWakeUpPointSetValue;
-                Log.d("AlarmMeeting-->", "WakeUp3 ELSE :"+nextWakeUp[3]);
             }
 
             // notification client end suggestion in 15 minutes
@@ -397,16 +395,8 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // sort array with next wake up time for alarm manager ascending
         Arrays.sort(nextWakeUp);
 
-        Log.d("AlarmMeeting-->", "After Sort 0:"+nextWakeUp[0]);
-        Log.d("AlarmMeeting-->", "After Sort 1:"+nextWakeUp[1]);
-        Log.d("AlarmMeeting-->", "After Sort 2:"+nextWakeUp[2]);
-        Log.d("AlarmMeeting-->", "After Sort 3:"+nextWakeUp[3]);
-
         // set next wake up time for remember meeting/ suggestion
         if (nextWakeUp[0] > 0L && nextWakeUp[0] < noWakeUpPointSetValue) {
-
-
-            Log.d("AlarmMeeting:", "SET ALARM MANAGER");
 
             PendingIntent pendingIntentRememberMeeting;
 
@@ -415,25 +405,18 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
 
             if ((nextWakeUp[0]-delta_1440min_upperLimit) > currentSystemTime) {
                 startRememberMeeting = nextWakeUp[0] - delta_1440min_upperLimit + 1000; // next start point for meeting/ suggestion remember function
-                Log.d("AlarmMeeting:", "ALARM in 24h");
             }
             else  if ((nextWakeUp[0]-delta_120min_upperLimit) > currentSystemTime) {
                 startRememberMeeting = nextWakeUp[0] - delta_120min_upperLimit + 1000; // next start point for meeting/ suggestion remember function
-                Log.d("AlarmMeeting:", "ALARM in 2h");
             }
             else if ((nextWakeUp[0]-delta_15min_upperLimit) > currentSystemTime) {
                 startRememberMeeting = nextWakeUp[0] - delta_15min_upperLimit + 1000; // next start point for meeting/ suggestion remember function
-                Log.d("AlarmMeeting:", "ALARM in 15 min");
             }
 
             // set alarm manager only when next alarm is in less or greater 15 min
             if (startRememberMeeting > 0L) {
 
-
                 Long repeatingMeetingRemember = 24L * 60L * 60L * 1000L; // one day
-
-                Log.d("AlarmMeeting", "Next Wake Up:" + startRememberMeeting);
-
 
                 // get reference to alarm manager
                 AlarmManager manager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);

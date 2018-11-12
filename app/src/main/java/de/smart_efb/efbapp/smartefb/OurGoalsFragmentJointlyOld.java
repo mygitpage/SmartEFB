@@ -121,6 +121,7 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                 String tmpExtraOurGoals = intentExtras.getString("OurGoals","0");
                 String tmpExtraOurGoalsSettings = intentExtras.getString("OurGoalsSettings","0");
                 String tmpExtraOurGoalsNow = intentExtras.getString("OurGoalsJointlyNow","0");
+                String tmpExtraOurGoalsDebetableNow = intentExtras.getString("OurGoalsDebetableNow","0");
                 // case is close
                 String tmpSettings = intentExtras.getString("Settings", "0");
                 String tmpCaseClose = intentExtras.getString("Case_close", "0");
@@ -139,14 +140,13 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                     //update current block id of jointly goals
                     currentBlockIdOfJointlyGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0");
 
-                    // check jointly and debetable goals update and show dialog jointly and debetable goals change
+                    // check jointly goals update and show dialog jointly and debetable goals change
                     ((ActivityOurGoals) getActivity()).checkUpdateForShowDialog ("jointly");
+                }
+                else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsDebetableNow != null && tmpExtraOurGoalsDebetableNow.equals("1")) {
 
-                    // go back to fragment jointly goals -> this is my mother!
-                    Intent backIntent = new Intent(getActivity(), ActivityOurGoals.class);
-                    backIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    backIntent.putExtra("com","show_jointly_goals_now");
-                    getActivity().startActivity(backIntent);
+                    // check debetable goals update and show dialog jointly and debetable goals change
+                    ((ActivityOurGoals) getActivity()).checkUpdateForShowDialog ("debetable");
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1")) {
 

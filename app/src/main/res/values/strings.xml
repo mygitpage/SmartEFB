@@ -130,7 +130,7 @@
             <string name="hintTextCaseCloseIntroTextHeadline">Fall abgeschlossen</string>
             <string name="settingsSendingToServerInvolvedPersonHeadlineText">Beteiligte an dieser App-Beratung</string>
             <string name="settingsConnectToServerInvolvedPersonHeadlineExplainText">Hier finden Sie die Namen der Beraterinnen und Berater und Klienten, die an der Kommunikation über die App teilnehmen (Stand: %1$s Uhr)</string>
-            <string name="functionStringForCoach">(BeraterIn)</string>
+            <string name="functionStringForCoach">(Berater/-in)</string>
             <string name="settingsConnectToServerInvolvedPersonPresenceHeadlineText">Verfügbarkeit Ihrer Beraterinnen und Berater</string>
             <string name="settingsConnectToServerInvolvedPersonPresenceExplainText">Ihre Beraterinnen und Berater können in der Regel zu den unten angegebenen Zeiten auf Nachrichten, Kommentare oder andere Ereignisse in der App-Beratung reagieren.</string>
             <string name="settingsSendingToServerLastContactTimeToServerHeadlineText">Letzter Serverkontakt</string>
@@ -377,7 +377,10 @@
             <string name="evaluateThankAndNextEvaluationLastText">Vielen Dank für die Bewertung der vorherrigen Absprache. Bitte bewerten Sie nun die letzte Absprache.</string>
             <string name="ourArrangementEvaluationBackLinkToArrangement">Zurück zu den aktuellen Absprachen</string>
             <string name="ourArrangementEvaluationAuthorNameWithDateForArrangement">Die Absprache wurde von &lt;u>%1$s&lt;/u> am %2$s geschrieben.</string>
-            <string name="ourArrangementEvaluationInfoEvaluationPeriod">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Für eine Bewertung steht/en jeweils %5$d Stunde/n zur Verfügung. Die Pause beträgt %6$d Stunde/n.</string>
+            <string name="ourArrangementEvaluationInfoEvaluationPeriodSingularSingular">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Der Bewertungs- und Pausenzeitraum betragen jeweils %5$d Stunde.</string>
+            <string name="ourArrangementEvaluationInfoEvaluationPeriodSingularPlural">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Der Bewertungszeitraum beträgt %5$d Stunde. Der Pausenzeitraum erstreckt sich über %6$d Stunden.</string>
+            <string name="ourArrangementEvaluationInfoEvaluationPeriodPluralSingular">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Der Bewertungszeitraum beträgt %5$d Stunden. Der Pausenzeitraum erstreckt sich über %6$d Stunde.</string>
+            <string name="ourArrangementEvaluationInfoEvaluationPeriodPluralPlural">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Der Bewertungszeitraum beträgt %5$d Stunden. Der Pausenzeitraum erstreckt sich über %6$d Stunden.</string>
             <string name="ourArrangementEvaluationNoEvaluationPossibleWhenEvaluate">Wenn Sie eine Absprache bewertet haben, ist eine weitere Bewertung erst nach Ablauf der Pausenzeit möglich.</string>
             <string name="ourArrangementEvaluatePeriodExpired">Bewertungszeitraum abgelaufen</string>
             <string name="ourArrangementEvaluateTextEvaluationModulSwitchOn">Bewertungsmodul wird eingeschaltet</string>
@@ -465,8 +468,8 @@
         <!-- String Fragment sketch arrangement -->
             <string name="ourArrangementSketchArrangementNothingThere">Es sind keine Entwürfe für Absprachen vorhanden!</string>
             <string name="ourArrangementSketchArrangementFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
-            <string name="ourArrangementSketchIntroTextPlural">Ihre BeraterInnen haben am %1$s folgende Entwürfe für Absprachen eingestellt.</string>
-            <string name="ourArrangementSketchIntroTextChangeTo">Ihre BeraterInnen haben am %1s die folgenden Entwürfe für Absprachen, vielleicht mit einigen Änderungen, als verbindliche Absprachen gespeichert.</string>
+            <string name="ourArrangementSketchIntroTextPlural">Ihre Berater/-innen haben am %1$s folgende Entwürfe für Absprachen eingestellt.</string>
+            <string name="ourArrangementSketchIntroTextChangeTo">Ihre Berater/-innen haben am %1s die folgenden Entwürfe für Absprachen, vielleicht mit einigen Änderungen, als verbindliche Absprachen gespeichert.</string>
             <string name="showSketchArrangementNumberText">Entwurf Absprache</string>
             <string name="ourArrangementSketchAuthorNameText">Geschrieben von %1$s</string>
             <string name="ourArrangementSketchAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
@@ -524,12 +527,12 @@
         <!-- our arrangement dialog arrangement change -->
             <string name="textDialogOurArrangementArrangementChangeCloseButton">Schliessen</string>
             <string name="textDialogOurArrangementArrangementChangeHeadline">Änderung der Absprachen</string>
-            <string name="textDialogOurArrangementArrangementChangeInfoText">Es stehen neue Absprachen zur Verfügung, die bereits geladen wurden.\nSobald Sie diesen Dialog beenden, sehen Sie die neuen Absprachen.\nEin eventuell gesendeter Kommentar wird bei den älteren Absprachen archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Beraterin.</string>
+            <string name="textDialogOurArrangementArrangementChangeInfoText">Es stehen neue Absprachen zur Verfügung, die bereits geladen wurden.\nEin eventuell gesendeter Kommentar wird bei den älteren Absprachen archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Ihre Beraterin.</string>
             <string name="textDialogOurArrangementSketchArrangementChangeCloseButton">Schliessen</string>
             <string name="textDialogOurArrangementSketchArrangementChangeHeadline">Änderung der Entwürfe von Absprachen</string>
             <string name="textDialogOurArrangementCurrentSketchArrangementChangeHeadline">Änderung der Absprachen und der Entwürfe</string>
-            <string name="textDialogOurArrangementSketchArrangementChangeInfoText">Es stehen neue Entwürfe von Absprachen zur Verfügung, die bereits geladen wurden.\nSobald Sie diesen Dialog beenden, sehen Sie die neuen Entwürfe.\nEine eventuell gesendete Einschätzung wird bei den älteren Entwürfen archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Beraterin.</string>
-            <string name="textDialogOurArrangementSketchAndCurrentArrangementChangeInfoText">Es stehen neue Entwürfe von Absprachen und aktuelle Absprachen zur Verfügung, die bereits alle geladen wurden.\nSobald Sie diesen Dialog beenden, sehen Sie die neuen Entwürfe und neuen Absprachen.\nEventuell gesendete Einschätzungen oder Kommentare werden archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Beraterin.</string>
+            <string name="textDialogOurArrangementSketchArrangementChangeInfoText">Es stehen neue Entwürfe von Absprachen zur Verfügung, die bereits geladen wurden.\nEine eventuell gesendete Einschätzung wird bei den älteren Entwürfen archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Ihre Beraterin.</string>
+            <string name="textDialogOurArrangementSketchAndCurrentArrangementChangeInfoText">Es stehen neue Entwürfe von Absprachen und aktuelle Absprachen zur Verfügung, die bereits alle geladen wurden.\nEventuell gesendete Einschätzungen oder Kommentare werden archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Ihre Beraterin.</string>
         <!-- End our arrangement dialog arrangement change -->
 
 
@@ -711,7 +714,10 @@
                 <string name="evaluateThankAndNextJointlyGoalEvaluationText">Vielen Dank für die Bewertung des vorherrigen Ziels. Bitte bewerten Sie nun das folgende Ziel.</string>
                 <string name="evaluateJointlyGoalResultNotCompletely">Ihre Bewertung ist nicht vollständig! Bitte kontrollieren Sie die markierten Fragen!</string>
                 <string name="ourGoalsEvaluationAuthorNameWithDateForGoal">Das Ziel wurde von &lt;u>%1$s&lt;/u> am %2$s geschrieben.</string>
-                <string name="evaluateJointlyGoalInfoEvaluationPeriod">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Für eine Bewertung steht/en jeweils %5$d Stunde/n zur Verfügung. Die Pause beträgt %6$d Stunde/n.</string>
+                <string name="evaluateJointlyGoalInfoEvaluationPeriodSingularSingular">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Der Bewertungs- und Pausenzeitraum betragen jeweils %5$d Stunde.</string>
+                <string name="evaluateJointlyGoalInfoEvaluationPeriodSingularPlural">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Der Bewertungszeitraum beträgt %5$d Stunde. Der Pausenzeitraum erstreckt sich über %6$d Stunden.</string>
+                <string name="evaluateJointlyGoalInfoEvaluationPeriodPluralSingular">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Der Bewertungszeitraum beträgt %5$d Stunden. Der Pausenzeitraum erstreckt sich über %6$d Stunde.</string>
+                <string name="evaluateJointlyGoalInfoEvaluationPeriodPluralPlural">Der Bewertungszeitraum läuft vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr. Der Bewertungszeitraum beträgt %5$d Stunden. Der Pausenzeitraum erstreckt sich über %6$d Stunden.</string>
                 <string name="ourGoalsEvaluationNoEvaluationPossibleWhenEvaluate">Wenn Sie ein Ziel bewertet haben, ist eine weitere Bewertung erst nach Ablauf der Pausenzeit möglich.</string>
                 <string name="evaluateJointlyGoalEvaluatePeriodExpired">Bewertungszeitraum abgelaufen</string>
                 <string name="evaluateJointlyGoalEvaluateTextEvaluationModulSwitchOn">Bewertungsmodul wird eingeschaltet</string>
@@ -726,8 +732,8 @@
                 <string name="ourGoalsDebetableGoalsIntroText">%1$s hat am %2$s folgende strittigen Ziele eingestellt.</string>
                 <string name="showDebetableGoalNumberText">Strittiges Ziel</string>
                 <string name="ourGoalsDebetableGoalsAssessmentsString">Strittiges Ziel einschätzen</string>
-                <string name="ourGoalsDebetableGoalsIntroTextPlural">Ihre BeraterInnen haben am %1$s folgende strittigen Ziele eingestellt.</string>
-                <string name="ourGoalsDebetableGoalsIntroTextChangeTo">Ihre BeraterInnen haben am %1s die folgenden strittigen Ziele, vielleicht mit einigen Änderungen, als gemeinsame Ziele gespeichert.</string>
+                <string name="ourGoalsDebetableGoalsIntroTextPlural">Ihre Berater/-innen haben am %1$s folgende strittigen Ziele eingestellt.</string>
+                <string name="ourGoalsDebetableGoalsIntroTextChangeTo">Ihre Berater/-innen haben am %1s die folgenden strittigen Ziele, vielleicht mit einigen Änderungen, als gemeinsame Ziele gespeichert.</string>
                 <string name="ourGoalsDebetableGoalsAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
                 <string name="infoTextNumberOfDebetableCommentsPossiblePlural">(%1$d verbleiben)</string>
                 <string name="infoTextNumberOfDebetableCommentsPossibleSingular">(%1$d verbleibt)</string>
@@ -836,12 +842,12 @@
         <!-- our goals dialog goals change -->
             <string name="textDialogOurGoalsGoalsChangeCloseButton">Schliessen</string>
             <string name="textDialogOurGoalsGoalsChangeHeadline">Änderung der gemeinsamen Ziele</string>
-            <string name="textDialogOurGoalsGoalsChangeInfoText">Es stehen neue gemeinsame Ziele zur Verfügung, die bereits geladen wurden.\nSobald Sie diesen Dialog beenden, sehen Sie die neuen Ziele.\nEin eventuell gesendeter Kommentar wird bei den älteren Absprachen archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Beraterin.</string>
+            <string name="textDialogOurGoalsGoalsChangeInfoText">Es stehen neue gemeinsame Ziele zur Verfügung, die bereits geladen wurden.\nEin eventuell gesendeter Kommentar wird bei den älteren Absprachen archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Ihre Beraterin.</string>
             <string name="textDialogOurGoalsDebetableGoalsChangeCloseButton">Schliessen</string>
             <string name="textDialogOurGoalsDebetableGoalsChangeHeadline">Änderung der strittigen Ziele</string>
             <string name="textDialogOurGoalsDebetableJointlyGoalsChangeHeadline">Änderung der gemeinsamen und strittigen Ziele</string>
-            <string name="textDialogOurGoalsDebetableGoalsChangeInfoText">Es stehen neue strittige Ziele zur Verfügung, die bereits geladen wurden.\nSobald Sie diesen Dialog beenden, sehen Sie die neuen strittigen Ziele.\nEine eventuell gesendete Einschätzung wird bei den älteren strittigen Zielen archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Beraterin.</string>
-            <string name="textDialogOurGoalsDebetableJointlyGoalsChangeInfoText">Es stehen neue gemeinsame und strittige Ziele zur Verfügung, die bereits alle geladen wurden.\nSobald Sie diesen Dialog beenden, sehen Sie die neuen gemeinsamen und strittigen Ziele.\nEventuell gesendete Einschätzungen oder Kommentare werden archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Beraterin.</string>
+            <string name="textDialogOurGoalsDebetableGoalsChangeInfoText">Es stehen neue strittige Ziele zur Verfügung, die bereits geladen wurden.\nEine eventuell gesendete Einschätzung wird bei den älteren strittigen Zielen archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Ihre Beraterin.</string>
+            <string name="textDialogOurGoalsDebetableJointlyGoalsChangeInfoText">Es stehen neue gemeinsame und strittige Ziele zur Verfügung, die bereits alle geladen wurden.\nEventuell gesendete Einschätzungen oder Kommentare werden archiviert.\nBei Fragen wenden Sie sich bitte an Ihren Berater/ Ihre Beraterin.</string>
         <!-- End our goals dialog goals change -->
 
     <!-- Activity our goals End -->
@@ -968,7 +974,7 @@
             <string name="textDialogMeetingCloseDialog">Schließen</string>
             <string name="textDialogMeetingTitleDialog">Hinweise zu den Terminen</string>
             <string name="textDialogMeetingSettingsIntro">Im Bereich \"Termine\" finden Sie Ihre nächsten Beratungstermine, können eigene Terminvorschläge machen oder auf Terminvorschläge Ihrer Beraterin/ Ihres Beraters antworten.</string>
-            <string name="textDialogMeetingSettingsIntroMeetingFunction">Die verbindlichen Beratungsterrmine kann nur Ihre Beraterin/ Ihr Berater einstellen. Dazu wird sie sich mit Ihnen in der persönlichen Beratung austauschen, Ihnen über die App Terminvorschläge unterbreiten oder Sie auffordern über die App eigene Terminvorschläge einzureichen.</string>
+            <string name="textDialogMeetingSettingsIntroMeetingFunction">Die verbindlichen Beratungstermine kann nur Ihre Beraterin/ Ihr Berater einstellen. Dazu wird sie sich mit Ihnen in der persönlichen Beratung austauschen, Ihnen über die App Terminvorschläge unterbreiten oder Sie auffordern über die App eigene Terminvorschläge einzureichen.</string>
             <string name="textDialogMeetingSettingsIntroMeetingFunctionCanceleOn">Sie können verbindliche Beratungstermine über die App absagen. Beachten Sie bitte, dass es sich dabei nur um einen Absagewunsch handelt. Einen Termin offiziel absagen kann nur Ihre Beraterin/ Ihr Berater.</string>
             <string name="textDialogMeetingSettingsIntroMeetingFunctionCanceleOff">Sie können verbindliche Beratungstermine nicht über die App absagen. Wenn Sie kurzfirstig einen Termin nicht wahrnehmen können, rufen Sie bitte Ihre Beraterin/ Ihren Berater an.</string>
             <string name="textDialogMeetingSettingsIntroMeetingFunctionAtLeast">Ihre Beraterin/ Ihr Berater kann Termine absagen. Dies wird Sie Ihnen über die App mitteilen.</string>
@@ -1009,7 +1015,7 @@
             <string name="meetingClientCanceledIntroText">Sind Sie sicher, dass Sie den Termin vom %1$s um %2$s in %3$s absagen möchten?</string>
             <string name="meetingReasonHintText">Bitte begründen Sie Ihre Absage</string>
             <string name="errorInputMeetingCanceled">Bitte kontrollieren Sie Ihre Begründung. Sie ist zu kurz!</string>
-            <string name="infoProcedureCanceledMeeting">Sie teilen Ihre Terminabsage nur Ihrer Beraterin/ Ihrem Berater mit. Andere Beteiligte können Ihre Absage nicht lesen. Nur Ihre Beraterin/ Ihr Berater kann dann den Termin offiziel absagen!</string>
+            <string name="infoProcedureCanceledMeeting">Sie teilen Ihre Terminabsage nur Ihrer Beraterin/ Ihrem Berater mit. Andere Beteiligte können Ihre Absage nicht lesen. Nur Ihre Beraterin/ Ihr Berater kann dann den Termin offiziel absagen! So lange der Termin nicht offiziell abgesagt wurde, gilt dieser!</string>
             <string name="meetingBackLinkToMeetingOverview">Zurück zu den Terminen</string>
             <string name="meetingCanceledByClientHintText">Der Termin wurde von Ihnen abgesagt!</string>
             <string name="meetingCanceledByClientHintText1">Diese Absage sehen nur Ihre Beraterin/ Ihr Berater. Ausschließlich diese können den Termin offiziell absagen! So lange der Termin nicht offiziell abgesagt wurde, gilt dieser!</string>
@@ -1269,7 +1275,7 @@
         <string name="messageAutomaticGeneratedHelloTextAuthorNameAssociated">Ihre Beraterin/ Ihr Berater</string>
         <string name="messageAutomaticGeneratedHelloTextMessageTextAssociated">Herzlich willkommen\nim Nachrichtenchat. Sie sind in einen Fall involviert und können in diesem Chat Ihrer Beraterin/ Ihrem Berater persönlich Nachrichten schicken. Andere Personen können diese Nachrichten nicht lesen.</string>
         <string name="messageAutomaticGeneratedHelloTextAuthorNameNotAssociatedAgain">BeraterInnen Lichtblick</string>
-        <string name="messageAutomaticGeneratedHelloTextMessageTextNotAssociatedAgain">Herzlich willkommen nochmals\nim Nachrichtenchat der Erziehungs- und Familienberatungstelle Lichtblick.\nIhr Fall wurde gescchlossen und damit können Sie Ihrer Beraterin/ Ihrem Berrater keine persönlichen Nachrichten mehr schreiben. Alle Nachrichten, die Sie uns über den Chat schicken, sind nun wieder anonym. Die Beraterin/ der Berater kann nicht erkennen, wer diese Nachricht geschrieben hat.</string>
+        <string name="messageAutomaticGeneratedHelloTextMessageTextNotAssociatedAgain">Herzlich willkommen nochmals\nim Nachrichtenchat der Erziehungs- und Familienberatungstelle Lichtblick.\nIhr Fall wurde abgeschlossen und damit können Sie Ihrer Beraterin/ Ihrem Berrater keine persönlichen Nachrichten mehr schreiben. Alle Nachrichten, die Sie uns über den Chat schicken, sind nun wieder anonym. Die Beraterin/ der Berater kann nicht erkennen, wer diese Nachricht geschrieben hat.</string>
     <!-- end messages -->
 
     <!-- message dialog no more messages -->
@@ -1294,7 +1300,7 @@
         <string name="textDialogMessageSettingsMessageMaxLetters">\nEine Nachricht darf maximal %1d Zeichen enthalten.</string>
         <string name="textDialogMessageSettingsInfoTextReadByCoach">Alle Nachrichten, die Sie schreiben, können nur von Ihrer Braterin/ Ihrem Berater gelesen und beantwortet werden.</string>
         <string name="textDialogMessageSettingsInfoTextContactCoach">Sollten Sie Fragen oder Änderungswünsche zu diesen Einstellungen haben, wenden Sie sich bitte an Ihre Beraterin/ Ihren Berater.</string>
-        <string name="textDialogMessageSettingsInfoTextNotAssociated">Ihre Nachrichten werden von einer Beraterin/ einem Berater beantworte. Beachten Sie bitte, dass es, gerade bei \"Erstanfragen\", bis zu drei Werktagen dauern kann, bis Sie eine Antwort erhalten.</string>
+        <string name="textDialogMessageSettingsInfoTextNotAssociated">Ihre Nachrichten werden von einer Beraterin/ einem Berater beantwortet. Beachten Sie bitte, dass es, gerade bei \"Erstanfragen\", bis zu drei Werktagen dauern kann, bis Sie eine Antwort erhalten.</string>
     <!-- End connect book dialog settings -->
 
     <!-- Activity Message -->

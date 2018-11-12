@@ -102,9 +102,6 @@ public class MessageCursorAdapter extends CursorAdapter {
         // context for cursor adapter
         final Context context = mContext;
 
-        // set row id of comment from db for timer update
-        final Long rowIdForUpdate = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
-
         // rightViewCurrent: true -> current right view is new View; false-> other view ist new View
         Boolean rightViewCurrent = false;
 

@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -58,6 +59,9 @@ public class ActivityMessage extends AppCompatActivity {
     // reference to dialog settings
     AlertDialog alertDialogMessage;
 
+    // define one second for correct time in welcome message
+    long oneSecondForWelcomeMessageCorrection = 60000; // in milli seconds
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,17 +88,14 @@ public class ActivityMessage extends AppCompatActivity {
         // init the ui
         displayMessageSet();
 
-        // first ask to server for new data, when case is not closed!
-        if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
-            // send intent to service to start the service
-            Intent startServiceIntent = new Intent(contextMessage, ExchangeServiceEfb.class);
-            // set command = "ask new data" on server
-            startServiceIntent.putExtra("com", "ask_new_data");
-            startServiceIntent.putExtra("dbid",0L);
-            startServiceIntent.putExtra("receiverBroadcast","");
-            // start service
-            contextMessage.startService(startServiceIntent);
-        }
+        // first ask to server for new data, send intent to service to start the service
+        Intent startServiceIntent = new Intent(contextMessage, ExchangeServiceEfb.class);
+        // set command = "ask new data" on server
+        startServiceIntent.putExtra("com", "ask_new_data");
+        startServiceIntent.putExtra("dbid",0L);
+        startServiceIntent.putExtra("receiverBroadcast","");
+        // start service
+        contextMessage.startService(startServiceIntent);
     }
 
 
@@ -154,14 +155,28 @@ public class ActivityMessage extends AppCompatActivity {
             // insert welcome message in db? -> no connection, anonymous
             if (!prefs.getBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithoutConnection, false)) {
 
+                // look for actual messages in db -> welcome message back must last - set write time correct!
+                Cursor cursor = myDb.getAllRowsMessages("desc");
+
                 if (prefs.getString(ConstansClassMessage.namePrefsMessageWelcomeMessageLast, "").equals("helloWithConnection")) {
                     // get author and text of welcome message not associated again
                     String tmpStoreAuthorName = getResources().getString(R.string.messageAutomaticGeneratedHelloTextAuthorNameNotAssociatedAgain);
                     String tmpStoreMessageText = getResources().getString(R.string.messageAutomaticGeneratedHelloTextMessageTextNotAssociatedAgain);
                     int tmpAnonymous = 0;
+                    long writeTime = 0L;
+
+                    // check for entry in db -> get last write time
+                    if (cursor != null && cursor.getCount() > 0) {
+                        writeTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_WRITE_TIME));
+                        // we add one minute (60 seconds) to last message write time to put last element
+                        writeTime = writeTime + oneSecondForWelcomeMessageCorrection;
+                    }
+                    else {
+                        writeTime = System.currentTimeMillis();
+                    }
 
                     // insert welcome message in db
-                    insertAutomaticHelloMessageByCoaches(tmpStoreAuthorName, tmpStoreMessageText, tmpAnonymous);
+                    insertAutomaticHelloMessageByCoaches(tmpStoreAuthorName, tmpStoreMessageText, tmpAnonymous, writeTime);
 
                     // possible welcome text with new connection
                     prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithConnection, false);
@@ -171,12 +186,23 @@ public class ActivityMessage extends AppCompatActivity {
                     String tmpStoreAuthorName = getResources().getString(R.string.messageAutomaticGeneratedHelloTextAuthorNameNotAssociated);
                     String tmpStoreMessageText = getResources().getString(R.string.messageAutomaticGeneratedHelloTextMessageTextNotAssociated);
                     int tmpAnonymous = 0;
+                    long writeTime = 0L;
+
+                    if (cursor != null && cursor.getCount() > 0) {
+                        writeTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_WRITE_TIME));
+                        // check for negative timestamp -> because we sub one minute (60 seconds)
+                        if (writeTime > 100) {writeTime = writeTime - oneSecondForWelcomeMessageCorrection;}
+                        else {writeTime = System.currentTimeMillis();}
+                    }
+                    else {
+                        writeTime = System.currentTimeMillis();
+                    }
 
                     // insert welcome message in db
-                    insertAutomaticHelloMessageByCoaches(tmpStoreAuthorName, tmpStoreMessageText, tmpAnonymous);
+                    insertAutomaticHelloMessageByCoaches(tmpStoreAuthorName, tmpStoreMessageText, tmpAnonymous, writeTime);
                 }
                 prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithoutConnection, true);
-                prefsEditor.putString(ConstansClassMessage.namePrefsMessageWelcomeMessageLast, "");
+                prefsEditor.putString(ConstansClassMessage.namePrefsMessageWelcomeMessageLast, "welcomeMessageConnectedShow");
                 prefsEditor.apply();
             }
 
@@ -198,13 +224,50 @@ public class ActivityMessage extends AppCompatActivity {
             
             // insert welcome message in db? -> connected, associated with case
             if (!prefs.getBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithConnection, false)) {
-                // get author and text of welcome message associated
-                String tmpStoreAuthorName = getResources().getString(R.string.messageAutomaticGeneratedHelloTextAuthorNameAssociated);
-                String tmpStoreMessageText = getResources().getString(R.string.messageAutomaticGeneratedHelloTextMessageTextAssociated);
-                int tmpAnonymous = 1;
 
-                // insert welcome message in db
-                insertAutomaticHelloMessageByCoaches(tmpStoreAuthorName, tmpStoreMessageText, tmpAnonymous);
+                // look for actual messages in db -> welcome message must first - set write time correct!
+                Cursor cursor = myDb.getAllRowsMessages("desc");
+
+                if (prefs.getString(ConstansClassMessage.namePrefsMessageWelcomeMessageLast, "").equals("welcomeMessageConnectedShow")) {
+
+                    // get author and text of welcome message associated
+                    String tmpStoreAuthorName = getResources().getString(R.string.messageAutomaticGeneratedHelloTextAuthorNameAssociated);
+                    String tmpStoreMessageText = getResources().getString(R.string.messageAutomaticGeneratedHelloTextMessageTextAssociated);
+                    int tmpAnonymous = 1;
+                    long writeTime = 0L;
+
+                    if (cursor != null && cursor.getCount() > 0) {
+                        writeTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_WRITE_TIME));
+                        // add one minute to last message write time
+                        writeTime = writeTime + oneSecondForWelcomeMessageCorrection;
+                    }
+                    else {
+                        writeTime = System.currentTimeMillis();
+                    }
+
+                    // insert welcome message in db
+                    insertAutomaticHelloMessageByCoaches(tmpStoreAuthorName, tmpStoreMessageText, tmpAnonymous, writeTime);
+                }
+                else {
+                    // get author and text of welcome message associated
+                    String tmpStoreAuthorName = getResources().getString(R.string.messageAutomaticGeneratedHelloTextAuthorNameAssociated);
+                    String tmpStoreMessageText = getResources().getString(R.string.messageAutomaticGeneratedHelloTextMessageTextAssociated);
+                    int tmpAnonymous = 1;
+                    long writeTime = 0L;
+
+                    if (cursor != null && cursor.getCount() > 0) {
+                        writeTime = cursor.getLong(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_WRITE_TIME));
+                        // check for negative timestamp -> because we sub one minute (60 seconds)
+                        if (writeTime > 100) {writeTime = writeTime - oneSecondForWelcomeMessageCorrection;}
+                        else {writeTime = System.currentTimeMillis();}
+                    }
+                    else {
+                        writeTime = System.currentTimeMillis();
+                    }
+
+                    // insert welcome message in db
+                    insertAutomaticHelloMessageByCoaches(tmpStoreAuthorName, tmpStoreMessageText, tmpAnonymous, writeTime);
+                }
 
                 prefsEditor.putBoolean(ConstansClassMessage.namePrefsMessageWelcomeMessageWithConnection, true);
                 prefsEditor.putString(ConstansClassMessage.namePrefsMessageWelcomeMessageLast, "helloWithConnection");
@@ -287,6 +350,7 @@ public class ActivityMessage extends AppCompatActivity {
                 public void onClick(View v) {
 
                     if (!prefs.getBoolean(ConstansClassMessage.namePrefsMessageStopCommunication, false)) {
+
                         // check number of send messages
                         if (tmpCountCurrentMessagesFinal < tmpMaxMessagesFinal) {
 
@@ -521,7 +585,7 @@ public class ActivityMessage extends AppCompatActivity {
     // display messages in listview
     public void displayMessageSet () {
 
-        Cursor cursor = myDb.getAllRowsMessages();
+        Cursor cursor = myDb.getAllRowsMessages("asc");
 
         if (cursor != null && cursor.getCount() > 0 && listViewMessage != null) {
 
@@ -559,8 +623,6 @@ public class ActivityMessage extends AppCompatActivity {
                 // inflate and get the view
                 View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_message, null);
 
-
-
                 // show help dialog for client modus
                 if (clientModus) {
                     // associated
@@ -568,11 +630,9 @@ public class ActivityMessage extends AppCompatActivity {
                     String tmpTextAssociatedOrNot = ActivityMessage.this.getResources().getString(R.string.textDialogMessageGeneralInfoTextAssociated);
                     tmpDialogTextViewAssociatedOrNot.setText(tmpTextAssociatedOrNot);
 
-
                     // show the settings for message
                     tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogMessageSettings);
                     String tmpTxtElement, tmpTxtElement1, tmpTxtElement2, tmpTxtElement2a;
-
 
                     // generate text for max messages
                     if (prefs.getInt(ConstansClassMessage.namePrefsMessageMaxMessageAssociated, ConstansClassMessage.namePrefsMessageMaxMessageAssociatedStandard) > 1) {
@@ -581,7 +641,6 @@ public class ActivityMessage extends AppCompatActivity {
                         tmpTxtElement = ActivityMessage.this.getResources().getString(R.string.textDialogMessageSettingsMaxMessagesSingular);
                     }
                     tmpTxtElement = String.format(tmpTxtElement, prefs.getInt(ConstansClassMessage.namePrefsMessageMaxMessageAssociated, ConstansClassMessage.namePrefsMessageMaxMessageAssociatedStandard));
-
 
                     // generate text for count current messages
                     if (prefs.getInt(ConstansClassMessage.namePrefsMessageCountCurrentAssociated, 0) > 1) {
@@ -619,11 +678,9 @@ public class ActivityMessage extends AppCompatActivity {
                     String tmpTextAssociatedOrNot = ActivityMessage.this.getResources().getString(R.string.textDialogMessageGeneralInfoTextNotAssociated);
                     tmpDialogTextViewAssociatedOrNot.setText(tmpTextAssociatedOrNot);
 
-
                     // show the settings for message
                     tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogMessageSettings);
                     String tmpTxtElement, tmpTxtElement1, tmpTxtElement2, tmpTxtElement2a;
-
 
                     // generate text for max messages
                     if (prefs.getInt(ConstansClassMessage.namePrefsMessageMaxMessageNotAssociated, ConstansClassMessage.namePrefsMessageMaxMessageNotAssociatedStandard) > 1) {
@@ -632,7 +689,6 @@ public class ActivityMessage extends AppCompatActivity {
                         tmpTxtElement = ActivityMessage.this.getResources().getString(R.string.textDialogMessageSettingsMaxMessagesSingular);
                     }
                     tmpTxtElement = String.format(tmpTxtElement, prefs.getInt(ConstansClassMessage.namePrefsMessageMaxMessageNotAssociated, ConstansClassMessage.namePrefsMessageMaxMessageNotAssociatedStandard));
-
 
                     // generate text for count current messages
                     if (prefs.getInt(ConstansClassMessage.namePrefsMessageCountCurrentNotAssociated, 0) > 1) {
@@ -659,13 +715,7 @@ public class ActivityMessage extends AppCompatActivity {
 
                     TextView tmpDialogTextViewInfoTextNotAssociated = (TextView) dialogSettings.findViewById(R.id. textViewDialogMessageSettingsHintNotAssociated);
                     tmpDialogTextViewInfoTextNotAssociated.setVisibility(View.VISIBLE);
-
                 }
-
-
-
-
-
 
                 // get string ressources
                 String tmpTextCloseDialog = ActivityMessage.this.getResources().getString(R.string.textDialogMessageCloseDialog);
@@ -732,12 +782,10 @@ public class ActivityMessage extends AppCompatActivity {
     }
 
 
+    void insertAutomaticHelloMessageByCoaches (String authorName, String messageText, int anonymous, Long messageWriteTime) {
 
-    void insertAutomaticHelloMessageByCoaches (String authorName, String messageText, int anonymous) {
-
-        Long messageTime = System.currentTimeMillis(); // first insert with local system time
-        Long uploadTime = System.currentTimeMillis();
-        Long localeTime = System.currentTimeMillis();
+        Long uploadTime = messageWriteTime;
+        Long localeTime = messageWriteTime;
         Boolean newEntry = false;
         int messageStatus = 4; // 0= not send to sever; 1= send to server; 4= external comment
 
@@ -746,15 +794,9 @@ public class ActivityMessage extends AppCompatActivity {
         String source = "message"; // used for future extension
 
         // put message into db
-        long tmpDbId = myDb.insertRowMessage(authorName, localeTime, messageTime, messageText, roleMessage, messageStatus, newEntry, uploadTime, anonymous, source);
+        long tmpDbId = myDb.insertRowMessage(authorName, localeTime, messageWriteTime, messageText, roleMessage, messageStatus, newEntry, uploadTime, anonymous, source);
 
     }
-
-
-
-
-
-
 
 
     @Override
@@ -774,4 +816,3 @@ public class ActivityMessage extends AppCompatActivity {
 
 
 }
-
