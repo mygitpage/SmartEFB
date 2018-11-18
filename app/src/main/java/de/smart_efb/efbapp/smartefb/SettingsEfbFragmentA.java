@@ -403,6 +403,16 @@ public class SettingsEfbFragmentA extends Fragment {
 
             // show connected to server intro text
             TextView textViewConnectedWithServerIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerSucsessfullIntro);
+
+            String tmpTextIntroHeadingText;
+            if (prefs.getLong(ConstansClassSettings.namePrefsFirstInitTimeInMills, 0L) > 0) {
+                tmpTextIntroHeadingText = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerSuccessfulTextWithDate);
+                tmpTextIntroHeadingText = String.format(tmpTextIntroHeadingText, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassSettings.namePrefsFirstInitTimeInMills, 0L), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassSettings.namePrefsFirstInitTimeInMills, 0L), "HH:mm"));
+            }
+            else {
+                tmpTextIntroHeadingText = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerSuccessfulTextWithoutDate);
+            }
+            textViewConnectedWithServerIntroText.setText(Html.fromHtml(tmpTextIntroHeadingText));
             textViewConnectedWithServerIntroText.setVisibility(View.VISIBLE);
             textViewConnectedWithServerIntroText.setMovementMethod(LinkMovementMethod.getInstance());
 

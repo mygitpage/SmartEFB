@@ -341,8 +341,6 @@ public class EfbXmlParser {
                                 }
                             }
                             break;
-
-
                     }
                 }
                 else if (eventType == XmlPullParser.END_DOCUMENT) {
@@ -351,7 +349,13 @@ public class EfbXmlParser {
 
                 } else if (eventType == XmlPullParser.END_TAG && xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForMain)) {
 
-                    if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Init) && tmpClientId.trim().length() > 0) { // init client smartphone
+                    if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Init) && tmpClientId.trim().length() > 0 && tmpServerTime.length() > 0) { // init client smartphone
+
+                        // save global server time
+                        saveGlobalServerTime (tmpServerTime);
+
+                        // write first init time in prefs (time is from server)
+                        prefsEditor.putLong(ConstansClassSettings.namePrefsFirstInitTimeInMills, globalServerTime);
                         // set case close to false
                         prefsEditor.putBoolean(ConstansClassSettings.namePrefsCaseClose, false);
                         // write client id to prefs
@@ -367,16 +371,13 @@ public class EfbXmlParser {
                         // delete all content from db tables (init process)
                         myDb.initDeleteAllContentFromTables();
 
-                        // save global server time
-                        saveGlobalServerTime (tmpServerTime);
-
                         returnMap.put("ClientId", tmpClientId);
                         returnMap.put("ConnectionStatus", "3");
                         returnMap.put("Error", "0");
                         returnMap.put("ErrorText", "");
                         readMoreXml = false;
                     }
-                    else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Receive_Ok_Send)) { // data send and now receive data
+                    else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Receive_Ok_Send) && tmpServerTime.length() > 0) { // data send and now receive data
 
                         // save global server time
                         saveGlobalServerTime (tmpServerTime);
@@ -391,7 +392,7 @@ public class EfbXmlParser {
                         readMoreXml = false;
 
                     }
-                    else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Error_Init) && tmpErrorText.length() > 0) { // Error in main tag
+                    else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Error_Init) && tmpErrorText.length() > 0 && tmpServerTime.length() > 0) { // Error in main tag
 
                         // write last error messages to prefs
                         prefsEditor.putString(ConstansClassSettings.namePrefsLastErrorMessages, tmpErrorText);
@@ -410,7 +411,7 @@ public class EfbXmlParser {
                         readMoreXml = false;
                     }
 
-                    else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Error_Communication) && tmpErrorText.length() > 0) {
+                    else if (tmpMainOrder.equals(ConstansClassXmlParser.xmlNameForOrder_Error_Communication) && tmpErrorText.length() > 0 && tmpServerTime.length() > 0) {
 
                         // save global server time
                         saveGlobalServerTime (tmpServerTime);
@@ -855,15 +856,14 @@ public class EfbXmlParser {
                 if (eventType == XmlPullParser.END_TAG) {
                     if (xpp.getName().trim().equals(ConstansClassXmlParser.xmlNameForOurArrangement_NowComment)) {
 
-                        // check all data for arrangement now correct?
+                        // check all data for arrangement comment correct?
                         if (!error) {
 
                             // our arrangement now comment order -> new entry?
                             if (tmpOrder.equals(ConstansClassXmlParser.xmlNameForOrder_New) && tmpCommentText.length() > 0 && tmpAuthorName.length() > 0 && tmpLocalCommentTime > 0 && globalServerTime > 0 && tmpServerIdArrangement >= 0 && tmpArrangementTime > 0 && tmpBlockId.length() > 0) {
                                 // set upload time on smartphone for commeent
                                 tmpUploadTime = System.currentTimeMillis();
-
-                                // insert new comment in DB
+                               // insert new comment in DB
                                 myDb.insertRowOurArrangementComment(tmpCommentText, tmpAuthorName,  globalServerTime, tmpUploadTime, tmpLocalCommentTime, tmpBlockId, true, tmpArrangementTime, 4, tmpServerIdArrangement, 1);
 
                                 // refresh activity our arrangement and fragment now comment

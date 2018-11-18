@@ -726,13 +726,13 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // Return all data in the database. chat messages sorted by write time ASC
+    // Return all data in the database. chat messages sorted by write time ASC and locale time ASC
     Cursor getAllRowsChatMessage() {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         // sort string
-        String sort = CHAT_MESSAGE_KEY_WRITE_TIME + " ASC";
+        String sort = CHAT_MESSAGE_KEY_WRITE_TIME + " ASC, " + CHAT_MESSAGE_KEY_LOCAL_TIME + " ASC";
 
         Cursor c = db.query(true, DATABASE_TABLE_CHAT_MESSAGE, CHAT_MESSAGE_ALL_KEYS,
                 null, null, null, null, sort, null);
@@ -1244,13 +1244,13 @@ public class DBAdapter extends SQLiteOpenHelper {
         String sort = "";
         switch (sortSequence) {
             case "ascending":
-                sort = OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " ASC";
+                sort = OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " ASC, " + OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME+ " ASC";
                 break;
             case "descending":
-                sort = OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " DESC";
+                sort = OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " DESC, " + OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME+ " DESC";
                 break;
             default:
-                sort = OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " DESC";
+                sort = OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME + " DESC, " + OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME+ " DESC";
                 break;
         }
 
@@ -1443,7 +1443,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return all comments from the database for sketch arrangement with server arrangement id = id (table ourArrangementSketchComment)
-    // the result is sorted by DESC
     Cursor getAllRowsOurArrangementSketchComment(int serverId, String sortSequence) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1455,13 +1454,13 @@ public class DBAdapter extends SQLiteOpenHelper {
         String sort = "";
         switch (sortSequence) {
             case "ascending":
-                sort = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME + " ASC";
+                sort = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME + " ASC, " + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_LOCAL_TIME + " ASC";
                 break;
             case "descending":
-                sort = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME + " DESC";
+                sort = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME + " DESC, " + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_LOCAL_TIME + " DESC";
                 break;
             default:
-                sort = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME + " DESC";
+                sort = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME + " DESC, " + OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_LOCAL_TIME + " DESC";
                 break;
         }
 
@@ -2103,7 +2102,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return all comments from the database for jointly goals with serverGoalId = id (table ourGoalsJointlyGoalsComment)
-    // the result is sorted by DESC
     Cursor getAllRowsOurGoalsJointlyGoalsComment(int serverGoalId, String sortSequence) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -2115,13 +2113,13 @@ public class DBAdapter extends SQLiteOpenHelper {
         String sort = "";
         switch (sortSequence) {
             case "ascending":
-                sort = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " ASC";
+                sort = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " ASC, " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME + " ASC";
                 break;
             case "descending":
-                sort = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
+                sort = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " DESC, " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME + " DESC";
                 break;
             default:
-                sort = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
+                sort = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME + " DESC, " + OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME + " DESC";
                 break;
         }
 
@@ -2433,7 +2431,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return all comments from the database for debetable goal with serverGoalId = id (table ourGoalsDebetableGoalsComment)
-    // the result is sorted by DESC
     Cursor getAllRowsOurGoalsDebetableGoalsComment(int serverGoalId, String sortSequence) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -2445,13 +2442,13 @@ public class DBAdapter extends SQLiteOpenHelper {
         String sort = "";
         switch (sortSequence) {
             case "ascending":
-                sort = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " ASC";
+                sort = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " ASC, " + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_LOCAL_TIME + " ASC";
                 break;
             case "descending":
-                sort = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
+                sort = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " DESC, " + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_LOCAL_TIME + " DESC";
                 break;
             default:
-                sort = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " DESC";
+                sort = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME + " DESC, " + OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_LOCAL_TIME + " DESC";
                 break;
         }
 

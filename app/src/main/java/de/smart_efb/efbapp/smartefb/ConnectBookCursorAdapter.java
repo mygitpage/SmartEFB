@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.CountDownTimer;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,9 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
     Boolean showMessageGroupFirstDateChange = false;
     // show message group date at end -> true
     Boolean showMessageGroupLastDateChange = false;
+
+    // true-> info text message block load while init process was show
+    Boolean firstInitProcessMessageBlockLoadEndSet = false;
 
     // shared prefs for the settings
     SharedPreferences prefs;
@@ -90,6 +94,13 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
             }
             showMessageGroupFirstDateChange = false;
         }
+
+
+
+
+
+
+
     }
 
 
@@ -311,6 +322,44 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_STATUS)) == 4) {tmpAuthorandDate = context.getResources().getString(R.string.textConnectBookMessageAuthorAndDate);}
         tmpAuthorandDate = String.format(tmpAuthorandDate, cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_LOCAL_TIME)), "dd.MM.yyyy - HH:mm"), tmpNewMessage);
         textViewAuthor.setText(Html.fromHtml(tmpAuthorandDate));
+
+        // show block for init process load first messages
+        if (cursor.isFirst()) {
+            LinearLayout firstInitProcessMessageBlockLoadStartHolder = (LinearLayout) inflatedView.findViewById(R.id.connectBookFirstInitProcessMessageBlockLoadStartHolder);
+            // show info text: message load while init process
+            if (firstInitProcessMessageBlockLoadStartHolder != null) {
+                if (writeTime == prefs.getLong(ConstansClassSettings.namePrefsFirstInitTimeInMills, 0L)) {
+                    firstInitProcessMessageBlockLoadStartHolder.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+
+        if (!firstInitProcessMessageBlockLoadEndSet) {
+            LinearLayout firstInitProcessMessageBlockLoadEndHolder;
+
+            if (!cursor.isLast()) {
+                cursor.moveToNext();
+                Long writeTimeNextForBlockLoad = cursor.getLong(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_WRITE_TIME));
+                cursor.moveToPrevious();
+
+                if (writeTime == prefs.getLong(ConstansClassSettings.namePrefsFirstInitTimeInMills, 0L) && writeTimeNextForBlockLoad != prefs.getLong(ConstansClassSettings.namePrefsFirstInitTimeInMills, 0L)) {
+                    firstInitProcessMessageBlockLoadEndHolder = (LinearLayout) inflatedView.findViewById(R.id.connectBookFirstInitProcessMessageBlockLoadEndHolder);
+                    if (firstInitProcessMessageBlockLoadEndHolder != null) {
+                        firstInitProcessMessageBlockLoadEndHolder.setVisibility(View.VISIBLE);
+                        firstInitProcessMessageBlockLoadEndSet = true;
+                    }
+                }
+            }
+            else {
+                if (writeTime == prefs.getLong(ConstansClassSettings.namePrefsFirstInitTimeInMills, 0L)) {
+                    firstInitProcessMessageBlockLoadEndHolder = (LinearLayout) inflatedView.findViewById(R.id.connectBookFirstInitProcessMessageBlockLoadEndHolder);
+                    if (firstInitProcessMessageBlockLoadEndHolder != null) {
+                        firstInitProcessMessageBlockLoadEndHolder.setVisibility(View.VISIBLE);
+                        firstInitProcessMessageBlockLoadEndSet = true;
+                    }
+                }
+            }
+        }
 
         // close DB connection
         myDb.close();

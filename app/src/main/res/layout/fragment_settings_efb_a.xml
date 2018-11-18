@@ -91,7 +91,6 @@
             android:textSize="16dp"
             android:paddingLeft="10dp"
             android:paddingBottom="15dp"
-            android:text="@string/settingsConnectToServerSuccessfulText"
             android:textColor="@color/colorPrimaryDark"
             android:textColorLink="@color/colorPrimary"
             android:gravity="left"

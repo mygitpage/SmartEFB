@@ -891,6 +891,7 @@ public class MainActivity extends AppCompatActivity {
                     prefsEditor.putInt(ConstansClassSettings.namePrefsRandomNumberForConnection, 0); // five digits for connection to server
                     prefsEditor.putString(ConstansClassSettings.namePrefsClientId, ""); // set client id to nothing
                     prefsEditor.putString(ConstansClassSettings.namePrefsContactId, ""); // set contact id to nothing
+                    prefsEditor.putLong(ConstansClassSettings.namePrefsFirstInitTimeInMills, 0L); // set first init time to zero
 
                     // set visual notification
                     prefsEditor.putBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_ConnectBook, false);

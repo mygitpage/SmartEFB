@@ -56,7 +56,6 @@ import java.util.Map;
         @Override
         public void onCreate() {
             super.onCreate();
-            Log.d("Exchange Service", "In onCreate");
 
             this.isRunning = false;
             this.context = this;
@@ -131,7 +130,7 @@ import java.util.Map;
                     Cursor allMeetingsReadyToSend = null;
                     Cursor allMessagesReadyToSend = null;
 
-                    Log.d("Exchange Service", "Network on in aks new data");
+                    Log.d("Exchange Service", "Network on in ask new data");
 
                     // get client id from prefs
                     String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
@@ -321,7 +320,7 @@ import java.util.Map;
                         // prepair data to send
                         String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
 
-                        Log.d("Send", "XMLCODE=" + textparam);
+                        //Log.d("Send", "XMLCODE=" + textparam);
 
                         // set url and parameters
                         URL scripturl = new URL(ConstansClassSettings.urlConnectionAskForNewDataToServer);
@@ -359,7 +358,7 @@ import java.util.Map;
                             e.printStackTrace();
                         }
 
-                        Log.d("New Data Send", "Antwort:" + stringBuilder.toString().trim());
+                        //Log.d("New Data Send", "Antwort:" + stringBuilder.toString().trim());
 
                         // call xml parser with input
                         EfbXmlParser xmlparser = new EfbXmlParser(context);
@@ -765,8 +764,6 @@ import java.util.Map;
 
                 if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
 
-                    Log.d("Exchange Service", "Network on in send now");
-
                     // get client id from prefs
                     String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
 
@@ -824,8 +821,6 @@ import java.util.Map;
                         // prepair data to send
                         String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
 
-                        Log.d("Send", "XMLCODE=" + textparam);
-
                         // set url and parameters
                         URL scripturl = new URL(ConstansClassSettings.urlConnectionSendNewCommentArrangementToServer);
                         HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
@@ -861,8 +856,6 @@ import java.util.Map;
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
-                        Log.d("Comment Send", "Antwort:" + stringBuilder.toString().trim());
 
                         // call xml parser with input
                         EfbXmlParser xmlparser = new EfbXmlParser(context);
@@ -970,8 +963,6 @@ import java.util.Map;
 
             if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
 
-                Log.d("Exchange Service Sketch", "Network on in send sketch");
-
                 // get comment from db
                 Cursor commentData = myDb.getOneRowOurArrangementSketchComment(dbId);
 
@@ -1065,9 +1056,6 @@ import java.util.Map;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                    Log.d("Sketch Comment XML", "Content:"+stringBuilder.toString().trim());
-
 
                     // call xml parser with input
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
@@ -1174,8 +1162,6 @@ import java.util.Map;
 
             if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
 
-                Log.d("Exch Service Evaluation", "Network on in send evaluation");
-
                 // get evaluation result from db
                 Cursor evaluationResultData = myDb.getOneRowEvaluationResultArrangement (dbId);
 
@@ -1186,8 +1172,6 @@ import java.util.Map;
                 XmlSerializer xmlSerializer = Xml.newSerializer();
                 StringWriter writer = new StringWriter();
                 try {
-
-                    Log.d("Exch Service Evaluation", "Try to send");
 
                     xmlSerializer.setOutput(writer);
 
@@ -1271,8 +1255,6 @@ import java.util.Map;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                    Log.d("Evaluation REc. XML", "Content:"+stringBuilder.toString().trim());
 
                     // call xml parser with input
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
@@ -1379,8 +1361,6 @@ import java.util.Map;
 
             if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
 
-                Log.d("Exchange Service", "Network on in send jointly com");
-
                 // get comment from db
                 Cursor commentData = myDb.getOneRowOurGoalsJointlyComment(dbId);
 
@@ -1439,8 +1419,6 @@ import java.util.Map;
                     // prepair data to send
                     String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
 
-                    Log.d("Send","XMLCODE="+textparam);
-
                     // set url and parameters
                     URL scripturl = new URL(ConstansClassSettings.urlConnectionSendNewCommentJointlyGoalsToServer);
                     HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
@@ -1476,8 +1454,6 @@ import java.util.Map;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                    Log.d("Comment Send", "Antwort:"+stringBuilder.toString().trim());
 
                     // call xml parser with input
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
@@ -1678,8 +1654,6 @@ import java.util.Map;
                         e.printStackTrace();
                     }
 
-                    Log.d("Evaluation Jointly XML", "Content:"+stringBuilder.toString().trim());
-
                     // call xml parser with input
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
                     returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
@@ -1760,8 +1734,6 @@ import java.util.Map;
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
             if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
-
-                Log.d("Ex Service Debetable", "Network on in send sketch");
 
                 // get comment from db
                 Cursor commentData = myDb.getOneRowOurGoalsDebetableComment (dbId);
@@ -1856,9 +1828,6 @@ import java.util.Map;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                    Log.d("Debetable Comment XML", "Content:"+stringBuilder.toString().trim());
-
 
                     // call xml parser with input
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
@@ -1970,8 +1939,6 @@ import java.util.Map;
 
             if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
 
-                Log.d("Ex Service Connect Book", "Network on in send message!");
-
                 // get comment from db
                 Cursor messageData = myDb.getOneRowChatMessage (dbId);
 
@@ -2065,9 +2032,6 @@ import java.util.Map;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                    Log.d("Connect Book XML", "Content:"+stringBuilder.toString().trim());
-
 
                     // call xml parser with input
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
@@ -2245,8 +2209,6 @@ import java.util.Map;
                     // prepair data to send
                     String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
 
-                    Log.d("Send","XMLCODE="+textparam);
-
                     // set url and parameters
                     URL scripturl = new URL(ConstansClassSettings.urlConnectionSendMeetingDataToServer);
                     HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
@@ -2282,8 +2244,6 @@ import java.util.Map;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                    Log.d("Meeting Send", "Antwort:"+stringBuilder.toString().trim());
 
                     // call xml parser with input
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
@@ -2430,12 +2390,7 @@ import java.util.Map;
             ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-
-            Log.d("Ex Service MESSAGE", "VOR Network on!!!!!");
-
             if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
-
-                Log.d("Ex Service MESSAGE", "Network on in send MESSAGE!");
 
                 // get message from db
                 Cursor messageData = myDb.getOneRowMessage (dbId);
@@ -2477,11 +2432,6 @@ import java.util.Map;
 
                     // check client or contact id set?
                     if (clientIdSet) {
-
-
-                        Log.d("Exchange---->", "Client ID!!!!!!!!!");
-
-
                         // start tag client id
                         xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                         xmlSerializer.text(tmpClientId);
@@ -2491,9 +2441,6 @@ import java.util.Map;
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                     }
                     else {
-
-                        Log.d("Exchange---->", "CONTACT ID!!!!!!!!!");
-
                         // start empty tag client id
                         xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
@@ -2524,11 +2471,6 @@ import java.util.Map;
                     e.printStackTrace();
                 }
 
-
-                Log.d("MESSAGE--->", "WRITER:"+writer.toString());
-
-
-
                 // and send xml text to server
                 try {
                     // prepair data to send
@@ -2554,11 +2496,6 @@ import java.util.Map;
 
                     contentWriter.close();
 
-
-
-
-                    Log.d("Exchange--->", "MESSAGE SEND!");
-
                     // get answer from input
                     InputStream answerInputStream = connection.getInputStream();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
@@ -2574,9 +2511,6 @@ import java.util.Map;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                    Log.d("Message XML", "Content:"+stringBuilder.toString().trim());
-
 
                     // call xml parser with input
                     EfbXmlParser xmlparser = new EfbXmlParser(context);
@@ -2712,10 +2646,6 @@ import java.util.Map;
 
                 // check commands
                 if (command.equals("ask_new_data")) { // Ask server for new data
-
-
-                    Log.d("Exchange -->", "ASK NEW DATA!!!!");
-
 
                     // generate new background task
                     this.backgroundThread = new Thread(new ExchangeTaskCheckNewContent(context));
