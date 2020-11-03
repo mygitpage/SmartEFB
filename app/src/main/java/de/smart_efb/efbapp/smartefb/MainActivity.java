@@ -1,5 +1,7 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,10 +9,11 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
         this.registerReceiver(mainActivityBrodcastReceiver, filter);
+
+        // init notification channel and importance
+        initNotificationChannelForApp();
 
         // init the elements arrays (title, color, colorLight, backgroundImage)
         initMainMenueElementsArrays();
@@ -173,18 +179,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         // first ask to server for new data, when case is not closed!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+
             // send intent to service to start the service
-            Intent startServiceIntent = new Intent(getApplicationContext(), ExchangeServiceEfb.class);
+            Intent startServiceIntent = new Intent(getApplicationContext(), ExchangeJobIntentServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
             startServiceIntent.putExtra("dbid",0L);
             startServiceIntent.putExtra("receiverBroadcast","");
             // start service
-            getApplicationContext().startService(startServiceIntent);
-        }
+            ExchangeJobIntentServiceEfb.enqueueWork(getApplicationContext(), startServiceIntent);
+          }
     }
 
 
@@ -237,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
     private BroadcastReceiver mainActivityBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
@@ -929,6 +935,14 @@ public class MainActivity extends AppCompatActivity {
                     // nothing to do!
                 case 6: // update six
                     // nothing to do!
+                case 7: // update seven
+                    // nothing to do!
+                case 8: // update eight
+                    // nothing to do!
+                case 9: // update nine
+                    // nothing to do!
+                case 10: // update ten
+                    // nothing to do!
             }
 
             // write app version to prefs
@@ -937,5 +951,34 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    // init notification channel for app
+    void initNotificationChannelForApp () {
+
+        int importanceNoSound = NotificationManager.IMPORTANCE_LOW;
+        int importanceSound = NotificationManager.IMPORTANCE_DEFAULT;
+
+        // get notification manager
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // create new notification channel object without sound
+        NotificationChannel notificationChannelNoSound = new NotificationChannel(ConstansClassMain.uniqueNotificationChannelIdNoSound, ConstansClassMain.uniqueNotificationChannelNameNoSound, importanceNoSound);
+
+        // set sound off
+        notificationChannelNoSound.setSound(null, null);
+
+        // create notification channel
+        notificationManager.createNotificationChannel(notificationChannelNoSound);
+
+        // create new notification channel object without sound
+        NotificationChannel notificationChannelSound = new NotificationChannel(ConstansClassMain.uniqueNotificationChannelIdSound, ConstansClassMain.uniqueNotificationChannelNameSound, importanceSound);
+
+        // set sound on
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        notificationChannelSound.setSound(alarmSound, null);
+
+        // create notification channel
+        notificationManager.createNotificationChannel(notificationChannelSound);
+    }
 
 }

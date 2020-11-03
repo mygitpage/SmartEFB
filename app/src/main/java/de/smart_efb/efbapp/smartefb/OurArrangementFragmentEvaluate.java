@@ -117,14 +117,15 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         // first ask to server for new data, when case is not closed!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+
             // send intent to service to start the service
-            Intent startServiceIntent = new Intent(fragmentEvaluateContext, ExchangeServiceEfb.class);
+            Intent startServiceIntent = new Intent(fragmentEvaluateContext, ExchangeJobIntentServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
             startServiceIntent.putExtra("dbid",0L);
             startServiceIntent.putExtra("receiverBroadcast","");
             // start service
-            fragmentEvaluateContext.startService(startServiceIntent);
+            ExchangeJobIntentServiceEfb.enqueueWork(fragmentEvaluateContext, startServiceIntent);
         }
     }
 
@@ -141,7 +142,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
     }
 
 
-    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
     private BroadcastReceiver ourArrangementFragmentEvaluateBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
@@ -507,12 +508,13 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                         // reset evaluate results
                         resetEvaluateResult();
 
-                        // send intent to service to start the service and send evaluationresult to server!
-                        Intent startServiceIntent = new Intent(fragmentEvaluateContext, ExchangeServiceEfb.class);
+                        // send intent to service to start the service
+                        Intent startServiceIntent = new Intent(fragmentEvaluateContext, ExchangeJobIntentServiceEfb.class);
                         startServiceIntent.putExtra("com", "send_evaluation_result_arrangement");
                         startServiceIntent.putExtra("dbid", tmpDbId);
                         startServiceIntent.putExtra("receiverBroadcast", "");
-                        fragmentEvaluateContext.startService(startServiceIntent);
+                        // start service
+                        ExchangeJobIntentServiceEfb.enqueueWork(fragmentEvaluateContext, startServiceIntent);
 
                         // build and send intent to next evaluation arrangement or back to OurArrangementNow
                         if (nextArrangementServerDbIdToEvaluate != 0) { // is there another arrangement to evaluate?

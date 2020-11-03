@@ -5,12 +5,11 @@ package de.smart_efb.efbapp.smartefb;
  */
 class ConstansClassMain {
 
-
     // actual app version (set manualy)
-    static final int actualAppVersionNumber = 6; // increment these number with every new version
+    static final int actualAppVersionNumber = 7; // increment these number with every new version
 
     // locale app version as string
-    static final String localeAppVersionAsString = "1.06"; // app version as a string
+    static final String localeAppVersionAsString = "1.07"; // app version as a string
 
     // app version number of local installation
     static final String namePrefsNumberAppVersion = "smartEfbAppNumberVersion";
@@ -69,5 +68,16 @@ class ConstansClassMain {
     // max letters border for more/ less letters in string in activity/ fragment faq
     static final int maxLessOrMoreStringFaqLetters = 100;
 
+    // unique notification channel id without sound
+    static final String uniqueNotificationChannelIdNoSound = "101010101";
+
+    // unique notification channel name without sound
+    static final CharSequence uniqueNotificationChannelNameNoSound = "Benachrichtigungen ohne Signalton";
+
+    // unique notification channel id with sound
+    static final String uniqueNotificationChannelIdSound = "10101010201";
+
+    // unique notification channel name with sound
+    static final CharSequence uniqueNotificationChannelNameSound = "Benachrichtigungen mit Signalton";
 
 }

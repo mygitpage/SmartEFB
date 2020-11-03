@@ -5,7 +5,6 @@ package de.smart_efb.efbapp.smartefb;
  */
 class ConstansClassXmlParser {
 
-
     // xml name for master element smartefb
     static final String xmlNameForMasterElement = "smartEfb";
 

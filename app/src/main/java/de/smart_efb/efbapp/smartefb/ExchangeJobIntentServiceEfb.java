@@ -2,19 +2,16 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
-import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -33,892 +30,904 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
-    /**
-     * Created by ich on 27.07.2017.
-     */
-    public class ExchangeServiceEfb extends Service {
+public class ExchangeJobIntentServiceEfb extends JobIntentService {
 
-        private boolean isRunning;
-        private Context context;
-        private Thread backgroundThread;
+    private static final int JOB_ID = 22222;
+    private boolean isRunning;
+    private Context context;
+    private Thread backgroundThread;
 
-        // point to shared preferences
+    // point to shared preferences
+    SharedPreferences prefs;
+
+    public static void enqueueWork(Context context, Intent intent) {
+        enqueueWork(context, ExchangeJobIntentServiceEfb.class, JOB_ID, intent);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        this.isRunning = false;
+        this.context = this;
+
+        // get the shared preferences
+        prefs = this.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
+    }
+
+    //++++++++++++++++++ TASK AREA ++++++++++++++++++++++++++++++++++++++++++++++
+
+    // Check the DB for unsend comments, evaluation results, meetings, etc. and send to sever.
+    // Ask server for new data and get answer from server
+    public class ExchangeTaskCheckNewContent implements Runnable {
+
+        // reference to the DB
+        private DBAdapter myDb;
+
+        // context of task
+        Context context;
+
+        // shared prefs
         SharedPreferences prefs;
+        SharedPreferences.Editor prefsEditor;
 
-        @Override
-        public IBinder onBind(Intent intent) {
-            // Wont be called as service is not bound
+        // return information for change
+        Map<String, String> returnMap;
 
-            return null;
-        }
-
-
-        @Override
-        public void onCreate() {
-            super.onCreate();
-
-            this.isRunning = false;
-            this.context = this;
-
-            // get the shared preferences
-            prefs = this.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
-        }
-
-
-        //++++++++++++++++++ TASK AREA ++++++++++++++++++++++++++++++++++++++++++++++
-
-        // Check the DB for unsend comments, evaluation results, meetings, etc. and send to sever.
-        // Ask server for new data and get answer from server
-        public class ExchangeTaskCheckNewContent implements Runnable {
-
-            // reference to the DB
-            private DBAdapter myDb;
+        // Constructor
+        public ExchangeTaskCheckNewContent (Context context) {
 
             // context of task
-            Context context;
+            this.context = context;
 
-            // shared prefs
-            SharedPreferences prefs;
-            SharedPreferences.Editor prefsEditor;
+            // init the DB
+            myDb = new DBAdapter(context);
 
-            // return information for change
-            Map<String, String> returnMap;
+            // init the prefs
+            prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
+            prefsEditor = prefs.edit();
+        }
 
-            // Constructor
-            public ExchangeTaskCheckNewContent (Context context) {
+        // the task
+        public void run() {
 
-                // context of task
-                this.context = context;
+            Boolean send_now_comment_info = false;
+            Boolean send_sketch_comment_info = false;
+            Boolean send_jointly_goals_comment_info = false;
+            Boolean send_arrangement_evaluation_result_info = false;
+            Boolean send_goals_evaluation_result_info = false;
+            Boolean send_debetable_goals_comment_info = false;
+            Boolean send_connect_book_messages_result_info = false;
+            Boolean send_meeting_data_result_info = false;
+            Boolean send_message_data_result_info = false;
 
-                // init the DB
-                myDb = new DBAdapter(context);
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-                // init the prefs
-                prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
-                prefsEditor = prefs.edit();
-            }
+            if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
 
-            // the task
-            public void run() {
+                Boolean clientIdSet = false;
+                Boolean contactIdSet = false;
 
-                Boolean send_now_comment_info = false;
-                Boolean send_sketch_comment_info = false;
-                Boolean send_jointly_goals_comment_info = false;
-                Boolean send_arrangement_evaluation_result_info = false;
-                Boolean send_goals_evaluation_result_info = false;
-                Boolean send_debetable_goals_comment_info = false;
-                Boolean send_connect_book_messages_result_info = false;
-                Boolean send_meeting_data_result_info = false;
-                Boolean send_message_data_result_info = false;
+                // all cursors for data
+                Cursor allCommentsReadyToSend = null;
+                Cursor allSketchCommentsReadyToSend = null;
+                Cursor allArrangementEvaluationResultsReadyToSend = null;
+                Cursor allJointlyGoalsCommentsReadyToSend = null;
+                Cursor allGoalsEvaluationResultsReadyToSend = null;
+                Cursor allDebetableCommentsReadyToSend = null;
+                Cursor allConnectBookMessagesReadyToSend = null;
+                Cursor allMeetingsReadyToSend = null;
+                Cursor allMessagesReadyToSend = null;
 
-                ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-                NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                // get client id from prefs
+                String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
 
-                if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+                // get contact id from prefs
+                String tmpContactId = prefs.getString(ConstansClassSettings.namePrefsContactId, "");
 
-                    Boolean clientIdSet = false;
-                    Boolean contactIdSet = false;
+                // check for client or contact id
+                if (tmpClientId.length() > 0) {clientIdSet = true;}
+                if (tmpContactId.length() > 0 && !clientIdSet) {contactIdSet = true;}
 
-                    // all cursors for data
-                    Cursor allCommentsReadyToSend = null;
-                    Cursor allSketchCommentsReadyToSend = null;
-                    Cursor allArrangementEvaluationResultsReadyToSend = null;
-                    Cursor allJointlyGoalsCommentsReadyToSend = null;
-                    Cursor allGoalsEvaluationResultsReadyToSend = null;
-                    Cursor allDebetableCommentsReadyToSend = null;
-                    Cursor allConnectBookMessagesReadyToSend = null;
-                    Cursor allMeetingsReadyToSend = null;
-                    Cursor allMessagesReadyToSend = null;
+                // generate xml output text
+                XmlSerializer xmlSerializer = Xml.newSerializer();
+                StringWriter writer = new StringWriter();
 
-                    Log.d("Exchange Service", "Network on in ask new data");
+                // check association -> app connect to server -> check all data
+                if (clientIdSet) {
 
-                    // get client id from prefs
-                    String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
+                    // get all comments with status = 0 -> ready to send
+                    allCommentsReadyToSend = myDb.getAllReadyToSendComments(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0"));
 
-                    // get contact id from prefs
-                    String tmpContactId = prefs.getString(ConstansClassSettings.namePrefsContactId, "");
+                    // get all sketch comments with status = 0 -> ready to send
+                    allSketchCommentsReadyToSend = myDb.getAllReadyToSendSketchComments(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0"));
 
-                    // check for client or contact id
-                    if (tmpClientId.length() > 0) {clientIdSet = true;}
-                    if (tmpContactId.length() > 0 && !clientIdSet) {contactIdSet = true;}
+                    // get all now arrangement evaluation results with status = 0 -> ready to send
+                    allArrangementEvaluationResultsReadyToSend = myDb.getAllReadyToSendArrangementEvaluationResults();
 
-                    // generate xml output text
-                    XmlSerializer xmlSerializer = Xml.newSerializer();
-                    StringWriter writer = new StringWriter();
+                    // get all jointly goals comments with status = 0 -> ready to send
+                    allJointlyGoalsCommentsReadyToSend = myDb.getAllReadyToSendJointlyGoalsComments(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0"));
 
-                    // check association -> app connect to server -> check all data
+                    // get all jointly goals evaluation results with status = 0 -> ready to send
+                    allGoalsEvaluationResultsReadyToSend = myDb.getAllReadyToSendGoalsEvaluationResults();
+
+                    // get all debetable comments with status = 0 -> ready to send
+                    allDebetableCommentsReadyToSend = myDb.getAllReadyToSendDebetableComments(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfDebetableGoals, "0"));
+
+                    // get all connect book messages with status = 0 and role = 1 (own messages) -> ready to send
+                    allConnectBookMessagesReadyToSend = myDb.getAllReadyToSendConnectBookMessages();
+
+                    // get all meetings data (meetings, suggestions from client, answers, comments, etc.) with status = 0 -> ready to send
+                    allMeetingsReadyToSend = myDb.getAllRowsMeetingsAndSuggestion("ready_to_send", 0L); // time is not needed for db-question, so set to zero
+                }
+
+                // in every case (associated or not associated) -> get all messages with status = 0 and role = 1 (own messages) -> ready to send
+                allMessagesReadyToSend = myDb.getAllReadyToSendMessages();
+
+                try {
+
+                    xmlSerializer.setOutput(writer);
+
+                    //Start Document
+                    xmlSerializer.startDocument("UTF-8", true);
+                    xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
+
+                    // Open Tag
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                    // start tag main order -> send "ask new data" and client id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+                    xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_AskNewData);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+
+                    // check client or contact id set?
                     if (clientIdSet) {
-
-                        // get all comments with status = 0 -> ready to send
-                        allCommentsReadyToSend = myDb.getAllReadyToSendComments(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0"));
-
-                        // get all sketch comments with status = 0 -> ready to send
-                        allSketchCommentsReadyToSend = myDb.getAllReadyToSendSketchComments(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0"));
-
-                        // get all now arrangement evaluation results with status = 0 -> ready to send
-                        allArrangementEvaluationResultsReadyToSend = myDb.getAllReadyToSendArrangementEvaluationResults();
-
-                        // get all jointly goals comments with status = 0 -> ready to send
-                        allJointlyGoalsCommentsReadyToSend = myDb.getAllReadyToSendJointlyGoalsComments(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0"));
-
-                        // get all jointly goals evaluation results with status = 0 -> ready to send
-                        allGoalsEvaluationResultsReadyToSend = myDb.getAllReadyToSendGoalsEvaluationResults();
-
-                        // get all debetable comments with status = 0 -> ready to send
-                        allDebetableCommentsReadyToSend = myDb.getAllReadyToSendDebetableComments(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfDebetableGoals, "0"));
-
-                        // get all connect book messages with status = 0 and role = 1 (own messages) -> ready to send
-                        allConnectBookMessagesReadyToSend = myDb.getAllReadyToSendConnectBookMessages();
-
-                        // get all meetings data (meetings, suggestions from client, answers, comments, etc.) with status = 0 -> ready to send
-                        allMeetingsReadyToSend = myDb.getAllRowsMeetingsAndSuggestion("ready_to_send", 0L); // time is not needed for db-question, so set to zero
-                    }
-
-                    // in every case (associated or not associated) -> get all messages with status = 0 and role = 1 (own messages) -> ready to send
-                    allMessagesReadyToSend = myDb.getAllReadyToSendMessages();
-
-                    try {
-
-                        xmlSerializer.setOutput(writer);
-
-                        //Start Document
-                        xmlSerializer.startDocument("UTF-8", true);
-                        xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
-
-                        // Open Tag
-                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
-                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
-
-                        // start tag main order -> send "ask new data" and client id
-                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
-                        xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_AskNewData);
-                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
-
-                        // check client or contact id set?
-                        if (clientIdSet) {
-                            // start tag client id
-                            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
-                            xmlSerializer.text(tmpClientId);
-                            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
-                            // start empty tag contact id
-                            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
-                            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
-                        }
-                        else {
-                            // start empty tag client id
-                            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
-                            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
-                            // start tag contact id
-                            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
-                            xmlSerializer.text(tmpContactId);
-                            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
-                        }
-
-                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
-                        xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
-                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
-
-                        // end tag main
-                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
-
-                        // check association -> app connect to server -> check all data
-                        if (clientIdSet) {
-
-                            // build xml for all now comments
-                            if (allCommentsReadyToSend != null && allCommentsReadyToSend.getCount() > 0) {
-
-                                do {
-                                    buildCommentNowXmlTagWithData(xmlSerializer, allCommentsReadyToSend);
-                                    send_now_comment_info = true;
-                                } while (allCommentsReadyToSend.moveToNext());
-                            }
-
-                            // build xml for all sketch comments
-                            if (allSketchCommentsReadyToSend != null && allSketchCommentsReadyToSend.getCount() > 0) {
-
-                                do {
-                                    buildCommentSketchXmlTagWithData(xmlSerializer, allSketchCommentsReadyToSend);
-                                    send_sketch_comment_info = true;
-                                } while (allSketchCommentsReadyToSend.moveToNext());
-                            }
-
-                            // build xml for all arrangement evaluation result
-                            if (allArrangementEvaluationResultsReadyToSend != null && allArrangementEvaluationResultsReadyToSend.getCount() > 0) {
-
-                                do {
-                                    buildArrangementEvaluationResultXmlTagWithData(xmlSerializer, allArrangementEvaluationResultsReadyToSend);
-                                    send_arrangement_evaluation_result_info = true;
-                                }
-                                while (allArrangementEvaluationResultsReadyToSend.moveToNext());
-                            }
-
-                            // build xml for all jointly goals comments
-                            if (allJointlyGoalsCommentsReadyToSend != null && allJointlyGoalsCommentsReadyToSend.getCount() > 0) {
-
-                                do {
-                                    buildJointlyCommentXmlTagWithData(xmlSerializer, allJointlyGoalsCommentsReadyToSend);
-                                    send_jointly_goals_comment_info = true;
-                                } while (allJointlyGoalsCommentsReadyToSend.moveToNext());
-                            }
-
-                            // build xml for all goals evaluation result
-                            if (allGoalsEvaluationResultsReadyToSend != null && allGoalsEvaluationResultsReadyToSend.getCount() > 0) {
-
-                                do {
-                                    buildJointlyGoalsEvaluationResultXmlTagWithData(xmlSerializer, allGoalsEvaluationResultsReadyToSend);
-                                    send_goals_evaluation_result_info = true;
-                                } while (allGoalsEvaluationResultsReadyToSend.moveToNext());
-                            }
-
-                            // build xml for all debetable goals comments
-                            if (allDebetableCommentsReadyToSend != null && allDebetableCommentsReadyToSend.getCount() > 0) {
-
-                                do {
-                                    buildCommentDebetableXmlTagWithData(xmlSerializer, allDebetableCommentsReadyToSend);
-                                    send_debetable_goals_comment_info = true;
-                                } while (allDebetableCommentsReadyToSend.moveToNext());
-                            }
-
-                            // build xml for all connect book messages result
-                            if (allConnectBookMessagesReadyToSend != null && allConnectBookMessagesReadyToSend.getCount() > 0) {
-
-                                do {
-                                    buildConnectBookMessageXmlTagWithData(xmlSerializer, allConnectBookMessagesReadyToSend);
-                                    send_connect_book_messages_result_info = true;
-                                } while (allConnectBookMessagesReadyToSend.moveToNext());
-                            }
-
-                            // build xml for all meetings data set result
-                            if (allMeetingsReadyToSend != null && allMeetingsReadyToSend.getCount() > 0) {
-
-                                do {
-                                    buildMeetingDataXmlTagWithData(xmlSerializer, allMeetingsReadyToSend);
-                                    send_meeting_data_result_info = true;
-                                } while (allMeetingsReadyToSend.moveToNext());
-                            }
-                        }
-
-                        // build in every case (associated or not associated) xml for all messages result
-                        if (allMessagesReadyToSend != null && allMessagesReadyToSend.getCount() > 0) {
-                            do {
-                                buildMessageXmlTagWithData(xmlSerializer, allMessagesReadyToSend, clientIdSet, contactIdSet);
-                                send_message_data_result_info = true;
-                            } while (allMessagesReadyToSend.moveToNext());
-                        }
-
-                        // end tag smartEfb
-                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
-
-                        xmlSerializer.endDocument();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    // and send xml text to server
-                    try {
-                        // prepair data to send
-                        String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
-
-                        //Log.d("Send", "XMLCODE=" + textparam);
-
-                        // set url and parameters
-                        URL scripturl = new URL(ConstansClassSettings.urlConnectionAskForNewDataToServer);
-                        HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
-
-                        // set timeout for connection
-                        connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
-                        connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
-
-                        connection.setDoOutput(true);
-                        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                        connection.setRequestMethod("POST");
-                        connection.setFixedLengthStreamingMode(textparam.getBytes().length);
-
-                        // generate output stream and send
-                        OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
-                        contentWriter.write(textparam);
-                        contentWriter.flush();
-
-                        contentWriter.close();
-
-                        // get answer from input
-                        InputStream answerInputStream = connection.getInputStream();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
-                        StringBuilder stringBuilder = new StringBuilder();
-
-                        // convert input stream to string
-                        String currentRow;
-                        try {
-                            while ((currentRow = reader.readLine()) != null) {
-                                stringBuilder.append(currentRow);
-                                stringBuilder.append("\n");
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        //Log.d("New Data Send", "Antwort:" + stringBuilder.toString().trim());
-
-                        // call xml parser with input
-                        EfbXmlParser xmlparser = new EfbXmlParser(context);
-                        returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
-
-                        //++++++++++++++++ db status update section +++++++++++++++++++++++++++++++++
-
-                        // set global server time for comments, messages, etc.
-                        Long globalServerTime = 0L;
-                        if (returnMap.get("AskForTimeSuccessfull").equals("1") && returnMap.get("ServerTimeInMills").length() > 0) {
-                            globalServerTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; // make global server time in mills
-                        }
-
-                        // build intent to update ui for user
-                        Intent tmpIntentUpdateUiForUser = new Intent();
-                        tmpIntentUpdateUiForUser.setAction("ACTIVITY_STATUS_UPDATE");
-
-                        // check association -> app is connected to server
-                        if (clientIdSet) {
-
-                            // set status of now comment to 1 -> send successfull
-                            if (allCommentsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_now_comment_info) {
-                                    allCommentsReadyToSend.moveToFirst();
-                                    do {
-                                        Long rowId = allCommentsReadyToSend.getLong(allCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                        myDb.updateStatusOurArrangementComment(rowId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {
-                                            myDb.updateWriteTimeOurArrangementComment(rowId, globalServerTime);
-                                        } // update write time for comment with server time
-                                    } while (allCommentsReadyToSend.moveToNext());
-                                    // intent for our arrangement comment -> refresh list view
-                                    tmpIntentUpdateUiForUser.putExtra("OurArrangementCommentSendInBackgroundRefreshView", "1"); // refresh list view in our arrangement comment
-                                }
-                            }
-
-                            // set status of sketch comment to 1 -> send successfull
-                            if (allSketchCommentsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_sketch_comment_info) {
-                                    allSketchCommentsReadyToSend.moveToFirst();
-                                    do {
-                                        Long rowId = allSketchCommentsReadyToSend.getLong(allSketchCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                        myDb.updateStatusOurArrangementSketchComment(allSketchCommentsReadyToSend.getLong(allSketchCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {
-                                            myDb.updateWriteTimeOurArrangementSketchComment(rowId, globalServerTime);
-                                        } // update write time for sketch comment with server time
-                                    } while (allSketchCommentsReadyToSend.moveToNext());
-                                    // intent for our arrangement sketch comment -> refresh list view
-                                    tmpIntentUpdateUiForUser.putExtra("OurArrangementSketchCommentSendInBackgroundRefreshView", "1"); // refresh list view in our arrangement sketch comment
-                                }
-                            }
-
-                            // set status of evaluation result for arrangement to 1 -> send successfull
-                            if (allArrangementEvaluationResultsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_arrangement_evaluation_result_info) {
-                                    allArrangementEvaluationResultsReadyToSend.moveToFirst();
-                                    do {
-                                        Long rowId = allArrangementEvaluationResultsReadyToSend.getLong(allArrangementEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                        myDb.updateStatusOurArrangementEvaluation(allArrangementEvaluationResultsReadyToSend.getLong(allArrangementEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {
-                                            myDb.updateWriteTimeOurArrangementEvaluationResult(rowId, globalServerTime);
-                                        } // update write time for sketch comment with server time
-                                    }
-                                    while (allArrangementEvaluationResultsReadyToSend.moveToNext());
-                                }
-                            }
-
-                            // set status of evaluation jointly goal to 1 -> send successfull
-                            if (allGoalsEvaluationResultsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_goals_evaluation_result_info) {
-                                    allGoalsEvaluationResultsReadyToSend.moveToFirst();
-                                    do {
-                                        Long rowId = allGoalsEvaluationResultsReadyToSend.getLong(allGoalsEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                        myDb.updateStatusOurGoalsEvaluation(allGoalsEvaluationResultsReadyToSend.getLong(allGoalsEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of evaluation result to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {
-                                            myDb.updateWriteTimeOurGoalsEvaluationResult(rowId, globalServerTime);
-                                        } // update write time for sketch comment with server time
-                                    } while (allGoalsEvaluationResultsReadyToSend.moveToNext());
-                                }
-                            }
-
-                            // set status of jointly goal comment to 1 -> send successfull
-                            if (allJointlyGoalsCommentsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_jointly_goals_comment_info) {
-                                    allJointlyGoalsCommentsReadyToSend.moveToFirst();
-                                    do {
-                                        Long rowId = allJointlyGoalsCommentsReadyToSend.getLong(allJointlyGoalsCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                        myDb.updateStatusOurGoalsJointlyGoalsComment(allJointlyGoalsCommentsReadyToSend.getLong(allJointlyGoalsCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {
-                                            myDb.updateWriteTimeOurGoalsJointlyComment(rowId, globalServerTime);
-                                        } // update write time for jointly comment with server time
-                                    } while (allJointlyGoalsCommentsReadyToSend.moveToNext());
-                                    // intent for our goals jointly comment -> refresh list view
-                                    tmpIntentUpdateUiForUser.putExtra("OurGoalsJointlyCommentSendInBackgroundRefreshView", "1"); // refresh list view in our goals jointly comment
-                                }
-                            }
-
-                            // set status of debetable goal comment to 1 -> send successfull
-                            if (allDebetableCommentsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_debetable_goals_comment_info) {
-                                    allDebetableCommentsReadyToSend.moveToFirst();
-                                    do {
-                                        Long rowId = allDebetableCommentsReadyToSend.getLong(allDebetableCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                        myDb.updateStatusOurGoalsDebetableComment(allDebetableCommentsReadyToSend.getLong(allDebetableCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of debetable comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {
-                                            myDb.updateWriteTimeOurGoalsDebetableComment(rowId, globalServerTime);
-                                        } // update write time for debetable comment with server time
-                                    } while (allDebetableCommentsReadyToSend.moveToNext());
-                                    // intent for our goals debetable comment -> refresh list view
-                                    tmpIntentUpdateUiForUser.putExtra("OurGoalsDebetableCommentSendInBackgroundRefreshView", "1"); // refresh list view in our goals debetable comment
-                                }
-                            }
-
-                            // set status of connect book messages to 1 -> send successfull
-                            if (allConnectBookMessagesReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_connect_book_messages_result_info) {
-                                    allConnectBookMessagesReadyToSend.moveToFirst();
-                                    do {
-                                        Long rowId = allConnectBookMessagesReadyToSend.getLong(allConnectBookMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                        myDb.updateStatusConnectBookMessage(allConnectBookMessagesReadyToSend.getLong(allConnectBookMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of message to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {
-                                            myDb.updateWriteTimeConnectBookMessage(rowId, globalServerTime);
-                                        } // update write time for connect book messages with server time
-                                    } while (allConnectBookMessagesReadyToSend.moveToNext());
-
-                                    // intent for connect book activity -> refresh list view
-                                    tmpIntentUpdateUiForUser.putExtra("ConnectBookMessageNewOrSend", "1"); // refresh list view in connect book messages
-                                }
-                            }
-
-                            // set status of meeting data to 1 -> send successfull
-                            if (allMeetingsReadyToSend != null) {
-                                if (returnMap.get("SendSuccessfull").equals("1") && send_meeting_data_result_info) {
-                                    allMeetingsReadyToSend.moveToFirst();
-                                    do {
-                                        myDb.updateStatusMeetingAndSuggestion(allMeetingsReadyToSend.getLong(allMeetingsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of meeting data to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                        if (globalServerTime > 0) {
-                                            postUpdateMeetingAndSuggestionDataInDB(allMeetingsReadyToSend, globalServerTime, myDb);
-                                        }
-                                    } while (allMeetingsReadyToSend.moveToNext());
-                                    // intent for meeting activity -> refresh view
-                                    tmpIntentUpdateUiForUser.putExtra("MeetingSendInBackgroundRefreshView", "1"); // refresh view in any meeting fragement
-                                }
-                            }
-                        }
-
-                        // set status of messages to 1 -> send successfull -> in every case (associated or not associated)
-                        if (allMessagesReadyToSend != null) {
-                            if (returnMap.get("SendSuccessfull").equals("1") && send_message_data_result_info) {
-                                allMessagesReadyToSend.moveToFirst();
-                                do {
-                                    Long rowId = allMessagesReadyToSend.getLong(allMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
-                                    myDb.updateStatusMessage(allMessagesReadyToSend.getLong(allMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of message to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-                                    if (globalServerTime > 0) {myDb.updateWriteTimeMessage(rowId, globalServerTime); } // update write time for messages with server time
-                                } while (allMessagesReadyToSend.moveToNext());
-
-                                // intent for message activity -> refresh list view
-                                tmpIntentUpdateUiForUser.putExtra("MessageMessageNewOrSend", "1"); // refresh list view in message activity
-                            }
-                        }
-
-                        //++++++++++++++++ end db status update section +++++++++++++++++++++++++++++++++
-
-                        // close input stream and disconnect
-                        answerInputStream.close();
-                        connection.disconnect();
-
-                        // check is app visible and in foreground -> only then send broadcast to receiver!
-                        if (EfbLifecycle.isApplicationVisible() && EfbLifecycle.isApplicationInForeground()) {
-
-                            // send broadcast for update ui for user
-                            context.sendBroadcast(tmpIntentUpdateUiForUser);
-
-                            // send intent to broadcast receiver -> the receiver looks for relevant data in intent
-                            Intent tmpIntent;
-                            tmpIntent = translateMapToIntent(returnMap);
-                            tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
-                            context.sendBroadcast(tmpIntent);
-                        }
-
-                        // show notification when needed
-                        setNotificationToScreen(returnMap);
-
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (XmlPullParserException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // close db connection
-                myDb.close();
-
-                // stop the task with service
-                stopSelf();
-            }
-        }
-
-
-        private void setNotificationToScreen (Map<String, String> returnMap) {
-
-            String notificationContentTitle;
-            Intent notificationIntent;
-            Intent  mainActivityIntent;
-            PendingIntent contentPendingIntent;
-            TaskStackBuilder stackBuilder;
-
-            // check is app visible and in foreground -> only then set notification
-            if (!EfbLifecycle.isApplicationVisible() && !EfbLifecycle.isApplicationInForeground()) {
-
-                // set unique request id
-                int requestID = (int) System.currentTimeMillis();
-
-                // get notification manager
-                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-                // get alarm tone
-                Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-                // new notification builder
-                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
-                // set basic things to all notifications
-                mBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.notification_large_appicon));
-                mBuilder.setSmallIcon(R.drawable.notification_smile);
-                mBuilder.setAutoCancel(true);
-
-                // needed for back stack -> start main activity after pressing back
-                mainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);
-                mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-                // notification for arrangement
-                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangement, true) && returnMap.get("OurArrangement").equals("1") && (returnMap.get("OurArrangementNow").equals("1") || returnMap.get("OurArrangementSketch").equals("1") || returnMap.get("OurArrangementNowComment").equals("1") || returnMap.get("OurArrangementSketchComment").equals("1"))) {
-
-                    // get our arrangement notification string
-                    notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewEventOurArrangement);
-
-                    // set intent/ pending intent to start connect book
-                    notificationIntent = new Intent(getApplicationContext(), ActivityOurArrangement.class);
-                    notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-                    // generate back stack for pending intent and add main activity
-                    stackBuilder = TaskStackBuilder.create(this);
-                    stackBuilder.addParentStack(MainActivity.class);
-                    stackBuilder.addNextIntent(mainActivityIntent);
-
-                    // add intent for arrangement
-                    stackBuilder.addNextIntent(notificationIntent);
-
-                    // generate pending intent
-                    contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                    // set notofication attributes
-                    mBuilder.setContentTitle(notificationContentTitle);
-                    mBuilder.setContentIntent(contentPendingIntent);
-                    // sound on/off for arrangement?
-                    if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, true)) {
-                        mBuilder.setSound(alarmSound);
-                    }
-                    // show notification
-                    mNotificationManager.notify(001, mBuilder.build());
-                }
-
-                // notification for connect book
-                if (returnMap.get("ConnectBook").equals("1") && returnMap.get("ConnectBookMessageNewOrSend").equals("1") && prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_ConnectBook, true)) {
-
-                    // get connect book notification string
-                    notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewConnectBookMessage);
-
-                    // set intent/ pending intent to start connect book
-                    notificationIntent = new Intent(getApplicationContext(), ActivityConnectBook.class);
-                    notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-                    // generate back stack for pending intent and add main activity
-                    stackBuilder = TaskStackBuilder.create(this);
-                    stackBuilder.addParentStack(MainActivity.class);
-                    stackBuilder.addNextIntent(mainActivityIntent);
-
-                    // add intent for connect book
-                    stackBuilder.addNextIntent(notificationIntent);
-
-                    // generate pending intent
-                    contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                    // set notofication attributes
-                    mBuilder.setContentTitle(notificationContentTitle);
-                    mBuilder.setContentIntent(contentPendingIntent);
-                    // sound on/off for connect book?
-                    if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true)) {
-                        mBuilder.setSound(alarmSound);
-                    }
-                    // show notification
-                    mNotificationManager.notify(001, mBuilder.build());
-                }
-
-                // notification for goal
-                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoal, true) && returnMap.get("OurGoals").equals("1") && (returnMap.get("OurGoalsJointlyNow").equals("1") || returnMap.get("OurGoalsDebetableNow").equals("1") || returnMap.get("OurGoalsJointlyComment").equals("1") || returnMap.get("OurGoalsDebetableComment").equals("1"))) {
-
-                    // get our goals notification string
-                    notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewEventOurGoals);
-
-                    // set intent/ pending intent to start goals
-                    notificationIntent = new Intent(getApplicationContext(), ActivityOurGoals.class);
-                    notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-                    // generate back stack for pending intent and add main activity
-                    stackBuilder = TaskStackBuilder.create(this);
-                    stackBuilder.addParentStack(MainActivity.class);
-                    stackBuilder.addNextIntent(mainActivityIntent);
-
-                    // add intent for goals
-                    stackBuilder.addNextIntent(notificationIntent);
-
-                    // generate pending intent
-                    contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                    // set notification attributes
-                    mBuilder.setContentTitle(notificationContentTitle);
-                    mBuilder.setContentIntent(contentPendingIntent);
-                    // sound on/off for goal?
-                    if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, true)) {
-                        mBuilder.setSound(alarmSound);
-                    }
-                    // show notification
-                    mNotificationManager.notify(001, mBuilder.build());
-                }
-
-                // notification for message
-                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_Message, true) && returnMap.get("MessagesMessage").equals("1") && returnMap.get("MessageMessageNewOrSend").equals("1") ) {
-
-                    // get new message notification string
-                    notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewEventMessage);
-
-                    // set intent/ pending intent to start message
-                    notificationIntent = new Intent(getApplicationContext(), ActivityMessage.class);
-                    notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-                    // generate back stack for pending intent and add main activity
-                    stackBuilder = TaskStackBuilder.create(this);
-                    stackBuilder.addParentStack(MainActivity.class);
-                    stackBuilder.addNextIntent(mainActivityIntent);
-
-                    // add intent for message
-                    stackBuilder.addNextIntent(notificationIntent);
-
-                    // generate pending intent
-                    contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                    // set notification attributes
-                    mBuilder.setContentTitle(notificationContentTitle);
-                    mBuilder.setContentIntent(contentPendingIntent);
-                    // sound on/off for message?
-                    if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_Message, true)) {
-                        mBuilder.setSound(alarmSound);
-                    }
-                    // show notification
-                    mNotificationManager.notify(001, mBuilder.build());
-                }
-
-            }
-        }
-
-
-        // send now comment arrangement to server and get answer from server
-        public class ExchangeTaskSendNowCommentArrangement implements Runnable {
-
-            // id of the data row in db
-            private Long dbId;
-
-            // context of task
-            Context context;
-
-            // shared prefs
-            SharedPreferences prefs;
-            SharedPreferences.Editor prefsEditor;
-
-            // return information for change
-            Map<String, String> returnMap;
-
-            // Constructor
-            public ExchangeTaskSendNowCommentArrangement (Context context, Long dbid) {
-
-                // id of the data row in db
-                this.dbId = dbid;
-
-                // context of task
-                this.context = context;
-
-                // init the prefs
-                prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
-                prefsEditor = prefs.edit();
-            }
-
-            // the task
-            public void run() {
-
-                // init the DB
-                DBAdapter myDb = new DBAdapter(context);
-
-                ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-                NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-
-                if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
-
-                    // get client id from prefs
-                    String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
-
-                    // get comment from db
-                    Cursor commentData = myDb.getOneRowOurArrangementComment(dbId);
-
-                    // generate xml output text
-                    XmlSerializer xmlSerializer = Xml.newSerializer();
-                    StringWriter writer = new StringWriter();
-                    try {
-
-                        xmlSerializer.setOutput(writer);
-
-                        //Start Document
-                        xmlSerializer.startDocument("UTF-8", true);
-                        xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
-
-                        // Open Tag
-                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
-                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
-
-                        // start tag main order -> send comment and client id
-                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
-                        xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_CommentArrangement);
-                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
-
                         // start tag client id
                         xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
                         xmlSerializer.text(tmpClientId);
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                        // start empty tag contact id
                         xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                         xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
-
-                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
-                        xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
-                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
-
-                        // end tag main
-                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
-
-                        // build xml tag for comment with data
-                        buildCommentNowXmlTagWithData(xmlSerializer, commentData);
-
-                        // end tag smartEfb
-                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
-
-                        xmlSerializer.endDocument();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    }
+                    else {
+                        // start empty tag client id
+                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                        // start tag contact id
+                        xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                        xmlSerializer.text(tmpContactId);
+                        xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
                     }
 
-                    // and send xml text to server
-                    try {
-                        // prepair data to send
-                        String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+                    xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
 
-                        // set url and parameters
-                        URL scripturl = new URL(ConstansClassSettings.urlConnectionSendNewCommentArrangementToServer);
-                        HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
+                    // end tag main
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
 
-                        // set timeout for connection
-                        connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
-                        connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
+                    // check association -> app connect to server -> check all data
+                    if (clientIdSet) {
 
-                        connection.setDoOutput(true);
-                        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                        connection.setRequestMethod("POST");
-                        connection.setFixedLengthStreamingMode(textparam.getBytes().length);
+                        // build xml for all now comments
+                        if (allCommentsReadyToSend != null && allCommentsReadyToSend.getCount() > 0) {
 
-                        // generate output stream and send
-                        OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
-                        contentWriter.write(textparam);
-                        contentWriter.flush();
+                            do {
+                                buildCommentNowXmlTagWithData(xmlSerializer, allCommentsReadyToSend);
+                                send_now_comment_info = true;
+                            } while (allCommentsReadyToSend.moveToNext());
+                        }
 
-                        contentWriter.close();
+                        // build xml for all sketch comments
+                        if (allSketchCommentsReadyToSend != null && allSketchCommentsReadyToSend.getCount() > 0) {
 
-                        // get answer from input
-                        InputStream answerInputStream = connection.getInputStream();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
-                        StringBuilder stringBuilder = new StringBuilder();
+                            do {
+                                buildCommentSketchXmlTagWithData(xmlSerializer, allSketchCommentsReadyToSend);
+                                send_sketch_comment_info = true;
+                            } while (allSketchCommentsReadyToSend.moveToNext());
+                        }
 
-                        // convert input stream to string
-                        String currentRow;
-                        try {
-                            while ((currentRow = reader.readLine()) != null) {
-                                stringBuilder.append(currentRow);
-                                stringBuilder.append("\n");
+                        // build xml for all arrangement evaluation result
+                        if (allArrangementEvaluationResultsReadyToSend != null && allArrangementEvaluationResultsReadyToSend.getCount() > 0) {
+
+                            do {
+                                buildArrangementEvaluationResultXmlTagWithData(xmlSerializer, allArrangementEvaluationResultsReadyToSend);
+                                send_arrangement_evaluation_result_info = true;
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            while (allArrangementEvaluationResultsReadyToSend.moveToNext());
                         }
 
-                        // call xml parser with input
-                        EfbXmlParser xmlparser = new EfbXmlParser(context);
-                        returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
+                        // build xml for all jointly goals comments
+                        if (allJointlyGoalsCommentsReadyToSend != null && allJointlyGoalsCommentsReadyToSend.getCount() > 0) {
 
-                        // set global server time for comments, messages, etc.
-                        Long globalServerTime = 0L;
-                        if (returnMap.get("AskForTimeSuccessfull").equals("1") && returnMap.get("ServerTimeInMills").length() > 0) {
-                            globalServerTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; // make global server time in mills
+                            do {
+                                buildJointlyCommentXmlTagWithData(xmlSerializer, allJointlyGoalsCommentsReadyToSend);
+                                send_jointly_goals_comment_info = true;
+                            } while (allJointlyGoalsCommentsReadyToSend.moveToNext());
                         }
 
-                        // close input stream and disconnect
-                        answerInputStream.close();
-                        connection.disconnect();
+                        // build xml for all goals evaluation result
+                        if (allGoalsEvaluationResultsReadyToSend != null && allGoalsEvaluationResultsReadyToSend.getCount() > 0) {
 
-                        if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull with server time?
-                            myDb.updateStatusOurArrangementComment(dbId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
-
-                            // update write time of comment with server time
-                            if (globalServerTime > 0) {myDb.updateWriteTimeOurArrangementComment(dbId, globalServerTime); } // update write time for comment with server time
-
-                            // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
-                            Intent tmpIntent = translateMapToIntent(returnMap);
-                            tmpIntent.putExtra("Message", context.getResources().getString(R.string.toastMessageCommentSendSuccessfull));
-                            tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
-                            context.sendBroadcast(tmpIntent);
-                        } else { // send not successfull
-                            // send information broadcast to receiver that sending was not successefull
-                            String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
-                            String command = "";
-                            sendIntentBroadcastSendingNotSuccessefull(message, command);
+                            do {
+                                buildJointlyGoalsEvaluationResultXmlTagWithData(xmlSerializer, allGoalsEvaluationResultsReadyToSend);
+                                send_goals_evaluation_result_info = true;
+                            } while (allGoalsEvaluationResultsReadyToSend.moveToNext());
                         }
 
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                        // send information broadcast to receiver that sending not successfull
-                        String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
-                        String command = "";
-                        sendIntentBroadcastSendingNotSuccessefull(message, command);
+                        // build xml for all debetable goals comments
+                        if (allDebetableCommentsReadyToSend != null && allDebetableCommentsReadyToSend.getCount() > 0) {
+
+                            do {
+                                buildCommentDebetableXmlTagWithData(xmlSerializer, allDebetableCommentsReadyToSend);
+                                send_debetable_goals_comment_info = true;
+                            } while (allDebetableCommentsReadyToSend.moveToNext());
+                        }
+
+                        // build xml for all connect book messages result
+                        if (allConnectBookMessagesReadyToSend != null && allConnectBookMessagesReadyToSend.getCount() > 0) {
+
+                            do {
+                                buildConnectBookMessageXmlTagWithData(xmlSerializer, allConnectBookMessagesReadyToSend);
+                                send_connect_book_messages_result_info = true;
+                            } while (allConnectBookMessagesReadyToSend.moveToNext());
+                        }
+
+                        // build xml for all meetings data set result
+                        if (allMeetingsReadyToSend != null && allMeetingsReadyToSend.getCount() > 0) {
+
+                            do {
+                                buildMeetingDataXmlTagWithData(xmlSerializer, allMeetingsReadyToSend);
+                                send_meeting_data_result_info = true;
+                            } while (allMeetingsReadyToSend.moveToNext());
+                        }
+                    }
+
+                    // build in every case (associated or not associated) xml for all messages result
+                    if (allMessagesReadyToSend != null && allMessagesReadyToSend.getCount() > 0) {
+                        do {
+                            buildMessageXmlTagWithData(xmlSerializer, allMessagesReadyToSend, clientIdSet, contactIdSet);
+                            send_message_data_result_info = true;
+                        } while (allMessagesReadyToSend.moveToNext());
+                    }
+
+                    // end tag smartEfb
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+
+                    xmlSerializer.endDocument();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // and send xml text to server
+                try {
+                    // prepair data to send
+                    String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
+
+                    //Log.d("Send", "XMLCODE=" + textparam);
+
+                    // set url and parameters
+                    URL scripturl = new URL(ConstansClassSettings.urlConnectionAskForNewDataToServer);
+                    HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
+
+                    // set timeout for connection
+                    connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
+                    connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
+
+                    connection.setDoOutput(true);
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    connection.setRequestMethod("POST");
+                    connection.setFixedLengthStreamingMode(textparam.getBytes().length);
+
+                    // generate output stream and send
+                    OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
+                    contentWriter.write(textparam);
+                    contentWriter.flush();
+
+                    contentWriter.close();
+
+                    // get answer from input
+                    InputStream answerInputStream = connection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    // convert input stream to string
+                    String currentRow;
+                    try {
+                        while ((currentRow = reader.readLine()) != null) {
+                            stringBuilder.append(currentRow);
+                            stringBuilder.append("\n");
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
-                        // send information broadcast to receiver that sending not successfull
-                        String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
-                        String command = "";
-                        sendIntentBroadcastSendingNotSuccessefull(message, command);
-                    } catch (XmlPullParserException e) {
-                        e.printStackTrace();
                     }
-                }
-                else { // no network enable -> try to send comment to server later
-                    // send information broadcast to receiver that sending not successfull
-                    String message = context.getResources().getString(R.string.toastMessageCommentNotSendSuccessfullNoNetwork);
-                    String command = "";
-                    sendIntentBroadcastSendingNotSuccessefull (message, command);
-                }
 
-                // close db connection
-                myDb.close();
+                    //Log.d("+++++++++ New Data Send", "Antwort:" + stringBuilder.toString().trim());
 
-                // stop the task with service
-                stopSelf();
+                    // call xml parser with input
+                    EfbXmlParser xmlparser = new EfbXmlParser(context);
+                    returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
+
+                    //++++++++++++++++ db status update section +++++++++++++++++++++++++++++++++
+
+                    // set global server time for comments, messages, etc.
+                    Long globalServerTime = 0L;
+                    if (returnMap.get("AskForTimeSuccessfull").equals("1") && returnMap.get("ServerTimeInMills").length() > 0) {
+                        globalServerTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; // make global server time in mills
+                    }
+
+                    // build intent to update ui for user
+                    Intent tmpIntentUpdateUiForUser = new Intent();
+                    tmpIntentUpdateUiForUser.setAction("ACTIVITY_STATUS_UPDATE");
+
+                    // check association -> app is connected to server
+                    if (clientIdSet) {
+
+                        // set status of now comment to 1 -> send successfull
+                        if (allCommentsReadyToSend != null) {
+                            if (returnMap.get("SendSuccessfull").equals("1") && send_now_comment_info) {
+                                allCommentsReadyToSend.moveToFirst();
+                                do {
+                                    Long rowId = allCommentsReadyToSend.getLong(allCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                    myDb.updateStatusOurArrangementComment(rowId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                    if (globalServerTime > 0) {
+                                        myDb.updateWriteTimeOurArrangementComment(rowId, globalServerTime);
+                                    } // update write time for comment with server time
+                                } while (allCommentsReadyToSend.moveToNext());
+                                // intent for our arrangement comment -> refresh list view
+                                tmpIntentUpdateUiForUser.putExtra("OurArrangementCommentSendInBackgroundRefreshView", "1"); // refresh list view in our arrangement comment
+                            }
+                        }
+
+                        // set status of sketch comment to 1 -> send successfull
+                        if (allSketchCommentsReadyToSend != null) {
+                            if (returnMap.get("SendSuccessfull").equals("1") && send_sketch_comment_info) {
+                                allSketchCommentsReadyToSend.moveToFirst();
+                                do {
+                                    Long rowId = allSketchCommentsReadyToSend.getLong(allSketchCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                    myDb.updateStatusOurArrangementSketchComment(allSketchCommentsReadyToSend.getLong(allSketchCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                    if (globalServerTime > 0) {
+                                        myDb.updateWriteTimeOurArrangementSketchComment(rowId, globalServerTime);
+                                    } // update write time for sketch comment with server time
+                                } while (allSketchCommentsReadyToSend.moveToNext());
+                                // intent for our arrangement sketch comment -> refresh list view
+                                tmpIntentUpdateUiForUser.putExtra("OurArrangementSketchCommentSendInBackgroundRefreshView", "1"); // refresh list view in our arrangement sketch comment
+                            }
+                        }
+
+                        // set status of evaluation result for arrangement to 1 -> send successfull
+                        if (allArrangementEvaluationResultsReadyToSend != null) {
+                            if (returnMap.get("SendSuccessfull").equals("1") && send_arrangement_evaluation_result_info) {
+                                allArrangementEvaluationResultsReadyToSend.moveToFirst();
+                                do {
+                                    Long rowId = allArrangementEvaluationResultsReadyToSend.getLong(allArrangementEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                    myDb.updateStatusOurArrangementEvaluation(allArrangementEvaluationResultsReadyToSend.getLong(allArrangementEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of sketch comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                    if (globalServerTime > 0) {
+                                        myDb.updateWriteTimeOurArrangementEvaluationResult(rowId, globalServerTime);
+                                    } // update write time for sketch comment with server time
+                                }
+                                while (allArrangementEvaluationResultsReadyToSend.moveToNext());
+                            }
+                        }
+
+                        // set status of evaluation jointly goal to 1 -> send successfull
+                        if (allGoalsEvaluationResultsReadyToSend != null) {
+                            if (returnMap.get("SendSuccessfull").equals("1") && send_goals_evaluation_result_info) {
+                                allGoalsEvaluationResultsReadyToSend.moveToFirst();
+                                do {
+                                    Long rowId = allGoalsEvaluationResultsReadyToSend.getLong(allGoalsEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                    myDb.updateStatusOurGoalsEvaluation(allGoalsEvaluationResultsReadyToSend.getLong(allGoalsEvaluationResultsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of evaluation result to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                    if (globalServerTime > 0) {
+                                        myDb.updateWriteTimeOurGoalsEvaluationResult(rowId, globalServerTime);
+                                    } // update write time for sketch comment with server time
+                                } while (allGoalsEvaluationResultsReadyToSend.moveToNext());
+                            }
+                        }
+
+                        // set status of jointly goal comment to 1 -> send successfull
+                        if (allJointlyGoalsCommentsReadyToSend != null) {
+                            if (returnMap.get("SendSuccessfull").equals("1") && send_jointly_goals_comment_info) {
+                                allJointlyGoalsCommentsReadyToSend.moveToFirst();
+                                do {
+                                    Long rowId = allJointlyGoalsCommentsReadyToSend.getLong(allJointlyGoalsCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                    myDb.updateStatusOurGoalsJointlyGoalsComment(allJointlyGoalsCommentsReadyToSend.getLong(allJointlyGoalsCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                    if (globalServerTime > 0) {
+                                        myDb.updateWriteTimeOurGoalsJointlyComment(rowId, globalServerTime);
+                                    } // update write time for jointly comment with server time
+                                } while (allJointlyGoalsCommentsReadyToSend.moveToNext());
+                                // intent for our goals jointly comment -> refresh list view
+                                tmpIntentUpdateUiForUser.putExtra("OurGoalsJointlyCommentSendInBackgroundRefreshView", "1"); // refresh list view in our goals jointly comment
+                            }
+                        }
+
+                        // set status of debetable goal comment to 1 -> send successfull
+                        if (allDebetableCommentsReadyToSend != null) {
+                            if (returnMap.get("SendSuccessfull").equals("1") && send_debetable_goals_comment_info) {
+                                allDebetableCommentsReadyToSend.moveToFirst();
+                                do {
+                                    Long rowId = allDebetableCommentsReadyToSend.getLong(allDebetableCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                    myDb.updateStatusOurGoalsDebetableComment(allDebetableCommentsReadyToSend.getLong(allDebetableCommentsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of debetable comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                    if (globalServerTime > 0) {
+                                        myDb.updateWriteTimeOurGoalsDebetableComment(rowId, globalServerTime);
+                                    } // update write time for debetable comment with server time
+                                } while (allDebetableCommentsReadyToSend.moveToNext());
+                                // intent for our goals debetable comment -> refresh list view
+                                tmpIntentUpdateUiForUser.putExtra("OurGoalsDebetableCommentSendInBackgroundRefreshView", "1"); // refresh list view in our goals debetable comment
+                            }
+                        }
+
+                        // set status of connect book messages to 1 -> send successfull
+                        if (allConnectBookMessagesReadyToSend != null) {
+                            if (returnMap.get("SendSuccessfull").equals("1") && send_connect_book_messages_result_info) {
+                                allConnectBookMessagesReadyToSend.moveToFirst();
+                                do {
+                                    Long rowId = allConnectBookMessagesReadyToSend.getLong(allConnectBookMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                    myDb.updateStatusConnectBookMessage(allConnectBookMessagesReadyToSend.getLong(allConnectBookMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of message to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                    if (globalServerTime > 0) {
+                                        myDb.updateWriteTimeConnectBookMessage(rowId, globalServerTime);
+                                    } // update write time for connect book messages with server time
+                                } while (allConnectBookMessagesReadyToSend.moveToNext());
+
+                                // intent for connect book activity -> refresh list view
+                                tmpIntentUpdateUiForUser.putExtra("ConnectBookMessageNewOrSend", "1"); // refresh list view in connect book messages
+                            }
+                        }
+
+                        // set status of meeting data to 1 -> send successfull
+                        if (allMeetingsReadyToSend != null) {
+                            if (returnMap.get("SendSuccessfull").equals("1") && send_meeting_data_result_info) {
+                                allMeetingsReadyToSend.moveToFirst();
+                                do {
+                                    myDb.updateStatusMeetingAndSuggestion(allMeetingsReadyToSend.getLong(allMeetingsReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of meeting data to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                    if (globalServerTime > 0) {
+                                        postUpdateMeetingAndSuggestionDataInDB(allMeetingsReadyToSend, globalServerTime, myDb);
+                                    }
+                                } while (allMeetingsReadyToSend.moveToNext());
+                                // intent for meeting activity -> refresh view
+                                tmpIntentUpdateUiForUser.putExtra("MeetingSendInBackgroundRefreshView", "1"); // refresh view in any meeting fragement
+                            }
+                        }
+                    }
+
+                    // set status of messages to 1 -> send successfull -> in every case (associated or not associated)
+                    if (allMessagesReadyToSend != null) {
+                        if (returnMap.get("SendSuccessfull").equals("1") && send_message_data_result_info) {
+                            allMessagesReadyToSend.moveToFirst();
+                            do {
+                                Long rowId = allMessagesReadyToSend.getLong(allMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID));
+                                myDb.updateStatusMessage(allMessagesReadyToSend.getLong(allMessagesReadyToSend.getColumnIndex(DBAdapter.KEY_ROWID)), 1); // set status of message to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+                                if (globalServerTime > 0) {myDb.updateWriteTimeMessage(rowId, globalServerTime); } // update write time for messages with server time
+                            } while (allMessagesReadyToSend.moveToNext());
+
+                            // intent for message activity -> refresh list view
+                            tmpIntentUpdateUiForUser.putExtra("MessageMessageNewOrSend", "1"); // refresh list view in message activity
+                        }
+                    }
+
+                    //++++++++++++++++ end db status update section +++++++++++++++++++++++++++++++++
+
+                    // close input stream and disconnect
+                    answerInputStream.close();
+                    connection.disconnect();
+
+                    // check is app visible and in foreground -> only then send broadcast to receiver!
+                    if (EfbLifecycle.isApplicationVisible() && EfbLifecycle.isApplicationInForeground()) {
+
+                        // send broadcast for update ui for user
+                        context.sendBroadcast(tmpIntentUpdateUiForUser);
+
+                        // send intent to broadcast receiver -> the receiver looks for relevant data in intent
+                        Intent tmpIntent;
+                        tmpIntent = translateMapToIntent(returnMap);
+                        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                        context.sendBroadcast(tmpIntent);
+                    }
+
+                    // show notification when needed
+                    setNotificationToScreen(returnMap);
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // close db connection
+            myDb.close();
+
+            // stop the task with service
+            stopSelf();
+        }
+    }
+
+
+    private void setNotificationToScreen (Map<String, String> returnMap) {
+
+        String notificationContentTitle;
+        Intent notificationIntent;
+        Intent  mainActivityIntent;
+        PendingIntent contentPendingIntent;
+        TaskStackBuilder stackBuilder;
+
+        // check is app visible and in foreground -> only then set notification
+        if (!EfbLifecycle.isApplicationVisible() && !EfbLifecycle.isApplicationInForeground()) {
+
+            // get notification manager
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            // new notification builder without sound
+            NotificationCompat.Builder mBuilderNoSound = new NotificationCompat.Builder(context, ConstansClassMain.uniqueNotificationChannelIdNoSound);
+
+            // new notification builder with sound
+            NotificationCompat.Builder mBuilderSound = new NotificationCompat.Builder(context, ConstansClassMain.uniqueNotificationChannelIdSound);
+
+            // set basic things to all notifications (channel with or without sound)
+            mBuilderNoSound.setSmallIcon(R.drawable.notification_smile);
+            mBuilderNoSound.setAutoCancel(true);
+            mBuilderSound.setSmallIcon(R.drawable.notification_smile);
+            mBuilderSound.setAutoCancel(true);
+
+            // needed for back stack -> start main activity after pressing back
+            mainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);
+            mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+            // notification for arrangement
+            if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurArrangement, true) && returnMap.get("OurArrangement").equals("1") && (returnMap.get("OurArrangementNow").equals("1") || returnMap.get("OurArrangementSketch").equals("1") || returnMap.get("OurArrangementNowComment").equals("1") || returnMap.get("OurArrangementSketchComment").equals("1"))) {
+
+                // get our arrangement notification string
+                notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewEventOurArrangement);
+
+                // set intent/ pending intent to start connect book
+                notificationIntent = new Intent(getApplicationContext(), ActivityOurArrangement.class);
+                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                // generate back stack for pending intent and add main activity
+                stackBuilder = TaskStackBuilder.create(this);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(mainActivityIntent);
+
+                // add intent for arrangement
+                stackBuilder.addNextIntent(notificationIntent);
+
+                // generate pending intent
+                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                // set notification attributes (without or with sound)
+                mBuilderNoSound.setContentTitle(notificationContentTitle);
+                mBuilderNoSound.setContentIntent(contentPendingIntent);
+                mBuilderSound.setContentTitle(notificationContentTitle);
+                mBuilderSound.setContentIntent(contentPendingIntent);
+
+                // sound on/off for arrangement?
+                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangement, true)) {
+                    // show notification with sound
+                    mNotificationManager.notify(001, mBuilderSound.build());
+                }
+                else {
+                    // show notification without sound
+                    mNotificationManager.notify(002, mBuilderNoSound.build());
+                }
+            }
+
+            // notification for connect book
+            if (returnMap.get("ConnectBook").equals("1") && returnMap.get("ConnectBookMessageNewOrSend").equals("1") && prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_ConnectBook, true)) {
+
+                // get connect book notification string
+                notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewConnectBookMessage);
+
+                // set intent/ pending intent to start connect book
+                notificationIntent = new Intent(getApplicationContext(), ActivityConnectBook.class);
+                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                // generate back stack for pending intent and add main activity
+                stackBuilder = TaskStackBuilder.create(this);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(mainActivityIntent);
+
+                // add intent for connect book
+                stackBuilder.addNextIntent(notificationIntent);
+
+                // generate pending intent
+                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                // set notification attributes (without or with sound)
+                mBuilderNoSound.setContentTitle(notificationContentTitle);
+                mBuilderNoSound.setContentIntent(contentPendingIntent);
+                mBuilderSound.setContentTitle(notificationContentTitle);
+                mBuilderSound.setContentIntent(contentPendingIntent);
+
+                // sound on/off for connect book?
+                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_ConnectBook, true)) {
+                    // show notification with sound
+                    mNotificationManager.notify(001, mBuilderSound.build());
+                }
+                else {
+                    // show notification without sound
+                    mNotificationManager.notify(002, mBuilderNoSound.build());
+                }
+            }
+
+            // notification for goal
+            if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_OurGoal, true) && returnMap.get("OurGoals").equals("1") && (returnMap.get("OurGoalsJointlyNow").equals("1") || returnMap.get("OurGoalsDebetableNow").equals("1") || returnMap.get("OurGoalsJointlyComment").equals("1") || returnMap.get("OurGoalsDebetableComment").equals("1"))) {
+
+                // get our goals notification string
+                notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewEventOurGoals);
+
+                // set intent/ pending intent to start goals
+                notificationIntent = new Intent(getApplicationContext(), ActivityOurGoals.class);
+                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                // generate back stack for pending intent and add main activity
+                stackBuilder = TaskStackBuilder.create(this);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(mainActivityIntent);
+
+                // add intent for goals
+                stackBuilder.addNextIntent(notificationIntent);
+
+                // generate pending intent
+                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                // set notification attributes (without or with sound)
+                mBuilderNoSound.setContentTitle(notificationContentTitle);
+                mBuilderNoSound.setContentIntent(contentPendingIntent);
+                mBuilderSound.setContentTitle(notificationContentTitle);
+                mBuilderSound.setContentIntent(contentPendingIntent);
+
+                // sound on/off for our goal?
+                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurGoal, true)) {
+                    // show notification with sound
+                    mNotificationManager.notify(001, mBuilderSound.build());
+                }
+                else {
+                    // show notification without sound
+                    mNotificationManager.notify(002, mBuilderNoSound.build());
+                }
+            }
+
+            // notification for message
+            if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationVisualSignal_Message, true) && returnMap.get("MessagesMessage").equals("1") && returnMap.get("MessageMessageNewOrSend").equals("1") ) {
+
+                // get new message notification string
+                notificationContentTitle = this.getResources().getString(R.string.exchangeServiceNotificationTextNewEventMessage);
+
+                // set intent/ pending intent to start message
+                notificationIntent = new Intent(getApplicationContext(), ActivityMessage.class);
+                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                // generate back stack for pending intent and add main activity
+                stackBuilder = TaskStackBuilder.create(this);
+                stackBuilder.addParentStack(MainActivity.class);
+                stackBuilder.addNextIntent(mainActivityIntent);
+
+                // add intent for message
+                stackBuilder.addNextIntent(notificationIntent);
+
+                // generate pending intent
+                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                // set notification attributes (without or with sound)
+                mBuilderNoSound.setContentTitle(notificationContentTitle);
+                mBuilderNoSound.setContentIntent(contentPendingIntent);
+                mBuilderSound.setContentTitle(notificationContentTitle);
+                mBuilderSound.setContentIntent(contentPendingIntent);
+
+                // sound on/off for message?
+                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_Message, true)) {
+                    // show notification with sound
+                    mNotificationManager.notify(001, mBuilderSound.build());
+                }
+                else {
+                    // show notification without sound
+                    mNotificationManager.notify(002, mBuilderNoSound.build());
+                }
             }
         }
+    }
+
+    // send now comment arrangement to server and get answer from server
+    public class ExchangeTaskSendNowCommentArrangement implements Runnable {
+
+        // id of the data row in db
+        private Long dbId;
+
+        // context of task
+        Context context;
+
+        // shared prefs
+        SharedPreferences prefs;
+        SharedPreferences.Editor prefsEditor;
+
+        // return information for change
+        Map<String, String> returnMap;
+
+        // Constructor
+        public ExchangeTaskSendNowCommentArrangement (Context context, Long dbid) {
+
+            // id of the data row in db
+            this.dbId = dbid;
+
+            // context of task
+            this.context = context;
+
+            // init the prefs
+            prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
+            prefsEditor = prefs.edit();
+        }
+
+        // the task
+        public void run() {
+
+            // init the DB
+            DBAdapter myDb = new DBAdapter(context);
+
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+            if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+
+                // get client id from prefs
+                String tmpClientId = prefs.getString(ConstansClassSettings.namePrefsClientId, "");
+
+                // get comment from db
+                Cursor commentData = myDb.getOneRowOurArrangementComment(dbId);
+
+                // generate xml output text
+                XmlSerializer xmlSerializer = Xml.newSerializer();
+                StringWriter writer = new StringWriter();
+                try {
+
+                    xmlSerializer.setOutput(writer);
+
+                    //Start Document
+                    xmlSerializer.startDocument("UTF-8", true);
+                    xmlSerializer.setFeature(ConstansClassXmlParser.xmlFeatureLink, true);
+
+                    // Open Tag
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                    // start tag main order -> send comment and client id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+                    xmlSerializer.text(ConstansClassXmlParser.xmlNameForSendToServer_CommentArrangement);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_Order);
+
+                    // start tag client id
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.text(tmpClientId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ClientID);
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ContactId);
+
+                    xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+                    xmlSerializer.text(ConstansClassMain.localeAppVersionAsString);
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain_ThisAppVersion);
+
+                    // end tag main
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMain);
+
+                    // build xml tag for comment with data
+                    buildCommentNowXmlTagWithData(xmlSerializer, commentData);
+
+                    // end tag smartEfb
+                    xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMasterElement);
+
+                    xmlSerializer.endDocument();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // and send xml text to server
+                try {
+                    // prepair data to send
+                    String textparam = "xmlcode=" + URLEncoder.encode(writer.toString(), "UTF-8");
+
+                    // set url and parameters
+                    URL scripturl = new URL(ConstansClassSettings.urlConnectionSendNewCommentArrangementToServer);
+                    HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
+
+                    // set timeout for connection
+                    connection.setConnectTimeout(ConstansClassSettings.connectionEstablishedTimeOut);
+                    connection.setReadTimeout(ConstansClassSettings.connectionReadTimeOut);
+
+                    connection.setDoOutput(true);
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    connection.setRequestMethod("POST");
+                    connection.setFixedLengthStreamingMode(textparam.getBytes().length);
+
+                    // generate output stream and send
+                    OutputStreamWriter contentWriter = new OutputStreamWriter(connection.getOutputStream());
+                    contentWriter.write(textparam);
+                    contentWriter.flush();
+
+                    contentWriter.close();
+
+                    // get answer from input
+                    InputStream answerInputStream = connection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(answerInputStream));
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    // convert input stream to string
+                    String currentRow;
+                    try {
+                        while ((currentRow = reader.readLine()) != null) {
+                            stringBuilder.append(currentRow);
+                            stringBuilder.append("\n");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    // call xml parser with input
+                    EfbXmlParser xmlparser = new EfbXmlParser(context);
+                    returnMap = xmlparser.parseXmlInput(stringBuilder.toString().trim());
+
+                    // set global server time for comments, messages, etc.
+                    Long globalServerTime = 0L;
+                    if (returnMap.get("AskForTimeSuccessfull").equals("1") && returnMap.get("ServerTimeInMills").length() > 0) {
+                        globalServerTime = Long.valueOf(returnMap.get("ServerTimeInMills")) * 1000; // make global server time in mills
+                    }
+
+                    // close input stream and disconnect
+                    answerInputStream.close();
+                    connection.disconnect();
+
+                    if (returnMap.get("SendSuccessfull").equals("1")) { // send successfull with server time?
+                        myDb.updateStatusOurArrangementComment(dbId, 1); // set status of comment to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
+
+                        // update write time of comment with server time
+                        if (globalServerTime > 0) {myDb.updateWriteTimeOurArrangementComment(dbId, globalServerTime); } // update write time for comment with server time
+
+                        // send intent to receiver in OurArrangementFragmentNow to update listView OurArrangement (when active)
+                        Intent tmpIntent = translateMapToIntent(returnMap);
+                        tmpIntent.putExtra("Message", context.getResources().getString(R.string.toastMessageCommentSendSuccessfull));
+                        tmpIntent.setAction("ACTIVITY_STATUS_UPDATE");
+                        context.sendBroadcast(tmpIntent);
+                    } else { // send not successfull
+                        // send information broadcast to receiver that sending was not successefull
+                        String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                        String command = "";
+                        sendIntentBroadcastSendingNotSuccessefull(message, command);
+                    }
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                    String command = "";
+                    sendIntentBroadcastSendingNotSuccessefull(message, command);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // send information broadcast to receiver that sending not successfull
+                    String message = context.getResources().getString(R.string.toastMessageCommentSendNotSuccessfull);
+                    String command = "";
+                    sendIntentBroadcastSendingNotSuccessefull(message, command);
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                }
+            }
+            else { // no network enable -> try to send comment to server later
+                // send information broadcast to receiver that sending not successfull
+                String message = context.getResources().getString(R.string.toastMessageCommentNotSendSuccessfullNoNetwork);
+                String command = "";
+                sendIntentBroadcastSendingNotSuccessefull (message, command);
+            }
+
+            // close db connection
+            myDb.close();
+
+            // stop the task with service
+            stopSelf();
+        }
+    }
 
 
     // send sketch comment arrangement to server and get answer from server
@@ -2324,22 +2333,9 @@ import java.util.Map;
         Long dbId = meetingData.getLong(meetingData.getColumnIndex(DBAdapter.KEY_ROWID));
 
         if (updateOrder != null && updateOrder.length() > 0) {
-            switch (updateOrder) {
 
-                case "update_client_canceled_server_time":
-                    myDb.postUpdateWriteTimeMeetingSuggestion(dbId, updateOrder, globalServerTime);
-                    break;
+            myDb.postUpdateWriteTimeMeetingSuggestion(dbId, updateOrder, globalServerTime);
 
-                case "update_client_vote_comment_time_voteandcomment":
-                case "update_client_vote_comment_time_onlyvote":
-                case "update_client_vote_comment_time_onlycomment":
-                    myDb.postUpdateWriteTimeMeetingSuggestion(dbId, updateOrder, globalServerTime);
-                    break;
-
-                case "update_suggestion_from_client_server_time":
-                    myDb.postUpdateWriteTimeMeetingSuggestion(dbId, updateOrder, globalServerTime);
-                    break;
-            }
         }
     }
 
@@ -2584,211 +2580,215 @@ import java.util.Map;
     //++++++++++++++++++ END TASK AREA ++++++++++++++++++++++++++++++++++++++++++++++
 
 
-        // convert the returnMap from the EfbXMLParser to extras in Intents for the fragments
-        public Intent translateMapToIntent (Map<String, String> returnMap) {
+    // convert the returnMap from the EfbXMLParser to extras in Intents for the fragments
+    public Intent translateMapToIntent (Map<String, String> returnMap) {
 
-            Intent intent = new Intent();
+        Intent intent = new Intent();
 
-            for( Map.Entry <String, String> entry : returnMap.entrySet()) {
-                String key = entry.getKey();
-                String value = entry.getValue();
-                // put to intent when value = "1"
-                if (value.equals("1")) {
-                    intent.putExtra(key,"1");
-                }
+        for( Map.Entry <String, String> entry : returnMap.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            // put to intent when value = "1"
+            if (value.equals("1")) {
+                intent.putExtra(key,"1");
             }
+        }
 
-            // translate "ErrorText" to intent, when given
-            String tmpErrorTextForTranslate = returnMap.get("ErrorText");
-            if (tmpErrorTextForTranslate != null && tmpErrorTextForTranslate.length() > 0) {
-                intent.putExtra("ErrorText",tmpErrorTextForTranslate);
-            }
-
-
-            return intent;
+        // translate "ErrorText" to intent, when given
+        String tmpErrorTextForTranslate = returnMap.get("ErrorText");
+        if (tmpErrorTextForTranslate != null && tmpErrorTextForTranslate.length() > 0) {
+            intent.putExtra("ErrorText",tmpErrorTextForTranslate);
         }
 
 
-        @Override
-        public void onDestroy() {
-            super.onDestroy();
-            Log.d("Exchange Service", "In onDestroy");
-
-            this.isRunning = false;
-        }
+        return intent;
+    }
 
 
-        @Override
-        // check the commands for service and start the task to handle the command
-        public int onStartCommand(Intent intent, int flags, int startId) {
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
-            // Extras from intent that holds data
-            Bundle intentExtras = null;
-
-            // get data from intent
-            intentExtras = intent.getExtras();
-
-            if (intentExtras != null && !this.isRunning) {// && !prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
-
-                int tmpCommectionStatus = prefs.getInt(ConstansClassSettings.namePrefsConnectingStatus, 0);
-
-                // get command from intent extras
-                String command = intentExtras.getString("com");
-                if (command == null) {command="";}
-
-                // get db id from intent extras
-                Long dbId = intentExtras.getLong("dbid", 0);
-                if (dbId == null) { dbId = 0L;}
-
-                // get receiver broadcast
-                String receiverBroadcast = intentExtras.getString("receiverBroadcast", ""); // this is needed for double "mystic" messages receives in view pager like suggestion and client suggestion
-                if (receiverBroadcast == null) {receiverBroadcast = "";}
-
-                // check commands
-                if (command.equals("ask_new_data")) { // Ask server for new data
-
-                    // generate new background task
-                    this.backgroundThread = new Thread(new ExchangeTaskCheckNewContent(context));
-                    // set task is running
-                    this.isRunning = true;
-                    // start task
-                    this.backgroundThread.start();
-
-                } else if (command.equals("send_now_comment_arrangement") && dbId > 0 && tmpCommectionStatus == 3) { // send new arrangement comment to server
-
-                    // generate new send task
-                    this.backgroundThread = new Thread(new ExchangeTaskSendNowCommentArrangement (context, dbId));
-                    // task is running
-                    this.isRunning = true;
-                    // start task
-                    this.backgroundThread.start();
-
-                } else if (command.equals("send_sketch_comment_arrangement") && dbId > 0 && tmpCommectionStatus == 3) { // send new sketch arrangement comment to server
-
-                    // generate new send task
-                    this.backgroundThread = new Thread(new ExchangeTaskSendSketchCommentArrangement (context, dbId));
-                    // task is running
-                    this.isRunning = true;
-                    // start task
-                    this.backgroundThread.start();
-
-                } else if (command.equals("send_evaluation_result_arrangement") && dbId > 0 && tmpCommectionStatus == 3) { // send new evaluation result to server
-
-                    // generate new send task
-                    this.backgroundThread = new Thread(new ExchangeTaskSendEvaluationResultArrangement(context, dbId));
-                    // task is running
-                    this.isRunning = true;
-                    // start task
-                    this.backgroundThread.start();
-
-                } else if (command.equals("send_jointly_comment_goal") && dbId > 0 && tmpCommectionStatus == 3) { // send jointly goal comment to server
-
-                    // generate new send task
-                    this.backgroundThread = new Thread(new ExchangeTaskSendJointlyCommentGoals (context, dbId));
-                    // task is running
-                    this.isRunning = true;
-                    // start task
-                    this.backgroundThread.start();
-
-                } else if (command.equals("send_evaluation_result_goal") && dbId > 0 && tmpCommectionStatus == 3) { // send jointly goal evaluation result to server
-
-                    // generate new send task
-                    this.backgroundThread = new Thread(new ExchangeTaskSendJointlyGoalsEvaluationResult (context, dbId));
-                    // task is running
-                    this.isRunning = true;
-                    // start task
-                    this.backgroundThread.start();
-
-                }  else if (command.equals("send_debetable_comment_goal") && dbId > 0 && tmpCommectionStatus == 3) { // send debetable comment result to server
-
-                    // generate new send task
-                    this.backgroundThread = new Thread(new ExchangeTaskSendDebetableGoalCommentResult (context, dbId));
-                    // task is running
-                    this.isRunning = true;
-                    // start task
-                    this.backgroundThread.start();
-                
-                } else if (command.equals("send_connectbook_message") && dbId > 0 && tmpCommectionStatus == 3) { // send connect book message to server
-
-                    // generate new send task
-                    this.backgroundThread = new Thread(new ExchangeTaskSendConnectBookMessage (context, dbId));
-                    // task is running
-                    this.isRunning = true;
-                    // start task
-                    this.backgroundThread.start();
-
-                } else if (command.equals("send_meeting_data") && dbId > 0 && tmpCommectionStatus == 3) { // send meeting data to server
-
-                    // generate new send task
-                    this.backgroundThread = new Thread(new ExchangeTaskSendMeetingData (context, dbId, receiverBroadcast));
-                    // task is running
-                    this.isRunning = true;
-                    // start task
-                    this.backgroundThread.start();
-
-                } else if (command.equals("send_current_message") && dbId > 0) { // send current message data to server
-
-                    // generate new send task
-                    this.backgroundThread = new Thread(new ExchangeTaskSendMessageData(context, dbId));
-                    // task is running
-                    this.isRunning = true;
-                    // start task
-                    this.backgroundThread.start();
-                }
-            }
-
-            return START_STICKY;
-        }
+        this.isRunning = false;
+    }
 
 
-        public void buildCommentNowXmlTagWithData(XmlSerializer xmlSerializer, Cursor commentData) {
+    @Override
+    public boolean onStopCurrentWork() {
 
-            try {
-                // open comment now arrangement tag
-                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment);
+        return super.onStopCurrentWork();
+    }
 
-                // start tag comment now arrangement order
-                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_Order );
-                xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_New);
-                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_Order );
 
-                // start tag comment text
-                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_Comment);
-                xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)));
-                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_Comment);
+    @Override
+    // check the commands for service and start the task to handle the command
+    protected void onHandleWork(@NonNull Intent intent) {
 
-                // start tag author name text
-                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_AuthorName);
-                xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME)));
-                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_AuthorName);
+        // Extras from intent that holds data
+        Bundle intentExtras;
 
-                // start tag comment time
-                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentLocaleTime);
-                xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME))/1000)); // this is the local smartphone time; server puts his time self! // convert millis to timestamp
-                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentLocaleTime);
+        // get data from intent
+        intentExtras = intent.getExtras();
 
-                // start tag arrangement time
-                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_DateOfArrangement);
-                xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME))/1000)); // convert millis to timestamp
-                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_DateOfArrangement);
+        if (intentExtras != null && !this.isRunning) {// && !prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
 
-                // start tag block number
-                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_BlockId);
-                xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID)));
-                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_BlockId);
+            int tmpCommectionStatus = prefs.getInt(ConstansClassSettings.namePrefsConnectingStatus, 0);
 
-                // start tag server id arrangement
-                xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_ServerIdArrangement);
-                xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT)));
-                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_ServerIdArrangement);
+            // get command from intent extras
+            String command = intentExtras.getString("com");
+            if (command == null) {command="";}
 
-                // end tag comment now arrangement
-                xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment);
-            }
-            catch (IOException e) {
-                e.printStackTrace();
+            // get db id from intent extras
+            Long dbId = intentExtras.getLong("dbid", 0);
+
+            // get receiver broadcast
+            String receiverBroadcast = intentExtras.getString("receiverBroadcast", ""); // this is needed for double "mystic" messages receives in view pager like suggestion and client suggestion
+            if (receiverBroadcast == null) {receiverBroadcast = "";}
+
+            // check commands
+            if (command.equals("ask_new_data")) { // Ask server for new data
+
+                // generate new background task
+                this.backgroundThread = new Thread(new ExchangeJobIntentServiceEfb.ExchangeTaskCheckNewContent(context));
+                // set task is running
+                this.isRunning = true;
+                // start task
+                this.backgroundThread.start();
+
+            } else if (command.equals("send_now_comment_arrangement") && dbId > 0 && tmpCommectionStatus == 3) { // send new arrangement comment to server
+
+                // generate new send task
+                this.backgroundThread = new Thread(new ExchangeJobIntentServiceEfb.ExchangeTaskSendNowCommentArrangement(context, dbId));
+                // task is running
+                this.isRunning = true;
+                // start task
+                this.backgroundThread.start();
+
+            } else if (command.equals("send_sketch_comment_arrangement") && dbId > 0 && tmpCommectionStatus == 3) { // send new sketch arrangement comment to server
+
+                // generate new send task
+                this.backgroundThread = new Thread(new ExchangeJobIntentServiceEfb.ExchangeTaskSendSketchCommentArrangement(context, dbId));
+                // task is running
+                this.isRunning = true;
+                // start task
+                this.backgroundThread.start();
+
+            } else if (command.equals("send_evaluation_result_arrangement") && dbId > 0 && tmpCommectionStatus == 3) { // send new evaluation result to server
+
+                // generate new send task
+                this.backgroundThread = new Thread(new ExchangeJobIntentServiceEfb.ExchangeTaskSendEvaluationResultArrangement(context, dbId));
+                // task is running
+                this.isRunning = true;
+                // start task
+                this.backgroundThread.start();
+
+            } else if (command.equals("send_jointly_comment_goal") && dbId > 0 && tmpCommectionStatus == 3) { // send jointly goal comment to server
+
+                // generate new send task
+                this.backgroundThread = new Thread(new ExchangeJobIntentServiceEfb.ExchangeTaskSendJointlyCommentGoals(context, dbId));
+                // task is running
+                this.isRunning = true;
+                // start task
+                this.backgroundThread.start();
+
+            } else if (command.equals("send_evaluation_result_goal") && dbId > 0 && tmpCommectionStatus == 3) { // send jointly goal evaluation result to server
+
+                // generate new send task
+                this.backgroundThread = new Thread(new ExchangeJobIntentServiceEfb.ExchangeTaskSendJointlyGoalsEvaluationResult(context, dbId));
+                // task is running
+                this.isRunning = true;
+                // start task
+                this.backgroundThread.start();
+
+            }  else if (command.equals("send_debetable_comment_goal") && dbId > 0 && tmpCommectionStatus == 3) { // send debetable comment result to server
+
+                // generate new send task
+                this.backgroundThread = new Thread(new ExchangeJobIntentServiceEfb.ExchangeTaskSendDebetableGoalCommentResult(context, dbId));
+                // task is running
+                this.isRunning = true;
+                // start task
+                this.backgroundThread.start();
+
+            } else if (command.equals("send_connectbook_message") && dbId > 0 && tmpCommectionStatus == 3) { // send connect book message to server
+
+                // generate new send task
+                this.backgroundThread = new Thread(new ExchangeJobIntentServiceEfb.ExchangeTaskSendConnectBookMessage(context, dbId));
+                // task is running
+                this.isRunning = true;
+                // start task
+                this.backgroundThread.start();
+
+            } else if (command.equals("send_meeting_data") && dbId > 0 && tmpCommectionStatus == 3) { // send meeting data to server
+
+                // generate new send task
+                this.backgroundThread = new Thread(new ExchangeJobIntentServiceEfb.ExchangeTaskSendMeetingData(context, dbId, receiverBroadcast));
+                // task is running
+                this.isRunning = true;
+                // start task
+                this.backgroundThread.start();
+
+            } else if (command.equals("send_current_message") && dbId > 0) { // send current message data to server
+
+                // generate new send task
+                this.backgroundThread = new Thread(new ExchangeJobIntentServiceEfb.ExchangeTaskSendMessageData(context, dbId));
+                // task is running
+                this.isRunning = true;
+                // start task
+                this.backgroundThread.start();
             }
         }
+
+    }
+
+
+    public void buildCommentNowXmlTagWithData(XmlSerializer xmlSerializer, Cursor commentData) {
+
+        try {
+            // open comment now arrangement tag
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment);
+
+            // start tag comment now arrangement order
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_Order );
+            xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_New);
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_Order );
+
+            // start tag comment text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_Comment);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_Comment);
+
+            // start tag author name text
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_AuthorName);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_AuthorName);
+
+            // start tag comment time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentLocaleTime);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME))/1000)); // this is the local smartphone time; server puts his time self! // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_CommentLocaleTime);
+
+            // start tag arrangement time
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_DateOfArrangement);
+            xmlSerializer.text(String.valueOf(commentData.getLong(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME))/1000)); // convert millis to timestamp
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_DateOfArrangement);
+
+            // start tag block number
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_BlockId);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_BlockId);
+
+            // start tag server id arrangement
+            xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_ServerIdArrangement);
+            xmlSerializer.text(commentData.getString(commentData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT)));
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment_ServerIdArrangement);
+
+            // end tag comment now arrangement
+            xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_NowComment);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public void buildCommentSketchXmlTagWithData(XmlSerializer xmlSerializer, Cursor commentData) {
@@ -2863,72 +2863,72 @@ import java.util.Map;
 
             // open evaluation result arrangement tag
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate);
-    
+
             // start tag evaluate arrangement order
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_Order);
             xmlSerializer.text(ConstansClassXmlParser.xmlNameForOrder_New);
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_Order);
-    
+
             // start tag evalute remarks
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_Remarks);
             xmlSerializer.text(evaluationData.getString(evaluationData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_REMARKS)));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_Remarks);
-    
+
             // start tag evaluate author name text
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_AuthorName);
             xmlSerializer.text(evaluationData.getString(evaluationData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_EVALUATE_KEY_USERNAME)));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_AuthorName);
-    
+
             // start tag evaluate result time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_LocaleTime);
             xmlSerializer.text(String.valueOf(evaluationData.getLong(evaluationData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_EVALUATE_KEY_LOCAL_TIME))/1000)); // convert millis to timestamp
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_LocaleTime);
-    
+
             // start tag evaluate arrangement time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_DateOfArrangement);
             xmlSerializer.text(String.valueOf(evaluationData.getLong(evaluationData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_TIME))/1000)); // convert millis to timestamp
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_DateOfArrangement);
-    
+
             // start tag evaluate result question A
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_ResultQuestionA);
             xmlSerializer.text(String.valueOf(evaluationData.getLong(evaluationData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION1))));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_ResultQuestionA);
-    
+
             // start tag evaluate result question B
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_ResultQuestionB);
             xmlSerializer.text(String.valueOf(evaluationData.getLong(evaluationData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION2))));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_ResultQuestionB);
-    
+
             // start tag evaluate result question C
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_ResultQuestionC);
             xmlSerializer.text(String.valueOf(evaluationData.getLong(evaluationData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION3))));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_ResultQuestionC);
-    
+
             // start tag evaluate result question D
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_ResultQuestionD);
             xmlSerializer.text(String.valueOf(evaluationData.getLong(evaluationData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_QUESTION4))));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_ResultQuestionD);
-    
+
             // start tag evaluate start time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_StartTime);
             xmlSerializer.text(String.valueOf(evaluationData.getLong(evaluationData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_EVALUATE_KEY_START_EVALUATIONBLOCK_TIME))/1000)); // convert millis to timestamp
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_StartTime);
-    
+
             // start tag evaluate end time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_EndTime);
             xmlSerializer.text(String.valueOf(evaluationData.getLong(evaluationData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_EVALUATE_KEY_END_EVALUATIONBLOCK_TIME))/1000)); // convert millis to timestamp
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_EndTime);
-    
+
             // start tag server id arrangement
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_ServerIdArrangement);
             xmlSerializer.text(evaluationData.getString(evaluationData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_EVALUATE_KEY_SERVER_ID_ARRANGEMENT)));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_ServerIdArrangement);
-    
+
             // start tag block id of arrangements
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_BlockId);
             xmlSerializer.text(evaluationData.getString(evaluationData.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_EVALUATE_KEY_ARRANGEMENT_BLOCKID)));
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate_BlockId);
-    
+
             // end tag evaluation result arrangement
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForOurArrangement_Evaluate);
         }
@@ -3282,7 +3282,7 @@ import java.util.Map;
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_VoteLocaleDate);
             xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_VOTELOCALEDATE))/1000)); // convert millis to times
             xmlSerializer.endTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_VoteLocaleDate);
-            
+
             // start tag meeting/suggestion creation time
             xmlSerializer.startTag("", ConstansClassXmlParser.xmlNameForMeeting_Suggestion_CreationTime);
             xmlSerializer.text(String.valueOf(meetingData.getLong(meetingData.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME))/1000)); // convert millis to times
@@ -3393,6 +3393,5 @@ import java.util.Map;
             e.printStackTrace();
         }
     }
-
 
 }

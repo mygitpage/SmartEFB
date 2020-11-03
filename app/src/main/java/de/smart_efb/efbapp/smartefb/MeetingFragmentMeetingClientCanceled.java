@@ -92,14 +92,15 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
 
         // first ask to server for new data, when case is not closed!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+
             // send intent to service to start the service
-            Intent startServiceIntent = new Intent(fragmentClientCanceledMeetingContext, ExchangeServiceEfb.class);
+            Intent startServiceIntent = new Intent(fragmentClientCanceledMeetingContext, ExchangeJobIntentServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
             startServiceIntent.putExtra("dbid",0L);
             startServiceIntent.putExtra("receiverBroadcast","");
             // start service
-            fragmentClientCanceledMeetingContext.startService(startServiceIntent);
+            ExchangeJobIntentServiceEfb.enqueueWork(fragmentClientCanceledMeetingContext, startServiceIntent);
         }
     }
 
@@ -146,7 +147,7 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
     }
 
 
-    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeServiceEfb
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeJobIntentServiceEfb
     private BroadcastReceiver meetingFragmentMeetingClientCanceledBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
@@ -347,11 +348,13 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
                             ((ActivityMeeting) getActivity()).setNotSuccessefullMessageForSending(tmpNotSuccessfullMessage);
 
                             // send intent to service to start the service and send canceled meeting to server!
-                            Intent startServiceIntent = new Intent(fragmentClientCanceledMeetingContext, ExchangeServiceEfb.class);
+                            // send intent to service to start the service
+                            Intent startServiceIntent = new Intent(fragmentClientCanceledMeetingContext, ExchangeJobIntentServiceEfb.class);
                             startServiceIntent.putExtra("com", "send_meeting_data");
                             startServiceIntent.putExtra("dbid", clientCanceledMeetingId);
                             startServiceIntent.putExtra("receiverBroadcast", "");
-                            fragmentClientCanceledMeetingContext.startService(startServiceIntent);
+                            // start service
+                            ExchangeJobIntentServiceEfb.enqueueWork(fragmentClientCanceledMeetingContext, startServiceIntent);
 
                             // build intent to go back to meetingOverview
                             Intent intent = new Intent(getActivity(), ActivityMeeting.class);

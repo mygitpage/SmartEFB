@@ -624,11 +624,13 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                                 myDb.updateSuggestionVoteAndCommentByClient(checkBoxSuggestionsValues[1], checkBoxSuggestionsValues[2], checkBoxSuggestionsValues[3], checkBoxSuggestionsValues[4], checkBoxSuggestionsValues[5], checkBoxSuggestionsValues[6], tmpVoteDate, tmpVoteLocaleDate, tmpVoteAuthor, tmpClientCommentAuthor, tmpClientCommentDate, tmpClientCommentLocaleDate, tmpClientCommentText, clientVoteDbId, tmpStatus, timerStatus, updateOrder);
 
                                 // send intent to service to start the service and send vote suggestion to server!
-                                Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeServiceEfb.class);
+                                Intent startServiceIntent = new Intent(meetingSuggestionOverviewCursorAdapterContext, ExchangeJobIntentServiceEfb.class);
+                                // set command = "ask new data" on server
                                 startServiceIntent.putExtra("com", "send_meeting_data");
                                 startServiceIntent.putExtra("dbid", clientVoteDbId);
                                 startServiceIntent.putExtra("receiverBroadcast", "meetingFragmentSuggestionOverview");
-                                meetingSuggestionOverviewCursorAdapterContext.startService(startServiceIntent);
+                                // start service
+                                ExchangeJobIntentServiceEfb.enqueueWork(meetingSuggestionOverviewCursorAdapterContext, startServiceIntent);
                             } else { // error too little suggestions!
 
                                 // show error message in view

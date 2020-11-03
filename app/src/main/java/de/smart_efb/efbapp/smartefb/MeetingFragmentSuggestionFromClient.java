@@ -80,15 +80,16 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
 
         // first ask to server for new data, when case is not closed!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+
             // send intent to service to start the service
-            Intent startServiceIntent = new Intent(fragmentSuggestionFromClientContext, ExchangeServiceEfb.class);
+            Intent startServiceIntent = new Intent(fragmentSuggestionFromClientContext, ExchangeJobIntentServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
             startServiceIntent.putExtra("dbid",0L);
             startServiceIntent.putExtra("receiverBroadcast","");
             // start service
-            fragmentSuggestionFromClientContext.startService(startServiceIntent);
-        }
+            ExchangeJobIntentServiceEfb.enqueueWork(fragmentSuggestionFromClientContext, startServiceIntent);
+         }
     }
 
 
@@ -118,7 +119,7 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
     }
 
 
-    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ExchangeServiceEfb
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ExchangeJobIntentServiceEfb
     private BroadcastReceiver meetingFragmentSuggestionFromClientBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
@@ -294,7 +295,7 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
                 TextView tmpNoSuggestionsText = (TextView) viewFragmentSuggestionFromCLient.findViewById(R.id.meetingOverviewNoSuggestionFromClientAvailable);
                 tmpNoSuggestionsText.setVisibility(View.GONE);
 
-                // set message for sending successful and not successful -> in cursorAdapter is a button with intent to exchangeServiceEfb
+                // set message for sending successful and not successful -> in cursorAdapter is a button with intent to ExchangeJobIntentServiceEfb
                 // set successfull message in parent activity -> show in toast, when suggestion from client is send successfull
                 String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageSuggestionFromClientByClientSuccessfullSend", "string", fragmentSuggestionFromClientContext.getPackageName()));
                 ((ActivityMeeting) getActivity()).setSuccessefullMessageForSending(tmpSuccessfullMessage);

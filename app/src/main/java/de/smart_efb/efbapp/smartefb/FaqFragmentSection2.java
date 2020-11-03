@@ -60,14 +60,15 @@ public class FaqFragmentSection2 extends Fragment {
 
         // first ask to server for new data, when case is not closed!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+
             // send intent to service to start the service
-            Intent startServiceIntent = new Intent(fragmentFaqSectionTwoContext, ExchangeServiceEfb.class);
+            Intent startServiceIntent = new Intent(fragmentFaqSectionTwoContext, ExchangeJobIntentServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
             startServiceIntent.putExtra("dbid",0L);
             startServiceIntent.putExtra("receiverBroadcast","");
             // start service
-            fragmentFaqSectionTwoContext.startService(startServiceIntent);
+            ExchangeJobIntentServiceEfb.enqueueWork(fragmentFaqSectionTwoContext, startServiceIntent);
         }
 
         // display the view

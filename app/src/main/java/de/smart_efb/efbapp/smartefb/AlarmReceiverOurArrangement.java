@@ -50,15 +50,17 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
         // get notifocation manager
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // get alarm tone
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        // new notification builder without sound
+        NotificationCompat.Builder mBuilderNoSound = new NotificationCompat.Builder(context, ConstansClassMain.uniqueNotificationChannelIdNoSound);
 
-        // new notification builder
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
-        // set basic things to all notifications
-        mBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.notification_large_appicon));
-        mBuilder.setSmallIcon(R.drawable.notification_smile);
-        mBuilder.setAutoCancel(true);
+        // new notification builder with sound
+        NotificationCompat.Builder mBuilderSound = new NotificationCompat.Builder(context, ConstansClassMain.uniqueNotificationChannelIdSound);
+
+        // set basic things to all notifications (channel with or without sound)
+        mBuilderNoSound.setSmallIcon(R.drawable.notification_smile);
+        mBuilderNoSound.setAutoCancel(true);
+        mBuilderSound.setSmallIcon(R.drawable.notification_smile);
+        mBuilderSound.setAutoCancel(true);
 
         // needed for back stack -> start main activity after pressing back
         mainActivityIntent = new Intent(context, MainActivity.class);
@@ -159,14 +161,6 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
                 // generate pending intent
                 contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                // set notofication attributes
-                mBuilder.setContentTitle(notificationContentTitle);
-                mBuilder.setContentIntent(contentPendingIntent);
-                // sound on/off for connect book?
-                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, true)) {
-                    mBuilder.setSound(alarmSound);
-                }
-
                 String subTitleNotification = "";
                 int evaluationPeriod = evaluatePauseTime / 3600; // make hours from seconds
                 int evaluationActivePeriod = evaluateActivTime / 3600; // make hours from seconds;
@@ -182,12 +176,25 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
                         break;
                 }
 
-                // show long text in notification
-                mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(subTitleNotification));
-                mBuilder.setContentText(subTitleNotification);
+                // set notification attributes (with or without sound)
+                mBuilderSound.setContentTitle(notificationContentTitle);
+                mBuilderSound.setContentIntent(contentPendingIntent);
+                mBuilderSound.setStyle(new NotificationCompat.BigTextStyle().bigText(subTitleNotification));
+                mBuilderSound.setContentText(subTitleNotification);
+                mBuilderNoSound.setContentTitle(notificationContentTitle);
+                mBuilderNoSound.setContentIntent(contentPendingIntent);
+                mBuilderNoSound.setStyle(new NotificationCompat.BigTextStyle().bigText(subTitleNotification));
+                mBuilderNoSound.setContentText(subTitleNotification);
 
-                // show notification
-                mNotificationManager.notify(102, mBuilder.build());
+                // sound on/off for meeting?
+                if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_OurArrangementEvaluation, true)) {
+                    // show notification with sound
+                    mNotificationManager.notify(2201, mBuilderSound.build());
+                }
+                else {
+                    // show notification with no sound
+                    mNotificationManager.notify(2202, mBuilderNoSound.build());
+                }
             }
         }
         else { // delete alarm - it is out of time

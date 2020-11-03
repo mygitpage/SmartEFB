@@ -8,13 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
-
 import java.util.Arrays;
 
 
@@ -23,7 +18,6 @@ import java.util.Arrays;
  */
 
 public class AlarmReceiverMeeting extends BroadcastReceiver {
-
 
     // reference to the DB
     DBAdapter myDb;
@@ -36,8 +30,6 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
 
     // the context
     Context mContext;
-
-
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -84,15 +76,17 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // get notification manager
         NotificationManager mNotificationManager = (NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
 
-        // get alarm tone
-        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        // new notification builder without sound
+        NotificationCompat.Builder mBuilderNoSound = new NotificationCompat.Builder(context, ConstansClassMain.uniqueNotificationChannelIdNoSound);
 
-        // new notification builder
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
-        // set basic things to all notifications
-        mBuilder.setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.notification_large_appicon));
-        mBuilder.setSmallIcon(R.drawable.notification_smile);
-        mBuilder.setAutoCancel(true);
+        // new notification builder with sound
+        NotificationCompat.Builder mBuilderSound = new NotificationCompat.Builder(context, ConstansClassMain.uniqueNotificationChannelIdSound);
+
+        // set basic things to all notifications (channel with or without sound)
+        mBuilderNoSound.setSmallIcon(R.drawable.notification_smile);
+        mBuilderNoSound.setAutoCancel(true);
+        mBuilderSound.setSmallIcon(R.drawable.notification_smile);
+        mBuilderSound.setAutoCancel(true);
 
         // needed for back stack -> start main activity after pressing back
         mainActivityIntent = new Intent(mContext, MainActivity.class);
@@ -168,17 +162,17 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
 
             // notification meeting in 15 minutes
             if (meetingTextIn15Min.length() > 0) {
-                notificationMeetingIn15Minutes(meetingTextIn15Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+                notificationMeetingIn15Minutes(meetingTextIn15Min, mainActivityIntent, mBuilderSound, mBuilderNoSound, mNotificationManager);
             }
 
             // notification meeting in 120 minutes
             if (meetingTextIn120Min.length() > 0) {
-                notificationMeetingIn120Minutes(meetingTextIn120Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+                notificationMeetingIn120Minutes(meetingTextIn120Min, mainActivityIntent, mBuilderSound, mBuilderNoSound, mNotificationManager);
             }
 
             // notification meeting in 1440 minutes; 24 hours
             if (meetingTextIn1440Min.length() > 0) {
-                notificationMeetingIn1440Minutes(meetingTextIn1440Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+                notificationMeetingIn1440Minutes(meetingTextIn1440Min, mainActivityIntent, mBuilderSound, mBuilderNoSound, mNotificationManager);
             }
         }
 
@@ -242,15 +236,15 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
             
             // notification coach suggestion ends in 15 minutes
             if (suggestionEndTextIn15Min.length() > 0) {
-                notificationCoachSuggestionEndIn15Minutes(suggestionEndTextIn15Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+                notificationCoachSuggestionEndIn15Minutes(suggestionEndTextIn15Min, mainActivityIntent, mBuilderSound, mBuilderNoSound, mNotificationManager);
             }
             // notification coach suggestion ends in 120 minutes
             if (suggestionEndTextIn120Min.length() > 0) {
-                notificationCoachSuggestionEndIn120Minutes(suggestionEndTextIn120Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+                notificationCoachSuggestionEndIn120Minutes(suggestionEndTextIn120Min, mainActivityIntent, mBuilderSound, mBuilderNoSound, mNotificationManager);
             }
             // notification coach suggestion ends in 1440 minutes
             if (suggestionEndTextIn1440Min.length() > 0) {
-                notificationCoachSuggestionEndIn1440Minutes(suggestionEndTextIn1440Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+                notificationCoachSuggestionEndIn1440Minutes(suggestionEndTextIn1440Min, mainActivityIntent, mBuilderSound, mBuilderNoSound, mNotificationManager);
             }
 
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -311,15 +305,15 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
 
             // notification client start suggestion in 15 minutes
             if (clientSuggestionStartTextIn15Min.length() > 0) {
-                notificationClientStartSuggestionIn15Minutes(clientSuggestionStartTextIn15Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+                notificationClientStartSuggestionIn15Minutes(clientSuggestionStartTextIn15Min, mainActivityIntent, mBuilderSound, mBuilderNoSound, mNotificationManager);
             }
             // notification client start suggestion in 120 minutes
             if (clientSuggestionStartTextIn120Min.length() > 0) {
-                notificationClientStartSuggestionIn120Minutes(clientSuggestionStartTextIn120Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+                notificationClientStartSuggestionIn120Minutes(clientSuggestionStartTextIn120Min, mainActivityIntent, mBuilderSound, mBuilderNoSound, mNotificationManager);
             }
             // notification client start suggestion in 1440 minutes
             if (clientSuggestionStartTextIn1440Min.length() > 0) {
-                notificationClientStartSuggestionIn1440Minutes(clientSuggestionStartTextIn1440Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+                notificationClientStartSuggestionIn1440Minutes(clientSuggestionStartTextIn1440Min, mainActivityIntent, mBuilderSound, mBuilderNoSound, mNotificationManager);
             }
 
             // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -380,15 +374,15 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
 
             // notification client end suggestion in 15 minutes
             if (clientSuggestionEndTextIn15Min.length() > 0) {
-                notificationClientEndSuggestionIn15Minutes(clientSuggestionEndTextIn15Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+                notificationClientEndSuggestionIn15Minutes(clientSuggestionEndTextIn15Min, mainActivityIntent, mBuilderSound, mBuilderNoSound, mNotificationManager);
             }
             // notification client end suggestion in 120 minutes
             if (clientSuggestionEndTextIn120Min.length() > 0) {
-                notificationClientEndSuggestionIn120Minutes(clientSuggestionEndTextIn120Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+                notificationClientEndSuggestionIn120Minutes(clientSuggestionEndTextIn120Min, mainActivityIntent, mBuilderSound, mBuilderNoSound, mNotificationManager);
             }
             // notification client end suggestion in 1440 minutes
             if (clientSuggestionEndTextIn1440Min.length() > 0) {
-                notificationClientEndSuggestionIn1440Minutes(clientSuggestionEndTextIn1440Min, mainActivityIntent, mBuilder, alarmSound, mNotificationManager);
+                notificationClientEndSuggestionIn1440Minutes(clientSuggestionEndTextIn1440Min, mainActivityIntent, mBuilderSound, mBuilderNoSound, mNotificationManager);
             }
         }
 
@@ -428,7 +422,9 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
                 pendingIntentRememberMeeting = PendingIntent.getBroadcast(mContext, 0, rememberMeetingAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 // set alarm
-                manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, startRememberMeeting, repeatingMeetingRemember, pendingIntentRememberMeeting);
+                if (manager != null) {
+                    manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, startRememberMeeting, repeatingMeetingRemember, pendingIntentRememberMeeting);
+                }
             }
         }
 
@@ -439,7 +435,7 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
 
     // ++++++++++++++++++++++++++++++++ Notification for meeting ++++++++++++++++++++++++++++++++++++++++++++++++++
     
-    void notificationMeetingIn15Minutes (String meetingTextIn15Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+    void notificationMeetingIn15Minutes (String meetingTextIn15Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilderSound, NotificationCompat.Builder mBuilderNoSound, NotificationManager mNotificationManager) {
         // get meeting remember notification string
         String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverNotificationHeadlineTextRemember15Min);
 
@@ -460,25 +456,29 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // generate pending intent
         PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // set notification attributes
-        mBuilder.setContentTitle(notificationContentTitle);
-        mBuilder.setContentIntent(contentPendingIntent);
+        // set notification attributes (with or without sound)
+        mBuilderSound.setContentTitle(notificationContentTitle);
+        mBuilderSound.setContentIntent(contentPendingIntent);
+        mBuilderSound.setStyle(new NotificationCompat.BigTextStyle().bigText(meetingTextIn15Min));
+        mBuilderSound.setContentText(meetingTextIn15Min);
+        mBuilderNoSound.setContentTitle(notificationContentTitle);
+        mBuilderNoSound.setContentIntent(contentPendingIntent);
+        mBuilderNoSound.setStyle(new NotificationCompat.BigTextStyle().bigText(meetingTextIn15Min));
+        mBuilderNoSound.setContentText(meetingTextIn15Min);
+
         // sound on/off for meeting?
         if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, true)) {
-            mBuilder.setSound(alarmSound);
+            // show notification with sound
+            mNotificationManager.notify(201, mBuilderSound.build());
         }
-
-        // show long text in notification
-        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(meetingTextIn15Min));
-        mBuilder.setContentText(meetingTextIn15Min);
-
-        // show notification
-        mNotificationManager.notify(201, mBuilder.build());
+        else {
+            // show notification with no sound
+            mNotificationManager.notify(202, mBuilderNoSound.build());
+        }
     }
 
 
-
-    void notificationMeetingIn120Minutes (String meetingTextIn120Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+    void notificationMeetingIn120Minutes (String meetingTextIn120Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilderSound, NotificationCompat.Builder mBuilderNoSound, NotificationManager mNotificationManager) {
         // get meeting remember notification string
         String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverNotificationHeadlineTextRemember120Min);
 
@@ -499,24 +499,29 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // generate pending intent
         PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // set notification attributes
-        mBuilder.setContentTitle(notificationContentTitle);
-        mBuilder.setContentIntent(contentPendingIntent);
+        // set notification attributes (with or without sound)
+        mBuilderSound.setContentTitle(notificationContentTitle);
+        mBuilderSound.setContentIntent(contentPendingIntent);
+        mBuilderSound.setStyle(new NotificationCompat.BigTextStyle().bigText(meetingTextIn120Min));
+        mBuilderSound.setContentText(meetingTextIn120Min);
+        mBuilderNoSound.setContentTitle(notificationContentTitle);
+        mBuilderNoSound.setContentIntent(contentPendingIntent);
+        mBuilderNoSound.setStyle(new NotificationCompat.BigTextStyle().bigText(meetingTextIn120Min));
+        mBuilderNoSound.setContentText(meetingTextIn120Min);
+
         // sound on/off for meeting?
         if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, true)) {
-            mBuilder.setSound(alarmSound);
+            // show notification with sound
+            mNotificationManager.notify(201, mBuilderSound.build());
         }
-
-        // show long text in notification
-        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(meetingTextIn120Min));
-        mBuilder.setContentText(meetingTextIn120Min);
-
-        // show notification
-        mNotificationManager.notify(202, mBuilder.build());
+        else {
+            // show notification with no sound
+            mNotificationManager.notify(202, mBuilderNoSound.build());
+        }
     }
 
 
-    void notificationMeetingIn1440Minutes (String meetingTextIn1440Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+    void notificationMeetingIn1440Minutes (String meetingTextIn1440Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilderSound, NotificationCompat.Builder mBuilderNoSound, NotificationManager mNotificationManager) {
         // get meeting remember notification string
         String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverNotificationHeadlineTextRemember1440Min);
 
@@ -537,26 +542,31 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // generate pending intent
         PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // set notification attributes
-        mBuilder.setContentTitle(notificationContentTitle);
-        mBuilder.setContentIntent(contentPendingIntent);
+        // set notification attributes (with or without sound)
+        mBuilderSound.setContentTitle(notificationContentTitle);
+        mBuilderSound.setContentIntent(contentPendingIntent);
+        mBuilderSound.setStyle(new NotificationCompat.BigTextStyle().bigText(meetingTextIn1440Min));
+        mBuilderSound.setContentText(meetingTextIn1440Min);
+        mBuilderNoSound.setContentTitle(notificationContentTitle);
+        mBuilderNoSound.setContentIntent(contentPendingIntent);
+        mBuilderNoSound.setStyle(new NotificationCompat.BigTextStyle().bigText(meetingTextIn1440Min));
+        mBuilderNoSound.setContentText(meetingTextIn1440Min);
+
         // sound on/off for meeting?
         if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberMeeting, true)) {
-            mBuilder.setSound(alarmSound);
+            // show notification with sound
+            mNotificationManager.notify(201, mBuilderSound.build());
         }
-
-        // show long text in notification
-        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(meetingTextIn1440Min));
-        mBuilder.setContentText(meetingTextIn1440Min);
-
-        // show notification
-        mNotificationManager.notify(203, mBuilder.build());
+        else {
+            // show notification with no sound
+            mNotificationManager.notify(202, mBuilderNoSound.build());
+        }
     }
 
 
     // ++++++++++++++++++++++++++++++++ Notification for suggestion start ++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    void notificationCoachSuggestionEndIn15Minutes (String suggestionEndTextIn15Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+    void notificationCoachSuggestionEndIn15Minutes (String suggestionEndTextIn15Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilderSound, NotificationCompat.Builder mBuilderNoSound, NotificationManager mNotificationManager) {
         // get suggestion end remember notification string
         String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverNotificationHeadlineTextSuggestionEndIn15Min);
 
@@ -577,24 +587,29 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // generate pending intent
         PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // set notification attributes
-        mBuilder.setContentTitle(notificationContentTitle);
-        mBuilder.setContentIntent(contentPendingIntent);
+        // set notification attributes (with or without sound)
+        mBuilderSound.setContentTitle(notificationContentTitle);
+        mBuilderSound.setContentIntent(contentPendingIntent);
+        mBuilderSound.setStyle(new NotificationCompat.BigTextStyle().bigText(suggestionEndTextIn15Min));
+        mBuilderSound.setContentText(suggestionEndTextIn15Min);
+        mBuilderNoSound.setContentTitle(notificationContentTitle);
+        mBuilderNoSound.setContentIntent(contentPendingIntent);
+        mBuilderNoSound.setStyle(new NotificationCompat.BigTextStyle().bigText(suggestionEndTextIn15Min));
+        mBuilderNoSound.setContentText(suggestionEndTextIn15Min);
+
         // sound on/off for meeting?
         if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true)) {
-            mBuilder.setSound(alarmSound);
+            // show notification with sound
+            mNotificationManager.notify(201, mBuilderSound.build());
         }
-
-        // show long text in notification
-        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(suggestionEndTextIn15Min));
-        mBuilder.setContentText(suggestionEndTextIn15Min);
-
-        // show notification
-        mNotificationManager.notify(204, mBuilder.build());
+        else {
+            // show notification with no sound
+            mNotificationManager.notify(202, mBuilderNoSound.build());
+        }
     }
 
 
-    void notificationCoachSuggestionEndIn120Minutes (String suggestionEndTextIn120Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+    void notificationCoachSuggestionEndIn120Minutes (String suggestionEndTextIn120Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilderSound, NotificationCompat.Builder mBuilderNoSound, NotificationManager mNotificationManager) {
         // get suggestion end remember notification string
         String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverNotificationHeadlineTextSuggestionEndIn120Min);
 
@@ -615,24 +630,29 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // generate pending intent
         PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // set notification attributes
-        mBuilder.setContentTitle(notificationContentTitle);
-        mBuilder.setContentIntent(contentPendingIntent);
+        // set notification attributes (with or without sound)
+        mBuilderSound.setContentTitle(notificationContentTitle);
+        mBuilderSound.setContentIntent(contentPendingIntent);
+        mBuilderSound.setStyle(new NotificationCompat.BigTextStyle().bigText(suggestionEndTextIn120Min));
+        mBuilderSound.setContentText(suggestionEndTextIn120Min);
+        mBuilderNoSound.setContentTitle(notificationContentTitle);
+        mBuilderNoSound.setContentIntent(contentPendingIntent);
+        mBuilderNoSound.setStyle(new NotificationCompat.BigTextStyle().bigText(suggestionEndTextIn120Min));
+        mBuilderNoSound.setContentText(suggestionEndTextIn120Min);
+
         // sound on/off for meeting?
         if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true)) {
-            mBuilder.setSound(alarmSound);
+            // show notification with sound
+            mNotificationManager.notify(201, mBuilderSound.build());
         }
-
-        // show long text in notification
-        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(suggestionEndTextIn120Min));
-        mBuilder.setContentText(suggestionEndTextIn120Min);
-
-        // show notification
-        mNotificationManager.notify(205, mBuilder.build());
+        else {
+            // show notification with no sound
+            mNotificationManager.notify(202, mBuilderNoSound.build());
+        }
     }
 
 
-    void notificationCoachSuggestionEndIn1440Minutes (String suggestionEndTextIn1440Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+    void notificationCoachSuggestionEndIn1440Minutes (String suggestionEndTextIn1440Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilderSound, NotificationCompat.Builder mBuilderNoSound, NotificationManager mNotificationManager) {
         // get suggestion end remember notification string
         String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverNotificationHeadlineTextSuggestionEndIn1440Min);
 
@@ -653,29 +673,31 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // generate pending intent
         PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // set notification attributes
-        mBuilder.setContentTitle(notificationContentTitle);
-        mBuilder.setContentIntent(contentPendingIntent);
+        // set notification attributes (with or without sound)
+        mBuilderSound.setContentTitle(notificationContentTitle);
+        mBuilderSound.setContentIntent(contentPendingIntent);
+        mBuilderSound.setStyle(new NotificationCompat.BigTextStyle().bigText(suggestionEndTextIn1440Min));
+        mBuilderSound.setContentText(suggestionEndTextIn1440Min);
+        mBuilderNoSound.setContentTitle(notificationContentTitle);
+        mBuilderNoSound.setContentIntent(contentPendingIntent);
+        mBuilderNoSound.setStyle(new NotificationCompat.BigTextStyle().bigText(suggestionEndTextIn1440Min));
+        mBuilderNoSound.setContentText(suggestionEndTextIn1440Min);
+
         // sound on/off for meeting?
         if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true)) {
-            mBuilder.setSound(alarmSound);
+            // show notification with sound
+            mNotificationManager.notify(201, mBuilderSound.build());
         }
-
-        // show long text in notification
-        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(suggestionEndTextIn1440Min));
-        mBuilder.setContentText(suggestionEndTextIn1440Min);
-
-        // show notification
-        mNotificationManager.notify(206, mBuilder.build());
+        else {
+            // show notification with no sound
+            mNotificationManager.notify(202, mBuilderNoSound.build());
+        }
     }
-
-
-
 
 
     // ++++++++++++++++++++++++++++++++ Notification for client suggestion start ++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    void notificationClientStartSuggestionIn15Minutes (String clientSuggestionStartTextIn15Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+    void notificationClientStartSuggestionIn15Minutes (String clientSuggestionStartTextIn15Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilderSound, NotificationCompat.Builder mBuilderNoSound, NotificationManager mNotificationManager) {
         // get client suggestion start remember notification string
         String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverNotificationHeadlineTextClientSuggestionStartIn15Min);
 
@@ -696,24 +718,29 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // generate pending intent
         PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // set notification attributes
-        mBuilder.setContentTitle(notificationContentTitle);
-        mBuilder.setContentIntent(contentPendingIntent);
+        // set notification attributes (with or without sound)
+        mBuilderSound.setContentTitle(notificationContentTitle);
+        mBuilderSound.setContentIntent(contentPendingIntent);
+        mBuilderSound.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionStartTextIn15Min));
+        mBuilderSound.setContentText(clientSuggestionStartTextIn15Min);
+        mBuilderNoSound.setContentTitle(notificationContentTitle);
+        mBuilderNoSound.setContentIntent(contentPendingIntent);
+        mBuilderNoSound.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionStartTextIn15Min));
+        mBuilderNoSound.setContentText(clientSuggestionStartTextIn15Min);
+
         // sound on/off for meeting?
         if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true)) {
-            mBuilder.setSound(alarmSound);
+            // show notification with sound
+            mNotificationManager.notify(201, mBuilderSound.build());
         }
-
-        // show long text in notification
-        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionStartTextIn15Min));
-        mBuilder.setContentText(clientSuggestionStartTextIn15Min);
-
-        // show notification
-        mNotificationManager.notify(207, mBuilder.build());
+        else {
+            // show notification with no sound
+            mNotificationManager.notify(202, mBuilderNoSound.build());
+        }
     }
 
 
-    void notificationClientStartSuggestionIn120Minutes (String clientSuggestionStartTextIn120Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+    void notificationClientStartSuggestionIn120Minutes (String clientSuggestionStartTextIn120Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilderSound, NotificationCompat.Builder mBuilderNoSound, NotificationManager mNotificationManager) {
         // get client suggestion start remember notification string
         String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverNotificationHeadlineTextClientSuggestionStartIn120Min);
 
@@ -734,24 +761,29 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // generate pending intent
         PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // set notification attributes
-        mBuilder.setContentTitle(notificationContentTitle);
-        mBuilder.setContentIntent(contentPendingIntent);
+        // set notification attributes (with or without sound)
+        mBuilderSound.setContentTitle(notificationContentTitle);
+        mBuilderSound.setContentIntent(contentPendingIntent);
+        mBuilderSound.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionStartTextIn120Min));
+        mBuilderSound.setContentText(clientSuggestionStartTextIn120Min);
+        mBuilderNoSound.setContentTitle(notificationContentTitle);
+        mBuilderNoSound.setContentIntent(contentPendingIntent);
+        mBuilderNoSound.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionStartTextIn120Min));
+        mBuilderNoSound.setContentText(clientSuggestionStartTextIn120Min);
+
         // sound on/off for meeting?
         if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true)) {
-            mBuilder.setSound(alarmSound);
+            // show notification with sound
+            mNotificationManager.notify(201, mBuilderSound.build());
         }
-
-        // show long text in notification
-        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionStartTextIn120Min));
-        mBuilder.setContentText(clientSuggestionStartTextIn120Min);
-
-        // show notification
-        mNotificationManager.notify(208, mBuilder.build());
+        else {
+            // show notification with no sound
+            mNotificationManager.notify(202, mBuilderNoSound.build());
+        }
     }
 
 
-    void notificationClientStartSuggestionIn1440Minutes (String clientSuggestionStartTextIn1440Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+    void notificationClientStartSuggestionIn1440Minutes (String clientSuggestionStartTextIn1440Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilderSound, NotificationCompat.Builder mBuilderNoSound, NotificationManager mNotificationManager) {
         // get client suggestion start remember notification string
         String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverNotificationHeadlineTextClientSuggestionStartIn1440Min);
 
@@ -772,27 +804,32 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // generate pending intent
         PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // set notification attributes
-        mBuilder.setContentTitle(notificationContentTitle);
-        mBuilder.setContentIntent(contentPendingIntent);
+        // set notification attributes (with or without sound)
+        mBuilderSound.setContentTitle(notificationContentTitle);
+        mBuilderSound.setContentIntent(contentPendingIntent);
+        mBuilderSound.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionStartTextIn1440Min));
+        mBuilderSound.setContentText(clientSuggestionStartTextIn1440Min);
+        mBuilderNoSound.setContentTitle(notificationContentTitle);
+        mBuilderNoSound.setContentIntent(contentPendingIntent);
+        mBuilderNoSound.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionStartTextIn1440Min));
+        mBuilderNoSound.setContentText(clientSuggestionStartTextIn1440Min);
+
         // sound on/off for meeting?
         if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true)) {
-            mBuilder.setSound(alarmSound);
+            // show notification with sound
+            mNotificationManager.notify(201, mBuilderSound.build());
         }
-
-        // show long text in notification
-        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionStartTextIn1440Min));
-        mBuilder.setContentText(clientSuggestionStartTextIn1440Min);
-
-        // show notification
-        mNotificationManager.notify(209, mBuilder.build());
+        else {
+            // show notification with no sound
+            mNotificationManager.notify(202, mBuilderNoSound.build());
+        }
     }
 
 
     // ++++++++++++++++++++++++++++++++ Notification for client suggestion end ++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-    void notificationClientEndSuggestionIn15Minutes (String clientSuggestionEndTextIn15Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+    void notificationClientEndSuggestionIn15Minutes (String clientSuggestionEndTextIn15Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilderSound, NotificationCompat.Builder mBuilderNoSound, NotificationManager mNotificationManager) {
         // get client suggestion end remember notification string
         String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverNotificationHeadlineTextClientSuggestionEndIn15Min);
 
@@ -813,24 +850,29 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // generate pending intent
         PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // set notification attributes
-        mBuilder.setContentTitle(notificationContentTitle);
-        mBuilder.setContentIntent(contentPendingIntent);
+        // set notification attributes (with or without sound)
+        mBuilderSound.setContentTitle(notificationContentTitle);
+        mBuilderSound.setContentIntent(contentPendingIntent);
+        mBuilderSound.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionEndTextIn15Min));
+        mBuilderSound.setContentText(clientSuggestionEndTextIn15Min);
+        mBuilderNoSound.setContentTitle(notificationContentTitle);
+        mBuilderNoSound.setContentIntent(contentPendingIntent);
+        mBuilderNoSound.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionEndTextIn15Min));
+        mBuilderNoSound.setContentText(clientSuggestionEndTextIn15Min);
+
         // sound on/off for meeting?
         if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true)) {
-            mBuilder.setSound(alarmSound);
+            // show notification with sound
+            mNotificationManager.notify(201, mBuilderSound.build());
         }
-
-        // show long text in notification
-        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionEndTextIn15Min));
-        mBuilder.setContentText(clientSuggestionEndTextIn15Min);
-
-        // show notification
-        mNotificationManager.notify(210, mBuilder.build());
+        else {
+            // show notification with no sound
+            mNotificationManager.notify(202, mBuilderNoSound.build());
+        }
     }
 
 
-    void notificationClientEndSuggestionIn120Minutes (String clientSuggestionEndTextIn120Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+    void notificationClientEndSuggestionIn120Minutes (String clientSuggestionEndTextIn120Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilderSound, NotificationCompat.Builder mBuilderNoSound, NotificationManager mNotificationManager) {
         // get client suggestion end remember notification string
         String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverNotificationHeadlineTextClientSuggestionEndIn120Min);
 
@@ -851,24 +893,29 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // generate pending intent
         PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // set notification attributes
-        mBuilder.setContentTitle(notificationContentTitle);
-        mBuilder.setContentIntent(contentPendingIntent);
+        // set notification attributes (with or without sound)
+        mBuilderSound.setContentTitle(notificationContentTitle);
+        mBuilderSound.setContentIntent(contentPendingIntent);
+        mBuilderSound.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionEndTextIn120Min));
+        mBuilderSound.setContentText(clientSuggestionEndTextIn120Min);
+        mBuilderNoSound.setContentTitle(notificationContentTitle);
+        mBuilderNoSound.setContentIntent(contentPendingIntent);
+        mBuilderNoSound.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionEndTextIn120Min));
+        mBuilderNoSound.setContentText(clientSuggestionEndTextIn120Min);
+
         // sound on/off for meeting?
         if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true)) {
-            mBuilder.setSound(alarmSound);
+            // show notification with sound
+            mNotificationManager.notify(201, mBuilderSound.build());
         }
-
-        // show long text in notification
-        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionEndTextIn120Min));
-        mBuilder.setContentText(clientSuggestionEndTextIn120Min);
-
-        // show notification
-        mNotificationManager.notify(211, mBuilder.build());
+        else {
+            // show notification with no sound
+            mNotificationManager.notify(202, mBuilderNoSound.build());
+        }
     }
 
 
-    void notificationClientEndSuggestionIn1440Minutes (String clientSuggestionEndTextIn1440Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilder, Uri alarmSound, NotificationManager mNotificationManager) {
+    void notificationClientEndSuggestionIn1440Minutes (String clientSuggestionEndTextIn1440Min, Intent mainActivityIntent, NotificationCompat.Builder mBuilderSound, NotificationCompat.Builder mBuilderNoSound, NotificationManager mNotificationManager) {
         // get client suggestion end remember notification string
         String notificationContentTitle = mContext.getResources().getString(R.string.alarmReceiverNotificationHeadlineTextClientSuggestionEndIn1440Min);
 
@@ -889,21 +936,26 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         // generate pending intent
         PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // set notification attributes
-        mBuilder.setContentTitle(notificationContentTitle);
-        mBuilder.setContentIntent(contentPendingIntent);
+        // set notification attributes (with or without sound)
+        mBuilderSound.setContentTitle(notificationContentTitle);
+        mBuilderSound.setContentIntent(contentPendingIntent);
+        mBuilderSound.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionEndTextIn1440Min));
+        mBuilderSound.setContentText(clientSuggestionEndTextIn1440Min);
+        mBuilderNoSound.setContentTitle(notificationContentTitle);
+        mBuilderNoSound.setContentIntent(contentPendingIntent);
+        mBuilderNoSound.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionEndTextIn1440Min));
+        mBuilderNoSound.setContentText(clientSuggestionEndTextIn1440Min);
+
         // sound on/off for meeting?
         if (prefs.getBoolean(ConstansClassSettings.namePrefsNotificationAcousticSignal_RememberSuggestion, true)) {
-            mBuilder.setSound(alarmSound);
+            // show notification with sound
+            mNotificationManager.notify(201, mBuilderSound.build());
         }
-
-        // show long text in notification
-        mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(clientSuggestionEndTextIn1440Min));
-        mBuilder.setContentText(clientSuggestionEndTextIn1440Min);
-
-        // show notification
-        mNotificationManager.notify(212, mBuilder.build());
-    }
+        else {
+            // show notification with no sound
+            mNotificationManager.notify(202, mBuilderNoSound.build());
+        }
+     }
 
 
 }

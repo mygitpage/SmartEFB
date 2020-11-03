@@ -77,15 +77,16 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
 
         // first ask to server for new data, when case is not closed!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+
             // send intent to service to start the service
-            Intent startServiceIntent = new Intent(fragmentSuggestionContext, ExchangeServiceEfb.class);
+            Intent startServiceIntent = new Intent(fragmentSuggestionContext, ExchangeJobIntentServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
             startServiceIntent.putExtra("dbid",0L);
             startServiceIntent.putExtra("receiverBroadcast","");
             // start service
-            fragmentSuggestionContext.startService(startServiceIntent);
-        }
+            ExchangeJobIntentServiceEfb.enqueueWork(fragmentSuggestionContext, startServiceIntent);
+         }
     }
 
 
@@ -115,7 +116,7 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
     }
 
 
-    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
     private BroadcastReceiver meetingFragmentSuggestionOverviewBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
@@ -317,7 +318,7 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
             TextView tmpNoSuggestionsText = (TextView) viewFragmentSuggestion.findViewById(R.id.meetingOverviewNoSuggestionAvailable);
             tmpNoSuggestionsText.setVisibility(View.GONE);
 
-            // set message for sending successful and not successful -> in cursorAdapter is a button with intent to exchangeServiceEfb
+            // set message for sending successful and not successful -> in cursorAdapter is a button with intent to ExchangeJobIntentServiceEfb
             if (prefs.getBoolean(ConstansClassMeeting.namePrefsMeeting_ClientCommentSuggestion_OnOff, false)) { // is client comment on -> show other successfull and not successfull text
                 // set successfull message in parent activity -> show in toast, when vote from client + comment for suggestion is send successfull
                 String tmpSuccessfullMessage = getResources().getString(getResources().getIdentifier("toastMessageSuggestionOverviewVoteAndCommentByClientSuccessfullSend", "string", fragmentSuggestionContext.getPackageName()));

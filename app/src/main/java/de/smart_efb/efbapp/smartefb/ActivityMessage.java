@@ -89,13 +89,13 @@ public class ActivityMessage extends AppCompatActivity {
         displayMessageSet();
 
         // first ask to server for new data, send intent to service to start the service
-        Intent startServiceIntent = new Intent(contextMessage, ExchangeServiceEfb.class);
+        Intent startServiceIntent = new Intent(contextMessage, ExchangeJobIntentServiceEfb.class);
         // set command = "ask new data" on server
         startServiceIntent.putExtra("com", "ask_new_data");
         startServiceIntent.putExtra("dbid",0L);
         startServiceIntent.putExtra("receiverBroadcast","");
         // start service
-        contextMessage.startService(startServiceIntent);
+        ExchangeJobIntentServiceEfb.enqueueWork(contextMessage, startServiceIntent);
     }
 
 
@@ -356,7 +356,7 @@ public class ActivityMessage extends AppCompatActivity {
 
                             String inputMessage = txtInputMsg.getText().toString();
 
-                            if (inputMessage.length() > 3) {
+                            if (inputMessage.length() > 1) {
 
                                 // author name of message
                                 String tmpAuthorName;
@@ -392,11 +392,13 @@ public class ActivityMessage extends AppCompatActivity {
                                 long tmpDbId = myDb.insertRowMessage(tmpAuthorName, localeTime, messageTime, inputMessage, roleMessage, messageStatus, newEntry, uploadTime, tmpAnonymous, source);
 
                                 // send intent to service to start the service and send message to server!
-                                Intent startServiceIntent = new Intent(contextMessage, ExchangeServiceEfb.class);
+                                Intent startServiceIntent = new Intent(contextMessage, ExchangeJobIntentServiceEfb.class);
+                                // set command = "ask new data" on server
                                 startServiceIntent.putExtra("com", "send_current_message");
                                 startServiceIntent.putExtra("dbid", tmpDbId);
                                 startServiceIntent.putExtra("receiverBroadcast", "");
-                                contextMessage.startService(startServiceIntent);
+                                // start service
+                                ExchangeJobIntentServiceEfb.enqueueWork(contextMessage, startServiceIntent);
 
                                 // delete text in edittextfield
                                 txtInputMsg.setText("");
@@ -453,7 +455,7 @@ public class ActivityMessage extends AppCompatActivity {
         myDb.close();
     }
 
-    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
     private BroadcastReceiver messageBroadcastReceiver = new BroadcastReceiver() {
 
         @Override

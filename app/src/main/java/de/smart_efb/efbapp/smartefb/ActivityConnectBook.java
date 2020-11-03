@@ -90,14 +90,15 @@ public class ActivityConnectBook extends AppCompatActivity {
 
         // first ask to server for new data, when case is not closed!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+
             // send intent to service to start the service
-            Intent startServiceIntent = new Intent(contextOfConnectBook, ExchangeServiceEfb.class);
+            Intent startServiceIntent = new Intent(contextOfConnectBook, ExchangeJobIntentServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
             startServiceIntent.putExtra("dbid",0L);
             startServiceIntent.putExtra("receiverBroadcast","");
             // start service
-            contextOfConnectBook.startService(startServiceIntent);
+            ExchangeJobIntentServiceEfb.enqueueWork(contextOfConnectBook, startServiceIntent);
         }
     }
 
@@ -244,12 +245,13 @@ public class ActivityConnectBook extends AppCompatActivity {
                             prefsEditor.putInt(ConstansClassConnectBook.namePrefsConnectCountCurrentMessages, tmpCountCurrentMessages);
                             prefsEditor.apply();
 
-                            // send intent to service to start the service and send message to server!
-                            Intent startServiceIntent = new Intent(contextOfConnectBook, ExchangeServiceEfb.class);
+                            // send intent to service to start the service
+                            Intent startServiceIntent = new Intent(contextOfConnectBook, ExchangeJobIntentServiceEfb.class);
                             startServiceIntent.putExtra("com", "send_connectbook_message");
                             startServiceIntent.putExtra("dbid", tmpDbId);
                             startServiceIntent.putExtra("receiverBroadcast", "");
-                            contextOfConnectBook.startService(startServiceIntent);
+                            // start service
+                            ExchangeJobIntentServiceEfb.enqueueWork(contextOfConnectBook, startServiceIntent);
 
                             // delete text in edittextfield
                             txtInputMsg.setText("");
@@ -306,7 +308,7 @@ public class ActivityConnectBook extends AppCompatActivity {
         myDb.close();
     }
 
-    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
     private BroadcastReceiver connectBookBroadcastReceiver = new BroadcastReceiver() {
 
         @Override

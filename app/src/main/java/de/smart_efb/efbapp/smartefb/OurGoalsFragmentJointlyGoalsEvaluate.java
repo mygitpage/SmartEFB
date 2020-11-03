@@ -122,14 +122,15 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
         // first ask to server for new data, when case is not closed!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+
             // send intent to service to start the service
-            Intent startServiceIntent = new Intent(fragmentEvaluateJointlyGoalsContext, ExchangeServiceEfb.class);
+            Intent startServiceIntent = new Intent(fragmentEvaluateJointlyGoalsContext, ExchangeJobIntentServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
             startServiceIntent.putExtra("dbid",0L);
             startServiceIntent.putExtra("receiverBroadcast","");
             // start service
-            fragmentEvaluateJointlyGoalsContext.startService(startServiceIntent);
+            ExchangeJobIntentServiceEfb.enqueueWork(fragmentEvaluateJointlyGoalsContext, startServiceIntent);
         }
     }
 
@@ -146,7 +147,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
     }
 
 
-    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
     private BroadcastReceiver ourGoalsFragmentEvaluateJointlyGoalsBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
@@ -520,11 +521,13 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                         resetEvaluateResult();
 
                         // send intent to service to start the service and send evaluation result to server!
-                        Intent startServiceIntent = new Intent(fragmentEvaluateJointlyGoalsContext, ExchangeServiceEfb.class);
+                        Intent startServiceIntent = new Intent(fragmentEvaluateJointlyGoalsContext, ExchangeJobIntentServiceEfb.class);
+                        // set command = "ask new data" on server
                         startServiceIntent.putExtra("com", "send_evaluation_result_goal");
                         startServiceIntent.putExtra("dbid", tmpDbId);
                         startServiceIntent.putExtra("receiverBroadcast", "");
-                        fragmentEvaluateJointlyGoalsContext.startService(startServiceIntent);
+                        // start service
+                        ExchangeJobIntentServiceEfb.enqueueWork(fragmentEvaluateJointlyGoalsContext, startServiceIntent);
 
                         // build and send intent to next evaluation jointly goal or back to OurGoalsJointlyGoalsNow
                         if (nextJointlyGoalDbIdToEvaluate != 0) { // is there another jointly goal to evaluate?

@@ -117,15 +117,16 @@ public class SettingsEfbFragmentA extends Fragment {
 
         // first ask to server for new data, when case is not closed!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+
             // send intent to service to start the service
-            Intent startServiceIntent = new Intent(fragmentConnectToServerContext, ExchangeServiceEfb.class);
+            Intent startServiceIntent = new Intent(fragmentConnectToServerContext, ExchangeJobIntentServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
             startServiceIntent.putExtra("dbid",0L);
             startServiceIntent.putExtra("receiverBroadcast","");
             // start service
-            fragmentConnectToServerContext.startService(startServiceIntent);
-        }
+            ExchangeJobIntentServiceEfb.enqueueWork(fragmentConnectToServerContext, startServiceIntent);
+         }
 
     }
 
@@ -155,7 +156,7 @@ public class SettingsEfbFragmentA extends Fragment {
     }
 
 
-    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeServiceEfb
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeJobIntentServiceEfb
     private BroadcastReceiver settingsFragmentABrodcastReceiver = new BroadcastReceiver() {
 
         @Override

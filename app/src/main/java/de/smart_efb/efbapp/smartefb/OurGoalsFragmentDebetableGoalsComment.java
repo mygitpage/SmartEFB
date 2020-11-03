@@ -119,14 +119,15 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
 
         // first ask to server for new data, when case is not closed!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+
             // send intent to service to start the service
-            Intent startServiceIntent = new Intent(fragmentDebetableGoalsContext, ExchangeServiceEfb.class);
+            Intent startServiceIntent = new Intent(fragmentDebetableGoalsContext, ExchangeJobIntentServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
             startServiceIntent.putExtra("dbid",0L);
             startServiceIntent.putExtra("receiverBroadcast","");
             // start service
-            fragmentDebetableGoalsContext.startService(startServiceIntent);
+            ExchangeJobIntentServiceEfb.enqueueWork(fragmentDebetableGoalsContext, startServiceIntent);
         }
     }
 
@@ -144,7 +145,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
     }
 
 
-    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
     private BroadcastReceiver ourGoalsFragmentCommentDebetableGoalsBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
@@ -648,12 +649,13 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                         prefsEditor.putInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, countDebetableGoalsCommentSum);
                         prefsEditor.apply();
 
-                        // send intent to service to start the service and send comment to server!
-                        Intent startServiceIntent = new Intent(fragmentDebetableGoalsContext, ExchangeServiceEfb.class);
+                        // send intent to service to start the service
+                        Intent startServiceIntent = new Intent(fragmentDebetableGoalsContext, ExchangeJobIntentServiceEfb.class);
                         startServiceIntent.putExtra("com", "send_debetable_comment_goal");
                         startServiceIntent.putExtra("dbid", tmpDbId);
                         startServiceIntent.putExtra("receiverBroadcast", "");
-                        fragmentDebetableGoalsContext.startService(startServiceIntent);
+                        // start service
+                        ExchangeJobIntentServiceEfb.enqueueWork(fragmentDebetableGoalsContext, startServiceIntent);
 
                         // build intent to get back to OurGoalsFragmentDebetableNow
                         Intent intent = new Intent(getActivity(), ActivityOurGoals.class);

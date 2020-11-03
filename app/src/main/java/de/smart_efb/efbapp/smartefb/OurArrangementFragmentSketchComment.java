@@ -116,15 +116,16 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
         // first ask to server for new data, when case is not closed!
         if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
+
             // send intent to service to start the service
-            Intent startServiceIntent = new Intent(fragmentSketchCommentContext, ExchangeServiceEfb.class);
+            Intent startServiceIntent = new Intent(fragmentSketchCommentContext, ExchangeJobIntentServiceEfb.class);
             // set command = "ask new data" on server
             startServiceIntent.putExtra("com", "ask_new_data");
             startServiceIntent.putExtra("dbid",0L);
             startServiceIntent.putExtra("receiverBroadcast","");
             // start service
-            fragmentSketchCommentContext.startService(startServiceIntent);
-        }
+            ExchangeJobIntentServiceEfb.enqueueWork(fragmentSketchCommentContext, startServiceIntent);
+         }
     }
 
 
@@ -140,7 +141,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
     }
 
 
-    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeServiceEfb
+    // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
     private BroadcastReceiver ourArrangementFragmentSketchCommentBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
@@ -647,11 +648,13 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                         prefsEditor.commit();
 
                         // send intent to service to start the service and send comment to server!
-                        Intent startServiceIntent = new Intent(fragmentSketchCommentContext, ExchangeServiceEfb.class);
+                        Intent startServiceIntent = new Intent(fragmentSketchCommentContext, ExchangeJobIntentServiceEfb.class);
+                        // set command = "ask new data" on server
                         startServiceIntent.putExtra("com", "send_sketch_comment_arrangement");
                         startServiceIntent.putExtra("dbid", tmpDbId);
                         startServiceIntent.putExtra("receiverBroadcast", "");
-                        fragmentSketchCommentContext.startService(startServiceIntent);
+                        // start service
+                        ExchangeJobIntentServiceEfb.enqueueWork(fragmentSketchCommentContext, startServiceIntent);
 
                         // build intent to get back to OurArrangementFragmentSketchArrangement
                         Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
