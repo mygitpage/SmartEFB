@@ -53,21 +53,6 @@ public class OurGoalsDebetableGoalsNowCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        if (cursor.isFirst() ) { // listview for first element? write intro text
-
-            TextView tmpTextViewDebetableIntroText = (TextView) view.findViewById(R.id.ourGoalsDebetableGoalsIntroText);
-            String tmpTextIntroText = "";
-
-            if (cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_CHANGE_TO)).equals(ConstansClassOurGoals.jointlyGoalStatusNothing)) {
-                tmpTextIntroText = String.format(context.getResources().getString(R.string.ourGoalsDebetableGoalsIntroTextPlural), EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfDebetableGoals", System.currentTimeMillis()), "dd.MM.yyyy"));
-                tmpTextViewDebetableIntroText.setText(tmpTextIntroText);
-            }
-            else {
-                tmpTextIntroText = String.format(context.getResources().getString(R.string.ourGoalsDebetableGoalsIntroTextChangeTo), EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME)), "dd.MM.yyyy"));
-                tmpTextViewDebetableIntroText.setText(tmpTextIntroText);
-            }
-        }
-
         // is cursor last?
         if (cursor.isLast() ) { // listview for last element -> set gap to bottom of display
             // show gap to bottom of display

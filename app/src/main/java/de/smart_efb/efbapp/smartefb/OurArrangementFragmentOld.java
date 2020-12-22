@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -225,7 +226,7 @@ public class OurArrangementFragmentOld extends Fragment {
                 setVisibilityTextViewNothingThere ("show");
 
                 // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
-                tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNothingThere", "string", fragmentOldContext.getPackageName()));
+                tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleOldNothingThere", "string", fragmentOldContext.getPackageName()));
                 ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "old");
             }
         }
@@ -264,7 +265,7 @@ public class OurArrangementFragmentOld extends Fragment {
 
     private void setVisibilityTextViewFunctionNotAvailable (String visibility) {
 
-        TextView tmpNotAvailable = (TextView) viewFragmentOld.findViewById(R.id.textViewOldArrangementFunctionNotAvailable);
+        RelativeLayout tmpNotAvailable = (RelativeLayout) viewFragmentOld.findViewById(R.id.textViewOldArrangementFunctionNotAvailable);
 
         if (tmpNotAvailable != null) {
 
@@ -283,7 +284,7 @@ public class OurArrangementFragmentOld extends Fragment {
 
     private void setVisibilityTextViewNothingThere (String visibility) {
 
-        TextView tmpNothingThere = (TextView) viewFragmentOld.findViewById(R.id.textViewOldArrangementNothingThere);
+        RelativeLayout tmpNothingThere = (RelativeLayout) viewFragmentOld.findViewById(R.id.textViewOldArrangementNothingThere);
 
         if (tmpNothingThere != null) {
 

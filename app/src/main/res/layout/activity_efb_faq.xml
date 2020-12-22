@@ -17,7 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextAppearance="@style/toolbarTitleAppearanceStandard"
+            app:subtitleTextAppearance="@style/toolbarSubtitleAppearanceStandard">
 
         <Button android:id="@+id/helpFaq"
             android:layout_width="30dp"

@@ -7,33 +7,59 @@
     android:orientation="vertical"
     android:background="@color/body_background">
 
-
-    <TextView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/textViewArrangementSketchNothingThere"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textColor="@color/text_color"
-        android:gravity="left"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:text="@string/ourArrangementSketchArrangementNothingThere"
-        android:paddingTop="15dp"
-        android:paddingLeft="15dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-    <TextView
+        <ImageView
+            android:id="@+id/textViewArrangementSketchNothingThereImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/function_not_available_image"/>
+
+        <TextView
+            android:id="@+id/textViewArrangementSketchNothingThereText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:text="@string/ourArrangementSketchArrangementNothingThere"
+            android:textColor="@color/text_color" />
+
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/textViewArrangementSketchFunctionNotAvailable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textColor="@color/text_color"
-        android:gravity="left"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:text="@string/ourArrangementSketchArrangementFunctionNotAvailable"
-        android:paddingTop="15dp"
-        android:paddingLeft="15dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
 
+        <ImageView
+            android:id="@+id/textViewArrangementSketchFunctionNotAvailableImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/function_not_available_image"/>
+
+        <TextView
+            android:id="@+id/textViewArrangementSketchFunctionNotAvailableText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:text="@string/ourArrangementSketchArrangementFunctionNotAvailable"
+            android:textColor="@color/text_color" />
+
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/listOurArrangementSketch"

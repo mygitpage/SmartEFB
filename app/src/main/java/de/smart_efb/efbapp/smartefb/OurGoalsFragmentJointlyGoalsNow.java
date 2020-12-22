@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -307,7 +308,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
             setVisibilityTextViewTextNotAvailable("show");
 
             // Set correct subtitle in Activity -> "Keine gemeinsamen Ziele vorhanden"
-            String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleGoalsNothingThere", "string", fragmentJointlyGoalsNowContext.getPackageName()));
+            String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsJointlySubtitleGoalsNothingThere", "string", fragmentJointlyGoalsNowContext.getPackageName()));
             ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyNow");
         }
     }
@@ -336,7 +337,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
     // set visibility of textView "nothing there"
     private void setVisibilityTextViewTextNotAvailable (String visibility) {
 
-        TextView tmpNotAvailable = (TextView) viewFragmentJointlyGoalsNow.findViewById(R.id.textViewJointlyGoalsNowNothingThere);
+        RelativeLayout tmpNotAvailable = (RelativeLayout) viewFragmentJointlyGoalsNow.findViewById(R.id.textViewJointlyGoalsNowNothingThere);
 
         if (tmpNotAvailable != null) {
 

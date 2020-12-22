@@ -57,13 +57,6 @@ public class OurArrangementNowCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        // is cursor first?
-        if (cursor.isFirst() ) {
-            TextView numberOfArrangement = (TextView) view.findViewById(R.id.ourArrangementIntroText);
-            String txtArrangementNumber = context.getResources().getString(R.string.ourArrangementIntroText) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy");
-            numberOfArrangement.setText(txtArrangementNumber);
-        }
-
         // is cursor last?
         if (cursor.isLast() ) { // listview for last element -> set gap to bottom of display
 

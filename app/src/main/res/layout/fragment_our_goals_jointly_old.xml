@@ -7,7 +7,62 @@
     android:orientation="vertical"
     android:background="@color/body_background">
 
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/textViewOldJointlyGoalsNothingThere"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
 
+        <ImageView
+            android:id="@+id/textViewOldJointlyGoalsNothingThereImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/function_not_available_image"/>
+
+        <TextView
+            android:id="@+id/textViewOldJointlyGoalsNothingThereText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:text="@string/ourGoalsOldJointlyGoalsNothingThere"
+            android:textColor="@color/text_color" />
+
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/textViewOldJointlyGoalsFunctionNotAvailable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/textViewOldJointlyGoalsFunctionNotAvailableImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/function_not_available_image"/>
+
+        <TextView
+            android:id="@+id/textViewOldJointlyGoalsFunctionNotAvailableText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:text="@string/ourGoalsOldJointlyGoalsFunctionNotAvailable"
+            android:textColor="@color/text_color" />
+
+    </RelativeLayout>
+
+
+<!--
     <TextView
         android:id="@+id/textViewOldJointlyGoalsNothingThere"
         android:layout_width="wrap_content"
@@ -33,7 +88,7 @@
         android:text="@string/ourGoalsOldJointlyGoalsFunctionNotAvailable"
         android:paddingTop="15dp"
         android:paddingLeft="15dp"/>
-
+-->
 
     <ListView
         android:id="@+id/listOurGoalsJointlyOld"

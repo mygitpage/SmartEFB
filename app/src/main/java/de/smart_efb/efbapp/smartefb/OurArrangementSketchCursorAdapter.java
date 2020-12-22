@@ -54,22 +54,6 @@ public class OurArrangementSketchCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        if (cursor.isFirst() ) { // listview for first element? write intro text
-
-            TextView tmpTextViewSketchIntroText = (TextView) view.findViewById(R.id.ourArrangementSketchIntroText);
-            String tmpTextIntroText = "";
-
-            if (cursor.getString(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_CHANGE_TO)).equals(ConstansClassOurArrangement.arrangementStatusNothing)) {
-                tmpTextIntroText = String.format(context.getResources().getString(R.string.ourArrangementSketchIntroTextPlural), EfbHelperClass.timestampToDateFormat(prefs.getLong("currentDateOfSketchArrangement", System.currentTimeMillis()), "dd.MM.yyyy"));
-                tmpTextViewSketchIntroText.setText(tmpTextIntroText);
-            }
-            else {
-                tmpTextIntroText = String.format(context.getResources().getString(R.string.ourArrangementSketchIntroTextChangeTo), EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME)), "dd.MM.yyyy"));
-                tmpTextViewSketchIntroText.setText(tmpTextIntroText);
-            }
-
-        }
-
         // is cursor last?
         if (cursor.isLast() ) { // listview for last element -> set gap to bottom of display
             // show gap to bottom of display

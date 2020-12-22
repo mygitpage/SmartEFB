@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -315,7 +316,7 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
             ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, "suggestion_overview");
 
             // set no suggestions text visibility gone
-            TextView tmpNoSuggestionsText = (TextView) viewFragmentSuggestion.findViewById(R.id.meetingOverviewNoSuggestionAvailable);
+            RelativeLayout tmpNoSuggestionsText = (RelativeLayout) viewFragmentSuggestion.findViewById(R.id.meetingOverviewNoSuggestionAvailable);
             tmpNoSuggestionsText.setVisibility(View.GONE);
 
             // set message for sending successful and not successful -> in cursorAdapter is a button with intent to ExchangeJobIntentServiceEfb
@@ -356,7 +357,7 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
             ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, "suggestion_overview");
 
             // set no suggestions text visibility gone
-            TextView tmpNoSuggestionsText = (TextView) viewFragmentSuggestion.findViewById(R.id.meetingOverviewNoSuggestionAvailable);
+            RelativeLayout tmpNoSuggestionsText = (RelativeLayout) viewFragmentSuggestion.findViewById(R.id.meetingOverviewNoSuggestionAvailable);
             tmpNoSuggestionsText.setVisibility(View.VISIBLE);
 
             // set list view visibility gone

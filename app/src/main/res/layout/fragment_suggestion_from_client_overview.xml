@@ -5,31 +5,59 @@
     android:orientation="vertical"
     android:background="@color/body_background">
 
-    <TextView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/meetingOverviewNoSuggestionFromClientAvailable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:gravity="left"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:text="@string/meetingOverviewNoSuggestionFromClientAvailableText"
-        android:paddingTop="15dp"
-        android:paddingLeft="15dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-    <TextView
+        <ImageView
+            android:id="@+id/meetingOverviewNoSuggestionFromClientAvailableImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/function_not_available_image"/>
+
+        <TextView
+            android:id="@+id/meetingOverviewNoSuggestionFromClientAvailableText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:text="@string/meetingOverviewNoSuggestionFromClientAvailableText"
+            android:textColor="@color/text_color" />
+
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/meetingOverviewSuggestionFromClientFunctionOff"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:gravity="left"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:text="@string/meetingOverviewSuggestionFromClientFunctionOffText"
-        android:paddingTop="15dp"
-        android:paddingLeft="15dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/meetingOverviewSuggestionFromClientFunctionOffImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/function_not_available_image"/>
+
+        <TextView
+            android:id="@+id/meetingOverviewSuggestionFromClientFunctionOffText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:text="@string/meetingOverviewSuggestionFromClientFunctionOffText"
+            android:textColor="@color/text_color" />
+
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/listViewSuggestionFromClientDates"

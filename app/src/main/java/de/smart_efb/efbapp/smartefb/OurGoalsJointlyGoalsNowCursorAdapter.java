@@ -55,13 +55,6 @@ public class OurGoalsJointlyGoalsNowCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        // is cursor first?
-        if (cursor.isFirst() ) { // listview for first element
-            TextView introTextfJointlyGoals = (TextView) view.findViewById(R.id.ourGoalsJointlyGoalsIntroText);
-            String txtGoalNumber = context.getResources().getString(R.string.ourGoalsJointlyNowIntroText) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "dd.MM.yyyy");
-            introTextfJointlyGoals.setText(txtGoalNumber);
-        }
-
         // is cursor last?
         if (cursor.isLast() ) { // listview for last element -> set gap to bottom of display
 

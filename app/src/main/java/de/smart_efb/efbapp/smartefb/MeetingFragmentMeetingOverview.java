@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -260,7 +261,7 @@ public class MeetingFragmentMeetingOverview extends Fragment {
             ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, "meeting_overview");
 
             // set no suggestions text visibility gone
-            TextView tmpNoSuggestionsText = (TextView) viewFragmentMeeting.findViewById(R.id.meetingOverviewNoMeetingAvailable);
+            RelativeLayout tmpNoSuggestionsText = (RelativeLayout) viewFragmentMeeting.findViewById(R.id.meetingOverviewNoMeetingAvailable);
             tmpNoSuggestionsText.setVisibility(View.GONE);
 
             // set listview visible
@@ -283,7 +284,7 @@ public class MeetingFragmentMeetingOverview extends Fragment {
             ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, "meeting_overview");
 
             // set no suggestions text visibility gone
-            TextView tmpNoSuggestionsText = (TextView) viewFragmentMeeting.findViewById(R.id.meetingOverviewNoMeetingAvailable);
+            RelativeLayout tmpNoSuggestionsText = (RelativeLayout) viewFragmentMeeting.findViewById(R.id.meetingOverviewNoMeetingAvailable);
             tmpNoSuggestionsText.setVisibility(View.VISIBLE);
 
         }

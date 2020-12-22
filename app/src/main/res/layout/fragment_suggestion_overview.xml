@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/body_background">
-
+<!--
         <TextView
             android:id="@+id/meetingOverviewNoSuggestionAvailable"
             android:layout_width="wrap_content"
@@ -17,7 +17,33 @@
             android:text="@string/meetingOverviewNoSuggestionAvailableText"
             android:paddingTop="15dp"
             android:paddingLeft="15dp"/>
+-->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/meetingOverviewNoSuggestionAvailable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
 
+        <ImageView
+            android:id="@+id/meetingOverviewNoSuggestionAvailableImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/function_not_available_image"/>
+
+        <TextView
+            android:id="@+id/meetingOverviewNoSuggestionAvailableText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:text="@string/meetingOverviewNoSuggestionAvailableText"
+            android:textColor="@color/text_color" />
+
+    </RelativeLayout>
 
         <ListView
             android:id="@+id/listViewSuggestionDates"

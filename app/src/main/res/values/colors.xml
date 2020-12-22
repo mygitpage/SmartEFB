@@ -8,7 +8,7 @@
     // general background color fragments and activitys
     <color name="body_background">#ffffff</color> <!-- 61def1 -->
 
-    // gernal text color fragments and activitys
+    // general text color fragments and activitys
     <color name="text_color">#FF4D4D4D</color>
 
     // gernal text color white fragments and activitys

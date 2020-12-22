@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.2'
 
     defaultConfig {
         applicationId "de.smart_efb.efbapp.smartefb"
         minSdkVersion 26
-        targetSdkVersion 26
-        versionCode 8
-        versionName "1.08"
+        targetSdkVersion 29
+        versionCode 9
+        versionName "1.09"
     }
     buildTypes {
         release {
@@ -22,7 +22,10 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support:appcompat-v7:26.+'
-    implementation 'com.android.support:design:26.+'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    //noinspection GradleCompatible
     implementation 'com.android.support:gridlayout-v7:26.+'
+
 }

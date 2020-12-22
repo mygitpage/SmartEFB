@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -292,7 +293,7 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
                 ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle(tmpSubtitle, "suggestion_from_client");
 
                 // set no suggestions text visibility gone
-                TextView tmpNoSuggestionsText = (TextView) viewFragmentSuggestionFromCLient.findViewById(R.id.meetingOverviewNoSuggestionFromClientAvailable);
+                RelativeLayout tmpNoSuggestionsText = (RelativeLayout) viewFragmentSuggestionFromCLient.findViewById(R.id.meetingOverviewNoSuggestionFromClientAvailable);
                 tmpNoSuggestionsText.setVisibility(View.GONE);
 
                 // set message for sending successful and not successful -> in cursorAdapter is a button with intent to ExchangeJobIntentServiceEfb
@@ -321,7 +322,7 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
                 ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle(tmpSubtitle, "suggestion_from_client");
 
                 // set no suggestions text visibility show
-                TextView tmpNoSuggestionsText = (TextView) viewFragmentSuggestionFromCLient.findViewById(R.id.meetingOverviewNoSuggestionFromClientAvailable);
+                RelativeLayout tmpNoSuggestionsText = (RelativeLayout) viewFragmentSuggestionFromCLient.findViewById(R.id.meetingOverviewNoSuggestionFromClientAvailable);
                 tmpNoSuggestionsText.setVisibility(View.VISIBLE);
             }
         }
@@ -332,7 +333,7 @@ public class MeetingFragmentSuggestionFromClient extends Fragment {
             ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle(tmpSubtitle, "suggestion_from_client");
 
             // set function off text visibility show
-            TextView tmpNoSuggestionsText = (TextView) viewFragmentSuggestionFromCLient.findViewById(R.id.meetingOverviewSuggestionFromClientFunctionOff);
+            RelativeLayout tmpNoSuggestionsText = (RelativeLayout) viewFragmentSuggestionFromCLient.findViewById(R.id.meetingOverviewSuggestionFromClientFunctionOff);
             tmpNoSuggestionsText.setVisibility(View.VISIBLE);
         }
     }

@@ -3,8 +3,6 @@
     <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- app strings -->
 
-
-
         <!-- App name -->
             <string name="app_name">Smart<b>EFB</b></string>
         <!-- End app name -->
@@ -25,10 +23,10 @@
     <!-- Activity Connect Book -->
         <!-- String Activity Connect Book -->
             <string name="buttonSendMessage">SENDEN</string>
-            <string name="subTitleConnectBook">Austausch zwischen Allen</string>
+            <string name="subTitleConnectBook">Austausch zwischen allen Beteiligten</string>
             <string name="infoTextCountCurrentMessages">%1$d von %2$d Nachrichten in 24 Stunden</string>
             <string name="textConnectBookMessageAuthorAndDate">%1$s - %2$s &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
-            <string name="textConnectBookMessageAuthorAndDateLocale">%1$s - %2$s (lokal) &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
+            <string name="textConnectBookMessageAuthorAndDateLocale">%1$s - %2$s&lt;font color=\"#FF0000\">%3$s&lt;/font></string>
             <string name="textConnectBookMessageNoSharing">Die Nachrichten werden im Moment nicht zugestellt!</string>
             <string name="textConnectBookMessageNotSendYet">Die Nachricht wurde noch nicht gesendet.</string>
             <string name="textConnectBookMessageSendDelayInfo">Die Nachricht wurde gesendet und\nwird in %1$s zugestellt.</string>
@@ -42,9 +40,9 @@
             <string name="toastConnectBookMessageSettingsSharingDisable">Die Nachrichten werden im Momentan nicht mehr zugestellt!</string>
             <string name="toastConnectBookToLessLettersMessageInput">Ihre Nachricht muss aus mindestens einem Zeichen bestehen!</string>
             <string name="toastConnectBookCaseCloseToastText">Der Fall ist abgeschlossen! Nachrichten werden nicht mehr gesendet!</string>
-            <string name="connectBookFirstInitProcessMessageBlockLoadStartTextViewHeadlineText">Ersteinrichtungsblock Start</string>
-            <string name="connectBookFirstInitProcessMessageBlockLoadStartTextViewInfoText">Die folgenden Nachrichten wurden bei der ersten Serververbindung als Block geladen.</string>
-            <string name="connectBookFirstInitProcessMessageBlockLoadEndTextViewHeadlineText">Ersteinrichtungsblock Ende</string>
+            <string name="connectBookFirstInitProcessMessageBlockLoadStartTextViewHeadlineText">Bereits vorhandene Nachrichten</string>
+            <string name="connectBookFirstInitProcessMessageBlockLoadStartTextViewInfoText">Die folgenden Nachrichten waren bereits in Ihrem Fall vorhanden und wurden heruntergeladen.</string>
+            <string name="connectBookFirstInitProcessMessageBlockLoadEndTextViewHeadlineText">Vorhandene Nachrichten Ende</string>
         <!-- End String Activity Connect Book -->
 
         <!-- connect book dialog settings -->
@@ -180,8 +178,8 @@
             <string name="settingsEfbFragmentCDataPrivacyHeadineText">Datenschutz</string>
             <string name="settingsEfbFragmentCDataPrivacyText">Personenbezogene Daten werden in der App/ Server nur gespeichert, sofern Sie oder Ihre Beraterinnen oder Berater diese über die App-Funktionen oder das Backend (Übergabebuch, Absprachen, Ziele, Kommentare, Nachrichten, etc.) eingeben. Eine weitergehende elektronische Verarbeitung oder Weitergabe an Dritte findet nicht statt. Es werden keine personenbezogenen Daten von Ihrem Smartphone durch die App übertragen, beispielsweise Adress- und Kontaktbücher, Anruferlisten oder SMS-Verläufe.\nDie Beratungsfälle werden mit einer eindeutigen Nummer (Fallnummer) gekennzeichent, die eine Verknüpfug mit der Papierakte Ihrer Beraterinnen und Berater zulässt.\nDie Pin-Nummer zur Verbindungsherstellung zwischen App und Server (Backend) dient zum erstmaligen Austausch und wird durch eine lange zufällige und eindeutige Zeichenkette ersetzt. Anhand dieser Zeichenkette ist Ihre App eindeutig durch den Server zu erkennen. Diese Zeichenkette enthält keine personenbezogenen Merkmale und entsteht durch einen Zufallsprozess.\nWenn Sie über die Nachrichtenfunktion Kontakt zu den Beraterinnen oder Beratern der Beratungsstellen aufnehmen, wird hierzu ebenfalls eine eindeutige Zufallsnummer erzeugt, anhand derer Ihr Smartphone vom Server eindeutig erkannt werden kann. Über diese Zufallsnummer sind keine Rückschlüsse auf Ihre Person möglich.\nDie Kommunikation zwischen App und Server ist durch eine Verschlüsselung (https) geschützt.\n Die App fragt in regelmäßigen Abständen beim Server an, ob neue Inhalte vorliegen. Dies kann Sie nur, wenn Sie im Vorder- oder Hintergrund läuft.\n Wenn die App nicht gestartet ist, werden keine Anfragen gestellt. Es finden dann aber auch beispielsweise keine Erinnerungen an anstehende Termine statt.\nIm Rahmen des Projektes findet eine wissenschaftliche Befragung und Auswertung statt. Die verwendeten Fragebögen lassen keine Rückschlüsse auf bestimmte Personen zu und sind daher anonym.\n</string>
             <string name="settingsEfbFragmentCDataPrivacyLinkText">Die ausführliche Datenschutzerklärung finden Sie <a href="smart.efb.deeplink://linkin/settings?com=open_link_dataprivacy_external">hier</a></string>
-            <string name="settingsEfbFragmentCDataPrivacyManagerHeadineText">Datenschutzbeauftragte</string>
-            <string name="settingsEfbFragmentCDataPrivacyManagerText">Wenn Sie Fragen zum Datenschutz haben, schreiben Sie uns bitte eine E-Mail (gs@gfb-potsdam.de) oder wenden Sie sich direkt an die für den Datenschutz verantwortliche Person in unserer Organisation:\n\nAtlas Informationssysteme GmbH\n\nHerrn Detlev Voigt\n\nCarl-Reichstein-Str. 7/9\n\n14770 Brandenburg an der Havel\n\n03381/529316\n\ndvoigt@atlas-brb.de</string>
+            <string name="settingsEfbFragmentCDataPrivacyManagerHeadineText">Datenschutzbeauftragter</string>
+            <string name="settingsEfbFragmentCDataPrivacyManagerText">Wenn Sie Fragen zum Datenschutz haben, schreiben Sie uns bitte eine E-Mail (gs@gfb-potsdam.de) oder wenden Sie sich direkt an die für den Datenschutz verantwortliche Person in unserer Organisation:\n\nAtlas Informationssysteme GmbH\nHerrn Detlev Voigt\nCarl-Reichstein-Str. 7/9\n14770 Brandenburg an der Havel\n03381/529316\ndvoigt@atlas-brb.de</string>
             <string name="settingsEfbFragmentCLinksHeadineText">Externe Verlinkungen</string>
             <string name="settingsEfbFragmentCLinksText">Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.</string>
             <string name="settingsEfbFragmentCHelpForAppHeadineText">Weitere Fragen zur App</string>
@@ -245,7 +243,8 @@
             <string name="showCommentArrangementsubtitle">Gewählte Kommentare zeigen</string>
             <string name="evaluateArrangementsubtitle">Absprache bewerten</string>
             <string name="sketchArrangementsubtitle">Entwürfe vom</string>
-            <string name="subtitleNothingThere">Keine Absprachen vorhanden</string>
+            <string name="subtitleNowNothingThere">Keine Absprachen vorhanden</string>
+            <string name="subtitleOldNothingThere">Keine älteren Absprachen vorhanden</string>
             <string name="subtitleSketchNothingThere">Keine Entwürfe vorhanden</string>
             <string name="subtitleNotAvailable">Funktion nicht möglich</string>
             <string name="subtitleFragmentNowCommentText">Kommentieren Absprache</string>
@@ -277,15 +276,14 @@
         <!-- End String Activity Our Arrangement -->
 
         <!-- fragment show old arrangements -->
-            <string name="ourArrangementOldArrangementFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
-            <string name="ourArrangementOldArrangementNothingThere">Es sind keine älteren Absprachen vorhanden!</string>
+            <string name="ourArrangementOldArrangementFunctionNotAvailable">Diese Funktion steht zur Verfügung,\nsobald Ihr/e Berater*innen diese einschalten!</string>
+            <string name="ourArrangementOldArrangementNothingThere">Es sind keine älteren\nAbsprachen vorhanden!</string>
             <string name="ourArrangementOldArrangementDateIntro">Absprachen vom</string>
             <string name="showOldArrangementIntroText">Alte Absprache</string>
         <!-- End fragment show old arrangements -->
 
         <!-- fragment show current arrangements -->
-            <string name="ourArrangementNowArrangementNothingThere">Es sind keine aktuellen Absprachen vorhanden!</string>
-            <string name="ourArrangementIntroText">Die aktuellen Absprachen vom</string>
+            <string name="ourArrangementNowArrangementNothingThere">Es sind keine aktuellen\nAbsprachen vorhanden!</string>
             <string name="ourArrangementAuthorNameText">Geschrieben von %1$s</string>
             <string name="ourArrangementAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
         <!-- End show now arrangements -->
@@ -321,7 +319,7 @@
             <string name="lastActualCommentText">Aktuellster Kommentar zur Absprache</string>
             <string name="lastActualCommentTextNoCommentAvailabel">Keine Kommentare vorhanden</string>
             <string name="lastActualCommentTextNoCommentAvailabelFirstAuthor">Werden Sie erster Autor eines Kommentares</string>
-            <string name="ourArrangementCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+            <string name="ourArrangementCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourArrangementCommentLinkToShowAllCommentsPlural">%1$d weitere Kommentare vorhanden</string>
             <string name="ourArrangementCommentLinkToShowAllCommentsSingular">%1$d weiterer Kommentar vorhanden</string>
             <string name="ourArrangementCommentLinkToShowAllCommentsNotAvailable">Keine weiteren Kommentare vorhanden</string>
@@ -345,7 +343,7 @@
             <string name="showCommentHeadlineWithNumberExtraNewest">(Aktuellster)</string>
             <string name="showCommentHeadlineWithNumberExtraOldest">(Ältester)</string>
             <string name="ourArrangementBackLinkToArrangementFromShowComment">Zurück zu den aktuellen Absprachen</string>
-            <string name="ourArrangementShowCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+            <string name="ourArrangementShowCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourArrangementShowCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourArrangementShowCommentSendInfo">Der Kommentar wurde noch nicht gesendet.</string>
             <string name="ourArrangementShowCommentSendDelayInfo">Der Kommentar wurde gesendet und wird in %1$s zugestellt.</string>
@@ -427,7 +425,7 @@
             <string name="ourArrangementSketchCommentAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
             <string name="lastActualSketchCommentText">Aktuellste Einschätzung zum Entwurf</string>
             <string name="ourArrangementSketchCommentPersonalAuthorName">Ihnen</string>
-            <string name="ourArrangementSketchCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+            <string name="ourArrangementSketchCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourArrangementSketchCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourArrangementSketchCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
             <string name="ourArrangementSketchCommentSendSuccsessfullInfo">Die Einschätzung wurde gesendet.</string>
@@ -453,7 +451,7 @@
             <string name="showSketchCommentHeadlineWithNumberExtraNewest">(Aktuellste)</string>
             <string name="showSketchCommentHeadlineWithNumberExtraOldest">(Älteste)</string>
             <string name="ourArrangementBackLinkToSketchArrangementFromShowSketchComment">Zurück zu den aktuellen Entwürfen</string>
-            <string name="ourArrangementShowSketchCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+            <string name="ourArrangementShowSketchCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourArrangementShowSketchCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourArrangementShowSketchCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
             <string name="ourArrangementShowSketchCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
@@ -466,13 +464,9 @@
             <string name="ourArrangementShowCommentLinkChangeSortSequenceOfArrangementSketchCommentDescending">Einschätzungen aufsteigend sortieren (Älteste zu erst)</string>
         <!-- End String Fragment show sketch comment -->
 
-
-
         <!-- String Fragment sketch arrangement -->
-            <string name="ourArrangementSketchArrangementNothingThere">Es sind keine Entwürfe für Absprachen vorhanden!</string>
-            <string name="ourArrangementSketchArrangementFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
-            <string name="ourArrangementSketchIntroTextPlural">Ihre Berater/-innen haben am %1$s folgende Entwürfe für Absprachen eingestellt.</string>
-            <string name="ourArrangementSketchIntroTextChangeTo">Ihre Berater/-innen haben am %1s die folgenden Entwürfe für Absprachen, vielleicht mit einigen Änderungen, als verbindliche Absprachen gespeichert.</string>
+            <string name="ourArrangementSketchArrangementNothingThere">Es sind keine Entwürfe für\nAbsprachen vorhanden!</string>
+            <string name="ourArrangementSketchArrangementFunctionNotAvailable">Diese Funktion steht zur Verfügung,\nsobald Ihr/e Berater*innen diese einschalten!</string>
             <string name="showSketchArrangementNumberText">Entwurf Absprache</string>
             <string name="ourArrangementSketchAuthorNameText">Geschrieben von %1$s</string>
             <string name="ourArrangementSketchAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
@@ -619,7 +613,7 @@
 
 
         <!-- fragment show current jointly goals now -->
-            <string name="textViewJointlyGoalsNowNothingThere">Zurzeit sind keine gemeinsamen Ziele vorhanden!</string>
+            <string name="textViewJointlyGoalsNowNothingThere">Zurzeit sind keine gemeinsamen\nZiele vorhanden!</string>
             <string name="ourGoalsJointlyNowIntroText">Die gemeinsamen Ziele vom</string>
             <string name="ourGoalsEvaluateJointlyGoalString">Bewerten</string>
             <string name="ourGoalsCommentString">Gemeinsame Ziele kommentieren</string>
@@ -658,7 +652,7 @@
             <string name="lastActualJointlyCommentTextNoCommentAvailabel">Keine Kommentare vorhanden</string>
             <string name="lastActualJointlyCommentTextNoCommentAvailabelFirstAuthor">Werden Sie erster Autor eines Kommentares</string>
             <string name="ourGoalsJointlyCommentPersonalAuthorName">Ihnen</string>
-            <string name="ourGoalsJointlyCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+            <string name="ourGoalsJointlyCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourGoalsJointlyCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourGoalsJointlyCommentSendInfo">Der Kommentar wurde noch nicht gesendet.</string>
             <string name="ourGoalsJointlyCommentSendDelayInfo">Der Kommentar wurde gesendet und wird in %1$s zugestellt.</string>
@@ -682,7 +676,7 @@
             <string name="showJointlyGoalsCommentHeadlineWithNumberExtraNewest">(Aktuellster)</string>
             <string name="showJointlyGoalsCommentHeadlineWithNumberExtraOldest">(Ältester)</string>
             <string name="ourJointlyGoalsShowCommentPersonalAuthorName">Ihnen</string>
-            <string name="ourJointlyGoalsShowCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+            <string name="ourJointlyGoalsShowCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourJointlyGoalsShowCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourJointlyGoalsShowCommentSendInfo">Der Kommentar wurde noch nicht gesendet.</string>
             <string name="ourJointlyGoalsShowCommentSendDelayInfo">Der Kommentar wurde gesendet und wird in %1$s zugestellt.</string>
@@ -731,12 +725,9 @@
 
         <!-- String Fragment debetable goals now -->
                 <string name="ourGoalsDebetableGoalsNowNothingThere">Es sind keine strittigen Ziele vorhanden!</string>
-                <string name="ourGoalsDebetableGoalsFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
-                <string name="ourGoalsDebetableGoalsIntroText">%1$s hat am %2$s folgende strittigen Ziele eingestellt.</string>
+                <string name="ourGoalsDebetableGoalsFunctionNotAvailable">Diese Funktion steht zur Verfügung,\nsobald Ihr/e Berater*innen diese einschalten!</string>
                 <string name="showDebetableGoalNumberText">Strittiges Ziel</string>
                 <string name="ourGoalsDebetableGoalsAssessmentsString">Strittiges Ziel einschätzen</string>
-                <string name="ourGoalsDebetableGoalsIntroTextPlural">Ihre Berater/-innen haben am %1$s folgende strittigen Ziele eingestellt.</string>
-                <string name="ourGoalsDebetableGoalsIntroTextChangeTo">Ihre Berater/-innen haben am %1s die folgenden strittigen Ziele, vielleicht mit einigen Änderungen, als gemeinsame Ziele gespeichert.</string>
                 <string name="ourGoalsDebetableGoalsAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
                 <string name="infoTextNumberOfDebetableCommentsPossiblePlural">(%1$d verbleiben)</string>
                 <string name="infoTextNumberOfDebetableCommentsPossibleSingular">(%1$d verbleibt)</string>
@@ -773,7 +764,7 @@
             <string name="textOurGoalsDebetableCommentActualResultStructQuestionFromCoach">Die Einschätzung wurde ohne Zustimmungswert von Ihrer Beraterin/ Ihrem Berater geschrieben</string>
             <string name="textOurGoalsDebetableGoalsCommentNoSharing">Die Einschätzungen werden im Moment nicht zugestellt!</string>
             <string name="ourGoalsDebetableCommentPersonalAuthorName">Ihnen</string>
-            <string name="ourGoalsDebetableCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+            <string name="ourGoalsDebetableCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourGoalsDebetableCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourGoalsDebetableCommentAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
             <string name="ourGoalsDebetableCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
@@ -801,7 +792,7 @@
             <string name="showDebetableCommentHeadlineWithNumber">Einschätzung</string>
             <string name="showDebetableCommentHeadlineWithNumberExtraNewest">(Aktuellste)</string>
             <string name="showDebetableCommentHeadlineWithNumberExtraOldest">(Älteste)</string>
-            <string name="ourGoalsShowDebetableCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr (Lokale Smartphonezeit).</string>
+            <string name="ourGoalsShowDebetableCommentAuthorNameWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourGoalsShowDebetableCommentAuthorNameWithDateExternal">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr.</string>
             <string name="ourGoalsShowDebetableCommentSendInfo">Die Einschätzung wurde noch nicht gesendet.</string>
             <string name="ourGoalsShowDebetableCommentSendDelayInfo">Die Einschätzung wurde gesendet und wird in %1$s zugestellt.</string>
@@ -821,8 +812,8 @@
 
 
         <!-- fragment show old jointly goals -->
-            <string name="ourGoalsOldJointlyGoalsFunctionNotAvailable">Diese Funktion steht im Moment nicht zur Verfügung!</string>
-            <string name="ourGoalsOldJointlyGoalsNothingThere">Es sind keine älteren gemeinsamen Ziele vorhanden!</string>
+            <string name="ourGoalsOldJointlyGoalsFunctionNotAvailable">Diese Funktion steht zur Verfügung,\nsobald Ihr/e Berater*innen diese einschalten!</string>
+            <string name="ourGoalsOldJointlyGoalsNothingThere">Es sind keine älteren\ngemeinsamen Ziele vorhanden!</string>
             <string name="ourGoalsOldJointlyGoalDateIntro">Ältere gemeinsame Ziele vom</string>
             <string name="showOurGoalsOldJointlyGoalIntroText">Altes Ziel</string>
         <!-- End fragment show old jointly goals -->
@@ -836,7 +827,9 @@
             <string name="ourGoalsSubtitleEvaluateJointlyGoal">Ziel %1$d bewerten</string>
             <string name="ourGoalsSubtitleDebetableGoalsNow">Strittige Ziele vom</string>
             <string name="ourGoalsSubtitleFunctionNotAvailable">Funktion nicht möglich</string>
-            <string name="ourGoalsSubtitleGoalsNothingThere">Keine Ziele vorhanden</string>
+            <string name="ourGoalsJointlySubtitleGoalsNothingThere">Keine gemeinsamen Ziele vorhanden</string>
+            <string name="ourGoalsDebetableSubtitleGoalsNothingThere">Keine strittigen Ziele vorhanden</string>
+            <string name="ourGoalsOldSubtitleGoalsNothingThere">Keine älteren Ziele vorhanden</string>
             <string name="ourGoalsSubtitleDebetableGoalsComment">Strittiges Ziel %1$d einschätzen</string>
             <string name="ourGoalsSubtitleDebetableGoalsShowCommentText">Einschätzungen strittiges Ziel</string>
             <string name="ourGoalsSubtitleOldJointlyGoals">Älter als</string>
@@ -992,12 +985,12 @@
 
         <!-- fragment meeting overview -->
             <string name="toastMessageMeetingDataNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
-            <string name="meetingOverviewNoMeetingAvailableText">Es sind keine aktuellen Termine vorhanden.</string>
+            <string name="meetingOverviewNoMeetingAvailableText">Es sind keine aktuellen\nTermine vorhanden.</string>
             <string name="meetingOverviewMeetingTitleAndNumberText">Nächster Termin</string>
             <string name="meetingOverviewMeetingCanceledTitleAndNumberText">Abgesagter Termin</string>
             <string name="meetingOverviewCreateMeetingAuthorAndDate">Der Termin wurde von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt.</string>
             <string name="meetingOverviewCreateMeetingAuthorAndDateWithCancele">Der Termin wurde von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt und von &lt;u>%4$s&lt;/u> am %5$s um %6$s Uhr abgesagt.</string>
-            <string name="meetingOverviewClientCanceledMeetingAuthorAndDate">Von Ihnen wurde der Termin am %1$s um %2$s Uhr (Lokale Smartphonezeit) abgesagt.</string>
+            <string name="meetingOverviewClientCanceledMeetingAuthorAndDate">Von Ihnen wurde der Termin am %1$s um %2$s Uhr abgesagt.</string>
             <string name="meetingOverviewClientCanceledNotSendToServer">Ihre Absage wurde noch nicht gesendet.</string>
             <string name="meetingOverviewClientCanceledLinkText">Terminabsagewunsch Beraterin/ Berater mitteilen</string>
             <string name="meetingOverviewmeetingCanceledByCoachText">Abgesagt!</string>
@@ -1009,7 +1002,7 @@
         <!-- end fragment meeting overview -->
 
         <!-- fragment old meeting overview -->
-            <string name="meetingOverviewOldNoMeetingAvailableText">Es sind keine vergangenen Termine vorhanden.</string>
+            <string name="meetingOverviewOldNoMeetingAvailableText">Es sind keine vergangenen\nTermine vorhanden.</string>
             <string name="meetingOverviewOldMeetingTitleAndNumberText">Vergangener Termin</string>
             <string name="oldMeetingOverviewIntroText">Hier finden Sie zu Ihrer Information alle vergangenen oder abgesagten Termine. Termine, die Sie gelöscht haben, sind nicht mehr vorhanden.</string>
         <!-- end fragment old meeting overview -->
@@ -1036,9 +1029,9 @@
             <string name="meetingOverviewNoSuggestionAvailableText">Es sind keine Terminvorschläge von Ihrer Beraterin/ Ihrem Berater vorhanden oder alle Rückmeldezeiten sind verstrichen.</string>
             <string name="meetingOverviewSuggestionSelectSuggestFromListIntro">Bitte wählen Sie aus den Terminvorschlägen die für Sie passenden aus.</string>
             <string name="meetingOverviewSuggestionAuthorAndDateWithCancele">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt und von &lt;u>%4$s&lt;/u> am %5$s um %6$s Uhr verworfen.</string>
-            <string name="meetingOverviewSuggestionAuthorAndDateVote">Ihre Auswahl an Terminvorschlägen vom %1$s um %2$s Uhr (Lokale Smartphonezeit) wurde zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
-            <string name="meetingOverviewSuggestionAuthorAndDateVoteAndOrComment">Ihre Auswahl an Terminvorschlägen und/oder Ihr Kommentar vom %1$s um %2$s Uhr (Lokale Smartphonezeit) wurde zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
-            <string name="meetingOverviewSuggestionAuthorAndDateVoteNotSend">Ihre Auswahl an Terminvorschlägen wurde am %1$s um %2$s Uhr (Lokale Smartphonezeit) gespeichert, aber noch nicht gesendet.</string>
+            <string name="meetingOverviewSuggestionAuthorAndDateVote">Ihre Auswahl an Terminvorschlägen vom %1$s um %2$s Uhr wurde zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
+            <string name="meetingOverviewSuggestionAuthorAndDateVoteAndOrComment">Ihre Auswahl an Terminvorschlägen und/oder Ihr Kommentar vom %1$s um %2$s Uhr wurde zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
+            <string name="meetingOverviewSuggestionAuthorAndDateVoteNotSend">Ihre Auswahl an Terminvorschlägen wurde am %1$s um %2$s Uhr gespeichert, aber noch nicht gesendet.</string>
             <string name="meetingOverviewMeetingFoundFromSuggestionAuthorAndDate">Ihre Beraterin/ Ihr Berater (%1$s) hat am  %2$s um %3$s Uhr aus allen Terminvorschlägen einen Termin gefunden. Bitte schauen Sie in den Bereich Termine.</string>
             <string name="meetingOverviewSuggestionAuthorAndDate">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt.</string>
             <string name="meetingOverviewSuggestionAuthorAndDateResponseTimeOver">Die Terminvorschläge wurden von &lt;u>%1$s&lt;/u> am %2$s um %3$s Uhr erstellt. Die Rückmeldezeit ist am %4$s um %5$s Uhr abgelaufen. Sie haben leider keine Rückmeldung gegeben. Bitte setzen Sie sich mit Ihrer Beraterin/ Ihrem Berater in Verbindung.</string>
@@ -1075,9 +1068,9 @@
         <!-- end fragment suggestion overview -->
 
         <!-- fragment suggestion from client -->
-            <string name="meetingOverviewNoSuggestionFromClientAvailableText">Es liegen keine Terminvorschläge von Ihnen vor.</string>
+            <string name="meetingOverviewNoSuggestionFromClientAvailableText">Es liegen keine Terminvorschläge\nvon Ihnen vor.</string>
             <string name="meetingOverviewNoSuggestionFromClientAvailableTimeProblemText">Die Systemzeit wurde verändert. Daher wird der Vorschlagszeitraum nicht korrekt angezeigt. Bitte korregieren Sie die Systemzeit.</string>
-            <string name="meetingOverviewSuggestionFromClientFunctionOffText">Die Funktion steht im Moment nicht zur Verfügung.</string>
+            <string name="meetingOverviewSuggestionFromClientFunctionOffText">Diese Funktion steht zur Verfügung,\nsobald Ihr/e Berater*innen diese einschalten!</string>
             <string name="meetingOverviewSuggestionFromClientIntroInfoTextInTimezone">Bitte geben Sie Ihre Terminvorschläge ein</string>
             <string name="meetingOverviewSuggestionFromClientIntroInfoTextOutPreTimezone">Demnächst hier Ihre Terminvorschläge abgeben</string>
             <string name="meetingOverviewSuggestionFromClientIntroInfoTextOutPostTimezone">Ihre abgegebenen Terminvorschläge</string>
@@ -1089,7 +1082,7 @@
             <string name="meetingOverviewSuggestionFromClientTitleAndNumberTextAlreadySend">Terminvorschläge gesendet</string>
             <string name="meetingOverviewSuggestionFromClientAuthorAndDateCanceled">Der Zeitraum vom %1$s, %2$s Uhr, bis zum %3$s, %4$s Uhr (Beratungsstellenzeit), für die Abgabe von Terminvorschlägen wurde von Ihrer Beraterin/ Ihrem Berater (&lt;u>%5$s&lt;/u>) am %6$s um %7$s Uhr abgesagt.</string>
             <string name="meetingOverviewSuggestionFromClientAuthorAndDateMeetingFound">Ihre Beraterin/ Ihr Berater (&lt;u>%1$s&lt;/u>) hat am %2$s um %3$s Uhr aus Ihren Terminvorschlägen einen Termin finden können. Bitte schauen Sie unter dem Punkt \"Termine\" nach (Vorschlagszeitraum war vom %4$s, %5$s Uhr, bis zum %6$s um %7$s Uhr).</string>
-            <string name="meetingOverviewSuggestionFromClientAuthorAndDateAlreadySend">Ihre Terminvorschläge wurden am %1$s um %2$s Uhr (Lokale Smartphonezeit) zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
+            <string name="meetingOverviewSuggestionFromClientAuthorAndDateAlreadySend">Ihre Terminvorschläge wurden am %1$s um %2$s Uhr zu Ihrer Beraterin/ Ihrem Berater gesendet.</string>
             <string name="meetingOverviewSuggestionFromClientInTimezone">Bitte geben Sie bis zum %1$s um %2$s Uhr (Beratungsstellenzeit) Ihre Terminvorschläge ab. Der Terminvorschlagszeitraum begann am %3$s um %4$s Uhr und wurde von &lt;u>%5$s&lt;/u> am %6$s um %7$s Uhr erstellt.</string>
             <string name="meetingOverviewSuggestionFromClientOutPreTimezone">Ab dem %1$s um %2$s Uhr können Sie bis zum %3$s um %4$s Uhr (Beratungsstellenzeit) Ihre Terminvorschläge abgeben. Der Terminvorschlagszeitraum wurde von &lt;u>%5$s&lt;/u> am %6$s um %7$s Uhr erstellt.</string>
             <string name="meetingOverviewSuggestionFromClientOutPostTimezone">Der Abgabezeitraum für Terminvorschläge ist abgelaufen (vom %1$s um %2$s Uhr bis zum %3$s um %4$s Uhr, Beratungsstellenzeit). Sie haben leider keine Terminvorschläge abgegeben. Bitte setzen Sie sich mit Ihrer Beraterin/ Ihrem Berater in Verbindung.</string>
@@ -1260,7 +1253,7 @@
     <!-- Activity Message -->
 
     <!-- messages -->
-        <string name="messageSubtitleActivity">Austausch nur Sie und BeraterIn</string>
+        <string name="messageSubtitleActivity">Austausch zwischen Ihnen und Ihrer Berater*in</string>
         <string name="messageNotAssociatedAuthorName">Sie</string>
         <string name="messageInfoTextCountCurrentMessages">%1$d von %2$d Nachrichten</string>
         <string name="messageToastErrorMessageToShort">Ihre Nachricht muss aus mindestens zwei Zeichen bestehen.</string>
@@ -1269,15 +1262,15 @@
         <string name="textMessageNotSendYet">Die Nachricht wurde noch nicht gesendet.</string>
         <string name="textMessageSend">Die Nachricht wurde gesendet.</string>
         <string name="textMessageAuthorAndDate">%1$s - %2$s &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
-        <string name="textMessageAuthorAndDateLocale">%1$s - %2$s (lokal) &lt;font color=\"#FF0000\">%3$s&lt;/font></string>
+        <string name="textMessageAuthorAndDateLocale">%1$s - %2$s&lt;font color=\"#FF0000\">%3$s&lt;/font></string>
         <string name="textMessageStopSendingMessages">Nachrichten können im Moment nicht gesendet werden!</string>
         <string name="toastTextMessageStopSendingMessagesDisable">Nachrichten können im Moment nicht gesendet werden!</string>
         <string name="toastTextMessageStopSendingMessagesEnable">Nachrichten können wieder gesendet werden!</string>
-        <string name="messageAutomaticGeneratedHelloTextAuthorNameNotAssociated">BeraterInnen Lichtblick</string>
+        <string name="messageAutomaticGeneratedHelloTextAuthorNameNotAssociated">Berater*innen Lichtblick</string>
         <string name="messageAutomaticGeneratedHelloTextMessageTextNotAssociated">Herzlich willkommen\nim Nachrichtenchat der Erziehungs- und Familienberatungstelle Lichtblick.\nHier können Sie anonym den Beraterinnen und Beratern in der Beratungsstelle Fragen stellen. Sie können beispielsweise auch einen ersten Beratungstermin vereinbaren.\nLeider können wir nicht auf alle Anfragen sofort reagieren. Es kann bis zu drei Werktagen dauern, bis wir Ihnen antworten können.\nVersuchen Sie es. Schreiben Sie uns eine Nachricht!</string>
         <string name="messageAutomaticGeneratedHelloTextAuthorNameAssociated">Ihre Beraterin/ Ihr Berater</string>
         <string name="messageAutomaticGeneratedHelloTextMessageTextAssociated">Herzlich willkommen\nim Nachrichtenchat. Sie sind in einen Fall involviert und können in diesem Chat Ihrer Beraterin/ Ihrem Berater persönlich Nachrichten schicken. Andere Personen können diese Nachrichten nicht lesen.</string>
-        <string name="messageAutomaticGeneratedHelloTextAuthorNameNotAssociatedAgain">BeraterInnen Lichtblick</string>
+        <string name="messageAutomaticGeneratedHelloTextAuthorNameNotAssociatedAgain">Berater*innen Lichtblick</string>
         <string name="messageAutomaticGeneratedHelloTextMessageTextNotAssociatedAgain">Herzlich willkommen nochmals\nim Nachrichtenchat der Erziehungs- und Familienberatungstelle Lichtblick.\nIhr Fall wurde abgeschlossen und damit können Sie Ihrer Beraterin/ Ihrem Berrater keine persönlichen Nachrichten mehr schreiben. Alle Nachrichten, die Sie uns über den Chat schicken, sind nun wieder anonym. Die Beraterin/ der Berater kann nicht erkennen, wer diese Nachricht geschrieben hat.</string>
     <!-- end messages -->
 

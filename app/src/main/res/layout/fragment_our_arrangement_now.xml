@@ -7,19 +7,32 @@
     android:background="@color/body_background"
     android:id="@+id/listOurArrangementNowHolder">
 
-    <TextView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/textViewArrangementNowNothingThere"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textColor="@color/text_color"
-        android:gravity="left"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:text="@string/ourArrangementNowArrangementNothingThere"
-        android:paddingTop="15dp"
-        android:paddingLeft="15dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
 
+        <ImageView
+            android:id="@+id/textViewArrangementNowNothingThereImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/function_not_available_image"/>
+
+        <TextView
+            android:id="@+id/textViewArrangementNowNothingThereText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:text="@string/ourArrangementNowArrangementNothingThere"
+            android:textColor="@color/text_color" />
+
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/listOurArrangementNow"

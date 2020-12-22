@@ -17,7 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextAppearance="@style/toolbarTitleAppearanceStandard"
+            app:subtitleTextAppearance="@style/toolbarSubtitleAppearanceStandard">
 
             <Button android:id="@+id/helpTimeTable"
                 android:layout_width="30dp"
@@ -48,31 +50,40 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
 
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/list_element_style">
+
                 <TextView
-                    android:id="@+id/introTextTimeTable"
+                    android:id="@+id/settingsConnectToServerInvolvedPersonHeadlineTextTimeTable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
                     android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
                     android:textStyle="bold"
                     android:text="@string/timeTableIntroText"
-                    android:gravity="left"
                     android:layout_marginLeft="3dp"/>
 
                 <TextView
                     android:id="@+id/textAuthorNameAndDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="13dp"
+                    android:textSize="14dp"
                     android:textColor="@color/colorPrimaryDark"
                     android:gravity="left"
                     android:layout_marginLeft="3dp"/>
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_height="wrap_content"
-                android:paddingBottom="15dp">
+                android:paddingBottom="25dp"
+                android:paddingTop="15dp">
 
                 <ProgressBar
                     android:id="@+id/progressBar"
@@ -97,20 +108,28 @@
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold"
                     android:gravity="center"/>
-                <!-- android:textAppearance="?android:attr/textAppearanceSmall"  -->
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/introTextComputeValueExplain"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold"
-                android:text="@string/timeTableIntroTextComputeValueExplain"
-                android:gravity="left"
-                android:paddingBottom="15dp"/>
+                android:orientation="vertical"
+                android:background="@drawable/list_element_style">
+
+                <TextView
+                    android:id="@+id/introTextComputeValueExplain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
+
+                    android:text="@string/timeTableIntroTextComputeValueExplain"
+                    android:layout_marginLeft="3dp"/>
+
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/timeTableIntroTextComputeValueExplainPoint_One"
@@ -120,6 +139,7 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:text="@string/timeTableIntroTextComputeValueExplainPoint1"
                 android:gravity="left"
+                android:paddingTop="15dp"
                 android:paddingBottom="15dp"
                 android:paddingLeft="10dp"/>
 

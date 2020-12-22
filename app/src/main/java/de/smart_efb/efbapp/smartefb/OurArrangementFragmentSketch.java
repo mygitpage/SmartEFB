@@ -14,8 +14,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
+
+
+
+
+
+// Look Progess Bar
+// www.journaldev.com/9629/android-progressbar-example
+
+//https://github.com/chrisbanes/cheesesquare/blob/master/app/src/main/res/layout/activity_detail.xml
+// https://guides.codepath.com/android/handling-scrolls-with-coordinatorlayout
+
+
 
 /**
  * Created by ich on 09.09.16.
@@ -323,7 +338,9 @@ public class OurArrangementFragmentSketch  extends Fragment {
     // set visibility of textView "nothing there"
     private void setVisibilityTextViewSketchNotAvailable (String visibility) {
 
-        TextView tmpNotAvailable = (TextView) viewFragmentSketch.findViewById(R.id.textViewArrangementSketchFunctionNotAvailable);
+        //TextView tmpNotAvailable = (TextView) viewFragmentSketch.findViewById(R.id.textViewArrangementSketchFunctionNotAvailable);
+
+        RelativeLayout tmpNotAvailable = (RelativeLayout) viewFragmentSketch.findViewById(R.id.textViewArrangementSketchFunctionNotAvailable);
 
         if (tmpNotAvailable != null) {
 
@@ -342,7 +359,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
     private void setVisibilityTextViewSketchNothingThere (String visibility) {
 
-        TextView tmpNothingThere = (TextView) viewFragmentSketch.findViewById(R.id.textViewArrangementSketchNothingThere);
+        RelativeLayout tmpNothingThere = (RelativeLayout) viewFragmentSketch.findViewById(R.id.textViewArrangementSketchNothingThere);
 
         if (tmpNothingThere != null) {
 

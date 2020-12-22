@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -287,7 +288,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                 setVisibilityTextViewDebetableGoalsNowNothingThere ("show");
 
                 // Set correct subtitle in Activity -> "Keine Ziele vorhanden"
-                String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleGoalsNothingThere", "string", fragmentDebetableGoalNowContext.getPackageName()));
+                String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsDebetableSubtitleGoalsNothingThere", "string", fragmentDebetableGoalNowContext.getPackageName()));
                 ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "debetableNow");
             }
         }
@@ -326,7 +327,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
     // set visibility of textView "nothing there"
     private void setVisibilityTextViewDebetableGoalsNowNotAvailable (String visibility) {
 
-        TextView tmpNotAvailable = (TextView) viewFragmentDebetablGoalNow.findViewById(R.id.textViewOurGoalsFunctionNotAvailable);
+        RelativeLayout tmpNotAvailable = (RelativeLayout) viewFragmentDebetablGoalNow.findViewById(R.id.textViewOurGoalsFunctionNotAvailable);
 
         if (tmpNotAvailable != null) {
 
@@ -345,7 +346,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
 
     private void setVisibilityTextViewDebetableGoalsNowNothingThere (String visibility) {
 
-        TextView tmpNothingThere = (TextView) viewFragmentDebetablGoalNow.findViewById(R.id.textViewOurGoalsNothingThere);
+        RelativeLayout tmpNothingThere = (RelativeLayout) viewFragmentDebetablGoalNow.findViewById(R.id.textViewOurGoalsNothingThere);
 
         if (tmpNothingThere != null) {
 

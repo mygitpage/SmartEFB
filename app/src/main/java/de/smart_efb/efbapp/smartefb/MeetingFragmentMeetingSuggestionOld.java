@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -176,8 +177,8 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
             tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMeetingSuggestionOverviewOld", "string", fragmentMeetingSuggestionContextOld.getPackageName()));
             ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, "meeting_suggestion_old");
 
-            // set old meeting text visibility gone
-            TextView tmpNoSuggestionsText = (TextView) viewFragmentMeetingSuggestion.findViewById(R.id.meetingSuggestionOldOverviewNothingAvailable);
+            // set relative layout with old meeting text visibility gone
+            RelativeLayout tmpNoSuggestionsText = (RelativeLayout) viewFragmentMeetingSuggestion.findViewById(R.id.meetingSuggestionOldOverviewNothingAvailable);
             tmpNoSuggestionsText.setVisibility(View.GONE);
 
             // set listview visible
@@ -198,8 +199,8 @@ public class MeetingFragmentMeetingSuggestionOld extends Fragment {
             tmpSubtitle = getResources().getString(getResources().getIdentifier("meetingSubtitleMeetingSuggestionOverviewOldNotAvailable", "string", fragmentMeetingSuggestionContextOld.getPackageName()));
             ((ActivityMeeting) getActivity()).setMeetingToolbarSubtitle (tmpSubtitle, "meeting_suggestion_old");
 
-            // set old meeting text visibility show
-            TextView tmpNoSuggestionsText = (TextView) viewFragmentMeetingSuggestion.findViewById(R.id.meetingSuggestionOldOverviewNothingAvailable);
+            //  set relative layout with old meeting text visibility show
+            RelativeLayout tmpNoSuggestionsText = (RelativeLayout) viewFragmentMeetingSuggestion.findViewById(R.id.meetingSuggestionOldOverviewNothingAvailable);
             tmpNoSuggestionsText.setVisibility(View.VISIBLE);
         }
     }

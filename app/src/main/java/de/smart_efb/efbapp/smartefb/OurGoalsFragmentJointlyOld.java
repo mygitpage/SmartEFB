@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -222,7 +223,7 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                 setVisibilityTextViewNothingThere ("show");
 
                 // Set correct subtitle in Activity -> "Keine Ziele vorhanden"
-                tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleGoalsNothingThere", "string", fragmentJointlyOldContext.getPackageName()));
+                tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsOldSubtitleGoalsNothingThere", "string", fragmentJointlyOldContext.getPackageName()));
                 ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyOld");
             }
         }
@@ -263,7 +264,7 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
 
     private void setVisibilityTextViewFunctionNotAvailable (String visibility) {
 
-        TextView tmpNotAvailable = (TextView) viewFragmentJointlyOld.findViewById(R.id.textViewOldJointlyGoalsFunctionNotAvailable);
+        RelativeLayout tmpNotAvailable = (RelativeLayout) viewFragmentJointlyOld.findViewById(R.id.textViewOldJointlyGoalsFunctionNotAvailable);
 
         if (tmpNotAvailable != null) {
 
@@ -282,7 +283,7 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
 
     private void setVisibilityTextViewNothingThere (String visibility) {
 
-        TextView tmpNothingThere = (TextView) viewFragmentJointlyOld.findViewById(R.id.textViewOldJointlyGoalsNothingThere);
+        RelativeLayout tmpNothingThere = (RelativeLayout) viewFragmentJointlyOld.findViewById(R.id.textViewOldJointlyGoalsNothingThere);
 
         if (tmpNothingThere != null) {
 

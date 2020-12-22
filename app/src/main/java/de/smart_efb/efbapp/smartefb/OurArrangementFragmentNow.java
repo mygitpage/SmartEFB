@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -303,7 +304,7 @@ public class OurArrangementFragmentNow extends Fragment {
             setVisibilityTextViewNowNotAvailable("show");
 
             // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
-            String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNothingThere", "string", fragmentNowContext.getPackageName()));
+            String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNowNothingThere", "string", fragmentNowContext.getPackageName()));
             ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "now");
         }
     }
@@ -333,7 +334,7 @@ public class OurArrangementFragmentNow extends Fragment {
     // set visibility of textView "nothing there"
     private void setVisibilityTextViewNowNotAvailable (String visibility) {
 
-        TextView tmpNotAvailable = (TextView) viewFragmentNow.findViewById(R.id.textViewArrangementNowNothingThere);
+        RelativeLayout tmpNotAvailable = (RelativeLayout) viewFragmentNow.findViewById(R.id.textViewArrangementNowNothingThere);
 
         if (tmpNotAvailable != null) {
 

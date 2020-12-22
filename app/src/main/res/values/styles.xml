@@ -64,4 +64,14 @@
         <item name="colorControlActivated">@color/bg_btn_join</item>
     </style>
 
+    <style name="toolbarTitleAppearanceStandard" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="toolbarSubtitleAppearanceStandard" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>
