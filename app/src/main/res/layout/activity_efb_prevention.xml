@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context="de.smart_efb.efbapp.smartefb.ActivityPrevention">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="6dp">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarPrevention"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:titleTextAppearance="@style/toolbarTitleAppearanceStandard"
-            app:subtitleTextAppearance="@style/toolbarSubtitleAppearanceStandard">
+            app:subtitleTextAppearance="@style/toolbarSubtitleAppearanceStandard"
+            app:elevation="0dp"
+            app:layout_scrollFlags="scroll|enterAlways">
 
             <Button android:id="@+id/helpPrevention"
                 android:layout_width="30dp"
@@ -28,309 +30,315 @@
                 android:layout_marginRight="15dp"
                 android:background="@drawable/activity_help_toolbar_icon" />
 
-        </android.support.v7.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:fillViewport="true"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/containerShowPreventionInformation"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="left"
-            android:background="@color/body_background"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:layout_height="match_parent">
 
-            // prevention depression
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/containerShowPreventionInformation"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@drawable/list_element_style">
+                android:gravity="left"
+                android:background="@color/body_background"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                // prevention depression
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <TextView
+                        android:id="@+id/preventionDepressionHeadline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/preventionDepressionHeadlineText"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"/>
+
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/preventionDepressionHeadline"
+                    android:id="@+id/preventionDepressionExplain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:layout_marginLeft="3dp"/>
+
+                <Button
+                    android:id="@+id/buttonShowVideoDepression"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/app_button_style"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="@string/btnPreventionShowVideo"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:padding="10dp"/>
+
+                <TextView
+                    android:id="@+id/borderBetweenSection1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"/>
+
+
+                // prevention media competence
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <TextView
+                        android:id="@+id/preventionMediaCompetenceHeadline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/preventionMediaCompetenceHeadlineText"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/preventionMediaCompetenceExplain1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:layout_marginLeft="3dp"/>
+
+                <TextView
+                    android:id="@+id/preventionMediaCompetenceLinkToVideo1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
                     android:textColor="@color/colorPrimaryDark"
-                    android:text="@string/preventionDepressionHeadlineText"
-                    android:gravity="left"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="3dp"/>
+                    android:textColorLink="@color/colorPrimary"
+                    android:text="@string/preventionMediaCompetenceExplainText1Link"
+                    android:gravity="right"
+                    android:paddingTop="20dp"/>
 
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/preventionDepressionExplain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorLink="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:layout_marginLeft="3dp"/>
-
-            <Button
-                android:id="@+id/buttonShowVideoDepression"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/app_button_style"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/btnPreventionShowVideo"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:padding="10dp"/>
-
-            <TextView
-                android:id="@+id/borderBetweenSection1"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorPrimaryDark"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"/>
-
-
-            // prevention media competence
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/list_element_style">
 
                 <TextView
-                    android:id="@+id/preventionMediaCompetenceHeadline"
+                    android:id="@+id/preventionMediaCompetenceExplain2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:layout_marginLeft="3dp"
+                    android:paddingTop="20dp"/>
+
+                <TextView
+                    android:id="@+id/preventionMediaCompetenceLinkToVideo2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
                     android:textColor="@color/colorPrimaryDark"
-                    android:text="@string/preventionMediaCompetenceHeadlineText"
-                    android:gravity="left"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="3dp"/>
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/preventionMediaCompetenceExplain1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorLink="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:layout_marginLeft="3dp"/>
-
-            <TextView
-                android:id="@+id/preventionMediaCompetenceLinkToVideo1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorLink="@color/colorPrimary"
-                android:text="@string/preventionMediaCompetenceExplainText1Link"
-                android:gravity="right"
-                android:paddingTop="20dp"/>
-
-
-            <TextView
-                android:id="@+id/preventionMediaCompetenceExplain2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorLink="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:layout_marginLeft="3dp"
-                android:paddingTop="20dp"/>
-
-            <TextView
-                android:id="@+id/preventionMediaCompetenceLinkToVideo2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorLink="@color/colorPrimary"
-                android:text="@string/preventionMediaCompetenceExplainText2Link"
-                android:gravity="right"
-                android:paddingTop="20dp"/>
-
-            <TextView
-                android:id="@+id/borderBetweenSection2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorPrimaryDark"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"/>
-
-            // prevention pain
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/list_element_style">
+                    android:textColorLink="@color/colorPrimary"
+                    android:text="@string/preventionMediaCompetenceExplainText2Link"
+                    android:gravity="right"
+                    android:paddingTop="20dp"/>
 
                 <TextView
-                    android:id="@+id/preventionPainHeadline"
+                    android:id="@+id/borderBetweenSection2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"/>
+
+                // prevention pain
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <TextView
+                        android:id="@+id/preventionPainHeadline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/preventionPainHeadlineText"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/preventionPainExplain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:layout_marginLeft="3dp"/>
+
+                <Button
+                    android:id="@+id/buttonShowVideoPain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/app_button_style"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="@string/btnPreventionShowVideo"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:padding="10dp"/>
+
+                <TextView
+                    android:id="@+id/borderBetweenSection3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"/>
+
+
+
+                // finance help for family
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <TextView
+                        android:id="@+id/preventionFinanceForFamilyHeadline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/preventionFinanceForFamilyHeadlineText"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/preventionFinanceForFamilyExplain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:layout_marginLeft="3dp"/>
+
+                <TextView
+                    android:id="@+id/preventionFinanceForFamilyLinkToVideo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
                     android:textColor="@color/colorPrimaryDark"
-                    android:text="@string/preventionPainHeadlineText"
-                    android:gravity="left"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="3dp"/>
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/preventionPainExplain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorLink="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:layout_marginLeft="3dp"/>
-
-            <Button
-                android:id="@+id/buttonShowVideoPain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/app_button_style"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/btnPreventionShowVideo"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:padding="10dp"/>
-
-            <TextView
-                android:id="@+id/borderBetweenSection3"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorPrimaryDark"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"/>
-
-
-
-            <!-- finance help for family -->
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/list_element_style">
+                    android:textColorLink="@color/colorPrimary"
+                    android:text="@string/preventionFinanceForFamilyExplainTextLink"
+                    android:gravity="right"
+                    android:paddingTop="20dp"/>
 
                 <TextView
-                    android:id="@+id/preventionFinanceForFamilyHeadline"
+                    android:id="@+id/borderBetweenSection4"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"/>
+
+
+
+                // mobbing help
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <TextView
+                        android:id="@+id/preventionMobbingHeadline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/preventionMobbingHeadlineText"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/preventionMobbingExplain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:layout_marginLeft="3dp"/>
+
+                <TextView
+                    android:id="@+id/preventionMobbingLink1ToVideo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
                     android:textColor="@color/colorPrimaryDark"
-                    android:text="@string/preventionFinanceForFamilyHeadlineText"
-                    android:gravity="left"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="3dp"/>
+                    android:textColorLink="@color/colorPrimary"
+                    android:text="@string/preventionMobbingExplainText1Link"
+                    android:gravity="right"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"/>
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/preventionFinanceForFamilyExplain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorLink="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:layout_marginLeft="3dp"/>
+        </androidx.core.widget.NestedScrollView>
 
-            <TextView
-                android:id="@+id/preventionFinanceForFamilyLinkToVideo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorLink="@color/colorPrimary"
-                android:text="@string/preventionFinanceForFamilyExplainTextLink"
-                android:gravity="right"
-                android:paddingTop="20dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/borderBetweenSection4"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorPrimaryDark"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"/>
-
-
-
-            <!-- mobbing help -->
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/list_element_style">
-
-                <TextView
-                    android:id="@+id/preventionMobbingHeadline"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:text="@string/preventionMobbingHeadlineText"
-                    android:gravity="left"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="3dp"/>
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/preventionMobbingExplain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorLink="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:layout_marginLeft="3dp"/>
-
-            <TextView
-                android:id="@+id/preventionMobbingLink1ToVideo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorLink="@color/colorPrimary"
-                android:text="@string/preventionMobbingExplainText1Link"
-                android:gravity="right"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"/>
-
-        </LinearLayout>
-
-    </ScrollView>
-
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

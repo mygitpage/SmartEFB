@@ -10,10 +10,10 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -142,6 +142,7 @@ public class ActivityPrevention extends AppCompatActivity {
 
     void displayPreventionView (String tmpExpandTextList, String tmpLinkTextHash) {
 
+
         TextView tmpLinkToVideo;
 
         String tmpText;
@@ -268,7 +269,12 @@ public class ActivityPrevention extends AppCompatActivity {
         // get textview for Link to finance help
         tmpLinkToVideo = (TextView) preventionView.findViewById(R.id.preventionMobbingLink1ToVideo);
         tmpLinkToVideo.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+
+
     }
+
 
 
     // generate hash value of string and check for sub or full string output

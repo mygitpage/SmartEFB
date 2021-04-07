@@ -1,720 +1,723 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="true">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="left"
-        android:background="@color/body_background"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-        <!-- Visual check boxes ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/settingsEfbFragmentDVisualSignalsHeadline"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/settingsEfbFragmentDVisualSignalsHeadline"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:gravity="left"
-                android:textStyle="bold"
-                android:layout_marginLeft="3dp"/>
+                android:background="@color/body_background"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
-            <TextView
-                android:id="@+id/settingsEfbFragmentDVisualSignalsIntro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/settingsEfbFragmentDVisualSignalsIntroText"
-                android:gravity="left"
-                android:layout_marginLeft="3dp"/>
 
-        </LinearLayout>
+                <!-- Visual check boxes ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-        <!-- Settings (Visualsignal connect book ) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerConnectBookVisual"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxConnectBookVisualSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-
-                <TextView
-                    android:id="@+id/checkBoxConnectBookVisualSignalTextView"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <TextView
+                        android:id="@+id/settingsEfbFragmentDVisualSignalsHeadline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/settingsEfbFragmentDVisualSignalsHeadline"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"/>
+
+                    <TextView
+                        android:id="@+id/settingsEfbFragmentDVisualSignalsIntro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/settingsEfbFragmentDVisualSignalsIntroText"
+                        android:gravity="left"
+                        android:layout_marginLeft="3dp"/>
+
+                </LinearLayout>
+
+                <!-- Settings (Visualsignal connect book ) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerConnectBookVisual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxConnectBookVisualSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxConnectBookVisualSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxConnectBookVisualSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Settings (Visualsignal our arrangement) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerOurArrangementVisual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxOurArrangementVisualSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxOurArrangementVisualSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxOurArrangementVisualSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <!-- Settings (Visualsignal arrangement evaluation event) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerArrangementEvaluationVisual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxArrangementEvaluationVisualSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxArrangementEvaluationVisualSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxArrangementEvaluationVisualSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+                <!-- Settings (Visualsignal our goal) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerOurGoalVisual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxOurGoalVisualSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxOurGoalVisualSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxOurGoalVisualSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Settings (Visualsignal our goal evaluation) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerOurGoalEvaluationVisual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxOurGoalEvaluationVisualSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxOurGoalEvaluationVisualSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxOurGoalEvaluationVisualSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+                <!-- Settings (Visualsignal message) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerMessageVisual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxMessageVisualSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxMessageVisualSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxMessageVisualSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Settings (Signal remember meetings) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerRememberMeetingVisual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxRememberMeetingVisualSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxRememberMeetingVisualSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxRememberMeetingVisualSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Settings (Signal remember suggestion time period) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerRememberSuggestionTimePeriodVisual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxRememberSuggestionTimePeriodVisualSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxRememberSuggestionTimePeriodVisualSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxRememberSuggestionTimePeriodVisualSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/textViewInfoNoVisualChekcBoxPossible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="30dp"
                     android:textSize="16dp"
                     android:textColor="@color/colorPrimaryDark"
                     android:gravity="left"
-                    android:text="@string/checkBoxConnectBookVisualSignalText"/>
+                    android:text="@string/textViewInfoNoVisualChekcBoxPossible"
+                    android:visibility="gone"/>
 
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Settings (Visualsignal our arrangement) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerOurArrangementVisual"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxOurArrangementVisualSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
 
                 <TextView
-                    android:id="@+id/checkBoxOurArrangementVisualSignalTextView"
+                    android:id="@+id/borderBetweenAcousticsAndVisual"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"/>
+
+
+
+
+                <!-- Acoustics check boxes ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <TextView
+                        android:id="@+id/settingsEfbFragmentDAcousticsSignalsHeadline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/settingsEfbFragmentDAcousticsSignalsHeadline"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"/>
+
+                    <TextView
+                        android:id="@+id/settingsEfbFragmentDAcousticsSignalsIntro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/settingsEfbFragmentDAcousticsSignalsIntroText"
+                        android:gravity="left"
+                        android:layout_marginLeft="3dp"/>
+
+                </LinearLayout>
+
+                <!-- Settings (Signal connect book ) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerConnectBookAcoustics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxConnectBookAcousticsSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxConnectBookAcousticsSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxConnectBookAcousticsSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Settings (Signal arrangement event) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerArrangementAcoustics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxArrangementAcousticsSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxArrangementAcousticsSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxArrangementAcousticsSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Settings (Signal arrangement evaluation event) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerArrangementEvaluationAcoustics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxArrangementEvaluationAcousticsSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxArrangementEvaluationAcousticsSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxArrangementEvaluationAcousticsSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+                <!-- Settings (Signal goal event) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerGoalAcoustics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxGoalAcousticsSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxGoalAcousticsSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxGoalAcousticsSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Settings (Signal goal evaluation event) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerGoalEvaluationAcoustics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxGoalEvaluationAcousticsSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxGoalEvaluationAcousticsSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxGoalEvaluationAcousticsSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Settings (Signal message event) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerMessageAcoustics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxMessageAcousticsSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxMessageAcousticsSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxMessageAcousticsSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Settings (Signal remember meetings) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerRememberMeetingAcoustics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxRememberMeetingAcousticsSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxRememberMeetingAcousticsSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxRememberMeetingAcousticsSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Settings (Signal remember suggestion time period) -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/checkBoxContainerRememberSuggestionTimePeriodAcoustics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="30dp">
+
+                    <CheckBox android:id="@+id/checkBoxRememberSuggestionTimePeriodAcousticsSignal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:theme="@style/chooseAppSettingsCheckboxes"/>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/checkBoxRememberSuggestionTimePeriodAcousticsSignalTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/checkBoxRememberSuggestionTimePeriodAcousticsSignalText"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textViewInfoNoAcousticsChekcBoxPossible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="30dp"
                     android:textSize="16dp"
                     android:textColor="@color/colorPrimaryDark"
                     android:gravity="left"
-                    android:text="@string/checkBoxOurArrangementVisualSignalText"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-        <!-- Settings (Visualsignal arrangement evaluation event) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerArrangementEvaluationVisual"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxArrangementEvaluationVisualSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
+                    android:text="@string/textViewInfoNoAcousticsChekcBoxPossible"
+                    android:visibility="gone"/>
 
                 <TextView
-                    android:id="@+id/checkBoxArrangementEvaluationVisualSignalTextView"
+                    android:id="@+id/borderBetweenAcousticsAndBottom"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/checkBoxArrangementEvaluationVisualSignalText"/>
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"/>
+
 
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-
-
-        <!-- Settings (Visualsignal our goal) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerOurGoalVisual"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxOurGoalVisualSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-
-                <TextView
-                    android:id="@+id/checkBoxOurGoalVisualSignalTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/checkBoxOurGoalVisualSignalText"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Settings (Visualsignal our goal evaluation) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerOurGoalEvaluationVisual"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxOurGoalEvaluationVisualSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-
-                <TextView
-                    android:id="@+id/checkBoxOurGoalEvaluationVisualSignalTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/checkBoxOurGoalEvaluationVisualSignalText"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-
-        <!-- Settings (Visualsignal message) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerMessageVisual"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxMessageVisualSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-
-                <TextView
-                    android:id="@+id/checkBoxMessageVisualSignalTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/checkBoxMessageVisualSignalText"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Settings (Signal remember meetings) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerRememberMeetingVisual"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxRememberMeetingVisualSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-
-                <TextView
-                    android:id="@+id/checkBoxRememberMeetingVisualSignalTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/checkBoxRememberMeetingVisualSignalText"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Settings (Signal remember suggestion time period) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerRememberSuggestionTimePeriodVisual"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxRememberSuggestionTimePeriodVisualSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-
-                <TextView
-                    android:id="@+id/checkBoxRememberSuggestionTimePeriodVisualSignalTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/checkBoxRememberSuggestionTimePeriodVisualSignalText"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/textViewInfoNoVisualChekcBoxPossible"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="30dp"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="left"
-            android:text="@string/textViewInfoNoVisualChekcBoxPossible"
-            android:visibility="gone"/>
-
-
-        <TextView
-            android:id="@+id/borderBetweenAcousticsAndVisual"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimaryDark"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"/>
-
-
-
-
-        <!-- Acoustics check boxes ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
-
-            <TextView
-                android:id="@+id/settingsEfbFragmentDAcousticsSignalsHeadline"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/settingsEfbFragmentDAcousticsSignalsHeadline"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:layout_marginLeft="3dp"/>
-
-            <TextView
-                android:id="@+id/settingsEfbFragmentDAcousticsSignalsIntro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/settingsEfbFragmentDAcousticsSignalsIntroText"
-                android:gravity="left"
-                android:layout_marginLeft="3dp"/>
-
-        </LinearLayout>
-
-        <!-- Settings (Signal connect book ) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerConnectBookAcoustics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxConnectBookAcousticsSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-
-                <TextView
-                    android:id="@+id/checkBoxConnectBookAcousticsSignalTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/checkBoxConnectBookAcousticsSignalText"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Settings (Signal arrangement event) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerArrangementAcoustics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxArrangementAcousticsSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-
-                <TextView
-                    android:id="@+id/checkBoxArrangementAcousticsSignalTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/checkBoxArrangementAcousticsSignalText"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Settings (Signal arrangement evaluation event) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerArrangementEvaluationAcoustics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxArrangementEvaluationAcousticsSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-
-                <TextView
-                    android:id="@+id/checkBoxArrangementEvaluationAcousticsSignalTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/checkBoxArrangementEvaluationAcousticsSignalText"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-
-        <!-- Settings (Signal goal event) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerGoalAcoustics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxGoalAcousticsSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-
-                <TextView
-                    android:id="@+id/checkBoxGoalAcousticsSignalTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/checkBoxGoalAcousticsSignalText"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Settings (Signal goal evaluation event) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerGoalEvaluationAcoustics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxGoalEvaluationAcousticsSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-
-                <TextView
-                    android:id="@+id/checkBoxGoalEvaluationAcousticsSignalTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/checkBoxGoalEvaluationAcousticsSignalText"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Settings (Signal message event) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerMessageAcoustics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxMessageAcousticsSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-
-                <TextView
-                    android:id="@+id/checkBoxMessageAcousticsSignalTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/checkBoxMessageAcousticsSignalText"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Settings (Signal remember meetings) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerRememberMeetingAcoustics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxRememberMeetingAcousticsSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-
-                <TextView
-                    android:id="@+id/checkBoxRememberMeetingAcousticsSignalTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/checkBoxRememberMeetingAcousticsSignalText"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Settings (Signal remember suggestion time period) -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/checkBoxContainerRememberSuggestionTimePeriodAcoustics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp">
-
-            <CheckBox android:id="@+id/checkBoxRememberSuggestionTimePeriodAcousticsSignal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:theme="@style/chooseAppSettingsCheckboxes"/>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="left">
-
-                <TextView
-                    android:id="@+id/checkBoxRememberSuggestionTimePeriodAcousticsSignalTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/checkBoxRememberSuggestionTimePeriodAcousticsSignalText"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-
-        <TextView
-            android:id="@+id/textViewInfoNoAcousticsChekcBoxPossible"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="30dp"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="left"
-            android:text="@string/textViewInfoNoAcousticsChekcBoxPossible"
-            android:visibility="gone"/>
-
-
-
-        <TextView
-            android:id="@+id/borderBetweenAcousticsAndBottom"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimaryDark"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"/>
-
-
-    </LinearLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

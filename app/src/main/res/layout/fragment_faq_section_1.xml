@@ -1,135 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="true">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="left"
-        android:background="@color/body_background"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:id="@+id/faqOverviewIntro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="left"
-            android:textStyle="bold"
-            android:text="@string/faqOverviewIntroText"/>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/faqOverviewSectionTwoTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:textStyle="bold"
-            android:text="@string/faqOverviewSectionTwoTitleText"
-            android:paddingTop="15dp"/>
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="left"
+                android:background="@color/body_background"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
-        <TextView
-            android:id="@+id/faqOverviewSectionTwoInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:text="@string/faqOverviewSectionTwoInfoText"
-            android:paddingTop="5dp"/>
+                <TextView
+                    android:id="@+id/faqOverviewIntro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:text="@string/faqOverviewIntroText"/>
 
-        <TextView
-            android:id="@+id/faqOverviewSectionThreeTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:textStyle="bold"
-            android:text="@string/faqOverviewSectionThreeTitleText"
-            android:paddingTop="15dp"/>
+                <TextView
+                    android:id="@+id/faqOverviewSectionTwoTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:text="@string/faqOverviewSectionTwoTitleText"
+                    android:paddingTop="15dp"/>
 
-        <TextView
-            android:id="@+id/faqOverviewSectionThreeInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:text="@string/faqOverviewSectionThreeInfoText"
-            android:paddingTop="5dp"/>
+                <TextView
+                    android:id="@+id/faqOverviewSectionTwoInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:text="@string/faqOverviewSectionTwoInfoText"
+                    android:paddingTop="5dp"/>
 
-        <TextView
-            android:id="@+id/faqOverviewSectionFourTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:textStyle="bold"
-            android:text="@string/faqOverviewSectionFourTitleText"
-            android:paddingTop="15dp"/>
+                <TextView
+                    android:id="@+id/faqOverviewSectionThreeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:text="@string/faqOverviewSectionThreeTitleText"
+                    android:paddingTop="15dp"/>
 
-        <TextView
-            android:id="@+id/faqOverviewSectionFourInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:text="@string/faqOverviewSectionFourInfoText"
-            android:paddingTop="5dp"/>
+                <TextView
+                    android:id="@+id/faqOverviewSectionThreeInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:text="@string/faqOverviewSectionThreeInfoText"
+                    android:paddingTop="5dp"/>
 
-        <TextView
-            android:id="@+id/faqOverviewSectionFiveTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:textStyle="bold"
-            android:text="@string/faqOverviewSectionFiveTitleText"
-            android:paddingTop="15dp"/>
+                <TextView
+                    android:id="@+id/faqOverviewSectionFourTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:text="@string/faqOverviewSectionFourTitleText"
+                    android:paddingTop="15dp"/>
 
-        <TextView
-            android:id="@+id/faqOverviewSectionFiveInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:text="@string/faqOverviewSectionFiveInfoText"
-            android:paddingTop="5dp"/>
+                <TextView
+                    android:id="@+id/faqOverviewSectionFourInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:text="@string/faqOverviewSectionFourInfoText"
+                    android:paddingTop="5dp"/>
 
-        <TextView
-            android:id="@+id/faqOverviewSectionOneEnd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:textStyle="bold"
-            android:text="@string/faqOverviewSectionOneEndText"
-            android:paddingTop="15dp"
-            android:paddingBottom="25dp"/>
+                <TextView
+                    android:id="@+id/faqOverviewSectionFiveTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:text="@string/faqOverviewSectionFiveTitleText"
+                    android:paddingTop="15dp"/>
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/faqOverviewSectionFiveInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:text="@string/faqOverviewSectionFiveInfoText"
+                    android:paddingTop="5dp"/>
 
-</ScrollView>
+                <TextView
+                    android:id="@+id/faqOverviewSectionOneEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:text="@string/faqOverviewSectionOneEndText"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="25dp"/>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+

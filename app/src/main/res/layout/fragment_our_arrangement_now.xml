@@ -1,48 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.core.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/body_background"
-    android:id="@+id/listOurArrangementNowHolder">
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/textViewArrangementNowNothingThere"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:background="@color/body_background"
+        android:id="@+id/listOurArrangementNowHolder">
 
-        <ImageView
-            android:id="@+id/textViewArrangementNowNothingThereImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/function_not_available_image"/>
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/textViewArrangementNowNothingThere"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <TextView
-            android:id="@+id/textViewArrangementNowNothingThereText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:text="@string/ourArrangementNowArrangementNothingThere"
-            android:textColor="@color/text_color" />
+            <ImageView
+                android:id="@+id/textViewArrangementNowNothingThereImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/function_not_available_image"/>
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/textViewArrangementNowNothingThereText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:text="@string/ourArrangementNowArrangementNothingThere"
+                android:textColor="@color/text_color" />
 
-    <ListView
-        android:id="@+id/listOurArrangementNow"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:transcriptMode="normal"
-        android:layout_weight="1"
-        android:stackFromBottom="false"
-        android:background="@null"
-        android:divider="@null">
-    </ListView>
+        </RelativeLayout>
 
-</LinearLayout>
+        <ListView
+            android:id="@+id/listOurArrangementNow"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:transcriptMode="normal"
+            android:layout_weight="1"
+            android:stackFromBottom="false"
+            android:background="@null"
+            android:divider="@null">
+        </ListView>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

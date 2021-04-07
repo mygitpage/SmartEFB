@@ -1,365 +1,372 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="true">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="left"
-        android:background="@color/body_background"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/layoutHolderHintTextCaseClose"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:layout_height="match_parent">
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@drawable/list_element_style">
+                android:gravity="left"
+                android:background="@color/body_background"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/layoutHolderHintTextCaseClose"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/list_element_style">
+
+                        <TextView
+                            android:id="@+id/hintTextCaseCloseIntroHeadline"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="left"
+                            android:text="@string/hintTextCaseCloseIntroTextHeadline"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="3dp"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/hintTextCaseCloseIntro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/text_accent_color"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:paddingBottom="15dp"
+                        android:text="@string/hintTextCaseCloseIntroText"/>
+
+                </LinearLayout>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <TextView
+                        android:id="@+id/settingsConnectToServerHeadingIntro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"/>
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/hintTextCaseCloseIntroHeadline"
+                    android:id="@+id/settingsConnectToServerIntro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="15dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/settingsConnectToServerSucsessfullIntro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="15dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/borderBetweenMessageAndInvolvedPerson"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_color"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:visibility="gone"/>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style"
+                    android:id="@+id/settingsConnectToServerInvolvedPersonHeadline"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/settingsConnectToServerInvolvedPersonHeadlineText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:text="@string/settingsSendingToServerInvolvedPersonHeadlineText"
+                        android:layout_marginLeft="3dp"/>
+
+                    <TextView
+                        android:id="@+id/settingsConnectToServerInvolvedPersonHeadlineExplainText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:layout_marginLeft="3dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/settingsConnectToServerInvolvedPersonCoachesAndClients"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
                     android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:text="@string/hintTextCaseCloseIntroTextHeadline"
+                    android:gravity="center"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/settingsConnectToServerInvolvedPersonClients"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:paddingBottom="15dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/borderBetweenInvolvedPersonAndPresenceText"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_color"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:visibility="gone"/>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style"
+                    android:id="@+id/settingsConnectToServerInvolvedPersonPresenceContainer"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/settingsConnectToServerInvolvedPersonPresenceHeadlineText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:text="@string/settingsConnectToServerInvolvedPersonPresenceHeadlineText"
+                        android:layout_marginLeft="3dp"/>
+
+                    <TextView
+                        android:id="@+id/settingsConnectToServerInvolvedPersonPresenceExplainText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/settingsConnectToServerInvolvedPersonPresenceExplainText"
+                        android:gravity="left"
+                        android:layout_marginLeft="3dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/settingsConnectToServerInvolvedPersonPresenceText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/borderBetweenInvolvedPersonAndLastContactTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_color"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:visibility="gone"/>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style"
+                    android:id="@+id/settingsConnectToServerLastContactTimeToServer"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/settingsConnectToServerLastContactTimeToServerHeadlineText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:text="@string/settingsSendingToServerLastContactTimeToServerHeadlineText"
+                        android:layout_marginLeft="3dp"/>
+
+                    <TextView
+                        android:id="@+id/settingsConnectToServerLastContactTimeToServerHeadlineExplainText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/settingsSendingToServerLastContactTimeToServerHeadlineExplainText"
+                        android:gravity="left"
+                        android:layout_marginLeft="3dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/settingsConnectToServerLastContactTimeToServerTimeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
                     android:textStyle="bold"
-                    android:layout_marginLeft="3dp"/>
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="5dp"/>
+
+                <TextView
+                    android:id="@+id/settingsConnectToServerLastCommunicationStatusServer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:layout_marginBottom="15dp"/>
+
+                <!-- Start Error section -->
+                <TextView
+                    android:id="@+id/settingsConnectToServerConnectionErrorPreIntro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="15dp"
+                    android:text="@string/settingsConnectToServerErrorPreIntroText"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/settingsConnectToServerConnectionErrorTextError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="15dp"
+                    android:textColor="@color/text_accent_color"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/settingsConnectToServerConnectionErrorPostIntro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="15dp"
+                    android:text="@string/settingsConnectToServerErrorPostIntroText"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:visibility="gone"/>
+
+                <!-- End Error section -->
+
+                <TextView
+                    android:id="@+id/settingConnectToServerKeyNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="40dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="15dp"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/settingsConnectToServerRemarkClickButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="15dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/buttonSendConnectToServerKeyNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/app_button_style"
+                    android:textColor="@color/white"
+                    android:text="@string/buttonSendConnectToServerKeyNumberText"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="5dp"
+                    android:padding="10dp"
+                    android:visibility="gone"
+                    android:layout_marginBottom="30dp"/>
+
+                <TextView
+                    android:id="@+id/settingsEfbALinkGenerateNewConnectionNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/text_color"
+                    android:textColorLink="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:paddingBottom="30dp"/>
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/hintTextCaseCloseIntro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/text_accent_color"
-                android:gravity="left"
-                android:paddingLeft="10dp"
-                android:paddingBottom="15dp"
-                android:text="@string/hintTextCaseCloseIntroText"/>
+        </androidx.core.widget.NestedScrollView>
 
-        </LinearLayout>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
-
-            <TextView
-                android:id="@+id/settingsConnectToServerHeadingIntro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:layout_marginLeft="3dp"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/settingsConnectToServerIntro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/settingsConnectToServerSucsessfullIntro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/borderBetweenMessageAndInvolvedPerson"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
-            android:visibility="gone"/>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style"
-            android:id="@+id/settingsConnectToServerInvolvedPersonHeadline"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/settingsConnectToServerInvolvedPersonHeadlineText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:text="@string/settingsSendingToServerInvolvedPersonHeadlineText"
-                android:layout_marginLeft="3dp"/>
-
-            <TextView
-                android:id="@+id/settingsConnectToServerInvolvedPersonHeadlineExplainText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:layout_marginLeft="3dp"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/settingsConnectToServerInvolvedPersonCoachesAndClients"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="center"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/settingsConnectToServerInvolvedPersonClients"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:paddingBottom="15dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="center"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/borderBetweenInvolvedPersonAndPresenceText"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
-            android:visibility="gone"/>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style"
-            android:id="@+id/settingsConnectToServerInvolvedPersonPresenceContainer"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/settingsConnectToServerInvolvedPersonPresenceHeadlineText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:text="@string/settingsConnectToServerInvolvedPersonPresenceHeadlineText"
-                android:layout_marginLeft="3dp"/>
-
-            <TextView
-                android:id="@+id/settingsConnectToServerInvolvedPersonPresenceExplainText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/settingsConnectToServerInvolvedPersonPresenceExplainText"
-                android:gravity="left"
-                android:layout_marginLeft="3dp"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/settingsConnectToServerInvolvedPersonPresenceText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="center"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/borderBetweenInvolvedPersonAndLastContactTime"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
-            android:visibility="gone"/>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style"
-            android:id="@+id/settingsConnectToServerLastContactTimeToServer"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/settingsConnectToServerLastContactTimeToServerHeadlineText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:text="@string/settingsSendingToServerLastContactTimeToServerHeadlineText"
-                android:layout_marginLeft="3dp"/>
-
-            <TextView
-                android:id="@+id/settingsConnectToServerLastContactTimeToServerHeadlineExplainText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/settingsSendingToServerLastContactTimeToServerHeadlineExplainText"
-                android:gravity="left"
-                android:layout_marginLeft="3dp"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/settingsConnectToServerLastContactTimeToServerTimeText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="center"
-            android:visibility="gone"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="5dp"/>
-
-        <TextView
-            android:id="@+id/settingsConnectToServerLastCommunicationStatusServer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="center"
-            android:visibility="gone"
-            android:layout_marginBottom="15dp"/>
-
-        <!-- Start Error section -->
-        <TextView
-            android:id="@+id/settingsConnectToServerConnectionErrorPreIntro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
-            android:text="@string/settingsConnectToServerErrorPreIntroText"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/settingsConnectToServerConnectionErrorTextError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
-            android:textColor="@color/text_accent_color"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/settingsConnectToServerConnectionErrorPostIntro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
-            android:text="@string/settingsConnectToServerErrorPostIntroText"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:visibility="gone"/>
-
-        <!-- End Error section -->
-
-        <TextView
-            android:id="@+id/settingConnectToServerKeyNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="40dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold"
-            android:gravity="center_horizontal"
-            android:paddingBottom="15dp"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/settingsConnectToServerRemarkClickButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:visibility="gone"/>
-
-        <Button
-            android:id="@+id/buttonSendConnectToServerKeyNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/app_button_style"
-            android:textColor="@color/white"
-            android:text="@string/buttonSendConnectToServerKeyNumberText"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginRight="5dp"
-            android:padding="10dp"
-            android:visibility="gone"
-            android:layout_marginBottom="30dp"/>
-
-        <TextView
-            android:id="@+id/settingsEfbALinkGenerateNewConnectionNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="@color/text_color"
-            android:textColorLink="@color/colorPrimaryDark"
-            android:gravity="center"
-            android:visibility="gone"
-            android:paddingBottom="30dp"/>
-
-    </LinearLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

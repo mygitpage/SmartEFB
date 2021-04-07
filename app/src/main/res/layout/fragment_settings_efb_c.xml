@@ -1,148 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="true">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="left"
-        android:background="@color/body_background"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/settingsEfbFragmentCDataPrivacyHeadine"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/settingsEfbFragmentCDataPrivacyHeadineText"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:gravity="left"
-                android:textStyle="bold"
-                android:layout_marginLeft="3dp"/>
+                android:background="@color/body_background"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
-        </LinearLayout>
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
 
-        <TextView
-            android:id="@+id/settingsEfbFragmentCDataPrivacyText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:text="@string/settingsEfbFragmentCDataPrivacyText"
-            android:gravity="left"
-            android:paddingBottom="5dp"/>
+                    <TextView
+                        android:id="@+id/settingsEfbFragmentCDataPrivacyHeadine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/settingsEfbFragmentCDataPrivacyHeadineText"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"/>
 
-        <TextView
-            android:id="@+id/settingsEfbFragmentCDataPrivacyLink"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:text="@string/settingsEfbFragmentCDataPrivacyLinkText"
-            android:gravity="left"
-            android:paddingBottom="20dp"/>
+                </LinearLayout>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
+                <TextView
+                    android:id="@+id/settingsEfbFragmentCDataPrivacyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="@string/settingsEfbFragmentCDataPrivacyText"
+                    android:gravity="left"
+                    android:paddingBottom="5dp"/>
 
-            <TextView
-                android:id="@+id/settingsEfbFragmentCDataPrivacyManagerHeadine"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/settingsEfbFragmentCDataPrivacyManagerHeadineText"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:layout_marginLeft="3dp"/>
+                <TextView
+                    android:id="@+id/settingsEfbFragmentCDataPrivacyLink"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:text="@string/settingsEfbFragmentCDataPrivacyLinkText"
+                    android:gravity="left"
+                    android:paddingBottom="20dp"/>
 
-        </LinearLayout>
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
 
-        <TextView
-            android:id="@+id/settingsEfbFragmentCDataPrivacyManagerText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:text="@string/settingsEfbFragmentCDataPrivacyManagerText"
-            android:gravity="left"
-            android:paddingBottom="20dp"/>
+                    <TextView
+                        android:id="@+id/settingsEfbFragmentCDataPrivacyManagerHeadine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/settingsEfbFragmentCDataPrivacyManagerHeadineText"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"/>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/settingsEfbFragmentCLinksHeadine"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/settingsEfbFragmentCLinksHeadineText"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:layout_marginLeft="3dp"/>
+                <TextView
+                    android:id="@+id/settingsEfbFragmentCDataPrivacyManagerText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="@string/settingsEfbFragmentCDataPrivacyManagerText"
+                    android:gravity="left"
+                    android:paddingBottom="20dp"/>
 
-        </LinearLayout>
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
 
-        <TextView
-            android:id="@+id/settingsEfbFragmentCLinksText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:text="@string/settingsEfbFragmentCLinksText"
-            android:gravity="left"
-            android:paddingBottom="20dp"/>
+                    <TextView
+                        android:id="@+id/settingsEfbFragmentCLinksHeadine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/settingsEfbFragmentCLinksHeadineText"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"/>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/settingsEfbFragmentCHelpForAppHeadine"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/settingsEfbFragmentCHelpForAppHeadineText"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:layout_marginLeft="3dp"/>
+                <TextView
+                    android:id="@+id/settingsEfbFragmentCLinksText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="@string/settingsEfbFragmentCLinksText"
+                    android:gravity="left"
+                    android:paddingBottom="20dp"/>
 
-        </LinearLayout>
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
 
-        <TextView
-            android:id="@+id/settingsConnectToServerSucsessfullIntro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:paddingBottom="15dp"
-            android:text="@string/settingsEfbFragmentCHelpForAppText"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"/>
+                    <TextView
+                        android:id="@+id/settingsEfbFragmentCHelpForAppHeadine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:text="@string/settingsEfbFragmentCHelpForAppHeadineText"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"/>
 
-    </LinearLayout>
+                </LinearLayout>
 
-</ScrollView>
+                <TextView
+                    android:id="@+id/settingsConnectToServerSucsessfullIntro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:paddingBottom="15dp"
+                    android:text="@string/settingsEfbFragmentCHelpForAppText"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"/>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

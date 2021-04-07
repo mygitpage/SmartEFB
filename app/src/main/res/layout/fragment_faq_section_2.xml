@@ -1,282 +1,295 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="true">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="left"
-        android:background="@color/body_background"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- FAQ: Warum sind Schaltflächen inaktiv? -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:gravity="left"
-                android:textStyle="bold"
-                android:layout_marginLeft="3dp"
-                android:text="@string/faq_section2_question1"/>
+                android:background="@color/body_background"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
-        </LinearLayout>
+                <!-- FAQ: Warum sind Schaltflächen inaktiv? -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
 
-        <TextView
-            android:id="@+id/faq_section2_answer1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:layout_marginLeft="3dp"
-            android:layout_marginBottom="20dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"
+                        android:text="@string/faq_section2_question1"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"/>
+                </LinearLayout>
 
-        <!-- FAQ: Wozu brauche ich die Funktion Übergabebuch? -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
+                <TextView
+                    android:id="@+id/faq_section2_answer1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginBottom="20dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:layout_marginLeft="3dp"
-                android:text="@string/faq_section2_question2"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_color"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"/>
 
-        </LinearLayout>
+                <!-- FAQ: Wozu brauche ich die Funktion Übergabebuch? -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
 
-        <TextView
-            android:id="@+id/faq_section2_answer2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:layout_marginLeft="3dp"
-            android:layout_marginBottom="20dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"
+                        android:text="@string/faq_section2_question2"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/faq_section2_answer2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginBottom="20dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_color"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"/>
+
+                <!-- FAQ: Wozu brauche ich die Funktion Absprachen? -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"
+                        android:text="@string/faq_section2_question3"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/faq_section2_answer3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginBottom="20dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_color"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"/>
+
+                <!-- FAQ: Wozu brauche ich die Funktion Ziele? -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"
+                        android:text="@string/faq_section2_question4"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/faq_section2_answer4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginBottom="20dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_color"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"/>
+
+                <!-- FAQ: Wozu brauche ich die Funktion Termine? -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"
+                        android:text="@string/faq_section2_question5"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/faq_section2_answer5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginBottom="20dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_color"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"/>
+
+                <!-- FAQ: Wozu brauche ich die Funktion Nachrichten? -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"
+                        android:text="@string/faq_section2_question6"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/faq_section2_answer6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:text="@string/faq_section2_answer5"
+                    android:gravity="left"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginBottom="20dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_color"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"/>
+
+                <!-- FAQ: Welche Daten werden von der App erhoben und wie werden diese übertragen? -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="3dp"
+                        android:text="@string/faq_section2_question7"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/faq_section2_answer7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimary"
+                    android:gravity="left"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginBottom="20dp"/>
+
+            </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <!-- FAQ: Wozu brauche ich die Funktion Absprachen? -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:layout_marginLeft="3dp"
-                android:text="@string/faq_section2_question3"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/faq_section2_answer3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:layout_marginLeft="3dp"
-            android:layout_marginBottom="20dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"/>
 
 
-        <!-- FAQ: Wozu brauche ich die Funktion Ziele? -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:layout_marginLeft="3dp"
-                android:text="@string/faq_section2_question4"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/faq_section2_answer4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:layout_marginLeft="3dp"
-            android:layout_marginBottom="20dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"/>
 
 
-        <!-- FAQ: Wozu brauche ich die Funktion Termine? -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:layout_marginLeft="3dp"
-                android:text="@string/faq_section2_question5"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/faq_section2_answer5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:layout_marginLeft="3dp"
-            android:layout_marginBottom="20dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"/>
-
-        <!-- FAQ: Wozu brauche ich die Funktion Nachrichten? -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:layout_marginLeft="3dp"
-                android:text="@string/faq_section2_question6"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/faq_section2_answer6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:text="@string/faq_section2_answer5"
-            android:gravity="left"
-            android:layout_marginLeft="3dp"
-            android:layout_marginBottom="20dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"/>
-
-        <!-- FAQ: Welche Daten werden von der App erhoben und wie werden diese übertragen? -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:layout_marginLeft="3dp"
-                android:text="@string/faq_section2_question7"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/faq_section2_answer7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="left"
-            android:layout_marginLeft="3dp"
-            android:layout_marginBottom="20dp"/>
-
-    </LinearLayout>
-
+    <!--
 </ScrollView>
+    -->
