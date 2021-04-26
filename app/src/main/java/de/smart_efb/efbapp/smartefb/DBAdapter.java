@@ -11,6 +11,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 
 public class DBAdapter extends SQLiteOpenHelper {
 
@@ -1232,7 +1234,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return all comments from the database for arrangement with  server id = id (table ourArrangementComment)
-    // the result is sorted by DESC
+    // the result is sorted by sortSequence
     Cursor getAllRowsOurArrangementComment(int serverId, String sortSequence) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1263,6 +1265,56 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         return c;
     }
+
+
+
+
+    // Return all comments from the database for arrangement with  server id = id (table ourArrangementComment) in Array List <ObjectSmartEFBComment>
+    // the result is sorted by sortSequence
+    ArrayList<ObjectSmartEFBComment> getAllRowsOurArrangementCommentArrayList (int serverId, String sortSequence) {
+
+        ArrayList<ObjectSmartEFBComment> storeComment = new ArrayList<>();
+
+        // get the data (all comments from an arrangement) from DB
+        Cursor cursorComments = this.getAllRowsOurArrangementComment(serverId, sortSequence);
+
+        if (cursorComments.moveToFirst()) {
+            do {
+
+                String comment = cursorComments.getString(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT));
+                String authorName = cursorComments.getString(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME));
+                String blockid = cursorComments.getString(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID));
+                Long commentTime = cursorComments.getLong(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME));
+                Long uploadTime = cursorComments.getLong(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_UPLOAD_TIME));
+                Long localeTime = cursorComments.getLong(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME));
+                Long arrangementTime = cursorComments.getLong(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME));
+                Long currentDateOfArrangement = cursorComments.getLong(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME));
+                Integer newEntry = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY));
+                Integer serverIdComment = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT));
+                Integer timerStatus = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_TIMER_STATUS));
+                Integer status = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS));
+
+                // make comment object and store data
+                storeComment.add(new ObjectSmartEFBComment(comment, authorName, blockid, commentTime, uploadTime, localeTime, arrangementTime, currentDateOfArrangement, newEntry, serverIdComment, timerStatus, status));
+
+            } while (cursorComments.moveToNext());
+        }
+
+        cursorComments.close();
+
+        return storeComment;
+
+    }
+
+
+
+
+
+
+
+
+
+
 
 
     // Get the number of new rows in all comment for all arrangement (new entrys) where block id are current arrangement block

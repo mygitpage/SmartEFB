@@ -10,6 +10,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Created by ich on 22.07.16.
@@ -29,8 +34,21 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // fragment context
     Context fragmentShowCommentContext = null;
 
+
+
+
+    // the recyler view
+    RecyclerView recylerViewShowComment = null;
+
+
     // the listview for the comments
     ListView listViewShowComments = null;
+
+
+
+
+
+
 
     // reference to the DB
     DBAdapter myDb;
@@ -42,8 +60,20 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
 
+
+
+    // reference cursorAdapter for the recyler view
+    OurArrangementShowCommentRecylerViewAdapter showCommentRecylerViewAdapter;
+
+
     // reference cursorAdapter for the listview
     OurArrangementShowCommentCursorAdapter showCommentCursorAdapter;
+
+
+
+
+
+
 
     // Server DB-Id of arrangement to comment
     int arrangementServerDbIdToShow = 0;
@@ -134,7 +164,16 @@ public class OurArrangementFragmentShowComment extends Fragment {
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "showComment");
 
         // find the listview
-        listViewShowComments = (ListView) viewFragmentShowComment.findViewById(R.id.listOurArrangementShowComment);
+        //listViewShowComments = (ListView) viewFragmentShowComment.findViewById(R.id.listOurArrangementShowComment);
+
+
+        // new recyler view!!!!!!!!!!
+        recylerViewShowComment = (RecyclerView) viewFragmentShowComment.findViewById(R.id.listOurArrangementShowComment);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fragmentShowCommentContext);
+        recylerViewShowComment.setLayoutManager(linearLayoutManager);
+        recylerViewShowComment.setHasFixedSize(true);
+
+
     }
 
 
@@ -263,6 +302,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // update the list view with now comments
     public void updateListView () {
 
+        /*
         if (listViewShowComments != null) {
             listViewShowComments.destroyDrawingCache();
             listViewShowComments.setVisibility(ListView.INVISIBLE);
@@ -270,6 +310,8 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
             displayActualCommentSet ();
         }
+
+         */
     }
 
 
@@ -294,6 +336,38 @@ public class OurArrangementFragmentShowComment extends Fragment {
     }
 
 
+
+    // buil the view for the comments
+    public void displayActualCommentSet () {
+
+        // get the data (all comments from an arrangement) from DB
+        ArrayList<ObjectSmartEFBComment> arrayListComments = myDb.getAllRowsOurArrangementCommentArrayList(arrangementServerDbIdToShow, prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending"));
+
+        // get the data (the choosen arrangement) from the DB
+        Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToShow);
+
+        if (arrayListComments.size() > 0 && choosenArrangement.getCount() > 0 && recylerViewShowComment != null) {
+
+            showCommentRecylerViewAdapter = new OurArrangementShowCommentRecylerViewAdapter(
+                    getActivity(),
+                    arrayListComments,
+                    0,
+                    arrangementServerDbIdToShow,
+                    arrangementNumberInListView,
+                    commentLimitationBorder,
+                    choosenArrangement);
+
+            // Assign adapter to Recyler View
+            recylerViewShowComment.setAdapter(showCommentRecylerViewAdapter);
+        }
+    }
+
+
+
+
+
+
+/*
     // buil the view for the comments
     public void displayActualCommentSet () {
 
@@ -319,4 +393,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
             listViewShowComments.setAdapter(showCommentCursorAdapter);
         }
     }
+
+ */
 }
