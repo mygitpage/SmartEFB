@@ -10,6 +10,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -1290,12 +1291,19 @@ public class DBAdapter extends SQLiteOpenHelper {
                 Long arrangementTime = cursorComments.getLong(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME));
                 Long currentDateOfArrangement = cursorComments.getLong(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME));
                 Integer newEntry = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY));
+
+                Log.d("DBAdapter ------>", "New Entry: "+newEntry);
+
+
+
                 Integer serverIdComment = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT));
                 Integer timerStatus = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_TIMER_STATUS));
                 Integer status = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS));
+                Integer rowID = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.KEY_ROWID));
+
 
                 // make comment object and store data
-                storeComment.add(new ObjectSmartEFBComment(comment, authorName, blockid, commentTime, uploadTime, localeTime, arrangementTime, currentDateOfArrangement, newEntry, serverIdComment, timerStatus, status));
+                storeComment.add(new ObjectSmartEFBComment(rowID, comment, authorName, blockid, commentTime, uploadTime, localeTime, arrangementTime, currentDateOfArrangement, newEntry, serverIdComment, timerStatus, status));
 
             } while (cursorComments.moveToNext());
         }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/our_arrangement_menu_fragment_now_show_comment_sort_desc"
+        app:showAsAction="never"
+        android:title="@string/ourArrangementShowCommentMenuSortDesc" />
+
+    <item
+        android:id="@+id/our_arrangement_menu_fragment_now_show_comment_sort_asc"
+        app:showAsAction="never"
+        android:title="@string/ourArrangementShowCommentMenuSortAsc" />
+
+</menu>

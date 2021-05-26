@@ -1,5 +1,7 @@
 package de.smart_efb.efbapp.smartefb;
 
+import android.util.Log;
+
 public class ObjectSmartEFBComment {
 
     private String comment;
@@ -14,8 +16,11 @@ public class ObjectSmartEFBComment {
     private Integer serverIdComment;
     private Integer timerStatus;
     private Integer status;
+    private Integer rowID;
 
-    public ObjectSmartEFBComment (String comment, String authorName, String blockid, Long commentTime, Long uploadTime, Long localeTime, Long arrangementTime, Long currentDateOfArrangement, Integer newEntry, Integer serverIdComment, Integer timerStatus, Integer status) {
+    public ObjectSmartEFBComment (Integer rowID, String comment, String authorName, String blockid, Long commentTime, Long uploadTime, Long localeTime, Long arrangementTime, Long currentDateOfArrangement, Integer newEntry, Integer serverIdComment, Integer timerStatus, Integer status) {
+
+        this.rowID = rowID;
         this.comment = comment;
         this.authorName = authorName;
         this.blockid = blockid;
@@ -28,6 +33,9 @@ public class ObjectSmartEFBComment {
         this.serverIdComment = serverIdComment;
         this.timerStatus = timerStatus;
         this.status = status;
+
+        Log.d("+++++++++++++++++ Comment Object", "New Status:"+newEntry);
+
     }
 
 
@@ -43,6 +51,18 @@ public class ObjectSmartEFBComment {
 
     public Integer getStatus () {
         return status;
+    }
+
+    public Integer getNewEntry () {
+        return newEntry;
+    }
+
+    public Integer getRowID () {
+        return rowID;
+    }
+
+    public String getCommentText () {
+        return comment;
     }
 
 }

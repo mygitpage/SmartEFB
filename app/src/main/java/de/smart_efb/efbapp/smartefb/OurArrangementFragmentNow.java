@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -56,6 +58,9 @@ public class OurArrangementFragmentNow extends Fragment {
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
         viewFragmentNow = layoutInflater.inflate(R.layout.fragment_our_arrangement_now, null);
+
+        // fragment has option menu
+        setHasOptionsMenu(true);
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
@@ -103,6 +108,19 @@ public class OurArrangementFragmentNow extends Fragment {
         // close db connection
         myDb.close();
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+
+        menuInflater.inflate(R.menu.menu_efb_our_arrangement_fragment_now, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+
+
+
+
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeJobIntentServiceEfb

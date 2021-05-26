@@ -15,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -37,8 +40,13 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
 
 
-    // the recyler view
+    // the recycler view
     RecyclerView recylerViewShowComment = null;
+
+
+    // data array of comments for recycler view
+    ArrayList<ObjectSmartEFBComment> arrayListComments;
+
 
 
     // the listview for the comments
@@ -89,6 +97,9 @@ public class OurArrangementFragmentShowComment extends Fragment {
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
         viewFragmentShowComment = layoutInflater.inflate(R.layout.fragment_our_arrangement_show_comment, null);
+
+        // fragment has option menu
+        setHasOptionsMenu(true);
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
@@ -144,6 +155,65 @@ public class OurArrangementFragmentShowComment extends Fragment {
         // close db connection
         myDb.close();
     }
+
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+
+        menuInflater.inflate(R.menu.menu_efb_our_arrangement_fragment_now_show_comment, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem registerItemDesc = menu.findItem(R.id.our_arrangement_menu_fragment_now_show_comment_sort_desc);
+        MenuItem registerItemAsc = menu.findItem(R.id.our_arrangement_menu_fragment_now_show_comment_sort_asc);
+
+        if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending").equals("descending")) {
+            registerItemDesc.setVisible(false);
+            registerItemAsc.setVisible(true);
+        }
+        else {
+            registerItemAsc.setVisible(false);
+            registerItemDesc.setVisible(true);
+        }
+
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.our_arrangement_menu_fragment_now_show_comment_sort_desc:
+                prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending");
+                prefsEditor.apply();
+                updateListView();
+                return true;
+            case R.id.our_arrangement_menu_fragment_now_show_comment_sort_asc:
+                prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "ascending");
+                prefsEditor.apply();
+                updateListView();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+
+
+    }
+
+
+
+
+
+
 
 
     // inits the fragment for use
@@ -302,16 +372,15 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // update the list view with now comments
     public void updateListView () {
 
-        /*
-        if (listViewShowComments != null) {
-            listViewShowComments.destroyDrawingCache();
-            listViewShowComments.setVisibility(ListView.INVISIBLE);
-            listViewShowComments.setVisibility(ListView.VISIBLE);
+        if (recylerViewShowComment != null) {
+
+            recylerViewShowComment.destroyDrawingCache();
+            recylerViewShowComment.setVisibility(ListView.INVISIBLE);
+            recylerViewShowComment.setVisibility(ListView.VISIBLE);
 
             displayActualCommentSet ();
         }
 
-         */
     }
 
 
@@ -337,11 +406,11 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
 
 
-    // buil the view for the comments
+    // build the view for the comments
     public void displayActualCommentSet () {
 
         // get the data (all comments from an arrangement) from DB
-        ArrayList<ObjectSmartEFBComment> arrayListComments = myDb.getAllRowsOurArrangementCommentArrayList(arrangementServerDbIdToShow, prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending"));
+        arrayListComments = myDb.getAllRowsOurArrangementCommentArrayList(arrangementServerDbIdToShow, prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending"));
 
         // get the data (the choosen arrangement) from the DB
         Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToShow);

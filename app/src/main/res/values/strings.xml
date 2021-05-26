@@ -286,6 +286,8 @@
             <string name="ourArrangementNowArrangementNothingThere">Es sind keine aktuellen\nAbsprachen vorhanden!</string>
             <string name="ourArrangementAuthorNameText">Geschrieben von %1$s</string>
             <string name="ourArrangementAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
+            <string name="ourArrangementNowArrangementMenuSortDesc">Absteigend sortieren</string>
+            <string name="ourArrangementNowArrangementMenuSortAsc">Aufsteigend sortieren</string>
         <!-- End show now arrangements -->
 
         <!-- Link text for comment, show comments and evaluate-->
@@ -352,6 +354,9 @@
             <string name="ourArrangementShowCommentPersonalAuthorName">Ihnen</string>
             <string name="ourArrangementShowCommentLinkChangeSortSequenceOfArrangementCommentAscending">Kommentare absteigend sortieren (Jüngster zu erst)</string>
             <string name="ourArrangementShowCommentLinkChangeSortSequenceOfArrangementCommentDescending">Kommentare aufsteigend sortieren (Ältester zu erst)</string>
+            <string name="ourArrangementBackButtonToNowArrangement">Übersicht Absprachen</string>
+            <string name="ourArrangementShowCommentMenuSortDesc">Absteigend sortieren (Datum)</string>
+            <string name="ourArrangementShowCommentMenuSortAsc">Aufsteigend sortieren (Datum)</string>
         <!-- End String Fragment show comment -->
 
         <!-- String Fragment evaluate arrangement -->

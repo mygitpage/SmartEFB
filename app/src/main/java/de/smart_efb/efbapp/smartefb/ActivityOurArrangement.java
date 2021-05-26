@@ -212,6 +212,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
+
     // Look for new intents (with data from URI or putExtra)
     @Override
     protected void onNewIntent(Intent intent) {
@@ -447,6 +448,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbarOurArrangement);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
+
         actionBar = getSupportActionBar();
         try {
             actionBar.setDisplayHomeAsUpEnabled(true);
