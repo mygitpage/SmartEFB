@@ -1,7 +1,7 @@
 package de.smart_efb.efbapp.smartefb;
 
 
-/**
+/*
  * Created by ich on 20.03.16.
  */
 
@@ -10,8 +10,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
 import java.util.ArrayList;
 
 
@@ -995,7 +993,7 @@ public class DBAdapter extends SQLiteOpenHelper {
     // the result is sorted by DESC
     Cursor getAllRowsCurrentOurArrangement(String blockID, String order) {
 
-        String where = "";
+        String where;
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1003,12 +1001,10 @@ public class DBAdapter extends SQLiteOpenHelper {
         where = OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=0 AND ";
 
         switch (order) {
-
-
+            
             case "equalBlockId":
                 where += OUR_ARRANGEMENT_KEY_BLOCK_ID + "='" + blockID + "'";
                 break;
-
             case "notEqualBlockId":
                 where += OUR_ARRANGEMENT_KEY_BLOCK_ID + "!='" + blockID + "'";
                 break;
@@ -1031,6 +1027,44 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+    // Return all now arangement from the database with blockId in Array List <ObjectSmartEFBArrangement>
+    // the result is sorted by sortSequence
+    ArrayList<ObjectSmartEFBArrangement> getAllRowsOurArrangementNowArrayList (String blockID, String order) {
+
+        ArrayList<ObjectSmartEFBArrangement> storeArrangement = new ArrayList<>();
+
+        // get the data (all comments from an arrangement) from DB
+        Cursor cursorArrangement = this.getAllRowsCurrentOurArrangement(blockID, order);
+
+        if (cursorArrangement.moveToFirst()) {
+            do {
+
+                String arrangement = cursorArrangement.getString(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
+                String authorName = cursorArrangement.getString(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME));
+                String blockid = cursorArrangement.getString(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID));
+                String changeTo = cursorArrangement.getString(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_CHANGE_TO));
+                Long arrangementWriteTime = cursorArrangement.getLong(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_WRITE_TIME));
+                Long arrangementSketchWriteTime = cursorArrangement.getLong(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME));
+                Long lastEvalTime = cursorArrangement.getLong(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME));
+                Integer sketchArrangement = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT));
+                Integer evaluatePossible = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE));
+                Integer newEntry = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_NEW_ENTRY));
+                Integer serverIdArrangement = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID));
+                Integer status = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_STATUS)); // 0=ready to send, 1=message send, 4=external message
+                Integer rowID = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.KEY_ROWID));
+
+                // make comment object and store data
+                storeArrangement.add(new ObjectSmartEFBArrangement(rowID, arrangement, authorName, blockid, changeTo, arrangementWriteTime, arrangementSketchWriteTime, lastEvalTime, sketchArrangement, evaluatePossible, newEntry, serverIdArrangement, status));
+
+            } while (cursorArrangement.moveToNext());
+        }
+
+        cursorArrangement.close();
+
+        return storeArrangement;
+    }
+    
+
     // Return sketch arrangmenet from the database (table ourArrangement)
     // the result is sorted by DESC
     Cursor getAllRowsSketchOurArrangement(String blockID) {
@@ -1051,7 +1085,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         if (c != null) {
             c.moveToFirst();
         }
-
 
         return c;
     }
@@ -1268,8 +1301,6 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-
-
     // Return all comments from the database for arrangement with  server id = id (table ourArrangementComment) in Array List <ObjectSmartEFBComment>
     // the result is sorted by sortSequence
     ArrayList<ObjectSmartEFBComment> getAllRowsOurArrangementCommentArrayList (int serverId, String sortSequence) {
@@ -1291,16 +1322,10 @@ public class DBAdapter extends SQLiteOpenHelper {
                 Long arrangementTime = cursorComments.getLong(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME));
                 Long currentDateOfArrangement = cursorComments.getLong(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_ARRANGEMENT_TIME));
                 Integer newEntry = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY));
-
-                Log.d("DBAdapter ------>", "New Entry: "+newEntry);
-
-
-
                 Integer serverIdComment = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_SERVER_ID_ARRANGEMENT));
                 Integer timerStatus = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_TIMER_STATUS));
                 Integer status = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS));
                 Integer rowID = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.KEY_ROWID));
-
 
                 // make comment object and store data
                 storeComment.add(new ObjectSmartEFBComment(rowID, comment, authorName, blockid, commentTime, uploadTime, localeTime, arrangementTime, currentDateOfArrangement, newEntry, serverIdComment, timerStatus, status));
@@ -1311,18 +1336,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         cursorComments.close();
 
         return storeComment;
-
     }
-
-
-
-
-
-
-
-
-
-
 
 
     // Get the number of new rows in all comment for all arrangement (new entrys) where block id are current arrangement block

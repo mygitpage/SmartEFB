@@ -14,11 +14,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.Calendar;
 
@@ -111,14 +113,14 @@ public class ActivityOurArrangement extends AppCompatActivity {
         setOurArrangementEvaluationStartPoint();
 
         // find viewpager in view
-        viewPagerOurArrangement = (ViewPager) findViewById(R.id.viewPagerOurArrangement);
+        viewPagerOurArrangement = findViewById(R.id.viewPagerOurArrangement);
         // new pager adapter for OurArrangement
         ourArrangementViewPagerAdapter = new OurArrangementViewPagerAdapter(getSupportFragmentManager(), this);
         // set pagerAdapter to viewpager
         viewPagerOurArrangement.setAdapter(ourArrangementViewPagerAdapter);
 
         //find tablayout and set gravity
-        tabLayoutOurArrangement = (TabLayout) findViewById(R.id.tabLayoutOurArrangement);
+        tabLayoutOurArrangement = findViewById(R.id.tabLayoutOurArrangement);
         tabLayoutOurArrangement.setTabGravity(TabLayout.GRAVITY_FILL);
 
         // and set tablayout with viewpager
@@ -128,9 +130,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
         setTabZeroTitleAndColor();
         setTabOneTitleAndColor();
 
-
         // init listener for tab selected
-        tabLayoutOurArrangement.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayoutOurArrangement.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
@@ -445,7 +446,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     private void initOurArrangement() {
 
         // init the toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbarOurArrangement);
+        toolbar = findViewById(R.id.toolbarOurArrangement);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
 
@@ -501,18 +502,18 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // help dialog
     void createHelpDialog () {
 
-        Button tmpHelpButtonOurArrangement = (Button) findViewById(R.id.helpOurArrangementNow);
+        Button tmpHelpButtonOurArrangement = findViewById(R.id.helpOurArrangementNow);
 
         // add button listener to question mark in activity OurArrangement (toolbar)
         tmpHelpButtonOurArrangement.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
                 TextView tmpdialogTextView;
                 LayoutInflater dialogInflater;
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityOurArrangement.this);
+                // get alert dialog builder with custom style
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityOurArrangement.this, R.style.helpDialogStyle);
 
                 // Get the layout inflater
                 dialogInflater = (LayoutInflater) ActivityOurArrangement.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -521,17 +522,17 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_our_arrangement, null);
 
                 // show intro for settings
-                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsIntro);
+                tmpdialogTextView = dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsIntro);
                 tmpdialogTextView.setText(ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsIntro));
 
                 // show the settings for evaluation (like evaluation period, on/off-status, ...)
-                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsEvaluate);
+                tmpdialogTextView = dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsEvaluate);
                 if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false)) {
 
                     String tmpTxtEvaluate = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsEvaluateEnable);
                     String tmpTxtEvaluate1 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsEvaluatePeriod);
-                    String tmpCompleteTxtEvaluate1String = String.format(tmpTxtEvaluate1, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), "kk.mm"), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy"),EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()), "kk.mm"));
-                    tmpdialogTextView.setText(tmpTxtEvaluate + " " + tmpCompleteTxtEvaluate1String);
+                    String tmpCompleteTxtEvaluate1String = tmpTxtEvaluate + " " + String.format(tmpTxtEvaluate1, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), "kk.mm"), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy"),EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsEndDateEvaluationInMills, System.currentTimeMillis()), "kk.mm"));
+                    tmpdialogTextView.setText(tmpCompleteTxtEvaluate1String);
                 }
                 else {
                     String tmpTxtEvaluate = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsEvaluateDisable);
@@ -539,7 +540,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 }
 
                 // show the settings for comment (like on/off-status, count comment...)
-                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsComment);
+                tmpdialogTextView = dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsComment);
                 String tmpTxtComment, tmpTxtComment1, tmpTxtComment2, tmpTxtComment3, tmpTxtComment4, tmpTxtCommentSum;
 
                 if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false)) {
@@ -608,7 +609,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                     // check comment sharing disable/ enable -> in case of disable -> show text
                     if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) != 1) {
-                        TextView tmpdialogTextViewNoSharing = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementCommentSharingDisable);
+                        TextView tmpdialogTextViewNoSharing = dialogSettings.findViewById(R.id.textViewDialogOurArrangementCommentSharingDisable);
                         tmpdialogTextViewNoSharing.setVisibility(View.VISIBLE);
                     }
                 }
@@ -618,7 +619,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 }
 
                 // show the settings for old arrangement
-                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsOldArrangement);
+                tmpdialogTextView = dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsOldArrangement);
                 if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, false)) {
 
                     String tmpTxtOldArrangement = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsOldArrangementEnable);
@@ -630,7 +631,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 }
 
                 // show the settings for sketch arrangement
-                tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsSketchArrangement);
+                tmpdialogTextView = dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsSketchArrangement);
                 String tmpTxtSketchArrangementSum, tmpTxtSketchArrangement, tmpTxtSketchArrangement1, tmpTxtSketchArrangement2, tmpTxtSketchArrangement3, tmpTxtSketchArrangement4, tmpTxtSketchArrangement5;
                 if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false)) {
 
@@ -699,7 +700,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
                         // check sketch comment sharing disable/ enable -> in case of disable -> show text
                         if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShare, 0) != 1) {
-                            TextView tmpdialogTextViewNoSharing = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSketchCommentSharingDisable);
+                            TextView tmpdialogTextViewNoSharing = dialogSettings.findViewById(R.id.textViewDialogOurArrangementSketchCommentSharingDisable);
                             tmpdialogTextViewNoSharing.setVisibility(View.VISIBLE);
                         }
                     }
@@ -720,7 +721,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 tmpdialogTextView.setText(tmpTxtSketchArrangementSum);
 
                 // generate link to involved person (activity settings tab 0)
-                TextView tmpdialogTextViewLinkToInvolvedPerson = (TextView) dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsInvolvedPerson);
+                TextView tmpdialogTextViewLinkToInvolvedPerson = dialogSettings.findViewById(R.id.textViewDialogOurArrangementSettingsInvolvedPerson);
                 tmpdialogTextViewLinkToInvolvedPerson.setMovementMethod(LinkMovementMethod.getInstance());
 
                 // get string ressources
@@ -728,26 +729,38 @@ public class ActivityOurArrangement extends AppCompatActivity {
                 String tmpTextTitleDialog = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementTitleDialog);
 
                 // build the dialog
-                builder.setView(dialogSettings)
+                builder.setView(dialogSettings);
 
-                        // Add close button
-                        .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
+                // Add close button
+                builder.setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 alertDialogSettings.cancel();
                             }
-                        })
+                        });
 
-                        // add title
-                        .setTitle(tmpTextTitleDialog);
+                // add title
+                builder.setTitle(tmpTextTitleDialog);
 
                 // and create
                 alertDialogSettings = builder.create();
 
-                // and show the dialog
-                builder.show();
+                alertDialogSettings.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        // change background and text color of button
+                        Button negativeButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                        // Change negative button text and background color
+                        negativeButton.setTextColor(ContextCompat.getColor(ActivityOurArrangement.this, R.color.white));
+                        negativeButton.setBackgroundResource(R.drawable.help_dialog_custom_negativ_button_background);
+                    }
+                });
+
+                // show dialog
+                alertDialogSettings.show();
+
             }
         });
-    }
+    } 
 
 
     // set evaluation start point

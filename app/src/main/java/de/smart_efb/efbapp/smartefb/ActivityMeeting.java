@@ -496,7 +496,7 @@ public class ActivityMeeting extends AppCompatActivity {
 
                 LayoutInflater dialogInflater;
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityMeeting.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityMeeting.this, R.style.helpDialogStyle);
 
                 // Get the layout inflater
                 dialogInflater = (LayoutInflater) ActivityMeeting.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -504,13 +504,6 @@ public class ActivityMeeting extends AppCompatActivity {
                 // inflate and get the view
 
                 View dialogSettings = dialogInflater.inflate(R.layout.dialog_help_meeting, null);
-
-
-
-                //String tmpDateAndTimeForResponse = String.format(context.getResources().getString(R.string.suggestionFromClientEndDateAndTimeText), tmpResponseDate, tmpResponseTime);
-
-
-
 
                 // show text meeting cancele by client on/off
                 TextView tmpFunctionMeetingCanceleOnOff = (TextView) dialogSettings.findViewById(R.id.textViewDialogMeetingSettingsIntroMeetingFunctionCanceleOnOff);
@@ -534,10 +527,6 @@ public class ActivityMeeting extends AppCompatActivity {
                 }
                 tmpFunctionClientSuggestionOnOff.setText(tmpTextFunctionClientSuggestionOnOff);
 
-
-
-
-
                 // set text client comment for suggestion on/off
                 TextView tmpFunctionClientCommentCoachSuggestionOnOff = (TextView) dialogSettings.findViewById(R.id.textViewDialogMeetingSettingsIntroCoachSuggestionFunctionCommentOnOff);
                 String tmpTextFunctionClientCommentCoachSuggestionOnOff;
@@ -548,12 +537,6 @@ public class ActivityMeeting extends AppCompatActivity {
                     tmpTextFunctionClientCommentCoachSuggestionOnOff = ActivityMeeting.this.getResources().getString(R.string.textViewDialogMeetingSettingsIntroCoachSuggestionFunctionCommentOff);
                 }
                 tmpFunctionClientCommentCoachSuggestionOnOff.setText(tmpTextFunctionClientCommentCoachSuggestionOnOff);
-
-
-
-
-
-
 
                 // get string ressources
                 String tmpTextCloseDialog = ActivityMeeting.this.getResources().getString(R.string.textDialogMeetingCloseDialog);
@@ -575,8 +558,19 @@ public class ActivityMeeting extends AppCompatActivity {
                 // and create
                 alertDialogSettings = builder.create();
 
+                alertDialogSettings.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        // change background and text color of button
+                        Button negativeButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                        // Change negative button text and background color
+                        negativeButton.setTextColor(ContextCompat.getColor(ActivityMeeting.this, R.color.white));
+                        negativeButton.setBackgroundResource(R.drawable.help_dialog_custom_negativ_button_background);
+                    }
+                });
+
                 // and show the dialog
-                builder.show();
+                alertDialogSettings.show();
 
             }
         });

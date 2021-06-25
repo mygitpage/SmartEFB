@@ -13,6 +13,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -616,7 +618,7 @@ public class ActivityMessage extends AppCompatActivity {
                 TextView tmpdialogTextView;
                 LayoutInflater dialogInflater;
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityMessage.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityMessage.this, R.style.helpDialogStyle);
 
                 // Get the layout inflater
                 dialogInflater = (LayoutInflater) ActivityMessage.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -738,8 +740,19 @@ public class ActivityMessage extends AppCompatActivity {
                 // and create
                 alertDialogMessage = builder.create();
 
+                alertDialogMessage.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        // change background and text color of button
+                        Button negativeButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                        // Change negative button text and background color
+                        negativeButton.setTextColor(ContextCompat.getColor(ActivityMessage.this, R.color.white));
+                        negativeButton.setBackgroundResource(R.drawable.help_dialog_custom_negativ_button_background);
+                    }
+                });
+
                 // and show the dialog
-                builder.show();
+                alertDialogMessage.show();
             }
         });
     }

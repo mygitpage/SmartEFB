@@ -12,6 +12,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
 import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -199,7 +201,7 @@ public class ActivityTimeTable extends AppCompatActivity {
 
                 LayoutInflater dialogInflater;
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityTimeTable.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityTimeTable.this, R.style.helpDialogStyle);
 
                 // Get the layout inflater
                 dialogInflater = (LayoutInflater) ActivityTimeTable.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -227,8 +229,19 @@ public class ActivityTimeTable extends AppCompatActivity {
                 // and create
                 alertDialogTimeTable = builder.create();
 
+                alertDialogTimeTable.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        // change background and text color of button
+                        Button negativeButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                        // Change negative button text and background color
+                        negativeButton.setTextColor(ContextCompat.getColor(ActivityTimeTable.this, R.color.white));
+                        negativeButton.setBackgroundResource(R.drawable.help_dialog_custom_negativ_button_background);
+                    }
+                });
+
                 // and show the dialog
-                builder.show();
+                alertDialogTimeTable.show();
             }
         });
     }

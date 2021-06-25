@@ -74,4 +74,9 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="helpDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/help_dialog_style_custom_background</item>
+    </style>
+
+
 </resources>

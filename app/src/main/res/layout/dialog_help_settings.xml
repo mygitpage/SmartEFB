@@ -22,7 +22,6 @@
             android:textSize="14dp"
             android:textColor="@color/text_color"
             android:gravity="left"
-            android:textStyle="bold"
             android:text="@string/textDialogSettingsEfbSettingsIntro"
             android:paddingTop="5dp"
             android:paddingBottom="10dp"/>

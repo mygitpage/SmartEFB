@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.text.Editable;
@@ -17,6 +18,7 @@ import android.text.Html;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -134,13 +136,12 @@ public class OurArrangementFragmentNowComment extends Fragment {
         public void onReceive(Context context, Intent intent) {
 
             // Extras from intent that holds data
-            Bundle intentExtras = null;
+            Bundle intentExtras;
 
             // check for intent extras
             intentExtras = intent.getExtras();
             if (intentExtras != null) {
                 // check intent order
-
                 Boolean refreshView = false;
 
                 String tmpExtraOurArrangement = intentExtras.getString("OurArrangement","0");
@@ -160,7 +161,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentNowCommentContext.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -188,7 +189,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     // reset now comment counter -> show toast and update view
                     String updateMessageCommentNow = fragmentNowCommentContext.getString(R.string.toastMessageArrangementResetCommentCountComment);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -199,7 +200,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     // sharing is disable -> show toast and update view
                     String updateMessageCommentNow = fragmentNowCommentContext.getString(R.string.toastMessageArrangementCommentShareDisable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -210,7 +211,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
                     // sharing is enable -> show toast and update view
                     String updateMessageCommentNow = fragmentNowCommentContext.getString(R.string.toastMessageArrangementCommentShareEnable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -268,35 +269,25 @@ public class OurArrangementFragmentNowComment extends Fragment {
     private void buildFragmentNowCommentView () {
 
         //textview for the comment intro
-        TextView textCommentNumberIntro = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementCommentNumberIntro);
+        TextView textCommentNumberIntro = viewFragmentNowComment.findViewById(R.id.arrangementCommentNumberIntro);
         textCommentNumberIntro.setText(this.getResources().getString(R.string.showArrangementIntroText) + " " + arrangementNumberInListView);
 
         // textview for the author of arrangement
-        TextView tmpTextViewAuthorNameText = (TextView) viewFragmentNowComment.findViewById(R.id.textAuthorName);
+        TextView tmpTextViewAuthorNameText = viewFragmentNowComment.findViewById(R.id.textAuthorName);
         String tmpTextAuthorNameText = String.format(fragmentNowCommentContext.getResources().getString(R.string.ourArrangementAuthorNameTextWithDate), cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
-        tmpTextViewAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
+        tmpTextViewAuthorNameText.setText(HtmlCompat.fromHtml(tmpTextAuthorNameText, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         // textview for the arrangement
-        TextView textViewArrangement = (TextView) viewFragmentNowComment.findViewById(R.id.choosenArrangement);
+        TextView textViewArrangement = viewFragmentNowComment.findViewById(R.id.choosenArrangement);
         String arrangement = cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(arrangement);
 
-        // generate back link "zurueck zu allen Absprachen"
-        Uri.Builder backArrangementLinkBuilder = new Uri.Builder();
-        backArrangementLinkBuilder.scheme("smart.efb.deeplink")
-                .authority("linkin")
-                .path("ourarrangement")
-                .appendQueryParameter("db_id", "0")
-                .appendQueryParameter("arr_num", "0")
-                .appendQueryParameter("com", "show_arrangement_now");
-        TextView linkShowCommentBackLink = (TextView) viewFragmentNowComment.findViewById(R.id.arrangementShowCommentBackLinkNow);
-        linkShowCommentBackLink.setText(Html.fromHtml("<a href=\"" + backArrangementLinkBuilder.build().toString() + "\">"+fragmentNowCommentContext.getResources().getString(fragmentNowCommentContext.getResources().getIdentifier("ourArrangementBackLinkToArrangementFromComment", "string", fragmentNowCommentContext.getPackageName()))+"</a>"));
-        linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
-
         // check, sharing comments enable?
         if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) == 0) {
-            TextView textCommentSharingIsDisable = (TextView) viewFragmentNowComment.findViewById(R.id.commentSharingIsDisable);
+            TextView textCommentSharingIsDisable = viewFragmentNowComment.findViewById(R.id.commentSharingIsDisable);
+            TextView borderBetweenTextCommentSharingIsDisable = viewFragmentNowComment.findViewById(R.id.borderBetweencommentSharingIsDisable);
             textCommentSharingIsDisable.setVisibility (View.VISIBLE);
+            borderBetweenTextCommentSharingIsDisable.setVisibility (View.VISIBLE);
         }
 
         // some comments for arrangement available?
@@ -306,7 +297,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
             final Long rowIdForUpdate = cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID));
 
             //textview for the last actual comment intro
-            TextView textLastActualCommentIntro = (TextView) viewFragmentNowComment.findViewById(R.id.lastActualCommentInfoText);
+            TextView textLastActualCommentIntro = viewFragmentNowComment.findViewById(R.id.lastActualCommentInfoText);
             textLastActualCommentIntro.setText(this.getResources().getString(R.string.lastActualCommentText));
 
             // position one for comment cursor
@@ -314,14 +305,14 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
             // check if comment entry new?
             if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY)) == 1) {
-                TextView newEntryOfComment = (TextView) viewFragmentNowComment.findViewById(R.id.lastActualCommentNewInfoText);
+                TextView newEntryOfComment = viewFragmentNowComment.findViewById(R.id.lastActualCommentNewInfoText);
                 String txtNewEntryOfComment = fragmentNowCommentContext.getResources().getString(R.string.newEntryText);
                 newEntryOfComment.setText(txtNewEntryOfComment);
                 myDb.deleteStatusNewEntryOurArrangementComment(cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
             }
 
             // textview for the author of last actual comment
-            TextView tmpTextViewAuthorNameLastActualComment = (TextView) viewFragmentNowComment.findViewById(R.id.textAuthorNameLastActualComment);
+            TextView tmpTextViewAuthorNameLastActualComment = viewFragmentNowComment.findViewById(R.id.textAuthorNameLastActualComment);
             String tmpAuthorName = cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_AUTHOR_NAME));
 
             if (tmpAuthorName.equals(prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt"))) {
@@ -332,10 +323,10 @@ public class OurArrangementFragmentNowComment extends Fragment {
             String commentTime = EfbHelperClass.timestampToDateFormat(cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_LOCAL_TIME)), "HH:mm");
             String tmpTextAuthorNameLastActualComment = String.format(fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
             if (cursorArrangementAllComments.getLong(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 4) {tmpTextAuthorNameLastActualComment = String.format(getResources().getString(R.string.ourArrangementShowCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
-            tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
+            tmpTextViewAuthorNameLastActualComment.setText(HtmlCompat.fromHtml(tmpTextAuthorNameLastActualComment, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
             // textview for status 0 of the last actual comment
-            final TextView tmpTextViewSendInfoLastActualComment = (TextView) viewFragmentNowComment.findViewById(R.id.textSendInfoLastActualComment);
+            final TextView tmpTextViewSendInfoLastActualComment = viewFragmentNowComment.findViewById(R.id.textSendInfoLastActualComment);
             if (cursorArrangementAllComments.getInt(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS)) == 0) {
 
                 String tmpTextSendInfoLastActualComment = fragmentNowCommentContext.getResources().getString(R.string.ourArrangementCommentSendInfo);
@@ -416,61 +407,31 @@ public class OurArrangementFragmentNowComment extends Fragment {
             }
 
             // textview for the comment text
-            TextView tmpTextViewCommentText = (TextView) viewFragmentNowComment.findViewById(R.id.lastActualCommentText);
+            TextView tmpTextViewCommentText = viewFragmentNowComment.findViewById(R.id.lastActualCommentText);
             String tmpCommentText = cursorArrangementAllComments.getString(cursorArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_COMMENT));
             tmpTextViewCommentText.setText(tmpCommentText);
 
-            // get textview for Link to Show all comments
-            TextView tmpTextViewLInkToShowAllComment = (TextView) viewFragmentNowComment.findViewById(R.id.commentLInkToShowAllComments);
-
-            // more than one comment available?
-            if (cursorArrangementAllComments.getCount() > 1) {
-
-                // generate link to show all comments
-                Uri.Builder commentLinkBuilder = new Uri.Builder();
-                commentLinkBuilder.scheme("smart.efb.deeplink")
-                        .authority("linkin")
-                        .path("ourarrangement")
-                        .appendQueryParameter("db_id", Integer.toString(arrangementServerDbIdToComment))
-                        .appendQueryParameter("arr_num", Integer.toString(arrangementNumberInListView))
-                        .appendQueryParameter("com", "show_comment_for_arrangement");
-
-                if (cursorArrangementAllComments.getCount() == 2) {
-                    String tmpLinkStringShowAllComments = String.format(fragmentNowCommentContext.getResources().getString(fragmentNowCommentContext.getResources().getIdentifier("ourArrangementCommentLinkToShowAllCommentsSingular", "string", fragmentNowCommentContext.getPackageName())),cursorArrangementAllComments.getCount()-1);
-                    tmpTextViewLInkToShowAllComment.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllComments + "</a>"));
-                }
-                else {
-                    String tmpLinkStringShowAllComments = String.format(fragmentNowCommentContext.getResources().getString(fragmentNowCommentContext.getResources().getIdentifier("ourArrangementCommentLinkToShowAllCommentsPlural", "string", fragmentNowCommentContext.getPackageName())),cursorArrangementAllComments.getCount()-1);
-                    tmpTextViewLInkToShowAllComment.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllComments + "</a>"));
-                }
-                tmpTextViewLInkToShowAllComment.setMovementMethod(LinkMovementMethod.getInstance());
-            }
-            else {
-                // no comment anymore
-                String tmpLinkStringShowAllComments = fragmentNowCommentContext.getResources().getString(fragmentNowCommentContext.getResources().getIdentifier("ourArrangementCommentLinkToShowAllCommentsNotAvailable", "string", fragmentNowCommentContext.getPackageName()));
-                tmpTextViewLInkToShowAllComment.setText(tmpLinkStringShowAllComments);
-            }
         }
         else { // no comments
 
             //textview for the last actual comment intro
-            TextView textLastActualCommentIntro = (TextView) viewFragmentNowComment.findViewById(R.id.lastActualCommentInfoText);
+            TextView textLastActualCommentIntro = viewFragmentNowComment.findViewById(R.id.lastActualCommentInfoText);
             textLastActualCommentIntro.setText(this.getResources().getString(R.string.lastActualCommentTextNoCommentAvailabel));
 
             // position one for comment cursor
             cursorArrangementAllComments.moveToFirst();
 
             // textview for the author of last actual comment
-            TextView tmpTextViewAuthorNameLastActualComment = (TextView) viewFragmentNowComment.findViewById(R.id.textAuthorNameLastActualComment);
+            TextView tmpTextViewAuthorNameLastActualComment = viewFragmentNowComment.findViewById(R.id.textAuthorNameLastActualComment);
             tmpTextViewAuthorNameLastActualComment.setText(this.getResources().getString(R.string.lastActualCommentTextNoCommentAvailabelFirstAuthor));
 
             // textview for the comment text
-            TextView tmpTextViewCommentText = (TextView) viewFragmentNowComment.findViewById(R.id.lastActualCommentText);
+            TextView tmpTextViewCommentText = viewFragmentNowComment.findViewById(R.id.lastActualCommentText);
             tmpTextViewCommentText.setVisibility(View.GONE);
         }
 
         // textview for max comments, count comments and max letters
-        TextView textViewMaxAndCount = (TextView) viewFragmentNowComment.findViewById(R.id.infoNowCommentMaxAndCount);
+        TextView textViewMaxAndCount = viewFragmentNowComment.findViewById(R.id.infoNowCommentMaxAndCount);
         String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral, tmpInfoTextCommentMaxLetters;
         // build text element max comment
         if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0) == 1 && commentLimitationBorder) {
@@ -520,13 +481,19 @@ public class OurArrangementFragmentNowComment extends Fragment {
         final int tmpMaxLength = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxLetters, 10);
 
         // get textView to count input letters and init it
-        final TextView textViewCountLettersCommentEditText = (TextView) viewFragmentNowComment.findViewById(R.id.countLettersCommentEditText);
+        final TextView textViewCountLettersCommentEditText = viewFragmentNowComment.findViewById(R.id.countLettersCommentEditText);
         String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
         tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", tmpMaxLength);
         textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
 
-        // comment textfield -> set hint text
-        final EditText txtInputArrangementComment = (EditText) viewFragmentNowComment.findViewById(R.id.inputArrangementComment);
+        // comment textfield
+        final EditText txtInputArrangementComment = viewFragmentNowComment.findViewById(R.id.inputArrangementComment);
+
+        // set hint text in edit text field
+        String tmpHintTextForCommentField = this.getResources().getString(R.string.arrangementCommentHintText);
+        tmpHintTextForCommentField = String.format(tmpHintTextForCommentField, arrangementNumberInListView);
+        txtInputArrangementComment.setHint(tmpHintTextForCommentField);
+
 
         // set text watcher to count letters in comment field
         final TextWatcher txtInputArrangementCommentTextWatcher = new TextWatcher() {
@@ -548,8 +515,25 @@ public class OurArrangementFragmentNowComment extends Fragment {
         // set input filter max length for comment field
         txtInputArrangementComment.setFilters(new InputFilter[] {new InputFilter.LengthFilter(tmpMaxLength)});
 
+        // set text max comment/ actual comment
+        TextView infoTextCountComment = viewFragmentNowComment.findViewById(R.id.infoTextCountComment);
+        String tmpInfoTextCountCommentSingluarPluaralNoLimit;
+        if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0) == 1 && commentLimitationBorder) {
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = this.getResources().getString(R.string.ourArrangementNowCommentCountCommentTextSingular);
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = String.format(tmpInfoTextCountCommentSingluarPluaralNoLimit, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0), prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0));
+        }
+        else if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0) > 1 && commentLimitationBorder) {
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = this.getResources().getString(R.string.ourArrangementNowCommentCountCommentTextPlural);
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = String.format(tmpInfoTextCountCommentSingluarPluaralNoLimit, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment,0), prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0));
+
+        }
+        else {
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = this.getResources().getString(R.string.ourArrangementNowCommentCountCommentTextNoLimit);
+        }
+        infoTextCountComment.setText(tmpInfoTextCountCommentSingluarPluaralNoLimit);
+
         // get button send comment
-        Button buttonSendArrangementComment = (Button) viewFragmentNowComment.findViewById(R.id.buttonSendArrangementComment);
+        Button buttonSendArrangementComment = viewFragmentNowComment.findViewById(R.id.buttonSendArrangementComment);
 
         // set onClick listener send arrangement comment
         buttonSendArrangementComment.setOnClickListener(new View.OnClickListener() {
@@ -602,7 +586,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
                         getActivity().startActivity(intent);
 
                     } else {
-                        TextView tmpErrorTextView = (TextView) viewFragmentNowComment.findViewById(R.id.errorInputArrangementComment);
+                        TextView tmpErrorTextView = viewFragmentNowComment.findViewById(R.id.errorInputArrangementComment);
                         tmpErrorTextView.setVisibility(View.VISIBLE);
                     }
                 }
@@ -621,10 +605,11 @@ public class OurArrangementFragmentNowComment extends Fragment {
             }
         });
 
-        // button abbort
-        Button buttonAbbortArrangementComment = (Button) viewFragmentNowComment.findViewById(R.id.buttonAbortComment);
-        // onClick listener button abbort
-        buttonAbbortArrangementComment.setOnClickListener(new View.OnClickListener() {
+
+        // button back to arrangement overview
+        Button buttonBackToArrangementOverview = viewFragmentNowComment.findViewById(R.id.buttonNowCommentBackToArrangement);
+        // onClick listener back to arrangement overview
+        buttonBackToArrangementOverview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -637,19 +622,38 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
             }
         });
+
+
+        // button back to comment overview for arrangement
+        Button buttonBackToCommentOverviewForArrangement = viewFragmentNowComment.findViewById(R.id.buttonNowCommentBackToShowComment);
+        // onClick listener back to comment overview for arrangement
+        buttonBackToCommentOverviewForArrangement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("com","show_comment_for_arrangement");
+                intent.putExtra("db_id", arrangementServerDbIdToComment );
+                intent.putExtra("arr_num", arrangementNumberInListView);
+                getActivity().startActivity(intent);
+
+            }
+        });
+
     }
 
 
     // call getter Functions in ActivityOurArrangement for some data
     private void callGetterFunctionInSuper () {
 
-        int tmparrangementServerDbIdToComment;
+        int tmpArrangementServerDbIdToComment;
 
         // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
-        tmparrangementServerDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
+        tmpArrangementServerDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
 
-        if (tmparrangementServerDbIdToComment > 0) {
-            arrangementServerDbIdToComment = tmparrangementServerDbIdToComment;
+        if (tmpArrangementServerDbIdToComment > 0) {
+            arrangementServerDbIdToComment = tmpArrangementServerDbIdToComment;
 
             // call getter-methode getArrangementNumberInListview() in ActivityOurArrangement to get listView-number for the actuale arrangement
             arrangementNumberInListView = ((ActivityOurArrangement)getActivity()).getArrangementNumberInListview();

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="left"
+    android:paddingTop="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <!-- only show when needed -->
+    <TextView
+        android:id="@+id/borderToBottomOfDisplayWhenNeeded"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="40dp"
+        android:visibility="gone"/>
+
+    <!-- only show when needed -->
+    <TextView
+        android:id="@+id/borderBetweenLastElementAndEvaluationInfo"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_color"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"/>
+
+    <!-- only show when needed -->
+    <TextView
+        android:id="@+id/infoEvaluationTimePeriod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:paddingBottom="35dp"
+        android:visibility="gone"/>
+
+</LinearLayout>

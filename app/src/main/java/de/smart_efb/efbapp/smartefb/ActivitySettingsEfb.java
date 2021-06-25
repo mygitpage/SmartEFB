@@ -13,6 +13,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -315,7 +317,7 @@ public class ActivitySettingsEfb extends AppCompatActivity {
 
                 LayoutInflater dialogInflater;
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ActivitySettingsEfb.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivitySettingsEfb.this, R.style.helpDialogStyle);
 
                 // Get the layout inflater
                 dialogInflater = (LayoutInflater) ActivitySettingsEfb.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -343,8 +345,19 @@ public class ActivitySettingsEfb extends AppCompatActivity {
                 // and create
                 alertDialogSettings = builder.create();
 
+                alertDialogSettings.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        // change background and text color of button
+                        Button negativeButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                        // Change negative button text and background color
+                        negativeButton.setTextColor(ContextCompat.getColor(ActivitySettingsEfb.this, R.color.white));
+                        negativeButton.setBackgroundResource(R.drawable.help_dialog_custom_negativ_button_background);
+                    }
+                });
+
                 // and show the dialog
-                builder.show();
+                alertDialogSettings.show();
             }
         });
     }

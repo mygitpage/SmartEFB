@@ -13,6 +13,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -478,7 +480,7 @@ public class ActivityConnectBook extends AppCompatActivity {
                 TextView tmpdialogTextView;
                 LayoutInflater dialogInflater;
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityConnectBook.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityConnectBook.this, R.style.helpDialogStyle);
 
                 // Get the layout inflater
                 dialogInflater = (LayoutInflater) ActivityConnectBook.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -489,7 +491,6 @@ public class ActivityConnectBook extends AppCompatActivity {
                 // show the settings for connect book
                 tmpdialogTextView = (TextView) dialogSettings.findViewById(R.id.textViewDialogConnectBookSettings);
                 String tmpTxtElement, tmpTxtElement1, tmpTxtElement2, tmpTxtElement2a, tmpTxtElement3;
-
 
                 // generate text for max messages
                 if (prefs.getInt(ConstansClassConnectBook.namePrefsConnectMaxMessages, 0) > 1) {
@@ -561,8 +562,19 @@ public class ActivityConnectBook extends AppCompatActivity {
                 // and create
                 alertDialogSettings = builder.create();
 
-                // and show the dialog
-                builder.show();
+                alertDialogSettings.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        // change background and text color of button
+                        Button negativeButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                        // Change negative button text and background color
+                        negativeButton.setTextColor(ContextCompat.getColor(ActivityConnectBook.this, R.color.white));
+                        negativeButton.setBackgroundResource(R.drawable.help_dialog_custom_negativ_button_background);
+                    }
+                });
+
+                // show dialog
+                alertDialogSettings.show();
             }
         });
     }

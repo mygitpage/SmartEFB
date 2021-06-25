@@ -13,6 +13,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -118,7 +120,8 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
 
                 LayoutInflater dialogInflater;
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityEmergencyHelp.this);
+                // get alert dialog builder with custom style
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityEmergencyHelp.this, R.style.helpDialogStyle);
 
                 // Get the layout inflater
                 dialogInflater = (LayoutInflater) ActivityEmergencyHelp.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -146,8 +149,19 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
                 // and create
                 alertDialogEmergencyHelp = builder.create();
 
+                alertDialogEmergencyHelp.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        // change background and text color of button
+                        Button negativeButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                        // Change negative button text and background color
+                        negativeButton.setTextColor(ContextCompat.getColor(ActivityEmergencyHelp.this, R.color.white));
+                        negativeButton.setBackgroundResource(R.drawable.help_dialog_custom_negativ_button_background);
+                    }
+                });
+
                 // and show the dialog
-                builder.show();
+                alertDialogEmergencyHelp.show();
             }
         });
     }

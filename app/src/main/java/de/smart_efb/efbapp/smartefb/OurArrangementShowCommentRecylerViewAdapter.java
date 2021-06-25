@@ -53,25 +53,16 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
     // shared prefs for the comment arrangement
     SharedPreferences prefs;
 
-
-
-
-
+    // own reycler view elements
     final static int HEADER = 0;
     final static int ITEM = 1;
     final static int FOOTER = 2;
     final static int BOTH = 3;
-
-
     private int STATE;
 
 
-
-
     // own constructor!!!
-    public OurArrangementShowCommentRecylerViewAdapter (Context context, ArrayList<ObjectSmartEFBComment> commentList, int flags, int dbId, int numberInList, Boolean commentsLimitation, Cursor arrangement) {
-
-        //cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public OurArrangementShowCommentRecylerViewAdapter (Context context, ArrayList<ObjectSmartEFBComment> commentList, int dbId, int numberInList, Boolean commentsLimitation, Cursor arrangement) {
 
         // Array List of arrangement comment
         ourArrangementShowCommentList = commentList;
@@ -95,38 +86,31 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
         prefs = contextForActivity.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, contextForActivity.MODE_PRIVATE);
 
         // init view has header, items and footer
-        STATE = 3;
-
+        STATE = BOTH;
 
     }
 
-
-
-
-
+    // inner class for header element
     private class OurArrangementShowCommentHeaderViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textViewShowArrangementIntro, tmpTextViewAuthorNameText, linkShowCommentBackLink;
-        public TextView textViewShowChoosenArrangement, textCommentSharingIsDisable;
+        public TextView textViewShowArrangementIntro, textViewAuthorNameText;
+        public TextView textViewShowChoosenArrangement, textCommentSharingIsDisable, borderBetweenTextCommentSharingIsDisable;
         public Button buttonHeaderBackToArrangement;
-
 
         OurArrangementShowCommentHeaderViewHolder(View headerView) {
 
             super(headerView);
 
-            textViewShowArrangementIntro = (TextView) headerView.findViewById(R.id.arrangementShowArrangementIntro);
-            tmpTextViewAuthorNameText = (TextView) headerView.findViewById(R.id.textAuthorName);
-            //linkShowCommentBackLink = (TextView) headerView.findViewById(R.id.arrangementShowCommentBackLink);
-            buttonHeaderBackToArrangement = (Button) headerView.findViewById(R.id.buttonHeaderBackToArrangement);
-            textViewShowChoosenArrangement = (TextView) headerView.findViewById(R.id.choosenArrangement);
-            textCommentSharingIsDisable = (TextView) headerView.findViewById(R.id.commentSharingIsDisable);
-
+            textViewShowArrangementIntro = headerView.findViewById(R.id.arrangementShowArrangementIntro);
+            textViewAuthorNameText = headerView.findViewById(R.id.textAuthorName);
+            buttonHeaderBackToArrangement = headerView.findViewById(R.id.buttonHeaderBackToArrangement);
+            textViewShowChoosenArrangement = headerView.findViewById(R.id.choosenArrangement);
+            textCommentSharingIsDisable = headerView.findViewById(R.id.commentSharingIsDisable);
+            borderBetweenTextCommentSharingIsDisable = headerView.findViewById(R.id.borderBetweencommentSharingIsDisable);
         }
-
     }
 
-
+    // inner class for footer element
     private class OurArrangementShowCommentFooterViewHolder extends RecyclerView.ViewHolder {
 
         public TextView textViewChangeSortSequence, textViewMaxAndCount;
@@ -136,48 +120,29 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
             
             super(footerView);
 
-            buttonBackToArrangement = (Button) footerView.findViewById(R.id.buttonAbortShowComment);
-
-            textViewChangeSortSequence = (TextView) footerView.findViewById(R.id.linkToChangeSortSequenceOfCommentList);
-            textViewMaxAndCount = (TextView) footerView.findViewById(R.id.infoShowCommentMaxAndCount);
-            
-            
+            buttonBackToArrangement = footerView.findViewById(R.id.buttonAbortShowComment);
+            textViewMaxAndCount = footerView.findViewById(R.id.infoShowCommentMaxAndCount);
         }
-
     }
 
-
+    // inner class for item element
     private class OurArrangementShowCommentItemViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textViewShowActualCommentHeadline, newEntryOfArrangement, tmpTextViewAuthorNameLastActualComment;
-        public TextView tmpTextViewSendInfoLastActualComment, textViewShowActualComment, linkToCommentAnArrangement;
+        public TextView textViewShowActualCommentHeadline, newEntryOfArrangement, textViewAuthorNameLastActualComment;
+        public TextView textViewSendInfoLastActualComment, textViewShowActualComment, linkToCommentAnArrangement;
 
         OurArrangementShowCommentItemViewHolder(View ItemView) {
 
             super (ItemView);
 
-            textViewShowActualCommentHeadline = (TextView) ItemView.findViewById(R.id.actualCommentInfoText);
-            newEntryOfArrangement = (TextView) ItemView.findViewById(R.id.actualCommentNewInfoText);
-            tmpTextViewAuthorNameLastActualComment = (TextView) ItemView.findViewById(R.id.textAuthorNameActualComment);
-            tmpTextViewSendInfoLastActualComment = (TextView) ItemView.findViewById(R.id.textSendInfoActualComment);
-            textViewShowActualComment = (TextView) ItemView.findViewById(R.id.listActualTextComment);
-            linkToCommentAnArrangement = (TextView) ItemView.findViewById(R.id.linkToCommentAnArrangement);
-
-
-
-
-
-
+            textViewShowActualCommentHeadline = ItemView.findViewById(R.id.actualCommentInfoText);
+            newEntryOfArrangement = ItemView.findViewById(R.id.actualCommentNewInfoText);
+            textViewAuthorNameLastActualComment = ItemView.findViewById(R.id.textAuthorNameActualComment);
+            textViewSendInfoLastActualComment = ItemView.findViewById(R.id.textSendInfoActualComment);
+            textViewShowActualComment = ItemView.findViewById(R.id.listActualTextComment);
+            linkToCommentAnArrangement = ItemView.findViewById(R.id.linkToCommentAnArrangement);
         }
-
     }
-
-
-
-
-
-
-
 
 
     @Override
@@ -193,29 +158,18 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
     }
 
 
-
     @Override
     public int getItemViewType(int position) {
         // if there is both footerResource and header
         switch (STATE) {
             case BOTH:
-
-
-                Log.d("Get Item View Type --->", "BOTH mit Laenge:" + ourArrangementShowCommentList.size() + " ##### Position: "+ position);
-
-
                 if (position == 0) {
-                    Log.d("Get Item View Type --->", "Gewaehlt -> HEADER");
                     return HEADER;
-
-                } else if (position >= (ourArrangementShowCommentList.size()+1) ) {
-                    Log.d("Get Item View Type --->", "Gewaehlt -> FOOTER");
-                    return FOOTER;
-
                 }
-                Log.d("Get Item View Type --->", "Gewaehlt -> ITEM");
+                else if (position >= (ourArrangementShowCommentList.size()+1) ) {
+                    return FOOTER;
+                }
                 return ITEM;
-
             case HEADER:
                 return position == 0 ? HEADER : ITEM;
 
@@ -228,9 +182,6 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
     }
 
 
-
-
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
@@ -240,23 +191,13 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
         // init the DB
         final DBAdapter myDb = new DBAdapter(contextForActivity);
 
-
-
-        Uri.Builder commentLinkBuilder;
-
         switch (viewType) {
             case ITEM:
 
-
-                Log.d("OnBind", "In ITEM mit Position: " + position +" +++++++++++++++++++++++++++");
-
-                // ++++++++++++++++++++++++++++++++++++
                 final ObjectSmartEFBComment commentElement = ourArrangementShowCommentList.get(position-1);
 
-
-
+                // cast holder
                 OurArrangementShowCommentItemViewHolder itemView = (OurArrangementShowCommentItemViewHolder) holder;
-
 
                 // set comment headline
                 String actualCommentHeadline = contextForActivity.getResources().getString(R.string.showCommentHeadlineWithNumber) + " " + actualPosition;
@@ -270,25 +211,15 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
                 }
                 itemView.textViewShowActualCommentHeadline.setText(actualCommentHeadline);
 
-
                 // check if arrangement entry new?
-
-                Log.d("ITEM VISIBLE ------------------>", "Value: " + commentElement.getNewEntry());
-
                 if (commentElement.getNewEntry() == 1) {
-
-
-
-
                     String txtnewEntryOfArrangement = contextForActivity.getResources().getString(R.string.newEntryText);
                     itemView.newEntryOfArrangement.setVisibility(View.VISIBLE);
                     itemView.newEntryOfArrangement.setText(txtnewEntryOfArrangement);
 
                     // delete status new entry in db
-                    //myDb.deleteStatusNewEntryOurArrangementComment(commentElement.getRowID());
+                    myDb.deleteStatusNewEntryOurArrangementComment(commentElement.getRowID());
                 }
-
-
 
                 // set author name and date/time
                 String tmpAuthorName = commentElement.getAuthorName();
@@ -297,25 +228,18 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
                 }
 
                 String commentDate = EfbHelperClass.timestampToDateFormat(commentElement.getLocalTime(), "dd.MM.yyyy");
-                String commentTime = EfbHelperClass.timestampToDateFormat(commentElement.getLocalTime(), "HH:mm");;
-                String tmpTextAuthorNameLastActualComment = "";
-                tmpTextAuthorNameLastActualComment = String.format(contextForActivity.getResources().getString(R.string.ourArrangementShowCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
+                String commentTime = EfbHelperClass.timestampToDateFormat(commentElement.getLocalTime(), "HH:mm");
+                String tmpTextAuthorNameLastActualComment = String.format(contextForActivity.getResources().getString(R.string.ourArrangementShowCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
                 if (commentElement.getStatus() == 4) {tmpTextAuthorNameLastActualComment = String.format(contextForActivity.getResources().getString(R.string.ourArrangementShowCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
-                itemView.tmpTextViewAuthorNameLastActualComment.setText(HtmlCompat.fromHtml(tmpTextAuthorNameLastActualComment, HtmlCompat.FROM_HTML_MODE_LEGACY));
+                itemView.textViewAuthorNameLastActualComment.setText(HtmlCompat.fromHtml(tmpTextAuthorNameLastActualComment, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
                 // show actual comment
                 itemView.textViewShowActualComment.setText(commentElement.getCommentText());
 
-
-
-
-                // ++++++++++++++++++++++++++++++++++++++
-
                 break;
             case HEADER:
 
-                Log.d("OnBind", "In HEADER +++++++++++++++++++++++++++");
-
+                // cast holder
                 OurArrangementShowCommentHeaderViewHolder headerView = (OurArrangementShowCommentHeaderViewHolder) holder;
 
                 // set text arrangement intro
@@ -324,20 +248,7 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
 
                 // textview for the author of arrangement
                 String tmpTextAuthorNameText = String.format(contextForActivity.getResources().getString(R.string.ourArrangementAuthorNameTextWithDate), choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
-                headerView.tmpTextViewAuthorNameText.setText(HtmlCompat.fromHtml(tmpTextAuthorNameText, HtmlCompat.FROM_HTML_MODE_LEGACY));
-
-                // make link back to show arrangement
-                commentLinkBuilder = new Uri.Builder();
-                commentLinkBuilder.scheme("smart.efb.deeplink")
-                        .authority("linkin")
-                        .path("ourarrangement")
-                        .appendQueryParameter("db_id", "0")
-                        .appendQueryParameter("arr_num", "0")
-                        .appendQueryParameter("com", "show_arrangement_now");
-
-                Spanned tmpBackLink = HtmlCompat.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + contextForActivity.getResources().getString(contextForActivity.getResources().getIdentifier("ourArrangementBackLinkToArrangementFromShowComment", "string", contextForActivity.getPackageName()))+"</a>", HtmlCompat.FROM_HTML_MODE_LEGACY);
-                //headerView.linkShowCommentBackLink.setText(tmpBackLink);
-                //headerView.linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
+                headerView.textViewAuthorNameText.setText(HtmlCompat.fromHtml(tmpTextAuthorNameText, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
                 // show choosen arrangement
                 headerView.textViewShowChoosenArrangement.setText(choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT)));
@@ -345,6 +256,7 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
                 // show hint sharing is disable
                 if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) == 0) {
                     headerView.textCommentSharingIsDisable.setVisibility (View.VISIBLE);
+                    headerView.borderBetweenTextCommentSharingIsDisable.setVisibility (View.VISIBLE);
                 }
 
                 // onClick listener back button
@@ -358,10 +270,6 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
                         contextForActivity.startActivity(intent);
                     }
                 });
-
-
-
-
 
                 break;
             case FOOTER:
@@ -380,30 +288,6 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
                         contextForActivity.startActivity(intent);
                     }
                 });
-
-                // generate link for sort sequence change
-                
-                commentLinkBuilder = new Uri.Builder();
-                commentLinkBuilder.scheme("smart.efb.deeplink")
-                        .authority("linkin")
-                        .path("ourarrangement")
-                        .appendQueryParameter("db_id", Integer.toString(arrangementDbIdToShow))
-                        .appendQueryParameter("arr_num", Integer.toString(arrangementNumberInListView))
-                        .appendQueryParameter("eval_next", Boolean.toString(false))
-                        .appendQueryParameter("com", "change_sort_sequence_arrangement_comment");
-
-                String tmpLinkTextChangeSortSequence;
-                if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending").equals("descending")) {
-                    tmpLinkTextChangeSortSequence = contextForActivity.getResources().getString(contextForActivity.getResources().getIdentifier("ourArrangementShowCommentLinkChangeSortSequenceOfArrangementCommentDescending", "string", contextForActivity.getPackageName()));
-                }
-                else {
-                    tmpLinkTextChangeSortSequence = contextForActivity.getResources().getString(contextForActivity.getResources().getIdentifier("ourArrangementShowCommentLinkChangeSortSequenceOfArrangementCommentAscending", "string", contextForActivity.getPackageName()));
-                }
-                Spanned tmpSortLink = HtmlCompat.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + tmpLinkTextChangeSortSequence + "</a>", HtmlCompat.FROM_HTML_MODE_LEGACY);
-
-                footerView.textViewChangeSortSequence.setText(tmpSortLink);
-                footerView.textViewChangeSortSequence.setMovementMethod(LinkMovementMethod.getInstance());
-
 
                 String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral, tmpInfoTextCommentMaxLetters;
                 // build text element max comment
@@ -430,7 +314,7 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
                 tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0));
 
                 // build text element delay time
-                String tmpInfoTextDelaytimeSingluarPluaral = "";
+                String tmpInfoTextDelaytimeSingluarPluaral;
                 if (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) == 0) {
                     tmpInfoTextDelaytimeSingluarPluaral = contextForActivity.getString(R.string.infoTextNowCommentDelaytimeNoDelay);
                 }
@@ -451,12 +335,6 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
 
                 break;
 
-
-
-
-
-
-
             default:
                 break;
         }
@@ -464,66 +342,22 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
         // close DB connection
         myDb.close();
 
-
     }
-
-
-
-/*
-    @Override
-    public void onBindViewHolder (OurArrangementShowCommentViewHolder holder, int position) {
-
-
-        final ObjectSmartEFBComment commentElement = ourArrangementShowCommentList.get(position);
-
-
-
-
-        // set author name and date/time
-        String tmpAuthorName = commentElement.getAuthorName();
-        if (tmpAuthorName.equals(prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt"))) {
-            tmpAuthorName = contextForActivity.getResources().getString(R.string.ourArrangementShowCommentPersonalAuthorName);
-        }
-
-        String commentDate = EfbHelperClass.timestampToDateFormat(commentElement.getLocalTime(), "dd.MM.yyyy");
-        String commentTime = EfbHelperClass.timestampToDateFormat(commentElement.getLocalTime(), "HH:mm");;
-        String tmpTextAuthorNameLastActualComment = "";
-        tmpTextAuthorNameLastActualComment = String.format(contextForActivity.getResources().getString(R.string.ourArrangementShowCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
-        if (commentElement.getStatus() == 4) {tmpTextAuthorNameLastActualComment = String.format(contextForActivity.getResources().getString(R.string.ourArrangementShowCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
-
-        holder.tmpTextViewAuthorNameLastActualComment.setText(HtmlCompat.fromHtml(tmpTextAuthorNameLastActualComment, HtmlCompat.FROM_HTML_MODE_LEGACY));
-
-
-
-
-    }
-*/
-
-
-
-
-
 
 
     @Override
     public int getItemCount() {
         switch (STATE) {
             case BOTH:
-                // if both, return 2 additional for header & footerResource
-                Log.d("++++++ Get Item Count ->", "BOTH +2 ["+(ourArrangementShowCommentList.size()+2)+"]");
-
+                // if both, return 2 additional for header & footer Resource
                 return ourArrangementShowCommentList.size() + 2;
             case ITEM:
                 // if just items, return just the length
-                Log.d("++++++ Get Item Count ->", "Item size");
-
                 return ourArrangementShowCommentList.size();
             default:
                 // if either or, return 1 additional
-                Log.d("++++++ Get Item Count ->", "Default +1");
                 return ourArrangementShowCommentList.size() + 1;
         }
     }
-
 
 }

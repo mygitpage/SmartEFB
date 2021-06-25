@@ -304,7 +304,7 @@
             <string name="arrangementComment">Absprachen kommentieren</string>
             <string name="btnSendArrangementComment">Kommentar senden</string>
             <string name="btnAbortComment">Zurück</string>
-            <string name="arrangementCommentHintText"><b>Bitte kommentieren Sie die Absprache!</b></string>
+            <string name="arrangementCommentHintText"><b>Ihr Kommentar zur Absprache %1$d</b></string>
             <string name="commentHistoryIntroText">Alle bisherigen Kommentare zu Absprache</string>
             <string name="commentHistoryNoCommentIntroText">Bisher sind noch keine Kommentare zur Absprache vorhanden!</string>
             <string name ="commentArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
@@ -336,6 +336,11 @@
             <string name="textOurArrangementCommentNoSharing">Die Kommentare werden im Moment nicht zugestellt!</string>
             <string name="ourArrangementCommentSendInfoSharingDisable">Der Kommentar wurde gesendet. Wird aber im Moment nicht zugestellt!</string>
             <string name="toastOurArrangementCommentCaseCloseToastText">Der Fall ist abgeschlossen! Kommentare werden nicht mehr gesendet!</string>
+            <string name="ourArrangementNowCommentBackButtonToNowArrangement">Übersicht Absprachen</string>
+            <string name="ourArrangementNowCommentBackButtonToShowComment">Übersicht Kommentare</string>
+            <string name="ourArrangementNowCommentCountCommentTextSingular">%1$s von %2$d Kommentar</string>
+            <string name="ourArrangementNowCommentCountCommentTextPlural">%1$s von %2$d Kommentaren</string>
+            <string name="ourArrangementNowCommentCountCommentTextNoLimit">Keine Anzahlbeschränkung</string>
         <!-- End String Fragment comment -->
 
         <!-- String Fragment show comment -->
@@ -354,9 +359,9 @@
             <string name="ourArrangementShowCommentPersonalAuthorName">Ihnen</string>
             <string name="ourArrangementShowCommentLinkChangeSortSequenceOfArrangementCommentAscending">Kommentare absteigend sortieren (Jüngster zu erst)</string>
             <string name="ourArrangementShowCommentLinkChangeSortSequenceOfArrangementCommentDescending">Kommentare aufsteigend sortieren (Ältester zu erst)</string>
-            <string name="ourArrangementBackButtonToNowArrangement">Übersicht Absprachen</string>
-            <string name="ourArrangementShowCommentMenuSortDesc">Absteigend sortieren (Datum)</string>
-            <string name="ourArrangementShowCommentMenuSortAsc">Aufsteigend sortieren (Datum)</string>
+            <string name="ourArrangementShowCommentBackButtonToNowArrangement">Übersicht Absprachen</string>
+            <string name="ourArrangementShowCommentMenuSortDesc">Kommentare absteigend sortieren</string>
+            <string name="ourArrangementShowCommentMenuSortAsc">Kommentare aufsteigend sortieren</string>
         <!-- End String Fragment show comment -->
 
         <!-- String Fragment evaluate arrangement -->

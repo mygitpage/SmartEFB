@@ -9,6 +9,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +22,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Created by ich on 26.06.16.
@@ -38,8 +43,21 @@ public class OurArrangementFragmentNow extends Fragment {
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
 
-    // the list view for the arrangements
-    ListView listViewArrangements = null;
+
+
+
+    // the recycler view
+    RecyclerView recyclerViewNowArangement = null;
+
+    // data array of now arrangements for recycler view
+    ArrayList<ObjectSmartEFBArrangement> arrayListArrangements;
+
+    // reference cursorAdapter for the recyler view
+    OurArrangementNowArrangementRecylerViewAdapter nowArrangementRecylerViewAdapter;
+
+
+
+
 
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
@@ -47,8 +65,6 @@ public class OurArrangementFragmentNow extends Fragment {
     // block id of current arrangements
     String currentBlockIdOfArrangement = "";
 
-    // reference cursorAdapter for the listview
-    OurArrangementNowCursorAdapter dataAdapterListViewOurArrangement = null;
 
     //limitation in count comments true-> yes, there is a border; no, there is no border, wirte infitisly comments
     Boolean commentLimitationBorder;
@@ -116,11 +132,6 @@ public class OurArrangementFragmentNow extends Fragment {
         menuInflater.inflate(R.menu.menu_efb_our_arrangement_fragment_now, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
     }
-
-
-
-
-
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeJobIntentServiceEfb
@@ -257,10 +268,10 @@ public class OurArrangementFragmentNow extends Fragment {
     // update the list view with arrangements
     public void updateListView () {
 
-        if (listViewArrangements != null) {
-            listViewArrangements.destroyDrawingCache();
-            listViewArrangements.setVisibility(ListView.INVISIBLE);
-            listViewArrangements.setVisibility(ListView.VISIBLE);
+        if (recyclerViewNowArangement != null) {
+            recyclerViewNowArangement.destroyDrawingCache();
+            recyclerViewNowArangement.setVisibility(ListView.INVISIBLE);
+            recyclerViewNowArangement.setVisibility(ListView.VISIBLE);
 
             displayActualArrangementSet ();
         }
@@ -286,17 +297,40 @@ public class OurArrangementFragmentNow extends Fragment {
         // ask methode isCommentLimitationBorderSet() in ActivityOurArrangement to limitation in comments? true-> yes, linitation; false-> no
         commentLimitationBorder = ((ActivityOurArrangement) getActivity()).isCommentLimitationBorderSet("current");
 
-        // find the listview for the arrangements
-        listViewArrangements = (ListView) viewFragmentNow.findViewById(R.id.listOurArrangementNow);
+
+
+
+        // new recyler view
+        recyclerViewNowArangement = viewFragmentNow.findViewById(R.id.listOurArrangementNowArrangement);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fragmentNowContext);
+        recyclerViewNowArangement.setLayoutManager(linearLayoutManager);
+        recyclerViewNowArangement.setHasFixedSize(true);
+
+
+
+
+
     }
 
 
     // show listView with current arrangements or info: mothing there
     public void displayActualArrangementSet () {
 
+
+
+        // get the data (all comments from an arrangement) from DB
+        arrayListArrangements = myDb.getAllRowsOurArrangementNowArrayList(currentBlockIdOfArrangement, "equalBlockId"));
+
+
+
+
         Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentBlockIdOfArrangement, "equalBlockId");
 
-        if (cursor.getCount() > 0 && listViewArrangements != null) {
+
+
+
+
+        if (arrayListArrangements.size() > 0 && recyclerViewNowArangement != null) {
 
             // set listView visible and textView hide
             setVisibilityListViewNowArrangements("show");
@@ -307,13 +341,13 @@ public class OurArrangementFragmentNow extends Fragment {
             ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "now");
 
             // new dataadapter
-            dataAdapterListViewOurArrangement = new OurArrangementNowCursorAdapter(
+            nowArrangementRecylerViewAdapter = new OurArrangementNowArrangementRecylerViewAdapter (
                     getActivity(),
                     cursor,
                     0);
 
             // Assign adapter to ListView
-            listViewArrangements.setAdapter(dataAdapterListViewOurArrangement);
+            recyclerViewNowArangement.setAdapter(nowArrangementRecylerViewAdapter);
         }
         else {
 

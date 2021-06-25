@@ -471,7 +471,6 @@ public class ActivityOurGoals extends AppCompatActivity {
 
         Button tmpHelpButtonOurGoals = (Button) findViewById(R.id.helpOurGoalsNow);
 
-
         // add button listener to question mark in activity OurGoals (toolbar)
         tmpHelpButtonOurGoals.setOnClickListener(new View.OnClickListener() {
 
@@ -481,7 +480,7 @@ public class ActivityOurGoals extends AppCompatActivity {
                 TextView tmpdialogTextView;
                 LayoutInflater dialogInflater;
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityOurGoals.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityOurGoals.this, R.style.helpDialogStyle);
 
                 // Get the layout inflater
                 dialogInflater = (LayoutInflater) ActivityOurGoals.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -712,8 +711,19 @@ public class ActivityOurGoals extends AppCompatActivity {
                 // and create
                 alertDialogSettings = builder.create();
 
-                // and show the dialog
-                builder.show();
+                alertDialogSettings.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        // change background and text color of button
+                        Button negativeButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                        // Change negative button text and background color
+                        negativeButton.setTextColor(ContextCompat.getColor(ActivityOurGoals.this, R.color.white));
+                        negativeButton.setBackgroundResource(R.drawable.help_dialog_custom_negativ_button_background);
+                    }
+                });
+
+                // show dialog
+                alertDialogSettings.show();
 
             }
         });

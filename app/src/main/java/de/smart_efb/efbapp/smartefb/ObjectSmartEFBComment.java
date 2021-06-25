@@ -1,6 +1,5 @@
 package de.smart_efb.efbapp.smartefb;
 
-import android.util.Log;
 
 public class ObjectSmartEFBComment {
 
@@ -34,12 +33,10 @@ public class ObjectSmartEFBComment {
         this.timerStatus = timerStatus;
         this.status = status;
 
-        Log.d("+++++++++++++++++ Comment Object", "New Status:"+newEntry);
-
     }
 
 
-    // TODO: getter und setter funktionen implementieren!
+    // TODO: getter and setter function implement
 
     public String getAuthorName () {
         return authorName;

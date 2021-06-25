@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,6 +22,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -37,26 +38,14 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // fragment context
     Context fragmentShowCommentContext = null;
 
-
-
-
     // the recycler view
-    RecyclerView recylerViewShowComment = null;
-
+    RecyclerView recyclerViewShowComment = null;
 
     // data array of comments for recycler view
     ArrayList<ObjectSmartEFBComment> arrayListComments;
 
-
-
-    // the listview for the comments
-    ListView listViewShowComments = null;
-
-
-
-
-
-
+    // the fab
+    FloatingActionButton fabFragmentShowComment;
 
     // reference to the DB
     DBAdapter myDb;
@@ -68,20 +57,8 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
 
-
-
     // reference cursorAdapter for the recyler view
     OurArrangementShowCommentRecylerViewAdapter showCommentRecylerViewAdapter;
-
-
-    // reference cursorAdapter for the listview
-    OurArrangementShowCommentCursorAdapter showCommentCursorAdapter;
-
-
-
-
-
-
 
     // Server DB-Id of arrangement to comment
     int arrangementServerDbIdToShow = 0;
@@ -157,7 +134,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
     }
 
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 
@@ -184,7 +160,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -203,17 +178,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-
-
-
     }
-
-
-
-
-
-
 
 
     // inits the fragment for use
@@ -233,17 +198,40 @@ public class OurArrangementFragmentShowComment extends Fragment {
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentShowCommentText", "string", fragmentShowCommentContext.getPackageName())) + " " + arrangementNumberInListView;
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "showComment");
 
-        // find the listview
-        //listViewShowComments = (ListView) viewFragmentShowComment.findViewById(R.id.listOurArrangementShowComment);
-
-
-        // new recyler view!!!!!!!!!!
-        recylerViewShowComment = (RecyclerView) viewFragmentShowComment.findViewById(R.id.listOurArrangementShowComment);
+        // new recyler view
+        recyclerViewShowComment = viewFragmentShowComment.findViewById(R.id.listOurArrangementShowComment);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fragmentShowCommentContext);
-        recylerViewShowComment.setLayoutManager(linearLayoutManager);
-        recylerViewShowComment.setHasFixedSize(true);
+        recyclerViewShowComment.setLayoutManager(linearLayoutManager);
+        recyclerViewShowComment.setHasFixedSize(true);
 
+        // get floation action button
+        fabFragmentShowComment = viewFragmentShowComment.findViewById(R.id.fabOurArrangementShowComment);
 
+        // show and hide fab on scrolling recycler view
+        recyclerViewShowComment.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && fabFragmentShowComment.getVisibility() != View.VISIBLE) {
+                    fabFragmentShowComment.show();
+                } else if (dy < 0 && fabFragmentShowComment.getVisibility() == View.VISIBLE) {
+                    fabFragmentShowComment.hide();
+                }
+            }
+        });
+
+        // add on click listener to fab
+        fabFragmentShowComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(fragmentShowCommentContext, ActivityOurArrangement.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("com","comment_an_arrangement");
+                intent.putExtra("db_id",arrangementServerDbIdToShow);
+                intent.putExtra("arr_num",arrangementNumberInListView);
+                fragmentShowCommentContext.startActivity(intent);
+            }
+        });
     }
 
 
@@ -281,7 +269,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentShowCommentContext.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -308,7 +296,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
                     // reset now comment counter -> show toast and update view
                     String updateMessageCommentNow = fragmentShowCommentContext.getString(R.string.toastMessageArrangementResetCommentCountComment);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -319,7 +307,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
                     // sharing is disable -> show toast and update view
                     String updateMessageCommentNow = fragmentShowCommentContext.getString(R.string.toastMessageArrangementCommentShareDisable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -330,7 +318,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
                     // sharing is enable -> show toast and update view
                     String updateMessageCommentNow = fragmentShowCommentContext.getString(R.string.toastMessageArrangementCommentShareEnable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -372,22 +360,21 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // update the list view with now comments
     public void updateListView () {
 
-        if (recylerViewShowComment != null) {
+        if (recyclerViewShowComment != null) {
 
-            recylerViewShowComment.destroyDrawingCache();
-            recylerViewShowComment.setVisibility(ListView.INVISIBLE);
-            recylerViewShowComment.setVisibility(ListView.VISIBLE);
+            recyclerViewShowComment.destroyDrawingCache();
+            recyclerViewShowComment.setVisibility(ListView.INVISIBLE);
+            recyclerViewShowComment.setVisibility(ListView.VISIBLE);
 
             displayActualCommentSet ();
         }
-
     }
 
 
     // call getter Functions in ActivityOurArrangement for some data
     private void callGetterFunctionInSuper () {
 
-        int tmpArrangementDbIdToComment = 0;
+        int tmpArrangementDbIdToComment;
 
         // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
         tmpArrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
@@ -405,7 +392,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
     }
 
 
-
     // build the view for the comments
     public void displayActualCommentSet () {
 
@@ -415,53 +401,19 @@ public class OurArrangementFragmentShowComment extends Fragment {
         // get the data (the choosen arrangement) from the DB
         Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToShow);
 
-        if (arrayListComments.size() > 0 && choosenArrangement.getCount() > 0 && recylerViewShowComment != null) {
+        if (arrayListComments.size() > 0 && choosenArrangement.getCount() > 0 && recyclerViewShowComment != null) {
 
             showCommentRecylerViewAdapter = new OurArrangementShowCommentRecylerViewAdapter(
                     getActivity(),
                     arrayListComments,
-                    0,
                     arrangementServerDbIdToShow,
                     arrangementNumberInListView,
                     commentLimitationBorder,
                     choosenArrangement);
 
             // Assign adapter to Recyler View
-            recylerViewShowComment.setAdapter(showCommentRecylerViewAdapter);
+            recyclerViewShowComment.setAdapter(showCommentRecylerViewAdapter);
         }
     }
 
-
-
-
-
-
-/*
-    // buil the view for the comments
-    public void displayActualCommentSet () {
-
-        // get the data (all comments from an arrangement) from DB
-        Cursor cursorComments = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToShow, prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending"));
-
-        // get the data (the choosen arrangement) from the DB
-        Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToShow);
-
-        if (cursorComments.getCount() > 0 && choosenArrangement.getCount() > 0 && listViewShowComments != null) {
-
-            // new dataadapter with custom constructor for show comments now
-            showCommentCursorAdapter = new OurArrangementShowCommentCursorAdapter(
-                    getActivity(),
-                    cursorComments,
-                    0,
-                    arrangementServerDbIdToShow,
-                    arrangementNumberInListView,
-                    commentLimitationBorder,
-                    choosenArrangement);
-
-            // Assign adapter to ListView
-            listViewShowComments.setAdapter(showCommentCursorAdapter);
-        }
-    }
-
- */
 }

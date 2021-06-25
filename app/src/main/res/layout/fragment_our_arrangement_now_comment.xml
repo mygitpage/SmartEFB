@@ -1,273 +1,298 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="true">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="left"
-        android:background="@color/body_background"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
+            android:layout_height="match_parent">
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/arrangementCommentNumberIntro"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="3dp"/>
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textAuthorName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="13dp"
-                android:textColor="@color/colorPrimaryDark"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:gravity="left"
-                android:layout_marginLeft="3dp"/>
-
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/choosenArrangement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/text_color"
-            android:gravity="left"
-            android:paddingLeft="10dp"/>
+                android:background="@color/body_background"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
+                    <RelativeLayout
+                        android:id="@+id/RelativeLayout01"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/arrangementShowCommentBackLinkNow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="@color/text_color"
-                android:textColorLink="@color/colorPrimary"
-                android:gravity="right"/>
 
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/countLettersCommentEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_alignParentLeft="true"
+                        android:paddingLeft="10dp"/>
 
-        <TextView
-            android:id="@+id/borderBetweenArrangement1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"/>
+                    <TextView
+                        android:id="@+id/infoTextCountComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_alignParentRight="true"
+                        android:paddingRight="10dp"/>
 
-        <TextView
-            android:id="@+id/commentSharingIsDisable"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/textOurArrangementCommentNoSharing"
-            android:textSize="14dp"
-            android:textColor="@color/text_accent_color"
-            android:gravity="center"
-            android:layout_marginBottom="20dp"
-            android:visibility="gone"/>
+                    </RelativeLayout>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/lastActualCommentInfoText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
+                <EditText
+                    android:id="@+id/inputArrangementComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
                     android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="3dp"/>
+                    android:gravity="left|top"
+                    android:background="@drawable/app_edittext_style"
+
+                    android:layout_margin="5dp"
+                    android:textColorHint="@color/colorPrimaryDark"
+                    android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
+                    android:padding="5dp"
+                    android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
+
 
                 <TextView
-                    android:id="@+id/lastActualCommentNewInfoText"
+                    android:id="@+id/errorInputArrangementComment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="14dp"
                     android:textColor="@color/text_accent_color"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="@string/errorInputArrangementComment"
+                    android:paddingBottom="5dp"/>
+
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="15dp"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal">
+
+                    <Button
+                        android:id="@+id/buttonSendArrangementComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/app_button_style"
+                        android:textColor="@color/white"
+                        android:text="@string/btnSendArrangementComment"
+                        android:layout_gravity="center_horizontal"
+                        android:padding="10dp"/>
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/borderBetweenEditTextAndArrangement"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_color"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"/>
+
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/arrangementCommentNumberIntro"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="3dp"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textAuthorName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:layout_marginLeft="3dp"/>
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/choosenArrangement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/text_color"
                     android:gravity="left"
                     android:paddingLeft="10dp"/>
 
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="30dp">
+
+                    <Button
+                        android:id="@+id/buttonNowCommentBackToArrangement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/app_button_style"
+                        android:textColor="@color/white"
+                        android:text="@string/ourArrangementNowCommentBackButtonToNowArrangement"
+                        android:layout_gravity="center_horizontal"
+                        android:padding="10dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/borderBetweenArrangement1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_color"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"/>
+
+                <TextView
+                    android:id="@+id/commentSharingIsDisable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/textOurArrangementCommentNoSharing"
+                    android:textSize="14dp"
+                    android:textColor="@color/text_accent_color"
+                    android:gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:visibility="gone"/>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/lastActualCommentInfoText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="3dp"/>
+
+                        <TextView
+                            android:id="@+id/lastActualCommentNewInfoText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14dp"
+                            android:textColor="@color/text_accent_color"
+                            android:gravity="center"
+                            android:paddingLeft="10dp"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textAuthorNameLastActualComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:layout_marginLeft="3dp"/>
+
+                    <TextView
+                        android:id="@+id/textSendInfoLastActualComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:paddingBottom="5dp"
+                        android:layout_marginLeft="3dp"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/lastActualCommentText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/text_color"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"/>
+
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="30dp">
+
+                    <Button
+                        android:id="@+id/buttonNowCommentBackToShowComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/app_button_style"
+                        android:textColor="@color/white"
+                        android:text="@string/ourArrangementNowCommentBackButtonToShowComment"
+                        android:layout_gravity="center_horizontal"
+                        android:padding="10dp"/>
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/infoNowCommentMaxAndCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="50dp"/>
+
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textAuthorNameLastActualComment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="13dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:layout_marginLeft="3dp"/>
+        </androidx.core.widget.NestedScrollView>
 
-            <TextView
-                android:id="@+id/textSendInfoLastActualComment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="13dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:paddingBottom="5dp"
-                android:layout_marginLeft="3dp"
-                android:visibility="gone"/>
-
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/lastActualCommentText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/text_color"
-            android:gravity="left"
-            android:paddingLeft="10dp"/>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:id="@+id/commentLInkToShowAllComments"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="@color/text_color"
-                android:textColorLink="@color/colorPrimary"
-                android:gravity="right"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/borderBetweenArrangement2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"/>
-
-        <TextView
-            android:id="@+id/errorInputArrangementComment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="@color/text_accent_color"
-            android:gravity="center"
-            android:visibility="gone"
-            android:text="@string/errorInputArrangementComment"
-            android:paddingBottom="5dp"/>
-
-
-        <TextView
-            android:id="@+id/countLettersCommentEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="13dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="right" />
-
-        <EditText
-            android:id="@+id/inputArrangementComment"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="left|top"
-            android:background="@drawable/app_edittext_style"
-            android:hint="@string/arrangementCommentHintText"
-            android:layout_margin="5dp"
-            android:textColorHint="@color/colorPrimaryDark"
-            android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
-            android:padding="5dp"
-            android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
-
-
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="15dp"
-            android:gravity="center"
-            android:layout_gravity="center_horizontal">
-
-            <Button
-                android:id="@+id/buttonSendArrangementComment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/app_button_style"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/btnSendArrangementComment"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginRight="5dp"
-                android:padding="10dp"/>
-
-            <Button
-                android:id="@+id/buttonAbortComment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/app_button_style"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/btnAbortComment"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="5dp"
-                android:padding="10dp"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/infoNowCommentMaxAndCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="center"
-            android:paddingBottom="35dp"/>
-
-
-    </LinearLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
