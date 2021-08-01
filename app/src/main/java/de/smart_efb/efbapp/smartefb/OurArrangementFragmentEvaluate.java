@@ -27,6 +27,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 /**
  * Created by ich on 10.08.16.
  */
@@ -43,6 +45,9 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
     // reference to the DB
     DBAdapter myDb;
+
+    // the fab
+    FloatingActionButton fabFragmentNowArrangement;
 
     // shared prefs for the evaluate arrangement
     SharedPreferences prefs;
@@ -248,6 +253,11 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         // init the DB
         myDb = new DBAdapter(fragmentEvaluateContext);
 
+        // show fab and set on click listener
+        if (fabFragmentNowArrangement != null) {
+            fabFragmentNowArrangement.hide();
+        }
+
         // init the prefs
         prefs = fragmentEvaluateContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentEvaluateContext.MODE_PRIVATE);
         prefsEditor = prefs.edit();
@@ -256,7 +266,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToEvaluate);
 
         // get all actual arrangements
-        cursorNextArrangementToEvaluate = myDb.getAllRowsCurrentOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "equalBlockId"),  "equalBlockId");
+        cursorNextArrangementToEvaluate = myDb.getAllRowsCurrentOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "equalBlockId"),  "equalBlockId", "asc");
 
         // Set correct subtitle in Activity -> "Bewerten Absprache ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentEvaluateArrangementText", "string", fragmentEvaluateContext.getPackageName())) + " " + arrangementNumberInListView;
@@ -264,10 +274,11 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         // build the view
         //textview for the evaluation intro
-        TextView textCommentNumberIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.arrangementEvalauteIntroText);
+        TextView textCommentNumberIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.arrangementEvaluateIntroText);
         textCommentNumberIntro.setText(this.getResources().getString(R.string.showEvaluateArrangementIntroText) + " " + arrangementNumberInListView);
 
         // generate back link "zurueck zu allen Absprachen"
+        /*
         Uri.Builder commentLinkBuilder = new Uri.Builder();
         commentLinkBuilder.scheme("smart.efb.deeplink")
                 .authority("linkin")
@@ -278,6 +289,25 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         TextView linkShowEvaluateBackLink = (TextView) viewFragmentEvaluate.findViewById(R.id.arrangementShowEvaluateBackLink);
         linkShowEvaluateBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + fragmentEvaluateContext.getResources().getString(fragmentEvaluateContext.getResources().getIdentifier("ourArrangementEvaluationBackLinkToArrangement", "string", fragmentEvaluateContext.getPackageName())) + "</a>"));
         linkShowEvaluateBackLink.setMovementMethod(LinkMovementMethod.getInstance());
+        */
+
+
+
+        // onClick listener back button
+        Button tmpBackToArrangement = viewFragmentEvaluate.findViewById(R.id.buttonHeaderBackToArrangement);
+
+        tmpBackToArrangement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("com","show_arrangement_now");
+                getActivity().startActivity(intent);
+            }
+        });
+
+
 
         // put author name of arrangement
         TextView tmpTextViewAuthorNameText = (TextView) viewFragmentEvaluate.findViewById(R.id.textAuthorNameArrangement);
@@ -685,6 +715,9 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
         tmpArrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
+
+        // call getter-methode getFabViewOurArrangement() in ActivityOurArrangement to get view for fab
+        fabFragmentNowArrangement = ((ActivityOurArrangement)getActivity()).getFabViewOurArrangement();
 
         if (tmpArrangementDbIdToComment > 0) {
             arrangementServerDbIdToEvaluate = tmpArrangementDbIdToComment;

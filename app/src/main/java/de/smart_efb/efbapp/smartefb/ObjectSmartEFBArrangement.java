@@ -17,9 +17,10 @@ public class ObjectSmartEFBArrangement {
     private Integer newEntry;
     private Integer serverIdArrangement;
     private Integer status;
+    private Integer positionNumber;
 
 
-    public ObjectSmartEFBArrangement (Integer rowID, String arrangement, String authorName, String blockid, String changeTo, Long arrangementWriteTime, Long arrangementSketchWriteTime, Long lastEvalTime, Integer sketchArrangement, Integer evaluatePossible, Integer newEntry, Integer serverIdArrangement, Integer status) {
+    public ObjectSmartEFBArrangement (Integer rowID, String arrangement, String authorName, String blockid, String changeTo, Long arrangementWriteTime, Long arrangementSketchWriteTime, Long lastEvalTime, Integer sketchArrangement, Integer evaluatePossible, Integer newEntry, Integer serverIdArrangement, Integer status, Integer positionNumber) {
 
         this.rowID = rowID;
         this.arrangement = arrangement;
@@ -34,6 +35,7 @@ public class ObjectSmartEFBArrangement {
         this.newEntry = newEntry;
         this.serverIdArrangement = serverIdArrangement;
         this.status = status;
+        this.positionNumber = positionNumber;
 
     }
 
@@ -64,7 +66,12 @@ public class ObjectSmartEFBArrangement {
         return arrangement;
     }
 
+    public Integer getPositionNumber () {return positionNumber;}
 
+    public Integer getServerIdArrangement () {return serverIdArrangement;}
 
+    public Integer getEvaluatePossible () {return evaluatePossible;}
+
+    public Long getLastEvalTime () {return lastEvalTime;}
 
 }

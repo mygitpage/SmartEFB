@@ -9,7 +9,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -17,16 +16,14 @@
                 android:gravity="left"
                 android:background="@color/body_background"
                 android:paddingBottom="5dp"
-                android:paddingTop="5dp"
+                android:paddingTop="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
-
 
                     <RelativeLayout
                         android:id="@+id/RelativeLayout01"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-
 
                     <TextView
                         android:id="@+id/countLettersCommentEditText"
@@ -48,7 +45,6 @@
 
                     </RelativeLayout>
 
-
                 <EditText
                     android:id="@+id/inputArrangementComment"
                     android:layout_width="match_parent"
@@ -63,7 +59,6 @@
                     android:padding="5dp"
                     android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
 
-
                 <TextView
                     android:id="@+id/errorInputArrangementComment"
                     android:layout_width="match_parent"
@@ -74,7 +69,6 @@
                     android:visibility="gone"
                     android:text="@string/errorInputArrangementComment"
                     android:paddingBottom="5dp"/>
-
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
@@ -96,7 +90,6 @@
 
                 </LinearLayout>
 
-
                 <TextView
                     android:id="@+id/borderBetweenEditTextAndArrangement"
                     android:layout_width="match_parent"
@@ -106,7 +99,6 @@
                     android:layout_marginRight="40dp"
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"/>
-
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
@@ -141,7 +133,6 @@
                         android:layout_marginLeft="3dp"/>
 
                 </LinearLayout>
-
 
                 <TextView
                     android:id="@+id/choosenArrangement"
@@ -249,7 +240,6 @@
 
                 </LinearLayout>
 
-
                 <TextView
                     android:id="@+id/lastActualCommentText"
                     android:layout_width="match_parent"
@@ -258,7 +248,6 @@
                     android:textColor="@color/text_color"
                     android:gravity="left"
                     android:paddingLeft="10dp"/>
-
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
@@ -280,6 +269,15 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/borderBetweenNoCommentInfoAndInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_color"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/infoNowCommentMaxAndCount"

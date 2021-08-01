@@ -942,6 +942,17 @@ public class MainActivity extends AppCompatActivity {
                 case 9: // update nine
                     // nothing to do!
                 case 10: // update ten
+
+                    prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementNowList, "ascending");  // init sort of now arrangement
+                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsNumberOfCommentForOurArrangementNowShowComment, 20); // init the number of comments for list in our arrangement show comment
+
+                case 11: // update ten
+                    // nothing to do!
+                case 12: // update ten
+                    // nothing to do!
+                case 13: // update ten
+                    // nothing to do!
+                case 14: // update ten
                     // nothing to do!
             }
 

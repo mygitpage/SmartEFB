@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -43,6 +45,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // reference for the toolbar
     Toolbar toolbar = null;
     ActionBar actionBar = null;
+
+    // reference fab
+    FloatingActionButton ourArrangementFabView = null;
 
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
@@ -457,6 +462,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
         catch (NullPointerException e){
             // do nothing
         }
+
+        // find fab
+        ourArrangementFabView = findViewById(R.id.fabOurArrangement);
+
 
         // init the DB
         myDb = new DBAdapter(getApplicationContext());
@@ -947,6 +956,13 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
+    // geter for fab view
+    public FloatingActionButton getFabViewOurArrangement () {
+
+        return ourArrangementFabView;
+    }
+
+
     // geter for border for comments
     public boolean isCommentLimitationBorderSet (String currentSketch) {
 
@@ -1099,23 +1115,35 @@ public class ActivityOurArrangement extends AppCompatActivity {
         }
 
         // build the dialog
-        builder.setView(dialogSettings)
+        builder.setView(dialogSettings);
 
-                // Add close button
-                .setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        alertDialogArrangementChange.cancel();
-                    }
-                })
+        // add title
+        builder.setTitle(tmpTextTitleDialog);
 
-                // add title
-                .setTitle(tmpTextTitleDialog);
+        // Add close button
+        builder.setNegativeButton(tmpTextCloseDialog, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                alertDialogArrangementChange.cancel();
+            }
+        });
 
         // and create
         alertDialogArrangementChange = builder.create();
 
-        // and show the dialog
-        builder.show();
+        // change color and style of negativ button
+        alertDialogArrangementChange.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                // change background and text color of button
+                Button negativeButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                // Change negative button text and background color
+                negativeButton.setTextColor(ContextCompat.getColor(ActivityOurArrangement.this, R.color.white));
+                negativeButton.setBackgroundResource(R.drawable.help_dialog_custom_negativ_button_background);
+            }
+        });
+
+        // show dialog
+        alertDialogArrangementChange.show();
     }
 
 

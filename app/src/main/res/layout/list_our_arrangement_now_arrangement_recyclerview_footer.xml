@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="left"
-    android:paddingTop="5dp"
+    android:paddingTop="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
 
@@ -36,7 +36,7 @@
         android:textSize="14dp"
         android:textColor="@color/colorPrimaryDark"
         android:gravity="center"
-        android:paddingBottom="35dp"
+        android:paddingBottom="50dp"
         android:visibility="gone"/>
 
 </LinearLayout>

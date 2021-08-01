@@ -10,6 +10,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 
@@ -991,7 +993,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return all data from the database (table ourArrangement) -> see order!
     // the result is sorted by DESC
-    Cursor getAllRowsCurrentOurArrangement(String blockID, String order) {
+    Cursor getAllRowsCurrentOurArrangement(String blockID, String order, String sort) {
 
         String where;
 
@@ -1014,10 +1016,19 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         // sort string
-        String sort = OUR_ARRANGEMENT_KEY_WRITE_TIME + " DESC," + KEY_ROWID + " ASC";
+        String tmpSortSequence = "";
+        switch (sort) {
+            case "ascending":
+                tmpSortSequence = " ASC";
+                break;
+            case "descending":
+                tmpSortSequence = " DESC";
+                break;
+        }
+        String sortForDB = OUR_ARRANGEMENT_KEY_WRITE_TIME + " DESC, " + KEY_ROWID + tmpSortSequence;
 
         Cursor c = db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
-                where, null, null, null, sort, null);
+                where, null, null, null, sortForDB, null);
 
         if (c != null) {
             c.moveToFirst();
@@ -1029,12 +1040,14 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return all now arangement from the database with blockId in Array List <ObjectSmartEFBArrangement>
     // the result is sorted by sortSequence
-    ArrayList<ObjectSmartEFBArrangement> getAllRowsOurArrangementNowArrayList (String blockID, String order) {
+    ArrayList<ObjectSmartEFBArrangement> getAllRowsOurArrangementNowArrayList (String blockID, String order, String sort) {
 
         ArrayList<ObjectSmartEFBArrangement> storeArrangement = new ArrayList<>();
 
         // get the data (all comments from an arrangement) from DB
-        Cursor cursorArrangement = this.getAllRowsCurrentOurArrangement(blockID, order);
+        Cursor cursorArrangement = this.getAllRowsCurrentOurArrangement(blockID, order, sort);
+
+        Integer positionNumber = 0;
 
         if (cursorArrangement.moveToFirst()) {
             do {
@@ -1052,9 +1065,10 @@ public class DBAdapter extends SQLiteOpenHelper {
                 Integer serverIdArrangement = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID));
                 Integer status = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_STATUS)); // 0=ready to send, 1=message send, 4=external message
                 Integer rowID = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.KEY_ROWID));
+                positionNumber++;
 
                 // make comment object and store data
-                storeArrangement.add(new ObjectSmartEFBArrangement(rowID, arrangement, authorName, blockid, changeTo, arrangementWriteTime, arrangementSketchWriteTime, lastEvalTime, sketchArrangement, evaluatePossible, newEntry, serverIdArrangement, status));
+                storeArrangement.add(new ObjectSmartEFBArrangement(rowID, arrangement, authorName, blockid, changeTo, arrangementWriteTime, arrangementSketchWriteTime, lastEvalTime, sketchArrangement, evaluatePossible, newEntry, serverIdArrangement, status, positionNumber));
 
             } while (cursorArrangement.moveToNext());
         }
@@ -1269,7 +1283,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return all comments from the database for arrangement with  server id = id (table ourArrangementComment)
     // the result is sorted by sortSequence
-    Cursor getAllRowsOurArrangementComment(int serverId, String sortSequence) {
+    Cursor getAllRowsOurArrangementComment(int serverId, String sortSequence, int limit) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1290,8 +1304,16 @@ public class DBAdapter extends SQLiteOpenHelper {
                 break;
         }
 
-        Cursor c = db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
-                where, null, null, null, sort, null);
+        Cursor c;
+        if (limit > 0) { // get cursor with limit
+            c = db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
+                    where, null, null, null, sort, Integer.toString(limit));
+        }
+        else{
+            // get cursor without limit
+            c = db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, OUR_ARRANGEMENT_COMMENT_ALL_KEYS,
+                    where, null, null, null, sort, null);
+        }
 
         if (c != null) {
             c.moveToFirst();
@@ -1303,12 +1325,12 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // Return all comments from the database for arrangement with  server id = id (table ourArrangementComment) in Array List <ObjectSmartEFBComment>
     // the result is sorted by sortSequence
-    ArrayList<ObjectSmartEFBComment> getAllRowsOurArrangementCommentArrayList (int serverId, String sortSequence) {
+    ArrayList<ObjectSmartEFBComment> getAllRowsOurArrangementCommentArrayList (int serverId, String sortSequence, int limit) {
 
         ArrayList<ObjectSmartEFBComment> storeComment = new ArrayList<>();
 
         // get the data (all comments from an arrangement) from DB
-        Cursor cursorComments = this.getAllRowsOurArrangementComment(serverId, sortSequence);
+        Cursor cursorComments = this.getAllRowsOurArrangementComment(serverId, sortSequence, limit);
 
         if (cursorComments.moveToFirst()) {
             do {

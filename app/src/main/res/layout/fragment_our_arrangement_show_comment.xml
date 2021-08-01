@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
--->
-
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/main_content"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,18 +7,15 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listOurArrangementShowComment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingBottom="8dp"
-        android:scrollbars="none" />
+        android:scrollbars="none"/>
 
-
-
+    <!--
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabOurArrangementShowComment"
         android:layout_width="wrap_content"
@@ -40,13 +27,6 @@
         app:layout_anchorGravity="bottom|right|end"
         app:backgroundTint="@color/text_accent_color"
         android:visibility="invisible"/>
-
-
-
+    -->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
-<!--
-</androidx.constraintlayout.widget.ConstraintLayout>
-    -->

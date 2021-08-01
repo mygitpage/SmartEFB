@@ -3,15 +3,20 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,7 +24,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +46,9 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // fragment context
     Context fragmentShowCommentContext = null;
 
+    // the linear layout manager
+    LinearLayoutManager linearLayoutManager;
+
     // the recycler view
     RecyclerView recyclerViewShowComment = null;
 
@@ -46,6 +57,9 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
     // the fab
     FloatingActionButton fabFragmentShowComment;
+
+    // hide/ show fab on scroll?
+    Boolean switchHideShowOfFab = true;
 
     // reference to the DB
     DBAdapter myDb;
@@ -68,6 +82,9 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
     // true-> comments are limited, false -> comments are not limited
     Boolean commentLimitationBorder = false;
+
+    // reference to dialog selecting number of comment
+    AlertDialog dialogSelectingNumberOfComment;
 
 
     @Override
@@ -175,9 +192,115 @@ public class OurArrangementFragmentShowComment extends Fragment {
                 prefsEditor.apply();
                 updateListView();
                 return true;
+            case R.id.our_arrangement_menu_fragment_now_count_comment_in_recycler_view:
+                showDialogForSelectingNumberOfCommentInList();
+                updateListView();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    private void showDialogForSelectingNumberOfCommentInList () {
+
+        LayoutInflater dialogInflater;
+
+        // get alert dialog builder with custom style
+        AlertDialog.Builder builder = new AlertDialog.Builder(((ActivityOurArrangement)getActivity()), R.style.selectDialogStyle);
+
+        // Get the layout inflater
+        dialogInflater = (LayoutInflater) ((ActivityOurArrangement)getActivity()).getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // inflate and get the view
+        View dialogSelecting = dialogInflater.inflate(R.layout.select_dialog_our_arrangement_now_number_of_comment, null);
+
+        //set radio button with correct value
+        RadioButton tmpRadioButton;
+        switch (prefs.getInt(ConstansClassOurArrangement.namePrefsNumberOfCommentForOurArrangementNowShowComment, 50)) {
+            case 5:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfComment5);
+                break;
+            case 10:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfComment10);
+                break;
+            case 20:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfComment20);
+                break;
+            case 50:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfComment50);
+                break;
+            default:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfCommentAll);
+                break;
+        }
+        tmpRadioButton.setChecked(true);
+
+        // set on click listener
+        RadioGroup radioGroupNumberOfComment = dialogSelecting.findViewById(R.id.selectNumberOfComment);
+        radioGroupNumberOfComment.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                int numberOfComment = 0;
+                switch (checkedId) {
+                    case R.id.numberOfComment5:
+                        numberOfComment = 5;
+                        break;
+                    case R.id.numberOfComment10:
+                        numberOfComment = 10;
+                        break;
+                    case R.id.numberOfComment20:
+                        numberOfComment = 20;
+                        break;
+                    case R.id.numberOfComment50:
+                        numberOfComment = 50;
+                        break;
+                    case R.id.numberOfCommentAll:
+                        numberOfComment = 0;
+                        break;
+                }
+                prefsEditor.putInt(ConstansClassOurArrangement.namePrefsNumberOfCommentForOurArrangementNowShowComment, numberOfComment);
+                prefsEditor.apply();
+
+                // close dialog
+                dialogSelectingNumberOfComment.dismiss();
+
+                // update recycler view with new number of comment
+                updateListView ();
+            }
+        });
+
+        // build the dialog
+        builder.setView(dialogSelecting);
+
+        // Add close button
+        builder.setNegativeButton("Schliessen", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialogSelectingNumberOfComment.cancel();
+            }
+        });
+
+        // add title
+        builder.setTitle(R.string.select_dialog_our_arrangement_now_number_of_comment_title);
+
+        // and create
+        dialogSelectingNumberOfComment = builder.create();
+
+        // set correct color of close button
+        dialogSelectingNumberOfComment.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                // change background and text color of button
+                Button negativeButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                // Change negative button text and background color
+                negativeButton.setTextColor(ContextCompat.getColor(((ActivityOurArrangement)getActivity()), R.color.white));
+                negativeButton.setBackgroundResource(R.drawable.select_dialog_style_custom_negativ_button_background);
+            }
+        });
+
+        // show dialog
+        dialogSelectingNumberOfComment.show();
     }
 
 
@@ -204,34 +327,25 @@ public class OurArrangementFragmentShowComment extends Fragment {
         recyclerViewShowComment.setLayoutManager(linearLayoutManager);
         recyclerViewShowComment.setHasFixedSize(true);
 
-        // get floation action button
-        fabFragmentShowComment = viewFragmentShowComment.findViewById(R.id.fabOurArrangementShowComment);
+        // show fab and set on click listener
+        if (fabFragmentShowComment != null) {
 
-        // show and hide fab on scrolling recycler view
-        recyclerViewShowComment.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0 && fabFragmentShowComment.getVisibility() != View.VISIBLE) {
-                    fabFragmentShowComment.show();
-                } else if (dy < 0 && fabFragmentShowComment.getVisibility() == View.VISIBLE) {
-                    fabFragmentShowComment.hide();
+            fabFragmentShowComment.show();
+
+            // add on click listener to fab
+            fabFragmentShowComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(fragmentShowCommentContext, ActivityOurArrangement.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("com", "comment_an_arrangement");
+                    intent.putExtra("db_id", arrangementServerDbIdToShow);
+                    intent.putExtra("arr_num", arrangementNumberInListView);
+                    fragmentShowCommentContext.startActivity(intent);
                 }
-            }
-        });
+            });
+        }
 
-        // add on click listener to fab
-        fabFragmentShowComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(fragmentShowCommentContext, ActivityOurArrangement.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("com","comment_an_arrangement");
-                intent.putExtra("db_id",arrangementServerDbIdToShow);
-                intent.putExtra("arr_num",arrangementNumberInListView);
-                fragmentShowCommentContext.startActivity(intent);
-            }
-        });
     }
 
 
@@ -376,6 +490,9 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
         int tmpArrangementDbIdToComment;
 
+        // call getter-methode getFabViewOurArrangement() in ActivityOurArrangement to get view for fab
+        fabFragmentShowComment = ((ActivityOurArrangement)getActivity()).getFabViewOurArrangement();
+
         // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
         tmpArrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
 
@@ -396,7 +513,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
     public void displayActualCommentSet () {
 
         // get the data (all comments from an arrangement) from DB
-        arrayListComments = myDb.getAllRowsOurArrangementCommentArrayList(arrangementServerDbIdToShow, prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending"));
+        arrayListComments = myDb.getAllRowsOurArrangementCommentArrayList(arrangementServerDbIdToShow, prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending"), prefs.getInt(ConstansClassOurArrangement.namePrefsNumberOfCommentForOurArrangementNowShowComment, 50));
 
         // get the data (the choosen arrangement) from the DB
         Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToShow);
@@ -411,8 +528,13 @@ public class OurArrangementFragmentShowComment extends Fragment {
                     commentLimitationBorder,
                     choosenArrangement);
 
-            // Assign adapter to Recyler View
+            // Assign adapter to Recycler View
             recyclerViewShowComment.setAdapter(showCommentRecylerViewAdapter);
+
+
+
+
+
         }
     }
 

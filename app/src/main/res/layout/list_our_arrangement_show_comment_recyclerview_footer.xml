@@ -38,6 +38,6 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:gravity="center"
                 android:paddingTop="40dp"
-                android:paddingBottom="50dp"/>
+                android:paddingBottom="65dp"/>
 
     </LinearLayout>

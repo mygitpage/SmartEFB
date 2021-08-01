@@ -12,4 +12,9 @@
         app:showAsAction="never"
         android:title="@string/ourArrangementShowCommentMenuSortAsc" />
 
+    <item
+        android:id="@+id/our_arrangement_menu_fragment_now_count_comment_in_recycler_view"
+        app:showAsAction="never"
+        android:title="@string/ourArrangementShowCommentMenuCountCommentForList" />
+
 </menu>

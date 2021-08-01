@@ -196,7 +196,7 @@ public class OurArrangementFragmentOld extends Fragment {
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, false) && listView != null) { // Function showOldArrangement is available!!!!
 
             // get all old arrangement from DB
-            Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentBlockIdOfArrangement,"notEqualBlockId");
+            Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentBlockIdOfArrangement,"notEqualBlockId", "asc");
 
             if (cursor.getCount() > 0) {
 

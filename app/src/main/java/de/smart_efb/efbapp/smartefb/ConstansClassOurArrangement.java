@@ -68,6 +68,9 @@ class ConstansClassOurArrangement {
     // prefs name for count comment
     static final String namePrefsCommentCountComment = "commentOurArrangementCountComment";
 
+    // prefs name for number of comment in list for show comment in our arrangement now
+    static final String namePrefsNumberOfCommentForOurArrangementNowShowComment = "numberOfCommentForOurArrangementNow";
+
     // prefs name for time since comment start in mills
     static final String namePrefsCommentTimeSinceCommentStartInMills = "commentOurArrangementTimeSinceInMills";
 
@@ -106,6 +109,9 @@ class ConstansClassOurArrangement {
 
     // sort sequence of arrangement comment list-> "decending" or "ascending"
     static final String namePrefsSortSequenceOfArrangementCommentList = "arrangementCommentSortSequence";
+
+    // sort sequence of now arrangement list-> "decending" or "ascending"
+    static final String namePrefsSortSequenceOfArrangementNowList = "arrangementNowSortSequence";
 
     // sort sequence of arrangement sketch comment list-> "decending" or "ascending"
     static final String namePrefsSortSequenceOfArrangementSketchCommentList = "arrangementSketchCommentSortSequence";

@@ -61,4 +61,8 @@
     <color name="bg_color_help_dialog_button_close">#d6d6d6</color>
     <!-- End Colors for help dialog button -->
 
+    <!-- Colors for select number dialog button -->
+    <color name="bg_color_select_dialog_number_comment_button_close">#d6d6d6</color>
+    <!-- End Colors for select number dialog button -->
+
 </resources>

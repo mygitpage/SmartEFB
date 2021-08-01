@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/arrangement1"
+        android:title="@string/popupItemOurArrangementArrangement1"/>
+    <item android:id="@+id/arrangement2"
+        android:title="@string/popupItemOurArrangementArrangement2"/>
+    <item android:id="@+id/arrangement3"
+        android:title="@string/popupItemOurArrangementArrangement3"/>
+    <item android:id="@+id/arrangement4"
+        android:title="@string/popupItemOurArrangementArrangement4"/>
+    <item android:id="@+id/arrangement5"
+        android:title="@string/popupItemOurArrangementArrangement5"/>
+    <item android:id="@+id/arrangement6"
+        android:title="@string/popupItemOurArrangementArrangement6"/>
+    <item android:id="@+id/arrangement7"
+        android:title="@string/popupItemOurArrangementArrangement7"/>
+    <item android:id="@+id/arrangement8"
+        android:title="@string/popupItemOurArrangementArrangement8"/>
+    <item android:id="@+id/arrangement9"
+        android:title="@string/popupItemOurArrangementArrangement9"/>
+    <item android:id="@+id/arrangement10"
+        android:title="@string/popupItemOurArrangementArrangement10"/>
+    <item android:id="@+id/arrangement11"
+        android:title="@string/popupItemOurArrangementArrangement11"/>
+    <item android:id="@+id/arrangement12"
+        android:title="@string/popupItemOurArrangementArrangement12"/>
+</menu>

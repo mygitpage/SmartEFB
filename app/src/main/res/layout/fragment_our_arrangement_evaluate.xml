@@ -1,604 +1,611 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="true">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="left"
-        android:background="@color/body_background"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/list_element_style">
+            android:layout_height="match_parent">
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="left"
+                android:background="@color/body_background"
+                android:paddingBottom="5dp"
+                android:paddingTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/list_element_style">
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/arrangementEvaluateIntroText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:gravity="center"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textAuthorNameArrangement"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="left"
+                        android:layout_marginLeft="3dp"/>
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/arrangementEvalauteIntroText"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/evaluateArrangement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/text_color"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"/>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:paddingTop="10dp">
+
+                    <Button
+                        android:id="@+id/buttonHeaderBackToArrangement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/app_button_style"
+                        android:textColor="@color/white"
+                        android:text="@string/ourArrangementShowCommentBackButtonToNowArrangement"
+                        android:layout_gravity="center_horizontal"
+                        android:padding="10dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/borderBetweenArrangement1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_color"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="30dp"/>
+
+
+                <TextView
+                    android:id="@+id/evaluateThankAndNextEvaluation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/text_accent_color"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="@string/evaluateThankAndNextEvaluationText"/>
+
+                <TextView
+                    android:id="@+id/borderBetweenEvaluation1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/text_color"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginTop="30dp"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/questionOneEvaluate"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
                     android:textColor="@color/colorPrimaryDark"
-                    android:gravity="left"
+                    android:gravity="center"
                     android:textStyle="bold"
-                    android:layout_marginLeft="3dp"/>
+                    android:text="@string/questionOneEvaluateMySelf"
+                    android:paddingBottom="5dp"/>
+
+                <TextView
+                    android:id="@+id/questionOneEvaluateError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/text_accent_color"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="@string/evaluateErrorTextByQuestion"
+                    android:paddingBottom="5dp"/>
+
+                    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/radioGroupQuestionOne"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:gravity="center"
+                        android:background="@drawable/app_radiogroup_style">
+
+                        <RadioButton android:id="@+id/questionOne_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/evaluateArrangementSuggestion_1"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12dp"
+                            android:gravity="center"
+                            android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                            android:theme="@style/radioButtonStyleEvaluateArrangement"
+                            android:button="@null"
+                            android:layout_weight="0.2" />
+                        <RadioButton android:id="@+id/questionOne_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/evaluateArrangementSuggestion_2"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12dp"
+                            android:gravity="center"
+                            android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                            android:theme="@style/radioButtonStyleEvaluateArrangement"
+                            android:button="@null"
+                            android:layout_weight="0.2" />
+                        <RadioButton android:id="@+id/questionOne_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/evaluateArrangementSuggestion_3"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12dp"
+                            android:gravity="center"
+                            android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                            android:theme="@style/radioButtonStyleEvaluateArrangement"
+                            android:button="@null"
+                            android:layout_weight="0.2" />
+                        <RadioButton android:id="@+id/questionOne_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/evaluateArrangementSuggestion_4"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12dp"
+                            android:gravity="center"
+                            android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                            android:theme="@style/radioButtonStyleEvaluateArrangement"
+                            android:button="@null"
+                            android:layout_weight="0.2" />
+                        <RadioButton android:id="@+id/questionOne_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/evaluateArrangementSuggestion_5"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12dp"
+                            android:gravity="center"
+                            android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                            android:theme="@style/radioButtonStyleEvaluateArrangement"
+                            android:button="@null"
+                            android:layout_weight="0.2" />
+                        <RadioButton android:id="@+id/questionOne_6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/evaluateArrangementSuggestion_6"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12dp"
+                            android:gravity="center"
+                            android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                            android:theme="@style/radioButtonStyleEvaluateArrangement"
+                            android:button="@null"
+                            android:layout_weight="0.2" />
+                    </RadioGroup>
+
+                <TextView
+                    android:id="@+id/questionTwoEvaluate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="@string/questionTwoEvaluateMyEx"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="5dp"/>
+
+                <TextView
+                    android:id="@+id/questionTwoEvaluateError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/text_accent_color"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="@string/evaluateErrorTextByQuestion"
+                    android:paddingBottom="5dp"/>
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/radioGroupQuestionTwo"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:background="@drawable/app_radiogroup_style">
+
+                    <RadioButton android:id="@+id/questionTwo_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_1"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionTwo_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_2"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionTwo_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_3"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionTwo_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_4"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionTwo_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_5"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionTwo_6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_6"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/questionThreeEvaluate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="@string/questionThreeEvaluateChildreen"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="5dp"/>
+
+                <TextView
+                    android:id="@+id/questionThreeEvaluateError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/text_accent_color"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="@string/evaluateErrorTextByQuestion"
+                    android:paddingBottom="5dp"/>
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/radioGroupQuestionThree"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:background="@drawable/app_radiogroup_style">
+
+                    <RadioButton android:id="@+id/questionThree_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_1"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionThree_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_2"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionThree_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_3"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionThree_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_4"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionThree_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_5"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionThree_6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_6"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/questionFourEvaluate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="@string/questionFourEvaluateThirdPeople"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="5dp"/>
+
+                <TextView
+                    android:id="@+id/questionFourEvaluateError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/text_accent_color"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:text="@string/evaluateErrorTextByQuestion"
+                    android:paddingBottom="5dp"/>
+
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/radioGroupQuestionFour"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:background="@drawable/app_radiogroup_style">
+
+                    <RadioButton android:id="@+id/questionFour_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_1"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionFour_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_2"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionFour_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_3"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionFour_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_4"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionFour_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_5"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+                    <RadioButton android:id="@+id/questionFour_6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/evaluateArrangementSuggestion_6"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="12dp"
+                        android:gravity="center"
+                        android:drawableTop="?android:attr/listChoiceIndicatorSingle"
+                        android:theme="@style/radioButtonStyleEvaluateArrangement"
+                        android:button="@null"
+                        android:layout_weight="0.2" />
+
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/commentEvaluateText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:text="@string/commentTextEvaluateResult"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="5dp"/>
+
+                <TextView
+                    android:id="@+id/countLettersEvaluationCommentResultText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="right" />
+
+                <EditText
+                    android:id="@+id/inputEvaluateResultComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="left|top"
+                    android:background="@drawable/app_edittext_style"
+                    android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
+                    android:padding="5dp"
+                    android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
+
+
+                <TextView
+                    android:id="@+id/arrangementNextToEvaluateIntroText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_marginTop="30dp"/>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="15dp"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="20dp">
+
+                    <Button
+                        android:id="@+id/buttonSendEvaluateResult"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/app_button_style"
+                        android:textColor="@color/white"
+                        android:text="@string/btnSendEvaluateResult"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="5dp"
+                        android:padding="5dp"/>
+
+                    <Button
+                        android:id="@+id/buttonAbortEvaluate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/app_button_style"
+                        android:textColor="@color/white"
+                        android:text="@string/btnAbortEvaluate"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="5dp"
+                        android:padding="10dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/infoEvaluationTimePeriod"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:paddingBottom="35dp"/>
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textAuthorNameArrangement"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="13dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
-                android:layout_marginLeft="3dp"/>
+        </androidx.core.widget.NestedScrollView>
 
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/evaluateArrangement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/text_color"
-            android:gravity="left"
-            android:paddingLeft="10dp"/>
-
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:id="@+id/arrangementShowEvaluateBackLink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:textColor="@color/text_color"
-                android:textColorLink="@color/colorPrimary"
-                android:gravity="right"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/borderBetweenArrangement1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"/>
-
-
-
-        <TextView
-            android:id="@+id/evaluateThankAndNextEvaluation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="@color/text_accent_color"
-            android:gravity="left"
-            android:visibility="gone"
-            android:text="@string/evaluateThankAndNextEvaluationText"/>
-
-        <TextView
-            android:id="@+id/borderBetweenEvaluation1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/text_color"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/questionOneEvaluate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="left"
-            android:textStyle="bold"
-            android:text="@string/questionOneEvaluateMySelf"
-            android:paddingBottom="5dp"/>
-
-        <TextView
-            android:id="@+id/questionOneEvaluateError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/text_accent_color"
-            android:gravity="left"
-            android:visibility="gone"
-            android:text="@string/evaluateErrorTextByQuestion"
-            android:paddingBottom="5dp"/>
-
-            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/radioGroupQuestionOne"
-                android:layout_gravity="center"
-                android:padding="5dp"
-                android:gravity="center"
-                android:background="@drawable/app_radiogroup_style">
-
-                <RadioButton android:id="@+id/questionOne_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/evaluateArrangementSuggestion_1"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="12dp"
-                    android:gravity="center"
-                    android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                    android:theme="@style/radioButtonStyleEvaluateArrangement"
-                    android:button="@null"
-                    android:layout_weight="0.2" />
-                <RadioButton android:id="@+id/questionOne_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/evaluateArrangementSuggestion_2"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="12dp"
-                    android:gravity="center"
-                    android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                    android:theme="@style/radioButtonStyleEvaluateArrangement"
-                    android:button="@null"
-                    android:layout_weight="0.2" />
-                <RadioButton android:id="@+id/questionOne_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/evaluateArrangementSuggestion_3"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="12dp"
-                    android:gravity="center"
-                    android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                    android:theme="@style/radioButtonStyleEvaluateArrangement"
-                    android:button="@null"
-                    android:layout_weight="0.2" />
-                <RadioButton android:id="@+id/questionOne_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/evaluateArrangementSuggestion_4"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="12dp"
-                    android:gravity="center"
-                    android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                    android:theme="@style/radioButtonStyleEvaluateArrangement"
-                    android:button="@null"
-                    android:layout_weight="0.2" />
-                <RadioButton android:id="@+id/questionOne_5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/evaluateArrangementSuggestion_5"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="12dp"
-                    android:gravity="center"
-                    android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                    android:theme="@style/radioButtonStyleEvaluateArrangement"
-                    android:button="@null"
-                    android:layout_weight="0.2" />
-                <RadioButton android:id="@+id/questionOne_6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/evaluateArrangementSuggestion_6"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="12dp"
-                    android:gravity="center"
-                    android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                    android:theme="@style/radioButtonStyleEvaluateArrangement"
-                    android:button="@null"
-                    android:layout_weight="0.2" />
-            </RadioGroup>
-
-        <TextView
-            android:id="@+id/questionTwoEvaluate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="left"
-            android:textStyle="bold"
-            android:text="@string/questionTwoEvaluateMyEx"
-            android:paddingTop="20dp"
-            android:paddingBottom="5dp"/>
-
-        <TextView
-            android:id="@+id/questionTwoEvaluateError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/text_accent_color"
-            android:gravity="left"
-            android:visibility="gone"
-            android:text="@string/evaluateErrorTextByQuestion"
-            android:paddingBottom="5dp"/>
-
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/radioGroupQuestionTwo"
-            android:layout_gravity="center"
-            android:padding="5dp"
-            android:gravity="center"
-            android:background="@drawable/app_radiogroup_style">
-
-            <RadioButton android:id="@+id/questionTwo_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_1"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwo_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_2"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwo_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_3"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwo_4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_4"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwo_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_5"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionTwo_6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_6"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/questionThreeEvaluate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="left"
-            android:textStyle="bold"
-            android:text="@string/questionThreeEvaluateChildreen"
-            android:paddingTop="20dp"
-            android:paddingBottom="5dp"/>
-
-        <TextView
-            android:id="@+id/questionThreeEvaluateError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/text_accent_color"
-            android:gravity="left"
-            android:visibility="gone"
-            android:text="@string/evaluateErrorTextByQuestion"
-            android:paddingBottom="5dp"/>
-
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/radioGroupQuestionThree"
-            android:layout_gravity="center"
-            android:padding="5dp"
-            android:gravity="center"
-            android:background="@drawable/app_radiogroup_style">
-
-            <RadioButton android:id="@+id/questionThree_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_1"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThree_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_2"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThree_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_3"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThree_4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_4"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThree_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_5"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionThree_6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_6"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/questionFourEvaluate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="left"
-            android:textStyle="bold"
-            android:text="@string/questionFourEvaluateThirdPeople"
-            android:paddingTop="20dp"
-            android:paddingBottom="5dp"/>
-
-        <TextView
-            android:id="@+id/questionFourEvaluateError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/text_accent_color"
-            android:gravity="left"
-            android:visibility="gone"
-            android:text="@string/evaluateErrorTextByQuestion"
-            android:paddingBottom="5dp"/>
-
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/radioGroupQuestionFour"
-            android:layout_gravity="center"
-            android:padding="5dp"
-            android:gravity="center"
-            android:background="@drawable/app_radiogroup_style">
-
-            <RadioButton android:id="@+id/questionFour_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_1"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFour_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_2"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFour_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_3"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFour_4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_4"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFour_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_5"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-            <RadioButton android:id="@+id/questionFour_6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/evaluateArrangementSuggestion_6"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="12dp"
-                android:gravity="center"
-                android:drawableTop="?android:attr/listChoiceIndicatorSingle"
-                android:theme="@style/radioButtonStyleEvaluateArrangement"
-                android:button="@null"
-                android:layout_weight="0.2" />
-
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/commentEvaluateText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="left"
-            android:textStyle="bold"
-            android:text="@string/commentTextEvaluateResult"
-            android:paddingTop="20dp"
-            android:paddingBottom="5dp"/>
-
-        <TextView
-            android:id="@+id/countLettersEvaluationCommentResultText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="13dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="right" />
-
-        <EditText
-            android:id="@+id/inputEvaluateResultComment"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="left|top"
-            android:background="@drawable/app_edittext_style"
-            android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
-            android:padding="5dp"
-            android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
-
-
-        <TextView
-            android:id="@+id/arrangementNextToEvaluateIntroText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_marginTop="15dp"/>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="15dp"
-            android:gravity="center"
-            android:layout_gravity="center_horizontal">
-
-            <Button
-                android:id="@+id/buttonSendEvaluateResult"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/app_button_style"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/btnSendEvaluateResult"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginRight="5dp"
-                android:padding="5dp"/>
-
-            <Button
-                android:id="@+id/buttonAbortEvaluate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/app_button_style"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="@string/btnAbortEvaluate"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="5dp"
-                android:padding="10dp"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/infoEvaluationTimePeriod"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="center"
-            android:paddingBottom="35dp"/>
-
-    </LinearLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

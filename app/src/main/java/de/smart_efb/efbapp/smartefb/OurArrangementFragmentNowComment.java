@@ -27,6 +27,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -45,6 +48,9 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
     // layout inflater for fragment
     LayoutInflater layoutInflaterForFragment;
+
+    // fab view
+    FloatingActionButton fabFragmentNowComment = null;
 
     // reference to the DB
     DBAdapter myDb;
@@ -253,11 +259,17 @@ public class OurArrangementFragmentNowComment extends Fragment {
         prefs = fragmentNowCommentContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentNowCommentContext.MODE_PRIVATE);
         prefsEditor = prefs.edit();
 
+        // hide fab
+        // show fab and set on click listener
+        if (fabFragmentNowComment != null) {
+            fabFragmentNowComment.hide();
+        }
+
         // get choosen arrangement
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToComment);
 
         // get all comments for choosen arrangement
-        cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToComment, "descending");
+        cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToComment, "descending", 0);
 
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentNowCommentText", "string", fragmentNowCommentContext.getPackageName())) + " " + arrangementNumberInListView;
@@ -428,6 +440,15 @@ public class OurArrangementFragmentNowComment extends Fragment {
             // textview for the comment text
             TextView tmpTextViewCommentText = viewFragmentNowComment.findViewById(R.id.lastActualCommentText);
             tmpTextViewCommentText.setVisibility(View.GONE);
+
+            // button for overview comment
+            Button tmpButtonShowOverviewComment = viewFragmentNowComment.findViewById(R.id.buttonNowCommentBackToShowComment);
+            tmpButtonShowOverviewComment.setVisibility(View.GONE);
+
+            // textview border no comment and info text
+            TextView tmpBorderBetweenNoCommentAndInfoText = viewFragmentNowComment.findViewById(R.id.borderBetweenNoCommentInfoAndInfoText);
+            tmpBorderBetweenNoCommentAndInfoText.setVisibility(View.VISIBLE);
+
         }
 
         // textview for max comments, count comments and max letters
@@ -651,6 +672,9 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
         // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
         tmpArrangementServerDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
+
+        // call getter-methode getFabViewOurArrangement() in ActivityOurArrangement to get view for fab
+        fabFragmentNowComment = ((ActivityOurArrangement)getActivity()).getFabViewOurArrangement();
 
         if (tmpArrangementServerDbIdToComment > 0) {
             arrangementServerDbIdToComment = tmpArrangementServerDbIdToComment;

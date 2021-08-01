@@ -275,6 +275,22 @@
 
         <!-- End String Activity Our Arrangement -->
 
+        <!-- String Activity Our Arrangement Now Popup Menu Comment Arrangement -->
+            <string name="popupItemOurArrangementArrangement1"><b>Absprache 1 kommentieren</b></string>
+            <string name="popupItemOurArrangementArrangement2"><b>Absprache 2 kommentieren</b></string>
+            <string name="popupItemOurArrangementArrangement3"><b>Absprache 3 kommentieren</b></string>
+            <string name="popupItemOurArrangementArrangement4"><b>Absprache 4 kommentieren</b></string>
+            <string name="popupItemOurArrangementArrangement5"><b>Absprache 5 kommentieren</b></string>
+            <string name="popupItemOurArrangementArrangement6"><b>Absprache 6 kommentieren</b></string>
+            <string name="popupItemOurArrangementArrangement7"><b>Absprache 7 kommentieren</b></string>
+            <string name="popupItemOurArrangementArrangement8"><b>Absprache 8 kommentieren</b></string>
+            <string name="popupItemOurArrangementArrangement9"><b>Absprache 9 kommentieren</b></string>
+            <string name="popupItemOurArrangementArrangement10"><b>Absprache 10 kommentieren</b></string>
+            <string name="popupItemOurArrangementArrangement11"><b>Absprache 11 kommentieren</b></string>
+            <string name="popupItemOurArrangementArrangement12"><b>Absprache 12 kommentieren</b></string>
+        <!-- End String Activity Our Arrangement Now Popup Menu Comment Arrangement -->
+
+
         <!-- fragment show old arrangements -->
             <string name="ourArrangementOldArrangementFunctionNotAvailable">Diese Funktion steht zur Verfügung,\nsobald Ihr/e Berater*innen diese einschalten!</string>
             <string name="ourArrangementOldArrangementNothingThere">Es sind keine älteren\nAbsprachen vorhanden!</string>
@@ -286,8 +302,8 @@
             <string name="ourArrangementNowArrangementNothingThere">Es sind keine aktuellen\nAbsprachen vorhanden!</string>
             <string name="ourArrangementAuthorNameText">Geschrieben von %1$s</string>
             <string name="ourArrangementAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
-            <string name="ourArrangementNowArrangementMenuSortDesc">Absteigend sortieren</string>
-            <string name="ourArrangementNowArrangementMenuSortAsc">Aufsteigend sortieren</string>
+            <string name="ourArrangementNowArrangementMenuSortDesc">Absprachen absteigend sortieren</string>
+            <string name="ourArrangementNowArrangementMenuSortAsc">Absprachen aufsteigend sortieren</string>
         <!-- End show now arrangements -->
 
         <!-- Link text for comment, show comments and evaluate-->
@@ -362,6 +378,13 @@
             <string name="ourArrangementShowCommentBackButtonToNowArrangement">Übersicht Absprachen</string>
             <string name="ourArrangementShowCommentMenuSortDesc">Kommentare absteigend sortieren</string>
             <string name="ourArrangementShowCommentMenuSortAsc">Kommentare aufsteigend sortieren</string>
+            <string name="ourArrangementShowCommentMenuCountCommentForList">Anzahl anzuzeigener Kommentare</string>
+            <string name="select_dialog_our_arrangement_now_number_of_comment_title">Bitte wählen Sie die Anzahl der anzuzeigenden Kommentare</string>
+            <string name="select_dialog_our_arrangement_now_number_of_comment_5">5 Kommentare</string>
+            <string name="select_dialog_our_arrangement_now_number_of_comment_10">10 Kommentare</string>
+            <string name="select_dialog_our_arrangement_now_number_of_comment_20">20 Kommentare</string>
+            <string name="select_dialog_our_arrangement_now_number_of_comment_50">50 Kommentare</string>
+            <string name="select_dialog_our_arrangement_now_number_of_comment_all">Alle Kommentare</string>
         <!-- End String Fragment show comment -->
 
         <!-- String Fragment evaluate arrangement -->
