@@ -93,7 +93,7 @@ public class EfbSetAlarmManager {
         DBAdapter myDb = new DBAdapter(context);
 
         // get all arrangements with the same block id
-        Cursor cursor = myDb.getAllRowsCurrentOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""), "equalBlockId", "asc");
+        Cursor cursor = myDb.getAllRowsCurrentOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""), "equalBlockId", "ascending");
 
         if (cursor.getCount() > 0) {
 

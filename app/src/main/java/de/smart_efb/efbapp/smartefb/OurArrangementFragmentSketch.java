@@ -8,9 +8,17 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -18,18 +26,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-
-
-
-
-
-// Look Progess Bar
-// www.journaldev.com/9629/android-progressbar-example
-
-//https://github.com/chrisbanes/cheesesquare/blob/master/app/src/main/res/layout/activity_detail.xml
-// https://guides.codepath.com/android/handling-scrolls-with-coordinatorlayout
-
+import java.util.ArrayList;
 
 
 /**
@@ -50,23 +49,32 @@ public class OurArrangementFragmentSketch  extends Fragment {
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
 
+    // the recycler view
+    RecyclerView recyclerViewSketchArrangement = null;
+
+    // data array of sketch arrangements for recycler view
+    ArrayList<ObjectSmartEFBArrangement> arrayListSketchArrangements;
+
+    // reference arrayListAdapter for the recyler view
+    OurArrangementSketchArrangementRecyclerViewAdapter sketchArrangementRecyclerViewAdapter;
+
     // the date of sketch arrangement
     long currentDateOfSketchArrangement;
 
     // block id of current sketch arrangements
     String currentBlockIdOfSketchArrangement = "";
 
-    // reference cursorAdapter for the listview
-    OurArrangementSketchCursorAdapter dataAdapterListViewOurArrangementSketch = null;
-
-    // the list view for the sketch arrangements
-    ListView listViewSketchArrangement;
+    // true-> sketch comments are limited, false -> sketch comments are not limited
+    Boolean sketchCommentLimitationBorder = false;
 
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
         viewFragmentSketch = layoutInflater.inflate(R.layout.fragment_our_arrangement_sketch, null);
+
+        // fragment has option menu
+        setHasOptionsMenu(true);
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
@@ -132,8 +140,81 @@ public class OurArrangementFragmentSketch  extends Fragment {
         //get block id of sketch arrangement
         currentBlockIdOfSketchArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0");
 
-        // find the listview for sketch arrangement
-        listViewSketchArrangement = (ListView) viewFragmentSketch.findViewById(R.id.listOurArrangementSketch);
+        // call getter-methode isCommentLimitationBorderSet in ActivityOurArrangement to get true-> sketch comments are limited, false-> sketch comments are not limited
+        sketchCommentLimitationBorder = ((ActivityOurArrangement)getActivity()).isCommentLimitationBorderSet("sketch");
+
+        // new recyler view
+        recyclerViewSketchArrangement = viewFragmentSketch.findViewById(R.id.listOurArrangementSketchArrangement);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fragmentSketchContext);
+        recyclerViewSketchArrangement.setLayoutManager(linearLayoutManager);
+        recyclerViewSketchArrangement.setHasFixedSize(true);
+
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+
+        menuInflater.inflate(R.menu.menu_efb_our_arrangement_fragment_sketch, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem registerItemDesc = menu.findItem(R.id.our_arrangement_menu_fragment_sketch_sort_desc);
+        MenuItem registerItemAsc = menu.findItem(R.id.our_arrangement_menu_fragment_sketch_sort_asc);
+        MenuItem registerNoArrangementsInfo = menu.findItem(R.id.our_arrangement_menu_fragment_sketch_no_arrangement_available);
+        MenuItem registerFunctionOff = menu.findItem(R.id.our_arrangement_menu_fragment_sketch_function_off);
+
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false)) {
+
+            if (arrayListSketchArrangements != null && arrayListSketchArrangements.size() > 0) {
+
+                registerNoArrangementsInfo.setVisible(false);
+                registerFunctionOff.setVisible(false);
+                if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchList, "descending").equals("descending")) {
+                    registerItemDesc.setVisible(false);
+                    registerItemAsc.setVisible(true);
+                } else {
+                    registerItemAsc.setVisible(false);
+                    registerItemDesc.setVisible(true);
+                }
+            } else {
+                registerNoArrangementsInfo.setVisible(true);
+                registerFunctionOff.setVisible(false);
+                registerItemDesc.setVisible(false);
+                registerItemAsc.setVisible(false);
+            }
+        }
+        else {
+            registerNoArrangementsInfo.setVisible(false);
+            registerFunctionOff.setVisible(true);
+            registerItemDesc.setVisible(false);
+            registerItemAsc.setVisible(false);
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.our_arrangement_menu_fragment_sketch_sort_desc:
+                prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchList, "descending");
+                prefsEditor.apply();
+                updateListView();
+                return true;
+            case R.id.our_arrangement_menu_fragment_sketch_sort_asc:
+                prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchList, "ascending");
+                prefsEditor.apply();
+                updateListView();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
@@ -180,7 +261,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
                     //update current block id of sketch arrangements
                     currentBlockIdOfSketchArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfSketchArrangement, "0");
 
-                    // check arrangement and skecth arrangement update and show dialog arrangement and sketch arrangement change
+                    // check arrangement and sketch arrangement update and show dialog arrangement and sketch arrangement change
                     ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("sketch");
 
                     updateListView = true;
@@ -252,10 +333,10 @@ public class OurArrangementFragmentSketch  extends Fragment {
     // update the list view with sketch arrangements
     public void updateListView () {
 
-        if (listViewSketchArrangement != null) {
-            listViewSketchArrangement.destroyDrawingCache();
-            listViewSketchArrangement.setVisibility(ListView.INVISIBLE);
-            listViewSketchArrangement.setVisibility(ListView.VISIBLE);
+        if (recyclerViewSketchArrangement != null) {
+            recyclerViewSketchArrangement.destroyDrawingCache();
+            recyclerViewSketchArrangement.setVisibility(ListView.INVISIBLE);
+            recyclerViewSketchArrangement.setVisibility(ListView.VISIBLE);
 
             displaySketchArrangementSet ();
         }
@@ -265,47 +346,64 @@ public class OurArrangementFragmentSketch  extends Fragment {
     // show listView with sketch arrangements or info: nothing there
     public void displaySketchArrangementSet () {
 
-        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false) && listViewSketchArrangement != null) { // Function showSketchArrangement is available!!!!
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false) && recyclerViewSketchArrangement != null) { // Function showSketchArrangement is available!!!!
 
-            // get the data from db -> all sketch arrangements
-            Cursor cursor = myDb.getAllRowsSketchOurArrangement(currentBlockIdOfSketchArrangement);
+            // get the data (all now arrangements) from DB
+            arrayListSketchArrangements = myDb.getAllRowsOurArrangementSketchArrayList(currentBlockIdOfSketchArrangement, prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchList, "descending"));
 
-            if (cursor.getCount() > 0) {
+            if (arrayListSketchArrangements.size() > 0) {
 
-                // set listView visible, textView nothing there and not available gone
-                setVisibilityListViewSketchArrangements("show");
+                // set recycler view visible, textView nothing there and not available gone
+                setVisibilityRecyclerViewSketchArrangements("show");
                 setVisibilityTextViewSketchNotAvailable("hide");
                 setVisibilityTextViewSketchNothingThere ("hide");
 
-                // Set correct subtitle in Activity -> "Entwuerfe vom ..."
+                // Set correct subtitle in Activity
                 String tmpSubtitle = getResources().getString(getResources().getIdentifier("sketchArrangementsubtitle", "string", fragmentSketchContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfSketchArrangement, "dd.MM.yyyy");
                 ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "sketch");
 
-                // new dataadapter
-                dataAdapterListViewOurArrangementSketch = new OurArrangementSketchCursorAdapter(
+                // set visibility of FAB for this fragment
+
+                // show fab and comment sketch arrangement only when on and possible!
+                if ((prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowLinkCommentSketchArrangement, false) && (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment, 0) - prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0)) > 0 ) || !sketchCommentLimitationBorder) {
+                    // set fab visibility
+                    ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility("show", "sketch");
+                    // set fab click listener
+                    ((ActivityOurArrangement) getActivity()).setOurArrangementFABClickListener(arrayListSketchArrangements, "sketch", "comment_an_sketch_arrangement");
+                }
+                else {
+                    ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility("hide", "sketch");
+                }
+                
+                // new recycler view adapter
+                sketchArrangementRecyclerViewAdapter = new OurArrangementSketchArrangementRecyclerViewAdapter(
                         getActivity(),
-                        cursor,
+                        arrayListSketchArrangements,
                         0);
 
-                // Assign adapter to ListView
-                listViewSketchArrangement.setAdapter(dataAdapterListViewOurArrangementSketch);
+                // Assign adapter to recycler view
+                recyclerViewSketchArrangement.setAdapter(sketchArrangementRecyclerViewAdapter);
 
             } else {
 
-                // set listView and textView not available gone, set textView nothing there visible
-                setVisibilityListViewSketchArrangements("hide");
+                // set recycler view and textView not available gone, set textView nothing there visible
+                setVisibilityRecyclerViewSketchArrangements("hide");
                 setVisibilityTextViewSketchNotAvailable("hide");
                 setVisibilityTextViewSketchNothingThere ("show");
 
                 // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
                 String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleSketchNothingThere", "string", fragmentSketchContext.getPackageName()));
                 ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "sketch");
+
+                // set visibility of FAB for this fragment
+                ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility ("hide", "sketch");
+
             }
         }
         else {
 
             // set listView and textView nothing there gone, set textView not available visible
-            setVisibilityListViewSketchArrangements("hide");
+            setVisibilityRecyclerViewSketchArrangements("hide");
             setVisibilityTextViewSketchNotAvailable("show");
             setVisibilityTextViewSketchNothingThere ("hide");
 
@@ -313,22 +411,25 @@ public class OurArrangementFragmentSketch  extends Fragment {
             String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNotAvailable", "string", fragmentSketchContext.getPackageName()));
             ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "sketch");
 
+            // set visibility of FAB for this fragment
+            ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility ("hide", "sketch");
+
         }
     }
 
 
     // set visibility of listViewOurArrangement
-    private void setVisibilityListViewSketchArrangements (String visibility) {
+    private void setVisibilityRecyclerViewSketchArrangements (String visibility) {
 
-        if (listViewSketchArrangement != null) {
+        if (recyclerViewSketchArrangement != null) {
 
             switch (visibility) {
 
                 case "show":
-                    listViewSketchArrangement.setVisibility(View.VISIBLE);
+                    recyclerViewSketchArrangement.setVisibility(View.VISIBLE);
                     break;
                 case "hide":
-                    listViewSketchArrangement.setVisibility(View.GONE);
+                    recyclerViewSketchArrangement.setVisibility(View.GONE);
                     break;
             }
         }
@@ -338,9 +439,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
     // set visibility of textView "nothing there"
     private void setVisibilityTextViewSketchNotAvailable (String visibility) {
 
-        //TextView tmpNotAvailable = (TextView) viewFragmentSketch.findViewById(R.id.textViewArrangementSketchFunctionNotAvailable);
-
-        RelativeLayout tmpNotAvailable = (RelativeLayout) viewFragmentSketch.findViewById(R.id.textViewArrangementSketchFunctionNotAvailable);
+        RelativeLayout tmpNotAvailable = viewFragmentSketch.findViewById(R.id.textViewArrangementSketchFunctionNotAvailable);
 
         if (tmpNotAvailable != null) {
 
@@ -359,7 +458,7 @@ public class OurArrangementFragmentSketch  extends Fragment {
 
     private void setVisibilityTextViewSketchNothingThere (String visibility) {
 
-        RelativeLayout tmpNothingThere = (RelativeLayout) viewFragmentSketch.findViewById(R.id.textViewArrangementSketchNothingThere);
+        RelativeLayout tmpNothingThere = viewFragmentSketch.findViewById(R.id.textViewArrangementSketchNothingThere);
 
         if (tmpNothingThere != null) {
 

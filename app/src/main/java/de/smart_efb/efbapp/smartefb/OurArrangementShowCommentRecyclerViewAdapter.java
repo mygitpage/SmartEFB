@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -18,7 +19,7 @@ import android.widget.TextView;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
-
+import java.util.concurrent.TimeUnit;
 
 
 // Look at:
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 // https://o7planning.org/12725/create-a-simple-file-chooser-in-android
 
 
-public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class OurArrangementShowCommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     final Context contextForActivity;
 
@@ -47,8 +48,8 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
     // true-> comments are limited, false -> comments are not limited
     Boolean commentLimitationBorder = false;
 
-    // the chossen arrangement to show the comments
-    Cursor choosenArrangement;
+    // the chosse arrangement to show the comments
+    ArrayList<ObjectSmartEFBArrangement> chooseArrangement;
 
     // shared prefs for the comment arrangement
     SharedPreferences prefs;
@@ -62,7 +63,7 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
 
 
     // own constructor!!!
-    public OurArrangementShowCommentRecylerViewAdapter (Context context, ArrayList<ObjectSmartEFBComment> commentList, int dbId, int numberInList, Boolean commentsLimitation, Cursor arrangement) {
+    public OurArrangementShowCommentRecyclerViewAdapter(Context context, ArrayList<ObjectSmartEFBComment> commentList, int dbId, int numberInList, Boolean commentsLimitation, ArrayList<ObjectSmartEFBArrangement> arrangement) {
 
         // Array List of arrangement comment
         ourArrangementShowCommentList = commentList;
@@ -79,68 +80,52 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
         // set comments limitation
         commentLimitationBorder = commentsLimitation;
 
-        // set choosen arrangement
-        choosenArrangement = arrangement;
+        // set choose arrangement
+        chooseArrangement = arrangement;
 
         // init the prefs
         prefs = contextForActivity.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, contextForActivity.MODE_PRIVATE);
 
-        // init view has header, items and footer
-        STATE = BOTH;
+        // init view has items and footer
+        STATE = FOOTER;
 
     }
 
-    // inner class for header element
-    private class OurArrangementShowCommentHeaderViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView textViewShowArrangementIntro, textViewAuthorNameText;
-        public TextView textViewShowChoosenArrangement, textCommentSharingIsDisable, borderBetweenTextCommentSharingIsDisable;
-        public Button buttonHeaderBackToArrangement;
-
-        OurArrangementShowCommentHeaderViewHolder(View headerView) {
-
-            super(headerView);
-
-            textViewShowArrangementIntro = headerView.findViewById(R.id.arrangementShowArrangementIntro);
-            textViewAuthorNameText = headerView.findViewById(R.id.textAuthorName);
-            buttonHeaderBackToArrangement = headerView.findViewById(R.id.buttonHeaderBackToArrangement);
-            textViewShowChoosenArrangement = headerView.findViewById(R.id.choosenArrangement);
-            textCommentSharingIsDisable = headerView.findViewById(R.id.commentSharingIsDisable);
-            borderBetweenTextCommentSharingIsDisable = headerView.findViewById(R.id.borderBetweencommentSharingIsDisable);
-        }
-    }
 
     // inner class for footer element
     private class OurArrangementShowCommentFooterViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textViewChangeSortSequence, textViewMaxAndCount;
-        public Button buttonBackToArrangement;
-        
+        public TextView textViewShowArrangementIntro, textViewAuthorNameText, textViewMaxAndCount, textViewShowChooseArrangement;
+        public Button buttonFooterBackToArrangement, buttonCommentThisArrangement;
+
         OurArrangementShowCommentFooterViewHolder(View footerView) {
             
             super(footerView);
-
-            buttonBackToArrangement = footerView.findViewById(R.id.buttonAbortShowComment);
             textViewMaxAndCount = footerView.findViewById(R.id.infoShowCommentMaxAndCount);
+            buttonCommentThisArrangement = footerView.findViewById(R.id.buttonCommentThisArrangement);
+            textViewShowArrangementIntro = footerView.findViewById(R.id.arrangementShowArrangementIntro);
+            textViewAuthorNameText = footerView.findViewById(R.id.textAuthorName);
+            buttonFooterBackToArrangement = footerView.findViewById(R.id.buttonFooterBackToArrangement);
+            textViewShowChooseArrangement = footerView.findViewById(R.id.chooseArrangement);
+
         }
     }
+
 
     // inner class for item element
     private class OurArrangementShowCommentItemViewHolder extends RecyclerView.ViewHolder {
 
         public TextView textViewShowActualCommentHeadline, newEntryOfArrangement, textViewAuthorNameLastActualComment;
-        public TextView textViewSendInfoLastActualComment, textViewShowActualComment, linkToCommentAnArrangement;
+        public TextView textViewSendInfoLastActualComment, textViewShowActualComment;
 
         OurArrangementShowCommentItemViewHolder(View ItemView) {
 
             super (ItemView);
-
             textViewShowActualCommentHeadline = ItemView.findViewById(R.id.actualCommentInfoText);
             newEntryOfArrangement = ItemView.findViewById(R.id.actualCommentNewInfoText);
             textViewAuthorNameLastActualComment = ItemView.findViewById(R.id.textAuthorNameActualComment);
             textViewSendInfoLastActualComment = ItemView.findViewById(R.id.textSendInfoActualComment);
             textViewShowActualComment = ItemView.findViewById(R.id.listActualTextComment);
-            linkToCommentAnArrangement = ItemView.findViewById(R.id.linkToCommentAnArrangement);
         }
     }
 
@@ -148,9 +133,6 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        if (viewType == HEADER) {
-            return new OurArrangementShowCommentHeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_our_arrangement_show_comment_recyclerview_header, parent, false));
-        }
         if (viewType == FOOTER) {
             return new OurArrangementShowCommentFooterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_our_arrangement_show_comment_recyclerview_footer, parent, false));
         }
@@ -174,7 +156,11 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
                 return position == 0 ? HEADER : ITEM;
 
             case FOOTER:
-                return position == ourArrangementShowCommentList.size() ? FOOTER : ITEM;
+
+                if (position >= (ourArrangementShowCommentList.size()) ) {
+                    return FOOTER;
+                }
+                return ITEM;
 
             default:
                 return ITEM;
@@ -194,14 +180,14 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
         switch (viewType) {
             case ITEM:
 
-                final ObjectSmartEFBComment commentElement = ourArrangementShowCommentList.get(position-1);
+                final ObjectSmartEFBComment commentElement = ourArrangementShowCommentList.get(position);
 
                 // cast holder
-                OurArrangementShowCommentItemViewHolder itemView = (OurArrangementShowCommentItemViewHolder) holder;
+                final OurArrangementShowCommentItemViewHolder itemView = (OurArrangementShowCommentItemViewHolder) holder;
 
                 // set comment headline
-                String actualCommentHeadline = contextForActivity.getResources().getString(R.string.showCommentHeadlineWithNumber) + " " + actualPosition;
-                if (actualPosition == 1) { // set text newest/oldest comment
+                String actualCommentHeadline = contextForActivity.getResources().getString(R.string.showCommentHeadlineWithNumber) + " " + (actualPosition+1);
+                if (actualPosition == 0) { // set text newest/oldest comment
                     if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending").equals("descending")) {
                         actualCommentHeadline = actualCommentHeadline + " " + contextForActivity.getResources().getString(R.string.showCommentHeadlineWithNumberExtraNewest);
                     }
@@ -226,12 +212,94 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
                 if (tmpAuthorName.equals(prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt"))) {
                     tmpAuthorName = contextForActivity.getResources().getString(R.string.ourArrangementShowCommentPersonalAuthorName);
                 }
-
                 String commentDate = EfbHelperClass.timestampToDateFormat(commentElement.getLocalTime(), "dd.MM.yyyy");
                 String commentTime = EfbHelperClass.timestampToDateFormat(commentElement.getLocalTime(), "HH:mm");
                 String tmpTextAuthorNameLastActualComment = String.format(contextForActivity.getResources().getString(R.string.ourArrangementShowCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
                 if (commentElement.getStatus() == 4) {tmpTextAuthorNameLastActualComment = String.format(contextForActivity.getResources().getString(R.string.ourArrangementShowCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
                 itemView.textViewAuthorNameLastActualComment.setText(HtmlCompat.fromHtml(tmpTextAuthorNameLastActualComment, HtmlCompat.FROM_HTML_MODE_LEGACY));
+
+                // set row id of comment from db for timer update (cast from int to long because db function needs long value)
+                final Long rowIdForUpdate = Long.valueOf((commentElement.getRowID()).longValue());
+
+                // status 0 of the last actual comment
+                if (commentElement.getStatus() == 0) {
+
+                    String tmpTextSendInfoLastActualComment = contextForActivity.getResources().getString(R.string.ourArrangementCommentSendInfo);
+                    itemView.textViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
+                    itemView.textViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+
+                } else if (commentElement.getStatus() == 1) { // textview for status 1 of the last actual comment
+
+                    // check, sharing of comments enable and timer for comment possible, not finish?
+                    if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) == 1) {
+                        // check system time is in past or future?
+                        Long writeTimeComment = commentElement.getCommentTime(); // write time is from sever
+                        Integer delayTime = prefs.getInt(ConstansClassOurArrangement.namePrefsCommentDelaytime, 0) * 60000; // make milliseconds from minutes
+                        Long maxTimerTime = writeTimeComment+delayTime;
+                        if ( maxTimerTime > prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0) && commentElement.getTimerStatus() == 0) { // check system time is in past and timer status is run!
+                            // calculate run time for timer in MILLISECONDS!!!
+                            Long nowTime = System.currentTimeMillis();
+                            Long localeTimeComment = commentElement.getLocalTime();
+                            Long runTimeForTimer = delayTime - (nowTime - localeTimeComment);
+
+                            // set textview visible
+                            itemView.textViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
+
+                            // start the timer with the calculated milliseconds
+                            if (runTimeForTimer > 0 && runTimeForTimer <= delayTime) {
+                                new CountDownTimer(runTimeForTimer, 1000) {
+                                    public void onTick(long millisUntilFinished) {
+                                        // gernate count down timer
+                                        String FORMAT = "%02d:%02d:%02d";
+                                        String tmpTextSendInfoLastActualComment = contextForActivity.getResources().getString(R.string.ourArrangementCommentSendDelayInfo);
+                                        String tmpTime = String.format(FORMAT,
+                                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                                        // put count down to string
+                                        String tmpCountdownTimerString = String.format(tmpTextSendInfoLastActualComment, tmpTime);
+                                        // and show
+                                        itemView.textViewSendInfoLastActualComment.setText(tmpCountdownTimerString);
+                                    }
+
+                                    public void onFinish() {
+                                        // count down is over -> show send successfull
+                                        String tmpTextSendInfoLastActualComment = contextForActivity.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
+                                        itemView.textViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                                        myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                                    }
+                                }.start();
+
+                            } else {
+                                // no count down anymore -> show send successfull
+                                String tmpTextSendInfoLastActualComment = contextForActivity.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
+                                itemView.textViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                                myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                            }
+                        }
+                        else {
+                            // system time is in past or timer status is stop! -> Show Text: Comment send successfull!
+                            itemView.textViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
+                            String tmpTextSendInfoLastActualComment = contextForActivity.getResources().getString(R.string.ourArrangementCommentSendSuccsessfullInfo);
+                            itemView.textViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                            myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                        }
+                    }
+                    else { // sharing of comments is disable! -> show text
+                        String tmpTextSendInfoLastActualComment;
+                        itemView.textViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
+                        if (prefs.getLong(ConstansClassOurArrangement.namePrefsArrangementCommentShareChangeTime, 0) < commentElement.getCommentTime()) {
+                            // show send successfull, but no sharing
+                            tmpTextSendInfoLastActualComment = contextForActivity.getResources().getString(R.string.ourArrangementCommentSendInfoSharingDisable);
+                        }
+                        else {
+                            // show send successfull
+                            tmpTextSendInfoLastActualComment = contextForActivity.getResources().getString(R.string.ourArrangementShowCommentSendSuccsessfullInfo);
+                        }
+                        itemView.textViewSendInfoLastActualComment.setText(tmpTextSendInfoLastActualComment);
+                        myDb.updateTimerStatusOurArrangementComment(rowIdForUpdate, 1); // timer status: 0= timer can run; 1=timer finish!
+                    }
+                }
 
                 // show actual comment
                 itemView.textViewShowActualComment.setText(commentElement.getCommentText());
@@ -239,46 +307,49 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
                 break;
             case HEADER:
 
-                // cast holder
-                OurArrangementShowCommentHeaderViewHolder headerView = (OurArrangementShowCommentHeaderViewHolder) holder;
-
-                // set text arrangement intro
-                String txtArrangementIntro = contextForActivity.getResources().getString(R.string.showArrangementIntroText)+ " " + arrangementNumberInListView;
-                headerView.textViewShowArrangementIntro.setText(txtArrangementIntro);
-
-                // textview for the author of arrangement
-                String tmpTextAuthorNameText = String.format(contextForActivity.getResources().getString(R.string.ourArrangementAuthorNameTextWithDate), choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
-                headerView.textViewAuthorNameText.setText(HtmlCompat.fromHtml(tmpTextAuthorNameText, HtmlCompat.FROM_HTML_MODE_LEGACY));
-
-                // show choosen arrangement
-                headerView.textViewShowChoosenArrangement.setText(choosenArrangement.getString(choosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT)));
-
-                // show hint sharing is disable
-                if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) == 0) {
-                    headerView.textCommentSharingIsDisable.setVisibility (View.VISIBLE);
-                    headerView.borderBetweenTextCommentSharingIsDisable.setVisibility (View.VISIBLE);
-                }
-
-                // onClick listener back button
-                headerView.buttonHeaderBackToArrangement.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        Intent intent = new Intent(contextForActivity, ActivityOurArrangement.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        intent.putExtra("com","show_arrangement_now");
-                        contextForActivity.startActivity(intent);
-                    }
-                });
-
                 break;
             case FOOTER:
 
                 // type cast footerView
                 OurArrangementShowCommentFooterViewHolder footerView = (OurArrangementShowCommentFooterViewHolder) holder;
 
-                // onClick listener abbort button
-                footerView.buttonBackToArrangement.setOnClickListener(new View.OnClickListener() {
+                // set button text "comment arrangement X"
+                String tmpButtonTextCommentArrangementX = String.format(contextForActivity.getResources().getString(R.string.ourArrangementShowCommentCommentThisArrangement), arrangementNumberInListView);
+                footerView.buttonCommentThisArrangement.setText(HtmlCompat.fromHtml(tmpButtonTextCommentArrangementX, HtmlCompat.FROM_HTML_MODE_LEGACY));
+
+                // set text arrangement intro
+                String txtArrangementIntro = contextForActivity.getResources().getString(R.string.showArrangementIntroText)+ " " + arrangementNumberInListView;
+                footerView.textViewShowArrangementIntro.setText(txtArrangementIntro);
+
+                // textview for the author of arrangement
+                String tmpTextAuthorNameText = String.format(contextForActivity.getResources().getString(R.string.ourArrangementAuthorNameTextWithDate), chooseArrangement.get(0).getAuthorName(), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
+                footerView.textViewAuthorNameText.setText(HtmlCompat.fromHtml(tmpTextAuthorNameText, HtmlCompat.FROM_HTML_MODE_LEGACY));
+
+                // show choose arrangement
+                footerView.textViewShowChooseArrangement.setText(chooseArrangement.get(0).getArrangementText());
+
+                // set click listener for button "comment this arrangement" only when possible
+                if ((prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0) - prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0)) > 0 || !commentLimitationBorder) { // check comment possible?
+                    // onClick listener comment this arrangement
+                    footerView.buttonCommentThisArrangement.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            Intent intent = new Intent(contextForActivity, ActivityOurArrangement.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            intent.putExtra("com", "comment_an_arrangement");
+                            intent.putExtra("db_id", arrangementDbIdToShow);
+                            intent.putExtra("arr_num", arrangementNumberInListView);
+                            contextForActivity.startActivity(intent);
+                        }
+                    });
+                }
+                else {
+                    footerView.buttonCommentThisArrangement.setVisibility((View.GONE));
+                }
+
+                // onClick listener back button to now arrangement
+                footerView.buttonFooterBackToArrangement.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -288,6 +359,7 @@ public class OurArrangementShowCommentRecylerViewAdapter extends RecyclerView.Ad
                         contextForActivity.startActivity(intent);
                     }
                 });
+
 
                 String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral, tmpInfoTextCommentMaxLetters;
                 // build text element max comment

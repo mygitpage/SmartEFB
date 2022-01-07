@@ -15,18 +15,5 @@
         android:paddingBottom="8dp"
         android:scrollbars="none"/>
 
-    <!--
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabOurArrangementShowComment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        android:src="@drawable/fab_pic_send_message"
-        app:layout_anchor="@id/listOurArrangementShowComment"
-        app:layout_anchorGravity="bottom|right|end"
-        app:backgroundTint="@color/text_accent_color"
-        android:visibility="invisible"/>
-    -->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -266,32 +266,19 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToEvaluate);
 
         // get all actual arrangements
-        cursorNextArrangementToEvaluate = myDb.getAllRowsCurrentOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "equalBlockId"),  "equalBlockId", "asc");
+        cursorNextArrangementToEvaluate = myDb.getAllRowsCurrentOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "equalBlockId"),  "equalBlockId", "ascending");
 
         // Set correct subtitle in Activity -> "Bewerten Absprache ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentEvaluateArrangementText", "string", fragmentEvaluateContext.getPackageName())) + " " + arrangementNumberInListView;
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "evaluate");
 
+        // set visibility of FAB for this fragment
+        ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility ("hide", "evaluate");
+
         // build the view
         //textview for the evaluation intro
         TextView textCommentNumberIntro = (TextView) viewFragmentEvaluate.findViewById(R.id.arrangementEvaluateIntroText);
         textCommentNumberIntro.setText(this.getResources().getString(R.string.showEvaluateArrangementIntroText) + " " + arrangementNumberInListView);
-
-        // generate back link "zurueck zu allen Absprachen"
-        /*
-        Uri.Builder commentLinkBuilder = new Uri.Builder();
-        commentLinkBuilder.scheme("smart.efb.deeplink")
-                .authority("linkin")
-                .path("ourarrangement")
-                .appendQueryParameter("db_id", "0")
-                .appendQueryParameter("arr_num", "0")
-                .appendQueryParameter("com", "show_arrangement_now");
-        TextView linkShowEvaluateBackLink = (TextView) viewFragmentEvaluate.findViewById(R.id.arrangementShowEvaluateBackLink);
-        linkShowEvaluateBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + fragmentEvaluateContext.getResources().getString(fragmentEvaluateContext.getResources().getIdentifier("ourArrangementEvaluationBackLinkToArrangement", "string", fragmentEvaluateContext.getPackageName())) + "</a>"));
-        linkShowEvaluateBackLink.setMovementMethod(LinkMovementMethod.getInstance());
-        */
-
-
 
         // onClick listener back button
         Button tmpBackToArrangement = viewFragmentEvaluate.findViewById(R.id.buttonHeaderBackToArrangement);
@@ -306,8 +293,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 getActivity().startActivity(intent);
             }
         });
-
-
 
         // put author name of arrangement
         TextView tmpTextViewAuthorNameText = (TextView) viewFragmentEvaluate.findViewById(R.id.textAuthorNameArrangement);
@@ -595,22 +580,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
             }
         });
 
-        // button abbort
-        Button buttonAbbortArrangementComment = (Button) viewFragmentEvaluate.findViewById(R.id.buttonAbortEvaluate);
-        // onClick listener button abbort
-        buttonAbbortArrangementComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // reset evaluate results
-                resetEvaluateResult ();
-
-                Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent.putExtra("com","show_arrangement_now");
-                getActivity().startActivity(intent);
-            }
-        });
     }
 
     // reset evaluation results

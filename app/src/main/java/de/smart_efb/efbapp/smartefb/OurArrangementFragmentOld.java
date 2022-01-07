@@ -10,14 +10,22 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Created by ich on 26.06.16.
@@ -33,11 +41,21 @@ public class OurArrangementFragmentOld extends Fragment {
     // the fragment
     Fragment fragmentOldThisFragmentContext;
 
-    // reference to the DB
-    DBAdapter myDb;
-
     // shared prefs for the settings
     SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
+
+    // the recycler view
+    RecyclerView recyclerViewOldArrangement = null;
+
+    // data array of sketch arrangements for recycler view
+    ArrayList<ObjectSmartEFBArrangement> arrayListOldArrangements;
+
+    // reference arrayListAdapter for the recyler view
+    OurArrangementOldArrangementRecyclerViewAdapter oldArrangementRecyclerViewAdapter;
+
+    // reference to the DB
+    DBAdapter myDb;
 
     // the current date of arrangement -> the other are old
     long currentDateOfArrangement;
@@ -53,6 +71,9 @@ public class OurArrangementFragmentOld extends Fragment {
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
         viewFragmentOld = layoutInflater.inflate(R.layout.fragment_our_arrangement_old, null);
+
+        // fragment has option menu
+        setHasOptionsMenu(true);
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
@@ -103,6 +124,62 @@ public class OurArrangementFragmentOld extends Fragment {
         myDb.close();
 
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+
+        menuInflater.inflate(R.menu.menu_efb_our_arrangement_fragment_old, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem registerItemDesc = menu.findItem(R.id.our_arrangement_menu_fragment_old_sort_desc);
+        MenuItem registerItemAsc = menu.findItem(R.id.our_arrangement_menu_fragment_old_sort_asc);
+        MenuItem registerNoArrangementsInfo = menu.findItem(R.id.our_arrangement_menu_fragment_old_no_arrangement_available);
+
+        if (arrayListOldArrangements != null && arrayListOldArrangements.size() > 0) {
+
+            registerNoArrangementsInfo.setVisible(false);
+            if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "descending").equals("descending")) {
+                registerItemDesc.setVisible(false);
+                registerItemAsc.setVisible(true);
+            } else {
+                registerItemAsc.setVisible(false);
+                registerItemDesc.setVisible(true);
+            }
+        }
+        else {
+            registerNoArrangementsInfo.setVisible(true);
+            registerItemDesc.setVisible(false);
+            registerItemAsc.setVisible(false);
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.our_arrangement_menu_fragment_old_sort_desc:
+                prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "descending");
+                prefsEditor.apply();
+                refreshFragmentView();
+                return true;
+            case R.id.our_arrangement_menu_fragment_old_sort_asc:
+                prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "ascending");
+                prefsEditor.apply();
+                refreshFragmentView();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
@@ -177,12 +254,19 @@ public class OurArrangementFragmentOld extends Fragment {
 
         // init the prefs
         prefs = fragmentOldContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentOldContext.MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
         //get current date of arrangement
         currentDateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
 
         //get current block id of arrangements
         currentBlockIdOfArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0");
+
+        // new recyler view
+        recyclerViewOldArrangement = viewFragmentOld.findViewById(R.id.listOurArrangementOld);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fragmentOldContext);
+        recyclerViewOldArrangement.setLayoutManager(linearLayoutManager);
+        recyclerViewOldArrangement.setHasFixedSize(true);
     }
 
 
@@ -190,15 +274,12 @@ public class OurArrangementFragmentOld extends Fragment {
 
         String tmpSubtitle;
 
-        // find the listview
-        ListView listView = (ListView) viewFragmentOld.findViewById(R.id.listOurArrangementOld);
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, false) && recyclerViewOldArrangement != null) { // Function showOldArrangement is available!!!!
 
-        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, false) && listView != null) { // Function showOldArrangement is available!!!!
+            // get the data (all now arrangements) from DB
+            arrayListOldArrangements = myDb.getAllRowsOurArrangementNowArrayList(currentBlockIdOfArrangement, "notEqualBlockId", prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "descending"));
 
-            // get all old arrangement from DB
-            Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentBlockIdOfArrangement,"notEqualBlockId", "asc");
-
-            if (cursor.getCount() > 0) {
+            if (arrayListOldArrangements.size() > 0) {
 
                 // show the list view for the old arrangements, hide textview "Function not available" and "nothing there"
                 setVisibilityListViewOldArrangements ("show");
@@ -209,14 +290,18 @@ public class OurArrangementFragmentOld extends Fragment {
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("olderArrangementDateFrom", "string", fragmentOldContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
                 ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "old");
 
-                // new dataadapter
-                dataAdapter = new OurArrangementOldCursorAdapter(
+                // set visibility of FAB for this fragment
+                ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility ("hide", "old");
+
+                // new recycler view adapter
+                oldArrangementRecyclerViewAdapter = new OurArrangementOldArrangementRecyclerViewAdapter(
                         getActivity(),
-                        cursor,
+                        arrayListOldArrangements,
                         0);
 
-                // Assign adapter to ListView
-                listView.setAdapter(dataAdapter);
+                // Assign adapter to recycler view
+                recyclerViewOldArrangement.setAdapter(oldArrangementRecyclerViewAdapter);
+
             }
             else {
 
@@ -228,6 +313,9 @@ public class OurArrangementFragmentOld extends Fragment {
                 // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleOldNothingThere", "string", fragmentOldContext.getPackageName()));
                 ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "old");
+
+                // set visibility of FAB for this fragment
+                ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility ("hide", "old");
             }
         }
         else { // Function showOldArrangement is not available
@@ -240,23 +328,24 @@ public class OurArrangementFragmentOld extends Fragment {
             // Set correct subtitle in Activity -> "Funktion nicht moeglich"
             tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNotAvailable", "string", fragmentOldContext.getPackageName()));
             ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "old");
+
+            // set visibility of FAB for this fragment
+            ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility ("hide", "old");
         }
     }
 
 
     private void setVisibilityListViewOldArrangements (String visibility) {
 
-        ListView tmplistView = (ListView) viewFragmentOld.findViewById(R.id.listOurArrangementOld);
-
-        if (tmplistView != null) {
+        if (recyclerViewOldArrangement != null) {
 
             switch (visibility) {
 
                 case "show":
-                    tmplistView.setVisibility(View.VISIBLE);
+                    recyclerViewOldArrangement.setVisibility(View.VISIBLE);
                     break;
                 case "hide":
-                    tmplistView.setVisibility(View.GONE);
+                    recyclerViewOldArrangement.setVisibility(View.GONE);
                     break;
             }
         }

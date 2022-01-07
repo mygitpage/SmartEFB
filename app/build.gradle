@@ -1,8 +1,5 @@
 apply plugin: 'com.android.application'
 
-// Bitte lesen und dann umsetzen!
-// https://guides.codepath.com/android/handling-scrolls-with-coordinatorlayout
-// https://medium.com/@ankitashettya/collapsing-toolbar-in-android-using-androidx-jetpack-d54678ac4cbc
 android {
     compileSdkVersion 29
     buildToolsVersion '29.0.2'

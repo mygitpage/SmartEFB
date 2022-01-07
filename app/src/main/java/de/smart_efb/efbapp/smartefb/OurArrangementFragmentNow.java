@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,13 +48,13 @@ public class OurArrangementFragmentNow extends Fragment {
     SharedPreferences.Editor prefsEditor;
 
     // the recycler view
-    RecyclerView recyclerViewNowArangement = null;
+    RecyclerView recyclerViewNowArrangement = null;
 
     // data array of now arrangements for recycler view
     ArrayList<ObjectSmartEFBArrangement> arrayListArrangements;
 
-    // reference cursorAdapter for the recyler view
-    OurArrangementNowArrangementRecylerViewAdapter nowArrangementRecylerViewAdapter;
+    // reference arrayListAdapter for the recyler view
+    OurArrangementNowArrangementRecyclerViewAdapter nowArrangementRecylerViewAdapter;
 
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
@@ -63,11 +62,8 @@ public class OurArrangementFragmentNow extends Fragment {
     // block id of current arrangements
     String currentBlockIdOfArrangement = "";
 
-    //limitation in count comments true-> yes, there is a border; no, there is no border, wirte infitisly comments
+    //limitation in count comments true-> yes, there is a border; no, there is no border, write infitisly comments
     Boolean commentLimitationBorder;
-
-    // the fab
-    FloatingActionButton fabFragmentNowArrangement;
 
 
     @Override
@@ -140,16 +136,24 @@ public class OurArrangementFragmentNow extends Fragment {
     {
         MenuItem registerItemDesc = menu.findItem(R.id.our_arrangement_menu_fragment_now_sort_desc);
         MenuItem registerItemAsc = menu.findItem(R.id.our_arrangement_menu_fragment_now_sort_asc);
+        MenuItem registerNoArrangementsInfo = menu.findItem(R.id.our_arrangement_menu_fragment_now_no_arrangement_available);
 
-        if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementNowList, "descending").equals("descending")) {
-            registerItemDesc.setVisible(false);
-            registerItemAsc.setVisible(true);
+        if (arrayListArrangements != null && arrayListArrangements.size() > 0) {
+
+            registerNoArrangementsInfo.setVisible(false);
+            if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementNowList, "descending").equals("descending")) {
+                registerItemDesc.setVisible(false);
+                registerItemAsc.setVisible(true);
+            } else {
+                registerItemAsc.setVisible(false);
+                registerItemDesc.setVisible(true);
+            }
         }
         else {
+            registerNoArrangementsInfo.setVisible(true);
+            registerItemDesc.setVisible(false);
             registerItemAsc.setVisible(false);
-            registerItemDesc.setVisible(true);
         }
-
     }
 
 
@@ -161,12 +165,12 @@ public class OurArrangementFragmentNow extends Fragment {
             case R.id.our_arrangement_menu_fragment_now_sort_desc:
                 prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementNowList, "descending");
                 prefsEditor.apply();
-                updateListView();
+                updateRecyclerView();
                 return true;
             case R.id.our_arrangement_menu_fragment_now_sort_asc:
                 prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementNowList, "ascending");
                 prefsEditor.apply();
-                updateListView();
+                updateRecyclerView();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -184,7 +188,7 @@ public class OurArrangementFragmentNow extends Fragment {
             Bundle intentExtras = null;
 
             // true-> update the list view with arrangements
-            Boolean updateListView = false;
+            Boolean updateRecyclerView = false;
 
             // check for intent extras
             intentExtras = intent.getExtras();
@@ -220,11 +224,11 @@ public class OurArrangementFragmentNow extends Fragment {
                     //update current block id of arrangements
                     currentBlockIdOfArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0");
 
-                    // check arrangement and skecth arrangement update and show dialog arrangement and sketch arrangement change
+                    // check arrangement and sketch arrangement update and show dialog arrangement and sketch arrangement change
                     ((ActivityOurArrangement) getActivity()).checkUpdateForShowDialog ("now");
 
                     // update the view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNowComment != null && tmpExtraOurArrangementNowComment.equals("1")) {
                     // new comments -> update now view -> show toast and update view
@@ -232,7 +236,7 @@ public class OurArrangementFragmentNow extends Fragment {
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
 
                     // update the view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementResetCommentCountComment != null && tmpExtraOurArrangementResetCommentCountComment.equals("1")) {
                     // reset now comment counter -> show toast and update view
@@ -243,7 +247,7 @@ public class OurArrangementFragmentNow extends Fragment {
                     toast.show();
 
                    // update the view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementCommentShareDisable  != null && tmpExtraOurArrangementCommentShareDisable .equals("1")) {
                     // sharing is disable -> show toast and update view
@@ -278,7 +282,7 @@ public class OurArrangementFragmentNow extends Fragment {
                 else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
                     // evaluationperiod has change -> update view, only when current time is bigger than last start point
                     if (System.currentTimeMillis() >= prefs.getLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, 0)) {
-                        updateListView = true;
+                        updateRecyclerView = true;
                         // set new start point for evaluation timer in view
                         prefsEditor.putLong(ConstansClassOurArrangement.namePrefsStartPointEvaluationPeriodInMills, System.currentTimeMillis());
                         prefsEditor.apply();
@@ -286,7 +290,7 @@ public class OurArrangementFragmentNow extends Fragment {
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {
                     // arrangement settings have change -> refresh view
-                    updateListView = true;
+                    updateRecyclerView = true;
 
                     // new alarm manager service for start all needed alarms
                     EfbSetAlarmManager efbSetAlarmManager = new EfbSetAlarmManager(context);
@@ -297,8 +301,8 @@ public class OurArrangementFragmentNow extends Fragment {
                 }
 
                 // update the list view because data has change?
-                if (updateListView) {
-                    updateListView();
+                if (updateRecyclerView) {
+                    updateRecyclerView();
                 }
             }
         }
@@ -306,26 +310,23 @@ public class OurArrangementFragmentNow extends Fragment {
 
 
     // update the list view with arrangements
-    public void updateListView () {
+    public void updateRecyclerView () {
 
-        if (recyclerViewNowArangement != null) {
-            recyclerViewNowArangement.destroyDrawingCache();
-            recyclerViewNowArangement.setVisibility(ListView.INVISIBLE);
-            recyclerViewNowArangement.setVisibility(ListView.VISIBLE);
+        if (recyclerViewNowArrangement != null) {
+            recyclerViewNowArrangement.destroyDrawingCache();
+            recyclerViewNowArrangement.setVisibility(ListView.INVISIBLE);
+            recyclerViewNowArrangement.setVisibility(ListView.VISIBLE);
 
             displayActualArrangementSet ();
         }
     }
 
 
-    // inits the fragment for use
+    // init the fragment for use
     private void initFragmentNow() {
 
         // init the DB
         myDb = new DBAdapter(fragmentNowContext);
-
-        // call getter-methode getFabViewOurArrangement() in ActivityOurArrangement to get view for fab
-        fabFragmentNowArrangement = ((ActivityOurArrangement)getActivity()).getFabViewOurArrangement();
 
         // init the prefs
         prefs = fragmentNowContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentNowContext.MODE_PRIVATE);
@@ -341,158 +342,10 @@ public class OurArrangementFragmentNow extends Fragment {
         commentLimitationBorder = ((ActivityOurArrangement) getActivity()).isCommentLimitationBorderSet("current");
 
         // new recyler view
-        recyclerViewNowArangement = viewFragmentNow.findViewById(R.id.listOurArrangementNowArrangement);
+        recyclerViewNowArrangement = viewFragmentNow.findViewById(R.id.listOurArrangementNowArrangement);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fragmentNowContext);
-        recyclerViewNowArangement.setLayoutManager(linearLayoutManager);
-        recyclerViewNowArangement.setHasFixedSize(true);
-
-        // get the data (all arrangement) from DB
-        final Cursor cursor = myDb.getAllRowsCurrentOurArrangement(currentBlockIdOfArrangement, "equalBlockId" , prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementNowList, "descending"));
-
-        // show fab and comment arrangement only when on!
-        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false) && cursor.getCount() > 0) {
-
-            // show fab and set on click listener
-            if (fabFragmentNowArrangement != null) {
-
-                fabFragmentNowArrangement.show();
-
-                // add on click listener to fab
-                fabFragmentNowArrangement.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        if (cursor.getCount() > 1) {
-
-                            // create popup menu for fab
-                            PopupMenu popupFabCommentArrangement = new PopupMenu(((ActivityOurArrangement) getActivity()), view);
-
-                            // inflate popup menu for fab
-                            popupFabCommentArrangement.getMenuInflater().inflate(R.menu.popup_efb_our_arrangement_now_arrangement_fab, popupFabCommentArrangement.getMenu());
-
-                            // set on click listener for popup menu item
-                            popupFabCommentArrangement.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-                                @Override
-                                public boolean onMenuItemClick(MenuItem item) {
-
-                                    Intent intent = new Intent(fragmentNowContext, ActivityOurArrangement.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("com", "comment_an_arrangement");
-
-                                    switch (item.getItemId()) {
-                                        case R.id.arrangement1:
-                                            cursor.moveToFirst();
-                                            intent.putExtra("db_id", cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
-                                            intent.putExtra("arr_num", 1);
-
-                                            break;
-                                        case R.id.arrangement2:
-                                            if (cursor.moveToPosition(1)) {
-                                                intent.putExtra("db_id", cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
-                                                intent.putExtra("arr_num", 2);
-                                            }
-                                            break;
-                                        case R.id.arrangement3:
-                                            if (cursor.moveToPosition(2)) {
-                                                intent.putExtra("db_id", cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
-                                                intent.putExtra("arr_num", 3);
-                                            }
-                                            break;
-                                        case R.id.arrangement4:
-                                            if (cursor.moveToPosition(3)) {
-                                                intent.putExtra("db_id", cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
-                                                intent.putExtra("arr_num", 4);
-                                            }
-                                            break;
-
-                                        case R.id.arrangement5:
-                                            if (cursor.moveToPosition(4)) {
-                                                intent.putExtra("db_id", cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
-                                                intent.putExtra("arr_num", 5);
-                                            }
-                                            break;
-                                        case R.id.arrangement6:
-                                            if (cursor.moveToPosition(5)) {
-                                                intent.putExtra("db_id", cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
-                                                intent.putExtra("arr_num", 6);
-                                            }
-                                            break;
-                                        case R.id.arrangement7:
-                                            if (cursor.moveToPosition(6)) {
-                                                intent.putExtra("db_id", cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
-                                                intent.putExtra("arr_num", 7);
-                                            }
-                                            break;
-
-                                        case R.id.arrangement8:
-                                            if (cursor.moveToPosition(7)) {
-                                                intent.putExtra("db_id", cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
-                                                intent.putExtra("arr_num", 8);
-                                            }
-                                            break;
-                                        case R.id.arrangement9:
-                                            if (cursor.moveToPosition(8)) {
-                                                intent.putExtra("db_id", cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
-                                                intent.putExtra("arr_num", 9);
-                                            }
-                                            break;
-                                        case R.id.arrangement10:
-                                            if (cursor.moveToPosition(9)) {
-                                                intent.putExtra("db_id", cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
-                                                intent.putExtra("arr_num", 10);
-                                            }
-                                            break;
-
-                                        case R.id.arrangement11:
-                                            if (cursor.moveToPosition(10)) {
-                                                intent.putExtra("db_id", cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
-                                                intent.putExtra("arr_num", 11);
-                                            }
-                                            break;
-                                        case R.id.arrangement12:
-                                            if (cursor.moveToPosition(11)) {
-                                                intent.putExtra("db_id", cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
-                                                intent.putExtra("arr_num", 12);
-                                            }
-                                            break;
-                                    }
-
-                                    // start comment choosen arrangement
-                                    fragmentNowContext.startActivity(intent);
-
-                                    return true;
-                                }
-                            });
-
-                            // disable menu entry not used
-                            int resId;
-                            String ressourceArrangementString = "arrangement";
-                            for (int t = cursor.getCount() + 1; t <= 12; t++) {
-
-                                resId = getResources().getIdentifier(ressourceArrangementString + t, "id", fragmentNowContext.getPackageName());
-                                // set popup menu entrys gone, when not needed
-                                popupFabCommentArrangement.getMenu().findItem(resId).setVisible(false);
-                            }
-
-                            // show popup menu
-                            popupFabCommentArrangement.show();
-
-                        } else {
-                            // only one arrangement in db
-                            cursor.moveToFirst();
-                            Intent intent = new Intent(fragmentNowContext, ActivityOurArrangement.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.putExtra("com", "comment_an_arrangement");
-                            intent.putExtra("db_id", cursor.getInt(cursor.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID)));
-                            intent.putExtra("arr_num", 1);
-                            // start comment for this arrangement
-                            fragmentNowContext.startActivity(intent);
-                        }
-                    }
-                });
-            }
-        }
+        recyclerViewNowArrangement.setLayoutManager(linearLayoutManager);
+        recyclerViewNowArrangement.setHasFixedSize(true);
 
     }
 
@@ -503,7 +356,7 @@ public class OurArrangementFragmentNow extends Fragment {
         // get the data (all now arrangements) from DB
         arrayListArrangements = myDb.getAllRowsOurArrangementNowArrayList(currentBlockIdOfArrangement, "equalBlockId", prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementNowList, "descending"));
 
-        if (arrayListArrangements.size() > 0 && recyclerViewNowArangement != null) {
+        if (arrayListArrangements.size() > 0 && recyclerViewNowArrangement != null) {
 
             // set listView visible and textView hide
             setVisibilityListViewNowArrangements("show");
@@ -513,14 +366,26 @@ public class OurArrangementFragmentNow extends Fragment {
             String tmpSubtitle = getResources().getString(getResources().getIdentifier("currentArrangementDateFrom", "string", fragmentNowContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfArrangement, "dd.MM.yyyy");
             ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "now");
 
+            // set visibility of FAB for this fragment
+            // show fab and comment arrangement only when on and possible!
+            if ((prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false) && (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0) - prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0)) > 0 ) || !commentLimitationBorder) {
+                // set fab visibility
+                ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility("show", "now");
+                // set fab click listener
+                ((ActivityOurArrangement) getActivity()).setOurArrangementFABClickListener(arrayListArrangements, "now", "comment_an_arrangement");
+            }
+            else {
+                ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility("hide", "now");
+            }
+
             // new dataadapter
-            nowArrangementRecylerViewAdapter = new OurArrangementNowArrangementRecylerViewAdapter (
+            nowArrangementRecylerViewAdapter = new OurArrangementNowArrangementRecyclerViewAdapter(
                     getActivity(),
                     arrayListArrangements,
                     0);
 
             // Assign adapter to ListView
-            recyclerViewNowArangement.setAdapter(nowArrangementRecylerViewAdapter);
+            recyclerViewNowArrangement.setAdapter(nowArrangementRecylerViewAdapter);
         }
         else {
 
@@ -531,6 +396,9 @@ public class OurArrangementFragmentNow extends Fragment {
             // Set correct subtitle in Activity -> "Keine Absprachen vorhanden"
             String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleNowNothingThere", "string", fragmentNowContext.getPackageName()));
             ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "now");
+
+            // set visibility of FAB for this fragment
+            ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility ("hide", "now");
         }
     }
 

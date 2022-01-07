@@ -12,4 +12,9 @@
         app:showAsAction="never"
         android:title="@string/ourArrangementNowArrangementMenuSortAsc" />
 
+    <item
+        android:id="@+id/our_arrangement_menu_fragment_now_no_arrangement_available"
+        app:showAsAction="never"
+        android:title="@string/ourArrangementNowArrangementMenuNoArrangementAvailable" />
+
 </menu>

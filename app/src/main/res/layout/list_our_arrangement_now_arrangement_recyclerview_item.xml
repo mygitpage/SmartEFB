@@ -42,12 +42,15 @@
 
             <TextView
                 android:id="@+id/listArrangementNewArrangementText"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14dp"
+                android:textSize="16dp"
                 android:textColor="@color/text_accent_color"
+                android:text="@string/newEntryText"
                 android:gravity="center"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

@@ -19,7 +19,8 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/actualSketchCommentInfoText"
@@ -27,18 +28,19 @@
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
                 android:textColor="@color/colorPrimaryDark"
-                android:gravity="left"
+                android:gravity="center"
                 android:textStyle="bold"
                 android:layout_marginLeft="3dp"/>
 
             <TextView
                 android:id="@+id/actualSketchCommentNewInfoText"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14dp"
                 android:textColor="@color/text_accent_color"
-                android:gravity="left"
-                android:paddingLeft="10dp"/>
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:visibility="gone"/>
 
         </LinearLayout>
 
@@ -82,22 +84,5 @@
         android:textColor="@color/text_color"
         android:gravity="left"
         android:paddingLeft="10dp"/>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="10dp">
-
-        <TextView
-            android:id="@+id/linkToCommentAnSketchArrangement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="@color/text_color"
-            android:textColorLink="@color/colorPrimary"
-            android:gravity="right"/>
-
-    </LinearLayout>
 
 </LinearLayout>

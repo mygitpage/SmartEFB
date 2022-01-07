@@ -170,7 +170,7 @@
             <string name="settingsEfbFragmentBCompanyIntro">Die Beratungsstellen \"Lichtblick\" gehören zur Gesellschaft zur Förderung Brandenburger Kinder und Jugendlicher (GFB)</string>
             <string name="settingsEfbFragmentBCompanyManager">Frank Matzke\n(Geschäftsführer)\nfrank.matzke@gfb-potsdam.de</string>
             <string name="settingsEfbFragmentBFundingHeadine">Förderung</string>
-            <string name="settingsEfbFragmentBFundingIntro">Das Projekt wird durch die Auerbachstiftung gefördert</string>
+            <string name="settingsEfbFragmentBFundingIntro">Das Projekt wird durch die Auerbachstiftung und die Stiftung Großes Waisenhaus zu Potsdam gefördert.</string>
 
         <!-- end settings fragment b  -->
 
@@ -291,11 +291,30 @@
         <!-- End String Activity Our Arrangement Now Popup Menu Comment Arrangement -->
 
 
+        <!-- String Activity Our Arrangement Sketch Popup Menu Comment Arrangement -->
+            <string name="popupItemOurArrangementSketchArrangement1"><b>Entwurf 1 kommentieren</b></string>
+            <string name="popupItemOurArrangementSketchArrangement2"><b>Entwurf 2 kommentieren</b></string>
+            <string name="popupItemOurArrangementSketchArrangement3"><b>Entwurf 3 kommentieren</b></string>
+            <string name="popupItemOurArrangementSketchArrangement4"><b>Entwurf 4 kommentieren</b></string>
+            <string name="popupItemOurArrangementSketchArrangement5"><b>Entwurf 5 kommentieren</b></string>
+            <string name="popupItemOurArrangementSketchArrangement6"><b>Entwurf 6 kommentieren</b></string>
+            <string name="popupItemOurArrangementSketchArrangement7"><b>Entwurf 7 kommentieren</b></string>
+            <string name="popupItemOurArrangementSketchArrangement8"><b>Entwurf 8 kommentieren</b></string>
+            <string name="popupItemOurArrangementSketchArrangement9"><b>Entwurf 9 kommentieren</b></string>
+            <string name="popupItemOurArrangementSketchArrangement10"><b>Entwurf 10 kommentieren</b></string>
+            <string name="popupItemOurArrangementSketchArrangement11"><b>Entwurf 11 kommentieren</b></string>
+            <string name="popupItemOurArrangementSketchArrangement12"><b>Entwurf 12 kommentieren</b></string>
+        <!-- End String Activity Our Arrangement Sketch Popup Menu Comment Arrangement -->
+    
+
         <!-- fragment show old arrangements -->
             <string name="ourArrangementOldArrangementFunctionNotAvailable">Diese Funktion steht zur Verfügung,\nsobald Ihr/e Berater*innen diese einschalten!</string>
             <string name="ourArrangementOldArrangementNothingThere">Es sind keine älteren\nAbsprachen vorhanden!</string>
             <string name="ourArrangementOldArrangementDateIntro">Absprachen vom</string>
             <string name="showOldArrangementIntroText">Alte Absprache</string>
+            <string name="ourArrangementOldArrangementMenuSortDesc">Ältere Absprachen absteigend sortieren</string>
+            <string name="ourArrangementOldArrangementMenuSortAsc">Ältere Absprachen aufsteigend sortieren</string>
+            <string name="ourArrangementOldArrangementMenuNoArrangementAvailable">Keine älteren Absprachen vorhanden</string>
         <!-- End fragment show old arrangements -->
 
         <!-- fragment show current arrangements -->
@@ -304,6 +323,7 @@
             <string name="ourArrangementAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
             <string name="ourArrangementNowArrangementMenuSortDesc">Absprachen absteigend sortieren</string>
             <string name="ourArrangementNowArrangementMenuSortAsc">Absprachen aufsteigend sortieren</string>
+            <string name="ourArrangementNowArrangementMenuNoArrangementAvailable">Keine Absprachen vorhanden</string>
         <!-- End show now arrangements -->
 
         <!-- Link text for comment, show comments and evaluate-->
@@ -385,6 +405,8 @@
             <string name="select_dialog_our_arrangement_now_number_of_comment_20">20 Kommentare</string>
             <string name="select_dialog_our_arrangement_now_number_of_comment_50">50 Kommentare</string>
             <string name="select_dialog_our_arrangement_now_number_of_comment_all">Alle Kommentare</string>
+            <string name="ourArrangementShowCommentCommentThisArrangement">Absprache %1$d kommentieren</string>
+
         <!-- End String Fragment show comment -->
 
         <!-- String Fragment evaluate arrangement -->
@@ -423,11 +445,11 @@
         <!-- End Fragment evaluate arrangement -->
 
         <!-- fragment comment sketch arrangement -->
-            <string name="showSketchArrangementIntroText">Absprache Entwurf</string>
+            <string name="showSketchArrangementIntroText">Entwurf Absprache</string>
             <string name="commentSketchArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
             <string name="introStructQuestionForCommentSketchArrangement">Wie schätzen Sie Ihre Zustimmung zu dem Entwurf ein?</string>
             <string name="errorStructQuestionForCommentSketchArrangement">Bitte wählen Sie Ihre Zustimmung!</string>
-            <string name="introFreeQuestionForCommentSketchArrangementHint"><b>Bitte erläutern Sie Ihre obige Einschätzung</b></string>
+            <string name="introFreeQuestionForCommentSketchArrangementHint">Bitte erläutern Sie Ihre obige Einschätzung</string>
             <string name="errorFreeQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihre Erläuterungen zum obigen Zustimmungswert! Sie sind zu kurz!</string>
             <string name="commentFreeQuestionSketchArrangementTextFieldHintText">Bitte erläutern Sie hier Ihre Einschätzung.</string>
             <string name="buttonSendSketchArrangementComment">Einschätzung senden</string>
@@ -476,7 +498,22 @@
             <string name="textOurArrangementSketchCommentActualResultStructQuestionFromCoach">Die Einschätzung wurde ohne Zustimmungswert von Ihrer Beraterin/ Ihrem Berater geschrieben</string>
             <string name="textOurArrangementSketchCommentNoSharing">Die Einschätzungen werden im Moment nicht zugestellt!</string>
             <string name="toastOurArrangementSketchCommentCaseCloseToastText">Der Fall ist abgeschlossen! Einschätzungen werden nicht mehr gesendet!</string>
-        <!-- End fragment comment sketch arrangement -->
+            <string name="ourArrangementSketchCommentBackButtonToSketchArrangement">Übersicht Entwürfe</string>
+            <string name="ourArrangementSketchCommentBackButtonToShowSketchComment">Übersicht Einschätzungen</string>
+            <string name="ourArrangementSketchCommentCountCommentTextSingular">%1$s von %2$d Einschätzung</string>
+            <string name="ourArrangementSketchCommentCountCommentTextPlural">%1$s von %2$d Einschätzungen</string>
+            <string name="ourArrangementSketchCommentCountCommentTextNoLimit">Keine Anzahlbeschränkung</string>
+            <string name="ourArrangementShowSketchCommentCommentThisSketchArrangement">Entwurf %1$d einschätzen</string>
+            <string name="ourArrangementShowSketchCommentMenuSortDesc">Einschätzungen absteigend sortieren</string>
+            <string name="ourArrangementShowSketchCommentMenuSortAsc">Einschätzungen aufsteigend sortieren</string>
+            <string name="ourArrangementShowSketchCommentMenuCountCommentForList">Anzahl anzuzeigener Einschätzungen</string>
+            <string name="select_dialog_our_arrangement_sketch_number_of_comment_title">Bitte wählen Sie die Anzahl der anzuzeigenden Einschätzungen</string>
+            <string name="select_dialog_our_arrangement_sketch_number_of_comment_5">5 Einschätzungen</string>
+            <string name="select_dialog_our_arrangement_sketch_number_of_comment_10">10 Einschätzungen</string>
+            <string name="select_dialog_our_arrangement_sketch_number_of_comment_20">20 Einschätzungen</string>
+            <string name="select_dialog_our_arrangement_sketch_number_of_comment_50">50 Einschätzungen</string>
+            <string name="select_dialog_our_arrangement_sketch_number_of_comment_all">Alle Einschätzungen</string>
+    <!-- End fragment comment sketch arrangement -->
 
         <!-- String Fragment show sketch comment -->
             <string name="btnAbortShowSketchComment">Zurück zu den aktuellen Entwürfen</string>
@@ -503,6 +540,10 @@
             <string name="showSketchArrangementNumberText">Entwurf Absprache</string>
             <string name="ourArrangementSketchAuthorNameText">Geschrieben von %1$s</string>
             <string name="ourArrangementSketchAuthorNameTextWithDate">Geschrieben von &lt;u>%1$s&lt;/u> am %2$s</string>
+            <string name="ourArrangementSketchArrangementMenuSortDesc">Entwürfe absteigend sortieren</string>
+            <string name="ourArrangementSketchArrangementMenuSortAsc">Entwürfe aufsteigend sortieren</string>
+            <string name="ourArrangementSketchArrangementMenuNoArrangementAvailable">Keine Entwürfe vorhanden</string>
+            <string name="ourArrangementSketchArrangementMenuFunctionOff">Die Funktion ist ausgeschaltet</string>
         <!-- End Fragment sketch arrangement -->
 
         <!-- our arrangement dialog settings -->
@@ -551,8 +592,6 @@
             <string name="textDialogOurArrangementNoMoreMessages">Sie haben alle möglichen Kommentare geschrieben. Maximal konnten Sie %1s Kommentare schreiben.</string>
             <string name="textDialogOurArrangementInfoCoach">Sollten Sie Fragen oder Änderungswünsche zu dieser Einschränkung haben, wenden Sie sich bitte an Ihre Beraterin oder Ihren Berater.</string>
         <!-- End our arrangement dialog no more messages -->
-
-
 
         <!-- our arrangement dialog arrangement change -->
             <string name="textDialogOurArrangementArrangementChangeCloseButton">Schliessen</string>

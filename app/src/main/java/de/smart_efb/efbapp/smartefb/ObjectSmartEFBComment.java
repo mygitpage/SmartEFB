@@ -16,8 +16,11 @@ public class ObjectSmartEFBComment {
     private Integer timerStatus;
     private Integer status;
     private Integer rowID;
+    private Integer question1;
+    private Integer question2;
+    private Integer question3;
 
-    public ObjectSmartEFBComment (Integer rowID, String comment, String authorName, String blockid, Long commentTime, Long uploadTime, Long localeTime, Long arrangementTime, Long currentDateOfArrangement, Integer newEntry, Integer serverIdComment, Integer timerStatus, Integer status) {
+    public ObjectSmartEFBComment (Integer rowID, String comment, String authorName, String blockid, Long commentTime, Long uploadTime, Long localeTime, Long arrangementTime, Long currentDateOfArrangement, Integer newEntry, Integer serverIdComment, Integer timerStatus, Integer status, Integer question1, Integer question2, Integer question3) {
 
         this.rowID = rowID;
         this.comment = comment;
@@ -32,6 +35,9 @@ public class ObjectSmartEFBComment {
         this.serverIdComment = serverIdComment;
         this.timerStatus = timerStatus;
         this.status = status;
+        this.question1 = question1;
+        this.question2 = question2;
+        this.question3 = question3;
 
     }
 
@@ -61,5 +67,11 @@ public class ObjectSmartEFBComment {
     public String getCommentText () {
         return comment;
     }
+
+    public Integer getCommentResultStructQuestion1 () {return question1;}
+
+    public Long getCommentTime () {return commentTime;}
+
+    public Integer getTimerStatus () {return timerStatus;}
 
 }

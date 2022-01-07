@@ -1,7 +1,6 @@
 package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -23,13 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class OurArrangementNowArrangementRecylerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class OurArrangementNowArrangementRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
     final Context contextForActivity;
-
-    // hold layoutInflater
-    private LayoutInflater cursorInflater;
 
     //limitation in count comments true-> yes, there is a border; no, there is no border
     Boolean commentLimitationBorder;
@@ -52,13 +47,10 @@ public class OurArrangementNowArrangementRecylerViewAdapter extends RecyclerView
 
 
     // own constructor!!!
-    public OurArrangementNowArrangementRecylerViewAdapter (Context context, ArrayList<ObjectSmartEFBArrangement> arrangementList, int flags) {
+    public OurArrangementNowArrangementRecyclerViewAdapter(Context context, ArrayList<ObjectSmartEFBArrangement> arrangementList, int flags) {
 
         // context of activity OurArrangement
         contextForActivity = context;
-
-        // get inflater service
-        cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // init array for count comments
         numberCountForComments = context.getResources().getStringArray(R.array.ourArrangementCountComments);
@@ -72,13 +64,13 @@ public class OurArrangementNowArrangementRecylerViewAdapter extends RecyclerView
         // copy array list of arrangements
         nowArrangementListForRecyclerView = arrangementList;
 
-        // init view has header, items and footer
+        // init view has item and footer
         STATE = FOOTER;
 
     }
 
 
-    // inner class for item element
+    // inner class for footer element
     private class OurArrangementNowArrangementFooterViewHolder extends RecyclerView.ViewHolder {
 
         public TextView textViewBorderBetweenElementAndFooterNothingElse, textViewBorderBetweenElementAndFooter, textViewInfoTextForEvaluationTimePeriod;
@@ -119,10 +111,10 @@ public class OurArrangementNowArrangementRecylerViewAdapter extends RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == FOOTER) {
-            return new OurArrangementNowArrangementRecylerViewAdapter.OurArrangementNowArrangementFooterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_our_arrangement_now_arrangement_recyclerview_footer, parent, false));
+            return new OurArrangementNowArrangementRecyclerViewAdapter.OurArrangementNowArrangementFooterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_our_arrangement_now_arrangement_recyclerview_footer, parent, false));
         }
         
-        return new OurArrangementNowArrangementRecylerViewAdapter.OurArrangementNowArrangementItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_our_arrangement_now_arrangement_recyclerview_item, parent, false));
+        return new OurArrangementNowArrangementRecyclerViewAdapter.OurArrangementNowArrangementItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_our_arrangement_now_arrangement_recyclerview_item, parent, false));
     }
 
 
@@ -166,7 +158,7 @@ public class OurArrangementNowArrangementRecylerViewAdapter extends RecyclerView
                 final ObjectSmartEFBArrangement arrangementElement = nowArrangementListForRecyclerView.get(position);
 
                 // cast holder
-                OurArrangementNowArrangementRecylerViewAdapter.OurArrangementNowArrangementItemViewHolder itemView = (OurArrangementNowArrangementRecylerViewAdapter.OurArrangementNowArrangementItemViewHolder) holder;
+                OurArrangementNowArrangementRecyclerViewAdapter.OurArrangementNowArrangementItemViewHolder itemView = (OurArrangementNowArrangementRecyclerViewAdapter.OurArrangementNowArrangementItemViewHolder) holder;
 
                 // put arrangement number
                 int arrangementElementPositionNumber = 0;
@@ -184,9 +176,8 @@ public class OurArrangementNowArrangementRecylerViewAdapter extends RecyclerView
                 itemView.textViewAuthorNameForArrangement.setText(HtmlCompat.fromHtml(tmpTextAuthorNameText, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
                 // check if arrangement entry new?
-                if (arrangementElement.getNewEntry() == 1) {
-                    String txtNewEntryOfArrangement = contextForActivity.getResources().getString(R.string.newEntryText);
-                    itemView.textViewNewSignalForArrangement.setText(txtNewEntryOfArrangement);
+               if (arrangementElement.getNewEntry() == 1) {
+                    itemView.textViewNewSignalForArrangement.setVisibility(View.VISIBLE);
                     myDb.deleteStatusNewEntryOurArrangement(arrangementElement.getRowID());
                 }
 
@@ -317,7 +308,6 @@ public class OurArrangementNowArrangementRecylerViewAdapter extends RecyclerView
                     linkEvaluateAnArrangement.setVisibility(View.GONE);
                 }
 
-
                 // generate link to comment an arrangement
                 if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false)) {
 
@@ -411,7 +401,7 @@ public class OurArrangementNowArrangementRecylerViewAdapter extends RecyclerView
             case FOOTER:
 
                 // cast holder
-                OurArrangementNowArrangementRecylerViewAdapter.OurArrangementNowArrangementFooterViewHolder footerView = (OurArrangementNowArrangementRecylerViewAdapter.OurArrangementNowArrangementFooterViewHolder) holder;
+                OurArrangementNowArrangementRecyclerViewAdapter.OurArrangementNowArrangementFooterViewHolder footerView = (OurArrangementNowArrangementRecyclerViewAdapter.OurArrangementNowArrangementFooterViewHolder) holder;
 
                 // show and generate info text evaluation period
                 if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowEvaluateArrangement, false)) { // show info of evaluation period when activated

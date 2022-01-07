@@ -1038,13 +1038,13 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
-    // Return all now arangement from the database with blockId in Array List <ObjectSmartEFBArrangement>
+    // Return all now arrangements from the database with blockId in Array List <ObjectSmartEFBArrangement>
     // the result is sorted by sortSequence
     ArrayList<ObjectSmartEFBArrangement> getAllRowsOurArrangementNowArrayList (String blockID, String order, String sort) {
 
         ArrayList<ObjectSmartEFBArrangement> storeArrangement = new ArrayList<>();
 
-        // get the data (all comments from an arrangement) from DB
+        // get the data (all arrangements) from DB
         Cursor cursorArrangement = this.getAllRowsCurrentOurArrangement(blockID, order, sort);
 
         Integer positionNumber = 0;
@@ -1067,7 +1067,7 @@ public class DBAdapter extends SQLiteOpenHelper {
                 Integer rowID = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.KEY_ROWID));
                 positionNumber++;
 
-                // make comment object and store data
+                // make arrangement object and store data
                 storeArrangement.add(new ObjectSmartEFBArrangement(rowID, arrangement, authorName, blockid, changeTo, arrangementWriteTime, arrangementSketchWriteTime, lastEvalTime, sketchArrangement, evaluatePossible, newEntry, serverIdArrangement, status, positionNumber));
 
             } while (cursorArrangement.moveToNext());
@@ -1079,22 +1079,31 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
     
 
-    // Return sketch arrangmenet from the database (table ourArrangement)
-    // the result is sorted by DESC
-    Cursor getAllRowsSketchOurArrangement(String blockID) {
+    // Return sketch arrangement from the database (table ourArrangement)
+    // the result is sorted by sort
+    Cursor getAllRowsSketchOurArrangement(String sketchBlockID, String sort) {
 
         String where = "";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // get only arrangments and no sketches
-        where = OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=1 AND " + OUR_ARRANGEMENT_KEY_BLOCK_ID + "=" + blockID;
-
+        // get only sketches and no arrangements
+        where = OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=1 AND " + OUR_ARRANGEMENT_KEY_BLOCK_ID + "=" + sketchBlockID;
+        
         // sort string
-        String sort = KEY_ROWID + " ASC";
-
+        String tmpSortSequence = "";
+        switch (sort) {
+            case "ascending":
+                tmpSortSequence = " ASC";
+                break;
+            case "descending":
+                tmpSortSequence = " DESC";
+                break;
+        }
+        String sortForDB = OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME + " DESC, " + KEY_ROWID + tmpSortSequence;
+        
         Cursor c = db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
-                where, null, null, null, sort, null);
+                where, null, null, null, sortForDB, null);
 
         if (c != null) {
             c.moveToFirst();
@@ -1103,6 +1112,47 @@ public class DBAdapter extends SQLiteOpenHelper {
         return c;
     }
 
+
+    // Return all sketch arrangements from the database with blockId in Array List <ObjectSmartEFBArrangement>
+    // the result is sorted by sort
+    ArrayList<ObjectSmartEFBArrangement> getAllRowsOurArrangementSketchArrayList (String blockID, String sort) {
+
+        ArrayList<ObjectSmartEFBArrangement> storeSketchArrangement = new ArrayList<>();
+
+        // get the data (all sketch arrangements) from DB
+        Cursor cursorSketchArrangement = this.getAllRowsSketchOurArrangement(blockID, sort);
+
+        Integer positionNumber = 0;
+
+        if (cursorSketchArrangement.moveToFirst()) {
+            do {
+
+                String arrangement = cursorSketchArrangement.getString(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
+                String authorName = cursorSketchArrangement.getString(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME));
+                String blockid = cursorSketchArrangement.getString(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID));
+                String changeTo = cursorSketchArrangement.getString(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_CHANGE_TO));
+                Long arrangementWriteTime = cursorSketchArrangement.getLong(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_WRITE_TIME));
+                Long arrangementSketchWriteTime = cursorSketchArrangement.getLong(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME));
+                Long lastEvalTime = cursorSketchArrangement.getLong(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME));
+                Integer sketchArrangement = cursorSketchArrangement.getInt(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT));
+                Integer evaluatePossible = cursorSketchArrangement.getInt(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE));
+                Integer newEntry = cursorSketchArrangement.getInt(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_NEW_ENTRY));
+                Integer serverIdArrangement = cursorSketchArrangement.getInt(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID));
+                Integer status = cursorSketchArrangement.getInt(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_STATUS)); // 0=ready to send, 1=message send, 4=external message
+                Integer rowID = cursorSketchArrangement.getInt(cursorSketchArrangement.getColumnIndex(DBAdapter.KEY_ROWID));
+                positionNumber++;
+
+                // make sketch arrangement object and store data
+                storeSketchArrangement.add(new ObjectSmartEFBArrangement(rowID, arrangement, authorName, blockid, changeTo, arrangementWriteTime, arrangementSketchWriteTime, lastEvalTime, sketchArrangement, evaluatePossible, newEntry, serverIdArrangement, status, positionNumber));
+
+            } while (cursorSketchArrangement.moveToNext());
+        }
+
+        cursorSketchArrangement.close();
+
+        return storeSketchArrangement;
+    }
+    
 
     // Get a specific row from the arrangement (by serverId)
     Cursor getRowOurArrangement(int serverId) {
@@ -1121,6 +1171,48 @@ public class DBAdapter extends SQLiteOpenHelper {
     }
 
 
+    // Get a specific row from the arrangement (by serverId) and return as array list
+    ArrayList<ObjectSmartEFBArrangement> getRowOurArrangementArrayList(int serverId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ArrayList<ObjectSmartEFBArrangement> storeArrangement = new ArrayList<>();
+
+        String where = OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=0 AND " + OUR_ARRANGEMENT_KEY_SERVER_ID + "=" + serverId;
+
+        Cursor cursorArrangement = db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        Integer positionNumber = 0;
+
+        if (cursorArrangement.moveToFirst()) {
+            String arrangement = cursorArrangement.getString(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
+            String authorName = cursorArrangement.getString(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME));
+            String blockid = cursorArrangement.getString(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID));
+            String changeTo = cursorArrangement.getString(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_CHANGE_TO));
+            Long arrangementWriteTime = cursorArrangement.getLong(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_WRITE_TIME));
+            Long arrangementSketchWriteTime = cursorArrangement.getLong(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME));
+            Long lastEvalTime = cursorArrangement.getLong(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME));
+            Integer sketchArrangement = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT));
+            Integer evaluatePossible = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE));
+            Integer newEntry = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_NEW_ENTRY));
+            Integer serverIdArrangement = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID));
+            Integer status = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_STATUS)); // 0=ready to send, 1=message send, 4=external message
+            Integer rowID = cursorArrangement.getInt(cursorArrangement.getColumnIndex(DBAdapter.KEY_ROWID));
+            positionNumber++;
+
+            // make arrangement object and store data
+            storeArrangement.add(new ObjectSmartEFBArrangement(rowID, arrangement, authorName, blockid, changeTo, arrangementWriteTime, arrangementSketchWriteTime, lastEvalTime, sketchArrangement, evaluatePossible, newEntry, serverIdArrangement, status, positionNumber));
+
+        }
+
+        // close cursor
+        cursorArrangement.close();
+
+        return storeArrangement;
+    }
+
+
     // Get a specific row from the sketch arrangement (by rowId)
     Cursor getRowSketchOurArrangement(int serverId) {
 
@@ -1135,6 +1227,46 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         return c;
+    }
+
+
+    ArrayList<ObjectSmartEFBArrangement> getRowOurArrangementSketchArrayList (int serverId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ArrayList<ObjectSmartEFBArrangement> storeSketchArrangement = new ArrayList<>();
+
+        String where = OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=1 AND " + OUR_ARRANGEMENT_KEY_SERVER_ID + "=" + serverId;
+
+        Cursor cursorSketchArrangement = db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT, OUR_ARRANGEMENT_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        Integer positionNumber = 0;
+
+        if (cursorSketchArrangement.moveToFirst()) {
+
+            String arrangement = cursorSketchArrangement.getString(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
+            String authorName = cursorSketchArrangement.getString(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME));
+            String blockid = cursorSketchArrangement.getString(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID));
+            String changeTo = cursorSketchArrangement.getString(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_CHANGE_TO));
+            Long arrangementWriteTime = cursorSketchArrangement.getLong(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_WRITE_TIME));
+            Long arrangementSketchWriteTime = cursorSketchArrangement.getLong(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SKETCH_WRITE_TIME));
+            Long lastEvalTime = cursorSketchArrangement.getLong(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME));
+            Integer sketchArrangement = cursorSketchArrangement.getInt(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT));
+            Integer evaluatePossible = cursorSketchArrangement.getInt(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_EVALUATE_POSSIBLE));
+            Integer newEntry = cursorSketchArrangement.getInt(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_NEW_ENTRY));
+            Integer serverIdArrangement = cursorSketchArrangement.getInt(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID));
+            Integer status = cursorSketchArrangement.getInt(cursorSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_STATUS)); // 0=ready to send, 1=message send, 4=external message
+            Integer rowID = cursorSketchArrangement.getInt(cursorSketchArrangement.getColumnIndex(DBAdapter.KEY_ROWID));
+            positionNumber++;
+
+            // make sketch arrangement object and store data
+            storeSketchArrangement.add(new ObjectSmartEFBArrangement(rowID, arrangement, authorName, blockid, changeTo, arrangementWriteTime, arrangementSketchWriteTime, lastEvalTime, sketchArrangement, evaluatePossible, newEntry, serverIdArrangement, status, positionNumber));
+        }
+
+        cursorSketchArrangement.close();
+
+        return storeSketchArrangement;
     }
 
 
@@ -1349,8 +1481,8 @@ public class DBAdapter extends SQLiteOpenHelper {
                 Integer status = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_COMMENT_KEY_STATUS));
                 Integer rowID = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.KEY_ROWID));
 
-                // make comment object and store data
-                storeComment.add(new ObjectSmartEFBComment(rowID, comment, authorName, blockid, commentTime, uploadTime, localeTime, arrangementTime, currentDateOfArrangement, newEntry, serverIdComment, timerStatus, status));
+                // make comment object and store data (last three datas are for sketch comment)
+                storeComment.add(new ObjectSmartEFBComment(rowID, comment, authorName, blockid, commentTime, uploadTime, localeTime, arrangementTime, currentDateOfArrangement, newEntry, serverIdComment, timerStatus, status, 0, 0, 0));
 
             } while (cursorComments.moveToNext());
         }
@@ -1539,7 +1671,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return all comments from the database for sketch arrangement with server arrangement id = id (table ourArrangementSketchComment)
-    Cursor getAllRowsOurArrangementSketchComment(int serverId, String sortSequence) {
+    Cursor getAllRowsOurArrangementSketchComment(int serverId, String sortSequence, int limit) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1560,14 +1692,63 @@ public class DBAdapter extends SQLiteOpenHelper {
                 break;
         }
 
-        Cursor c = db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS,
-                where, null, null, null, sort, null);
+        Cursor c;
+        if (limit > 0) { // get cursor with limit
+            c = db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS,
+                    where, null, null, null, sort, Integer.toString(limit));
+        }
+        else{
+            // get cursor without limit
+            c = db.query(true, DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, OUR_ARRANGEMENT_SKETCH_COMMENT_ALL_KEYS,
+                    where, null, null, null, sort, null);
+        }
 
         if (c != null) {
             c.moveToFirst();
         }
 
         return c;
+    }
+
+
+    // Return all sketch comments from the database for sketch arrangement with  server id = id (table ourArrangementSketchComment) in Array List <ObjectSmartEFBComment>
+    // the result is sorted by sortSequence
+    ArrayList<ObjectSmartEFBComment> getAllRowsOurArrangementSketchCommentArrayList (int serverId, String sortSequence, int limit) {
+
+        ArrayList<ObjectSmartEFBComment> storeSketchComment = new ArrayList<>();
+
+        // get the data (all sketch comments from an sketch arrangement) from DB
+        Cursor cursorSketchComments = this.getAllRowsOurArrangementSketchComment (serverId, sortSequence, limit);
+
+        if (cursorSketchComments.moveToFirst()) {
+            do {
+
+                String comment = cursorSketchComments.getString(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT));
+                String authorName = cursorSketchComments.getString(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME));
+                String blockid = cursorSketchComments.getString(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID));
+                Long commentTime = cursorSketchComments.getLong(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME));
+                Long uploadTime = cursorSketchComments.getLong(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_UPLOAD_TIME));
+                Long localeTime = cursorSketchComments.getLong(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_LOCAL_TIME));
+                Long arrangementTime = cursorSketchComments.getLong(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME));
+                Long currentDateOfSketchArrangement = cursorSketchComments.getLong(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_ARRANGEMENT_TIME));
+                Integer newEntry = cursorSketchComments.getInt(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY));
+                Integer serverIdComment = cursorSketchComments.getInt(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_SERVER_ID_ARRANGEMENT));
+                Integer timerStatus = cursorSketchComments.getInt(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_TIMER_STATUS));
+                Integer status = cursorSketchComments.getInt(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS));
+                Integer rowID = cursorSketchComments.getInt(cursorSketchComments.getColumnIndex(DBAdapter.KEY_ROWID));
+                Integer question1 = cursorSketchComments.getInt(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1));
+                Integer question2 = cursorSketchComments.getInt(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION2));
+                Integer question3 = cursorSketchComments.getInt(cursorSketchComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION3));
+
+                // make sketch comment object and store data
+                storeSketchComment.add(new ObjectSmartEFBComment(rowID, comment, authorName, blockid, commentTime, uploadTime, localeTime, arrangementTime, currentDateOfSketchArrangement, newEntry, serverIdComment, timerStatus, status, question1, question2, question3));
+
+            } while (cursorSketchComments.moveToNext());
+        }
+
+        cursorSketchComments.close();
+
+        return storeSketchComment;
     }
 
 

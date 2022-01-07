@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/our_arrangement_menu_fragment_sketch_sort_desc"
+        app:showAsAction="never"
+        android:title="@string/ourArrangementSketchArrangementMenuSortDesc" />
+
+    <item
+        android:id="@+id/our_arrangement_menu_fragment_sketch_sort_asc"
+        app:showAsAction="never"
+        android:title="@string/ourArrangementSketchArrangementMenuSortAsc" />
+
+    <item
+        android:id="@+id/our_arrangement_menu_fragment_sketch_no_arrangement_available"
+        app:showAsAction="never"
+        android:title="@string/ourArrangementSketchArrangementMenuNoArrangementAvailable" />
+
+    <item
+        android:id="@+id/our_arrangement_menu_fragment_sketch_function_off"
+        app:showAsAction="never"
+        android:title="@string/ourArrangementSketchArrangementMenuFunctionOff" />
+
+</menu>

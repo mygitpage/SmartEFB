@@ -272,11 +272,14 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         cursorChoosenSketchArrangement = myDb.getRowSketchOurArrangement(sketchArrangementServerDbIdToComment);
 
         // get all comments for choosen sketch arrangement
-        cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(sketchArrangementServerDbIdToComment, "descending");
+        cursorSketchArrangementAllComments = myDb.getAllRowsOurArrangementSketchComment(sketchArrangementServerDbIdToComment, "descending", 0);
 
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
         String tmpSubtitle = String.format(getResources().getString(getResources().getIdentifier("subtitleFragmentSketchCommentText", "string", fragmentSketchCommentContext.getPackageName())), sketchArrangementNumberInListView);
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "sketchComment");
+
+        // set visibility of FAB for this fragment
+        ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility ("hide", "sketchComment");
 
         // build the view
         //textview for the comment intro
@@ -289,18 +292,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         String tmpTextAuthorNameText = String.format(fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentAuthorNameTextWithDate), cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
         tmpTextViewAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
 
-        // generate back link "zurueck zu allen Entwuerfen"
-        Uri.Builder backLinkBuilder = new Uri.Builder();
-        backLinkBuilder.scheme("smart.efb.deeplink")
-                .authority("linkin")
-                .path("ourarrangement")
-                .appendQueryParameter("db_id", "0")
-                .appendQueryParameter("arr_num", "0")
-                .appendQueryParameter("com", "show_sketch_arrangement");
-        TextView linkShowCommentBackLink = (TextView) viewFragmentSketchComment.findViewById(R.id.arrangementShowCommentBackLinkNow);
-        linkShowCommentBackLink.setText(Html.fromHtml("<a href=\"" + backLinkBuilder.build().toString() + "\">"+fragmentSketchCommentContext.getResources().getString(fragmentSketchCommentContext.getResources().getIdentifier("ourArrangementBackLinkToSketchArrangement", "string", fragmentSketchCommentContext.getPackageName()))+"</a>"));
-        linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
-
         // check, sharing sketch comments enable?
         if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShare, 0) == 0) {
             TextView textSketchCommentSharingIsDisable = (TextView) viewFragmentSketchComment.findViewById(R.id.sketchCommentSharingIsDisable);
@@ -312,7 +303,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         String arrangement = cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(arrangement);
 
-        // some comments for arrangement available?
+        // some comments for sketch arrangement available?
         if (cursorSketchArrangementAllComments.getCount() > 0) {
 
             // set row id of comment from db for timer update
@@ -347,7 +338,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             tmpTextViewAuthorNameLastActualSketchComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
 
             // textview for status 0 of the last actual comment
-            final TextView tmpTextViewSendInfoLastActualSketchComment = (TextView) viewFragmentSketchComment.findViewById(R.id.textSendInfoLastActualSketchComment);
+            final TextView tmpTextViewSendInfoLastActualSketchComment = viewFragmentSketchComment.findViewById(R.id.textSendInfoLastActualSketchComment);
             if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS)) == 0) {
 
                 String tmpTextSendInfoLastActualComment = fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentSendInfo);
@@ -444,37 +435,23 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             String tmpCommentText = cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT));
             tmpTextViewCommentText.setText(tmpCommentText);
 
-            // get textview for Link to Show all comments
-            TextView tmpTextViewLInkToShowAllSketchComment = (TextView) viewFragmentSketchComment.findViewById(R.id.commentLinkToShowAllSketchComments);
+            // button goto overview comment sketch arrangement
+            Button buttonGoToSketchArrangementOverview = viewFragmentSketchComment.findViewById(R.id.buttonSketchCommentBackToShowComment);
+            // onClick listener goto comment sketch arrangement overview
+            buttonGoToSketchArrangementOverview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            // more than one comment available?
-            if (cursorSketchArrangementAllComments.getCount() > 1) {
+                    Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.putExtra("com","show_comment_for_sketch_arrangement");
+                    intent.putExtra("db_id", sketchArrangementServerDbIdToComment);
+                    intent.putExtra("arr_num", sketchArrangementNumberInListView);
+                    getActivity().startActivity(intent);
 
-                // generate link to show all comments
-                Uri.Builder sketchCommentLinkBuilder = new Uri.Builder();
-                sketchCommentLinkBuilder.scheme("smart.efb.deeplink")
-                        .authority("linkin")
-                        .path("ourarrangement")
-                        .appendQueryParameter("db_id", Integer.toString(sketchArrangementServerDbIdToComment))
-                        .appendQueryParameter("arr_num", Integer.toString(sketchArrangementNumberInListView))
-                        .appendQueryParameter("com", "show_comment_for_sketch_arrangement");
-
-                if (cursorSketchArrangementAllComments.getCount() == 2) {
-                    String tmpLinkStringShowAllSketchComments = String.format(fragmentSketchCommentContext.getResources().getString(fragmentSketchCommentContext.getResources().getIdentifier("ourArrangementSketchCommentLinkToShowAllCommentsSingular", "string", fragmentSketchCommentContext.getPackageName())),cursorSketchArrangementAllComments.getCount()-1);
-                    tmpTextViewLInkToShowAllSketchComment.setText(Html.fromHtml("<a href=\"" + sketchCommentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllSketchComments + "</a>"));
                 }
-                else {
-                    String tmpLinkStringShowAllSketchComments = String.format(fragmentSketchCommentContext.getResources().getString(fragmentSketchCommentContext.getResources().getIdentifier("ourArrangementSketchCommentLinkToShowAllCommentsPlural", "string", fragmentSketchCommentContext.getPackageName())),cursorSketchArrangementAllComments.getCount()-1);
-                    tmpTextViewLInkToShowAllSketchComment.setText(Html.fromHtml("<a href=\"" + sketchCommentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllSketchComments + "</a>"));
-                }
-                tmpTextViewLInkToShowAllSketchComment.setMovementMethod(LinkMovementMethod.getInstance());
+            });
 
-            }
-            else {
-                // no comment anymore
-                String tmpLinkStringShowAllSketchComments = fragmentSketchCommentContext.getResources().getString(fragmentSketchCommentContext.getResources().getIdentifier("ourArrangementSketchCommentLinkToShowAllCommentsNotAvailable", "string", fragmentSketchCommentContext.getPackageName()));
-                tmpTextViewLInkToShowAllSketchComment.setText(tmpLinkStringShowAllSketchComments);
-            }
         }
         else { // no comments
 
@@ -492,6 +469,15 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             // textview for the comment text
             TextView tmpTextViewSketchCommentText = (TextView) viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentText);
             tmpTextViewSketchCommentText.setVisibility(View.GONE);
+
+            // button for overview sketch comment
+            Button tmpButtonShowOverviewSketchComment = viewFragmentSketchComment.findViewById(R.id.buttonSketchCommentBackToShowComment);
+            tmpButtonShowOverviewSketchComment.setVisibility(View.GONE);
+
+            // textview border no sketch comment and info text
+            TextView tmpBorderBetweenNoCommentAndInfoText = viewFragmentSketchComment.findViewById(R.id.borderBetweenNoCommentInfoAndInfoText);
+            tmpBorderBetweenNoCommentAndInfoText.setVisibility(View.VISIBLE);
+
         }
 
         // set onClickListener for radio button in radio group question 1
@@ -589,8 +575,26 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         // set input filter max length for sketch comment field
         txtInputSketchArrangementComment.setFilters(new InputFilter[] {new InputFilter.LengthFilter(tmpMaxLength)});
 
-        // button send comment
-        Button buttonSendSketchArrangementComment = (Button) viewFragmentSketchComment.findViewById(R.id.buttonSendSketchArrangementComment);
+        // set text max comment/ actual comment
+        TextView infoTextCountComment = viewFragmentSketchComment.findViewById(R.id.infoTextCountSketchComment);
+        String tmpInfoTextCountCommentSingluarPluaralNoLimit;
+        if (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment, 0) == 1 && commentLimitationBorder) {
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = this.getResources().getString(R.string.ourArrangementSketchCommentCountCommentTextSingular);
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = String.format(tmpInfoTextCountCommentSingluarPluaralNoLimit, prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0), prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment, 0));
+        }
+        else if (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment, 0) > 1 && commentLimitationBorder) {
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = this.getResources().getString(R.string.ourArrangementSketchCommentCountCommentTextPlural);
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = String.format(tmpInfoTextCountCommentSingluarPluaralNoLimit, prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0), prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment, 0));
+
+        }
+        else {
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = this.getResources().getString(R.string.ourArrangementSketchCommentCountCommentTextNoLimit);
+        }
+        infoTextCountComment.setText(tmpInfoTextCountCommentSingluarPluaralNoLimit);
+
+
+        // button send sketch comment
+        Button buttonSendSketchArrangementComment = viewFragmentSketchComment.findViewById(R.id.buttonSendSketchArrangementComment);
 
         // onClick listener send sketch arrangement comment
         buttonSendSketchArrangementComment.setOnClickListener(new View.OnClickListener() {
@@ -680,20 +684,25 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             }
         });
 
-        // button abbort
-        Button buttonAbbortArrangementComment = (Button) viewFragmentSketchComment.findViewById(R.id.buttonAbortSketchComment);
-        // onClick listener button abbort
-        buttonAbbortArrangementComment.setOnClickListener(new View.OnClickListener() {
+
+        // button back to sketch arrangement overview
+        Button buttonBackToSketchArrangementOverview = viewFragmentSketchComment.findViewById(R.id.buttonSketchCommentBackToSketchArrangement);
+        // onClick listener back to sketch arrangement overview
+        buttonBackToSketchArrangementOverview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), ActivityOurArrangement.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.putExtra("com","show_sketch_arrangement");
+                intent.putExtra("db_id", 0);
+                intent.putExtra("arr_num", 0);
                 getActivity().startActivity(intent);
 
             }
         });
+
+
         // End build the view
     }
 

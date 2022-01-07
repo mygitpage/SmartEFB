@@ -255,6 +255,24 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"/>
 
+            <TextView
+                android:id="@+id/borderBetween3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="20dp"/>
+
+            <ImageView
+                android:id="@+id/settingsEfbFragmentBFundingImageNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/waisenhaus_icon"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"/>
+
         </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

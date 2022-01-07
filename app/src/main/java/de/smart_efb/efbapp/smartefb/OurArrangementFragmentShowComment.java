@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -16,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,8 +29,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 
 /**
@@ -46,20 +42,11 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // fragment context
     Context fragmentShowCommentContext = null;
 
-    // the linear layout manager
-    LinearLayoutManager linearLayoutManager;
-
     // the recycler view
     RecyclerView recyclerViewShowComment = null;
 
     // data array of comments for recycler view
     ArrayList<ObjectSmartEFBComment> arrayListComments;
-
-    // the fab
-    FloatingActionButton fabFragmentShowComment;
-
-    // hide/ show fab on scroll?
-    Boolean switchHideShowOfFab = true;
 
     // reference to the DB
     DBAdapter myDb;
@@ -71,8 +58,8 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
 
-    // reference cursorAdapter for the recyler view
-    OurArrangementShowCommentRecylerViewAdapter showCommentRecylerViewAdapter;
+    // reference cursorAdapter for the recycler view
+    OurArrangementShowCommentRecyclerViewAdapter showCommentRecyclerViewAdapter;
 
     // Server DB-Id of arrangement to comment
     int arrangementServerDbIdToShow = 0;
@@ -185,16 +172,16 @@ public class OurArrangementFragmentShowComment extends Fragment {
             case R.id.our_arrangement_menu_fragment_now_show_comment_sort_desc:
                 prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending");
                 prefsEditor.apply();
-                updateListView();
+                updateRecyclerView();
                 return true;
             case R.id.our_arrangement_menu_fragment_now_show_comment_sort_asc:
                 prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "ascending");
                 prefsEditor.apply();
-                updateListView();
+                updateRecyclerView();
                 return true;
             case R.id.our_arrangement_menu_fragment_now_count_comment_in_recycler_view:
                 showDialogForSelectingNumberOfCommentInList();
-                updateListView();
+                updateRecyclerView();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -207,10 +194,10 @@ public class OurArrangementFragmentShowComment extends Fragment {
         LayoutInflater dialogInflater;
 
         // get alert dialog builder with custom style
-        AlertDialog.Builder builder = new AlertDialog.Builder(((ActivityOurArrangement)getActivity()), R.style.selectDialogStyle);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.selectDialogStyle);
 
         // Get the layout inflater
-        dialogInflater = (LayoutInflater) ((ActivityOurArrangement)getActivity()).getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        dialogInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // inflate and get the view
         View dialogSelecting = dialogInflater.inflate(R.layout.select_dialog_our_arrangement_now_number_of_comment, null);
@@ -267,7 +254,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
                 dialogSelectingNumberOfComment.dismiss();
 
                 // update recycler view with new number of comment
-                updateListView ();
+                updateRecyclerView();
             }
         });
 
@@ -321,30 +308,11 @@ public class OurArrangementFragmentShowComment extends Fragment {
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentShowCommentText", "string", fragmentShowCommentContext.getPackageName())) + " " + arrangementNumberInListView;
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "showComment");
 
-        // new recyler view
+        // new recycler view
         recyclerViewShowComment = viewFragmentShowComment.findViewById(R.id.listOurArrangementShowComment);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fragmentShowCommentContext);
         recyclerViewShowComment.setLayoutManager(linearLayoutManager);
         recyclerViewShowComment.setHasFixedSize(true);
-
-        // show fab and set on click listener
-        if (fabFragmentShowComment != null) {
-
-            fabFragmentShowComment.show();
-
-            // add on click listener to fab
-            fabFragmentShowComment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(fragmentShowCommentContext, ActivityOurArrangement.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("com", "comment_an_arrangement");
-                    intent.putExtra("db_id", arrangementServerDbIdToShow);
-                    intent.putExtra("arr_num", arrangementNumberInListView);
-                    fragmentShowCommentContext.startActivity(intent);
-                }
-            });
-        }
 
     }
 
@@ -463,7 +431,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
                 // update the list view because data has change?
                 if (updateListView) {
-                    updateListView();
+                    updateRecyclerView();
                 }
 
             }
@@ -471,8 +439,8 @@ public class OurArrangementFragmentShowComment extends Fragment {
     };
 
 
-    // update the list view with now comments
-    public void updateListView () {
+    // update the recycler view with now comments
+    public void updateRecyclerView() {
 
         if (recyclerViewShowComment != null) {
 
@@ -489,9 +457,6 @@ public class OurArrangementFragmentShowComment extends Fragment {
     private void callGetterFunctionInSuper () {
 
         int tmpArrangementDbIdToComment;
-
-        // call getter-methode getFabViewOurArrangement() in ActivityOurArrangement to get view for fab
-        fabFragmentShowComment = ((ActivityOurArrangement)getActivity()).getFabViewOurArrangement();
 
         // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
         tmpArrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getArrangementDbIdFromLink();
@@ -515,25 +480,33 @@ public class OurArrangementFragmentShowComment extends Fragment {
         // get the data (all comments from an arrangement) from DB
         arrayListComments = myDb.getAllRowsOurArrangementCommentArrayList(arrangementServerDbIdToShow, prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementCommentList, "descending"), prefs.getInt(ConstansClassOurArrangement.namePrefsNumberOfCommentForOurArrangementNowShowComment, 50));
 
-        // get the data (the choosen arrangement) from the DB
-        Cursor choosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToShow);
+        // get the data for chose arrangement
+        ArrayList<ObjectSmartEFBArrangement> arrayListChooseArrangement = myDb.getRowOurArrangementArrayList(arrangementServerDbIdToShow);
 
-        if (arrayListComments.size() > 0 && choosenArrangement.getCount() > 0 && recyclerViewShowComment != null) {
+        // set visibility of FAB for this fragment
+        // show fab and comment arrangement only when on and possible!
+        if ((prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowArrangementComment, false) && (prefs.getInt(ConstansClassOurArrangement.namePrefsCommentMaxComment, 0) - prefs.getInt(ConstansClassOurArrangement.namePrefsCommentCountComment, 0)) > 0 ) || !commentLimitationBorder) {
+            // set fab visibility
+            ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility("show", "showComment");
+            // set fab click listener
+            ((ActivityOurArrangement) getActivity()).setOurArrangementFABClickListener(arrayListChooseArrangement, "showComment", "comment_an_arrangement");
+        }
+        else {
+            ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility("hide", "showComment");
+        }
 
-            showCommentRecylerViewAdapter = new OurArrangementShowCommentRecylerViewAdapter(
+        if (arrayListComments.size() > 0 && arrayListChooseArrangement.size() > 0 && recyclerViewShowComment != null) {
+
+            showCommentRecyclerViewAdapter = new OurArrangementShowCommentRecyclerViewAdapter(
                     getActivity(),
                     arrayListComments,
                     arrangementServerDbIdToShow,
                     arrangementNumberInListView,
                     commentLimitationBorder,
-                    choosenArrangement);
+                    arrayListChooseArrangement);
 
             // Assign adapter to Recycler View
-            recyclerViewShowComment.setAdapter(showCommentRecylerViewAdapter);
-
-
-
-
+            recyclerViewShowComment.setAdapter(showCommentRecyclerViewAdapter);
 
         }
     }

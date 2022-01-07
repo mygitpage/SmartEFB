@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.ActionBar;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -24,7 +27,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by ich on 25.05.16.
@@ -33,6 +39,16 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
     // Set subtitle first time
     Boolean setSubtitleFirstTime = false;
+
+    // set visibility of fab for first time
+    Boolean setFabFirstTime = false;
+
+    // set visibility of fab after refresh
+    Boolean setFabClickListenerRefreshTimeForNow = false;
+    Boolean setFabClickListenerRefreshTimeForSketch = false;
+
+    // set click listener for fab for first time
+    Boolean setFabClickListenerFirstTime = false;
 
     // evaluate pause time and active time (get from prefs)
     int evaluatePauseTime = 0;
@@ -67,6 +83,18 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
     // Strings for subtitle ("Aktuelle vom...", "Älter als...", "Absprache kommentieren", "Kommentare zeigen", "Absprache bewerten", "Entwuerfe Absprachen" )
     String [] arraySubTitleText = new String[ConstansClassOurArrangement.numberOfDifferentSubtitle];
+
+    // Show or hide FAB in diffent fragments
+    String [] arrayShowOrHideFAB = new String[ConstansClassOurArrangement.numberOfDifferentSubtitle];
+
+    // array list of object smart efb arrangement
+    ArrayList<ObjectSmartEFBArrangement> arrayListOfArrangementNow = new ArrayList<ObjectSmartEFBArrangement>();
+    ArrayList<ObjectSmartEFBArrangement> arrayListOfArrangementSketch = new ArrayList<ObjectSmartEFBArrangement>();
+    ArrayList<ObjectSmartEFBArrangement> arrayListOfArrangementShowNowComment = new ArrayList<ObjectSmartEFBArrangement>();
+    ArrayList<ObjectSmartEFBArrangement> arrayListOfArrangementShowSketchComment = new ArrayList<ObjectSmartEFBArrangement>();
+    // fragment name for click listener in diffent fragments
+    String [] arrayFragmentNameForClickListener = new String[ConstansClassOurArrangement.numberOfDifferentSubtitle];
+    String [] arrayFragmentIntentOrderForClickListener = new String[ConstansClassOurArrangement.numberOfDifferentSubtitle];
 
     // what to show in tab zero (like show_comment_for_arrangement, comment_an_arrangement, show_arrangement_now, evaluate_an_arrangement)
     String showCommandFragmentTabZero = "";
@@ -141,6 +169,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
 
                 String tmpSubtitleText = "";
+                String tmpShowOrHideFAB = "";
 
                 // Change the subtitle of the activity
                 switch (tab.getPosition()) {
@@ -148,15 +177,19 @@ public class ActivityOurArrangement extends AppCompatActivity {
                         switch (showCommandFragmentTabZero) {
                             case "show_arrangement_now":
                                 tmpSubtitleText = arraySubTitleText[0];
+                                tmpShowOrHideFAB = arrayShowOrHideFAB[0];
                                 break;
                             case "comment_an_arrangement":
                                 tmpSubtitleText = arraySubTitleText[3];
+                                tmpShowOrHideFAB = arrayShowOrHideFAB[3];
                                 break;
                             case "show_comment_for_arrangement":
                                 tmpSubtitleText = arraySubTitleText[4];
+                                tmpShowOrHideFAB = arrayShowOrHideFAB[4];
                                 break;
                             case "evaluate_an_arrangement":
                                 tmpSubtitleText = arraySubTitleText[5];
+                                tmpShowOrHideFAB = arrayShowOrHideFAB[5];
                                 break;
                         }
 
@@ -168,12 +201,15 @@ public class ActivityOurArrangement extends AppCompatActivity {
                         switch (showCommandFragmentTabOne) {
                             case "show_sketch_arrangement":
                                 tmpSubtitleText = arraySubTitleText[1];
+                                tmpShowOrHideFAB = arrayShowOrHideFAB[1];
                                 break;
                             case "comment_an_sketch_arrangement":
                                 tmpSubtitleText = arraySubTitleText[6];
+                                tmpShowOrHideFAB = arrayShowOrHideFAB[6];
                                 break;
                             case "show_comment_for_sketch_arrangement":
                                 tmpSubtitleText = arraySubTitleText[7];
+                                tmpShowOrHideFAB = arrayShowOrHideFAB[7];
                                 break;
                         }
 
@@ -183,14 +219,34 @@ public class ActivityOurArrangement extends AppCompatActivity {
                        break;
                     case 2: // title for tab two
                         tmpSubtitleText = arraySubTitleText[2];
+                        tmpShowOrHideFAB = arrayShowOrHideFAB[2];
                         break;
                     default:
                         tmpSubtitleText = arraySubTitleText[0];
+                        tmpShowOrHideFAB = arrayShowOrHideFAB[0];
                         break;
                 }
 
                 // set toolbar text
                 toolbar.setSubtitle(tmpSubtitleText);
+
+                // show or hide fab in fragment
+                showOrHideFAB(tmpShowOrHideFAB);
+                // set on click listener for FAB
+                if (tmpShowOrHideFAB.equals("show")) {
+                    if (tab.getPosition() == 0 && showCommandFragmentTabZero.equals("show_arrangement_now")) {
+                        addOnClickListenerToFABForFragmentNow(arrayListOfArrangementNow, arrayFragmentNameForClickListener[0], arrayFragmentIntentOrderForClickListener[0]);
+                    }
+                    else if (tab.getPosition() == 0 && showCommandFragmentTabZero.equals("show_comment_for_arrangement")) {
+                        addOnClickListenerToFABForFragmentNow(arrayListOfArrangementNow, arrayFragmentNameForClickListener[4], arrayFragmentIntentOrderForClickListener[4]);
+                    }
+                    if (tab.getPosition() == 1 && showCommandFragmentTabOne.equals("show_sketch_arrangement")) {
+                        addOnClickListenerToFABForFragmentNow(arrayListOfArrangementSketch, arrayFragmentNameForClickListener[1], arrayFragmentIntentOrderForClickListener[1]);
+                    }
+                    else if (tab.getPosition() == 1 && showCommandFragmentTabOne.equals("show_comment_for_sketch_arrangement")) {
+                        addOnClickListenerToFABForFragmentNow(arrayListOfArrangementSketch, arrayFragmentNameForClickListener[7], arrayFragmentIntentOrderForClickListener[7]);
+                    }
+                }
 
                 // call viewpager
                 viewPagerOurArrangement.setCurrentItem(tab.getPosition());
@@ -280,6 +336,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // set correct subtitle in toolbar in tab zero
             toolbar.setSubtitle(arraySubTitleText[4]);
 
+            // show or hide fab for this fragment
+            showOrHideFAB(arrayShowOrHideFAB[4]);
+
         }  else if (command.equals("comment_an_arrangement")) { // Show fragment comment arrangement
 
             // set global varibales
@@ -302,6 +361,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // set correct subtitle in toolbar in tab zero
             toolbar.setSubtitle(arraySubTitleText[3]);
+
+            // show or hide fab for this fragment
+            showOrHideFAB(arrayShowOrHideFAB[3]);
 
         } else if (command.equals("evaluate_an_arrangement")) { // Show evaluate a arrangement
 
@@ -326,6 +388,8 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // set correct subtitle in toolbar in tab zero
             toolbar.setSubtitle(arraySubTitleText[5]);
 
+            // show or hide fab for this fragment
+            showOrHideFAB(arrayShowOrHideFAB[5]);
 
         } else if (command.equals("comment_an_sketch_arrangement")) { // Comment sketch arrangement -> TAB ONE
 
@@ -349,7 +413,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // set correct subtitle in toolbar in tab one
             toolbar.setSubtitle(arraySubTitleText[6]);
 
-        } else if (command.equals("show_sketch_arrangement")) { // Show sketch Arrangments -> TAB ONE
+            // show or hide fab for this fragment
+            showOrHideFAB(arrayShowOrHideFAB[6]);
+
+        } else if (command.equals("show_sketch_arrangement")) { // Show sketch Arrangements -> TAB ONE
 
             // set global varibales
             arrangementSketchDbIdFromLink = tmpServerDbId;
@@ -370,6 +437,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // set correct subtitle in toolbar in tab one
             toolbar.setSubtitle(arraySubTitleText[1]);
+
+            // show or hide fab for this fragment
+            showOrHideFAB(arrayShowOrHideFAB[1]);
 
         } else if (command.equals("show_comment_for_sketch_arrangement")) { // Show comments for sketch Arrangments -> TAB ONE
 
@@ -392,6 +462,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
             // set correct subtitle in toolbar in tab one
             toolbar.setSubtitle(arraySubTitleText[7]);
+
+            // show or hide fab for this fragment
+            showOrHideFAB(arrayShowOrHideFAB[7]);
         }
         else if (command.equals("show_arrangement_now_with_tab_change")) { // Change to Tab 0 and show arrangement now
 
@@ -419,6 +492,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // set correct subtitle in toolbar in tab zero
             toolbar.setSubtitle(arraySubTitleText[0]);
 
+            // show or hide fab for this fragment
+            showOrHideFAB(arrayShowOrHideFAB[0]);
+
         }
         else { // Show fragment arrangement now -> Tab 0
 
@@ -443,6 +519,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // set correct subtitle in toolbar in tab zero
             toolbar.setSubtitle(arraySubTitleText[0]);
 
+            // show or hide fab for this fragment
+            showOrHideFAB(arrayShowOrHideFAB[0]);
+
         }
     }
 
@@ -465,7 +544,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         // find fab
         ourArrangementFabView = findViewById(R.id.fabOurArrangement);
-
 
         // init the DB
         myDb = new DBAdapter(getApplicationContext());
@@ -494,10 +572,19 @@ public class ActivityOurArrangement extends AppCompatActivity {
 
         for (int t=0; t<ConstansClassOurArrangement.numberOfDifferentSubtitle; t++) {
             arraySubTitleText[t] = "";
+            arrayShowOrHideFAB[t] = "hide"; // init show/hide FAB with "hide"
+            arrayFragmentNameForClickListener[t] = ""; // init fragment name for FAB
+            arrayFragmentIntentOrderForClickListener[t] = ""; // init order for intent for FAB
         }
 
         // enable setting subtitle for the first time
         setSubtitleFirstTime = true;
+
+        // enable setting visibility of fab for first time
+        setFabFirstTime = true;
+
+        // enable setting click listener for fab for first time
+        setFabClickListenerFirstTime = true;
 
         //set tab title string
         tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourArrangementTabTitle_1", "string", getPackageName()));
@@ -949,21 +1036,21 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
-    // geter for evaluate next arrangement
+    // getter for evaluate next arrangement
     public boolean getEvaluateNextArrangement () {
 
         return evaluateNextArrangement;
     }
 
 
-    // geter for fab view
+    // getter for fab view
     public FloatingActionButton getFabViewOurArrangement () {
 
         return ourArrangementFabView;
     }
 
 
-    // geter for border for comments
+    // getter for border for comments
     public boolean isCommentLimitationBorderSet (String currentSketch) {
 
         switch (currentSketch) {
@@ -1022,6 +1109,111 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
+    // setter for visibility in OurArrangement FAB in fragment
+    public void setOurArrangementFABVisibility (String visibility, String fragment) {
+
+        switch (fragment) {
+
+            case "sketch":
+                arrayShowOrHideFAB[1] = visibility;
+                break;
+            case "old":
+                arrayShowOrHideFAB[2] = visibility;
+                break;
+            case "now":
+                arrayShowOrHideFAB[0] = visibility;
+                break;
+            case "nowComment":
+                arrayShowOrHideFAB[3] = visibility;
+                break;
+            case "showComment":
+                arrayShowOrHideFAB[4] = visibility;
+                break;
+            case "evaluate":
+                arrayShowOrHideFAB[5] = visibility;
+                break;
+            case "sketchComment":
+                arrayShowOrHideFAB[6] = visibility;
+                break;
+            case "showSketchComment":
+                arrayShowOrHideFAB[7] = visibility;
+                break;
+        }
+
+        // first time -> set initial visibility of fab
+        if (setFabFirstTime && fragment.equals("now")) {
+            showOrHideFAB(visibility);
+            setFabFirstTime = false;
+        }
+
+    }
+
+
+
+
+
+    // setter for click listener in OurArrangement FAB in fragment
+    public void setOurArrangementFABClickListener (ArrayList<ObjectSmartEFBArrangement> objectArrayArrangement, String fragment, String intentOrder) {
+
+        switch (fragment) {
+
+            case "sketch":
+                arrayListOfArrangementSketch = objectArrayArrangement;
+                arrayFragmentNameForClickListener[1] = fragment;
+                arrayFragmentIntentOrderForClickListener[1] = intentOrder;
+                break;
+            case "old":
+                arrayFragmentNameForClickListener[2] = fragment;
+                arrayFragmentIntentOrderForClickListener[2] = intentOrder;
+                break;
+            case "now":
+                arrayListOfArrangementNow = objectArrayArrangement;
+                arrayFragmentNameForClickListener[0] = fragment;
+                arrayFragmentIntentOrderForClickListener[0] = intentOrder;
+                break;
+            case "nowComment":
+                arrayFragmentNameForClickListener[3] = fragment;
+                arrayFragmentIntentOrderForClickListener[3] = intentOrder;
+                break;
+            case "showComment":
+                arrayListOfArrangementShowNowComment = objectArrayArrangement;
+                arrayFragmentNameForClickListener[4] = fragment;
+                arrayFragmentIntentOrderForClickListener[4] = intentOrder;
+                break;
+            case "evaluate":
+                arrayFragmentNameForClickListener[5] = fragment;
+                arrayFragmentIntentOrderForClickListener[5] = intentOrder;
+                break;
+            case "sketchComment":
+                arrayFragmentNameForClickListener[6] = fragment;
+                arrayFragmentIntentOrderForClickListener[6] = intentOrder;
+                break;
+            case "showSketchComment":
+                arrayListOfArrangementShowSketchComment = objectArrayArrangement;
+                arrayFragmentNameForClickListener[7] = fragment;
+                arrayFragmentIntentOrderForClickListener[7] = intentOrder;
+                break;
+        }
+
+        // first time -> set initial click listener of fab
+        if (setFabClickListenerFirstTime && fragment.equals("now")) {
+            addOnClickListenerToFABForFragmentNow(objectArrayArrangement, "now", "comment_an_arrangement");
+            setFabClickListenerFirstTime = false;
+        }
+
+        // new data for fragment -> refresh fab click listener
+        if (setFabClickListenerRefreshTimeForNow && fragment.equals("now")) {
+            addOnClickListenerToFABForFragmentNow(objectArrayArrangement, "now", "comment_an_arrangement");
+            setFabClickListenerRefreshTimeForNow = false;
+        }
+        if (setFabClickListenerRefreshTimeForSketch && fragment.equals("sketch")) {
+            addOnClickListenerToFABForFragmentNow(objectArrayArrangement, "sketch", "comment_an_sketch_arrangement");
+            setFabClickListenerRefreshTimeForSketch = false;
+        }
+
+    }
+
+
     // check prefs for update now and sketch arrangement or only now arrangements or only sketch?
     public void checkUpdateForShowDialog (String fragmentName) {
 
@@ -1031,6 +1223,10 @@ public class ActivityOurArrangement extends AppCompatActivity {
             prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false);
             prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false);
             prefsEditor.apply();
+
+            // update fab listener
+            refreshFABOnClickListenerAndVisibility("now");
+            refreshFABOnClickListenerAndVisibility("sketch");
 
             // set correct tab 0 and tab 1 color and text
             setTabZeroTitleAndColor ();
@@ -1045,6 +1241,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalNowArrangementUpdate, false);
             prefsEditor.apply();
 
+            // update fab listener
+            refreshFABOnClickListenerAndVisibility("now");
+
             // set correct tab 0 color and text
             setTabZeroTitleAndColor ();
 
@@ -1055,6 +1254,9 @@ public class ActivityOurArrangement extends AppCompatActivity {
             // set signal sketch arrangements are update to false; because user is informed by dialog!
             prefsEditor.putBoolean(ConstansClassOurArrangement.namePrefsSignalSketchArrangementUpdate, false);
             prefsEditor.apply();
+
+            // update fab listener
+            refreshFABOnClickListenerAndVisibility("sketch");
 
             // set correct tab 1 color and text
             setTabOneTitleAndColor();
@@ -1082,7 +1284,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
         View dialogSettings = dialogInflater.inflate(R.layout.dialog_info_arrangement_change, null);
 
         // get textview for info-text from view
-        TextView textViewArrangement = (TextView) dialogSettings.findViewById(R.id.dialogOurArrangementArrangementChangeInfoText);
+        TextView textViewArrangement = dialogSettings.findViewById(R.id.dialogOurArrangementArrangementChangeInfoText);
 
         switch (whatDialog) {
 
@@ -1146,5 +1348,202 @@ public class ActivityOurArrangement extends AppCompatActivity {
         alertDialogArrangementChange.show();
     }
 
+
+
+
+    public void refreshFABOnClickListenerAndVisibility (String fragmentName) {
+
+        switch (fragmentName) {
+
+            case "sketch":
+                arrayListOfArrangementSketch = null;
+                arrayFragmentNameForClickListener[1] = "";
+                arrayFragmentIntentOrderForClickListener[1] = "";
+                arrayFragmentNameForClickListener[6] = ""; // array index of sketchComment
+                arrayFragmentIntentOrderForClickListener[6] = ""; // array index of sketchComment
+                arrayListOfArrangementShowSketchComment = null; // array index of showSketchComment
+                arrayFragmentNameForClickListener[7] = ""; // array index of showSketchComment
+                arrayFragmentIntentOrderForClickListener[7] = ""; // array index of showSketchComment
+                setFabClickListenerRefreshTimeForSketch = true;
+
+            break;
+
+            case "now":
+                arrayListOfArrangementNow = null;
+                arrayFragmentNameForClickListener[0] = "";
+                arrayFragmentIntentOrderForClickListener[0] = "";
+                arrayFragmentNameForClickListener[3] = ""; // array index of nowComment
+                arrayFragmentIntentOrderForClickListener[3] = ""; // array index of nowComment
+                arrayListOfArrangementShowNowComment = null;
+                arrayFragmentNameForClickListener[4] = ""; // array index of showComment
+                arrayFragmentIntentOrderForClickListener[4] = ""; // array index of showComment
+                arrayFragmentNameForClickListener[5] = ""; // array index of evaluate
+                arrayFragmentIntentOrderForClickListener[5] = ""; // array index of evaluate
+                setFabClickListenerRefreshTimeForNow = true;
+
+            break;
+        }
+    }
+
+
+    // setter for visibility fab (hide or show)
+    public void showOrHideFAB (String hideOrShow) {
+
+        switch (hideOrShow) {
+            case "show":
+                ourArrangementFabView.show();
+                break;
+            case "hide":
+                ourArrangementFabView.hide();
+                break;
+            default:
+                ourArrangementFabView.hide();
+                break;
+        }
+
+    }
+
+    // add correct onclicklistener for fab in fragment
+    public void addOnClickListenerToFABForFragmentNow (final ArrayList<ObjectSmartEFBArrangement> arrayList, final String fragmentName, final String intentOrder) {
+
+        // add on click listener to fab
+        ourArrangementFabView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                if (arrayList.size() > 1) {
+
+                    // create popup menu for fab
+                    PopupMenu popupFabCommentArrangement = new PopupMenu(ActivityOurArrangement.this, view);
+
+                    // inflate popup menu for fab
+                    if (fragmentName.equals("sketch")) {
+                        popupFabCommentArrangement.getMenuInflater().inflate(R.menu.popup_efb_our_arrangement_sketch_arrangement_fab, popupFabCommentArrangement.getMenu());
+                    }
+                    else {
+                        popupFabCommentArrangement.getMenuInflater().inflate(R.menu.popup_efb_our_arrangement_now_arrangement_fab, popupFabCommentArrangement.getMenu());
+                    }
+
+                    // set on click listener for popup menu item
+                    popupFabCommentArrangement.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        Intent intent = new Intent(ActivityOurArrangement.this, ActivityOurArrangement.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("com", intentOrder);
+
+                        switch (item.getItemId()) {
+                            case R.id.arrangement1:
+                                intent.putExtra("db_id", arrayList.get(0).getServerIdArrangement());
+                                intent.putExtra("arr_num", 1);
+
+                                break;
+                            case R.id.arrangement2:
+                                if (1 < arrayList.size()) {
+                                    intent.putExtra("db_id", arrayList.get(1).getServerIdArrangement());
+                                    intent.putExtra("arr_num", 2);
+                                }
+                                break;
+                            case R.id.arrangement3:
+                                if (2 < arrayList.size()) {
+                                    intent.putExtra("db_id", arrayList.get(2).getServerIdArrangement());
+                                    intent.putExtra("arr_num", 3);
+                                }
+                                break;
+                            case R.id.arrangement4:
+                                if (3 < arrayList.size()) {
+                                    intent.putExtra("db_id", arrayList.get(3).getServerIdArrangement());
+                                    intent.putExtra("arr_num", 4);
+                                }
+                                break;
+
+                            case R.id.arrangement5:
+                                if (4 < arrayList.size()) {
+                                    intent.putExtra("db_id", arrayList.get(4).getServerIdArrangement());
+                                    intent.putExtra("arr_num", 5);
+                                }
+                                break;
+                            case R.id.arrangement6:
+                                if (5 < arrayList.size()) {
+                                    intent.putExtra("db_id", arrayList.get(5).getServerIdArrangement());
+                                    intent.putExtra("arr_num", 6);
+                                }
+                                break;
+                            case R.id.arrangement7:
+                                if (6 < arrayList.size()) {
+                                    intent.putExtra("db_id", arrayList.get(6).getServerIdArrangement());
+                                    intent.putExtra("arr_num", 7);
+                                }
+                                break;
+                            case R.id.arrangement8:
+                                if (7 < arrayList.size()) {
+                                    intent.putExtra("db_id", arrayList.get(7).getServerIdArrangement());
+                                    intent.putExtra("arr_num", 8);
+                                }
+                                break;
+                            case R.id.arrangement9:
+                                if (8 < arrayList.size()) {
+                                    intent.putExtra("db_id", arrayList.get(8).getServerIdArrangement());
+                                    intent.putExtra("arr_num", 9);
+                                }
+                                break;
+                            case R.id.arrangement10:
+                                if (9 < arrayList.size()) {
+                                    intent.putExtra("db_id", arrayList.get(9).getServerIdArrangement());
+                                    intent.putExtra("arr_num", 10);
+                                }
+                                break;
+                            case R.id.arrangement11:
+                                if (10 < arrayList.size()) {
+                                    intent.putExtra("db_id", arrayList.get(10).getServerIdArrangement());
+                                    intent.putExtra("arr_num", 11);
+                                }
+                                break;
+                            case R.id.arrangement12:
+                                if (11 < arrayList.size()) {
+                                    intent.putExtra("db_id", arrayList.get(11).getServerIdArrangement());
+                                    intent.putExtra("arr_num", 12);
+                                }
+                                break;
+                            }
+
+                            // start comment choosen arrangement
+                            ActivityOurArrangement.this.startActivity(intent);
+
+                            return true;
+                        }
+                    });
+
+                    // disable menu entry not used
+                    int resId;
+                    String ressourceArrangementString = "arrangement";
+
+                    for (int t = arrayList.size()+1; t <= 12; t++) {
+                        resId = getResources().getIdentifier(ressourceArrangementString + t, "id", ActivityOurArrangement.this.getPackageName());
+                        // set popup menu entrys gone, when not needed
+                        popupFabCommentArrangement.getMenu().findItem(resId).setVisible(false);
+                    }
+
+                    // show popup menu
+                    popupFabCommentArrangement.show();
+
+                }
+                else {
+                    // only one arrangement now/sketch in db
+
+                    Intent intent = new Intent(ActivityOurArrangement.this, ActivityOurArrangement.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("com", intentOrder);
+                    intent.putExtra("db_id", arrayList.get(0).getServerIdArrangement());
+                    intent.putExtra("arr_num", 1);
+                    // start comment for this arrangement (now/ sketch)
+                    ActivityOurArrangement.this.startActivity(intent);
+                }
+            }
+        });
+    }
 
 }

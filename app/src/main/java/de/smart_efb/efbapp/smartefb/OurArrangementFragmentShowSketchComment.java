@@ -2,20 +2,35 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Created by ich on 06.10.16.
@@ -28,6 +43,12 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
     // fragment context
     Context fragmentShowSketchCommentContext = null;
 
+    // the recycler view
+    RecyclerView recyclerViewShowSketchComment = null;
+
+    // data array of sketch comments for recycler view
+    ArrayList<ObjectSmartEFBComment> arrayListSketchComments;
+
     // reference to the DB
     DBAdapter myDb;
 
@@ -38,8 +59,8 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
 
-    // reference cursorAdapter for the listview
-    OurArrangementShowSketchCommentCursorAdapter showSketchCommentCursorAdapter;
+    // reference for the recycler view
+    OurArrangementShowSketchCommentRecyclerViewAdapter showSketchCommentRecyclerViewAdapter;
 
     // Server DB-Id of arrangement to comment
     int sketchArrangementServerDbIdToShow = 0;
@@ -48,16 +69,19 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
     int sketchArrangementNumberInListView = 0;
 
     // true-> comments are limited, false -> comments are not limited
-    Boolean commentLimitationBorder = false;
+    Boolean sketchCommentLimitationBorder = false;
 
-    // the list view for sketch comments
-    ListView listViewShowSketchComment = null;
+    // reference to dialog selecting number of sketch comment
+    AlertDialog dialogSelectingNumberOfSketchComment;
 
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
         viewFragmentShowSketchComment = layoutInflater.inflate(R.layout.fragment_our_arrangement_show_sketch_comment, null);
+
+        // fragment has option menu
+        setHasOptionsMenu(true);
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
@@ -111,6 +135,159 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
 
         // close db connection
         myDb.close();
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+
+        menuInflater.inflate(R.menu.menu_efb_our_arrangement_fragment_sketch_show_comment, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem registerItemDesc = menu.findItem(R.id.our_arrangement_menu_fragment_sketch_show_comment_sort_desc);
+        MenuItem registerItemAsc = menu.findItem(R.id.our_arrangement_menu_fragment_sketch_show_comment_sort_asc);
+
+        if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchCommentList, "descending").equals("descending")) {
+            registerItemDesc.setVisible(false);
+            registerItemAsc.setVisible(true);
+        }
+        else {
+            registerItemAsc.setVisible(false);
+            registerItemDesc.setVisible(true);
+        }
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.our_arrangement_menu_fragment_sketch_show_comment_sort_desc:
+                prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchCommentList, "descending");
+                prefsEditor.apply();
+                updateRecyclerView();
+                return true;
+            case R.id.our_arrangement_menu_fragment_sketch_show_comment_sort_asc:
+                prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchCommentList, "ascending");
+                prefsEditor.apply();
+                updateRecyclerView();
+                return true;
+            case R.id.our_arrangement_menu_fragment_sketch_count_comment_in_recycler_view:
+                showDialogForSelectingNumberOfSketchCommentInList();
+                updateRecyclerView();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    private void showDialogForSelectingNumberOfSketchCommentInList () {
+
+        LayoutInflater dialogInflater;
+
+        // get alert dialog builder with custom style
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.selectDialogStyle);
+
+        // Get the layout inflater
+        dialogInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // inflate and get the view
+        View dialogSelecting = dialogInflater.inflate(R.layout.select_dialog_our_arrangement_sketch_number_of_comment, null);
+
+        //set radio button with correct value
+        RadioButton tmpRadioButton;
+        switch (prefs.getInt(ConstansClassOurArrangement.namePrefsNumberOfCommentForOurArrangementSketchShowComment, 50)) {
+            case 5:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfSketchComment5);
+                break;
+            case 10:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfSketchComment10);
+                break;
+            case 20:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfSketchComment20);
+                break;
+            case 50:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfSketchComment50);
+                break;
+            default:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfSketchCommentAll);
+                break;
+        }
+        tmpRadioButton.setChecked(true);
+
+        // set on click listener
+        RadioGroup radioGroupNumberOfSketchComment = dialogSelecting.findViewById(R.id.selectNumberOfSketchComment);
+        radioGroupNumberOfSketchComment.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                int numberOfSketchComment = 0;
+                switch (checkedId) {
+                    case R.id.numberOfSketchComment5:
+                        numberOfSketchComment = 5;
+                        break;
+                    case R.id.numberOfSketchComment10:
+                        numberOfSketchComment = 10;
+                        break;
+                    case R.id.numberOfSketchComment20:
+                        numberOfSketchComment = 20;
+                        break;
+                    case R.id.numberOfSketchComment50:
+                        numberOfSketchComment = 50;
+                        break;
+                    case R.id.numberOfSketchCommentAll:
+                        numberOfSketchComment = 0;
+                        break;
+                }
+                prefsEditor.putInt(ConstansClassOurArrangement.namePrefsNumberOfCommentForOurArrangementSketchShowComment, numberOfSketchComment);
+                prefsEditor.apply();
+
+                // close dialog
+                dialogSelectingNumberOfSketchComment.dismiss();
+
+                // update recycler view with new number of comment
+                updateRecyclerView();
+            }
+        });
+
+        // build the dialog
+        builder.setView(dialogSelecting);
+
+        // Add close button
+        builder.setNegativeButton("Schliessen", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialogSelectingNumberOfSketchComment.cancel();
+            }
+        });
+
+        // add title
+        builder.setTitle(R.string.select_dialog_our_arrangement_sketch_number_of_comment_title);
+
+        // and create
+        dialogSelectingNumberOfSketchComment = builder.create();
+
+        // set correct color of close button
+        dialogSelectingNumberOfSketchComment.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                // change background and text color of button
+                Button negativeButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                // Change negative button text and background color
+                negativeButton.setTextColor(ContextCompat.getColor(((ActivityOurArrangement)getActivity()), R.color.white));
+                negativeButton.setBackgroundResource(R.drawable.select_dialog_style_custom_negativ_button_background);
+            }
+        });
+
+        // show dialog
+        dialogSelectingNumberOfSketchComment.show();
     }
 
 
@@ -228,20 +405,21 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
 
                 // update the list view with sketch arrangements
                 if (updateListView) {
-                    updateListView();
+                    updateRecyclerView();
                 }
             }
         }
     };
 
 
-    // update the list view with sketch arrangements
-    public void updateListView () {
+    // update the recycler view with sketch comments
+    public void updateRecyclerView() {
 
-        if (listViewShowSketchComment != null) {
-            listViewShowSketchComment.destroyDrawingCache();
-            listViewShowSketchComment.setVisibility(ListView.INVISIBLE);
-            listViewShowSketchComment.setVisibility(ListView.VISIBLE);
+        if (recyclerViewShowSketchComment != null) {
+
+            recyclerViewShowSketchComment.destroyDrawingCache();
+            recyclerViewShowSketchComment.setVisibility(ListView.INVISIBLE);
+            recyclerViewShowSketchComment.setVisibility(ListView.VISIBLE);
 
             displayActualCommentSet ();
         }
@@ -264,6 +442,12 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
         // Set correct subtitle in Activity -> "Einschaetzungen Entwuerfe ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentShowSketchCommentText", "string", fragmentShowSketchCommentContext.getPackageName())) + " " + sketchArrangementNumberInListView;
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "showSketchComment");
+
+        // new recycler view
+        recyclerViewShowSketchComment = viewFragmentShowSketchComment.findViewById(R.id.listOurArrangementShowSketchComment);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fragmentShowSketchCommentContext);
+        recyclerViewShowSketchComment.setLayoutManager(linearLayoutManager);
+        recyclerViewShowSketchComment.setHasFixedSize(true);
     }
 
 
@@ -272,7 +456,7 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
 
         int tmpArrangementDbIdToComment = 0;
 
-        // call getter-methode getArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
+        // call getter-methode getSketchArrangementDbIdFromLink() in ActivityOurArrangement to get DB ID for the actuale arrangement
         tmpArrangementDbIdToComment = ((ActivityOurArrangement)getActivity()).getSketchArrangementDbIdFromLink();
 
         if (tmpArrangementDbIdToComment > 0) {
@@ -283,7 +467,7 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
             if (sketchArrangementNumberInListView < 1) sketchArrangementNumberInListView = 1; // check borders
 
             // call getter-methode isCommentLimitationBorderSet in ActivityOurArrangement to get true-> sketch comments are limited, false-> sketch comments are not limited
-            commentLimitationBorder = ((ActivityOurArrangement)getActivity()).isCommentLimitationBorderSet("sketch");
+            sketchCommentLimitationBorder = ((ActivityOurArrangement)getActivity()).isCommentLimitationBorderSet("sketch");
         }
     }
 
@@ -291,28 +475,36 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
     public void displayActualCommentSet () {
 
         // get the data (all comments from an sketch arrangement) from DB
-        Cursor cursor = myDb.getAllRowsOurArrangementSketchComment(sketchArrangementServerDbIdToShow, prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchCommentList, "descending"));
+        arrayListSketchComments = myDb.getAllRowsOurArrangementSketchCommentArrayList(sketchArrangementServerDbIdToShow, prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchCommentList, "descending"), prefs.getInt(ConstansClassOurArrangement.namePrefsNumberOfCommentForOurArrangementSketchShowComment, 50));
 
-        // get the data (the choosen sketch arrangement) from the DB
-        Cursor choosenArrangement = myDb.getRowSketchOurArrangement(sketchArrangementServerDbIdToShow);
+        // get the data for chose sketch arrangement
+        ArrayList<ObjectSmartEFBArrangement> arrayListChooseSketchArrangement = myDb.getRowOurArrangementSketchArrayList(sketchArrangementServerDbIdToShow);
 
-        // find the listview
-        listViewShowSketchComment = (ListView) viewFragmentShowSketchComment.findViewById(R.id.listOurArrangementShowSketchComment);
+        // set visibility of FAB for this fragment
+        // show fab and comment arrangement only when on!
+        if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowSketchArrangement, false) && (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment, 0) - prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment, 0)) > 0 || !sketchCommentLimitationBorder) {
+            // set fab visibility
+            ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility("show", "showSketchComment");
+            // set fab click listener
+            ((ActivityOurArrangement) getActivity()).setOurArrangementFABClickListener(arrayListChooseSketchArrangement, "showSketchComment", "comment_an_sketch_arrangement");
+        }
+        else {
+            ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility("hide", "showSketchComment");
+        }
 
-        if (cursor != null && choosenArrangement != null && listViewShowSketchComment != null) {
+        if (arrayListSketchComments.size() > 0 && arrayListChooseSketchArrangement.size() > 0 && recyclerViewShowSketchComment != null) {
 
-            // new dataadapter with custom constructor
-            showSketchCommentCursorAdapter = new OurArrangementShowSketchCommentCursorAdapter(
+            showSketchCommentRecyclerViewAdapter = new OurArrangementShowSketchCommentRecyclerViewAdapter(
                     getActivity(),
-                    cursor,
-                    0,
+                    arrayListSketchComments,
                     sketchArrangementServerDbIdToShow,
                     sketchArrangementNumberInListView,
-                    commentLimitationBorder,
-                    choosenArrangement);
+                    sketchCommentLimitationBorder,
+                    arrayListChooseSketchArrangement);
 
-            // Assign adapter to ListView
-            listViewShowSketchComment.setAdapter(showSketchCommentCursorAdapter);
+            // Assign adapter to Recycler View
+            recyclerViewShowSketchComment.setAdapter(showSketchCommentRecyclerViewAdapter);
+
         }
     }
 

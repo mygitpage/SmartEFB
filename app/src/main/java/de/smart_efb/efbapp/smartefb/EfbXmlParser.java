@@ -1853,7 +1853,7 @@ public class EfbXmlParser {
                                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters,tmpSketchCommentMaxLetters);
                                     prefsEditor.apply();
 
-                                    // something change in sketch arragement comment process
+                                    // something change in sketch arrangement comment process
                                     returnMap.put("OurArrangementSettingsSketchCommentProcess","1");
                                 }
                                 else { // turn function arrangement sketch comment off

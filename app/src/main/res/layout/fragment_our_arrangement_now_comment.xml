@@ -52,7 +52,6 @@
                     android:textColor="@color/colorPrimaryDark"
                     android:gravity="left|top"
                     android:background="@drawable/app_edittext_style"
-
                     android:layout_margin="5dp"
                     android:textColorHint="@color/colorPrimaryDark"
                     android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
@@ -89,6 +88,17 @@
                         android:padding="10dp"/>
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/commentSharingIsDisable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/textOurArrangementCommentNoSharing"
+                    android:textSize="14dp"
+                    android:textColor="@color/text_accent_color"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/borderBetweenEditTextAndArrangement"
@@ -135,7 +145,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/choosenArrangement"
+                    android:id="@+id/chooseArrangement"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
@@ -174,16 +184,6 @@
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"/>
 
-                <TextView
-                    android:id="@+id/commentSharingIsDisable"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/textOurArrangementCommentNoSharing"
-                    android:textSize="14dp"
-                    android:textColor="@color/text_accent_color"
-                    android:gravity="center"
-                    android:layout_marginBottom="20dp"
-                    android:visibility="gone"/>
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"

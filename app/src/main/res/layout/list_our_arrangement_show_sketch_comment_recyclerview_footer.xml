@@ -5,9 +5,38 @@
     android:orientation="vertical"
     android:gravity="left"
     android:paddingBottom="5dp"
-    android:paddingTop="10dp"
+    android:paddingTop="5dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="30dp">
+
+        <Button
+            android:id="@+id/buttonCommentThisSketchArrangement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/app_button_style"
+            android:textColor="@color/white"
+            android:text="@string/ourArrangementShowCommentCommentThisArrangement"
+            android:layout_gravity="center_horizontal"
+            android:padding="10dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/borderBetweenItemsAndFooter"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/text_color"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="20dp"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -21,7 +50,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/arrangementShowArrangementIntro"
+                android:id="@+id/arrangementShowSketchArrangementIntro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
@@ -43,7 +72,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/choosenArrangement"
+        android:id="@+id/chooseSketchArrangement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16dp"
@@ -51,55 +80,33 @@
         android:gravity="left"
         android:paddingLeft="10dp"/>
 
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:paddingTop="10dp">
+        android:paddingTop="40dp">
 
         <Button
-            android:id="@+id/buttonHeaderBackToArrangement"
+            android:id="@+id/buttonFooterBackToSketchArrangement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/app_button_style"
             android:textColor="@color/white"
-            android:text="@string/ourArrangementShowCommentBackButtonToNowArrangement"
+            android:text="@string/ourArrangementSketchCommentBackButtonToSketchArrangement"
             android:layout_gravity="center_horizontal"
             android:padding="10dp"/>
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/borderBetweenArrangement1"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/text_color"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"/>
-
-    <TextView
-        android:id="@+id/commentSharingIsDisable"
-        android:layout_width="match_parent"
+        android:id="@+id/infoSketchCommentMaxAndCount"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/textOurArrangementCommentNoSharing"
         android:textSize="14dp"
-        android:textColor="@color/text_accent_color"
+        android:textColor="@color/colorPrimaryDark"
         android:gravity="center"
-        android:layout_marginBottom="20dp"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/borderBetweencommentSharingIsDisable"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/text_color"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="20dp"
-        android:visibility="gone"/>
+        android:paddingTop="30dp"
+        android:paddingBottom="65dp"/>
 
 </LinearLayout>

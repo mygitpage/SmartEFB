@@ -946,6 +946,14 @@ public class MainActivity extends AppCompatActivity {
                     prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementNowList, "ascending");  // init sort of now arrangement
                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsNumberOfCommentForOurArrangementNowShowComment, 20); // init the number of comments for list in our arrangement show comment
 
+                    prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchList, "ascending");  // init sort of sketch arrangement
+                    prefsEditor.putInt(ConstansClassOurArrangement.namePrefsNumberOfCommentForOurArrangementSketchShowComment, 20); // init the number of comments for list in our arrangement sketch show comment
+
+
+                    prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "ascending");  // init sort of old arrangement
+
+
+
                 case 11: // update ten
                     // nothing to do!
                 case 12: // update ten

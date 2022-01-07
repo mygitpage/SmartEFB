@@ -75,22 +75,4 @@
                 android:gravity="left"
                 android:paddingLeft="10dp"/>
 
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="10dp">
-
-                <TextView
-                    android:id="@+id/linkToCommentAnArrangement"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:textColor="@color/text_color"
-                    android:textColorLink="@color/colorPrimary"
-                    android:gravity="right"/>
-
-            </LinearLayout>
-
 </LinearLayout>

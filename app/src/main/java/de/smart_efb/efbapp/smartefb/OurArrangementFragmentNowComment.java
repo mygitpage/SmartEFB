@@ -66,7 +66,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
     int arrangementNumberInListView = 0;
 
     // cursor for the choosen arrangement
-    Cursor cursorChoosenArrangement;
+    Cursor cursorChooseArrangement;
 
     // cursor for all comments to the choosen arrangement
     Cursor cursorArrangementAllComments;
@@ -266,14 +266,17 @@ public class OurArrangementFragmentNowComment extends Fragment {
         }
 
         // get choosen arrangement
-        cursorChoosenArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToComment);
+        cursorChooseArrangement = myDb.getRowOurArrangement(arrangementServerDbIdToComment);
 
-        // get all comments for choosen arrangement
+        // get all comments for choose arrangement
         cursorArrangementAllComments = myDb.getAllRowsOurArrangementComment(arrangementServerDbIdToComment, "descending", 0);
 
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("subtitleFragmentNowCommentText", "string", fragmentNowCommentContext.getPackageName())) + " " + arrangementNumberInListView;
         ((ActivityOurArrangement) getActivity()).setOurArrangementToolbarSubtitle (tmpSubtitle, "nowComment");
+
+        // set visibility of FAB for this fragment
+        ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility ("hide", "nowComment");
     }
 
 
@@ -286,20 +289,20 @@ public class OurArrangementFragmentNowComment extends Fragment {
 
         // textview for the author of arrangement
         TextView tmpTextViewAuthorNameText = viewFragmentNowComment.findViewById(R.id.textAuthorName);
-        String tmpTextAuthorNameText = String.format(fragmentNowCommentContext.getResources().getString(R.string.ourArrangementAuthorNameTextWithDate), cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
+        String tmpTextAuthorNameText = String.format(fragmentNowCommentContext.getResources().getString(R.string.ourArrangementAuthorNameTextWithDate), cursorChooseArrangement.getString(cursorChooseArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
         tmpTextViewAuthorNameText.setText(HtmlCompat.fromHtml(tmpTextAuthorNameText, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         // textview for the arrangement
-        TextView textViewArrangement = viewFragmentNowComment.findViewById(R.id.choosenArrangement);
-        String arrangement = cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
+        TextView textViewArrangement = viewFragmentNowComment.findViewById(R.id.chooseArrangement);
+        String arrangement = cursorChooseArrangement.getString(cursorChooseArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(arrangement);
 
         // check, sharing comments enable?
         if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) == 0) {
             TextView textCommentSharingIsDisable = viewFragmentNowComment.findViewById(R.id.commentSharingIsDisable);
-            TextView borderBetweenTextCommentSharingIsDisable = viewFragmentNowComment.findViewById(R.id.borderBetweencommentSharingIsDisable);
+            //TextView borderBetweenTextCommentSharingIsDisable = viewFragmentNowComment.findViewById(R.id.borderBetweencommentSharingIsDisable);
             textCommentSharingIsDisable.setVisibility (View.VISIBLE);
-            borderBetweenTextCommentSharingIsDisable.setVisibility (View.VISIBLE);
+            //borderBetweenTextCommentSharingIsDisable.setVisibility (View.VISIBLE);
         }
 
         // some comments for arrangement available?
@@ -574,11 +577,11 @@ public class OurArrangementFragmentNowComment extends Fragment {
                         }
                         Long uploadTime = 0L;
                         Long localeTime = System.currentTimeMillis();
-                        String blockId = cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID));
+                        String blockId = cursorChooseArrangement.getString(cursorChooseArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_BLOCK_ID));
                         Boolean newEntry = false;
                         Long dateOfArrangement = prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis());
                         int commentStatus = 0; // 0= not send to sever; 1= send to server; 4= external comment
-                        int arrangementServerId = cursorChoosenArrangement.getInt(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID));
+                        int arrangementServerId = cursorChooseArrangement.getInt(cursorChooseArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_SERVER_ID));
                         int timerStatus = 0;
 
                         // insert comment in DB

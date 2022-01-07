@@ -107,15 +107,23 @@ class ConstansClassOurArrangement {
     // true -> Now arragement are updated; false -> no update
     static final String namePrefsSignalNowArrangementUpdate = "signalNowArrangementUpdated";
 
-    // sort sequence of arrangement comment list-> "decending" or "ascending"
+    // sort sequence of arrangement comment list-> "descending" or "ascending"
     static final String namePrefsSortSequenceOfArrangementCommentList = "arrangementCommentSortSequence";
 
-    // sort sequence of now arrangement list-> "decending" or "ascending"
+    // sort sequence of now arrangement list-> "descending" or "ascending"
     static final String namePrefsSortSequenceOfArrangementNowList = "arrangementNowSortSequence";
 
-    // sort sequence of arrangement sketch comment list-> "decending" or "ascending"
+    // sort sequence of now arrangement list-> "descending" or "ascending"
+    static final String namePrefsSortSequenceOfArrangementOldList = "arrangementOldSortSequence";
+
+    // sort sequence of arrangement sketch comment list-> "descending" or "ascending"
     static final String namePrefsSortSequenceOfArrangementSketchCommentList = "arrangementSketchCommentSortSequence";
 
+    // sort sequence of sketch arrangement list-> "descending" or "ascending"
+    static final String namePrefsSortSequenceOfArrangementSketchList = "arrangementSketchSortSequence";
+
+    // prefs name for number of comment in list for show comment in our arrangement sketch
+    static final String namePrefsNumberOfCommentForOurArrangementSketchShowComment = "numberOfCommentForOurArrangementSketch";
 
     // default time for active and pause time in evaluation arrangement (time in seconds)
     static final int defaultTimeForActiveAndPauseEvaluationArrangement = 43200; // this is 12 hours
