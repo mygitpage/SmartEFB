@@ -84,7 +84,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     // Strings for subtitle ("Aktuelle vom...", "Älter als...", "Absprache kommentieren", "Kommentare zeigen", "Absprache bewerten", "Entwuerfe Absprachen" )
     String [] arraySubTitleText = new String[ConstansClassOurArrangement.numberOfDifferentSubtitle];
 
-    // Show or hide FAB in diffent fragments
+    // Show or hide FAB in different fragments
     String [] arrayShowOrHideFAB = new String[ConstansClassOurArrangement.numberOfDifferentSubtitle];
 
     // array list of object smart efb arrangement
@@ -92,7 +92,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
     ArrayList<ObjectSmartEFBArrangement> arrayListOfArrangementSketch = new ArrayList<ObjectSmartEFBArrangement>();
     ArrayList<ObjectSmartEFBArrangement> arrayListOfArrangementShowNowComment = new ArrayList<ObjectSmartEFBArrangement>();
     ArrayList<ObjectSmartEFBArrangement> arrayListOfArrangementShowSketchComment = new ArrayList<ObjectSmartEFBArrangement>();
-    // fragment name for click listener in diffent fragments
+    // fragment name for click listener in different fragments
     String [] arrayFragmentNameForClickListener = new String[ConstansClassOurArrangement.numberOfDifferentSubtitle];
     String [] arrayFragmentIntentOrderForClickListener = new String[ConstansClassOurArrangement.numberOfDifferentSubtitle];
 
@@ -1149,9 +1149,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
     }
 
 
-
-
-
     // setter for click listener in OurArrangement FAB in fragment
     public void setOurArrangementFABClickListener (ArrayList<ObjectSmartEFBArrangement> objectArrayArrangement, String fragment, String intentOrder) {
 
@@ -1347,8 +1344,6 @@ public class ActivityOurArrangement extends AppCompatActivity {
         // show dialog
         alertDialogArrangementChange.show();
     }
-
-
 
 
     public void refreshFABOnClickListenerAndVisibility (String fragmentName) {

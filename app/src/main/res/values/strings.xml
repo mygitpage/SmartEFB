@@ -698,6 +698,20 @@
             <string name="ourGoalsInfoTextNumberOfCommentsPossibleNoBorder">(Keine Begrenzung)</string>
         <!-- End show current jointly goals now -->
 
+        <!-- String Activity Our Goals Jointly Popup Menu Comment Goals -->
+            <string name="popupItemOurGoalsJointlyGoal1"><b>Gemeinsames Ziel 1 kommentieren</b></string>
+            <string name="popupItemOurGoalsJointlyGoal2"><b>Gemeinsames Ziel 2 kommentieren</b></string>
+            <string name="popupItemOurGoalsJointlyGoal3"><b>Gemeinsames Ziel 3 kommentieren</b></string>
+            <string name="popupItemOurGoalsJointlyGoal4"><b>Gemeinsames Ziel 4 kommentieren</b></string>
+            <string name="popupItemOurGoalsJointlyGoal5"><b>Gemeinsames Ziel 5 kommentieren</b></string>
+            <string name="popupItemOurGoalsJointlyGoal6"><b>Gemeinsames Ziel 6 kommentieren</b></string>
+            <string name="popupItemOurGoalsJointlyGoal7"><b>Gemeinsames Ziel 7 kommentieren</b></string>
+            <string name="popupItemOurGoalsJointlyGoal8"><b>Gemeinsames Ziel 8 kommentieren</b></string>
+            <string name="popupItemOurGoalsJointlyGoal9"><b>Gemeinsames Ziel 9 kommentieren</b></string>
+            <string name="popupItemOurGoalsJointlyGoal10"><b>Gemeinsames Ziel 10 kommentieren</b></string>
+            <string name="popupItemOurGoalsJointlyGoal11"><b>Gemeinsames Ziel 11 kommentieren</b></string>
+            <string name="popupItemOurGoalsJointlyGoal12"><b>Gemeinsames Ziel 12 kommentieren</b></string>
+        <!-- End String Activity Our Goals Jointly Popup Menu Comment Goals -->
 
         <!-- fragment comment jointly goals -->
             <string name="showJointlyGoalCommentIntroText">Gemeinsames Ziel</string>
@@ -739,6 +753,10 @@
             <string name="textOurGoalsJointlyCommentNoSharing">Die Kommentare werden im Moment nicht weitergeleitet!</string>
             <string name="ourJointlyGoalsCommentSendInfoSharingDisable">Der Kommentar wurde gesendet. Wird aber im Moment nicht weitergeleitet!</string>
             <string name="toastJointlyGoalsCommentCaseCloseToastText">Der Fall ist abgeschlossen! Kommentare werden nicht mehr gesendet!</string>
+
+
+    <string name="ourGoalJointlyCommentBackButtonToJointlyGoals">Übersicht gemeinsame Ziele</string>
+    <string name="ourGoalJointlyCommentBackButtonToShowJointlyComment">Übersicht Kommentare</string>
 
     <!-- End comment jointly goals -->
 
@@ -858,6 +876,21 @@
             <string name="toastMessageeDebetableCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
             <string name="toastDebetableGoalsCommentCaseCloseToastText">Der Fall ist abgeschlossen! Einschätzungen werden nicht mehr gesendet!</string>
         <!-- End fragment debetable goals comment -->
+
+        <!-- String Activity Our Goals Debetable Popup Menu Comment Goals -->
+            <string name="popupItemOurGoalsDebetableGoal1"><b>Strittiges Ziel 1 kommentieren</b></string>
+            <string name="popupItemOurGoalsDebetableGoal2"><b>Strittiges Ziel 2 kommentieren</b></string>
+            <string name="popupItemOurGoalsDebetableGoal3"><b>Strittiges Ziel 3 kommentieren</b></string>
+            <string name="popupItemOurGoalsDebetableGoal4"><b>Strittiges Ziel 4 kommentieren</b></string>
+            <string name="popupItemOurGoalsDebetableGoal5"><b>Strittiges Ziel 5 kommentieren</b></string>
+            <string name="popupItemOurGoalsDebetableGoal6"><b>Strittiges Ziel 6 kommentieren</b></string>
+            <string name="popupItemOurGoalsDebetableGoal7"><b>Strittiges Ziel 7 kommentieren</b></string>
+            <string name="popupItemOurGoalsDebetableGoal8"><b>Strittiges Ziel 8 kommentieren</b></string>
+            <string name="popupItemOurGoalsDebetableGoal9"><b>Strittiges Ziel 9 kommentieren</b></string>
+            <string name="popupItemOurGoalsDebetableGoal10"><b>Strittiges Ziel 10 kommentieren</b></string>
+            <string name="popupItemOurGoalsDebetableGoal11"><b>Strittiges Ziel 11 kommentieren</b></string>
+            <string name="popupItemOurGoalsDebetableGoal12"><b>Strittiges Ziel 12 kommentieren</b></string>
+        <!-- End String Activity Our Goals Debetable Popup Menu Comment Goals -->
 
 
         <!-- Fragment show comment debetable goals -->

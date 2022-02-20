@@ -309,7 +309,7 @@ public class OurArrangementFragmentNow extends Fragment {
     };
 
 
-    // update the list view with arrangements
+    // update the recycler view with arrangements
     public void updateRecyclerView () {
 
         if (recyclerViewNowArrangement != null) {

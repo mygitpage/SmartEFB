@@ -193,7 +193,7 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
         if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkOldGoals, false) && listView != null) { // Function showOldJointlyGoals is available!!!!
 
             // get all old jointly goals from DB
-            Cursor cursor = myDb.getAllJointlyRowsOurGoals(currentBlockIdOfJointlyGoals,"notEqualBlockId");
+            Cursor cursor = myDb.getAllJointlyRowsOurGoals(currentBlockIdOfJointlyGoals,"notEqualBlockId", "ascending");
 
             if (cursor.getCount() > 0) {
 

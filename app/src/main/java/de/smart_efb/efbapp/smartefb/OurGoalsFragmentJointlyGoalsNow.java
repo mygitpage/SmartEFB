@@ -9,6 +9,9 @@ import android.database.Cursor;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Created by ich on 16.10.2016.
@@ -35,19 +40,22 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
     // shared prefs for the settings
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
+    
+    // the recycler view
+    RecyclerView recyclerViewJointlyGoalsNow = null;
 
-    // the list view for the jointly goals
-    ListView listViewJointlyGoals = null;
+    // data array of now goals for recycler view
+    ArrayList<ObjectSmartEFBGoals> arrayListGoals;
 
+    // reference arrayListAdapter for the recycler view
+    OurGoalsJointlyGoalsRecyclerViewAdapter jointlyGoalsRecylerViewAdapter;
+    
     // the current date of jointly goals -> the other are old (look at tab old)
     long currentDateOfJointlyGoals;
 
     // block id of current jointly goals
     String currentBlockIdOfJointlyGoals = "";
-
-    // reference cursorAdapter for the listview
-    OurGoalsJointlyGoalsNowCursorAdapter dataAdapterListViewOurGoals = null;
-
+    
     //limitation in count comments true-> yes, there is a border; no, there is no border, wirte infitisly comments
     Boolean commentLimitationBorder;
 
@@ -115,7 +123,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
             Bundle intentExtras = null;
 
             // true-> update the list view with goals
-            Boolean updateListView = false;
+            Boolean updateRecyclerView = false;
 
             // check for intent extras
             intentExtras = intent.getExtras();
@@ -156,7 +164,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                     ((ActivityOurGoals) getActivity()).checkUpdateForShowDialog ("jointly");
 
                     // update the view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNowComment != null && tmpExtraOurGoalsNowComment.equals("1")) {
                     // new comments -> update now view -> show toast and update view
@@ -164,7 +172,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
 
                     // update the view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsResetCommentCountComment != null && tmpExtraOurGoalsResetCommentCountComment.equals("1")) {
                     // reset now comment counter -> show toast and update view
@@ -175,7 +183,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                     toast.show();
 
                     // update the view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsCommentShareDisable  != null && tmpExtraOurGoalsCommentShareDisable .equals("1")) {
                     // sharing is disable -> show toast and update view
@@ -212,7 +220,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                 else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
                     // evaluationperiod has change -> update view, only when current time is bigger than last start point
                     if (System.currentTimeMillis() >= prefs.getLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, 0)) {
-                        updateListView = true;
+                        updateRecyclerView = true;
                         // set new start point for evaluation timer in view
                         prefsEditor.putLong(ConstansClassOurGoals.namePrefsStartPointJointlyGoalsEvaluationPeriodInMills, System.currentTimeMillis());
                         prefsEditor.apply();
@@ -221,7 +229,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1")) {
 
                     // goal settings change
-                    updateListView = true;
+                    updateRecyclerView = true;
 
                     // new alarm manager service for start all needed alarms
                     EfbSetAlarmManager efbSetAlarmManager = new EfbSetAlarmManager(context);
@@ -232,21 +240,21 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
                 }
 
                 // update the list view because data has change?
-                if (updateListView) {
-                    updateListView();
+                if (updateRecyclerView) {
+                    updateRecyclerView();
                 }
             }
         }
     };
 
 
-    // update the list view with goals
-    public void updateListView () {
+    // update the recycler view with goals
+    public void updateRecyclerView () {
 
-        if (listViewJointlyGoals != null) {
-            listViewJointlyGoals.destroyDrawingCache();
-            listViewJointlyGoals.setVisibility(ListView.INVISIBLE);
-            listViewJointlyGoals.setVisibility(ListView.VISIBLE);
+        if (recyclerViewJointlyGoalsNow != null) {
+            recyclerViewJointlyGoalsNow.destroyDrawingCache();
+            recyclerViewJointlyGoalsNow.setVisibility(ListView.INVISIBLE);
+            recyclerViewJointlyGoalsNow.setVisibility(ListView.VISIBLE);
 
             displayActualJointlyGoalsSet ();
         }
@@ -272,17 +280,21 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
         // ask methode isCommentLimitationBorderSet() in ActivityOurGoals to limitation in comments? true-> yes, linitation; false-> no
         commentLimitationBorder = ((ActivityOurGoals) getActivity()).isCommentLimitationBorderSet("jointlyGoals");
 
-        // find the listview for the jointly goals
-        listViewJointlyGoals = (ListView)  viewFragmentJointlyGoalsNow.findViewById(R.id.listOurGoalsJointlyGoalsNow);
+        // new recyler view
+        recyclerViewJointlyGoalsNow = viewFragmentJointlyGoalsNow.findViewById(R.id.listOurGoalsJointlyGoalsNow);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fragmentJointlyGoalsNowContext);
+        recyclerViewJointlyGoalsNow.setLayoutManager(linearLayoutManager);
+        recyclerViewJointlyGoalsNow.setHasFixedSize(true);
     }
 
 
-    // show listView with current goals or info: mothing there
+    // show listView with current goals or info: nothing there
     public void displayActualJointlyGoalsSet () {
 
-        Cursor cursor = myDb.getAllJointlyRowsOurGoals(currentBlockIdOfJointlyGoals, "equalBlockId");
+        // get the data (all now arrangements) from DB
+        arrayListGoals = myDb.getAllRowsOurGoalsJointlyGoalsArrayList(currentBlockIdOfJointlyGoals, "equalBlockId", prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsList, "descending"));
 
-        if (cursor.getCount() > 0 && listViewJointlyGoals != null) {
+        if (arrayListGoals.size() > 0 && recyclerViewJointlyGoalsNow != null) {
 
             // set listView visible and textView hide
             setVisibilityListViewJointlyGoalsNow("show");
@@ -292,14 +304,26 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
             String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleJointlyGoalsNow", "string", fragmentJointlyGoalsNowContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "dd.MM.yyyy");
             ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyNow");
 
+            // set visibility of FAB for this fragment
+            // show fab and comment jointly goals only when on and possible!
+            if ((prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, false) && (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, 0) - prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0)) > 0 ) || !commentLimitationBorder) {
+                // set fab visibility
+                ((ActivityOurGoals) getActivity()).setOurGoalFABVisibility("show", "jointlyNow");
+                // set fab click listener
+                ((ActivityOurGoals) getActivity()).setOurGoalFABClickListener(arrayListGoals, "jointlyNow", "comment_an_jointly_goal");
+            }
+            else {
+                ((ActivityOurGoals) getActivity()).setOurGoalFABVisibility("hide", "jointlyNow");
+            }
+
             // new dataadapter
-            dataAdapterListViewOurGoals = new OurGoalsJointlyGoalsNowCursorAdapter(
+            jointlyGoalsRecylerViewAdapter = new OurGoalsJointlyGoalsRecyclerViewAdapter(
                     getActivity(),
-                    cursor,
+                    arrayListGoals,
                     0);
 
-            // Assign adapter to ListView
-            listViewJointlyGoals.setAdapter(dataAdapterListViewOurGoals);
+            // Assign adapter to recycler view
+            recyclerViewJointlyGoalsNow.setAdapter(jointlyGoalsRecylerViewAdapter);
         }
         else {
 
@@ -310,7 +334,11 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
             // Set correct subtitle in Activity -> "Keine gemeinsamen Ziele vorhanden"
             String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsJointlySubtitleGoalsNothingThere", "string", fragmentJointlyGoalsNowContext.getPackageName()));
             ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyNow");
+
+            // set visibility of FAB for this fragment
+            ((ActivityOurGoals) getActivity()).setOurGoalFABVisibility ("hide", "jointlyNow");
         }
+
     }
 
 

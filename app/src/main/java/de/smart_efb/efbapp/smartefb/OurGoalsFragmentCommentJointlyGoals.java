@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.text.Editable;
@@ -25,6 +26,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.concurrent.TimeUnit;
 
@@ -44,6 +47,9 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
     // layout inflater for fragment
     LayoutInflater layoutInflaterForFragment;
+
+    // fab view
+    FloatingActionButton fabFragmentJointlyComment = null;
 
     // reference to the DB
     DBAdapter myDb;
@@ -244,6 +250,12 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         // init the DB
         myDb = new DBAdapter(fragmentCommentContextJointlyGoals);
 
+        // hide fab
+        // show fab and set on click listener
+        if (fabFragmentJointlyComment != null) {
+            fabFragmentJointlyComment.hide();
+        }
+
         // init the prefs
         prefs = fragmentCommentContextJointlyGoals.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentCommentContextJointlyGoals.MODE_PRIVATE);
         prefsEditor = prefs.edit();
@@ -258,6 +270,9 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleJointlyGoalsComment", "string", fragmentCommentContextJointlyGoals.getPackageName()));
         tmpSubtitle = String.format(tmpSubtitle, goalNumberInListView);
         ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyNowComment");
+
+        // set visibility of FAB for this fragment
+        ((ActivityOurGoals) getActivity()).setOurGoalFABVisibility ("hide", "jointlyNowComment");
     }
 
 
@@ -272,24 +287,12 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         // textview for the author of goal
         TextView tmpTextViewAuthorNameText = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.textAuthorName);
         String tmpTextAuthorNameText = String.format(fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsAuthorNameTextWithDate), cursorChoosenGoal.getString(cursorChoosenGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "dd.MM.yyyy"));
-        tmpTextViewAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
+        tmpTextViewAuthorNameText.setText(HtmlCompat.fromHtml(tmpTextAuthorNameText, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         // textview for the goal
         TextView textViewGoal = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.choosenGoal);
         String goal = cursorChoosenGoal.getString(cursorChoosenGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL));
         textViewGoal.setText(goal);
-
-        // generate back link "zurueck zu gemeinsamen zielen"
-        Uri.Builder commentLinkBuilder = new Uri.Builder();
-        commentLinkBuilder.scheme("smart.efb.deeplink")
-                .authority("linkin")
-                .path("ourgoals")
-                .appendQueryParameter("db_id", "0")
-                .appendQueryParameter("arr_num", "0")
-                .appendQueryParameter("com", "show_jointly_goals_now");
-        TextView linkShowCommentBackLink = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.goalShowCommentBackLinkNow);
-        linkShowCommentBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">"+viewFragmentCommentJointlyGoals.getResources().getString(fragmentCommentContextJointlyGoals.getResources().getIdentifier("ourGoalsBackLinkToJointlyGoals", "string", fragmentCommentContextJointlyGoals.getPackageName()))+"</a>"));
-        linkShowCommentBackLink.setMovementMethod(LinkMovementMethod.getInstance());
 
         // check, sharing comments enable?
         if (prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentShare, 0) == 0) {
@@ -419,6 +422,11 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
             String tmpCommentText = cursorGoalAllComments.getString(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT));
             tmpTextViewCommentText.setText(tmpCommentText);
 
+
+
+
+
+            /*
             // get textview for Link to Show all comments
             TextView tmpTextViewLInkToShowAllComment = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.commentLinkToShowAllComments);
 
@@ -449,6 +457,9 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                 String tmpLinkStringShowAllComments = fragmentCommentContextJointlyGoals.getResources().getString(fragmentCommentContextJointlyGoals.getResources().getIdentifier("ourGoalsJointlyCommentLinkToShowAllCommentsNotAvailable", "string", fragmentCommentContextJointlyGoals.getPackageName()));
                 tmpTextViewLInkToShowAllComment.setText(tmpLinkStringShowAllComments);
             }
+
+
+             */
         }
         else { // no comments
 
@@ -466,6 +477,14 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
             // textview for the comment text
             TextView tmpTextViewCommentText = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.lastActualCommentText);
             tmpTextViewCommentText.setVisibility(View.GONE);
+
+            // button for overview comment
+            Button tmpButtonShowOverviewComment = viewFragmentCommentJointlyGoals.findViewById(R.id.buttonJointlyCommentBackToShowJointlyComment);
+            tmpButtonShowOverviewComment.setVisibility(View.GONE);
+
+            // textview border no comment and info text
+            TextView tmpBorderBetweenNoCommentAndInfoText = viewFragmentCommentJointlyGoals.findViewById(R.id.borderBetweenNoCommentInfoAndInfoText);
+            tmpBorderBetweenNoCommentAndInfoText.setVisibility(View.VISIBLE);
         }
 
         // textview for max comments, count comments and max letters
@@ -594,6 +613,9 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                         Intent intent = new Intent(getActivity(), ActivityOurGoals.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         intent.putExtra("com", "show_jointly_goals_now");
+                        intent.putExtra("db_id", 0);
+                        intent.putExtra("arr_num", 0);
+                        intent.putExtra("eval_next", false);
                         getActivity().startActivity(intent);
 
                     } else {
@@ -617,16 +639,18 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
             }
         });
 
-        // button abbort
-        Button buttonAbbortGoalComment = (Button) viewFragmentCommentJointlyGoals.findViewById(R.id.buttonAbortComment);
-        // onClick listener button abbort
-        buttonAbbortGoalComment.setOnClickListener(new View.OnClickListener() {
+        // button back to goal overview
+        Button buttonBackToGoalOverview = (Button) viewFragmentCommentJointlyGoals.findViewById(R.id.buttonJointlyCommentBackToGoal);
+        // onClick listener button back to goal overview
+        buttonBackToGoalOverview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent(getActivity(), ActivityOurGoals.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.putExtra("com","show_jointly_goals_now");
+                intent.putExtra("db_id", 0);
+                intent.putExtra("arr_num", 0);
                 getActivity().startActivity(intent);
 
             }
@@ -642,6 +666,9 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
         // call getter-methode getJointlyGoalDbIdFromLink() in ActivityOurGoals to get DB ID for the actuale goal
         tmpJointlyGoalServerDbIdToComment = ((ActivityOurGoals)getActivity()).getJointlyGoalDbIdFromLink();
+
+        // call getter-methode getFabViewOurGoals() in ActivityOurGoals to get view for fab
+        fabFragmentJointlyComment = ((ActivityOurGoals)getActivity()).getFabViewOurGoals();
 
         if (tmpJointlyGoalServerDbIdToComment > 0) {
             goalServerDbIdToComment = tmpJointlyGoalServerDbIdToComment;

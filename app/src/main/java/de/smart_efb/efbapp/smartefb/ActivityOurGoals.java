@@ -7,7 +7,11 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.ActionBar;
@@ -22,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -31,6 +36,16 @@ public class ActivityOurGoals extends AppCompatActivity {
 
     // Set subtitle first time
     Boolean setSubtitleFirstTime = false;
+    
+    // set visibility of fab for first time
+    Boolean setFabFirstTime = false;
+
+    // set visibility of fab after refresh
+    Boolean setFabClickListenerRefreshTimeForNow = false;
+    Boolean setFabClickListenerRefreshTimeForSketch = false;
+
+    // set click listener for fab for first time
+    Boolean setFabClickListenerFirstTime = false;
 
     // evaluate pause time and active time (get from prefs)
     int evaluatePauseTime = 0;
@@ -44,6 +59,9 @@ public class ActivityOurGoals extends AppCompatActivity {
     Toolbar toolbarOurGoals = null;
     ActionBar actionBarOurGoals = null;
 
+    // reference fab
+    FloatingActionButton ourGoalFabView = null;
+    
     // the current date of jointly goals -> the other are old (look at tab old)
     long currentDateOfJointlyGoals;
 
@@ -62,6 +80,18 @@ public class ActivityOurGoals extends AppCompatActivity {
 
     // Strings for subtitle ()
     String [] arraySubTitleText = new String[ConstansClassOurGoals.numberOfDifferentSubtitle];
+
+    // Show or hide FAB in different fragments
+    String [] arrayShowOrHideFAB = new String[ConstansClassOurGoals.numberOfDifferentSubtitle];
+
+    // array list of object smart efb goals
+    ArrayList<ObjectSmartEFBGoals> arrayListOfGoalsJointly = new ArrayList<ObjectSmartEFBGoals>();
+    ArrayList<ObjectSmartEFBGoals> arrayListOfGoalsDebetable = new ArrayList<ObjectSmartEFBGoals>();
+    ArrayList<ObjectSmartEFBGoals> arrayListOfGoalsShowJointlyComment = new ArrayList<ObjectSmartEFBGoals>();
+    ArrayList<ObjectSmartEFBGoals> arrayListOfGoalsShowDebetableComment = new ArrayList<ObjectSmartEFBGoals>();
+    // fragment name for click listener in different fragments
+    String [] arrayFragmentNameForClickListener = new String[ConstansClassOurGoals.numberOfDifferentSubtitle];
+    String [] arrayFragmentIntentOrderForClickListener = new String[ConstansClassOurGoals.numberOfDifferentSubtitle];
 
     // what to show in tab zero (like )
     String showCommandFragmentTabZero = "";
@@ -138,6 +168,7 @@ public class ActivityOurGoals extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
 
                 String tmpSubtitleText = "";
+                String tmpShowOrHideFAB = "";
 
                 // Change the subtitle of the activity
                 switch (tab.getPosition()) {
@@ -145,15 +176,19 @@ public class ActivityOurGoals extends AppCompatActivity {
                         switch (showCommandFragmentTabZero) {
                             case "show_jointly_goals_now":
                                 tmpSubtitleText = arraySubTitleText[0];
+                                tmpShowOrHideFAB = arrayShowOrHideFAB[0];
                                 break;
                             case "comment_an_jointly_goal":
                                 tmpSubtitleText = arraySubTitleText[3];
+                                tmpShowOrHideFAB = arrayShowOrHideFAB[3];
                                 break;
                             case "show_comment_for_jointly_goal":
                                 tmpSubtitleText = arraySubTitleText[4];
+                                tmpShowOrHideFAB = arrayShowOrHideFAB[4];
                                 break;
                             case "evaluate_an_jointly_goal":
                                 tmpSubtitleText = arraySubTitleText[5];
+                                tmpShowOrHideFAB = arrayShowOrHideFAB[5];
                                 break;
                         }
 
@@ -165,12 +200,15 @@ public class ActivityOurGoals extends AppCompatActivity {
                         switch (showCommandFragmentTabOne) {
                             case "show_debetable_goals_now":
                                 tmpSubtitleText = arraySubTitleText[1];
+                                tmpShowOrHideFAB = arrayShowOrHideFAB[1];
                                 break;
                             case "comment_an_debetable_goal":
                                 tmpSubtitleText = arraySubTitleText[6];
+                                tmpShowOrHideFAB = arrayShowOrHideFAB[6];
                                 break;
                             case "show_comment_for_debetable_goal":
                                 tmpSubtitleText = arraySubTitleText[7];
+                                tmpShowOrHideFAB = arrayShowOrHideFAB[7];
                                 break;
                         }
 
@@ -180,14 +218,34 @@ public class ActivityOurGoals extends AppCompatActivity {
                         break;
                     case 2: // title for tab two
                         tmpSubtitleText = arraySubTitleText[2];
+                        tmpShowOrHideFAB = arrayShowOrHideFAB[2];
                         break;
                     default:
                         tmpSubtitleText = arraySubTitleText[0];
+                        tmpShowOrHideFAB = arrayShowOrHideFAB[0];
                         break;
                 }
 
                 // set toolbar text
                 toolbarOurGoals.setSubtitle(tmpSubtitleText);
+
+                // show or hide fab in fragment
+                showOrHideFAB(tmpShowOrHideFAB);
+                // set on click listener for FAB
+                if (tmpShowOrHideFAB.equals("show")) {
+                    if (tab.getPosition() == 0 && showCommandFragmentTabZero.equals("show_jointly_goals_now")) {
+                        addOnClickListenerToFABForFragment(arrayListOfGoalsJointly, arrayFragmentNameForClickListener[0], arrayFragmentIntentOrderForClickListener[0]);
+                    }
+                    else if (tab.getPosition() == 0 && showCommandFragmentTabZero.equals("show_comment_for_jointly_goal")) {
+                        addOnClickListenerToFABForFragment(arrayListOfGoalsJointly, arrayFragmentNameForClickListener[4], arrayFragmentIntentOrderForClickListener[4]);
+                    }
+                    if (tab.getPosition() == 1 && showCommandFragmentTabOne.equals("show_debetable_goals_now")) {
+                        addOnClickListenerToFABForFragment(arrayListOfGoalsDebetable, arrayFragmentNameForClickListener[1], arrayFragmentIntentOrderForClickListener[1]);
+                    }
+                    else if (tab.getPosition() == 1 && showCommandFragmentTabOne.equals("show_comment_for_debetable_goal")) {
+                        addOnClickListenerToFABForFragment(arrayListOfGoalsDebetable, arrayFragmentNameForClickListener[7], arrayFragmentIntentOrderForClickListener[7]);
+                    }
+                }
 
                 // call viewpager
                 viewPagerOurGoals.setCurrentItem(tab.getPosition());
@@ -448,15 +506,23 @@ public class ActivityOurGoals extends AppCompatActivity {
         showCommandFragmentTabZero = "show_jointly_goals_now";
         // init show on tab one debetable goals now
         showCommandFragmentTabOne = "show_debetable_goals_now";
-
-
+        
         for (int t=0; t<ConstansClassOurGoals.numberOfDifferentSubtitle; t++) {
             arraySubTitleText[t] = "";
+            arrayShowOrHideFAB[t] = "hide"; // init show/hide FAB with "hide"
+            arrayFragmentNameForClickListener[t] = ""; // init fragment name for FAB
+            arrayFragmentIntentOrderForClickListener[t] = ""; // init order for intent for FAB
         }
 
         // enable setting subtitle for the first time
         setSubtitleFirstTime = true;
 
+        // enable setting visibility of fab for first time
+        setFabFirstTime = true;
+
+        // enable setting click listener for fab for first time
+        setFabClickListenerFirstTime = true;
+        
         //set tab title string
         tabTitleTextTabZero = getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_1", "string", getPackageName()));
         tabTitleTextTabOne = getResources().getString(getResources().getIdentifier("ourGoalsTabTitle_2", "string", getPackageName()));
@@ -765,6 +831,12 @@ public class ActivityOurGoals extends AppCompatActivity {
         return evaluateNextJointlyGoal;
     }
 
+    // getter for fab view
+    public FloatingActionButton getFabViewOurGoals () {
+
+        return ourGoalFabView;
+    }
+
 
     // geter for border for comments
     public boolean isCommentLimitationBorderSet (String jointlyDebetable) {
@@ -826,6 +898,55 @@ public class ActivityOurGoals extends AppCompatActivity {
         }
     }
 
+
+    // setter for visibility in OurGoal FAB in fragment
+    public void setOurGoalFABVisibility (String visibility, String fragment) {
+
+        switch (fragment) {
+
+            case "debetableNow":
+                arrayShowOrHideFAB[1] = visibility;
+                break;
+            case "jointlyOld":
+                arrayShowOrHideFAB[2] = visibility;
+                break;
+            case "jointlyNow":
+                arrayShowOrHideFAB[0] = visibility;
+                break;
+            case "jointlyNowComment":
+                arrayShowOrHideFAB[3] = visibility;
+                break;
+            case "jointlyShowComment":
+                arrayShowOrHideFAB[4] = visibility;
+                break;
+            case "jointlyEvaluate":
+                arrayShowOrHideFAB[5] = visibility;
+                break;
+            case "debetableComment":
+                arrayShowOrHideFAB[6] = visibility;
+                break;
+            case "debetableShowComment":
+                arrayShowOrHideFAB[7] = visibility;
+                break;
+        }
+
+        // first time -> set initial visibility of fab
+        if (setFabFirstTime && fragment.equals("jointlyNow")) {
+            showOrHideFAB(visibility);
+            setFabFirstTime = false;
+        }
+
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     // set start point for our goals evaluation time
     void setOurGoalsEvaluationStartPoint () {
@@ -963,6 +1084,68 @@ public class ActivityOurGoals extends AppCompatActivity {
     }
 
 
+    // setter for click listener in OurGoals FAB in fragment
+    public void setOurGoalFABClickListener (ArrayList<ObjectSmartEFBGoals> objectArrayGoal, String fragment, String intentOrder) {
+
+        switch (fragment) {
+
+            case "debetableNow":
+                arrayListOfGoalsDebetable = objectArrayGoal;
+                arrayFragmentNameForClickListener[1] = fragment;
+                arrayFragmentIntentOrderForClickListener[1] = intentOrder;
+                break;
+            case "jointlyOld":
+                arrayFragmentNameForClickListener[2] = fragment;
+                arrayFragmentIntentOrderForClickListener[2] = intentOrder;
+                break;
+            case "jointlyNow":
+                arrayListOfGoalsJointly = objectArrayGoal;
+                arrayFragmentNameForClickListener[0] = fragment;
+                arrayFragmentIntentOrderForClickListener[0] = intentOrder;
+                break;
+            case "jointlyNowComment":
+                arrayFragmentNameForClickListener[3] = fragment;
+                arrayFragmentIntentOrderForClickListener[3] = intentOrder;
+                break;
+            case "jointlyShowComment":
+                arrayListOfGoalsShowJointlyComment = objectArrayGoal;
+                arrayFragmentNameForClickListener[4] = fragment;
+                arrayFragmentIntentOrderForClickListener[4] = intentOrder;
+                break;
+            case "jointlyEvaluate":
+                arrayFragmentNameForClickListener[5] = fragment;
+                arrayFragmentIntentOrderForClickListener[5] = intentOrder;
+                break;
+            case "debetableComment":
+                arrayFragmentNameForClickListener[6] = fragment;
+                arrayFragmentIntentOrderForClickListener[6] = intentOrder;
+                break;
+            case "debetableShowComment":
+                arrayListOfGoalsShowDebetableComment = objectArrayGoal;
+                arrayFragmentNameForClickListener[7] = fragment;
+                arrayFragmentIntentOrderForClickListener[7] = intentOrder;
+                break;
+        }
+
+        // first time -> set initial click listener of fab
+        if (setFabClickListenerFirstTime && fragment.equals("jointlyNow")) {
+            addOnClickListenerToFABForFragment(objectArrayGoal, "jointlyNow", "comment_an_jointly_goal");
+            setFabClickListenerFirstTime = false;
+        }
+
+        // new data for fragment -> refresh fab click listener
+        if (setFabClickListenerRefreshTimeForNow && fragment.equals("jointlyNow")) {
+            addOnClickListenerToFABForFragment(objectArrayGoal, "jointlyNow", "comment_an_jointly_goal");
+            setFabClickListenerRefreshTimeForNow = false;
+        }
+        if (setFabClickListenerRefreshTimeForSketch && fragment.equals("debetableNow")) {
+            addOnClickListenerToFABForFragment(objectArrayGoal, "debetableNow", "comment_an_debetable_goal");
+            setFabClickListenerRefreshTimeForSketch = false;
+        }
+
+    }
+    
+    
     // check prefs for update jointly and debetable goals or only jointly goals or only debetable goals?
     public void checkUpdateForShowDialog (String fragmentName) {
 
@@ -1090,5 +1273,202 @@ public class ActivityOurGoals extends AppCompatActivity {
 
     }
 
+
+    public void refreshFABOnClickListenerAndVisibility (String fragmentName) {
+
+        switch (fragmentName) {
+
+            case "debetable":
+                arrayListOfGoalsDebetable = null;
+                arrayFragmentNameForClickListener[1] = "";
+                arrayFragmentIntentOrderForClickListener[1] = "";
+                arrayFragmentNameForClickListener[6] = ""; // array index of debetable comment
+                arrayFragmentIntentOrderForClickListener[6] = ""; // array index of debetable comment
+                arrayListOfGoalsShowDebetableComment = null; // array index of show debetable comment
+                arrayFragmentNameForClickListener[7] = ""; // array index of show debetable comment
+                arrayFragmentIntentOrderForClickListener[7] = ""; // array index of show debetable comment
+                setFabClickListenerRefreshTimeForSketch = true;
+
+                break;
+
+            case "jointly":
+                arrayListOfGoalsJointly = null;
+                arrayFragmentNameForClickListener[0] = "";
+                arrayFragmentIntentOrderForClickListener[0] = "";
+                arrayFragmentNameForClickListener[3] = ""; // array index of jointly now comment
+                arrayFragmentIntentOrderForClickListener[3] = ""; // array index of jointly now comment
+                arrayListOfGoalsShowJointlyComment = null;
+                arrayFragmentNameForClickListener[4] = ""; // array index of jointly now comment
+                arrayFragmentIntentOrderForClickListener[4] = ""; // array index of show jointly now comment
+                arrayFragmentNameForClickListener[5] = ""; // array index of jointly evaluate
+                arrayFragmentIntentOrderForClickListener[5] = ""; // array index of jointly evaluate
+                setFabClickListenerRefreshTimeForNow = true;
+
+                break;
+        }
+    }
+
+
+    // setter for visibility fab (hide or show)
+    public void showOrHideFAB (String hideOrShow) {
+
+        switch (hideOrShow) {
+            case "show":
+                ourGoalFabView.show();
+                break;
+            case "hide":
+                ourGoalFabView.hide();
+                break;
+            default:
+                ourGoalFabView.hide();
+                break;
+        }
+
+    }
+
+    // add correct onclicklistener for fab in fragment
+    public void addOnClickListenerToFABForFragment (final ArrayList<ObjectSmartEFBGoals> arrayList, final String fragmentName, final String intentOrder) {
+
+        // add on click listener to fab
+        ourGoalFabView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                if (arrayList.size() > 1) {
+
+                    // create popup menu for fab
+                    PopupMenu popupFabCommentGoals = new PopupMenu(ActivityOurGoals.this, view);
+
+                    // inflate popup menu for fab
+                    if (fragmentName.equals("sketch")) {
+                        popupFabCommentGoals.getMenuInflater().inflate(R.menu.popup_efb_our_goals_debetable_goals_fab, popupFabCommentGoals.getMenu());
+                    }
+                    else {
+                        popupFabCommentGoals.getMenuInflater().inflate(R.menu.popup_efb_our_goals_jointly_goals_fab, popupFabCommentGoals.getMenu());
+                    }
+
+                    // set on click listener for popup menu item
+                    popupFabCommentGoals.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+
+                            Intent intent = new Intent(ActivityOurGoals.this, ActivityOurGoals.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra("com", intentOrder);
+
+                            switch (item.getItemId()) {
+                                case R.id.goal1:
+                                    intent.putExtra("db_id", arrayList.get(0).getServerIdGoal());
+                                    intent.putExtra("arr_num", 1);
+
+                                    break;
+                                case R.id.goal2:
+                                    if (1 < arrayList.size()) {
+                                        intent.putExtra("db_id", arrayList.get(1).getServerIdGoal());
+                                        intent.putExtra("arr_num", 2);
+                                    }
+                                    break;
+                                case R.id.goal3:
+                                    if (2 < arrayList.size()) {
+                                        intent.putExtra("db_id", arrayList.get(2).getServerIdGoal());
+                                        intent.putExtra("arr_num", 3);
+                                    }
+                                    break;
+                                case R.id.goal4:
+                                    if (3 < arrayList.size()) {
+                                        intent.putExtra("db_id", arrayList.get(3).getServerIdGoal());
+                                        intent.putExtra("arr_num", 4);
+                                    }
+                                    break;
+
+                                case R.id.goal5:
+                                    if (4 < arrayList.size()) {
+                                        intent.putExtra("db_id", arrayList.get(4).getServerIdGoal());
+                                        intent.putExtra("arr_num", 5);
+                                    }
+                                    break;
+                                case R.id.goal6:
+                                    if (5 < arrayList.size()) {
+                                        intent.putExtra("db_id", arrayList.get(5).getServerIdGoal());
+                                        intent.putExtra("arr_num", 6);
+                                    }
+                                    break;
+                                case R.id.goal7:
+                                    if (6 < arrayList.size()) {
+                                        intent.putExtra("db_id", arrayList.get(6).getServerIdGoal());
+                                        intent.putExtra("arr_num", 7);
+                                    }
+                                    break;
+                                case R.id.goal8:
+                                    if (7 < arrayList.size()) {
+                                        intent.putExtra("db_id", arrayList.get(7).getServerIdGoal());
+                                        intent.putExtra("arr_num", 8);
+                                    }
+                                    break;
+                                case R.id.goal9:
+                                    if (8 < arrayList.size()) {
+                                        intent.putExtra("db_id", arrayList.get(8).getServerIdGoal());
+                                        intent.putExtra("arr_num", 9);
+                                    }
+                                    break;
+                                case R.id.goal10:
+                                    if (9 < arrayList.size()) {
+                                        intent.putExtra("db_id", arrayList.get(9).getServerIdGoal());
+                                        intent.putExtra("arr_num", 10);
+                                    }
+                                    break;
+                                case R.id.goal11:
+                                    if (10 < arrayList.size()) {
+                                        intent.putExtra("db_id", arrayList.get(10).getServerIdGoal());
+                                        intent.putExtra("arr_num", 11);
+                                    }
+                                    break;
+                                case R.id.goal12:
+                                    if (11 < arrayList.size()) {
+                                        intent.putExtra("db_id", arrayList.get(11).getServerIdGoal());
+                                        intent.putExtra("arr_num", 12);
+                                    }
+                                    break;
+                            }
+
+                            // start comment choosen goal
+                            ActivityOurGoals.this.startActivity(intent);
+
+                            return true;
+                        }
+                    });
+
+                    // disable menu entry not used
+                    int resId;
+                    String ressourceGoalString = "goal";
+
+                    for (int t = arrayList.size()+1; t <= 12; t++) {
+                        resId = getResources().getIdentifier(ressourceGoalString + t, "id", ActivityOurGoals.this.getPackageName());
+                        // set popup menu entrys gone, when not needed
+                        popupFabCommentGoals.getMenu().findItem(resId).setVisible(false);
+                    }
+
+                    // show popup menu
+                    popupFabCommentGoals.show();
+
+                }
+                else {
+                    // only one goal jointly/debetable in db
+
+                    Intent intent = new Intent(ActivityOurGoals.this, ActivityOurGoals.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("com", intentOrder);
+                    intent.putExtra("db_id", arrayList.get(0).getServerIdGoal());
+                    intent.putExtra("arr_num", 1);
+                    // start comment for this goals (jointly/ debetable)
+                    ActivityOurGoals.this.startActivity(intent);
+                }
+            }
+        });
+    }
+    
+    
 
 }

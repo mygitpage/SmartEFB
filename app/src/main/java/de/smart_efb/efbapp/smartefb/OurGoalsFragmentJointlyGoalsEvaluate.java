@@ -27,6 +27,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 /**
  * Created by ich on 31.10.2016.
  */
@@ -43,6 +45,9 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
     // reference to the DB
     DBAdapter myDb;
+
+    // the fab
+    FloatingActionButton fabFragmentJointlyGoal;
 
     // shared prefs for the evaluate jointly goals
     SharedPreferences prefs;
@@ -257,6 +262,11 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         // init the DB
         myDb = new DBAdapter(fragmentEvaluateJointlyGoalsContext);
 
+        // show fab and set on click listener
+        if (fabFragmentJointlyGoal != null) {
+            fabFragmentJointlyGoal.hide();
+        }
+
         // init the prefs
         prefs = fragmentEvaluateJointlyGoalsContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentEvaluateJointlyGoalsContext.MODE_PRIVATE);
         prefsEditor = prefs.edit();
@@ -268,7 +278,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         cursorChoosenJointlyGoal = myDb.getJointlyRowOurGoals(jointlyGoalServerDbIdToEvaluate);
 
         // get all actual jointly goals
-        cursorNextJointlyGoalToEvaluate = myDb.getAllJointlyRowsOurGoals(currentBlockIdOfJointlyGoals, "equalBlockId");
+        cursorNextJointlyGoalToEvaluate = myDb.getAllJointlyRowsOurGoals(currentBlockIdOfJointlyGoals, "equalBlockId", "ascending");
 
         // Set correct subtitle in Activity -> "Ziel ... bewerten"
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleEvaluateJointlyGoal", "string", fragmentEvaluateJointlyGoalsContext.getPackageName()));
@@ -697,6 +707,9 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
         // call getter-methode getJointlyGoalsDbIdFromLink() in ActivityOurGoals to get DB ID for the actuale jointly goal
         tmpJointlyGoalDbIdToComment = ((ActivityOurGoals)getActivity()).getJointlyGoalDbIdFromLink();
+
+        // call getter-methode getFabViewOurGoals() in ActivityOurGoals to get view for fab
+        fabFragmentJointlyGoal = ((ActivityOurGoals)getActivity()).getFabViewOurGoals();
 
         if (tmpJointlyGoalDbIdToComment > 0) {
             jointlyGoalServerDbIdToEvaluate = tmpJointlyGoalDbIdToComment;

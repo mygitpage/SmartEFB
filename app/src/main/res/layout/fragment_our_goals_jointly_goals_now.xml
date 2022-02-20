@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/main_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/body_background"
-    android:id="@+id/listOurGoalsJointlyGoalsNowHolder">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/textViewJointlyGoalsNowNothingThere"
@@ -34,15 +35,12 @@
 
     </RelativeLayout>
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listOurGoalsJointlyGoalsNow"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:transcriptMode="normal"
-        android:layout_weight="1"
-        android:stackFromBottom="false"
-        android:background="@null"
-        android:divider="@null">
-    </ListView>
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:scrollbars="none"/>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

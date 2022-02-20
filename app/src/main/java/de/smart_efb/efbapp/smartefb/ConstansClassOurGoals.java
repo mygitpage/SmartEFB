@@ -102,11 +102,35 @@ class ConstansClassOurGoals {
     // prefs name for jointly goals time start point evaluation in millis
     static final String namePrefsStartPointJointlyGoalsEvaluationPeriodInMills = "startPointJointlygoalsEvaluationPeriodInMills";
 
+
+
+
+
     // sort sequence of goals jointly comment list-> "decending" or "ascending"
     static final String namePrefsSortSequenceOfGoalsJointlyCommentList = "goalsJointlyCommentSortSequence";
 
     // sort sequence of goals debetable comment list-> "decending" or "ascending"
     static final String namePrefsSortSequenceOfGoalsDebetableCommentList = "goalsDebetableCommentSortSequence";
+
+
+
+
+    // sort sequence of jointly goals list-> "descending" or "ascending"
+    static final String namePrefsSortSequenceOfJointlyGoalsList = "jointlyGoalsSortSequence";
+
+    // sort sequence of jointly goals old list-> "descending" or "ascending"
+    static final String namePrefsSortSequenceOfJointlyGoalsOldList = "jointlyGoalsOldSortSequence";
+
+    // sort sequence of debetable goals list-> "descending" or "ascending"
+    static final String namePrefsSortSequenceOfDebetableGoalsList = "debetableGoalsSortSequence";
+
+
+
+
+
+
+
+
 
     // default time for active and pause time in evaluation jointly goal (time in seconds)
     static final int defaultTimeForActiveAndPauseEvaluationJointlyGoals = 43200; // this is 12 hours

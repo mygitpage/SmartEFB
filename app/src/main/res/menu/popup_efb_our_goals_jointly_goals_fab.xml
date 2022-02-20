@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/goal1"
+        android:title="@string/popupItemOurGoalsJointlyGoal1"/>
+    <item android:id="@+id/goal2"
+        android:title="@string/popupItemOurGoalsJointlyGoal2"/>
+    <item android:id="@+id/goal3"
+        android:title="@string/popupItemOurGoalsJointlyGoal3"/>
+    <item android:id="@+id/goal4"
+        android:title="@string/popupItemOurGoalsJointlyGoal4"/>
+    <item android:id="@+id/goal5"
+        android:title="@string/popupItemOurGoalsJointlyGoal5"/>
+    <item android:id="@+id/goal6"
+        android:title="@string/popupItemOurGoalsJointlyGoal6"/>
+    <item android:id="@+id/goal7"
+        android:title="@string/popupItemOurGoalsJointlyGoal7"/>
+    <item android:id="@+id/goal8"
+        android:title="@string/popupItemOurGoalsJointlyGoal8"/>
+    <item android:id="@+id/goal9"
+        android:title="@string/popupItemOurGoalsJointlyGoal9"/>
+    <item android:id="@+id/goal10"
+        android:title="@string/popupItemOurGoalsJointlyGoal10"/>
+    <item android:id="@+id/goal11"
+        android:title="@string/popupItemOurGoalsJointlyGoal11"/>
+    <item android:id="@+id/goal12"
+        android:title="@string/popupItemOurGoalsJointlyGoal12"/>
+</menu>

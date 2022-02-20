@@ -15,5 +15,4 @@
         android:paddingBottom="8dp"
         android:scrollbars="none"/>
 
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

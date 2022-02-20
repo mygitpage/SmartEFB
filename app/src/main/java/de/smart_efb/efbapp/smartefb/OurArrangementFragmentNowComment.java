@@ -300,9 +300,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
         // check, sharing comments enable?
         if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementCommentShare, 0) == 0) {
             TextView textCommentSharingIsDisable = viewFragmentNowComment.findViewById(R.id.commentSharingIsDisable);
-            //TextView borderBetweenTextCommentSharingIsDisable = viewFragmentNowComment.findViewById(R.id.borderBetweencommentSharingIsDisable);
             textCommentSharingIsDisable.setVisibility (View.VISIBLE);
-            //borderBetweenTextCommentSharingIsDisable.setVisibility (View.VISIBLE);
         }
 
         // some comments for arrangement available?

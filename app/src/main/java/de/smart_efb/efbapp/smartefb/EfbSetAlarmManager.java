@@ -195,7 +195,7 @@ public class EfbSetAlarmManager {
         DBAdapter myDb = new DBAdapter(context);
 
         // get all jointly goals with the same block id
-        Cursor cursor = myDb.getAllJointlyRowsOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""), "equalBlockId");
+        Cursor cursor = myDb.getAllJointlyRowsOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""), "equalBlockId", "ascending");
 
         if (cursor.getCount() > 0) {
 
