@@ -113,7 +113,7 @@ class ConstansClassOurArrangement {
     // sort sequence of now arrangement list-> "descending" or "ascending"
     static final String namePrefsSortSequenceOfArrangementNowList = "arrangementNowSortSequence";
 
-    // sort sequence of now arrangement list-> "descending" or "ascending"
+    // sort sequence of old arrangement list-> "descending" or "ascending"
     static final String namePrefsSortSequenceOfArrangementOldList = "arrangementOldSortSequence";
 
     // sort sequence of arrangement sketch comment list-> "descending" or "ascending"

@@ -18,6 +18,7 @@ import android.text.Html;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -166,7 +167,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentCommentContextJointlyGoals.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -195,7 +196,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     // reset now comment counter -> show toast and update view
                     String updateMessageCommentNow = fragmentCommentContextJointlyGoals.getString(R.string.toastMessageJointlyGoalsResetCommentCountComment);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -206,7 +207,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     // sharing is disable -> show toast and update view
                     String updateMessageCommentNow = fragmentCommentContextJointlyGoals.getString(R.string.toastMessageJointlyGoalsCommentShareDisable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -217,7 +218,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     // sharing is enable -> show toast and update view
                     String updateMessageCommentNow = fragmentCommentContextJointlyGoals.getString(R.string.toastMessageJointlyGoalsCommentShareEnable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -264,7 +265,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         cursorChoosenGoal = myDb.getJointlyRowOurGoals(goalServerDbIdToComment);
 
         // get all comments for choosen jointly goals
-        cursorGoalAllComments = myDb.getAllRowsOurGoalsJointlyGoalsComment(goalServerDbIdToComment, "descending");
+        cursorGoalAllComments = myDb.getAllRowsOurGoalsJointlyGoalsComment(goalServerDbIdToComment, "descending", 0);
 
         // Set correct subtitle in Activity -> "Ziel ... kommentieren"
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleJointlyGoalsComment", "string", fragmentCommentContextJointlyGoals.getPackageName()));
@@ -281,22 +282,22 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
         // build the view
         //textview for the comment intro
-        TextView textCommentNumberIntro = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.goalCommentNumberIntro);
+        TextView textCommentNumberIntro = viewFragmentCommentJointlyGoals.findViewById(R.id.goalCommentNumberIntro);
         textCommentNumberIntro.setText(this.getResources().getString(R.string.showJointlyGoalCommentIntroText) + " " + goalNumberInListView);
 
         // textview for the author of goal
-        TextView tmpTextViewAuthorNameText = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.textAuthorName);
+        TextView tmpTextViewAuthorNameText = viewFragmentCommentJointlyGoals.findViewById(R.id.textAuthorName);
         String tmpTextAuthorNameText = String.format(fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsAuthorNameTextWithDate), cursorChoosenGoal.getString(cursorChoosenGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "dd.MM.yyyy"));
         tmpTextViewAuthorNameText.setText(HtmlCompat.fromHtml(tmpTextAuthorNameText, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         // textview for the goal
-        TextView textViewGoal = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.choosenGoal);
+        TextView textViewGoal = viewFragmentCommentJointlyGoals.findViewById(R.id.choosenGoal);
         String goal = cursorChoosenGoal.getString(cursorChoosenGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL));
         textViewGoal.setText(goal);
 
         // check, sharing comments enable?
         if (prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentShare, 0) == 0) {
-            TextView textCommentSharingIsDisable = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.commentSharingIsDisable);
+            TextView textCommentSharingIsDisable = viewFragmentCommentJointlyGoals.findViewById(R.id.commentSharingIsDisable);
             textCommentSharingIsDisable.setVisibility (View.VISIBLE);
         }
 
@@ -307,7 +308,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
             final Long rowIdForUpdate = cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.KEY_ROWID));
 
             //textview for the last actual comment intro
-            TextView textLastActualCommentIntro = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.lastActualCommentInfoText);
+            TextView textLastActualCommentIntro = viewFragmentCommentJointlyGoals.findViewById(R.id.lastActualCommentInfoText);
             textLastActualCommentIntro.setText(this.getResources().getString(R.string.lastActualJointlyCommentText));
 
             // position one for comment cursor
@@ -315,28 +316,28 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
             // check if comment entry new?
             if (cursorGoalAllComments.getInt(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY)) == 1) {
-                TextView newEntryOfComment = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.lastActualCommentNewInfoText);
+                TextView newEntryOfComment = viewFragmentCommentJointlyGoals.findViewById(R.id.lastActualCommentNewInfoText);
                 String txtNewEntryOfComment = fragmentCommentContextJointlyGoals.getResources().getString(R.string.newEntryTextOurGoal);
                 newEntryOfComment.setText(txtNewEntryOfComment);
                 myDb.deleteStatusNewEntryOurGoalsJointlyGoalComment(cursorGoalAllComments.getInt(cursorGoalAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
             }
 
             // textview for the author of last actual comment
-            TextView tmpTextViewAuthorNameLastActualComment = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.textAuthorNameLastActualComment);
+            TextView tmpTextViewAuthorNameLastActualComment = viewFragmentCommentJointlyGoals.findViewById(R.id.textAuthorNameLastActualComment);
             String tmpAuthorName = cursorGoalAllComments.getString(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME));
 
             if (tmpAuthorName.equals(prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt"))) {
                 tmpAuthorName = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentPersonalAuthorName);
             }
 
-            String commentDate = EfbHelperClass.timestampToDateFormat(cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");;
-            String commentTime = EfbHelperClass.timestampToDateFormat(cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME)), "HH:mm");;
+            String commentDate = EfbHelperClass.timestampToDateFormat(cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME)), "dd.MM.yyyy");
+            String commentTime = EfbHelperClass.timestampToDateFormat(cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME)), "HH:mm");
             String tmpTextAuthorNameLastActualComment = String.format(fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
             if (cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS)) == 4) {tmpTextAuthorNameLastActualComment = String.format(getResources().getString(R.string.ourGoalsJointlyCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
-            tmpTextViewAuthorNameLastActualComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
+            tmpTextViewAuthorNameLastActualComment.setText(HtmlCompat.fromHtml(tmpTextAuthorNameLastActualComment, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
             // textview for status 0 of the last actual comment
-            final TextView tmpTextViewSendInfoLastActualComment = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.textSendInfoLastActualComment);
+            final TextView tmpTextViewSendInfoLastActualComment = viewFragmentCommentJointlyGoals.findViewById(R.id.textSendInfoLastActualComment);
             if (cursorGoalAllComments.getInt(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS)) == 0) {
 
                 String tmpTextSendInfoLastActualComment = fragmentCommentContextJointlyGoals.getResources().getString(R.string.ourGoalsJointlyCommentSendInfo);
@@ -402,7 +403,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     }
                 }
                 else { // sharing of comments is disable! -> show text
-                    String tmpTextSendInfoLastActualComment = "";
+                    String tmpTextSendInfoLastActualComment;
                     tmpTextViewSendInfoLastActualComment.setVisibility(View.VISIBLE);
                     if (prefs.getLong(ConstansClassOurGoals.namePrefsJointlyCommentShareChangeTime, 0) < cursorGoalAllComments.getLong(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME))) {
                         // show send successfull, but no sharing
@@ -418,64 +419,26 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
             }
 
             // textview for the comment text
-            TextView tmpTextViewCommentText = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.lastActualCommentText);
+            TextView tmpTextViewCommentText = viewFragmentCommentJointlyGoals.findViewById(R.id.lastActualCommentText);
             String tmpCommentText = cursorGoalAllComments.getString(cursorGoalAllComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT));
             tmpTextViewCommentText.setText(tmpCommentText);
 
-
-
-
-
-            /*
-            // get textview for Link to Show all comments
-            TextView tmpTextViewLInkToShowAllComment = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.commentLinkToShowAllComments);
-
-            // more than one comment available?
-            if (cursorGoalAllComments.getCount() > 1) {
-
-                // generate link to show all comments
-                Uri.Builder showCommentLinkBuilder = new Uri.Builder();
-                showCommentLinkBuilder.scheme("smart.efb.deeplink")
-                        .authority("linkin")
-                        .path("ourgoals")
-                        .appendQueryParameter("db_id", Integer.toString(goalServerDbIdToComment))
-                        .appendQueryParameter("arr_num", Integer.toString(goalNumberInListView))
-                        .appendQueryParameter("com", "show_comment_for_jointly_goal");
-
-                if (cursorGoalAllComments.getCount() == 2) {
-                    String tmpLinkStringShowAllComments = String.format(fragmentCommentContextJointlyGoals.getResources().getString(fragmentCommentContextJointlyGoals.getResources().getIdentifier("ourGoalsJointlyCommentLinkToShowAllCommentsSingular", "string", fragmentCommentContextJointlyGoals.getPackageName())),cursorGoalAllComments.getCount()-1);
-                    tmpTextViewLInkToShowAllComment.setText(Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllComments + "</a>"));
-                }
-                else {
-                    String tmpLinkStringShowAllComments = String.format(fragmentCommentContextJointlyGoals.getResources().getString(fragmentCommentContextJointlyGoals.getResources().getIdentifier("ourGoalsJointlyCommentLinkToShowAllCommentsPlural", "string", fragmentCommentContextJointlyGoals.getPackageName())),cursorGoalAllComments.getCount()-1);
-                    tmpTextViewLInkToShowAllComment.setText(Html.fromHtml("<a href=\"" + showCommentLinkBuilder.build().toString() + "\">" + tmpLinkStringShowAllComments + "</a>"));
-                }
-                tmpTextViewLInkToShowAllComment.setMovementMethod(LinkMovementMethod.getInstance());
-            }
-            else {
-                // no comment anymore
-                String tmpLinkStringShowAllComments = fragmentCommentContextJointlyGoals.getResources().getString(fragmentCommentContextJointlyGoals.getResources().getIdentifier("ourGoalsJointlyCommentLinkToShowAllCommentsNotAvailable", "string", fragmentCommentContextJointlyGoals.getPackageName()));
-                tmpTextViewLInkToShowAllComment.setText(tmpLinkStringShowAllComments);
-            }
-
-
-             */
         }
         else { // no comments
 
             //textview for the last actual comment intro
-            TextView textLastActualCommentIntro = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.lastActualCommentInfoText);
+            TextView textLastActualCommentIntro = viewFragmentCommentJointlyGoals.findViewById(R.id.lastActualCommentInfoText);
             textLastActualCommentIntro.setText(this.getResources().getString(R.string.lastActualJointlyCommentTextNoCommentAvailabel));
 
             // position one for comment cursor
             cursorGoalAllComments.moveToFirst();
 
             // textview for the author of last actual comment
-            TextView tmpTextViewAuthorNameLastActualComment = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.textAuthorNameLastActualComment);
+            TextView tmpTextViewAuthorNameLastActualComment = viewFragmentCommentJointlyGoals.findViewById(R.id.textAuthorNameLastActualComment);
             tmpTextViewAuthorNameLastActualComment.setText(this.getResources().getString(R.string.lastActualJointlyCommentTextNoCommentAvailabelFirstAuthor));
 
             // textview for the comment text
-            TextView tmpTextViewCommentText = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.lastActualCommentText);
+            TextView tmpTextViewCommentText = viewFragmentCommentJointlyGoals.findViewById(R.id.lastActualCommentText);
             tmpTextViewCommentText.setVisibility(View.GONE);
 
             // button for overview comment
@@ -488,7 +451,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         }
 
         // textview for max comments, count comments and max letters
-        TextView textViewMaxAndCount = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.infoJointlyCommentMaxAndCount);
+        TextView textViewMaxAndCount = viewFragmentCommentJointlyGoals.findViewById(R.id.infoJointlyCommentMaxAndCount);
         String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral, tmpInfoTextCommentMaxLetters;
         // build text element max comment
         if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, 0) == 1 && commentLimitationBorder) {
@@ -514,7 +477,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         tmpInfoTextCountSingluarPluaral = String.format(tmpInfoTextCountSingluarPluaral, prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0));
 
         // build text element delay time
-        String tmpInfoTextDelaytimeSingluarPluaral = "";
+        String tmpInfoTextDelaytimeSingluarPluaral;
         if (prefs.getInt(ConstansClassOurGoals.namePrefsJointlyCommentDelaytime, 0) == 0) {
             tmpInfoTextDelaytimeSingluarPluaral = this.getResources().getString(R.string.infoTextJointlyCommentDelaytimeNoDelay);
         }
@@ -537,13 +500,18 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         final int tmpMaxLength = prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyLetters, 10);
 
         // get textView to count input letters and init it
-        final TextView textViewCountLettersCommentEditText = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.countLettersCommentEditText);
+        final TextView textViewCountLettersCommentEditText = viewFragmentCommentJointlyGoals.findViewById(R.id.countLettersCommentEditText);
         String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
         tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", tmpMaxLength);
         textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
 
-        // comment textfield -> set hint text
-        final EditText txtInputGoalComment = (EditText) viewFragmentCommentJointlyGoals.findViewById(R.id.inputGoalComment);
+        // comment textfield
+        final EditText txtInputGoalComment = viewFragmentCommentJointlyGoals.findViewById(R.id.inputGoalComment);
+
+        // set hint text in edit text field
+        String tmpHintTextForCommentField = this.getResources().getString(R.string.goalJointlyCommentHintText);
+        tmpHintTextForCommentField = String.format(tmpHintTextForCommentField, goalNumberInListView);
+        txtInputGoalComment.setHint(tmpHintTextForCommentField);
 
         // set text watcher to count letters in comment field
         final TextWatcher txtInputGoalCommentTextWatcher = new TextWatcher() {
@@ -565,8 +533,26 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         // set input filter max length for comment field
         txtInputGoalComment.setFilters(new InputFilter[] {new InputFilter.LengthFilter(tmpMaxLength)});
 
+        // set text max comment/ actual comment
+        TextView infoTextCountComment = viewFragmentCommentJointlyGoals.findViewById(R.id.infoTextCountComment);
+        String tmpInfoTextCountCommentSingluarPluaralNoLimit;
+        if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, 0) == 1 && commentLimitationBorder) {
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = this.getResources().getString(R.string.ourGoalsJointlyCommentCountCommentTextSingular);
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = String.format(tmpInfoTextCountCommentSingluarPluaralNoLimit, prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment,0), prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, 0));
+        }
+        else if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, 0) > 1 && commentLimitationBorder) {
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = this.getResources().getString(R.string.ourGoalsJointlyCommentCountCommentTextPlural);
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = String.format(tmpInfoTextCountCommentSingluarPluaralNoLimit, prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment,0), prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, 0));
+
+        }
+        else {
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = this.getResources().getString(R.string.ourGoalsJointlyCommentCountCommentTextNoLimit);
+        }
+        infoTextCountComment.setText(tmpInfoTextCountCommentSingluarPluaralNoLimit);
+
+
         // get button send comment
-        Button buttonSendGoalComment = (Button) viewFragmentCommentJointlyGoals.findViewById(R.id.buttonSendGoalComment);
+        Button buttonSendGoalComment = viewFragmentCommentJointlyGoals.findViewById(R.id.buttonSendGoalComment);
 
         // set onClick listener send goal comment
         buttonSendGoalComment.setOnClickListener(new View.OnClickListener() {
@@ -620,7 +606,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
                     } else {
 
-                        TextView tmpErrorTextView = (TextView) viewFragmentCommentJointlyGoals.findViewById(R.id.errorInputJointlyGoalComment);
+                        TextView tmpErrorTextView = viewFragmentCommentJointlyGoals.findViewById(R.id.errorInputJointlyGoalComment);
                         tmpErrorTextView.setVisibility(View.VISIBLE);
                     }
                 }
@@ -631,7 +617,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     // case is closed -> show toast
                     String textCaseClose = fragmentCommentContextJointlyGoals.getString(R.string.toastJointlyGoalsCommentCaseCloseToastText);
                     Toast toast = Toast.makeText(fragmentCommentContextJointlyGoals, textCaseClose, Toast.LENGTH_LONG);
-                    TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView viewMessage = toast.getView().findViewById(android.R.id.message);
                     if (v != null) viewMessage.setGravity(Gravity.CENTER);
                     toast.show();
                 }
@@ -640,7 +626,7 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
         });
 
         // button back to goal overview
-        Button buttonBackToGoalOverview = (Button) viewFragmentCommentJointlyGoals.findViewById(R.id.buttonJointlyCommentBackToGoal);
+        Button buttonBackToGoalOverview = viewFragmentCommentJointlyGoals.findViewById(R.id.buttonJointlyCommentBackToGoal);
         // onClick listener button back to goal overview
         buttonBackToGoalOverview.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -309,7 +309,7 @@ public class OurGoalsJointlyGoalsRecyclerViewAdapter extends RecyclerView.Adapte
                 // generate link to comment a goal
                 if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, false)) {
 
-                    // get from DB  all comments for choosen jointly goal (getCount)
+                    // get from DB  all comments for chosen jointly goal (getCount)
                     Cursor cursorJointlyGoalAllComments = myDb.getAllRowsOurGoalsJointlyGoalsComment(goalsElement.getServerIdGoal(), "descending", 0);
                     // generate the number of comments to show
                     String tmpCountComments;

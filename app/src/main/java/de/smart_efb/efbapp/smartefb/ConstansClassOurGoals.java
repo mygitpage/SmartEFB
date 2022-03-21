@@ -54,6 +54,9 @@ class ConstansClassOurGoals {
     // prefs name for jointly comment delaytime
     static final String namePrefsJointlyCommentDelaytime = "jointlyGoalsCommentDelaytime";
 
+    // prefs name for number of comment in list for show comment in jointly goals
+    static final String namePrefsNumberOfCommentForOurGoalsJointlyGoalsShowComment = "numberOfCommentForOurGoalsJointlyGoalsShowComment";
+
     // prefs name for sharing jointly comments
     static final String namePrefsJointlyCommentShare = "jointlyCommentOurGoalsShare";
 
@@ -87,6 +90,32 @@ class ConstansClassOurGoals {
     // true -> jointly goals are updated; false -> no update
     static final String namePrefsSignalJointlyGoalsUpdate = "signalJointlyGoalsUpdated";
 
+
+
+
+
+
+    // sort sequence of goals jointly comment list-> "descending" or "ascending"
+    static final String namePrefsSortSequenceOfGoalsJointlyCommentList = "goalsJointlyCommentSortSequence";
+
+    // sort sequence of jointly goals list-> "descending" or "ascending"
+    static final String namePrefsSortSequenceOfJointlyGoalsList = "jointlyGoalsSortSequence";
+
+    // sort sequence of old jointly Goals list-> "descending" or "ascending"
+    static final String namePrefsSortSequenceOfJointlyGoalsOldList = "jointlyGOalsOldSortSequence";
+
+    // sort sequence of goals debetable comment list-> "descending" or "ascending"
+    static final String namePrefsSortSequenceOfGoalsDebetableCommentList = "goalsDebetableCommentSortSequence";
+
+    // sort sequence of debetable goals list-> "descending" or "ascending"
+    static final String namePrefsSortSequenceOfDebetableGoalsList = "debetableGoalsSortSequence";
+
+
+
+
+
+
+
     // prefs name for start Date Evaluation in mills
     static final String namePrefsStartDateJointlyGoalsEvaluationInMills = "startDataJointlyGoalsEvaluationInMills";
 
@@ -106,23 +135,7 @@ class ConstansClassOurGoals {
 
 
 
-    // sort sequence of goals jointly comment list-> "decending" or "ascending"
-    static final String namePrefsSortSequenceOfGoalsJointlyCommentList = "goalsJointlyCommentSortSequence";
 
-    // sort sequence of goals debetable comment list-> "decending" or "ascending"
-    static final String namePrefsSortSequenceOfGoalsDebetableCommentList = "goalsDebetableCommentSortSequence";
-
-
-
-
-    // sort sequence of jointly goals list-> "descending" or "ascending"
-    static final String namePrefsSortSequenceOfJointlyGoalsList = "jointlyGoalsSortSequence";
-
-    // sort sequence of jointly goals old list-> "descending" or "ascending"
-    static final String namePrefsSortSequenceOfJointlyGoalsOldList = "jointlyGoalsOldSortSequence";
-
-    // sort sequence of debetable goals list-> "descending" or "ascending"
-    static final String namePrefsSortSequenceOfDebetableGoalsList = "debetableGoalsSortSequence";
 
 
 

@@ -789,7 +789,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
                         }
                         else {
                             tmpTxtSketchArrangement3 = ActivityOurArrangement.this.getResources().getString(R.string.textDialogOurArrangementSettingsSketchCommentCountNumberOff);
-                            tmpTxtSketchArrangement3 = String.format(tmpTxtSketchArrangement3, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0));
+                            tmpTxtSketchArrangement3 = String.format(tmpTxtSketchArrangement3, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsSketchCommentTimeSinceSketchCommentStartInMills, System.currentTimeMillis()), "dd.MM.yyyy"));
                             tmpTxtSketchArrangement4 = "";
                             tmpTxtSketchArrangement5 = "";
                         }
@@ -1430,76 +1430,102 @@ public class ActivityOurArrangement extends AppCompatActivity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("com", intentOrder);
 
+                        // generate correct db id value for intent
+                        int countIndexArrayList = 0;
+                        int offsetIndexArrayList = 1;
+                        int [] listOfDbId = {0,0,0,0,0,0,0,0,0,0,0,0};
+                        if (fragmentName.equals("sketch")) {
+                            if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchList, "descending").equals("descending")) {
+                                countIndexArrayList = arrayList.size() - 1;
+                                offsetIndexArrayList = -1;
+                            } else {
+                                countIndexArrayList = 0;
+                                offsetIndexArrayList = 1;
+                            }
+                        }
+                        else {
+                            if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementNowList, "descending").equals("descending")) {
+                                countIndexArrayList = arrayList.size() - 1;
+                                offsetIndexArrayList = -1;
+                            } else {
+                                countIndexArrayList = 0;
+                                offsetIndexArrayList = 1;
+                            }
+                        }
+                        for (int c = 0; c < arrayList.size(); c++) {
+                            listOfDbId[c] = arrayList.get(countIndexArrayList).getServerIdArrangement();
+                            countIndexArrayList = countIndexArrayList + offsetIndexArrayList;
+                        }
+
                         switch (item.getItemId()) {
                             case R.id.arrangement1:
-                                intent.putExtra("db_id", arrayList.get(0).getServerIdArrangement());
+                                intent.putExtra("db_id", listOfDbId[0]);
                                 intent.putExtra("arr_num", 1);
-
                                 break;
                             case R.id.arrangement2:
                                 if (1 < arrayList.size()) {
-                                    intent.putExtra("db_id", arrayList.get(1).getServerIdArrangement());
+                                    intent.putExtra("db_id", listOfDbId[1]);
                                     intent.putExtra("arr_num", 2);
                                 }
                                 break;
                             case R.id.arrangement3:
                                 if (2 < arrayList.size()) {
-                                    intent.putExtra("db_id", arrayList.get(2).getServerIdArrangement());
+                                    intent.putExtra("db_id", listOfDbId[2]);
                                     intent.putExtra("arr_num", 3);
                                 }
                                 break;
                             case R.id.arrangement4:
                                 if (3 < arrayList.size()) {
-                                    intent.putExtra("db_id", arrayList.get(3).getServerIdArrangement());
+                                    intent.putExtra("db_id", listOfDbId[3]);
                                     intent.putExtra("arr_num", 4);
                                 }
                                 break;
 
                             case R.id.arrangement5:
                                 if (4 < arrayList.size()) {
-                                    intent.putExtra("db_id", arrayList.get(4).getServerIdArrangement());
+                                    intent.putExtra("db_id", listOfDbId[4]);
                                     intent.putExtra("arr_num", 5);
                                 }
                                 break;
                             case R.id.arrangement6:
                                 if (5 < arrayList.size()) {
-                                    intent.putExtra("db_id", arrayList.get(5).getServerIdArrangement());
+                                    intent.putExtra("db_id", listOfDbId[5]);
                                     intent.putExtra("arr_num", 6);
                                 }
                                 break;
                             case R.id.arrangement7:
                                 if (6 < arrayList.size()) {
-                                    intent.putExtra("db_id", arrayList.get(6).getServerIdArrangement());
+                                    intent.putExtra("db_id", listOfDbId[6]);
                                     intent.putExtra("arr_num", 7);
                                 }
                                 break;
                             case R.id.arrangement8:
                                 if (7 < arrayList.size()) {
-                                    intent.putExtra("db_id", arrayList.get(7).getServerIdArrangement());
+                                    intent.putExtra("db_id", listOfDbId[7]);
                                     intent.putExtra("arr_num", 8);
                                 }
                                 break;
                             case R.id.arrangement9:
                                 if (8 < arrayList.size()) {
-                                    intent.putExtra("db_id", arrayList.get(8).getServerIdArrangement());
+                                    intent.putExtra("db_id", listOfDbId[8]);
                                     intent.putExtra("arr_num", 9);
                                 }
                                 break;
                             case R.id.arrangement10:
                                 if (9 < arrayList.size()) {
-                                    intent.putExtra("db_id", arrayList.get(9).getServerIdArrangement());
+                                    intent.putExtra("db_id", listOfDbId[9]);
                                     intent.putExtra("arr_num", 10);
                                 }
                                 break;
                             case R.id.arrangement11:
                                 if (10 < arrayList.size()) {
-                                    intent.putExtra("db_id", arrayList.get(10).getServerIdArrangement());
+                                    intent.putExtra("db_id", listOfDbId[10]);
                                     intent.putExtra("arr_num", 11);
                                 }
                                 break;
                             case R.id.arrangement12:
                                 if (11 < arrayList.size()) {
-                                    intent.putExtra("db_id", arrayList.get(11).getServerIdArrangement());
+                                    intent.putExtra("db_id", listOfDbId[11]);
                                     intent.putExtra("arr_num", 12);
                                 }
                                 break;

@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.text.Editable;
@@ -285,27 +286,32 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         tmpSubtitle = String.format(tmpSubtitle, jointlyGoalNumberInListView);
         ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyEvaluate");
 
+        // set visibility of FAB for this fragment
+        ((ActivityOurGoals) getActivity()).setOurGoalFABVisibility ("hide", "jointlyEvaluate");
+
         // build the view
         //textview for the evaluation intro
         TextView textCommentNumberIntro = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.jointlyGoalEvaluateIntroText);
         textCommentNumberIntro.setText(this.getResources().getString(R.string.showEvaluateJointlyGoalIntroText) + " " + jointlyGoalNumberInListView);
 
-        // generate back link "zurueck zu den gemeinsamen Zielen"
-        Uri.Builder commentLinkBuilder = new Uri.Builder();
-        commentLinkBuilder.scheme("smart.efb.deeplink")
-                .authority("linkin")
-                .path("ourgoals")
-                .appendQueryParameter("db_id", "0")
-                .appendQueryParameter("arr_num", "0")
-                .appendQueryParameter("com", "show_jointly_goals_now");
-        TextView linkShowEvaluateBackLink = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.jointlyGoalsShowEvaluateBackLink);
-        linkShowEvaluateBackLink.setText(Html.fromHtml("<a href=\"" + commentLinkBuilder.build().toString() + "\">" + fragmentEvaluateJointlyGoalsContext.getResources().getString(fragmentEvaluateJointlyGoalsContext.getResources().getIdentifier("ourGoalsBackLinkToJointlyGoals", "string", fragmentEvaluateJointlyGoalsContext.getPackageName())) + "</a>"));
-        linkShowEvaluateBackLink.setMovementMethod(LinkMovementMethod.getInstance());
+        // onClick listener back button
+        Button tmpBackToArrangement = viewFragmentJointlyGoalsEvaluate.findViewById(R.id.buttonHeaderBackToGoal);
+
+        tmpBackToArrangement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), ActivityOurGoals.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("com","show_jointly_goals_now");
+                getActivity().startActivity(intent);
+            }
+        });
 
         // put author name of goal
         TextView tmpTextViewAuthorNameText = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.textAuthorNameGoal);
         String tmpTextAuthorNameText = String.format(fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.ourGoalsEvaluationAuthorNameWithDateForGoal), cursorChoosenJointlyGoal.getString(cursorChoosenJointlyGoal.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis()), "dd.MM.yyyy"));
-        tmpTextViewAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
+        tmpTextViewAuthorNameText.setText(HtmlCompat.fromHtml(tmpTextAuthorNameText, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         // textview for the jointly goal
         TextView textViewJointlyGoal = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.evaluateJointlyGoal);
@@ -339,7 +345,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
             // more than one hour for active and passiv time
             textEvaluationPeriod = String.format(fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.evaluateJointlyGoalInfoEvaluationPeriodPluralPlural), tmpBeginEvaluationDate, tmpBeginEvaluatioTime, tmpEndEvaluationDate, tmpEndEvaluatioTime, tmpEvaluationPeriodActive, tmpEvaluationPeriodPassiv);
         }
-
 
         String textEvaluationNoEvaluationPossibleWhenEvaluate = fragmentEvaluateJointlyGoalsContext.getResources().getString(R.string.ourGoalsEvaluationNoEvaluationPossibleWhenEvaluate);
         textViewEvaluationPeriod.setText(textEvaluationPeriod + " " + textEvaluationNoEvaluationPossibleWhenEvaluate);
@@ -396,7 +401,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 try {
                     int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", fragmentEvaluateJointlyGoalsContext.getPackageName());
 
-                    tmpRadioButtonQuestion = (RadioButton) viewFragmentJointlyGoalsEvaluate.findViewById(resourceId);
+                    tmpRadioButtonQuestion = viewFragmentJointlyGoalsEvaluate.findViewById(resourceId);
                     tmpRadioButtonQuestion.setOnClickListener(new evaluateRadioButtonListenerQuestion1(numberOfButtons,countQuestion));
 
                 } catch (Exception e) {
@@ -406,13 +411,13 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
         }
 
         // get textView to count input letters and init it
-        final TextView textViewCountLettersCommentEditText = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.countLettersEvaluationCommentResultText);
+        final TextView textViewCountLettersCommentEditText = viewFragmentJointlyGoalsEvaluate.findViewById(R.id.countLettersEvaluationCommentResultText);
         String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
         tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", maxLengthForEvaluationResultComment);
         textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
 
         // comment result textfield
-        final EditText inputEvaluateResultComment = (EditText) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.inputJointlyGoalEvaluateResultComment);
+        final EditText inputEvaluateResultComment = viewFragmentJointlyGoalsEvaluate.findViewById(R.id.inputJointlyGoalEvaluateResultComment);
 
         // set text watcher to count letters in comment result field
         final TextWatcher inputEvaluateResultCommentTextWatcher = new TextWatcher() {
@@ -436,7 +441,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
         // Button save evaluate result OR abort
         // button send evaluate result
-        Button buttonSendEvaluateResult = (Button) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.buttonSendEvaluateJointlyGoalResult);
+        Button buttonSendEvaluateResult = viewFragmentJointlyGoalsEvaluate.findViewById(R.id.buttonSendEvaluateJointlyGoalResult);
         // onClick listener send evaluate result
         buttonSendEvaluateResult.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -447,7 +452,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 TextView tmpErrorTextView;
 
                 // check result question 1
-                tmpErrorTextView = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionOneJointlyGoalEvaluateError);
+                tmpErrorTextView = viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionOneJointlyGoalEvaluateError);
                 if ( evaluateResultQuestion1 == 0 && tmpErrorTextView != null) {
                     evaluateNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -456,7 +461,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 }
 
                 // check result question 2
-                tmpErrorTextView = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionTwoJointlyGoalEvaluateError);
+                tmpErrorTextView = viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionTwoJointlyGoalEvaluateError);
                 if ( evaluateResultQuestion2 == 0 && tmpErrorTextView != null) {
                     evaluateNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -465,7 +470,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 }
 
                 // check result question 3
-                tmpErrorTextView = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionThreeJointlyGoalEvaluateError);
+                tmpErrorTextView = viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionThreeJointlyGoalEvaluateError);
                 if ( evaluateResultQuestion3 == 0 && tmpErrorTextView != null) {
                     evaluateNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -474,7 +479,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                 }
 
                 // check result question 4
-                tmpErrorTextView = (TextView) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionFourJointlyGoalEvaluateError);
+                tmpErrorTextView = viewFragmentJointlyGoalsEvaluate.findViewById(R.id.questionFourJointlyGoalEvaluateError);
                 if ( evaluateResultQuestion4 == 0 && tmpErrorTextView != null) {
                     evaluateNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -522,7 +527,7 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                         if (nextJointlyGoalDbIdToEvaluate == 0) {
                             String tmpEvaluationResultsSendSuccsessfull = fragmentEvaluateJointlyGoalsContext.getString(R.string.evaluateResultJointlyGoalSuccsesfulySend);
                             Toast toast = Toast.makeText(fragmentEvaluateJointlyGoalsContext, tmpEvaluationResultsSendSuccsessfull, Toast.LENGTH_LONG);
-                            TextView viewToast = (TextView) toast.getView().findViewById(android.R.id.message);
+                            TextView viewToast = toast.getView().findViewById(android.R.id.message);
                             if (v != null) viewToast.setGravity(Gravity.CENTER);
                             toast.show();
                         }
@@ -588,22 +593,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
             }
         });
 
-        // button abbort
-        Button buttonAbbortEvaluationJointlyGoal = (Button) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.buttonAbortEvaluateJointlyGoal);
-        // onClick listener button abbort
-        buttonAbbortEvaluationJointlyGoal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // reset evaluate results
-                resetEvaluateResult ();
-
-                Intent intent = new Intent(getActivity(), ActivityOurGoals.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                intent.putExtra("com","show_jointly_goals_now");
-                getActivity().startActivity(intent);
-            }
-        });
     }
 
     // reset evaluation results
@@ -617,17 +606,17 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
 
         // Clear radio groups for next evaluation
         RadioGroup tmpRadioGroupClear;
-        tmpRadioGroupClear = (RadioGroup) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionOneJointlyGoal);
+        tmpRadioGroupClear = viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionOneJointlyGoal);
         tmpRadioGroupClear.clearCheck();
-        tmpRadioGroupClear = (RadioGroup) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionTwoJointlyGoal);
+        tmpRadioGroupClear = viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionTwoJointlyGoal);
         tmpRadioGroupClear.clearCheck();
-        tmpRadioGroupClear = (RadioGroup) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionThreeJointlyGoal);
+        tmpRadioGroupClear = viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionThreeJointlyGoal);
         tmpRadioGroupClear.clearCheck();
-        tmpRadioGroupClear = (RadioGroup) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionFourJointlyGoal);
+        tmpRadioGroupClear = viewFragmentJointlyGoalsEvaluate.findViewById(R.id.radioGroupQuestionFourJointlyGoal);
         tmpRadioGroupClear.clearCheck();
 
         // Clear comment text field for next evaluation
-        EditText tmpInputEvaluateResultComment = (EditText) viewFragmentJointlyGoalsEvaluate.findViewById(R.id.inputJointlyGoalEvaluateResultComment);
+        EditText tmpInputEvaluateResultComment = viewFragmentJointlyGoalsEvaluate.findViewById(R.id.inputJointlyGoalEvaluateResultComment);
         tmpInputEvaluateResultComment.setText("");
     }
 

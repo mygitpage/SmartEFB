@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/our_goals_menu_fragment_jointly_show_comment_sort_desc"
+        app:showAsAction="never"
+        android:title="@string/ourGoalsJointlyShowCommentMenuSortDesc" />
+
+    <item
+        android:id="@+id/our_goals_menu_fragment_jointly_show_comment_sort_asc"
+        app:showAsAction="never"
+        android:title="@string/ourGoalsJointlyShowCommentMenuSortAsc" />
+
+    <item
+        android:id="@+id/our_goals_menu_fragment_jointly_count_comment_in_recycler_view"
+        app:showAsAction="never"
+        android:title="@string/ourGoalsJointlyShowCommentMenuCountCommentForList" />
+
+</menu>

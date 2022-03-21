@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/body_background">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/textViewOurGoalsNothingThere"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,7 +34,7 @@
 
     </RelativeLayout>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/textViewOurGoalsFunctionNotAvailable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

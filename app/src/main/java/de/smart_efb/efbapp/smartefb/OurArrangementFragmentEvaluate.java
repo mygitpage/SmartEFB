@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.text.Editable;
@@ -295,17 +296,17 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         });
 
         // put author name of arrangement
-        TextView tmpTextViewAuthorNameText = (TextView) viewFragmentEvaluate.findViewById(R.id.textAuthorNameArrangement);
+        TextView tmpTextViewAuthorNameText = viewFragmentEvaluate.findViewById(R.id.textAuthorNameArrangement);
         String tmpTextAuthorNameText = String.format(fragmentEvaluateContext.getResources().getString(R.string.ourArrangementEvaluationAuthorNameWithDateForArrangement), cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
-        tmpTextViewAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
+        tmpTextViewAuthorNameText.setText(HtmlCompat.fromHtml(tmpTextAuthorNameText, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         // textview for the arrangement
-        TextView textViewArrangement = (TextView) viewFragmentEvaluate.findViewById(R.id.evaluateArrangement);
+        TextView textViewArrangement = viewFragmentEvaluate.findViewById(R.id.evaluateArrangement);
         String arrangement = cursorChoosenArrangement.getString(cursorChoosenArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(arrangement);
 
         // set info text evaluation period
-        TextView textViewEvaluationPeriod = (TextView) viewFragmentEvaluate.findViewById(R.id.infoEvaluationTimePeriod);
+        TextView textViewEvaluationPeriod = viewFragmentEvaluate.findViewById(R.id.infoEvaluationTimePeriod);
         // make time and date variables
         String tmpBeginEvaluationDate = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), "dd.MM.yyyy");
         String tmpBeginEvaluatioTime = EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsStartDateEvaluationInMills, System.currentTimeMillis()), "HH:mm");
@@ -389,7 +390,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 try {
                     int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", fragmentEvaluateContext.getPackageName());
 
-                    tmpRadioButtonQuestion = (RadioButton) viewFragmentEvaluate.findViewById(resourceId);
+                    tmpRadioButtonQuestion = viewFragmentEvaluate.findViewById(resourceId);
                     tmpRadioButtonQuestion.setOnClickListener(new evaluateRadioButtonListenerQuestion1(numberOfButtons,countQuestion));
 
                 } catch (Exception e) {
@@ -399,13 +400,13 @@ public class OurArrangementFragmentEvaluate extends Fragment {
         }
 
         // get textView to count input letters and init it
-        final TextView textViewCountLettersCommentEditText = (TextView) viewFragmentEvaluate.findViewById(R.id.countLettersEvaluationCommentResultText);
+        final TextView textViewCountLettersCommentEditText = viewFragmentEvaluate.findViewById(R.id.countLettersEvaluationCommentResultText);
         String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
         tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", maxLengthForEvaluationResultComment);
         textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
 
         // comment result textfield
-        final EditText inputEvaluateResultComment = (EditText) viewFragmentEvaluate.findViewById(R.id.inputEvaluateResultComment);
+        final EditText inputEvaluateResultComment = viewFragmentEvaluate.findViewById(R.id.inputEvaluateResultComment);
 
         // set text watcher to count letters in comment result field
         final TextWatcher inputEvaluateResultCommentTextWatcher = new TextWatcher() {
@@ -429,7 +430,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         // Button save evaluate result OR abort
         // button send evaluate result
-        Button buttonSendEvaluateResult = (Button) viewFragmentEvaluate.findViewById(R.id.buttonSendEvaluateResult);
+        Button buttonSendEvaluateResult = viewFragmentEvaluate.findViewById(R.id.buttonSendEvaluateResult);
         // onClick listener send evaluate result
         buttonSendEvaluateResult.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -440,7 +441,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 TextView tmpErrorTextView;
 
                 // check result question 1
-                tmpErrorTextView = (TextView) viewFragmentEvaluate.findViewById(R.id.questionOneEvaluateError);
+                tmpErrorTextView = viewFragmentEvaluate.findViewById(R.id.questionOneEvaluateError);
                 if ( evaluateResultQuestion1 == 0 && tmpErrorTextView != null) {
                     evaluateNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -449,7 +450,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 }
 
                 // check result question 2
-                tmpErrorTextView = (TextView) viewFragmentEvaluate.findViewById(R.id.questionTwoEvaluateError);
+                tmpErrorTextView = viewFragmentEvaluate.findViewById(R.id.questionTwoEvaluateError);
                 if ( evaluateResultQuestion2 == 0 && tmpErrorTextView != null) {
                     evaluateNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -458,7 +459,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 }
 
                 // check result question 3
-                tmpErrorTextView = (TextView) viewFragmentEvaluate.findViewById(R.id.questionThreeEvaluateError);
+                tmpErrorTextView = viewFragmentEvaluate.findViewById(R.id.questionThreeEvaluateError);
                 if ( evaluateResultQuestion3 == 0 && tmpErrorTextView != null) {
                     evaluateNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -467,7 +468,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                 }
 
                 // check result question 4
-                tmpErrorTextView = (TextView) viewFragmentEvaluate.findViewById(R.id.questionFourEvaluateError);
+                tmpErrorTextView = viewFragmentEvaluate.findViewById(R.id.questionFourEvaluateError);
                 if ( evaluateResultQuestion4 == 0 && tmpErrorTextView != null) {
                     evaluateNoError = false;
                     tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -515,7 +516,7 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                         if (nextArrangementServerDbIdToEvaluate == 0) {
                             String messageThankYouForEvaluation = fragmentEvaluateContext.getResources().getString(R.string.evaluateResultSuccsesfulySend);
                             Toast toast = Toast.makeText(fragmentEvaluateContext, messageThankYouForEvaluation, Toast.LENGTH_LONG);
-                            TextView vt = (TextView) toast.getView().findViewById(android.R.id.message);
+                            TextView vt = toast.getView().findViewById(android.R.id.message);
                             if (vt != null) vt.setGravity(Gravity.CENTER);
                             toast.show();
                         }
@@ -593,17 +594,17 @@ public class OurArrangementFragmentEvaluate extends Fragment {
 
         // Clear radio groups for next evaluation
         RadioGroup tmpRadioGroupClear;
-        tmpRadioGroupClear = (RadioGroup) viewFragmentEvaluate.findViewById(R.id.radioGroupQuestionOne);
+        tmpRadioGroupClear = viewFragmentEvaluate.findViewById(R.id.radioGroupQuestionOne);
         tmpRadioGroupClear.clearCheck();
-        tmpRadioGroupClear = (RadioGroup) viewFragmentEvaluate.findViewById(R.id.radioGroupQuestionTwo);
+        tmpRadioGroupClear = viewFragmentEvaluate.findViewById(R.id.radioGroupQuestionTwo);
         tmpRadioGroupClear.clearCheck();
-        tmpRadioGroupClear = (RadioGroup) viewFragmentEvaluate.findViewById(R.id.radioGroupQuestionThree);
+        tmpRadioGroupClear = viewFragmentEvaluate.findViewById(R.id.radioGroupQuestionThree);
         tmpRadioGroupClear.clearCheck();
-        tmpRadioGroupClear = (RadioGroup) viewFragmentEvaluate.findViewById(R.id.radioGroupQuestionFour);
+        tmpRadioGroupClear = viewFragmentEvaluate.findViewById(R.id.radioGroupQuestionFour);
         tmpRadioGroupClear.clearCheck();
 
         // Clear comment text field for next evaluation
-        EditText tmpInputEvaluateResultComment = (EditText) viewFragmentEvaluate.findViewById(R.id.inputEvaluateResultComment);
+        EditText tmpInputEvaluateResultComment = viewFragmentEvaluate.findViewById(R.id.inputEvaluateResultComment);
         tmpInputEvaluateResultComment.setText("");
     }
 

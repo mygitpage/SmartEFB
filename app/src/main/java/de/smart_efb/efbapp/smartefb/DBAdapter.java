@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+
 import java.util.ArrayList;
 
 
@@ -2165,8 +2166,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     
     
-    
-    // +++++++++++++++ eingefügt am 19.02.2022 +++++++++++++++++++++++++++++++
 
     // Return all jointly goals from the database with blockId in Array List <ObjectSmartEFBGoals>
     // the result is sorted by sortSequence
@@ -2208,28 +2207,6 @@ public class DBAdapter extends SQLiteOpenHelper {
         return storeGoals;
     } 
 
-
-
-
-
-
-    // +++++++++++++++ Ende eingefügt am 19.02.2022 ++++++++++++++++++++++++++
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 
     // Return debetable goals from the database (table ourGoals)
@@ -2273,6 +2250,61 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         return c;
     }
+
+
+    // Get a specific row from the jointly goals (by serverId) and return as array list
+    ArrayList<ObjectSmartEFBGoals> getRowOurGoalsJointlyArrayList(int serverId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ArrayList<ObjectSmartEFBGoals> storeGoal = new ArrayList<>();
+
+        String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=0 AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID + "=" + serverId;
+
+        Cursor cursorGoals = db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS,
+                where, null, null, null, null, null);
+
+        Integer positionNumber = 0;
+
+        if (cursorGoals.moveToFirst()) {
+
+            String goal = cursorGoals.getString(cursorGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL));
+            String authorName = cursorGoals.getString(cursorGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME));
+            String blockid = cursorGoals.getString(cursorGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID));
+            String changeTo = cursorGoals.getString(cursorGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_CHANGE_TO));
+            Long jointlyGoalWriteTime = cursorGoals.getLong(cursorGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME));
+            Long debetableGoalWriteTime = cursorGoals.getLong(cursorGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME));
+            Long lastEvalTime = cursorGoals.getLong(cursorGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME));
+            Integer jointlyDebetableGoalDifference = cursorGoals.getInt(cursorGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE));
+            Integer evaluatePossible = cursorGoals.getInt(cursorGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE));
+            Integer newEntry = cursorGoals.getInt(cursorGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY));
+            Integer serverIdGoal = cursorGoals.getInt(cursorGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID));
+            Integer status = cursorGoals.getInt(cursorGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS)); // 0=ready to send, 1=message send, 4=external message
+            Integer rowID = cursorGoals.getInt(cursorGoals.getColumnIndex(DBAdapter.KEY_ROWID));
+            positionNumber++;
+
+            // make goal object and store data
+            storeGoal.add(new ObjectSmartEFBGoals(rowID, goal, authorName, blockid, changeTo, jointlyGoalWriteTime, debetableGoalWriteTime, lastEvalTime, jointlyDebetableGoalDifference, evaluatePossible, newEntry, serverIdGoal, status, positionNumber));
+
+        }
+
+        // close cursor
+        cursorGoals.close();
+
+        return storeGoal;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     // Get a specific debetable row from the goals (by rowId)
@@ -2456,7 +2488,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Return all comments from the database for jointly goals with serverGoalId = id (table ourGoalsJointlyGoalsComment)
-    Cursor getAllRowsOurGoalsJointlyGoalsComment(int serverGoalId, String sortSequence) {
+    Cursor getAllRowsOurGoalsJointlyGoalsComment(int serverGoalId, String sortSequence, int limit) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2477,8 +2509,16 @@ public class DBAdapter extends SQLiteOpenHelper {
                 break;
         }
 
-        Cursor c = db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
-                where, null, null, null, sort, null);
+        Cursor c;
+        if (limit > 0) { // get cursor with limit
+            c = db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
+                    where, null, null, null, sort, Integer.toString(limit));
+        }
+        else{
+            // get cursor without limit
+            c = db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, OUR_GOALS_JOINTLY_GOALS_COMMENT_ALL_KEYS,
+                    where, null, null, null, sort, null);
+        }
 
         if (c != null) {
             c.moveToFirst();
@@ -2486,6 +2526,58 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         return c;
     }
+
+
+    // Return all comments from the database for goal with  server id = id (table ourGoalsJointlyComment) in Array List <ObjectSmartEFBGoalsComment>
+    // the result is sorted by sortSequence
+    ArrayList<ObjectSmartEFBGoalsComment> getAllRowsOurGoalsJointlyGoalsCommentArrayList (int serverId, String sortSequence, int limit) {
+
+        ArrayList<ObjectSmartEFBGoalsComment> storeComment = new ArrayList<>();
+
+        // get the data (all comments from an goal) from DB
+        Cursor cursorComments = this.getAllRowsOurGoalsJointlyGoalsComment (serverId, sortSequence, limit);
+
+        if (cursorComments.moveToFirst()) {
+            do {
+
+                String comment = cursorComments.getString(cursorComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_COMMENT));
+                String authorName = cursorComments.getString(cursorComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_AUTHOR_NAME));
+                String blockid = cursorComments.getString(cursorComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID));
+                Long commentTime = cursorComments.getLong(cursorComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME));
+                Long uploadTime = cursorComments.getLong(cursorComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_UPLOAD_TIME));
+                Long localeTime = cursorComments.getLong(cursorComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_LOCAL_TIME));
+                Long goalTime = cursorComments.getLong(cursorComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME));
+                Long currentDateOfGoal = cursorComments.getLong(cursorComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_GOAL_TIME));
+                Integer newEntry = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY));
+                Integer serverIdComment = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_SERVER_ID_GOAL));
+                Integer timerStatus = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_TIMER_STATUS));
+                Integer status = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS));
+                Integer rowID = cursorComments.getInt(cursorComments.getColumnIndex(DBAdapter.KEY_ROWID));
+
+                // make comment object and store data (last three datas are for debetable comment)
+                storeComment.add(new ObjectSmartEFBGoalsComment(rowID, comment, authorName, blockid, commentTime, uploadTime, localeTime, goalTime, currentDateOfGoal, newEntry, serverIdComment, timerStatus, status, 0, 0, 0));
+
+            } while (cursorComments.moveToNext());
+        }
+
+        cursorComments.close();
+
+        return storeComment;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     // Get the number of new rows in all comment for all jointly goals (new entrys) where date is current goal date -> no older one!
@@ -2508,7 +2600,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
 
-    // delete status new entry in table ourArrangementComment.
+    // delete status new entry in table ourGoalJointlyComment.
     boolean deleteStatusNewEntryOurGoalsJointlyGoalComment(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();

@@ -14,7 +14,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,7 +27,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 
 /**
@@ -58,7 +56,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
     // the current date of arrangement -> the other are old (look at tab old)
     long currentDateOfArrangement;
 
-    // reference cursorAdapter for the recycler view
+    // reference for the recycler view adapter
     OurArrangementShowCommentRecyclerViewAdapter showCommentRecyclerViewAdapter;
 
     // Server DB-Id of arrangement to comment

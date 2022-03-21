@@ -9,16 +9,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="left"
-            android:background="@color/body_background"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="left"
+                android:background="@color/body_background"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/introStructQuestionForCommentSketchArrangement"
@@ -42,7 +42,7 @@
                 android:text="@string/errorStructQuestionForCommentSketchArrangement"
                 android:paddingBottom="5dp"/>
 
-            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -121,7 +121,6 @@
                 android:text="@string/errorFreeQuestionForCommentSketchArrangement"
                 android:layout_marginTop="20dp"/>
 
-
             <RelativeLayout
                 android:id="@+id/RelativeLayout01"
                 android:layout_width="match_parent"
@@ -148,7 +147,6 @@
 
             </RelativeLayout>
 
-
             <EditText
                 android:id="@+id/inputSketchArrangementComment"
                 android:layout_width="match_parent"
@@ -158,12 +156,12 @@
                 android:background="@drawable/app_edittext_style"
                 android:hint="@string/introFreeQuestionForCommentSketchArrangementHint"
                 android:layout_margin="5dp"
-                android:textColorHint="@color/white"
+                android:textColorHint="@color/colorPrimaryDark"
                 android:inputType="textNoSuggestions|text|textMultiLine|textFilter"
                 android:padding="5dp"
                 android:digits="@string/editTextInputFilterTextAlphaNumeric"/>
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -205,14 +203,13 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"/>
 
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/list_element_style">
 
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -249,14 +246,13 @@
                 android:gravity="left"
                 android:paddingLeft="10dp"/>
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="30dp">
-
 
                 <Button
                     android:id="@+id/buttonSketchCommentBackToSketchArrangement"
@@ -280,13 +276,13 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"/>
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/list_element_style">
 
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -353,8 +349,7 @@
                 android:gravity="left"
                 android:paddingLeft="10dp"/>
 
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

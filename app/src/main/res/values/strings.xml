@@ -374,8 +374,8 @@
             <string name="toastOurArrangementCommentCaseCloseToastText">Der Fall ist abgeschlossen! Kommentare werden nicht mehr gesendet!</string>
             <string name="ourArrangementNowCommentBackButtonToNowArrangement">Übersicht Absprachen</string>
             <string name="ourArrangementNowCommentBackButtonToShowComment">Übersicht Kommentare</string>
-            <string name="ourArrangementNowCommentCountCommentTextSingular">%1$s von %2$d Kommentar</string>
-            <string name="ourArrangementNowCommentCountCommentTextPlural">%1$s von %2$d Kommentaren</string>
+            <string name="ourArrangementNowCommentCountCommentTextSingular">%1$d von %2$d Kommentar</string>
+            <string name="ourArrangementNowCommentCountCommentTextPlural">%1$d von %2$d Kommentaren</string>
             <string name="ourArrangementNowCommentCountCommentTextNoLimit">Keine Anzahlbeschränkung</string>
         <!-- End String Fragment comment -->
 
@@ -513,7 +513,7 @@
             <string name="select_dialog_our_arrangement_sketch_number_of_comment_20">20 Einschätzungen</string>
             <string name="select_dialog_our_arrangement_sketch_number_of_comment_50">50 Einschätzungen</string>
             <string name="select_dialog_our_arrangement_sketch_number_of_comment_all">Alle Einschätzungen</string>
-    <!-- End fragment comment sketch arrangement -->
+        <!-- End fragment comment sketch arrangement -->
 
         <!-- String Fragment show sketch comment -->
             <string name="btnAbortShowSketchComment">Zurück zu den aktuellen Entwürfen</string>
@@ -696,6 +696,9 @@
             <string name="ourGoalsInfoTextNumberOfCommentsPossibleSingular">(%1$d verbleibt)</string>
             <string name="ourGoalsInfoTextNumberOfCommentsPossibleNoMore">(Alle aufgebraucht)</string>
             <string name="ourGoalsInfoTextNumberOfCommentsPossibleNoBorder">(Keine Begrenzung)</string>
+            <string name="ourGoalsNowJointlyMenuSortDesc">Ziele absteigend sortieren</string>
+            <string name="ourGoalsNowJointlyMenuSortAsc">Ziele aufsteigend sortieren</string>
+            <string name="ourGoalsNowJointlyMenuNoGoalsAvailable">Keine Ziele vorhanden</string>
         <!-- End show current jointly goals now -->
 
         <!-- String Activity Our Goals Jointly Popup Menu Comment Goals -->
@@ -716,6 +719,7 @@
         <!-- fragment comment jointly goals -->
             <string name="showJointlyGoalCommentIntroText">Gemeinsames Ziel</string>
             <string name="jointlyGoalCommentIntro">Bitte kommentieren Sie das Ziel</string>
+            <string name="goalJointlyCommentHintText"><b>Ihr Kommentar zum gemeinsamen Ziel %1$d</b></string>
             <string name="commentHistoryJointlyGoalsIntroText">Alle bisherigen Kommentare zum gemeinsamen Ziel</string>
             <string name="infoTextJointlyGoalsCommentMaxSingular">Sie könnnen maximal %1$d Kommentar schreiben.</string>
             <string name="infoTextJointlyGoalsCommentMaxPlural">Sie könnnen maximal %1$d Kommentare schreiben.</string>
@@ -753,12 +757,14 @@
             <string name="textOurGoalsJointlyCommentNoSharing">Die Kommentare werden im Moment nicht weitergeleitet!</string>
             <string name="ourJointlyGoalsCommentSendInfoSharingDisable">Der Kommentar wurde gesendet. Wird aber im Moment nicht weitergeleitet!</string>
             <string name="toastJointlyGoalsCommentCaseCloseToastText">Der Fall ist abgeschlossen! Kommentare werden nicht mehr gesendet!</string>
+            <string name="ourGoalJointlyCommentBackButtonToJointlyGoals">Übersicht gemeinsame Ziele</string>
+            <string name="ourGoalJointlyCommentBackButtonToShowJointlyComment">Übersicht Kommentare</string>
+            <string name="ourGoalsJointlyCommentCountCommentTextSingular">%1$d von %2$d Kommentar</string>
+            <string name="ourGoalsJointlyCommentCountCommentTextPlural">%1$d von %2$d Kommentaren</string>
+            <string name="ourGoalsJointlyCommentCountCommentTextNoLimit">Keine Anzahlbeschränkung</string>
+            <string name="ourGoalsShowCommentCommentThisGoal">Gemeinsames Ziel %1$d kommentieren</string>
 
-
-    <string name="ourGoalJointlyCommentBackButtonToJointlyGoals">Übersicht gemeinsame Ziele</string>
-    <string name="ourGoalJointlyCommentBackButtonToShowJointlyComment">Übersicht Kommentare</string>
-
-    <!-- End comment jointly goals -->
+        <!-- End comment jointly goals -->
 
         <!-- Fragment show comment jointly goals -->
             <string name="btnAbortJointlyGoalsShowComment">Zurück zu den gemeinsamen Zielen</string>
@@ -772,8 +778,16 @@
             <string name="ourJointlyGoalsShowCommentSendDelayInfo">Der Kommentar wurde gesendet und wird in %1$s zugestellt.</string>
             <string name="ourJointlyGoalsShowCommentSendSuccsessfullInfo">Der Kommentar wurde gesendet.</string>
             <string name="ourJointlyGoalsShowCommentLinkToCommentAGoal">Ziel %1$d kommentieren</string>
-            <string name="ourGoalsShowJointlyCommentLinkChangeSortSequenceOfJointlyCommentAscending">Kommentare absteigend sortieren (Jüngster zu erst)</string>
-            <string name="ourGoalsShowJointlyCommentLinkChangeSortSequenceOfJointlyCommentDescending">Kommentare aufsteigend sortieren (Ältester zu erst)</string>
+            <string name="ourGoalsJointlyShowCommentMenuSortDesc">Kommentare absteigend sortieren</string>
+            <string name="ourGoalsJointlyShowCommentMenuSortAsc">Kommentare aufsteigend sortieren</string>
+            <string name="ourGoalsJointlyShowCommentMenuCountCommentForList">Anzahl anzuzeigener Kommentare</string>
+            <string name="select_dialog_our_goals_jointly_number_of_comment_title">Bitte wählen Sie die Anzahl der anzuzeigenden Kommentare</string>
+            <string name="select_dialog_our_goals_jointly_number_of_comment_5">5 Kommentare</string>
+            <string name="select_dialog_our_goals_jointly_number_of_comment_10">10 Kommentare</string>
+            <string name="select_dialog_our_goals_jointly_number_of_comment_20">20 Kommentare</string>
+            <string name="select_dialog_our_goals_jointly_number_of_comment_50">50 Kommentare</string>
+            <string name="select_dialog_our_goals_jointly_number_of_comment_all">Alle Kommentare</string>
+
         <!-- End show comment jointly goals -->
 
 
@@ -875,6 +889,20 @@
             <string name="toastMessageeDebetableCommentSendNotSuccessfull">Die Einschätzung wurde noch nicht gesendet!</string>
             <string name="toastMessageeDebetableCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
             <string name="toastDebetableGoalsCommentCaseCloseToastText">Der Fall ist abgeschlossen! Einschätzungen werden nicht mehr gesendet!</string>
+
+
+
+    <string name="ourGoalsDebetableShowCommentMenuSortDesc">Einschätzungen absteigend sortieren</string>
+    <string name="ourGoalsDebetableShowCommentMenuSortAsc">Einschätzungenaufsteigend sortieren</string>
+    <string name="ourGoalsDebetableShowCommentMenuCountCommentForList">Anzahl anzuzeigener Einschätzungen</string>
+    <string name="select_dialog_our_goals_debetable_number_of_comment_title">Bitte wählen Sie die Anzahl der anzuzeigenden Einschätzungen</string>
+    <string name="select_dialog_our_goals_debetable_number_of_comment_5">5 Einschätzungen</string>
+    <string name="select_dialog_our_goals_debetable_number_of_comment_10">10 Einschätzungen</string>
+    <string name="select_dialog_our_goals_debetable_number_of_comment_20">20 Einschätzungen</string>
+    <string name="select_dialog_our_goals_debetable_number_of_comment_50">50 Einschätzungen</string>
+    <string name="select_dialog_our_goals_debetable_number_of_comment_all">Alle Einschätzungen</string>
+
+
         <!-- End fragment debetable goals comment -->
 
         <!-- String Activity Our Goals Debetable Popup Menu Comment Goals -->

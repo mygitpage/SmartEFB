@@ -12,8 +12,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -65,6 +69,9 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
 
         viewFragmentJointlyGoalsNow = layoutInflater.inflate(R.layout.fragment_our_goals_jointly_goals_now, null);
 
+        // fragment has option menu
+        setHasOptionsMenu(true);
+
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
         getActivity().getApplicationContext().registerReceiver(ourGoalsFragmentJointlyGoalsNowBrodcastReceiver, filter);
@@ -110,6 +117,63 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
 
         // close db connection
         myDb.close();
+    }
+
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+
+        menuInflater.inflate(R.menu.menu_efb_our_goals_fragment_jointly_now, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem registerItemDesc = menu.findItem(R.id.our_goals_menu_fragment_jointly_now_sort_desc);
+        MenuItem registerItemAsc = menu.findItem(R.id.our_goals_menu_fragment_jointly_now_sort_asc);
+        MenuItem registerNoJointlyGoalsInfo = menu.findItem(R.id.our_goals_menu_fragment_jointly_now_no_goals_available);
+
+        if (arrayListGoals != null && arrayListGoals.size() > 0) {
+
+            registerNoJointlyGoalsInfo.setVisible(false);
+            if (prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsList, "descending").equals("descending")) {
+                registerItemDesc.setVisible(false);
+                registerItemAsc.setVisible(true);
+            } else {
+                registerItemAsc.setVisible(false);
+                registerItemDesc.setVisible(true);
+            }
+        }
+        else {
+            registerNoJointlyGoalsInfo.setVisible(true);
+            registerItemDesc.setVisible(false);
+            registerItemAsc.setVisible(false);
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.our_goals_menu_fragment_jointly_now_sort_desc:
+                prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsList, "descending");
+                prefsEditor.apply();
+                updateRecyclerView();
+                return true;
+            case R.id.our_goals_menu_fragment_jointly_now_sort_asc:
+                prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsList, "ascending");
+                prefsEditor.apply();
+                updateRecyclerView();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
@@ -291,7 +355,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
     // show listView with current goals or info: nothing there
     public void displayActualJointlyGoalsSet () {
 
-        // get the data (all now arrangements) from DB
+        // get the data (all jointly goals) from DB
         arrayListGoals = myDb.getAllRowsOurGoalsJointlyGoalsArrayList(currentBlockIdOfJointlyGoals, "equalBlockId", prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsList, "descending"));
 
         if (arrayListGoals.size() > 0 && recyclerViewJointlyGoalsNow != null) {
@@ -345,17 +409,18 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
     // set visibility of listViewOurGoals
     private void setVisibilityListViewJointlyGoalsNow (String visibility) {
 
-        ListView tmplistView = (ListView) viewFragmentJointlyGoalsNow.findViewById(R.id.listOurGoalsJointlyGoalsNow);
+        RecyclerView tmpRecyclerView = viewFragmentJointlyGoalsNow.findViewById(R.id.listOurGoalsJointlyGoalsNow);
 
-        if (tmplistView != null) {
+
+        if (tmpRecyclerView != null) {
 
             switch (visibility) {
 
                 case "show":
-                    tmplistView.setVisibility(View.VISIBLE);
+                    tmpRecyclerView.setVisibility(View.VISIBLE);
                     break;
                 case "hide":
-                    tmplistView.setVisibility(View.GONE);
+                    tmpRecyclerView.setVisibility(View.GONE);
                     break;
             }
         }
@@ -365,7 +430,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
     // set visibility of textView "nothing there"
     private void setVisibilityTextViewTextNotAvailable (String visibility) {
 
-        RelativeLayout tmpNotAvailable = (RelativeLayout) viewFragmentJointlyGoalsNow.findViewById(R.id.textViewJointlyGoalsNowNothingThere);
+        RelativeLayout tmpNotAvailable = viewFragmentJointlyGoalsNow.findViewById(R.id.textViewJointlyGoalsNowNothingThere);
 
         if (tmpNotAvailable != null) {
 

@@ -19,20 +19,21 @@
         android:layout_marginBottom="20dp"
         android:visibility="gone"/>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/list_element_style">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/listArrangementNumberText"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
                 android:textColor="@color/colorPrimaryDark"
@@ -44,12 +45,11 @@
                 android:id="@+id/listArrangementNewArrangementText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
+                android:textSize="14dp"
                 android:textColor="@color/text_accent_color"
                 android:text="@string/newEntryText"
                 android:gravity="center"
                 android:paddingLeft="10dp"
-                android:textStyle="bold"
                 android:visibility="gone"/>
 
         </LinearLayout>
@@ -75,7 +75,7 @@
         android:paddingLeft="10dp"
         android:paddingBottom="15dp"/>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

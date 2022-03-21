@@ -2,20 +2,35 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Created by ich on 28.10.2016.
@@ -28,8 +43,8 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
     // fragment context
     Context fragmentShowCommentJointlyGoalsContext = null;
 
-    // the listview for the comments
-    ListView listViewShowComments = null;
+    // the recycler view
+    RecyclerView recyclerViewShowComment = null;
 
     // reference to the DB
     DBAdapter myDb;
@@ -41,8 +56,11 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
     // the current date of jointly goals -> the other are old (look at tab old)
     long currentDateOfJointlyGoals;
 
-    // reference cursorAdapter for the listview
-    OurGoalsShowCommentJointlyGoalsCursorAdapter showCommentJointlyGoalsCursorAdapter;
+    // reference for the recycler view adapter
+    OurGoalsShowCommentJointlyGoalsRecyclerViewAdapter showJointlyGoalCommentRecyclerViewAdapter;
+
+    // data array of comments for recycler view
+    ArrayList<ObjectSmartEFBGoalsComment> arrayListJointlyComments;
 
     // DB-Id of jointly goal to comment
     int jointlyGoalDbIdToShow = 0;
@@ -53,11 +71,17 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
     // true-> comments are limited, false -> comments are not limited
     Boolean commentLimitationBorder = false;
 
+    // reference to dialog selecting number of comment
+    AlertDialog dialogSelectingNumberOfComment;
+
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
         viewFragmentShowCommentJointlyGoals = layoutInflater.inflate(R.layout.fragment_our_goals_jointly_goals_show_comment, null);
+
+        // fragment has option menu
+        setHasOptionsMenu(true);
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
@@ -74,7 +98,7 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
 
         fragmentShowCommentJointlyGoalsContext = getActivity().getApplicationContext();
 
-        // call getter function in ActivityOurArrangment
+        // call getter function in ActivityOurGoals
         callGetterFunctionInSuper();
 
         // init and display data from fragment show comment only when a goal is choosen
@@ -99,6 +123,161 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
             // start service
             ExchangeJobIntentServiceEfb.enqueueWork(fragmentShowCommentJointlyGoalsContext, startServiceIntent);
         }
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+
+        menuInflater.inflate(R.menu.menu_efb_our_goals_fragment_jointly_show_comment, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem registerItemDesc = menu.findItem(R.id.our_goals_menu_fragment_jointly_show_comment_sort_desc);
+        MenuItem registerItemAsc = menu.findItem(R.id.our_goals_menu_fragment_jointly_show_comment_sort_asc);
+
+        if (prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "descending").equals("descending")) {
+            registerItemDesc.setVisible(false);
+            registerItemAsc.setVisible(true);
+        }
+        else {
+            registerItemAsc.setVisible(false);
+            registerItemDesc.setVisible(true);
+        }
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.our_goals_menu_fragment_jointly_show_comment_sort_desc:
+                prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "descending");
+                prefsEditor.apply();
+                updateRecyclerView();
+
+                return true;
+            case R.id.our_goals_menu_fragment_jointly_show_comment_sort_asc:
+                prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "ascending");
+                prefsEditor.apply();
+                updateRecyclerView();
+
+                return true;
+            case R.id.our_goals_menu_fragment_jointly_count_comment_in_recycler_view:
+                showDialogForSelectingNumberOfCommentInList();
+                updateRecyclerView();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    private void showDialogForSelectingNumberOfCommentInList () {
+
+        LayoutInflater dialogInflater;
+
+        // get alert dialog builder with custom style
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.selectDialogStyle);
+
+        // Get the layout inflater
+        dialogInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // inflate and get the view
+        View dialogSelecting = dialogInflater.inflate(R.layout.select_dialog_our_goals_jointly_number_of_comment, null);
+
+        //set radio button with correct value
+        RadioButton tmpRadioButton;
+        switch (prefs.getInt(ConstansClassOurGoals.namePrefsNumberOfCommentForOurGoalsJointlyGoalsShowComment, 50)) {
+            case 5:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfComment5);
+                break;
+            case 10:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfComment10);
+                break;
+            case 20:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfComment20);
+                break;
+            case 50:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfComment50);
+                break;
+            default:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfCommentAll);
+                break;
+        }
+        tmpRadioButton.setChecked(true);
+
+        // set on click listener
+        RadioGroup radioGroupNumberOfComment = dialogSelecting.findViewById(R.id.selectNumberOfComment);
+        radioGroupNumberOfComment.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                int numberOfComment = 0;
+                switch (checkedId) {
+                    case R.id.numberOfComment5:
+                        numberOfComment = 5;
+                        break;
+                    case R.id.numberOfComment10:
+                        numberOfComment = 10;
+                        break;
+                    case R.id.numberOfComment20:
+                        numberOfComment = 20;
+                        break;
+                    case R.id.numberOfComment50:
+                        numberOfComment = 50;
+                        break;
+                    case R.id.numberOfCommentAll:
+                        numberOfComment = 0;
+                        break;
+                }
+                prefsEditor.putInt(ConstansClassOurGoals.namePrefsNumberOfCommentForOurGoalsJointlyGoalsShowComment, numberOfComment);
+                prefsEditor.apply();
+
+                // close dialog
+                dialogSelectingNumberOfComment.dismiss();
+
+                // update recycler view with new number of comment
+                updateRecyclerView();
+            }
+        });
+
+        // build the dialog
+        builder.setView(dialogSelecting);
+
+        // Add close button
+        builder.setNegativeButton("Schliessen", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialogSelectingNumberOfComment.cancel();
+            }
+        });
+
+        // add title
+        builder.setTitle(R.string.select_dialog_our_goals_jointly_number_of_comment_title);
+
+        // and create
+        dialogSelectingNumberOfComment = builder.create();
+
+        // set correct color of close button
+        dialogSelectingNumberOfComment.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                // change background and text color of button
+                Button negativeButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                // Change negative button text and background color
+                negativeButton.setTextColor(ContextCompat.getColor(((ActivityOurGoals)getActivity()), R.color.white));
+                negativeButton.setBackgroundResource(R.drawable.select_dialog_style_custom_negativ_button_background);
+            }
+        });
+
+        // show dialog
+        dialogSelectingNumberOfComment.show();
     }
 
 
@@ -127,8 +306,11 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
         //get current date of goal
         currentDateOfJointlyGoals = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis());
 
-        // find the listview
-        listViewShowComments = (ListView) viewFragmentShowCommentJointlyGoals.findViewById(R.id.listOurGoalsShowCommentJointlyGoals);
+        // new recycler view
+        recyclerViewShowComment = viewFragmentShowCommentJointlyGoals.findViewById(R.id.listOurGoalsShowCommentJointlyGoals);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fragmentShowCommentJointlyGoalsContext);
+        recyclerViewShowComment.setLayoutManager(linearLayoutManager);
+        recyclerViewShowComment.setHasFixedSize(true);
 
         // Set correct subtitle in Activity -> "Kommentare Ziel ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleJointlyGoalsShowComment", "string", fragmentShowCommentJointlyGoalsContext.getPackageName())) + " " + jointlyGoalNumberInListView;
@@ -146,7 +328,7 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
             Bundle intentExtras = null;
 
             // true-> update the list view with goals
-            Boolean updateListView = false;
+            Boolean updateRecyclerView = false;
 
             // check for intent extras
             intentExtras = intent.getExtras();
@@ -171,7 +353,7 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentShowCommentJointlyGoalsContext.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
@@ -181,7 +363,7 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
 
                     // update the view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsNow != null && tmpExtraOurGoalsNow.equals("1")) {
                     // update jointly goals! -> go back to fragment jointly goals and show dialog
@@ -199,34 +381,34 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
                     // reset jointly comment counter -> show toast and update view
                     String updateMessageCommentNow = fragmentShowCommentJointlyGoalsContext.getString(R.string.toastMessageJointlyGoalsResetCommentCountComment);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // update the view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsCommentShareDisable  != null && tmpExtraOurGoalsCommentShareDisable .equals("1")) {
                     // sharing is disable -> show toast and update view
                     String updateMessageCommentNow = fragmentShowCommentJointlyGoalsContext.getString(R.string.toastMessageJointlyGoalsCommentShareDisable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // update the view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsCommentShareEnable  != null && tmpExtraOurGoalsCommentShareEnable .equals("1")) {
                     // sharing is enable -> show toast and update view
                     String updateMessageCommentNow = fragmentShowCommentJointlyGoalsContext.getString(R.string.toastMessageJointlyGoalsCommentShareEnable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // update the view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpSortSequenceChange.equals("1")) {
                     if (prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "descending").equals("descending")) {
@@ -238,22 +420,22 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
                     prefsEditor.apply();
 
                     // list view sort sequence have change -> refresh view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1")) {
 
                     // goal settings change
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpExtraOurGoalsJointlyCommentSendInBackgroundRefreshView != null &&  tmpExtraOurGoalsJointlyCommentSendInBackgroundRefreshView.equals("1")) {
 
                     // jointly comment send in background -> refresh view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
 
                 // update the list view because data has change?
-                if (updateListView) {
-                    updateListView();
+                if (updateRecyclerView) {
+                    updateRecyclerView();
                 }
             }
         }
@@ -261,12 +443,12 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
 
 
     // update the list view with now comments
-    public void updateListView () {
+    public void updateRecyclerView () {
 
-        if (listViewShowComments != null) {
-            listViewShowComments.destroyDrawingCache();
-            listViewShowComments.setVisibility(ListView.INVISIBLE);
-            listViewShowComments.setVisibility(ListView.VISIBLE);
+        if (recyclerViewShowComment != null) {
+            recyclerViewShowComment.destroyDrawingCache();
+            recyclerViewShowComment.setVisibility(ListView.INVISIBLE);
+            recyclerViewShowComment.setVisibility(ListView.VISIBLE);
 
             displayActualCommentSet ();
         }
@@ -294,31 +476,41 @@ public class OurGoalsFragmentShowCommentJointlyGoals extends Fragment {
     }
 
 
+    // build the view for the comments
     public void displayActualCommentSet () {
 
-        // get the data (all comments from an jointly goals) from DB
-        Cursor cursorComments = myDb.getAllRowsOurGoalsJointlyGoalsComment(jointlyGoalDbIdToShow, prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "descending"));
+        // get the data (all comments from a goal) from DB
+        arrayListJointlyComments = myDb.getAllRowsOurGoalsJointlyGoalsCommentArrayList(jointlyGoalDbIdToShow, prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "descending"), prefs.getInt(ConstansClassOurGoals.namePrefsNumberOfCommentForOurGoalsJointlyGoalsShowComment, 50));
 
-        // get the data (the choosen jointly goal) from the DB
-        Cursor choosenJointlyGoal = myDb.getJointlyRowOurGoals(jointlyGoalDbIdToShow);
+        // get the data for chose goal
+        ArrayList<ObjectSmartEFBGoals> arrayListChooseGoal = myDb.getRowOurGoalsJointlyArrayList (jointlyGoalDbIdToShow);
 
+        // set visibility of FAB for this fragment
+        // show fab and comment goal only when on and possible!
+        if ((prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentJointlyGoals, false) && (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountJointlyComment, 0) - prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountJointlyComment, 0)) > 0 ) || !commentLimitationBorder) {
+            // set fab visibility
+            ((ActivityOurGoals) getActivity()).setOurGoalFABVisibility("show", "jointlyShowComment");
+            // set fab click listener
+            ((ActivityOurGoals) getActivity()).setOurGoalFABClickListener(arrayListChooseGoal, "jointlyShowComment", "comment_an_jointly_goal");
+        }
+        else {
+            ((ActivityOurGoals) getActivity()).setOurGoalFABVisibility("hide", "jointlyShowComment");
+        }
 
-        if (cursorComments.getCount() > 0 && choosenJointlyGoal.getCount() > 0 && listViewShowComments != null) {
+        if (arrayListJointlyComments.size() > 0 && arrayListChooseGoal.size() > 0 && recyclerViewShowComment != null) {
 
-            // new dataadapter with custom constructor
-            showCommentJointlyGoalsCursorAdapter = new OurGoalsShowCommentJointlyGoalsCursorAdapter(
+            showJointlyGoalCommentRecyclerViewAdapter = new OurGoalsShowCommentJointlyGoalsRecyclerViewAdapter(
                     getActivity(),
-                    cursorComments,
-                    0,
+                    arrayListJointlyComments,
                     jointlyGoalDbIdToShow,
                     jointlyGoalNumberInListView,
                     commentLimitationBorder,
-                    choosenJointlyGoal);
+                    arrayListChooseGoal);
 
-            // Assign adapter to ListView
-            listViewShowComments.setAdapter(showCommentJointlyGoalsCursorAdapter);
+            // Assign adapter to Recycler View
+            recyclerViewShowComment.setAdapter(showJointlyGoalCommentRecyclerViewAdapter);
+
         }
     }
-
 
 }

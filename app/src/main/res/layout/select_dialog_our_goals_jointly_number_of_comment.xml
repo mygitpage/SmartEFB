@@ -13,62 +13,62 @@
         android:background="@color/body_background">
 
         <RadioGroup
-            android:id="@+id/selectNumberOfSketchComment"
+            android:id="@+id/selectNumberOfComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <RadioButton
-                android:id="@+id/numberOfSketchComment5"
+                android:id="@+id/numberOfComment5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="20dp"
-                android:text="@string/select_dialog_our_arrangement_sketch_number_of_comment_5"
+                android:text="@string/select_dialog_our_goals_jointly_number_of_comment_5"
                 android:textColor="@color/text_color"
                 android:textSize="16dp"
                 android:buttonTint="@color/text_color"/>
 
             <RadioButton
-                android:id="@+id/numberOfSketchComment10"
+                android:id="@+id/numberOfComment10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="20dp"
-                android:text="@string/select_dialog_our_arrangement_sketch_number_of_comment_10"
+                android:text="@string/select_dialog_our_goals_jointly_number_of_comment_10"
                 android:textColor="@color/text_color"
                 android:textSize="16dp"
                 android:buttonTint="@color/text_color"/>
 
             <RadioButton
-                android:id="@+id/numberOfSketchComment20"
+                android:id="@+id/numberOfComment20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="20dp"
-                android:text="@string/select_dialog_our_arrangement_sketch_number_of_comment_20"
+                android:text="@string/select_dialog_our_goals_jointly_number_of_comment_20"
                 android:textColor="@color/text_color"
                 android:textSize="16dp"
                 android:buttonTint="@color/text_color"/>
 
             <RadioButton
-                android:id="@+id/numberOfSketchComment50"
+                android:id="@+id/numberOfComment50"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="20dp"
-                android:text="@string/select_dialog_our_arrangement_sketch_number_of_comment_50"
+                android:text="@string/select_dialog_our_goals_jointly_number_of_comment_50"
                 android:textColor="@color/text_color"
                 android:textSize="16dp"
                 android:buttonTint="@color/text_color"/>
 
             <RadioButton
-                android:id="@+id/numberOfSketchCommentAll"
+                android:id="@+id/numberOfCommentAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:text="@string/select_dialog_our_arrangement_sketch_number_of_comment_all"
+                android:text="@string/select_dialog_our_goals_jointly_number_of_comment_all"
                 android:textColor="@color/text_color"
                 android:textSize="16dp"
                 android:buttonTint="@color/text_color"/>

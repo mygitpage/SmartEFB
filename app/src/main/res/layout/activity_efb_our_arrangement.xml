@@ -30,7 +30,6 @@
                     android:layout_gravity="right"
                     android:background="@drawable/activity_help_toolbar_icon"/>
 
-
         </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.tabs.TabLayout

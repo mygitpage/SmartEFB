@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -163,7 +164,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         setTabOneTitleAndColor();
 
         // init listener for tab selected
-        tabLayoutOurGoals.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayoutOurGoals.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
@@ -482,6 +483,9 @@ public class ActivityOurGoals extends AppCompatActivity {
         actionBarOurGoals = getSupportActionBar();
         actionBarOurGoals.setDisplayHomeAsUpEnabled(true);
 
+        // find fab
+        ourGoalFabView = findViewById(R.id.fabOurGoals);
+
         // init the DB
         myDb = new DBAdapter(getApplicationContext());
 
@@ -725,7 +729,7 @@ public class ActivityOurGoals extends AppCompatActivity {
                         }
                         else {
                             tmpTxtDebetableGoal3 = ActivityOurGoals.this.getResources().getString(R.string.textDialogOurGoalsDebetableGoalsSettingsCommentNumberOff);
-                            tmpTxtDebetableGoal3 = String.format(tmpTxtDebetableGoal3, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsDebetableCommentTimeSinceInMills, System.currentTimeMillis()), "dd.MM.yyyy"), prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment,0));
+                            tmpTxtDebetableGoal3 = String.format(tmpTxtDebetableGoal3, EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurGoals.namePrefsDebetableCommentTimeSinceInMills, System.currentTimeMillis()), "dd.MM.yyyy"));
                             tmpTxtDebetableGoal4 = "";
                             tmpTxtDebetableGoal5 = "";
                         }
@@ -937,16 +941,7 @@ public class ActivityOurGoals extends AppCompatActivity {
         }
 
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 
     // set start point for our goals evaluation time
     void setOurGoalsEvaluationStartPoint () {
@@ -1156,6 +1151,10 @@ public class ActivityOurGoals extends AppCompatActivity {
             prefsEditor.putBoolean(ConstansClassOurGoals.namePrefsSignalDebetableGoalsUpdate, false);
             prefsEditor.apply();
 
+            // update fab listener
+            refreshFABOnClickListenerAndVisibility("jointly");
+            refreshFABOnClickListenerAndVisibility("debetable");
+
             // set correct tab 0 and tab 1 color and text
             setTabZeroTitleAndColor ();
             setTabOneTitleAndColor();
@@ -1172,6 +1171,9 @@ public class ActivityOurGoals extends AppCompatActivity {
             // set correct tab 0 color and text
             setTabZeroTitleAndColor ();
 
+            // update fab listener
+            refreshFABOnClickListenerAndVisibility("jointly");
+
             // show dialog jointly and debetable goals change
             alertDialogGoalsChange("jointly");
 
@@ -1182,6 +1184,9 @@ public class ActivityOurGoals extends AppCompatActivity {
 
             // set correct tab 1 color and text
             setTabOneTitleAndColor();
+
+            // update fab listener
+            refreshFABOnClickListenerAndVisibility("debetable");
 
             // show dialog jointly and debetable goals change
             alertDialogGoalsChange("debetable");
@@ -1341,7 +1346,7 @@ public class ActivityOurGoals extends AppCompatActivity {
                     PopupMenu popupFabCommentGoals = new PopupMenu(ActivityOurGoals.this, view);
 
                     // inflate popup menu for fab
-                    if (fragmentName.equals("sketch")) {
+                    if (fragmentName.equals("debetable")) {
                         popupFabCommentGoals.getMenuInflater().inflate(R.menu.popup_efb_our_goals_debetable_goals_fab, popupFabCommentGoals.getMenu());
                     }
                     else {
@@ -1358,82 +1363,109 @@ public class ActivityOurGoals extends AppCompatActivity {
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.putExtra("com", intentOrder);
 
+                            // generate correct sort of db id value for intent
+                            int countIndexArrayList = 0;
+                            int offsetIndexArrayList = 1;
+                            int [] listOfDbId = {0,0,0,0,0,0,0,0,0,0,0,0};
+
+                            if (fragmentName.equals("debetable")) {
+                                if (prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfDebetableGoalsList, "descending").equals("descending")) {
+                                    countIndexArrayList = arrayList.size() - 1;
+                                    offsetIndexArrayList = -1;
+                                } else {
+                                    countIndexArrayList = 0;
+                                    offsetIndexArrayList = 1;
+                                }
+                            }
+                            else {
+                                if (prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsList, "descending").equals("descending")) {
+                                    countIndexArrayList = arrayList.size() - 1;
+                                    offsetIndexArrayList = -1;
+                                } else {
+                                    countIndexArrayList = 0;
+                                    offsetIndexArrayList = 1;
+                                }
+                            }
+                            for (int c = 0; c < arrayList.size(); c++) {
+                                listOfDbId[c] = arrayList.get(countIndexArrayList).getServerIdGoal();
+                                countIndexArrayList = countIndexArrayList + offsetIndexArrayList;
+                            }
+
                             switch (item.getItemId()) {
                                 case R.id.goal1:
-                                    intent.putExtra("db_id", arrayList.get(0).getServerIdGoal());
+                                    intent.putExtra("db_id", listOfDbId[0]);
                                     intent.putExtra("arr_num", 1);
-
                                     break;
                                 case R.id.goal2:
                                     if (1 < arrayList.size()) {
-                                        intent.putExtra("db_id", arrayList.get(1).getServerIdGoal());
+                                        intent.putExtra("db_id", listOfDbId[1]);
                                         intent.putExtra("arr_num", 2);
                                     }
                                     break;
                                 case R.id.goal3:
                                     if (2 < arrayList.size()) {
-                                        intent.putExtra("db_id", arrayList.get(2).getServerIdGoal());
+                                        intent.putExtra("db_id", listOfDbId[2]);
                                         intent.putExtra("arr_num", 3);
                                     }
                                     break;
                                 case R.id.goal4:
                                     if (3 < arrayList.size()) {
-                                        intent.putExtra("db_id", arrayList.get(3).getServerIdGoal());
+                                        intent.putExtra("db_id", listOfDbId[3]);
                                         intent.putExtra("arr_num", 4);
                                     }
                                     break;
 
                                 case R.id.goal5:
                                     if (4 < arrayList.size()) {
-                                        intent.putExtra("db_id", arrayList.get(4).getServerIdGoal());
+                                        intent.putExtra("db_id", listOfDbId[4]);
                                         intent.putExtra("arr_num", 5);
                                     }
                                     break;
                                 case R.id.goal6:
                                     if (5 < arrayList.size()) {
-                                        intent.putExtra("db_id", arrayList.get(5).getServerIdGoal());
+                                        intent.putExtra("db_id", listOfDbId[5]);
                                         intent.putExtra("arr_num", 6);
                                     }
                                     break;
                                 case R.id.goal7:
                                     if (6 < arrayList.size()) {
-                                        intent.putExtra("db_id", arrayList.get(6).getServerIdGoal());
+                                        intent.putExtra("db_id", listOfDbId[6]);
                                         intent.putExtra("arr_num", 7);
                                     }
                                     break;
                                 case R.id.goal8:
                                     if (7 < arrayList.size()) {
-                                        intent.putExtra("db_id", arrayList.get(7).getServerIdGoal());
+                                        intent.putExtra("db_id", listOfDbId[7]);
                                         intent.putExtra("arr_num", 8);
                                     }
                                     break;
                                 case R.id.goal9:
                                     if (8 < arrayList.size()) {
-                                        intent.putExtra("db_id", arrayList.get(8).getServerIdGoal());
+                                        intent.putExtra("db_id", listOfDbId[8]);
                                         intent.putExtra("arr_num", 9);
                                     }
                                     break;
                                 case R.id.goal10:
                                     if (9 < arrayList.size()) {
-                                        intent.putExtra("db_id", arrayList.get(9).getServerIdGoal());
+                                        intent.putExtra("db_id", listOfDbId[9]);
                                         intent.putExtra("arr_num", 10);
                                     }
                                     break;
                                 case R.id.goal11:
                                     if (10 < arrayList.size()) {
-                                        intent.putExtra("db_id", arrayList.get(10).getServerIdGoal());
+                                        intent.putExtra("db_id", listOfDbId[10]);
                                         intent.putExtra("arr_num", 11);
                                     }
                                     break;
                                 case R.id.goal12:
                                     if (11 < arrayList.size()) {
-                                        intent.putExtra("db_id", arrayList.get(11).getServerIdGoal());
+                                        intent.putExtra("db_id", listOfDbId[11]);
                                         intent.putExtra("arr_num", 12);
                                     }
                                     break;
                             }
 
-                            // start comment choosen goal
+                            // start comment chose goal
                             ActivityOurGoals.this.startActivity(intent);
 
                             return true;

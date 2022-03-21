@@ -943,6 +943,9 @@ public class MainActivity extends AppCompatActivity {
                     // nothing to do!
                 case 10: // update ten
 
+
+                    // Bitte kontrollieren, ob hier weitere Inits fehlen, beispielsweise für comment list, etc.
+
                     prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementNowList, "ascending");  // init sort of now arrangement
                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsNumberOfCommentForOurArrangementNowShowComment, 20); // init the number of comments for list in our arrangement show comment
 
@@ -951,6 +954,28 @@ public class MainActivity extends AppCompatActivity {
 
 
                     prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "ascending");  // init sort of old arrangement
+
+
+
+                    // init prefs for goals
+                    prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "ascending");  // init sort of old arrangement
+                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsNumberOfCommentForOurGoalsJointlyGoalsShowComment, 20);
+
+
+                    prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsList, "ascending");  // init sort of old arrangement
+
+
+                    prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsOldList, "ascending");  // init sort of old arrangement
+
+
+                    prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "ascending");  // init sort of old arrangement
+
+
+                    prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfDebetableGoalsList, "ascending");  // init sort of old arrangement
+
+
+
+
 
 
 

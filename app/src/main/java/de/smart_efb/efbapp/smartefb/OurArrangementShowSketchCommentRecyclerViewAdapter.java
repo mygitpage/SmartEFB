@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -199,7 +200,7 @@ public class OurArrangementShowSketchCommentRecyclerViewAdapter extends Recycler
                     itemView.newEntryOfSketchComment.setText(txtNewEntryOfCommentOfSketchArrangement);
 
                     // delete status new entry in db
-                    myDb.deleteStatusNewEntryOurArrangementComment(sketchCommentElement.getRowID());
+                    myDb.deleteStatusNewEntryOurArrangementSketchComment(sketchCommentElement.getRowID());
                 }
 
                 // set author name and date/time

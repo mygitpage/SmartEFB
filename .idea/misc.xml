@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/ich/StudioProjects/SmartEFB/app/src/main/res/layout/fragment_our_goals_debetable_goals_now.xml" value="0.17291666666666666" />
+        <entry key="..\:/Users/ich/StudioProjects/SmartEFB/app/src/main/res/layout/fragment_our_goals_show_debetable_goal_comment.xml" value="0.17291666666666666" />
+        <entry key="..\:/Users/ich/StudioProjects/SmartEFB/app/src/main/res/layout/list_our_goals_debetable_goals_now.xml" value="0.17291666666666666" />
+        <entry key="..\:/Users/ich/StudioProjects/SmartEFB/app/src/main/res/layout/list_our_goals_jointly_goals_now.xml" value="0.17291666666666666" />
+        <entry key="..\:/Users/ich/StudioProjects/SmartEFB/app/src/main/res/layout/list_our_goals_show_jointly_comment_recyclerview_footer.xml" value="0.14583333333333334" />
+        <entry key="..\:/Users/ich/StudioProjects/SmartEFB/app/src/main/res/layout/list_our_goals_show_jointly_comment_recyclerview_item.xml" value="0.14583333333333334" />
+        <entry key="..\:/Users/ich/StudioProjects/SmartEFB/app/src/main/res/layout/select_dialog_our_goals_debetable_number_of_comment.xml" value="0.14583333333333334" />
+        <entry key="..\:/Users/ich/StudioProjects/SmartEFB/app/src/main/res/layout/select_dialog_our_goals_jointly_number_of_comment.xml" value="0.14583333333333334" />
+        <entry key="..\:/Users/ich/StudioProjects/SmartEFB/app/src/main/res/menu/menu_efb_our_goals_fragment_jointly_now.xml" value="0.153125" />
+        <entry key="..\:/Users/ich/StudioProjects/SmartEFB/app/src/main/res/menu/menu_efb_our_goals_fragment_jointly_show_comment.xml" value="0.25416666666666665" />
+      </map>
+    </option>
+  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
     <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />
