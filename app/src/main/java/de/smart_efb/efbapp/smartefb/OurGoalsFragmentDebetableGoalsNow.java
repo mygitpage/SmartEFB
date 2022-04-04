@@ -9,14 +9,22 @@ import android.database.Cursor;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Created by ich on 12.11.2016.
@@ -39,14 +47,29 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
     // the date of debetable goal
     long currentDateOfDebetableGoal;
 
+
+
+    // the recycler view
+    RecyclerView recyclerViewDebetableGoalsNow = null;
+
+    // data array of now debetable goals for recycler view
+    ArrayList<ObjectSmartEFBGoals> arrayListDebetableGoals;
+
+    // reference arrayListAdapter for the recycler view
+    OurGoalsDebetableGoalsNowRecyclerViewAdapter debetableGoalsRecylerViewAdapter;
+    
+    
+    
+    
+    
+    
+    
+    
     // block id of current debetable goals
     String currentBlockIdOfDebetableGoals = "";
 
-    // the list view for the debetable goals
-    ListView listViewDebetableGoals;
-
-    // reference cursorAdapter for the listview
-    OurGoalsDebetableGoalsNowCursorAdapter dataAdapterListViewOurGoalsDebetableGoalsNow = null;
+    // true-> debetable comments are limited, false -> debetable comments are not limited
+    Boolean debetableCommentLimitationBorder = false;
 
 
     @Override
@@ -54,6 +77,9 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
 
         viewFragmentDebetablGoalNow = layoutInflater.inflate(R.layout.fragment_our_goals_debetable_goals_now, null);
 
+        // fragment has option menu
+        setHasOptionsMenu(true);
+        
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
         getActivity().getApplicationContext().registerReceiver(ourGoalsFragmentDebetableBrodcastReceiver, filter);
@@ -110,6 +136,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
 
         // init the prefs
         prefs = fragmentDebetableGoalNowContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentDebetableGoalNowContext.MODE_PRIVATE);
+        prefsEditor = prefs.edit();
 
         //get date of debetable goals
         currentDateOfDebetableGoal = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfDebetableGoals, System.currentTimeMillis());
@@ -117,10 +144,86 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
         //get block id of debetable goals
         currentBlockIdOfDebetableGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfDebetableGoals, "0");
 
-        // find the listview for debetable goals
-        listViewDebetableGoals = (ListView) viewFragmentDebetablGoalNow.findViewById(R.id.listOurGoalsDebetableGoalsNow);
+        // call getter-methode isCommentLimitationBorderSet in ActivityOurArrangement to get true-> sketch comments are limited, false-> sketch comments are not limited
+        debetableCommentLimitationBorder = ((ActivityOurGoals)getActivity()).isCommentLimitationBorderSet("debetableGoals");
+
+        // new recyler view
+        recyclerViewDebetableGoalsNow = viewFragmentDebetablGoalNow.findViewById(R.id.listOurGoalsDebetableGoalsNow);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fragmentDebetableGoalNowContext);
+        recyclerViewDebetableGoalsNow.setLayoutManager(linearLayoutManager);
+        recyclerViewDebetableGoalsNow.setHasFixedSize(true);
     }
 
+    
+    
+    // ########################################### Options menue ############
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+
+        menuInflater.inflate(R.menu.menu_efb_our_goals_fragment_debetable_now, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem registerItemDesc = menu.findItem(R.id.our_goals_menu_fragment_debetable_now_sort_desc);
+        MenuItem registerItemAsc = menu.findItem(R.id.our_goals_menu_fragment_debetable_now_sort_asc);
+        MenuItem registerNoJointlyGoalsInfo = menu.findItem(R.id.our_goals_menu_fragment_debetable_now_no_goals_available);
+
+        if ( arrayListDebetableGoals != null &&  arrayListDebetableGoals.size() > 0) {
+
+            registerNoJointlyGoalsInfo.setVisible(false);
+            if (prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfDebetableGoalsList, "descending").equals("descending")) {
+                registerItemDesc.setVisible(false);
+                registerItemAsc.setVisible(true);
+            } else {
+                registerItemAsc.setVisible(false);
+                registerItemDesc.setVisible(true);
+            }
+        }
+        else {
+            registerNoJointlyGoalsInfo.setVisible(true);
+            registerItemDesc.setVisible(false);
+            registerItemAsc.setVisible(false);
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.our_goals_menu_fragment_debetable_now_sort_desc:
+                prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfDebetableGoalsList, "descending");
+                prefsEditor.apply();
+                updateRecyclerView();
+                return true;
+            case R.id.our_goals_menu_fragment_debetable_now_sort_asc:
+                prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfDebetableGoalsList, "ascending");
+                prefsEditor.apply();
+                updateRecyclerView();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+
+
+    // #####################################################################
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
     private BroadcastReceiver ourGoalsFragmentDebetableBrodcastReceiver = new BroadcastReceiver() {
@@ -132,7 +235,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
             Bundle intentExtras = null;
 
             // true-> update the list view with goals
-            Boolean updateListView = false;
+            Boolean updateRecyclerView = false;
 
             // check for intent extras
             intentExtras = intent.getExtras();
@@ -172,7 +275,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                     ((ActivityOurGoals) getActivity()).checkUpdateForShowDialog ("debetable");
 
                     // update the view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsDebetableNowComment != null && tmpExtraOurGoalsDebetableNowComment.equals("1")) {
                     // new debetable comments -> update view -> show toast and update view
@@ -180,7 +283,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                     Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG).show();
 
                     // update the view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsResetCommentCountComment != null && tmpExtraOurGoalsResetCommentCountComment.equals("1")) {
                     // reset debetable comment counter -> show toast and update view
@@ -191,7 +294,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                     toast.show();
 
                     // update the view
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsCommentShareDisable  != null && tmpExtraOurGoalsCommentShareDisable .equals("1")) {
                     // sharing is disable -> show toast and update view
@@ -227,25 +330,25 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1")) {
 
                     // goal settings change
-                    updateListView = true;
+                    updateRecyclerView = true;
                 }
 
                 // update the list view because data has change?
-                if (updateListView) {
-                    updateListView();
+                if (updateRecyclerView) {
+                    updateRecyclerView();
                 }
             }
         }
     };
 
 
-    // update the list view with debetable goals
-    public void updateListView () {
+    // update the recycler view with debetable goals
+    public void updateRecyclerView () {
 
-        if (listViewDebetableGoals != null) {
-            listViewDebetableGoals.destroyDrawingCache();
-            listViewDebetableGoals.setVisibility(ListView.INVISIBLE);
-            listViewDebetableGoals.setVisibility(ListView.VISIBLE);
+        if (recyclerViewDebetableGoalsNow != null) {
+            recyclerViewDebetableGoalsNow.destroyDrawingCache();
+            recyclerViewDebetableGoalsNow.setVisibility(ListView.INVISIBLE);
+            recyclerViewDebetableGoalsNow.setVisibility(ListView.VISIBLE);
 
             displayDebetableGoalsSet ();
         }
@@ -255,15 +358,15 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
     // show listView with debetable goals or info: nothing there
     public void displayDebetableGoalsSet () {
 
-        if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false) && listViewDebetableGoals != null) { // Function showDebetableGoals is available!!!!
+        if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false) && recyclerViewDebetableGoalsNow != null) { // Function showDebetableGoals is available!!!!
 
-            // get the data from db -> all debetable goals
-            Cursor cursor = myDb.getAllDebetableRowsOurGoals(currentBlockIdOfDebetableGoals);
+            // get the data (all debetable goals) from DB
+            arrayListDebetableGoals = myDb.getAllRowsOurGoalsDebetableArrayList(currentBlockIdOfDebetableGoals, prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfDebetableGoalsList, "descending"));
 
-            if (cursor.getCount() > 0 && listViewDebetableGoals != null) {
+            if (arrayListDebetableGoals.size() > 0) {
 
                 // set listView visible, textView nothing there and not available gone
-                setVisibilityListViewDebetableGoalsNow("show");
+                setVisibilityRecyclerViewDebetableGoalsNow("show");
                 setVisibilityTextViewDebetableGoalsNowNotAvailable("hide");
                 setVisibilityTextViewDebetableGoalsNowNothingThere ("hide");
 
@@ -271,19 +374,35 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                 String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleDebetableGoalsNow", "string", fragmentDebetableGoalNowContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfDebetableGoal, "dd.MM.yyyy");
                 ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "debetableNow");
 
-                // new dataadapter
-                dataAdapterListViewOurGoalsDebetableGoalsNow = new OurGoalsDebetableGoalsNowCursorAdapter(
-                        getActivity(),
-                        cursor,
-                        0);
 
-                // Assign adapter to ListView
-                listViewDebetableGoals.setAdapter(dataAdapterListViewOurGoalsDebetableGoalsNow);
+                // set visibility of FAB for this fragment
+
+                // show fab and comment debetable goals only when on and possible!
+                if ((prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentDebetableGoals, false) && (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment, 0) - prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, 0)) > 0 ) || !debetableCommentLimitationBorder) {
+                    // set fab visibility
+                    ((ActivityOurGoals) getActivity()).setOurGoalFABVisibility("show", "debetableNow");
+                    // set fab click listener
+                    ((ActivityOurGoals) getActivity()).setOurGoalFABClickListener(arrayListDebetableGoals, "debetableNow", "comment_an_debetable_goal");
+                }
+                else {
+                    ((ActivityOurGoals) getActivity()).setOurGoalFABVisibility("hide", "debetableNow");
+                }
+
+                
+                // new dataadapter
+                debetableGoalsRecylerViewAdapter = new OurGoalsDebetableGoalsNowRecyclerViewAdapter(
+                        getActivity(),
+                        arrayListDebetableGoals,
+                        0);
+                
+                // Assign adapter to recycler view
+                recyclerViewDebetableGoalsNow.setAdapter(debetableGoalsRecylerViewAdapter);
+                
             }
             else {
 
                 // set listView and textView not available gone, set textView nothing there visible
-                setVisibilityListViewDebetableGoalsNow("hide");
+                setVisibilityRecyclerViewDebetableGoalsNow("hide");
                 setVisibilityTextViewDebetableGoalsNowNotAvailable("hide");
                 setVisibilityTextViewDebetableGoalsNowNothingThere ("show");
 
@@ -295,7 +414,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
         else {
 
             // set listView and textView nothing there gone, set textView not available visible
-            setVisibilityListViewDebetableGoalsNow("hide");
+            setVisibilityRecyclerViewDebetableGoalsNow("hide");
             setVisibilityTextViewDebetableGoalsNowNotAvailable("show");
             setVisibilityTextViewDebetableGoalsNowNothingThere ("hide");
 
@@ -307,17 +426,17 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
 
 
     // set visibility of listViewOurGoals
-    private void setVisibilityListViewDebetableGoalsNow (String visibility) {
+    private void setVisibilityRecyclerViewDebetableGoalsNow (String visibility) {
 
-        if (listViewDebetableGoals != null) {
+        if (recyclerViewDebetableGoalsNow != null) {
 
             switch (visibility) {
 
                 case "show":
-                    listViewDebetableGoals.setVisibility(View.VISIBLE);
+                    recyclerViewDebetableGoalsNow.setVisibility(View.VISIBLE);
                     break;
                 case "hide":
-                    listViewDebetableGoals.setVisibility(View.GONE);
+                    recyclerViewDebetableGoalsNow.setVisibility(View.GONE);
                     break;
             }
         }

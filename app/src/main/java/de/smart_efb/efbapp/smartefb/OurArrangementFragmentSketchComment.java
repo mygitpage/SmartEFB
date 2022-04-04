@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.text.Editable;
@@ -173,7 +174,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentSketchCommentContext.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -201,7 +202,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     // reset sketch comment counter -> show toast and update view
                     String updateMessageCommentNow = fragmentSketchCommentContext.getString(R.string.toastMessageArrangementResetSketchCommentCountComment);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -212,7 +213,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     // sharing is disable -> show toast and update view
                     String updateMessageCommentSketch = fragmentSketchCommentContext.getString(R.string.toastMessageArrangementSketchCommentShareDisable);
                     Toast toast = Toast.makeText(context, updateMessageCommentSketch, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -223,7 +224,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     // sharing is enable -> show toast and update view
                     String updateMessageCommentSketch = fragmentSketchCommentContext.getString(R.string.toastMessageArrangementSketchCommentShareEnable);
                     Toast toast = Toast.makeText(context, updateMessageCommentSketch, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -283,23 +284,23 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
         // build the view
         //textview for the comment intro
-        TextView textCommentNumberIntro = (TextView) viewFragmentSketchComment.findViewById(R.id.sketchArrangementCommentNumberIntro);
+        TextView textCommentNumberIntro = viewFragmentSketchComment.findViewById(R.id.sketchArrangementCommentNumberIntro);
         String tmpCommentNumberIntro = this.getResources().getString(R.string.showSketchArrangementIntroText) + " " + sketchArrangementNumberInListView;
         textCommentNumberIntro.setText(tmpCommentNumberIntro);
 
         // textview for the author of sketch arrangement
-        TextView tmpTextViewAuthorNameText = (TextView) viewFragmentSketchComment.findViewById(R.id.textAuthorName);
+        TextView tmpTextViewAuthorNameText = viewFragmentSketchComment.findViewById(R.id.textAuthorName);
         String tmpTextAuthorNameText = String.format(fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentAuthorNameTextWithDate), cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassOurArrangement.namePrefsCurrentDateOfSketchArrangement, System.currentTimeMillis()), "dd.MM.yyyy"));
-        tmpTextViewAuthorNameText.setText(Html.fromHtml(tmpTextAuthorNameText));
+        tmpTextViewAuthorNameText.setText(HtmlCompat.fromHtml(tmpTextAuthorNameText, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         // check, sharing sketch comments enable?
         if (prefs.getInt(ConstansClassOurArrangement.namePrefsArrangementSketchCommentShare, 0) == 0) {
-            TextView textSketchCommentSharingIsDisable = (TextView) viewFragmentSketchComment.findViewById(R.id.sketchCommentSharingIsDisable);
+            TextView textSketchCommentSharingIsDisable = viewFragmentSketchComment.findViewById(R.id.sketchCommentSharingIsDisable);
             textSketchCommentSharingIsDisable.setVisibility (View.VISIBLE);
         }
 
         // textview for the sketch arrangement
-        TextView textViewArrangement = (TextView) viewFragmentSketchComment.findViewById(R.id.choosenSketchArrangement);
+        TextView textViewArrangement = viewFragmentSketchComment.findViewById(R.id.choosenSketchArrangement);
         String arrangement = cursorChoosenSketchArrangement.getString(cursorChoosenSketchArrangement.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_KEY_ARRANGEMENT));
         textViewArrangement.setText(arrangement);
 
@@ -310,7 +311,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             final Long rowIdForUpdate = cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID));
 
             //textview for the last actual comment intro
-            TextView textLastActualSketchCommentIntro = (TextView) viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentInfoText);
+            TextView textLastActualSketchCommentIntro = viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentInfoText);
             textLastActualSketchCommentIntro.setText(this.getResources().getString(R.string.lastActualSketchCommentText));
 
             // position one for comment cursor
@@ -318,14 +319,14 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
             // check if comment entry new?
             if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY)) == 1) {
-                TextView newEntryOfComment = (TextView) viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentNewInfoText);
+                TextView newEntryOfComment = viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentNewInfoText);
                 String txtNewEntryOfComment = fragmentSketchCommentContext.getResources().getString(R.string.newEntryText);
                 newEntryOfComment.setText(txtNewEntryOfComment);
                 myDb.deleteStatusNewEntryOurArrangementSketchComment(cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.KEY_ROWID)));
             }
 
             // textview for the author of last actual comment
-            TextView tmpTextViewAuthorNameLastActualSketchComment = (TextView) viewFragmentSketchComment.findViewById(R.id.textAuthorNameLastActualSketchComment);
+            TextView tmpTextViewAuthorNameLastActualSketchComment = viewFragmentSketchComment.findViewById(R.id.textAuthorNameLastActualSketchComment);
             String tmpAuthorName = cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_AUTHOR_NAME));
 
             if (tmpAuthorName.equals(prefs.getString(ConstansClassSettings.namePrefsClientName, "Unbekannt"))) {
@@ -335,7 +336,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             String commentTime = EfbHelperClass.timestampToDateFormat(cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_LOCAL_TIME)), "HH:mm");;
             String tmpTextAuthorNameLastActualComment = String.format(fragmentSketchCommentContext.getResources().getString(R.string.ourArrangementSketchCommentAuthorNameWithDate), tmpAuthorName, commentDate, commentTime);
             if (cursorSketchArrangementAllComments.getLong(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS)) == 4) {tmpTextAuthorNameLastActualComment = String.format(getResources().getString(R.string.ourArrangementSketchCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
-            tmpTextViewAuthorNameLastActualSketchComment.setText(Html.fromHtml(tmpTextAuthorNameLastActualComment));
+            tmpTextViewAuthorNameLastActualSketchComment.setText(HtmlCompat.fromHtml(tmpTextAuthorNameLastActualComment, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
             // textview for status 0 of the last actual comment
             final TextView tmpTextViewSendInfoLastActualSketchComment = viewFragmentSketchComment.findViewById(R.id.textSendInfoLastActualSketchComment);
@@ -420,18 +421,18 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             }
 
             // show actual result struct question only when result > 0
-            TextView textViewShowResultStructQuestion = (TextView) viewFragmentSketchComment.findViewById(R.id.assessementValueForSketchComment);
+            TextView textViewShowResultStructQuestion = viewFragmentSketchComment.findViewById(R.id.assessementValueForSketchComment);
             if (cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1)) > 0) {
                 String actualResultStructQuestion = fragmentSketchCommentContext.getResources().getString(R.string.textOurArrangementSketchCommentActualResultStructQuestion);
                 actualResultStructQuestion = String.format(actualResultStructQuestion, evaluateSketchCommentScalesLevel[cursorSketchArrangementAllComments.getInt(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_RESULT_QUESTION1)) - 1]);
-                textViewShowResultStructQuestion.setText(Html.fromHtml(actualResultStructQuestion));
+                textViewShowResultStructQuestion.setText(HtmlCompat.fromHtml(actualResultStructQuestion, HtmlCompat.FROM_HTML_MODE_LEGACY));
             } else { // result is =0; comes from server/ coach
                 String actualResultStructQuestionFromCoach = fragmentSketchCommentContext.getResources().getString(R.string.textOurArrangementSketchCommentActualResultStructQuestionFromCoach);
                 textViewShowResultStructQuestion.setText(actualResultStructQuestionFromCoach);
             }
 
             // textview for the comment text
-            TextView tmpTextViewCommentText = (TextView) viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentText);
+            TextView tmpTextViewCommentText = viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentText);
             String tmpCommentText = cursorSketchArrangementAllComments.getString(cursorSketchArrangementAllComments.getColumnIndex(DBAdapter.OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_COMMENT));
             tmpTextViewCommentText.setText(tmpCommentText);
 
@@ -456,18 +457,18 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         else { // no comments
 
             //textview for the last actual comment intro
-            TextView textLastActualSketchCommentIntro = (TextView) viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentInfoText);
+            TextView textLastActualSketchCommentIntro = viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentInfoText);
             textLastActualSketchCommentIntro.setText(this.getResources().getString(R.string.lastActualSketchCommentTextNoCommentAvailabel));
 
             // position one for comment cursor
             cursorSketchArrangementAllComments.moveToFirst();
 
             // textview for the author of last actual comment
-            TextView tmpTextViewAuthorNameLastActualSketchComment = (TextView) viewFragmentSketchComment.findViewById(R.id.textAuthorNameLastActualSketchComment);
+            TextView tmpTextViewAuthorNameLastActualSketchComment = viewFragmentSketchComment.findViewById(R.id.textAuthorNameLastActualSketchComment);
             tmpTextViewAuthorNameLastActualSketchComment.setText(this.getResources().getString(R.string.lastActualSketchCommentTextNoCommentAvailabelFirstAuthor));
 
             // textview for the comment text
-            TextView tmpTextViewSketchCommentText = (TextView) viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentText);
+            TextView tmpTextViewSketchCommentText = viewFragmentSketchComment.findViewById(R.id.lastActualSketchCommentText);
             tmpTextViewSketchCommentText.setVisibility(View.GONE);
 
             // button for overview sketch comment
@@ -489,7 +490,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
             try {
                 int resourceId = this.getResources().getIdentifier(tmpRessourceName, "id", fragmentSketchCommentContext.getPackageName());
 
-                tmpRadioButtonQuestion = (RadioButton) viewFragmentSketchComment.findViewById(resourceId);
+                tmpRadioButtonQuestion = viewFragmentSketchComment.findViewById(resourceId);
                 tmpRadioButtonQuestion.setOnClickListener(new sketchCommentRadioButtonListener(numberOfButtons));
 
             } catch (Exception e) {
@@ -498,7 +499,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         }
 
         // textview for max comments and count comments
-        TextView textViewMaxAndCount = (TextView) viewFragmentSketchComment.findViewById(R.id.infoSketchCommentMaxAndCount);
+        TextView textViewMaxAndCount = viewFragmentSketchComment.findViewById(R.id.infoSketchCommentMaxAndCount);
         String tmpInfoTextMaxSingluarPluaral, tmpInfoTextCountSingluarPluaral, tmpInfoTextSketchCommentMaxLetters;
         // build text element max sketch comment
         if (prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment, 0) == 1 && commentLimitationBorder) {
@@ -547,13 +548,13 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         final int tmpMaxLength = prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchCommentLetters, 10);
 
         // get textView to count input letters and init it
-        final TextView textViewCountLettersCommentEditText = (TextView) viewFragmentSketchComment.findViewById(R.id.countLettersSketchCommentEditText);
+        final TextView textViewCountLettersCommentEditText = viewFragmentSketchComment.findViewById(R.id.countLettersSketchCommentEditText);
         String tmpInfoTextCountLetters =  getResources().getString(R.string.infoTextCountLettersForComment);
         tmpInfoTextCountLetters = String.format(tmpInfoTextCountLetters, "0", tmpMaxLength);
         textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
 
         // get edit text field for sketch comment
-        final EditText txtInputSketchArrangementComment = (EditText) viewFragmentSketchComment.findViewById(R.id.inputSketchArrangementComment);
+        final EditText txtInputSketchArrangementComment = viewFragmentSketchComment.findViewById(R.id.inputSketchArrangementComment);
 
         // set text watcher to count letters in comment field
         final TextWatcher txtInputArrangementCommentTextWatcher = new TextWatcher() {
@@ -592,7 +593,6 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         }
         infoTextCountComment.setText(tmpInfoTextCountCommentSingluarPluaralNoLimit);
 
-
         // button send sketch comment
         Button buttonSendSketchArrangementComment = viewFragmentSketchComment.findViewById(R.id.buttonSendSketchArrangementComment);
 
@@ -607,7 +607,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                 if (!prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
 
                     // check result struct question
-                    tmpErrorTextView = (TextView) viewFragmentSketchComment.findViewById(R.id.errorStructQuestionForCommentSketchArrangement);
+                    tmpErrorTextView = viewFragmentSketchComment.findViewById(R.id.errorStructQuestionForCommentSketchArrangement);
                     if (structQuestionResultSketchComment == 0 && tmpErrorTextView != null) {
                         sketchCommentNoError = false;
                         tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -617,7 +617,7 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     }
 
                     // comment textfield -> insert new comment
-                    tmpErrorTextView = (TextView) viewFragmentSketchComment.findViewById(R.id.errorFreeQuestionForCommentSketchArrangement);
+                    tmpErrorTextView = viewFragmentSketchComment.findViewById(R.id.errorFreeQuestionForCommentSketchArrangement);
                     if (txtInputSketchArrangementComment.getText().toString().length() < 3 && tmpErrorTextView != null) {
                         sketchCommentNoError = false;
                         tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -677,13 +677,12 @@ public class OurArrangementFragmentSketchComment extends Fragment {
                     // case is closed -> show toast
                     String textCaseClose = fragmentSketchCommentContext.getString(R.string.toastOurArrangementSketchCommentCaseCloseToastText);
                     Toast toast = Toast.makeText(fragmentSketchCommentContext, textCaseClose, Toast.LENGTH_LONG);
-                    TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView viewMessage = toast.getView().findViewById(android.R.id.message);
                     if (v != null) viewMessage.setGravity(Gravity.CENTER);
                     toast.show();
                 }
             }
         });
-
 
         // button back to sketch arrangement overview
         Button buttonBackToSketchArrangementOverview = viewFragmentSketchComment.findViewById(R.id.buttonSketchCommentBackToSketchArrangement);

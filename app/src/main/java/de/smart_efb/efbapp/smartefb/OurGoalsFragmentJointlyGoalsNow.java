@@ -120,14 +120,12 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
     }
 
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
 
         menuInflater.inflate(R.menu.menu_efb_our_goals_fragment_jointly_now, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
     }
-
 
 
     @Override
@@ -356,7 +354,7 @@ public class OurGoalsFragmentJointlyGoalsNow extends Fragment {
     public void displayActualJointlyGoalsSet () {
 
         // get the data (all jointly goals) from DB
-        arrayListGoals = myDb.getAllRowsOurGoalsJointlyGoalsArrayList(currentBlockIdOfJointlyGoals, "equalBlockId", prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsList, "descending"));
+        arrayListGoals = myDb.getAllRowsOurGoalsJointlyGoalsArrayList(currentBlockIdOfJointlyGoals, "equalBlockId", prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfDebetableGoalsList, "descending"));
 
         if (arrayListGoals.size() > 0 && recyclerViewJointlyGoalsNow != null) {
 

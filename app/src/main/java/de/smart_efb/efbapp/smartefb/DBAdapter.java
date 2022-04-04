@@ -2205,33 +2205,106 @@ public class DBAdapter extends SQLiteOpenHelper {
         cursorGoals.close();
 
         return storeGoals;
-    } 
+    }
 
-    
+
+
+
+
+
+
+
+
+
+
+    // Return all debetable goals from the database with blockId in Array List <ObjectSmartEFBGoals>
+    // the result is sorted by sortSequence
+    ArrayList<ObjectSmartEFBGoals> getAllRowsOurGoalsDebetableArrayList (String blockID, String sort) {
+
+        ArrayList<ObjectSmartEFBGoals> storeGoals = new ArrayList<>();
+
+        // get the data (all debetable goals) from DB
+        Cursor cursorDebetableGoals = this.getAllDebetableRowsOurGoals (blockID, sort);
+
+        Integer positionNumber = 0;
+
+        if (cursorDebetableGoals.moveToFirst()) {
+            do {
+
+                String goal = cursorDebetableGoals.getString(cursorDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_KEY_GOAL));
+                String authorName = cursorDebetableGoals.getString(cursorDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_AUTHOR_NAME));
+                String blockid = cursorDebetableGoals.getString(cursorDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID));
+                String changeTo = cursorDebetableGoals.getString(cursorDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_CHANGE_TO));
+                Long jointlyGoalWriteTime = cursorDebetableGoals.getLong(cursorDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME));
+                Long debetableGoalWriteTime = cursorDebetableGoals.getLong(cursorDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DEBETABLE_TIME));
+                Long lastEvalTime = cursorDebetableGoals.getLong(cursorDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME));
+                Integer jointlyDebetableGoalDifference = cursorDebetableGoals.getInt(cursorDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE));
+                Integer evaluatePossible = cursorDebetableGoals.getInt(cursorDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_EVALUATE_POSSIBLE));
+                Integer newEntry = cursorDebetableGoals.getInt(cursorDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY));
+                Integer serverIdGoal = cursorDebetableGoals.getInt(cursorDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID));
+                Integer status = cursorDebetableGoals.getInt(cursorDebetableGoals.getColumnIndex(DBAdapter.OUR_GOALS_JOINTLY_DEBETABLE_GOALS_STATUS)); // 0=ready to send, 1=message send, 4=external message
+                Integer rowID = cursorDebetableGoals.getInt(cursorDebetableGoals.getColumnIndex(DBAdapter.KEY_ROWID));
+                positionNumber++;
+
+                // make jointly goals object and store data
+                storeGoals.add(new ObjectSmartEFBGoals(rowID, goal, authorName, blockid, changeTo, jointlyGoalWriteTime, debetableGoalWriteTime, lastEvalTime, jointlyDebetableGoalDifference, evaluatePossible, newEntry, serverIdGoal, status, positionNumber));
+
+            } while (cursorDebetableGoals.moveToNext());
+        }
+
+        cursorDebetableGoals.close();
+
+        return storeGoals;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Return debetable goals from the database (table ourGoals)
     // the result is sorted by DESC
-    Cursor getAllDebetableRowsOurGoals(String blockId) {
+    Cursor getAllDebetableRowsOurGoals(String blockID, String sort) {
 
         String where = "";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         // get only debetable goals
-        where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=1 AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID + "=" + blockId;
-        ;
+        where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=1 AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_BLOCK_ID + "=" + blockID;
 
         // sort string
-        String sort = KEY_ROWID + " ASC";
+        String tmpSortSequence = "";
+        switch (sort) {
+            case "ascending":
+                tmpSortSequence = " ASC";
+                break;
+            case "descending":
+                tmpSortSequence = " DESC";
+                break;
+        }
+        String sortForDB = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_WRITE_TIME + " DESC, " + KEY_ROWID + tmpSortSequence;
 
         Cursor c = db.query(true, DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, OUR_GOALS_JOINTLY_DEBETABLE_GOALS_ALL_KEYS,
-                where, null, null, null, sort, null);
+                where, null, null, null, sortForDB, null);
 
         if (c != null) {
             c.moveToFirst();
         }
 
         return c;
+
     }
 
 
@@ -2375,8 +2448,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // change (delete/set) status evaluation poosible in table ourGoals for one goal (rowId)
     boolean changeStatusEvaluationPossibleOurGoals(int serverId, String state) {
-
-
+        
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID + "=" + serverId;

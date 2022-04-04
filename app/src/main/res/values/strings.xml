@@ -500,8 +500,8 @@
             <string name="toastOurArrangementSketchCommentCaseCloseToastText">Der Fall ist abgeschlossen! Einschätzungen werden nicht mehr gesendet!</string>
             <string name="ourArrangementSketchCommentBackButtonToSketchArrangement">Übersicht Entwürfe</string>
             <string name="ourArrangementSketchCommentBackButtonToShowSketchComment">Übersicht Einschätzungen</string>
-            <string name="ourArrangementSketchCommentCountCommentTextSingular">%1$s von %2$d Einschätzung</string>
-            <string name="ourArrangementSketchCommentCountCommentTextPlural">%1$s von %2$d Einschätzungen</string>
+            <string name="ourArrangementSketchCommentCountCommentTextSingular">%1$d von %2$d Einschätzung</string>
+            <string name="ourArrangementSketchCommentCountCommentTextPlural">%1$d von %2$d Einschätzungen</string>
             <string name="ourArrangementSketchCommentCountCommentTextNoLimit">Keine Anzahlbeschränkung</string>
             <string name="ourArrangementShowSketchCommentCommentThisSketchArrangement">Entwurf %1$d einschätzen</string>
             <string name="ourArrangementShowSketchCommentMenuSortDesc">Einschätzungen absteigend sortieren</string>
@@ -837,6 +837,15 @@
                 <string name="infoTextNumberOfDebetableCommentsPossibleSingular">(%1$d verbleibt)</string>
                 <string name="infoTextNumberOfDebetableCommentsPossibleNoMore">(Alle aufgebraucht)</string>
                 <string name="infoTextNumberOfDebetableCommentsPossibleNoBorder">(Keine Begrenzung)</string>
+
+
+    <string name="ourGoalsNowDebetableMenuSortDesc">Strittige Ziele absteigend sortieren</string>
+    <string name="ourGoalsNowDebetableMenuSortAsc">Strittige Ziele aufsteigend sortieren</string>
+    <string name="ourGoalsNowDebetableMenuNoGoalsAvailable">Keine strittigen Ziele vorhanden</string>
+
+    <string name="ourGoalsDebetableGoalsCommentBackButtonToDebetabelGoal">Übersicht strittige Ziele</string>
+    <string name="ourGoalsDebetableGoalsCommentBackButtonToShowDebetableComment">Übersicht Einschätzungen</string>
+
         <!-- End Fragment debetable goals now -->
 
         <!-- fragment debetable goals comment-->
@@ -892,15 +901,15 @@
 
 
 
-    <string name="ourGoalsDebetableShowCommentMenuSortDesc">Einschätzungen absteigend sortieren</string>
-    <string name="ourGoalsDebetableShowCommentMenuSortAsc">Einschätzungenaufsteigend sortieren</string>
-    <string name="ourGoalsDebetableShowCommentMenuCountCommentForList">Anzahl anzuzeigener Einschätzungen</string>
-    <string name="select_dialog_our_goals_debetable_number_of_comment_title">Bitte wählen Sie die Anzahl der anzuzeigenden Einschätzungen</string>
-    <string name="select_dialog_our_goals_debetable_number_of_comment_5">5 Einschätzungen</string>
-    <string name="select_dialog_our_goals_debetable_number_of_comment_10">10 Einschätzungen</string>
-    <string name="select_dialog_our_goals_debetable_number_of_comment_20">20 Einschätzungen</string>
-    <string name="select_dialog_our_goals_debetable_number_of_comment_50">50 Einschätzungen</string>
-    <string name="select_dialog_our_goals_debetable_number_of_comment_all">Alle Einschätzungen</string>
+            <string name="ourGoalsDebetableShowCommentMenuSortDesc">Einschätzungen absteigend sortieren</string>
+            <string name="ourGoalsDebetableShowCommentMenuSortAsc">Einschätzungenaufsteigend sortieren</string>
+            <string name="ourGoalsDebetableShowCommentMenuCountCommentForList">Anzahl anzuzeigener Einschätzungen</string>
+            <string name="select_dialog_our_goals_debetable_number_of_comment_title">Bitte wählen Sie die Anzahl der anzuzeigenden Einschätzungen</string>
+            <string name="select_dialog_our_goals_debetable_number_of_comment_5">5 Einschätzungen</string>
+            <string name="select_dialog_our_goals_debetable_number_of_comment_10">10 Einschätzungen</string>
+            <string name="select_dialog_our_goals_debetable_number_of_comment_20">20 Einschätzungen</string>
+            <string name="select_dialog_our_goals_debetable_number_of_comment_50">50 Einschätzungen</string>
+            <string name="select_dialog_our_goals_debetable_number_of_comment_all">Alle Einschätzungen</string>
 
 
         <!-- End fragment debetable goals comment -->

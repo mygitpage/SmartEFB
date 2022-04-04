@@ -20,26 +20,28 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:titleTextAppearance="@style/toolbarTitleAppearanceStandard"
-            app:subtitleTextAppearance="@style/toolbarSubtitleAppearanceStandard">
+            app:subtitleTextAppearance="@style/toolbarSubtitleAppearanceStandard"
+            app:elevation="0dp"
+            app:layout_scrollFlags="scroll|enterAlways">
 
-            <Button android:id="@+id/helpOurGoalsNow"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="right"
-                android:background="@drawable/activity_help_toolbar_icon" />
+                <Button android:id="@+id/helpOurGoalsNow"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right"
+                    android:background="@drawable/activity_help_toolbar_icon" />
 
         </androidx.appcompat.widget.Toolbar>
 
-    <com.google.android.material.tabs.TabLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tabLayoutOurGoals"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:background="?attr/colorPrimary"
-        app:tabMode="scrollable"
-        app:tabBackground="@drawable/all_tabs_color_selector"
-        app:tabTextColor="@color/colorAccent"
-        app:tabSelectedTextColor="@color/colorAccent"/>
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tabLayoutOurGoals"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            android:background="?attr/colorPrimary"
+            app:tabMode="scrollable"
+            app:tabBackground="@drawable/all_tabs_color_selector"
+            app:tabTextColor="@color/colorAccent"
+            app:tabSelectedTextColor="@color/colorAccent"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
