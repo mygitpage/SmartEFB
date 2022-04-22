@@ -283,6 +283,12 @@ public class OurArrangementFragmentSketchComment extends Fragment {
         ((ActivityOurArrangement) getActivity()).setOurArrangementFABVisibility ("hide", "sketchComment");
 
         // build the view
+        // set intro text for comment debetable goal
+        TextView textViewIntroTextForCommentSketchArrangement = viewFragmentSketchComment.findViewById(R.id.introStructQuestionForCommentSketchArrangement);
+        String tmpIntroTextForCommentSketchArrangementField = this.getResources().getString(R.string.introStructQuestionForCommentSketchArrangement);
+        tmpIntroTextForCommentSketchArrangementField = String.format(tmpIntroTextForCommentSketchArrangementField, sketchArrangementNumberInListView);
+        textViewIntroTextForCommentSketchArrangement.setText(tmpIntroTextForCommentSketchArrangementField);
+
         //textview for the comment intro
         TextView textCommentNumberIntro = viewFragmentSketchComment.findViewById(R.id.sketchArrangementCommentNumberIntro);
         String tmpCommentNumberIntro = this.getResources().getString(R.string.showSketchArrangementIntroText) + " " + sketchArrangementNumberInListView;
@@ -555,6 +561,13 @@ public class OurArrangementFragmentSketchComment extends Fragment {
 
         // get edit text field for sketch comment
         final EditText txtInputSketchArrangementComment = viewFragmentSketchComment.findViewById(R.id.inputSketchArrangementComment);
+
+
+        // set hint text in edit text field
+        String tmpHintTextForCommentField = this.getResources().getString(R.string.introFreeQuestionForCommentSketchArrangementHint);
+        tmpHintTextForCommentField = String.format(tmpHintTextForCommentField, sketchArrangementNumberInListView);
+        txtInputSketchArrangementComment.setHint(tmpHintTextForCommentField);
+
 
         // set text watcher to count letters in comment field
         final TextWatcher txtInputArrangementCommentTextWatcher = new TextWatcher() {

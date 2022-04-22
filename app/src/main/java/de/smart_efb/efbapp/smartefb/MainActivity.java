@@ -969,6 +969,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                     prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "ascending");  // init sort of old arrangement
+                    prefsEditor.putInt(ConstansClassOurGoals.namePrefsNumberOfCommentForOurGoalsDebetableGoalsShowComment, 20);
 
 
                     prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfDebetableGoalsList, "ascending");  // init sort of old arrangement

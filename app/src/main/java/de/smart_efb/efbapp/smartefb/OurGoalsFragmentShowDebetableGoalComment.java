@@ -2,20 +2,34 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Created by ich on 22.11.2016.
@@ -28,6 +42,12 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
     // fragment context
     Context fragmentShowDebetableGoalCommentContext = null;
 
+    // the recycler view
+    RecyclerView recyclerViewShowDebetableComment = null;
+
+    // data array of debetable comments for recycler view
+    ArrayList<ObjectSmartEFBGoalsComment> arrayListDebetableComments;
+
     // reference to the DB
     DBAdapter myDb;
 
@@ -38,8 +58,8 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
     // the current date of debetable goal -> the other are old (look at tab old)
     long currentDateOfDebetableGoal;
 
-    // reference cursorAdapter for the listview
-    OurGoalShowDebetableGoalCommentCursorAdapter showDebetableGoalCommentCursorAdapter;
+    // reference for the recycler view
+    OurGoalsShowCommentDebetableGoalsRecyclerViewAdapter showDebetableCommentRecyclerViewAdapter;
 
     // DB-Id of debetable goal to comment
     int debetableServerDbIdToShow = 0;
@@ -50,14 +70,17 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
     // true-> comments are limited, false -> comments are not limited
     Boolean commentLimitationBorder = false;
 
-    // the list view for debetable comments
-    ListView listViewShowDebetableComment = null;
+    // reference to dialog selecting number of debetable comment
+    AlertDialog dialogSelectingNumberOfDebetableComment;
 
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
         viewFragmentShowDebetableGoalComment = layoutInflater.inflate(R.layout.fragment_our_goals_show_debetable_goal_comment, null);
+
+        // fragment has option menu
+        setHasOptionsMenu(true);
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
@@ -111,6 +134,161 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
 
         // close db connection
         myDb.close();
+    }
+
+
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+
+        menuInflater.inflate(R.menu.menu_efb_our_goals_fragment_debetable_show_comment, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem registerItemDesc = menu.findItem(R.id.our_goals_menu_fragment_debetable_show_comment_sort_desc);
+        MenuItem registerItemAsc = menu.findItem(R.id.our_goals_menu_fragment_debetable_show_comment_sort_asc);
+
+        if (prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "descending").equals("descending")) {
+            registerItemDesc.setVisible(false);
+            registerItemAsc.setVisible(true);
+        }
+        else {
+            registerItemAsc.setVisible(false);
+            registerItemDesc.setVisible(true);
+        }
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.our_goals_menu_fragment_debetable_show_comment_sort_desc:
+                prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "descending");
+                prefsEditor.apply();
+                updateRecyclerView();
+                return true;
+            case R.id.our_goals_menu_fragment_debetable_show_comment_sort_asc:
+                prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "ascending");
+                prefsEditor.apply();
+                updateRecyclerView();
+                return true;
+            case R.id.our_goals_menu_fragment_debetable_count_comment_in_recycler_view:
+                showDialogForSelectingNumberOfDebetableCommentInList();
+                updateRecyclerView();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    private void showDialogForSelectingNumberOfDebetableCommentInList () {
+
+        LayoutInflater dialogInflater;
+
+        // get alert dialog builder with custom style
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.selectDialogStyle);
+
+        // Get the layout inflater
+        dialogInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // inflate and get the view
+        View dialogSelecting = dialogInflater.inflate(R.layout.select_dialog_our_goals_debetable_number_of_comment, null);
+
+        //set radio button with correct value
+        RadioButton tmpRadioButton;
+        switch (prefs.getInt(ConstansClassOurGoals.namePrefsNumberOfCommentForOurGoalsDebetableGoalsShowComment, 50)) {
+            case 5:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfDebetableComment5);
+                break;
+            case 10:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfDebetableComment10);
+                break;
+            case 20:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfDebetableComment20);
+                break;
+            case 50:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfDebetableComment50);
+                break;
+            default:
+                tmpRadioButton = dialogSelecting.findViewById(R.id.numberOfDebetableCommentAll);
+                break;
+        }
+        tmpRadioButton.setChecked(true);
+
+        // set on click listener
+        RadioGroup radioGroupNumberOfDebetableComment = dialogSelecting.findViewById(R.id.selectNumberOfDebetableComment);
+        radioGroupNumberOfDebetableComment.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                int numberOfDebetableComment = 0;
+                switch (checkedId) {
+                    case R.id.numberOfDebetableComment5:
+                        numberOfDebetableComment = 5;
+                        break;
+                    case R.id.numberOfDebetableComment10:
+                        numberOfDebetableComment = 10;
+                        break;
+                    case R.id.numberOfDebetableComment20:
+                        numberOfDebetableComment = 20;
+                        break;
+                    case R.id.numberOfDebetableComment50:
+                        numberOfDebetableComment = 50;
+                        break;
+                    case R.id.numberOfDebetableCommentAll:
+                        numberOfDebetableComment = 0;
+                        break;
+                }
+                prefsEditor.putInt(ConstansClassOurGoals.namePrefsNumberOfCommentForOurGoalsDebetableGoalsShowComment, numberOfDebetableComment);
+                prefsEditor.apply();
+
+                // close dialog
+                dialogSelectingNumberOfDebetableComment.dismiss();
+
+                // update recycler view with new number of comment
+                updateRecyclerView();
+            }
+        });
+
+        // build the dialog
+        builder.setView(dialogSelecting);
+
+        // Add close button
+        builder.setNegativeButton("Schliessen", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialogSelectingNumberOfDebetableComment.cancel();
+            }
+        });
+
+        // add title
+        builder.setTitle(R.string.select_dialog_our_goals_debetable_number_of_comment_title);
+
+        // and create
+        dialogSelectingNumberOfDebetableComment = builder.create();
+
+        // set correct color of close button
+        dialogSelectingNumberOfDebetableComment.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                // change background and text color of button
+                Button negativeButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+                // Change negative button text and background color
+                negativeButton.setTextColor(ContextCompat.getColor(((ActivityOurGoals)getActivity()), R.color.white));
+                negativeButton.setBackgroundResource(R.drawable.select_dialog_style_custom_negativ_button_background);
+            }
+        });
+
+        // show dialog
+        dialogSelectingNumberOfDebetableComment.show();
     }
 
 
@@ -228,9 +406,9 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
                     refreshView = true;
                 }
 
-                // update the list view with sketch arrangements
+                // update the list view with debetable goals
                 if (refreshView) {
-                    updateListView();
+                    updateRecyclerView();
                 }
             }
         }
@@ -239,12 +417,13 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
 
 
     // update the list view with debetable comments
-    public void updateListView () {
+    public void updateRecyclerView() {
 
-        if (listViewShowDebetableComment != null) {
-            listViewShowDebetableComment.destroyDrawingCache();
-            listViewShowDebetableComment.setVisibility(ListView.INVISIBLE);
-            listViewShowDebetableComment.setVisibility(ListView.VISIBLE);
+        if (recyclerViewShowDebetableComment != null) {
+
+            recyclerViewShowDebetableComment.destroyDrawingCache();
+            recyclerViewShowDebetableComment.setVisibility(ListView.INVISIBLE);
+            recyclerViewShowDebetableComment.setVisibility(ListView.VISIBLE);
 
             displayActualCommentSet ();
         }
@@ -267,6 +446,12 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
         // Set correct subtitle in Activity -> "Einschaetzungen strittige Ziele ..."
         String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleDebetableGoalsShowCommentText", "string", fragmentShowDebetableGoalCommentContext.getPackageName())) + " " + debetableGoalNumberInListView;
         ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "debetableShowComment");
+
+        // new recycler view
+        recyclerViewShowDebetableComment = viewFragmentShowDebetableGoalComment.findViewById(R.id.listOurGoalsShowDebetableComment);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fragmentShowDebetableGoalCommentContext);
+        recyclerViewShowDebetableComment.setLayoutManager(linearLayoutManager);
+        recyclerViewShowDebetableComment.setHasFixedSize(true);
     }
 
 
@@ -293,27 +478,70 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
 
     public void displayActualCommentSet () {
 
+        // get the data (all comments from an debetable goals) from DB
+        arrayListDebetableComments = myDb.getAllRowsOurGoalsDebetableGoalsCommentArrayList (debetableServerDbIdToShow, prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "descending"), prefs.getInt(ConstansClassOurGoals.namePrefsNumberOfCommentForOurGoalsDebetableGoalsShowComment, 50));
+
+        // get the data for chose debetable goals
+        ArrayList<ObjectSmartEFBGoals> arrayListChoseDebetableGoals = myDb.getRowOurGoalsDebetableGoalsArrayList(debetableServerDbIdToShow);
+
+        // set visibility of FAB for this fragment
+        // show fab and comment debetable goals only when on!
+        if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkDebetableGoals, false) && (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment, 0) - prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, 0)) > 0 || !commentLimitationBorder) {
+            // set fab visibility
+            ((ActivityOurGoals) getActivity()).setOurGoalFABVisibility("show", "debetableShowComment");
+            // set fab click listener
+            ((ActivityOurGoals) getActivity()).setOurGoalFABClickListener(arrayListChoseDebetableGoals, "debetableShowComment", "comment_an_debetable_goal");
+        }
+        else {
+            ((ActivityOurGoals) getActivity()).setOurGoalFABVisibility("hide", "debetableShowComment");
+        }
+
+
+            
+        
+        
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+/*
+
         // get the data (all comments for an debetable goal) from DB
         Cursor cursor = myDb.getAllRowsOurGoalsDebetableGoalsComment(debetableServerDbIdToShow, prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "descending"));
 
         // get the data (the choosen debetable goal) from the DB
         Cursor choosenDebetableGoal = myDb.getDebetableRowOurGoals(debetableServerDbIdToShow);
 
-        // find the listview
-        listViewShowDebetableComment = (ListView) viewFragmentShowDebetableGoalComment.findViewById(R.id.listOurGoalsShowDebetableGoalComment);
+*/
 
-        // new dataadapter with custom constructor
-        showDebetableGoalCommentCursorAdapter = new OurGoalShowDebetableGoalCommentCursorAdapter(
-                getActivity(),
-                cursor,
-                0,
-                debetableServerDbIdToShow,
-                debetableGoalNumberInListView,
-                commentLimitationBorder,
-                choosenDebetableGoal);
 
-        // Assign adapter to ListView
-        listViewShowDebetableComment.setAdapter(showDebetableGoalCommentCursorAdapter);
+
+
+
+
+        if (arrayListDebetableComments.size() > 0 && arrayListChoseDebetableGoals.size() > 0 && recyclerViewShowDebetableComment != null) {
+
+            showDebetableCommentRecyclerViewAdapter = new OurGoalsShowCommentDebetableGoalsRecyclerViewAdapter(
+                    getActivity(),
+                    arrayListDebetableComments,
+                    debetableServerDbIdToShow,
+                    debetableGoalNumberInListView,
+                    commentLimitationBorder,
+                    arrayListChoseDebetableGoals);
+
+            // Assign adapter to Recycler View
+            recyclerViewShowDebetableComment.setAdapter(showDebetableCommentRecyclerViewAdapter);
+
+        }
     }
 
 }

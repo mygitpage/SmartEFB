@@ -189,7 +189,7 @@ public class OurGoalsDebetableGoalsNowRecyclerViewAdapter extends RecyclerView.A
                     }
 
                     // get from DB  all comments for chose debetable goal (getCount)
-                    Cursor cursorDebetableGoalsAllComments = myDb.getAllRowsOurGoalsDebetableGoalsComment (debetableGoalElement.getServerIdGoal(), "descending");
+                    Cursor cursorDebetableGoalsAllComments = myDb.getAllRowsOurGoalsDebetableGoalsComment (debetableGoalElement.getServerIdGoal(), "descending", 0);
 
                     // generate the number of comments to show
                     String tmpCountAssessments;

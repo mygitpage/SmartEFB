@@ -35,6 +35,14 @@ import java.util.List;
 /**
  * Created by ich on 25.05.16.
  */
+
+
+// Android File browser example
+// https://www.christophbrill.de/en/posts/how-to-create-a-android-file-browser-in-15-minutes/
+
+// https://mobikul.com/how-file-chooser-works-in-android-studio/
+
+
 public class ActivityOurArrangement extends AppCompatActivity {
 
     // Set subtitle first time
@@ -1413,7 +1421,7 @@ public class ActivityOurArrangement extends AppCompatActivity {
                     PopupMenu popupFabCommentArrangement = new PopupMenu(ActivityOurArrangement.this, view);
 
                     // inflate popup menu for fab
-                    if (fragmentName.equals("sketch")) {
+                    if (fragmentName.equals("sketch") || fragmentName.equals("showSketchComment")) {
                         popupFabCommentArrangement.getMenuInflater().inflate(R.menu.popup_efb_our_arrangement_sketch_arrangement_fab, popupFabCommentArrangement.getMenu());
                     }
                     else {

@@ -214,11 +214,6 @@ public class OurArrangementShowSketchCommentRecyclerViewAdapter extends Recycler
                 if (sketchCommentElement.getStatus() == 4) {tmpTextAuthorNameLastActualSketchComment = String.format(contextForActivity.getResources().getString(R.string.ourArrangementSketchCommentAuthorNameWithDateExternal), tmpAuthorName, commentDate, commentTime);} // comment from external-> show not text: locale smartphone time!!!
                 itemView.textViewAuthorNameLastActualSketchComment.setText(HtmlCompat.fromHtml(tmpTextAuthorNameLastActualSketchComment, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
-                
-                
-                
-                
-                // ++++++++++++++++++++++++++++++++
                 // set row id of comment from db for timer update (cast from int to long because db function needs long value)
                 final Long rowIdForUpdate = Long.valueOf((sketchCommentElement.getRowID()).longValue());
 

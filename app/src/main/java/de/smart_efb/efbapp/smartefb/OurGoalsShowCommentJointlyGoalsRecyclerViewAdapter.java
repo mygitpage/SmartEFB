@@ -19,10 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 public class OurGoalsShowCommentJointlyGoalsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-
-
-
-
     final Context contextForActivity;
 
     // Array List of jointly goal comment

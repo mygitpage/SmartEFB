@@ -374,9 +374,7 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                 String tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleDebetableGoalsNow", "string", fragmentDebetableGoalNowContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfDebetableGoal, "dd.MM.yyyy");
                 ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "debetableNow");
 
-
                 // set visibility of FAB for this fragment
-
                 // show fab and comment debetable goals only when on and possible!
                 if ((prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkCommentDebetableGoals, false) && (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment, 0) - prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment, 0)) > 0 ) || !debetableCommentLimitationBorder) {
                     // set fab visibility
@@ -388,7 +386,6 @@ public class OurGoalsFragmentDebetableGoalsNow extends Fragment {
                     ((ActivityOurGoals) getActivity()).setOurGoalFABVisibility("hide", "debetableNow");
                 }
 
-                
                 // new dataadapter
                 debetableGoalsRecylerViewAdapter = new OurGoalsDebetableGoalsNowRecyclerViewAdapter(
                         getActivity(),

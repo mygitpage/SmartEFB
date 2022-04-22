@@ -292,18 +292,18 @@
 
 
         <!-- String Activity Our Arrangement Sketch Popup Menu Comment Arrangement -->
-            <string name="popupItemOurArrangementSketchArrangement1"><b>Entwurf 1 kommentieren</b></string>
-            <string name="popupItemOurArrangementSketchArrangement2"><b>Entwurf 2 kommentieren</b></string>
-            <string name="popupItemOurArrangementSketchArrangement3"><b>Entwurf 3 kommentieren</b></string>
-            <string name="popupItemOurArrangementSketchArrangement4"><b>Entwurf 4 kommentieren</b></string>
-            <string name="popupItemOurArrangementSketchArrangement5"><b>Entwurf 5 kommentieren</b></string>
-            <string name="popupItemOurArrangementSketchArrangement6"><b>Entwurf 6 kommentieren</b></string>
-            <string name="popupItemOurArrangementSketchArrangement7"><b>Entwurf 7 kommentieren</b></string>
-            <string name="popupItemOurArrangementSketchArrangement8"><b>Entwurf 8 kommentieren</b></string>
-            <string name="popupItemOurArrangementSketchArrangement9"><b>Entwurf 9 kommentieren</b></string>
-            <string name="popupItemOurArrangementSketchArrangement10"><b>Entwurf 10 kommentieren</b></string>
-            <string name="popupItemOurArrangementSketchArrangement11"><b>Entwurf 11 kommentieren</b></string>
-            <string name="popupItemOurArrangementSketchArrangement12"><b>Entwurf 12 kommentieren</b></string>
+            <string name="popupItemOurArrangementSketchArrangement1"><b>Entwurf 1 einschätzen</b></string>
+            <string name="popupItemOurArrangementSketchArrangement2"><b>Entwurf 2 einschätzen</b></string>
+            <string name="popupItemOurArrangementSketchArrangement3"><b>Entwurf 3 einschätzen</b></string>
+            <string name="popupItemOurArrangementSketchArrangement4"><b>Entwurf 4 einschätzen</b></string>
+            <string name="popupItemOurArrangementSketchArrangement5"><b>Entwurf 5 einschätzen</b></string>
+            <string name="popupItemOurArrangementSketchArrangement6"><b>Entwurf 6 einschätzen</b></string>
+            <string name="popupItemOurArrangementSketchArrangement7"><b>Entwurf 7 einschätzen</b></string>
+            <string name="popupItemOurArrangementSketchArrangement8"><b>Entwurf 8 einschätzen</b></string>
+            <string name="popupItemOurArrangementSketchArrangement9"><b>Entwurf 9 einschätzen</b></string>
+            <string name="popupItemOurArrangementSketchArrangement10"><b>Entwurf 10 einschätzen</b></string>
+            <string name="popupItemOurArrangementSketchArrangement11"><b>Entwurf 11 einschätzen</b></string>
+            <string name="popupItemOurArrangementSketchArrangement12"><b>Entwurf 12 einschätzen</b></string>
         <!-- End String Activity Our Arrangement Sketch Popup Menu Comment Arrangement -->
     
 
@@ -447,9 +447,9 @@
         <!-- fragment comment sketch arrangement -->
             <string name="showSketchArrangementIntroText">Entwurf Absprache</string>
             <string name="commentSketchArrangementTextFieldHintText">Bitte geben Sie hier Ihren Kommentar ein!</string>
-            <string name="introStructQuestionForCommentSketchArrangement">Wie schätzen Sie Ihre Zustimmung zu dem Entwurf ein?</string>
+            <string name="introStructQuestionForCommentSketchArrangement">Wie schätzen Sie Ihre Zustimmung zu dem Entwurf %1$d ein?</string>
             <string name="errorStructQuestionForCommentSketchArrangement">Bitte wählen Sie Ihre Zustimmung!</string>
-            <string name="introFreeQuestionForCommentSketchArrangementHint">Bitte erläutern Sie Ihre obige Einschätzung</string>
+            <string name="introFreeQuestionForCommentSketchArrangementHint">Bitte erläutern Sie Ihre obige Einschätzung zum Entwurf %1$d!</string>
             <string name="errorFreeQuestionForCommentSketchArrangement">Bitte kontrollieren Sie Ihre Erläuterungen zum obigen Zustimmungswert! Sie sind zu kurz!</string>
             <string name="commentFreeQuestionSketchArrangementTextFieldHintText">Bitte erläutern Sie hier Ihre Einschätzung.</string>
             <string name="buttonSendSketchArrangementComment">Einschätzung senden</string>
@@ -837,14 +837,14 @@
                 <string name="infoTextNumberOfDebetableCommentsPossibleSingular">(%1$d verbleibt)</string>
                 <string name="infoTextNumberOfDebetableCommentsPossibleNoMore">(Alle aufgebraucht)</string>
                 <string name="infoTextNumberOfDebetableCommentsPossibleNoBorder">(Keine Begrenzung)</string>
-
-
-    <string name="ourGoalsNowDebetableMenuSortDesc">Strittige Ziele absteigend sortieren</string>
-    <string name="ourGoalsNowDebetableMenuSortAsc">Strittige Ziele aufsteigend sortieren</string>
-    <string name="ourGoalsNowDebetableMenuNoGoalsAvailable">Keine strittigen Ziele vorhanden</string>
-
-    <string name="ourGoalsDebetableGoalsCommentBackButtonToDebetabelGoal">Übersicht strittige Ziele</string>
-    <string name="ourGoalsDebetableGoalsCommentBackButtonToShowDebetableComment">Übersicht Einschätzungen</string>
+                <string name="ourGoalsDebetableCommentCountCommentTextSingular">%1$d von %2$d Einschätzung</string>
+                <string name="ourGoalsDebetableCommentCountCommentTextPlural">%1$d von %2$d Einschätzungen</string>
+                <string name="ourGoalsDebetableCommentCountCommentTextNoLimit">Keine Anzahlbeschränkung</string>
+                <string name="ourGoalsNowDebetableMenuSortDesc">Strittige Ziele absteigend sortieren</string>
+                <string name="ourGoalsNowDebetableMenuSortAsc">Strittige Ziele aufsteigend sortieren</string>
+                <string name="ourGoalsNowDebetableMenuNoGoalsAvailable">Keine strittigen Ziele vorhanden</string>
+                <string name="ourGoalsDebetableGoalsCommentBackButtonToDebetabelGoal">Übersicht strittige Ziele</string>
+                <string name="ourGoalsDebetableGoalsCommentBackButtonToShowDebetableComment">Übersicht Einschätzungen</string>
 
         <!-- End Fragment debetable goals now -->
 
@@ -852,7 +852,7 @@
             <string name="showDebetableGoalsIntroText">Strittiges Ziel</string>
             <string name="ourGoalsBackLinkToDebetableGoals">Zurück zu den strittigen Zielen</string>
             <string name="commentDebetableGoalHistoryIntroText">Alle bisherigen Einschätzungen zum strittigen Ziel</string>
-            <string name="introStructQuestionForCommentDdebetableGoal">Wie schätzen Sie Ihre Zustimmung zu dem strittigen Ziel ein?</string>
+            <string name="introStructQuestionForCommentDebetableGoal">Wie schätzen Sie Ihre Zustimmung zu dem strittigen Ziel %1$d ein?</string>
             <string name="errorStructQuestionForCommentDebetableGoal">Bitte wählen Sie Ihre Zustimmung!</string>
             <string name="introFreeQuestionForCommentDebetableGoal">Bitte erläutern Sie Ihre obige Auswahl</string>
             <string name="errorFreeQuestionForCommentDebetableGoal">Bitte kontrollieren Sie Ihre Erläuterungen zur obigen Auswahl! Sie sind zu kurz!</string>
@@ -893,14 +893,11 @@
             <string name="infoTextDebetableCommentDelaytimeSingular">die Einschätzungen werden mit einer Verzögerungszeit von einer Minute zugestellt (wenn eine Internetverbindung besteht)</string>
             <string name="infoTextDebetableCommentDelaytimePlural">die Einschätzungen werden mit einer Verzögerungszeit von %1$d Minuten zugestellt (wenn eine Internetverbindung besteht)</string>
             <string name="btnSendOurGoalsDebetableComment">Einschätzung senden</string>
-            <string name ="commentDebetableGoalTextFieldHintText"><b>Bitte erläutern Sie Ihre obige Einschätzung!</b></string>
+            <string name ="commentDebetableGoalTextFieldHintText">Bitte erläutern Sie Ihre obige Einschätzung zum strittigen Ziel %1$d!</string>
             <string name="toastMessageDebetableCommentSendSuccessfull">Die Einschätzung wurde gesendet!</string>
             <string name="toastMessageeDebetableCommentSendNotSuccessfull">Die Einschätzung wurde noch nicht gesendet!</string>
             <string name="toastMessageeDebetableCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
             <string name="toastDebetableGoalsCommentCaseCloseToastText">Der Fall ist abgeschlossen! Einschätzungen werden nicht mehr gesendet!</string>
-
-
-
             <string name="ourGoalsDebetableShowCommentMenuSortDesc">Einschätzungen absteigend sortieren</string>
             <string name="ourGoalsDebetableShowCommentMenuSortAsc">Einschätzungenaufsteigend sortieren</string>
             <string name="ourGoalsDebetableShowCommentMenuCountCommentForList">Anzahl anzuzeigener Einschätzungen</string>
@@ -910,7 +907,8 @@
             <string name="select_dialog_our_goals_debetable_number_of_comment_20">20 Einschätzungen</string>
             <string name="select_dialog_our_goals_debetable_number_of_comment_50">50 Einschätzungen</string>
             <string name="select_dialog_our_goals_debetable_number_of_comment_all">Alle Einschätzungen</string>
-
+            <string name="ourGoalsShowCommentCommentThisDebetableGoal">Strittiges Ziel %1$d einschätzen</string>
+            <string name="ourGoalsDebetableCommentBackButtonToDebetableGoal">Übersicht Strittige Ziele</string>
 
         <!-- End fragment debetable goals comment -->
 

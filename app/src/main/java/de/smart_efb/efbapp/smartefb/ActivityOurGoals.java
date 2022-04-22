@@ -1346,7 +1346,7 @@ public class ActivityOurGoals extends AppCompatActivity {
                     PopupMenu popupFabCommentGoals = new PopupMenu(ActivityOurGoals.this, view);
 
                     // inflate popup menu for fab
-                    if (fragmentName.equals("debetable")) {
+                    if (fragmentName.equals("debetableNow") || fragmentName.equals("debetableShowComment")) {
                         popupFabCommentGoals.getMenuInflater().inflate(R.menu.popup_efb_our_goals_debetable_goals_fab, popupFabCommentGoals.getMenu());
                     }
                     else {

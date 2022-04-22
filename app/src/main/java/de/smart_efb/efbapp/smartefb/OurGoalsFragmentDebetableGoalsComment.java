@@ -28,6 +28,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -52,6 +54,9 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
 
     // layout inflater for fragment
     LayoutInflater layoutInflaterForFragment;
+
+    // fab view
+    FloatingActionButton fabFragmentDebetableComment = null;
 
     // reference to the DB
     DBAdapter myDb;
@@ -260,6 +265,12 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         // init the DB
         myDb = new DBAdapter(fragmentDebetableGoalsContext);
 
+        // hide fab
+        // show fab and set on click listener
+        if (fabFragmentDebetableComment != null) {
+            fabFragmentDebetableComment.hide();
+        }
+
         // init the prefs
         prefs = fragmentDebetableGoalsContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentDebetableGoalsContext.MODE_PRIVATE);
         prefsEditor = prefs.edit();
@@ -271,7 +282,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         cursorChoosenDebetableGoals = myDb.getDebetableRowOurGoals(debetableGoalsServerDbIdToComment);
 
         // get all comments for choosen debetable goal
-        cursorDebetableGoalAllComments = myDb.getAllRowsOurGoalsDebetableGoalsComment(debetableGoalsServerDbIdToComment, "descending");
+        cursorDebetableGoalAllComments = myDb.getAllRowsOurGoalsDebetableGoalsComment(debetableGoalsServerDbIdToComment, "descending", 0);
         
         // Set correct subtitle in Activity -> "Kommentieren Absprache ..."
         String tmpSubtitle = String.format(getResources().getString(getResources().getIdentifier("ourGoalsSubtitleDebetableGoalsComment", "string", fragmentDebetableGoalsContext.getPackageName())), debetableGoalNumberInListView);
@@ -284,7 +295,13 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
 
     // build the view for the fragment
     private void buildFragmentDebetableGoalsCommentView () {
-        
+
+        // set intro text for comment debetable goal
+        TextView textViewIntroTextForCommentDebetableGoal = viewFragmentDebetableGoalsComment.findViewById(R.id.introStructQuestionForCommentDebetableGoal);
+        String tmpIntroTextForCommentDebetableGoalField = this.getResources().getString(R.string.introStructQuestionForCommentDebetableGoal);
+        tmpIntroTextForCommentDebetableGoalField = String.format(tmpIntroTextForCommentDebetableGoalField, debetableGoalNumberInListView);
+        textViewIntroTextForCommentDebetableGoal.setText(tmpIntroTextForCommentDebetableGoalField);
+
         //textview for the comment intro
         TextView textCommentNumberIntro = viewFragmentDebetableGoalsComment.findViewById(R.id.debetableGoalCommentNumberIntro);
         String tmpCommentNumberIntro = this.getResources().getString(R.string.showDebetableGoalsIntroText) + " " + debetableGoalNumberInListView;
@@ -440,7 +457,7 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
             tmpTextViewCommentText.setText(tmpCommentText);
 
             // button goto overview comment debetable goal
-            Button buttonGoToDebetableGoalOverview = viewFragmentDebetableGoalsComment.findViewById(R.id.buttonSketchCommentBackToShowComment);
+            Button buttonGoToDebetableGoalOverview = viewFragmentDebetableGoalsComment.findViewById(R.id.buttonDebetableCommentBackToShowComment);
             // onClick listener goto comment debetable goals overview
             buttonGoToDebetableGoalOverview.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -556,7 +573,12 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
         textViewCountLettersCommentEditText.setText(tmpInfoTextCountLetters);
 
         // comment textfield -> insert new comment
-        final EditText txtInputDebetableCommentComment = (EditText) viewFragmentDebetableGoalsComment.findViewById(R.id.inputDebetableGoalComment);
+        final EditText txtInputDebetableCommentComment = viewFragmentDebetableGoalsComment.findViewById(R.id.inputDebetableGoalComment);
+
+        // set hint text in edit text field
+        String tmpHintTextForCommentField = this.getResources().getString(R.string.commentDebetableGoalTextFieldHintText);
+        tmpHintTextForCommentField = String.format(tmpHintTextForCommentField, debetableGoalNumberInListView);
+        txtInputDebetableCommentComment.setHint(tmpHintTextForCommentField);
 
         // set text watcher to count letters in comment field
         final TextWatcher txtInputGoalCommentTextWatcher = new TextWatcher() {
@@ -577,6 +599,23 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
 
         // set input filter max length for comment field
         txtInputDebetableCommentComment.setFilters(new InputFilter[] {new InputFilter.LengthFilter(tmpMaxLength)});
+
+        // set text max comment/ actual comment
+        TextView infoTextCountComment = viewFragmentDebetableGoalsComment.findViewById(R.id.infoTextCountDebetableComment);
+        String tmpInfoTextCountCommentSingluarPluaralNoLimit;
+        if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment, 0) == 1 && commentLimitationBorder) {
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = this.getResources().getString(R.string.ourGoalsDebetableCommentCountCommentTextSingular);
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = String.format(tmpInfoTextCountCommentSingluarPluaralNoLimit, prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment,0), prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment, 0));
+        }
+        else if (prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment, 0) > 1 && commentLimitationBorder) {
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = this.getResources().getString(R.string.ourGoalsDebetableCommentCountCommentTextPlural);
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = String.format(tmpInfoTextCountCommentSingluarPluaralNoLimit, prefs.getInt(ConstansClassOurGoals.namePrefsCommentCountDebetableComment,0), prefs.getInt(ConstansClassOurGoals.namePrefsCommentMaxCountDebetableComment, 0));
+
+        }
+        else {
+            tmpInfoTextCountCommentSingluarPluaralNoLimit = this.getResources().getString(R.string.ourGoalsDebetableCommentCountCommentTextNoLimit);
+        }
+        infoTextCountComment.setText(tmpInfoTextCountCommentSingluarPluaralNoLimit);
 
         // button send comment
         Button buttonSendDebetableCommentComment = viewFragmentDebetableGoalsComment.findViewById(R.id.buttonSendDebetableGoalComment);
@@ -601,8 +640,8 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                         tmpErrorTextView.setVisibility(View.GONE);
                     }
 
-                    // comment textfield -> insert new comment
-                    tmpErrorTextView = (TextView) viewFragmentDebetableGoalsComment.findViewById(R.id.errorFreeQuestionForCommentDebeableGoal);
+                    // check comment textfield -> insert new comment
+                    tmpErrorTextView = viewFragmentDebetableGoalsComment.findViewById(R.id.errorFreeQuestionForCommentDebeableGoal);
                     if (txtInputDebetableCommentComment.getText().toString().length() < 3 && tmpErrorTextView != null) {
                         debetableGoalCommentNoError = false;
                         tmpErrorTextView.setVisibility(View.VISIBLE);
@@ -693,6 +732,9 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
 
         // call getter-methode getDebetableGoalsDbIdFromLink() in ActivityOurGoals to get DB ID for the actuale debetable goal
         tmpdebetableGoalsServerDbIdToComment = ((ActivityOurGoals)getActivity()).getDebetableGoalDbIdFromLink();
+
+        // call getter-methode getFabViewOurGoals() in ActivityOurGoals to get view for fab
+        fabFragmentDebetableComment = ((ActivityOurGoals)getActivity()).getFabViewOurGoals();
 
         if (tmpdebetableGoalsServerDbIdToComment > 0) {
             debetableGoalsServerDbIdToComment = tmpdebetableGoalsServerDbIdToComment;

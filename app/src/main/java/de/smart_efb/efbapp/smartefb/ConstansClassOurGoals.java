@@ -32,7 +32,6 @@ class ConstansClassOurGoals {
     // prefs name for show link for old goals
     static final String namePrefsShowLinkOldGoals = "showOldGoals";
 
-
     // prefs name for show link for debetable goals
     static final String namePrefsShowLinkDebetableGoals = "showDebetableGoals";
 
@@ -90,11 +89,6 @@ class ConstansClassOurGoals {
     // true -> jointly goals are updated; false -> no update
     static final String namePrefsSignalJointlyGoalsUpdate = "signalJointlyGoalsUpdated";
 
-
-
-
-
-
     // sort sequence of goals jointly comment list-> "descending" or "ascending"
     static final String namePrefsSortSequenceOfGoalsJointlyCommentList = "goalsJointlyCommentSortSequence";
 
@@ -109,12 +103,6 @@ class ConstansClassOurGoals {
 
     // sort sequence of debetable goals list-> "descending" or "ascending"
     static final String namePrefsSortSequenceOfDebetableGoalsList = "debetableGoalsSortSequence";
-
-
-
-
-
-
 
     // prefs name for start Date Evaluation in mills
     static final String namePrefsStartDateJointlyGoalsEvaluationInMills = "startDataJointlyGoalsEvaluationInMills";
@@ -131,35 +119,13 @@ class ConstansClassOurGoals {
     // prefs name for jointly goals time start point evaluation in millis
     static final String namePrefsStartPointJointlyGoalsEvaluationPeriodInMills = "startPointJointlygoalsEvaluationPeriodInMills";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // prefs name for number of comment in list for show comment in debetable goals
+    static final String namePrefsNumberOfCommentForOurGoalsDebetableGoalsShowComment = "numberOfCommentForOurGoalsDebetableGoalsShowComment";
 
     // default time for active and pause time in evaluation jointly goal (time in seconds)
     static final int defaultTimeForActiveAndPauseEvaluationJointlyGoals = 43200; // this is 12 hours
 
     // prefs name for author of debetable goals
     static final String namePrefsAuthorOfDebetableGoals = "authorOfDebetableGoals";
-
-    // constans for normal goal in change to
-    static final String jointlyGoalStatusJointly = "jointly";
-
-    // constans for debetable goal in change to
-    static final String jointlyGoalStatusDebetable = "debetable";
-
-    // constans for nothing in change to
-    static final String jointlyGoalStatusNothing = "nothing";
-
-
 
 }

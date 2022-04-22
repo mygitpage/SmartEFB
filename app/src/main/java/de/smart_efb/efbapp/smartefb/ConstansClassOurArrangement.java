@@ -128,26 +128,4 @@ class ConstansClassOurArrangement {
     // default time for active and pause time in evaluation arrangement (time in seconds)
     static final int defaultTimeForActiveAndPauseEvaluationArrangement = 43200; // this is 12 hours
 
-
-    // constans for normal arrangement in change to
-    static final String arrangementStatusNormal = "normal";
-
-    // constans for sketch arrangement in change to
-    static final String arrangementStatusSketch = "sketch";
-
-    // constans for nothing in change to
-    static final String arrangementStatusNothing = "nothing";
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
