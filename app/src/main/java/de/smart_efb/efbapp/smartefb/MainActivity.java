@@ -942,51 +942,28 @@ public class MainActivity extends AppCompatActivity {
                 case 9: // update nine
                     // nothing to do!
                 case 10: // update ten
-
-
-                    // Bitte kontrollieren, ob hier weitere Inits fehlen, beispielsweise für comment list, etc.
-
                     prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementNowList, "ascending");  // init sort of now arrangement
                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsNumberOfCommentForOurArrangementNowShowComment, 20); // init the number of comments for list in our arrangement show comment
-
                     prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementSketchList, "ascending");  // init sort of sketch arrangement
                     prefsEditor.putInt(ConstansClassOurArrangement.namePrefsNumberOfCommentForOurArrangementSketchShowComment, 20); // init the number of comments for list in our arrangement sketch show comment
-
-
-                    prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "ascending");  // init sort of old arrangement
-
-
+                    prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "ascending_old");  // init sort of old arrangement
 
                     // init prefs for goals
                     prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsJointlyCommentList, "ascending");  // init sort of old arrangement
                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsNumberOfCommentForOurGoalsJointlyGoalsShowComment, 20);
-
-
-                    prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsList, "ascending");  // init sort of old arrangement
-
-
-                    prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsOldList, "ascending");  // init sort of old arrangement
-
-
-                    prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "ascending");  // init sort of old arrangement
+                    prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsList, "ascending");  // init sort of jointly goals
+                    prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsOldList, "ascending_old");  // init sort of old goals
+                    prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "ascending");  // init sort of debetable comment list
                     prefsEditor.putInt(ConstansClassOurGoals.namePrefsNumberOfCommentForOurGoalsDebetableGoalsShowComment, 20);
-
-
                     prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfDebetableGoalsList, "ascending");  // init sort of old arrangement
 
-
-
-
-
-
-
-                case 11: // update ten
+                case 11: // update eleven
                     // nothing to do!
-                case 12: // update ten
+                case 12: // update 12
                     // nothing to do!
-                case 13: // update ten
+                case 13: // update 13
                     // nothing to do!
-                case 14: // update ten
+                case 14: // update 14
                     // nothing to do!
             }
 

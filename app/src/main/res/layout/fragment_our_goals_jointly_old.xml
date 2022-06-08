@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/listOurArrangementOldHolder"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/main_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/body_background">
+    android:background="@color/body_background"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/textViewOldJointlyGoalsNothingThere"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,7 +35,7 @@
 
     </RelativeLayout>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/textViewOldJointlyGoalsFunctionNotAvailable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -61,45 +62,12 @@
 
     </RelativeLayout>
 
-
-<!--
-    <TextView
-        android:id="@+id/textViewOldJointlyGoalsNothingThere"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textColor="@color/text_color"
-        android:gravity="left"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:text="@string/ourGoalsOldJointlyGoalsNothingThere"
-        android:paddingTop="15dp"
-        android:paddingLeft="15dp"/>
-
-    <TextView
-        android:id="@+id/textViewOldJointlyGoalsFunctionNotAvailable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16dp"
-        android:textColor="@color/text_color"
-        android:gravity="left"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:text="@string/ourGoalsOldJointlyGoalsFunctionNotAvailable"
-        android:paddingTop="15dp"
-        android:paddingLeft="15dp"/>
--->
-
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listOurGoalsJointlyOld"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@null"
-        android:divider="@null"
-        android:transcriptMode="normal"
-        android:stackFromBottom="false">
-    </ListView>
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:scrollbars="none"/>
 
-</LinearLayout>
-
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

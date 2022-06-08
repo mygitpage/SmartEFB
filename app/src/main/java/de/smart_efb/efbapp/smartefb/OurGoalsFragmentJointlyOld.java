@@ -10,14 +10,22 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Created by ich on 30.11.2016.
@@ -38,6 +46,16 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
 
     // shared prefs for the settings
     SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
+
+    // the recycler view
+    RecyclerView recyclerViewOldJointlyGoals = null;
+
+    // data array of jointly goals for recycler view
+    ArrayList<ObjectSmartEFBGoals> arrayListOldJointlyGoals;
+
+    // reference jointlyGoalsListAdapter for the recycler view
+    OurGoalsOldJointlyGoalsRecyclerViewAdapter oldJointlyGoalsRecyclerViewAdapter;
 
     // the current date of jointly goals -> the other are old
     long currentDateOfJointlyGoal;
@@ -45,14 +63,14 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
     // block id of current jointly goals
     String currentBlockIdOfJointlyGoals = "";
 
-    // reference cursorAdapter for the listview
-    OurGoalsJointlyOldCursorAdapter dataAdapter;
 
-    
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
 
         viewFragmentJointlyOld = layoutInflater.inflate(R.layout.fragment_our_goals_jointly_old, null);
+
+        // fragment has option menu
+        setHasOptionsMenu(true);
 
         // register broadcast receiver and intent filter for action ACTIVITY_STATUS_UPDATE
         IntentFilter filter = new IntentFilter("ACTIVITY_STATUS_UPDATE");
@@ -101,6 +119,61 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
 
         // close db connection
         myDb.close();
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+
+        menuInflater.inflate(R.menu.menu_efb_our_goals_fragment_jointly_old, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+    }
+
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem registerItemDesc = menu.findItem(R.id.our_goals_menu_fragment_old_sort_desc);
+        MenuItem registerItemAsc = menu.findItem(R.id.our_goals_menu_fragment_old_sort_asc);
+        MenuItem registerNoGoalsInfo = menu.findItem(R.id.our_goals_menu_fragment_old_no_goals_available);
+
+        if (arrayListOldJointlyGoals != null && arrayListOldJointlyGoals.size() > 0) {
+
+            registerNoGoalsInfo.setVisible(false);
+            if (prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsOldList, "descending_old").equals("descending_old")) {
+                registerItemDesc.setVisible(false);
+                registerItemAsc.setVisible(true);
+            } else {
+                registerItemAsc.setVisible(false);
+                registerItemDesc.setVisible(true);
+            }
+        }
+        else {
+            registerNoGoalsInfo.setVisible(true);
+            registerItemDesc.setVisible(false);
+            registerItemAsc.setVisible(false);
+        }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.our_goals_menu_fragment_old_sort_desc:
+                prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsOldList, "descending_old");
+                prefsEditor.apply();
+                refreshFragmentView();
+                return true;
+            case R.id.our_goals_menu_fragment_old_sort_asc:
+                prefsEditor.putString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsOldList, "ascending_old");
+                prefsEditor.apply();
+                refreshFragmentView();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
@@ -157,13 +230,19 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
                 }
 
                 if (refreshView) {
-                    // refresh fragments view
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.detach(fragmentOldThisFragmentContext).attach(fragmentOldThisFragmentContext).commit();
+                    refreshFragmentView ();
                 }
             }
         }
     };
+
+
+    // refresh the fragments view
+    private void refreshFragmentView () {
+        // refresh fragments view
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(fragmentOldThisFragmentContext).attach(fragmentOldThisFragmentContext).commit();
+    }
 
 
     // inits the fragment for use
@@ -174,12 +253,19 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
 
         // init the prefs
         prefs = fragmentJointlyOldContext.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, fragmentJointlyOldContext.MODE_PRIVATE);
-
+        prefsEditor = prefs.edit();
+        
         //get current date of jointly goals
         currentDateOfJointlyGoal = prefs.getLong(ConstansClassOurGoals.namePrefsCurrentDateOfJointlyGoals, System.currentTimeMillis());
 
         //get current block id of jointly goals
         currentBlockIdOfJointlyGoals = prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, "0");
+
+        // new recycler view
+        recyclerViewOldJointlyGoals = viewFragmentJointlyOld.findViewById(R.id.listOurGoalsJointlyOld);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fragmentJointlyOldContext);
+        recyclerViewOldJointlyGoals.setLayoutManager(linearLayoutManager);
+        recyclerViewOldJointlyGoals.setHasFixedSize(true);
     }
 
 
@@ -187,38 +273,39 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
 
         String tmpSubtitle;
 
-        // find the listview
-        ListView listView = (ListView) viewFragmentJointlyOld.findViewById(R.id.listOurGoalsJointlyOld);
+        if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkOldGoals, false) && recyclerViewOldJointlyGoals != null) { // Function showOldJointlyGoals is available!!!!
 
-        if (prefs.getBoolean(ConstansClassOurGoals.namePrefsShowLinkOldGoals, false) && listView != null) { // Function showOldJointlyGoals is available!!!!
+            // get the data (all jointly old goals) from DB
+            arrayListOldJointlyGoals = myDb.getAllRowsOurGoalsJointlyGoalsArrayList(currentBlockIdOfJointlyGoals, "notEqualBlockId", prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfJointlyGoalsOldList, "descending_old"));
 
-            // get all old jointly goals from DB
-            Cursor cursor = myDb.getAllJointlyRowsOurGoals(currentBlockIdOfJointlyGoals,"notEqualBlockId", "ascending");
-
-            if (cursor.getCount() > 0) {
+            if (arrayListOldJointlyGoals.size() > 0) {
 
                 // show the list view for the old jointly goals, hide textview "Function not available" and "nothing there"
-                setVisibilityListViewOldJointlyGoals ("show");
+                setVisibilityRecyclerViewOldJointlyGoals ("show");
                 setVisibilityTextViewNothingThere ("hide");
                 setVisibilityTextViewFunctionNotAvailable ("hide");
 
                 // Set correct subtitle in Activity -> "ziele aelter als..."
                 tmpSubtitle = getResources().getString(getResources().getIdentifier("ourGoalsSubtitleOldJointlyGoals", "string", fragmentJointlyOldContext.getPackageName())) + " " + EfbHelperClass.timestampToDateFormat(currentDateOfJointlyGoal, "dd.MM.yyyy");
                 ((ActivityOurGoals) getActivity()).setOurGoalsToolbarSubtitle (tmpSubtitle, "jointlyOld");
-
-                // new dataadapter
-                dataAdapter = new OurGoalsJointlyOldCursorAdapter(
+                
+                // set visibility of FAB for this fragment
+                ((ActivityOurGoals) getActivity()).setOurGoalFABVisibility ("hide", "jointlyOld");
+                
+                // new recycler view adapter
+                oldJointlyGoalsRecyclerViewAdapter = new OurGoalsOldJointlyGoalsRecyclerViewAdapter(
                         getActivity(),
-                        cursor,
+                        arrayListOldJointlyGoals,
                         0);
 
-                // Assign adapter to ListView
-                listView.setAdapter(dataAdapter);
+                // Assign adapter to recycler view
+                recyclerViewOldJointlyGoals.setAdapter(oldJointlyGoalsRecyclerViewAdapter);
+
             }
             else {
 
                 // hide the list view for the old jointly goals, hide textview "Function not available", show textview "nothing there"
-                setVisibilityListViewOldJointlyGoals ("hide");
+                setVisibilityRecyclerViewOldJointlyGoals ("hide");
                 setVisibilityTextViewFunctionNotAvailable ("hide");
                 setVisibilityTextViewNothingThere ("show");
 
@@ -230,7 +317,7 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
         else { // Function showOldJointlyGoals is not available
 
             // show the list view for the old jointly goals, show textview "Function not available" and hide "nothing there"
-            setVisibilityListViewOldJointlyGoals ("hide");
+            setVisibilityRecyclerViewOldJointlyGoals ("hide");
             setVisibilityTextViewNothingThere ("hide");
             setVisibilityTextViewFunctionNotAvailable ("show");
 
@@ -242,19 +329,17 @@ public class OurGoalsFragmentJointlyOld extends Fragment {
     }
 
 
-    private void setVisibilityListViewOldJointlyGoals (String visibility) {
+    private void setVisibilityRecyclerViewOldJointlyGoals (String visibility) {
 
-        ListView tmplistView = (ListView) viewFragmentJointlyOld.findViewById(R.id.listOurGoalsJointlyOld);
-
-        if (tmplistView != null) {
+        if (recyclerViewOldJointlyGoals != null) {
 
             switch (visibility) {
 
                 case "show":
-                    tmplistView.setVisibility(View.VISIBLE);
+                    recyclerViewOldJointlyGoals.setVisibility(View.VISIBLE);
                     break;
                 case "hide":
-                    tmplistView.setVisibility(View.GONE);
+                    recyclerViewOldJointlyGoals.setVisibility(View.GONE);
                     break;
             }
         }

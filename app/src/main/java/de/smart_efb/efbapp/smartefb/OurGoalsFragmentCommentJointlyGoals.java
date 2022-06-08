@@ -641,6 +641,23 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
 
             }
         });
+
+        // button back to show comment overview for jointly goals
+        Button buttonBackToCommentOverviewForJointlyGoals = viewFragmentCommentJointlyGoals.findViewById(R.id.buttonJointlyCommentBackToShowJointlyComment);
+        // onClick listener back to comment overview for arrangement
+        buttonBackToCommentOverviewForJointlyGoals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), ActivityOurGoals.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("com","show_comment_for_jointly_goal");
+                intent.putExtra("db_id", goalServerDbIdToComment );
+                intent.putExtra("arr_num", goalNumberInListView);
+                getActivity().startActivity(intent);
+
+            }
+        });
         // End build the view
     }
 

@@ -305,7 +305,6 @@
             <string name="popupItemOurArrangementSketchArrangement11"><b>Entwurf 11 einschätzen</b></string>
             <string name="popupItemOurArrangementSketchArrangement12"><b>Entwurf 12 einschätzen</b></string>
         <!-- End String Activity Our Arrangement Sketch Popup Menu Comment Arrangement -->
-    
 
         <!-- fragment show old arrangements -->
             <string name="ourArrangementOldArrangementFunctionNotAvailable">Diese Funktion steht zur Verfügung,\nsobald Ihr/e Berater*innen diese einschalten!</string>
@@ -866,7 +865,7 @@
             <string name="infoTextDebetableGoalCommentCountSingular">Davon haben Sie bereits %1$d Einschätzung geschrieben.</string>
             <string name="infoTextDebetableGoalCommentCountPlural">Davon haben Sie bereits %1$d Einschätzungen geschrieben.</string>
             <string name="infoTextDebetableGoalCommentMaxLetters">Ihre Einschätzung darf maximal %1$d Zeichen lang sein und</string>
-            <string name="showDebetableGoalCommentIntroText">Die Einschätzungen zum strittigen Ziel</string>
+            <string name="showDebetableGoalCommentIntroText">Aktuellste Einschätzung zum strittigen Ziel</string>
             <string name="evaluateDebetableGoalSuggestion_1">Sehr stark</string>
             <string name="evaluateDebetableGoalSuggestion_2">Stark</string>
             <string name="evaluateDebetableGoalSuggestion_3">Mittelmäßig</string>
@@ -899,7 +898,7 @@
             <string name="toastMessageeDebetableCommentNotSendSuccessfullNoNetwork">Senden wird verschoben. Kein Netzwerk!</string>
             <string name="toastDebetableGoalsCommentCaseCloseToastText">Der Fall ist abgeschlossen! Einschätzungen werden nicht mehr gesendet!</string>
             <string name="ourGoalsDebetableShowCommentMenuSortDesc">Einschätzungen absteigend sortieren</string>
-            <string name="ourGoalsDebetableShowCommentMenuSortAsc">Einschätzungenaufsteigend sortieren</string>
+            <string name="ourGoalsDebetableShowCommentMenuSortAsc">Einschätzungen aufsteigend sortieren</string>
             <string name="ourGoalsDebetableShowCommentMenuCountCommentForList">Anzahl anzuzeigener Einschätzungen</string>
             <string name="select_dialog_our_goals_debetable_number_of_comment_title">Bitte wählen Sie die Anzahl der anzuzeigenden Einschätzungen</string>
             <string name="select_dialog_our_goals_debetable_number_of_comment_5">5 Einschätzungen</string>
@@ -950,14 +949,15 @@
             <string name="ourGoalsShowDebetableCommentLinkChangeSortSequenceOfDebetableCommentDescending">Einschätzungen aufsteigend sortieren (Älteste zu erst)</string>
         <!-- End fragment show comment debetable goals -->
 
-
         <!-- fragment show old jointly goals -->
             <string name="ourGoalsOldJointlyGoalsFunctionNotAvailable">Diese Funktion steht zur Verfügung,\nsobald Ihr/e Berater*innen diese einschalten!</string>
             <string name="ourGoalsOldJointlyGoalsNothingThere">Es sind keine älteren\ngemeinsamen Ziele vorhanden!</string>
             <string name="ourGoalsOldJointlyGoalDateIntro">Ältere gemeinsame Ziele vom</string>
-            <string name="showOurGoalsOldJointlyGoalIntroText">Altes Ziel</string>
+            <string name="showOurGoalsOldJointlyGoalIntroText">Vergangenes Ziel</string>
+            <string name="ourGoalsOldGoalsMenuSortDesc">Ältere Ziele absteigend sortieren</string>
+            <string name="ourGoalsOldGoalsMenuSortAsc">Ältere Ziele aufsteigend sortieren</string>
+            <string name="ourGoalsOldGoalsMenuNoGoalsAvailable">Keine älteren Ziele vorhanden</string>
         <!-- End fragment show old jointly goals -->
-
 
         <!-- Subtitle under Title Our Goals -->
 

@@ -496,38 +496,6 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
             ((ActivityOurGoals) getActivity()).setOurGoalFABVisibility("hide", "debetableShowComment");
         }
 
-
-            
-        
-        
-        
-        
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-        // get the data (all comments for an debetable goal) from DB
-        Cursor cursor = myDb.getAllRowsOurGoalsDebetableGoalsComment(debetableServerDbIdToShow, prefs.getString(ConstansClassOurGoals.namePrefsSortSequenceOfGoalsDebetableCommentList, "descending"));
-
-        // get the data (the choosen debetable goal) from the DB
-        Cursor choosenDebetableGoal = myDb.getDebetableRowOurGoals(debetableServerDbIdToShow);
-
-*/
-
-
-
-
-
-
         if (arrayListDebetableComments.size() > 0 && arrayListChoseDebetableGoals.size() > 0 && recyclerViewShowDebetableComment != null) {
 
             showDebetableCommentRecyclerViewAdapter = new OurGoalsShowCommentDebetableGoalsRecyclerViewAdapter(

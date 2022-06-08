@@ -63,9 +63,6 @@ public class OurArrangementFragmentOld extends Fragment {
     // block id of cuurrent arrangements
     String currentBlockIdOfArrangement = "";
 
-    // reference cursorAdapter for the listview
-    OurArrangementOldCursorAdapter dataAdapter;
-
 
     @Override
     public View onCreateView (LayoutInflater layoutInflater, ViewGroup container, Bundle saveInstanceState) {
@@ -144,7 +141,7 @@ public class OurArrangementFragmentOld extends Fragment {
         if (arrayListOldArrangements != null && arrayListOldArrangements.size() > 0) {
 
             registerNoArrangementsInfo.setVisible(false);
-            if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "descending").equals("descending")) {
+            if (prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "descending_old").equals("descending_old")) {
                 registerItemDesc.setVisible(false);
                 registerItemAsc.setVisible(true);
             } else {
@@ -166,12 +163,12 @@ public class OurArrangementFragmentOld extends Fragment {
         switch (item.getItemId()) {
 
             case R.id.our_arrangement_menu_fragment_old_sort_desc:
-                prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "descending");
+                prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "descending_old");
                 prefsEditor.apply();
                 refreshFragmentView();
                 return true;
             case R.id.our_arrangement_menu_fragment_old_sort_asc:
-                prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "ascending");
+                prefsEditor.putString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "ascending_old");
                 prefsEditor.apply();
                 refreshFragmentView();
                 return true;
@@ -179,7 +176,6 @@ public class OurArrangementFragmentOld extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
@@ -262,7 +258,7 @@ public class OurArrangementFragmentOld extends Fragment {
         //get current block id of arrangements
         currentBlockIdOfArrangement = prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, "0");
 
-        // new recyler view
+        // new recycler view
         recyclerViewOldArrangement = viewFragmentOld.findViewById(R.id.listOurArrangementOld);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(fragmentOldContext);
         recyclerViewOldArrangement.setLayoutManager(linearLayoutManager);
@@ -277,12 +273,12 @@ public class OurArrangementFragmentOld extends Fragment {
         if (prefs.getBoolean(ConstansClassOurArrangement.namePrefsShowOldArrangement, false) && recyclerViewOldArrangement != null) { // Function showOldArrangement is available!!!!
 
             // get the data (all now arrangements) from DB
-            arrayListOldArrangements = myDb.getAllRowsOurArrangementNowArrayList(currentBlockIdOfArrangement, "notEqualBlockId", prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "descending"));
+            arrayListOldArrangements = myDb.getAllRowsOurArrangementNowArrayList(currentBlockIdOfArrangement, "notEqualBlockId", prefs.getString(ConstansClassOurArrangement.namePrefsSortSequenceOfArrangementOldList, "descending_old"));
 
             if (arrayListOldArrangements.size() > 0) {
 
                 // show the list view for the old arrangements, hide textview "Function not available" and "nothing there"
-                setVisibilityListViewOldArrangements ("show");
+                setVisibilityRecyclerViewOldArrangements ("show");
                 setVisibilityTextViewNothingThere ("hide");
                 setVisibilityTextViewFunctionNotAvailable ("hide");
 
@@ -306,7 +302,7 @@ public class OurArrangementFragmentOld extends Fragment {
             else {
 
                 // hide the list view for the old arrangements, hide textview "Function not available", show textview "nothing there"
-                setVisibilityListViewOldArrangements ("hide");
+                setVisibilityRecyclerViewOldArrangements ("hide");
                 setVisibilityTextViewFunctionNotAvailable ("hide");
                 setVisibilityTextViewNothingThere ("show");
 
@@ -321,7 +317,7 @@ public class OurArrangementFragmentOld extends Fragment {
         else { // Function showOldArrangement is not available
 
             // show the list view for the old arrangements, show textview "Function not available" and hide "nothing there"
-            setVisibilityListViewOldArrangements ("hide");
+            setVisibilityRecyclerViewOldArrangements ("hide");
             setVisibilityTextViewNothingThere ("hide");
             setVisibilityTextViewFunctionNotAvailable ("show");
 
@@ -335,7 +331,7 @@ public class OurArrangementFragmentOld extends Fragment {
     }
 
 
-    private void setVisibilityListViewOldArrangements (String visibility) {
+    private void setVisibilityRecyclerViewOldArrangements (String visibility) {
 
         if (recyclerViewOldArrangement != null) {
 

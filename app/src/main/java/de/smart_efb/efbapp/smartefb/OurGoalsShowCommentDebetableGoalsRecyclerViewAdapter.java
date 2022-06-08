@@ -118,7 +118,7 @@ public class OurGoalsShowCommentDebetableGoalsRecyclerViewAdapter extends Recycl
             textViewShowActualDebetableCommentHeadline = ItemView.findViewById(R.id.actualDebetableCommentInfoText);
             newEntryOfDebetableComment = ItemView.findViewById(R.id.actualDebetableCommentNewInfoText);
             textViewAuthorNameLastActualDebetableComment = ItemView.findViewById(R.id.textAuthorNameActualDebetableComment);
-            textViewSendInfoLastActualDebetableComment = ItemView.findViewById(R.id.textSendInfoActualSketchComment);
+            textViewSendInfoLastActualDebetableComment = ItemView.findViewById(R.id.textSendInfoActualDebetableComment);
             textViewShowActualDebetableComment = ItemView.findViewById(R.id.listActualTextDebetableComment);
             textViewShowActualDebetableCommentAssessementValue = ItemView.findViewById(R.id.assessementValueForDebetableComment);
         }

@@ -627,7 +627,6 @@ public class OurArrangementFragmentNowComment extends Fragment {
             }
         });
 
-
         // button back to arrangement overview
         Button buttonBackToArrangementOverview = viewFragmentNowComment.findViewById(R.id.buttonNowCommentBackToArrangement);
         // onClick listener back to arrangement overview
@@ -645,8 +644,7 @@ public class OurArrangementFragmentNowComment extends Fragment {
             }
         });
 
-
-        // button back to comment overview for arrangement
+        // button back to show comment overview for arrangement
         Button buttonBackToCommentOverviewForArrangement = viewFragmentNowComment.findViewById(R.id.buttonNowCommentBackToShowComment);
         // onClick listener back to comment overview for arrangement
         buttonBackToCommentOverviewForArrangement.setOnClickListener(new View.OnClickListener() {

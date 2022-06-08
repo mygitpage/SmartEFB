@@ -45,9 +45,6 @@ public class OurArrangementOldArrangementRecyclerViewAdapter extends RecyclerVie
     private int STATE;
 
 
-
-
-
     // own constructor!!!
     public OurArrangementOldArrangementRecyclerViewAdapter (Context context, ArrayList<ObjectSmartEFBArrangement> arrangementList, int flags) {
 
@@ -128,11 +125,9 @@ public class OurArrangementOldArrangementRecyclerViewAdapter extends RecyclerVie
                 // cast holder
                 OurArrangementOldArrangementRecyclerViewAdapter.OurArrangementOldArrangementItemViewHolder itemView = (OurArrangementOldArrangementRecyclerViewAdapter.OurArrangementOldArrangementItemViewHolder) holder;
 
-
                 String txtOldArrangementNumber = "";
                 if (position == 0 || actualArrangementDate != arrangementElement.getArrangementWriteTime()) { // listview for first element
                     // item + date
-
                     actualArrangementDate = arrangementElement.getArrangementWriteTime();
 
                     countOldArrangementForView = 1;
