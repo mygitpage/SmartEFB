@@ -8,7 +8,6 @@ import android.os.CountDownTimer;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -273,7 +272,7 @@ public class OurArrangementNowArrangementRecyclerViewAdapter extends RecyclerVie
                                                         TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
                                                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
                                                 // put count down to string
-                                                Spanned tmpCountdownTimerString = Html.fromHtml(String.format(tmpTextNextEvaluationPeriod, tmpTime));
+                                                Spanned tmpCountdownTimerString = HtmlCompat.fromHtml(String.format(tmpTextNextEvaluationPeriod, tmpTime), HtmlCompat.FROM_HTML_MODE_LEGACY);
 
                                                 // and set to textview
                                                 linkEvaluateAnArrangement.setText(tmpCountdownTimerString);

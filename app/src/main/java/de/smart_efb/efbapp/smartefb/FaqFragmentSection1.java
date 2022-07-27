@@ -82,7 +82,7 @@ public class FaqFragmentSection1 extends Fragment {
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeJobIntentServiceEfb
-    private BroadcastReceiver faqFragmentSection1BrodcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver faqFragmentSection1BrodcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {

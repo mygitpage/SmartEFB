@@ -9,6 +9,7 @@ import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -222,7 +223,7 @@ public class ActivityFaq extends AppCompatActivity {
                 // Create MD5 Hash
                 MessageDigest digest = java.security.MessageDigest.getInstance(MD5);
                 digest.update(textString.getBytes());
-                byte messageDigest[] = digest.digest();
+                byte[] messageDigest = digest.digest();
 
                 // Create Hex String
                 StringBuilder hexString = new StringBuilder();
@@ -274,17 +275,13 @@ public class ActivityFaq extends AppCompatActivity {
 
         String linkLessOrMoreTextString = "";
         String linkLessTextString = contextFaq.getResources().getString(R.string.preventionLinkTextLess);
-        String linkMoreTextString = contextFaq.getResources().getString(R.string.preventionLinkTextMore);
-
-        linkLessOrMoreTextString = linkMoreTextString;
+        linkLessOrMoreTextString = contextFaq.getResources().getString(R.string.preventionLinkTextMore);
         if (tmpExpandTextList.contains(tmpLinkTextHash+";")) {
             linkLessOrMoreTextString = linkLessTextString;
         }
 
         // generate link for output
-        Spanned linkMoreOrLess = Html.fromHtml(subText + "\n<a href=\"" + linkLessOrMoreTextLinkBuilder.build().toString() + "\"><b>" + linkLessOrMoreTextString + "</b></a>");
-
-        return linkMoreOrLess;
+        return HtmlCompat.fromHtml(subText + "\n<a href=\"" + linkLessOrMoreTextLinkBuilder.build().toString() + "\"><b>" + linkLessOrMoreTextString + "</b></a>", HtmlCompat.FROM_HTML_MODE_LEGACY);
     }
 
 

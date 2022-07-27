@@ -2,20 +2,20 @@ package de.smart_efb.efbapp.smartefb;
 
 public class ObjectSmartEFBGoals {
 
-    private Integer rowID;
-    private String goal;
-    private String authorName;
-    private String blockid;
-    private String changeTo;
-    private Long jointlyGoalWriteTime;
-    private Long debetableGoalWriteTime;
-    private Long lastEvalTime;
-    private Integer debetableGoal;
-    private Integer evaluatePossible;
-    private Integer newEntry;
-    private Integer serverIdGoal;
-    private Integer status;
-    private Integer positionNumber;
+    private final Integer rowID;
+    private final String goal;
+    private final String authorName;
+    private final String blockid;
+    private final String changeTo;
+    private final Long jointlyGoalWriteTime;
+    private final Long debetableGoalWriteTime;
+    private final Long lastEvalTime;
+    private final Integer debetableGoal;
+    private final Integer evaluatePossible;
+    private final Integer newEntry;
+    private final Integer serverIdGoal;
+    private final Integer status;
+    private final Integer positionNumber;
 
     // constructor for object jointly goal and debetable goal
     public ObjectSmartEFBGoals (Integer rowID, String goal, String authorName, String blockid, String changeTo, Long jointlyGoalWriteTime, Long debetableGoalWriteTime, Long lastEvalTime, Integer debetableGoal, Integer evaluatePossible, Integer newEntry, Integer serverIdGoal, Integer status, Integer positionNumber) {

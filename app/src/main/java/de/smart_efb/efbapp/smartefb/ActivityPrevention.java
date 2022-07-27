@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 
 import android.text.Html;
 import android.text.Spanned;
@@ -298,7 +299,7 @@ public class ActivityPrevention extends AppCompatActivity {
                 // Create MD5 Hash
                 MessageDigest digest = java.security.MessageDigest.getInstance(MD5);
                 digest.update(textString.getBytes());
-                byte messageDigest[] = digest.digest();
+                byte[] messageDigest = digest.digest();
 
                 // Create Hex String
                 StringBuilder hexString = new StringBuilder();
@@ -358,7 +359,7 @@ public class ActivityPrevention extends AppCompatActivity {
         }
 
         // generate link for output
-        Spanned linkMoreOrLess = Html.fromHtml(subText + "\n<a href=\"" + linkLessOrMoreTextLinkBuilder.build().toString() + "\"><b>" + linkLessOrMoreTextString + "</b></a>");
+        Spanned linkMoreOrLess = HtmlCompat.fromHtml(subText + "\n<a href=\"" + linkLessOrMoreTextLinkBuilder.build().toString() + "\"><b>" + linkLessOrMoreTextString + "</b></a>", HtmlCompat.FROM_HTML_MODE_LEGACY);
 
         return linkMoreOrLess;
     }
@@ -377,7 +378,7 @@ public class ActivityPrevention extends AppCompatActivity {
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
-    private BroadcastReceiver preventionBrodcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver preventionBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {

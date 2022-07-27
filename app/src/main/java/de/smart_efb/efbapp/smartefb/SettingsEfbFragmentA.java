@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AlertDialog;
@@ -156,7 +157,7 @@ public class SettingsEfbFragmentA extends Fragment {
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeJobIntentServiceEfb
-    private BroadcastReceiver settingsFragmentABrodcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver settingsFragmentABrodcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -253,7 +254,7 @@ public class SettingsEfbFragmentA extends Fragment {
             String tmpLinkTextNewConnectionNumber = fragmentConnectToServerContext.getResources().getString(R.string.settingsGenerateNewConnectionNumberText);
 
             // generate link for output
-            Spanned tmpLinkNewConnectionNumber = Html.fromHtml("<a href=\"" + newConnectionNumberLinkBuilder.build().toString() + "\">" + tmpLinkTextNewConnectionNumber + "</a>");
+            Spanned tmpLinkNewConnectionNumber = HtmlCompat.fromHtml("<a href=\"" + newConnectionNumberLinkBuilder.build().toString() + "\">" + tmpLinkTextNewConnectionNumber + "</a>", HtmlCompat.FROM_HTML_MODE_LEGACY);
 
             // and set to textview
             tmpTextViewGenerateNewConnectionNumber.setVisibility(View.VISIBLE);
@@ -412,7 +413,7 @@ public class SettingsEfbFragmentA extends Fragment {
             else {
                 tmpTextIntroHeadingText = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerSuccessfulTextWithoutDate);
             }
-            textViewConnectedWithServerIntroText.setText(Html.fromHtml(tmpTextIntroHeadingText));
+            textViewConnectedWithServerIntroText.setText(HtmlCompat.fromHtml(tmpTextIntroHeadingText, HtmlCompat.FROM_HTML_MODE_LEGACY));
             textViewConnectedWithServerIntroText.setVisibility(View.VISIBLE);
             textViewConnectedWithServerIntroText.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -457,7 +458,7 @@ public class SettingsEfbFragmentA extends Fragment {
                 textViewBorder.setVisibility(View.VISIBLE);
                 // set coach and client names to view
                 TextView textViewInvolvedPersonCoaches = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonCoachesAndClients);
-                textViewInvolvedPersonCoaches.setText(Html.fromHtml(tmpAllCoachesForView));
+                textViewInvolvedPersonCoaches.setText(HtmlCompat.fromHtml(tmpAllCoachesForView, HtmlCompat.FROM_HTML_MODE_LEGACY));
                 textViewInvolvedPersonCoaches.setVisibility(View.VISIBLE);
             }
 
@@ -497,7 +498,7 @@ public class SettingsEfbFragmentA extends Fragment {
                     textViewBorder.setVisibility(View.VISIBLE);
                     // set presence text to view
                     TextView textViewInvolvedPersonPrecenseText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonPresenceText);
-                    textViewInvolvedPersonPrecenseText.setText(Html.fromHtml(tmpAllPresenceTextCoaches));
+                    textViewInvolvedPersonPrecenseText.setText(HtmlCompat.fromHtml(tmpAllPresenceTextCoaches, HtmlCompat.FROM_HTML_MODE_LEGACY));
                     textViewInvolvedPersonPrecenseText.setVisibility(View.VISIBLE);
                 }
             }

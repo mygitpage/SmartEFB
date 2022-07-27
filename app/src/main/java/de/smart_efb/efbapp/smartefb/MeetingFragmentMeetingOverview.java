@@ -112,7 +112,7 @@ public class MeetingFragmentMeetingOverview extends Fragment {
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeJobIntentServiceEfb
-    private BroadcastReceiver meetingFragmentMeetingOverviewBrodcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver meetingFragmentMeetingOverviewBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {

@@ -2,20 +2,20 @@ package de.smart_efb.efbapp.smartefb;
 
 public class ObjectSmartEFBArrangement {
 
-    private Integer rowID;
-    private String arrangement;
-    private String authorName;
-    private String blockid;
-    private String changeTo;
-    private Long arrangementWriteTime;
-    private Long arrangementSketchWriteTime;
-    private Long lastEvalTime;
-    private Integer sketchArrangement;
-    private Integer evaluatePossible;
-    private Integer newEntry;
-    private Integer serverIdArrangement;
-    private Integer status;
-    private Integer positionNumber;
+    private final Integer rowID;
+    private final String arrangement;
+    private final String authorName;
+    private final String blockid;
+    private final String changeTo;
+    private final Long arrangementWriteTime;
+    private final Long arrangementSketchWriteTime;
+    private final Long lastEvalTime;
+    private final Integer sketchArrangement;
+    private final Integer evaluatePossible;
+    private final Integer newEntry;
+    private final Integer serverIdArrangement;
+    private final Integer status;
+    private final Integer positionNumber;
 
     // constructor for object now arrangement and sketch arrangement
     public ObjectSmartEFBArrangement (Integer rowID, String arrangement, String authorName, String blockid, String changeTo, Long arrangementWriteTime, Long arrangementSketchWriteTime, Long lastEvalTime, Integer sketchArrangement, Integer evaluatePossible, Integer newEntry, Integer serverIdArrangement, Integer status, Integer positionNumber) {

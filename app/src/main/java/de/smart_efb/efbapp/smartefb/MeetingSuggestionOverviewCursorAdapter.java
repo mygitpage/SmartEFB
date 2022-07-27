@@ -23,6 +23,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.text.HtmlCompat;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -47,7 +50,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
     private int [] checkBoxSuggestionsValues = new int [maxSimultaneousMeetingCheckBoxes+1];
 
     // array of meeting places names (only 3 possible-> 0=nothing; 1=Werder(Havel); 2=Bad Belzig)
-    private String  meetingPlaceNames[] = new String[3];
+    private String[] meetingPlaceNames = new String[3];
 
     // number of min votes for suggestion
     private int minNumberOfVotes = 1;
@@ -184,7 +187,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
             // set info text
             String tmpTextAuthorNameMeeting = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionAuthorAndDate), tmpAuthorName, meetingDate, meetingTime);
-            tmpTextViewAuthorNameForSuggestion.setText(Html.fromHtml(tmpTextAuthorNameMeeting));
+            tmpTextViewAuthorNameForSuggestion.setText(HtmlCompat.fromHtml(tmpTextAuthorNameMeeting, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
             // set title "actual suggestion"
             tmpTitleForSuggestion = context.getResources().getString(R.string.suggestionOverviewActualSuggestionTitle);
@@ -199,7 +202,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
 
             // set info text response time over
             String tmpTextAuthorNameMeeting = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionAuthorAndDateResponseTimeOver), tmpAuthorName, suggestionDate, suggestionTime, responseDate, responseTime);
-            tmpTextViewAuthorNameForSuggestion.setText(Html.fromHtml(tmpTextAuthorNameMeeting));
+            tmpTextViewAuthorNameForSuggestion.setText(HtmlCompat.fromHtml(tmpTextAuthorNameMeeting, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
             // set title "response time over suggestion"
             tmpTitleForSuggestion = context.getResources().getString(R.string.suggestionOverviewResponseTimeOverSuggestionTitle);
@@ -218,7 +221,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             String meetingCanceledDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME)), "dd.MM.yyyy");
             String meetingCanceledTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME)), "HH:mm");
             String tmpTextAuthorNameSuggestionWithCancele = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionAuthorAndDateWithCancele), tmpAuthorName, meetingDate, meetingTime, tmpCanceledAuthorName, meetingCanceledDate, meetingCanceledTime);
-            tmpTextViewAuthorNameForSuggestion.setText(Html.fromHtml(tmpTextAuthorNameSuggestionWithCancele));
+            tmpTextViewAuthorNameForSuggestion.setText(HtmlCompat.fromHtml(tmpTextAuthorNameSuggestionWithCancele, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
             // set title "suggestion canceled"
             tmpTitleForSuggestion = context.getResources().getString(R.string.suggestionOverviewCanceledSuggestionTitle);
@@ -255,7 +258,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                 tmpTextAuthorNameSuggestionWithVote = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionAuthorAndDateVoteNotSend), meetingVoteDate, meetingVoteTime);
             }
 
-            tmpTextViewAuthorNameForSuggestion.setText(Html.fromHtml(tmpTextAuthorNameSuggestionWithVote));
+            tmpTextViewAuthorNameForSuggestion.setText(HtmlCompat.fromHtml(tmpTextAuthorNameSuggestionWithVote, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
             // set title "vote for suggestion send"
             tmpTitleForSuggestion = context.getResources().getString(R.string.suggestionOverviewVoteSuggestionTitle);
@@ -271,7 +274,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             String meetingFoundDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_DATE)), "dd.MM.yyyy");
             String meetingFoundTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_DATE)), "HH:mm");
             String tmpTextAuthorNameMeetingFoundFromSuggestion = String.format(context.getResources().getString(R.string.meetingOverviewMeetingFoundFromSuggestionAuthorAndDate), tmpFoundAuthorName, meetingFoundDate, meetingFoundTime);
-            tmpTextViewAuthorNameForSuggestion.setText(Html.fromHtml(tmpTextAuthorNameMeetingFoundFromSuggestion));
+            tmpTextViewAuthorNameForSuggestion.setText(HtmlCompat.fromHtml(tmpTextAuthorNameMeetingFoundFromSuggestion, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
             // set title "meeting found"
             tmpTitleForSuggestion = context.getResources().getString(R.string.suggestionOverviewFoundMeetingFromSuggestionTitle);
@@ -380,7 +383,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
                 String tmpLinkClientDeleteEntry = context.getResources().getString(context.getResources().getIdentifier("suggestionOverviewLinkTextDeleteSuggestionEntry", "string", context.getPackageName()));
 
                 // generate link for output
-                Spanned tmpDeleteEntrydLink = Html.fromHtml("<a href=\"" + meetingClientDeleteEntryLinkBuilder.build().toString() + "\">" + tmpLinkClientDeleteEntry + "</a>");
+                Spanned tmpDeleteEntrydLink = HtmlCompat.fromHtml("<a href=\"" + meetingClientDeleteEntryLinkBuilder.build().toString() + "\">" + tmpLinkClientDeleteEntry + "</a>", HtmlCompat.FROM_HTML_MODE_LEGACY);
 
                 // and set to textview
                 tmpTextViewClientDeleteEntry.setVisibility(View.VISIBLE);
@@ -444,7 +447,7 @@ public class MeetingSuggestionOverviewCursorAdapter extends CursorAdapter {
             placeholderForTicTimerAskedFor.setVisibility(View.VISIBLE);
 
             // generate end date
-            String tmpResponseDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME)), "dd.MM.yyyy");;
+            String tmpResponseDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME)), "dd.MM.yyyy");
             String tmpResponseTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_RESPONSE_TIME)), "HH:mm");
             String tmpDateAndTimeForResponse = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionResponseDateAndTimeText), tmpResponseDate, tmpResponseTime);
             TextView placeholderForTicTimerEndDateInText = (TextView) inflatedView.findViewById(R.id.suggestionResponseTicTimerEndDateInText);

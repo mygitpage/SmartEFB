@@ -15,7 +15,7 @@ public class MeetingViewPagerAdapter extends FragmentStatePagerAdapter {
     final static int metingTabCount = 4;
 
     // array of tab title
-    String meetingTabTitleNames[] = new String[metingTabCount];
+    String[] meetingTabTitleNames = new String[metingTabCount];
 
     // calling context
     Context pagerAdapterContext = null;

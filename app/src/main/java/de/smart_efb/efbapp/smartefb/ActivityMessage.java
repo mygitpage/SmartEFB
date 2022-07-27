@@ -457,7 +457,7 @@ public class ActivityMessage extends AppCompatActivity {
     }
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
-    private BroadcastReceiver messageBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver messageBroadcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {

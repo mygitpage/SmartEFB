@@ -10,18 +10,14 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
  */
 public class FaqViewPagerAdapter extends FragmentStatePagerAdapter {
 
-
     // number of tabs
     final static int faqTabCount = 5;
 
     // array of tab title
-    String faqTabTitleNames[] = new String[faqTabCount];
+    String[] faqTabTitleNames = new String[faqTabCount];
 
     // calling context
     Context pagerAdapterContext = null;
-
-
-
 
 
     // default constructor

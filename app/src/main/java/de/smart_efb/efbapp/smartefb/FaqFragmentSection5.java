@@ -84,7 +84,7 @@ public class FaqFragmentSection5 extends Fragment {
     }
 
 
-    private BroadcastReceiver faqFragmentSection5BrodcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver faqFragmentSection5BrodcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {

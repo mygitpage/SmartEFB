@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 
 import android.text.Html;
 import android.text.Spanned;
@@ -168,7 +169,7 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
-    private BroadcastReceiver emergencyHelpBrodcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver emergencyHelpBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -208,20 +209,16 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
         // get link and text for efb online
         tmpText = ActivityEmergencyHelp.this.getString(R.string.emergencyHelpEmergencyEFBCallEmail);
         textViewOnlineHint = (TextView) emergencyHelpView.findViewById(R.id.emergencyHelpEmergencyEFBCallEmail);
-        linkToOnlineConsultation = Html.fromHtml(tmpText);
+        linkToOnlineConsultation = HtmlCompat.fromHtml(tmpText, HtmlCompat.FROM_HTML_MODE_LEGACY);
         textViewOnlineHint.setText(linkToOnlineConsultation);
         textViewOnlineHint.setMovementMethod(LinkMovementMethod.getInstance());
-
 
         // get link and text for care our souls mail
         tmpText = ActivityEmergencyHelp.this.getString(R.string.emergencyHelpEmergencyCareOfSoulsEmail);
         textViewOnlineHint = (TextView) emergencyHelpView.findViewById(R.id.emergencyHelpEmergencyCareOfSoulsEmail);
-        linkToOnlineConsultation = Html.fromHtml(tmpText);
+        linkToOnlineConsultation = HtmlCompat.fromHtml(tmpText, HtmlCompat.FROM_HTML_MODE_LEGACY);
         textViewOnlineHint.setText(linkToOnlineConsultation);
         textViewOnlineHint.setMovementMethod(LinkMovementMethod.getInstance());
-
-
-
 
     }
 

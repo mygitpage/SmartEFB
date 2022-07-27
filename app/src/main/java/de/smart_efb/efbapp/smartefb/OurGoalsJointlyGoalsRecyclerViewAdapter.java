@@ -271,7 +271,7 @@ public class OurGoalsJointlyGoalsRecyclerViewAdapter extends RecyclerView.Adapte
                                                         TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
                                                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
                                                 // put count down to string
-                                                Spanned tmpCountdownTimerString = Html.fromHtml(String.format(tmpTextNextEvaluationPeriod, tmpTime));
+                                                Spanned tmpCountdownTimerString = HtmlCompat.fromHtml(String.format(tmpTextNextEvaluationPeriod, tmpTime), HtmlCompat.FROM_HTML_MODE_LEGACY);
 
                                                 // and set to textview
                                                 linkEvaluateAGoal.setText(tmpCountdownTimerString);

@@ -14,6 +14,8 @@ import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.text.HtmlCompat;
+
 /**
  * Created by ich on 21.11.2017.
  */
@@ -27,7 +29,7 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
     Context meetingSuggestionOverviewCursorAdapterContext;
 
     // array of meeting places names (only 3 possible-> 0=nothing; 1=Werder(Havel); 2=Bad Belzig)
-    String  meetingPlaceNames[] = new String[3];
+    String[] meetingPlaceNames = new String[3];
 
     // for prefs
     SharedPreferences prefs;
@@ -103,15 +105,15 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
         // textview for the author and date
         TextView tmpTextViewAuthorNameForMeeting = (TextView) inflatedView.findViewById(R.id.meetingAuthorAndDate);
         String tmpAuthorName = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR));
-        String meetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "dd.MM.yyyy");;
-        String meetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "HH:mm");;
+        String meetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "dd.MM.yyyy");
+        String meetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "HH:mm");
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED)) == 1) {
 
             String tmpCanceledAuthorName = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_AUTHOR));
-            String meetingCanceledDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME)), "dd.MM.yyyy");;
-            String meetingCanceledTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME)), "HH:mm");;
+            String meetingCanceledDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME)), "dd.MM.yyyy");
+            String meetingCanceledTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CANCELED_TIME)), "HH:mm");
             String tmpTextAuthorNameMeetingWithCancele = String.format(context.getResources().getString(R.string.meetingOverviewCreateMeetingAuthorAndDateWithCancele), tmpAuthorName, meetingDate, meetingTime, tmpCanceledAuthorName, meetingCanceledDate, meetingCanceledTime);
-            tmpTextViewAuthorNameForMeeting.setText(Html.fromHtml(tmpTextAuthorNameMeetingWithCancele));
+            tmpTextViewAuthorNameForMeeting.setText(HtmlCompat.fromHtml(tmpTextAuthorNameMeetingWithCancele, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         } else {
             String tmpTextAuthorNameMeeting = String.format(context.getResources().getString(R.string.meetingOverviewCreateMeetingAuthorAndDate), tmpAuthorName, meetingDate, meetingTime);
@@ -128,18 +130,17 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
                     tmpTextClientCanceledMeeting = tmpTextClientCanceledMeeting + " " + tmpNotSendToServer;
                 }
             }
-            tmpTextViewAuthorNameForMeeting.setText(Html.fromHtml(tmpTextAuthorNameMeeting+ " " + tmpTextClientCanceledMeeting));
+            tmpTextViewAuthorNameForMeeting.setText(HtmlCompat.fromHtml(tmpTextAuthorNameMeeting+ " " + tmpTextClientCanceledMeeting, HtmlCompat.FROM_HTML_MODE_LEGACY));
         }
 
         // textview for meeting date
         TextView tmpTextViewMeetingDate = (TextView) inflatedView.findViewById(R.id.meetingDate);
-        String tmpMeetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "dd.MM.yyyy");;
+        String tmpMeetingDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "dd.MM.yyyy");
         tmpTextViewMeetingDate.setText(tmpMeetingDate);
-
 
         // textview for meeting time
         TextView tmpTextViewMeetingTime = (TextView) inflatedView.findViewById(R.id.meetingTime);
-        String tmpMeetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "HH:mm");;
+        String tmpMeetingTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_DATE1)), "HH:mm");
         tmpTextViewMeetingTime.setText(tmpMeetingTime);
 
         // textview for meeting place
@@ -169,8 +170,7 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
             String tmpLinkClientCanceledMeeting = context.getResources().getString(context.getResources().getIdentifier("meetingOverviewClientCanceledLinkText", "string", context.getPackageName()));
 
             // generate link for output
-            Spanned tmpMeetingCanceledLink = Html.fromHtml("<a href=\"" + meetingClientCanceleLinkBuilder.build().toString() + "\">" + tmpLinkClientCanceledMeeting + "</a>");
-
+            Spanned tmpMeetingCanceledLink = HtmlCompat.fromHtml("<a href=\"" + meetingClientCanceleLinkBuilder.build().toString() + "\">" + tmpLinkClientCanceledMeeting + "</a>", HtmlCompat.FROM_HTML_MODE_LEGACY);
             // and set to textview
             tmpTextViewClientCanceledLink.setVisibility(View.VISIBLE);
             tmpTextViewClientCanceledLink.setText(tmpMeetingCanceledLink);
@@ -194,8 +194,7 @@ public class MeetingOverviewCursorAdapter extends CursorAdapter {
             String tmpLinkDeleteCanceledMeeting = context.getResources().getString(context.getResources().getIdentifier("meetingOverviewDeleteCanceledMeetingLinkText", "string", context.getPackageName()));
 
             // generate link for output
-            Spanned tmpMeetingDeleteCanceledLink = Html.fromHtml("<a href=\"" + meetingDeleteCanceledMeetingLink.build().toString() + "\">" + tmpLinkDeleteCanceledMeeting + "</a>");
-
+            Spanned tmpMeetingDeleteCanceledLink = HtmlCompat.fromHtml("<a href=\"" + meetingDeleteCanceledMeetingLink.build().toString() + "\">" + tmpLinkDeleteCanceledMeeting + "</a>", HtmlCompat.FROM_HTML_MODE_LEGACY);
             tmpTextViewDeleteCanceledMeetingLink.setVisibility(View.VISIBLE);
             tmpTextViewDeleteCanceledMeetingLink.setText(tmpMeetingDeleteCanceledLink);
             tmpTextViewDeleteCanceledMeetingLink.setMovementMethod(LinkMovementMethod.getInstance());

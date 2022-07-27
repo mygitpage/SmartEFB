@@ -681,7 +681,6 @@ public class MainActivity extends AppCompatActivity {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessourcesNewEntry[countElements];
                         } else {
                             mainMenueShowElementBackgroundRessources[countElements] = mainMenueElementBackgroundRessources[countElements];
-                            ;
                         }
                         tmpNew = true;
                     }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
-import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -21,9 +20,6 @@ public class OurArrangementSketchArrangementRecyclerViewAdapter extends Recycler
 
 
     final Context contextForActivity;
-
-    // hold layoutInflater
-    private LayoutInflater cursorInflater;
 
     //limitation in count comments true-> yes, there is a border; no, there is no border
     Boolean commentLimitationBorder;
@@ -50,9 +46,6 @@ public class OurArrangementSketchArrangementRecyclerViewAdapter extends Recycler
 
         // context of activity OurArrangement
         contextForActivity = context;
-
-        // get inflater service
-        cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // init array for count comments
         numberCountForAssessments = context.getResources().getStringArray(R.array.ourArrangementCountAssessments);
@@ -228,7 +221,7 @@ public class OurArrangementSketchArrangementRecyclerViewAdapter extends Recycler
                             .path("ourarrangement")
                             .appendQueryParameter("db_id", Integer.toString(sketchArrangementElement.getServerIdArrangement()))
                             .appendQueryParameter("arr_num", Integer.toString(sketchArrangementElementPositionNumber))
-                            .appendQueryParameter("com", "show_comment_for_sketch_arrangement");;
+                            .appendQueryParameter("com", "show_comment_for_sketch_arrangement");
 
                     Spanned showCommentSketchArrangementLinkTmp;
                     if (prefs.getInt(ConstansClassOurArrangement.namePrefsSketchCommentCountComment,0) < prefs.getInt(ConstansClassOurArrangement.namePrefsMaxSketchComment,0) || !commentLimitationBorder) {

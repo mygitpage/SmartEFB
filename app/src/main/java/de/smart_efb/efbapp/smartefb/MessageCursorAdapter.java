@@ -11,6 +11,8 @@ import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.text.HtmlCompat;
+
 /**
  * Created by ich on 26.02.2018.
  */
@@ -19,7 +21,7 @@ public class MessageCursorAdapter extends CursorAdapter {
 
     private LayoutInflater cursorInflater;
 
-    private Context messageCursorAdapterContext;
+    private final Context messageCursorAdapterContext;
 
     // previous date string of cursor element
     private String previousDateString = "";
@@ -234,7 +236,7 @@ public class MessageCursorAdapter extends CursorAdapter {
         String tmpAuthorandDate = context.getResources().getString(R.string.textMessageAuthorAndDateLocale);
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_STATUS)) == 4) {tmpAuthorandDate = context.getResources().getString(R.string.textMessageAuthorAndDate);}
         tmpAuthorandDate = String.format(tmpAuthorandDate, cursor.getString(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MESSAGE_KEY_LOCAL_TIME)), "dd.MM.yyyy - HH:mm"), tmpNewMessage);
-        textViewAuthor.setText(Html.fromHtml(tmpAuthorandDate));
+        textViewAuthor.setText(HtmlCompat.fromHtml(tmpAuthorandDate, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         // close DB connection
         myDb.close();

@@ -5,13 +5,14 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.CountDownTimer;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.core.text.HtmlCompat;
 
 import java.util.concurrent.TimeUnit;
 
@@ -321,7 +322,7 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
         String tmpAuthorandDate = context.getResources().getString(R.string.textConnectBookMessageAuthorAndDateLocale);
         if (cursor.getInt(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_STATUS)) == 4) {tmpAuthorandDate = context.getResources().getString(R.string.textConnectBookMessageAuthorAndDate);}
         tmpAuthorandDate = String.format(tmpAuthorandDate, cursor.getString(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_AUTHOR_NAME)), EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.CHAT_MESSAGE_KEY_LOCAL_TIME)), "dd.MM.yyyy - HH:mm"), tmpNewMessage);
-        textViewAuthor.setText(Html.fromHtml(tmpAuthorandDate));
+        textViewAuthor.setText(HtmlCompat.fromHtml(tmpAuthorandDate, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         // show block for init process load first messages
         if (cursor.isFirst()) {

@@ -21,9 +21,6 @@ public class OurGoalsDebetableGoalsNowRecyclerViewAdapter extends RecyclerView.A
 
     final Context contextForActivity;
 
-    // hold layoutInflater
-    private LayoutInflater cursorInflater;
-
     //limitation in count comments true-> yes, there is a border; no, there is no border
     Boolean commentLimitationBorder;
 
@@ -49,9 +46,6 @@ public class OurGoalsDebetableGoalsNowRecyclerViewAdapter extends RecyclerView.A
 
         // context of activity OurArrangement
         contextForActivity = context;
-
-        // get inflater service
-        cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // init array for count comments
         numberCountForAssessments = context.getResources().getStringArray(R.array.ourGoalsDebetableGoalsCountAssessments);

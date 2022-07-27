@@ -10,7 +10,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+
 import java.util.ArrayList;
 
 
@@ -705,12 +705,12 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Delete a row from the database, by rowId (primary key)
-    boolean deleteRowChatMessage(long rowId) {
+    void deleteRowChatMessage(long rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = KEY_ROWID + "=" + rowId;
-        return db.delete(DATABASE_TABLE_CHAT_MESSAGE, where, null) != 0;
+        db.delete(DATABASE_TABLE_CHAT_MESSAGE, where, null);
     }
 
 
@@ -766,7 +766,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status message in table connectBookMessage
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external message
-    boolean updateStatusConnectBookMessage(Long rowId, int status) {
+    void updateStatusConnectBookMessage(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -777,7 +777,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(CHAT_MESSAGE_KEY_STATUS, status);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null);
     }
 
 
@@ -821,7 +821,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry in table connect book for message rowId.
-    boolean deleteStatusNewEntryConnectBookMessage(int rowId) {
+    void deleteStatusNewEntryConnectBookMessage(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -833,13 +833,13 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(CHAT_MESSAGE_KEY_NEW_ENTRY, 0);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null);
     }
 
 
     // update status of timer for message
     // 0= timer can run; 1= timer finish!
-    boolean updateTimerStatusConnectBookMessage(Long rowId, int timerStatus) {
+    void updateTimerStatusConnectBookMessage(Long rowId, int timerStatus) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -850,12 +850,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(CHAT_MESSAGE_KEY_TIMER_STATUS, timerStatus);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null);
     }
 
 
     // update write time for message from locale time to server time in table connectBookMessage
-    boolean updateWriteTimeConnectBookMessage (Long rowId, Long writeTimeFromServer) {
+    void updateWriteTimeConnectBookMessage (Long rowId, Long writeTimeFromServer) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -866,7 +866,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(CHAT_MESSAGE_KEY_WRITE_TIME, writeTimeFromServer);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_CHAT_MESSAGE, newValues, where, null);
     }
 
     /********************************* End!! TABLES FOR FUNCTION: Chat Message ******************************************/
@@ -924,7 +924,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Change an existing row of arrangement to be equal to serverId.
-    boolean updateRowOurArrangement(String arrangement, String authorName, long arrangementTime, Boolean newEntry, Boolean sketchCurrent, long sketchTime, int status, int serverId, String blockId) {
+    void updateRowOurArrangement(String arrangement, String authorName, long arrangementTime, Boolean newEntry, Boolean sketchCurrent, long sketchTime, int status, int serverId, String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -957,22 +957,22 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null);
     }
 
 
     // Delete a row from the database, by serverId
-    boolean deleteRowOurArrangement(int serverId) {
+    void deleteRowOurArrangement(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = OUR_ARRANGEMENT_KEY_SERVER_ID + "=" + serverId;
-        return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT, where, null) != 0;
+        db.delete(DATABASE_TABLE_OUR_ARRANGEMENT, where, null);
     }
 
 
     // Delete all arrangements with the same blockId
-    boolean deleteAllRowsOurArrangement(String blockId, Boolean sketchCurrent) {
+    void deleteAllRowsOurArrangement(String blockId, Boolean sketchCurrent) {
 
         int tmpStatus;
 
@@ -986,7 +986,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         String where = OUR_ARRANGEMENT_KEY_BLOCK_ID + "='" + blockId + "' AND " + OUR_ARRANGEMENT_KEY_SKETCH_ARRANGEMENT + "=" + tmpStatus;
 
-        return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT, where, null) != 0;
+        db.delete(DATABASE_TABLE_OUR_ARRANGEMENT, where, null);
     }
 
 
@@ -1313,7 +1313,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry in table ourArrangement for arrangment rowId.
-    boolean deleteStatusNewEntryOurArrangement(int rowId) {
+    void deleteStatusNewEntryOurArrangement(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1325,12 +1325,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_ARRANGEMENT_KEY_NEW_ENTRY, 0);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null);
     }
 
 
     // change (delete/set) status evaluation possible in table ourArrangement
-    boolean changeStatusEvaluationPossibleOurArrangement(int serverId, String state) {
+    void changeStatusEvaluationPossibleOurArrangement(int serverId, String state) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1354,12 +1354,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         // update table our arrangement
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null);
     }
 
 
     // change (delete/set) status evaluation poosible in table ourArrangement for all arrangement with current block id
-    boolean changeStatusEvaluationPossibleAllOurArrangement(String blockId, String state) {
+    void changeStatusEvaluationPossibleAllOurArrangement(String blockId, String state) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1383,7 +1383,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null);
     }
 
 
@@ -1526,7 +1526,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry in table ourArrangementComment.
-    boolean deleteStatusNewEntryOurArrangementComment(int rowId) {
+    void deleteStatusNewEntryOurArrangementComment(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1538,18 +1538,18 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_NEW_ENTRY, 0);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null);
     }
 
 
     // delete all comments with the same block id
-    Boolean deleteAllRowsOurArrangementComment(String blockId) {
+    void deleteAllRowsOurArrangementComment(String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = OUR_ARRANGEMENT_COMMENT_KEY_BLOCK_ID + "='" + blockId + "'";
 
-        return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, where, null) != 0;
+        db.delete(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, where, null);
     }
 
 
@@ -1574,7 +1574,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status comment and write of comment (with server time) in table ourArrangementComment
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Comment
-    boolean updateStatusOurArrangementComment(Long rowId, int status) {
+    void updateStatusOurArrangementComment(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1585,7 +1585,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_STATUS, status);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null);
     }
 
 
@@ -1611,7 +1611,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status of timer for comment
     // 0= timer can run; 1= timer finish!
-    boolean updateTimerStatusOurArrangementComment(Long rowId, int timerStatus) {
+    void updateTimerStatusOurArrangementComment(Long rowId, int timerStatus) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1622,12 +1622,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_TIMER_STATUS, timerStatus);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null);
     }
 
 
     // update write time for comment from locale time to server time in table ourArrangementComment
-    boolean updateWriteTimeOurArrangementComment(Long rowId, Long writeTimeFromServer) {
+    void updateWriteTimeOurArrangementComment(Long rowId, Long writeTimeFromServer) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1638,7 +1638,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_ARRANGEMENT_COMMENT_KEY_WRITE_TIME, writeTimeFromServer);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT_COMMENT, newValues, where, null);
     }
 
     /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Comment ***************************************/
@@ -1782,7 +1782,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry in table ourArrangementSketchComment.
-    boolean deleteStatusNewEntryOurArrangementSketchComment(int rowId) {
+    void deleteStatusNewEntryOurArrangementSketchComment(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1794,18 +1794,18 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_NEW_ENTRY, 0);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, newValues, where, null);
     }
 
 
     // delete all comments for sketch arrangements with the same block id
-    Boolean deleteAllRowsOurArrangementSketchComment(String blockId) {
+    void deleteAllRowsOurArrangementSketchComment(String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_BLOCK_ID + "='" + blockId + "'";
 
-        return db.delete(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, where, null) != 0;
+        db.delete(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, where, null);
 
     }
 
@@ -1831,7 +1831,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status comment in table ourArrangementSketchComment
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Comment
-    boolean updateStatusOurArrangementSketchComment(Long rowId, int status) {
+    void updateStatusOurArrangementSketchComment(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1842,7 +1842,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_STATUS, status);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, newValues, where, null);
     }
 
 
@@ -1868,7 +1868,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status of timer for sketch comment
     // 0= timer can run; 1= timer finish!
-    boolean updateTimerStatusOurArrangementSketchComment(Long rowId, int timerStatus) {
+    void updateTimerStatusOurArrangementSketchComment(Long rowId, int timerStatus) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1879,12 +1879,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_TIMER_STATUS, timerStatus);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, newValues, where, null);
     }
 
 
     // update write time for sketch comment from locale time to server time in table ourArrangementSketchComment
-    boolean updateWriteTimeOurArrangementSketchComment(Long rowId, Long writeTimeFromServer) {
+    void updateWriteTimeOurArrangementSketchComment(Long rowId, Long writeTimeFromServer) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1895,7 +1895,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_ARRANGEMENT_SKETCH_COMMENT_KEY_WRITE_TIME, writeTimeFromServer);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT_SKETCH_COMMENT, newValues, where, null);
     }
 
     /********************************* End!! TABLES FOR FUNCTION: Our Arrangement Sketch Comment ***************************************/
@@ -1952,7 +1952,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status evaluation in table ourArrangementEvaluate
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Evaluation
-    boolean updateStatusOurArrangementEvaluation(Long rowId, int status) {
+    void updateStatusOurArrangementEvaluation(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1963,7 +1963,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_STATUS, status);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE, newValues, where, null);
     }
 
 
@@ -1987,7 +1987,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // set last evaluation time in choosen (serverId) arrangement in table our arrangement
-    boolean setEvaluationTimePointForArrangement(int serverId) {
+    void setEvaluationTimePointForArrangement(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -1999,12 +1999,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_ARRANGEMENT_KEY_LAST_EVAL_TIME, System.currentTimeMillis());
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT, newValues, where, null);
     }
 
 
     // update write time for evaluation result from locale time to server time in table ourArrangementEvaluationResult
-    boolean updateWriteTimeOurArrangementEvaluationResult(Long rowId, Long writeTimeFromServer) {
+    void updateWriteTimeOurArrangementEvaluationResult(Long rowId, Long writeTimeFromServer) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2015,7 +2015,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_ARRANGEMENT_EVALUATE_KEY_RESULT_TIME, writeTimeFromServer);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_ARRANGEMENT_EVALUATE, newValues, where, null);
     }
 
 
@@ -2075,17 +2075,17 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Delete a row from the database, by serverId
-    boolean deleteRowOurGoals(int serverId) {
+    void deleteRowOurGoals(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = OUR_GOALS_JOINTLY_DEBETABLE_GOALS_SERVER_ID + "=" + serverId;
-        return db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, where, null) != 0;
+        db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, where, null);
     }
 
 
     // Change an existing row to be equal to oldMd5.
-    boolean updateRowOurGoals(String goal, String authorName, long goalTime, Boolean newEntry, Boolean jointlyDebetable, long debetableTime, int status, int serverId, String blockId) {
+    void updateRowOurGoals(String goal, String authorName, long goalTime, Boolean newEntry, Boolean jointlyDebetable, long debetableTime, int status, int serverId, String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2121,7 +2121,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null);
     }
 
 
@@ -2454,7 +2454,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry in table ourGoals for goal rowId.
-    boolean deleteStatusNewEntryOurGoals(int rowId) {
+    void deleteStatusNewEntryOurGoals(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2466,12 +2466,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NEW_ENTRY, 0);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null);
     }
 
 
     // change (delete/set) status evaluation poosible in table ourGoals for one goal (rowId)
-    boolean changeStatusEvaluationPossibleOurGoals(int serverId, String state) {
+    void changeStatusEvaluationPossibleOurGoals(int serverId, String state) {
         
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2495,12 +2495,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null);
     }
 
 
     // change (delete/set) status evaluation poosible in table ourGoals for all goals with current goal time
-    boolean changeStatusEvaluationPossibleAllOurGoals(String blockId, String state) {
+    void changeStatusEvaluationPossibleAllOurGoals(String blockId, String state) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2524,12 +2524,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null);
     }
 
 
     // Delete all goals with the same blockId
-    boolean deleteAllRowsOurGoals(String blockId, Boolean jointlyDebetable) {
+    void deleteAllRowsOurGoals(String blockId, Boolean jointlyDebetable) {
 
         int tmpStatus;
 
@@ -2543,7 +2543,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID + "='" + blockId + "' AND " + OUR_GOALS_JOINTLY_DEBETABLE_GOALS_DIFFERENCE + "=" + tmpStatus;
 
-        return db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, where, null) != 0;
+        db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, where, null);
 
     }
 
@@ -2683,7 +2683,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry in table ourGoalJointlyComment.
-    boolean deleteStatusNewEntryOurGoalsJointlyGoalComment(int rowId) {
+    void deleteStatusNewEntryOurGoalsJointlyGoalComment(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2695,18 +2695,18 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_NEW_ENTRY, 0);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null);
     }
 
 
     // delete all comments with the same block id
-    Boolean deleteAllRowsOurJointlyGoalsComment(String blockId) {
+    void deleteAllRowsOurJointlyGoalsComment(String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_BLOCK_ID + "='" + blockId + "'";
 
-        return db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, where, null) != 0;
+        db.delete(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, where, null);
 
     }
 
@@ -2732,7 +2732,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status comment in table ourGoalsJointlyGoalsComment
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Comment
-    boolean updateStatusOurGoalsJointlyGoalsComment(Long rowId, int status) {
+    void updateStatusOurGoalsJointlyGoalsComment(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2743,7 +2743,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS, status);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null);
     }
 
 
@@ -2769,7 +2769,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status of timer for comment
     // 0= timer can run; 1= timer finish!
-    boolean updateTimerStatusOurGoalsJointlyComment(Long rowId, int timerStatus) {
+    void updateTimerStatusOurGoalsJointlyComment(Long rowId, int timerStatus) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2780,12 +2780,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_TIMER_STATUS, timerStatus);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null);
     }
 
 
     // update write time for jointly comment from locale time to server time in table ourGoalsJointlyComment
-    boolean updateWriteTimeOurGoalsJointlyComment(Long rowId, Long writeTimeFromServer) {
+    void updateWriteTimeOurGoalsJointlyComment(Long rowId, Long writeTimeFromServer) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2796,7 +2796,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_WRITE_TIME, writeTimeFromServer);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_COMMENT, newValues, where, null);
     }
 
 
@@ -2872,7 +2872,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status evaluation in table jointly goals evaluation
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Evaluation
-    boolean updateStatusOurGoalsEvaluation(Long rowId, int status) {
+    void updateStatusOurGoalsEvaluation(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2883,12 +2883,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_GOALS_JOINTLY_GOALS_COMMENT_KEY_STATUS, status);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE, newValues, where, null);
     }
 
 
     // set last evaluation time in choosen (serverId) goal in table jointly debetable goal
-    boolean setEvaluationTimePointForGoal(int serverId) {
+    void setEvaluationTimePointForGoal(int serverId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2900,12 +2900,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_GOALS_JOINTLY_DEBETABLE_GOALS_LAST_EVAL_TIME, System.currentTimeMillis());
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_DEBETABLE_GOALS_NOW, newValues, where, null);
     }
 
 
     // update write time for evaluation result from locale time to server time in table ourGoalsJointlyGoalsEvaluationResult
-    boolean updateWriteTimeOurGoalsEvaluationResult(Long rowId, Long writeTimeFromServer) {
+    void updateWriteTimeOurGoalsEvaluationResult(Long rowId, Long writeTimeFromServer) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -2916,7 +2916,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_GOALS_JOINTLY_GOALS_EVALUATE_KEY_RESULT_TIME, writeTimeFromServer);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_JOINTLY_GOALS_EVALUATE, newValues, where, null);
     }
 
 
@@ -3081,7 +3081,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status comment in table DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external Comment
-    boolean updateStatusOurGoalsDebetableComment(Long rowId, int status) {
+    void updateStatusOurGoalsDebetableComment(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3092,12 +3092,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_STATUS, status);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null);
     }
 
 
     // delete status new entry in table ourGoalsDebetableGoalsComment.
-    boolean deleteStatusNewEntryOurGoalsDebetableGoalsComment(int rowId) {
+    void deleteStatusNewEntryOurGoalsDebetableGoalsComment(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3109,18 +3109,18 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_NEW_ENTRY, 0);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null);
     }
 
 
     // delete all comments for debetable goals with the same block id
-    Boolean deleteAllRowsOurGoalsDebetableComment(String blockId) {
+    void deleteAllRowsOurGoalsDebetableComment(String blockId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_BLOCK_ID + "='" + blockId + "'";
 
-        return db.delete(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, where, null) != 0;
+        db.delete(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, where, null);
     }
 
 
@@ -3146,7 +3146,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status of timer for comment
     // 0= timer can run; 1= timer finish!
-    boolean updateTimerStatusOurGoalsDebetableComment(Long rowId, int timerStatus) {
+    void updateTimerStatusOurGoalsDebetableComment(Long rowId, int timerStatus) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3157,12 +3157,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_TIMER_STATUS, timerStatus);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null);
     }
 
 
     // update write time for debetable comment from locale time to server time in table ourGoalsJointlyComment
-    boolean updateWriteTimeOurGoalsDebetableComment(Long rowId, Long writeTimeFromServer) {
+    void updateWriteTimeOurGoalsDebetableComment(Long rowId, Long writeTimeFromServer) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3173,7 +3173,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(OUR_GOALS_DEBETABLE_GOALS_COMMENT_KEY_WRITE_TIME, writeTimeFromServer);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_OUR_GOALS_DEBETABLE_GOALS_COMMENT, newValues, where, null);
     }
 
     /********************************* End!! TABLES FOR FUNCTION: Our Goals Debetable Goals Comment ***************************************/
@@ -3250,7 +3250,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Change an existing meeting to canceled by coach
-    boolean updateMeetingCanceledByCoach(Long meeting_server_id, Long canceledTime, String canceledAuthor, int newMeeting, int status, int timerStatus, String updateOrder) {
+    void updateMeetingCanceledByCoach(Long meeting_server_id, Long canceledTime, String canceledAuthor, int newMeeting, int status, int timerStatus, String updateOrder) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3268,12 +3268,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, updateOrder);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null);
     }
 
 
     // Change an existing meeting to canceled by client
-    boolean updateMeetingCanceledByClient(Long meeting_id, long canceledLocaleTime, long canceledTime, String canceledAuthor, String canceledReasonText, int status,String updateOrder) {
+    void updateMeetingCanceledByClient(Long meeting_id, long canceledLocaleTime, long canceledTime, String canceledAuthor, String canceledReasonText, int status, String updateOrder) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3290,12 +3290,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, updateOrder);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null);
     }
 
 
     // Change an existing suggestion that a meeting was found by coach
-    boolean updateMeetingFoundFromSuggestion(Long meeting_id, long foundTime, String foundAuthor, int newMeeting, int status, int timerStatus, String updateOrder) {
+    void updateMeetingFoundFromSuggestion(Long meeting_id, long foundTime, String foundAuthor, int newMeeting, int status, int timerStatus, String updateOrder) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3313,12 +3313,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, updateOrder);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null);
     }
 
 
     // Change an existing suggestion from client with client suggestion
-    boolean updateSuggestionFromClient(Long meeting_id, long suggestionTime, long suggestionLocaleTime, String suggestionAuthor, String suggestionText, int status, int timerStatus, String updateOrder) {
+    void updateSuggestionFromClient(Long meeting_id, long suggestionTime, long suggestionLocaleTime, String suggestionAuthor, String suggestionText, int status, int timerStatus, String updateOrder) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3335,27 +3335,27 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, updateOrder);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null);
     }
 
 
     // Delete all rows meeting and suggestions from the database
-    boolean deleteAllRowsMeetingAndSuggestion() {
+    void deleteAllRowsMeetingAndSuggestion() {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        return db.delete(DATABASE_TABLE_MEETING_SUGGESTION, null, null) != 0;
+        db.delete(DATABASE_TABLE_MEETING_SUGGESTION, null, null);
     }
 
 
     // Delete selected meeting or suggestion from db
-    boolean deleteSelectedMeetingOrSuggestionFromDb(Long meeting_id) {
+    void deleteSelectedMeetingOrSuggestionFromDb(Long meeting_id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = KEY_ROWID + "=" + meeting_id;
 
-        return db.delete(DATABASE_TABLE_MEETING_SUGGESTION, where, null) != 0;
+        db.delete(DATABASE_TABLE_MEETING_SUGGESTION, where, null);
     }
 
 
@@ -3397,7 +3397,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry for meeting/ suggestion with rowId
-    boolean deleteStatusNewEntryMeetingAndSuggestion(Long rowId) {
+    void deleteStatusNewEntryMeetingAndSuggestion(Long rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3408,12 +3408,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST, 0);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null);
     }
 
 
     // delete status new entry for old meetings/ suggestions -> these are meeting/suggestion with time border
-    boolean deleteStatusNewEntryAllOldMeetingAndSuggestion(Long nowTime) {
+    void deleteStatusNewEntryAllOldMeetingAndSuggestion(Long nowTime) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3424,7 +3424,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MEETING_SUGGESTION_MEETING_KEY_NEW_METT_SUGGEST, 0);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null);
     }
 
 
@@ -3643,7 +3643,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update remember status of meeting/ suggestion with rowId
     // remember points are: 0 = no remember so far; 5 = remember 24 h; 10 = remember 2 hours; 15 = remember 15 minutes
-    boolean updateStatusRememberMeetingAndSuggestion(Long rowId, int status) {
+    void updateStatusRememberMeetingAndSuggestion(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3654,12 +3654,12 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MEETING_SUGGESTION_KEY_REMEMBER_POINT, status);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null);
     }
 
 
     // update status of meeting/ suggestion with rowId
-    boolean updateStatusMeetingAndSuggestion(Long rowId, int status) {
+    void updateStatusMeetingAndSuggestion(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3670,11 +3670,11 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MEETING_SUGGESTION_MEETING_KEY_STATUS, status);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null);
     }
 
 
-    boolean updateSuggestionVoteAndCommentByClient(int tmpResultVote1, int tmpResultVote2, int tmpResultVote3, int tmpResultVote4, int tmpResultVote5, int tmpResultVote6, Long tmpVoteDate, Long tmpVoteLocaleDate, String tmpVoteAuthor, String tmpClientCommentAuthor, Long tmpClientCommentDate, Long tmpClientCommentLocaleDate, String tmpClientCommentText, Long clientVoteDbId, int tmpStatus, int timerStatus, String updateOrder) {
+    void updateSuggestionVoteAndCommentByClient(int tmpResultVote1, int tmpResultVote2, int tmpResultVote3, int tmpResultVote4, int tmpResultVote5, int tmpResultVote6, Long tmpVoteDate, Long tmpVoteLocaleDate, String tmpVoteAuthor, String tmpClientCommentAuthor, Long tmpClientCommentDate, Long tmpClientCommentLocaleDate, String tmpClientCommentText, Long clientVoteDbId, int tmpStatus, int timerStatus, String updateOrder) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3708,11 +3708,11 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MEETING_SUGGESTION_KEY_UPDATE_ORDER, updateOrder);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null);
     }
 
 
-    boolean postUpdateWriteTimeMeetingSuggestion(Long dbId, String updateOrder, Long globalServerTime) {
+    void postUpdateWriteTimeMeetingSuggestion(Long dbId, String updateOrder, Long globalServerTime) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3748,14 +3748,14 @@ public class DBAdapter extends SQLiteOpenHelper {
         }
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null);
     }
 
 
 
     // update status of timer for meeting/suggestion/suggestion from client
     // 0= timer can run; 1= timer finish!
-    boolean updateTimerStatusMeetingSuggestion (Long rowId, int timerStatus) {
+    void updateTimerStatusMeetingSuggestion (Long rowId, int timerStatus) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3766,7 +3766,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MEETING_SUGGESTION_KEY_TIMER_STATUS, timerStatus);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_MEETING_SUGGESTION, newValues, where, null);
     }
 
 
@@ -3804,12 +3804,12 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Delete a row from the database, by rowId (primary key)
-    boolean deleteRowInvolvedPerson(long rowId) {
+    void deleteRowInvolvedPerson(long rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = KEY_ROWID + "=" + rowId;
-        return db.delete(DATABASE_TABLE_INVOLVED_PERSON, where, null) != 0;
+        db.delete(DATABASE_TABLE_INVOLVED_PERSON, where, null);
     }
 
 
@@ -3905,12 +3905,12 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // Delete a row from the database, by rowId (primary key)
-    boolean deleteRowMessage(long rowId) {
+    void deleteRowMessage(long rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         String where = KEY_ROWID + "=" + rowId;
-        return db.delete(DATABASE_TABLE_MESSAGE, where, null) != 0;
+        db.delete(DATABASE_TABLE_MESSAGE, where, null);
     }
 
 
@@ -3974,7 +3974,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
     // update status message in table message
     // status = 0 -> ready to send, = 1 -> sucsessfull send, = 4 -> external message
-    boolean updateStatusMessage(Long rowId, int status) {
+    void updateStatusMessage(Long rowId, int status) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -3985,7 +3985,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MESSAGE_KEY_STATUS, status);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_MESSAGE, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_MESSAGE, newValues, where, null);
     }
 
 
@@ -4029,7 +4029,7 @@ public class DBAdapter extends SQLiteOpenHelper {
 
 
     // delete status new entry in table message for rowId.
-    boolean deleteStatusNewEntryMessage(int rowId) {
+    void deleteStatusNewEntryMessage(int rowId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -4041,14 +4041,14 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MESSAGE_KEY_NEW_ENTRY, 0);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_MESSAGE, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_MESSAGE, newValues, where, null);
     }
 
 
 
 
     // update write time for message from locale time to server time in table message
-    boolean updateWriteTimeMessage (Long rowId, Long writeTimeFromServer) {
+    void updateWriteTimeMessage (Long rowId, Long writeTimeFromServer) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -4059,7 +4059,7 @@ public class DBAdapter extends SQLiteOpenHelper {
         newValues.put(MESSAGE_KEY_WRITE_TIME, writeTimeFromServer);
 
         // Insert it into the database.
-        return db.update(DATABASE_TABLE_MESSAGE, newValues, where, null) != 0;
+        db.update(DATABASE_TABLE_MESSAGE, newValues, where, null);
     }
 
     /********************************* END TABLES FOR FUNCTION: Message  ******************************************/

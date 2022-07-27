@@ -3,22 +3,22 @@ package de.smart_efb.efbapp.smartefb;
 
 public class ObjectSmartEFBComment {
 
-    private String comment;
-    private String authorName;
-    private String blockid;
-    private Long commentTime;
-    private Long uploadTime;
-    private Long localeTime;
-    private Long arrangementTime;
-    private Long currentDateOfArrangement;
-    private Integer newEntry;
-    private Integer serverIdComment;
-    private Integer timerStatus;
-    private Integer status;
-    private Integer rowID;
-    private Integer question1;
-    private Integer question2;
-    private Integer question3;
+    private final String comment;
+    private final String authorName;
+    private final String blockid;
+    private final Long commentTime;
+    private final Long uploadTime;
+    private final Long localeTime;
+    private final Long arrangementTime;
+    private final Long currentDateOfArrangement;
+    private final Integer newEntry;
+    private final Integer serverIdComment;
+    private final Integer timerStatus;
+    private final Integer status;
+    private final Integer rowID;
+    private final Integer question1;
+    private final Integer question2;
+    private final Integer question3;
 
     public ObjectSmartEFBComment (Integer rowID, String comment, String authorName, String blockid, Long commentTime, Long uploadTime, Long localeTime, Long arrangementTime, Long currentDateOfArrangement, Integer newEntry, Integer serverIdComment, Integer timerStatus, Integer status, Integer question1, Integer question2, Integer question3) {
 

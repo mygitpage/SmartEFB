@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -293,7 +292,7 @@ public class OurGoalsFragmentShowDebetableGoalComment extends Fragment {
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
-    private BroadcastReceiver ourGoalsFragmentShowCommentDebetableGoalsBrodcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver ourGoalsFragmentShowCommentDebetableGoalsBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {

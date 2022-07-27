@@ -316,7 +316,7 @@ public class OurArrangementFragmentShowComment extends Fragment {
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
-    private BroadcastReceiver ourArrangementFragmentShowCommentBrodcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver ourArrangementFragmentShowCommentBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {

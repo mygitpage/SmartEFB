@@ -16,7 +16,7 @@ public class OurArrangementViewPagerAdapter extends FragmentStatePagerAdapter {
     final static int ourArrangementTabCount = 3;
 
     // array of tab title
-    String ourArrangementTabTitleNames[] = new String[ourArrangementTabCount];
+    String[] ourArrangementTabTitleNames = new String[ourArrangementTabCount];
 
     // calling context
     Context pagerAdapterContext = null;

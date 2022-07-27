@@ -118,7 +118,7 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
-    private BroadcastReceiver meetingFragmentSuggestionOverviewBrodcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver meetingFragmentSuggestionOverviewBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {

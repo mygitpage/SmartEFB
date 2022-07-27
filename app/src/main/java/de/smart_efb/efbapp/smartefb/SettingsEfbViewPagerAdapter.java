@@ -22,7 +22,7 @@ public class SettingsEfbViewPagerAdapter extends FragmentPagerAdapter {
     final static int settingsEfbTabCount = 4;
 
     // array of tab title
-    String settingsEfbTabTitleNames[] = new String[settingsEfbTabCount];
+    String[] settingsEfbTabTitleNames = new String[settingsEfbTabCount];
 
     // calling context
     Context pagerAdapterContext = null;

@@ -26,7 +26,7 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
     SharedPreferences prefs;
 
     // array for names of meeting places
-    String  meetingPlaceNames[] = new String[3];
+    String[] meetingPlaceNames = new String[3];
 
     // the context
     Context mContext;

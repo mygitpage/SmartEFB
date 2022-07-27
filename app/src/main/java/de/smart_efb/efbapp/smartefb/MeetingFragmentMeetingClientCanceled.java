@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.text.Editable;
@@ -57,7 +58,7 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
     Long clientCanceledMeetingId = 0L;
 
     // array of meeting places names (only 3 possible-> 0=nothing; 1=Werder(Havel); 2=Bad Belzig)
-    String  meetingPlaceNames[] = new String[3];
+    String[] meetingPlaceNames = new String[3];
 
 
     @Override
@@ -148,7 +149,7 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeJobIntentServiceEfb
-    private BroadcastReceiver meetingFragmentMeetingClientCanceledBrodcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver meetingFragmentMeetingClientCanceledBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -272,7 +273,7 @@ public class MeetingFragmentMeetingClientCanceled extends Fragment {
                     .appendQueryParameter("meeting_id", "0")
                     .appendQueryParameter("com", "meeting_overview");
             TextView backLinkToMeetingOverview = (TextView) viewFragmentClientCanceledMeeting.findViewById(R.id.meetingBackLinkToOverview);
-            backLinkToMeetingOverview.setText(Html.fromHtml("<a href=\"" + backMeetingLinkBuilder.build().toString() + "\">" + fragmentClientCanceledMeetingContext.getResources().getString(fragmentClientCanceledMeetingContext.getResources().getIdentifier("meetingBackLinkToMeetingOverview", "string", fragmentClientCanceledMeetingContext.getPackageName())) + "</a>"));
+            backLinkToMeetingOverview.setText(HtmlCompat.fromHtml("<a href=\"" + backMeetingLinkBuilder.build().toString() + "\">" + fragmentClientCanceledMeetingContext.getResources().getString(fragmentClientCanceledMeetingContext.getResources().getIdentifier("meetingBackLinkToMeetingOverview", "string", fragmentClientCanceledMeetingContext.getPackageName())) + "</a>", HtmlCompat.FROM_HTML_MODE_LEGACY));
             backLinkToMeetingOverview.setMovementMethod(LinkMovementMethod.getInstance());
 
             // get max letters for edit text comment

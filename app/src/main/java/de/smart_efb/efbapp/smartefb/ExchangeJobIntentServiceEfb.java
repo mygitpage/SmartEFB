@@ -1279,7 +1279,8 @@ public class ExchangeJobIntentServiceEfb extends JobIntentService {
                         myDb.updateStatusOurArrangementEvaluation (dbId, 1); // set status of evaluation to 1 -> sucsessfull send! (=0-> ready to send, =4->comes from external)
 
                         // set result time of evaluationresult to server time
-                        if (globalServerTime > 0) {myDb.updateWriteTimeOurArrangementEvaluationResult(dbId, globalServerTime);; } // update evaluation result time with server time
+                        if (globalServerTime > 0) {myDb.updateWriteTimeOurArrangementEvaluationResult(dbId, globalServerTime);
+                        } // update evaluation result time with server time
                     }
 
                     // close input stream and disconnect

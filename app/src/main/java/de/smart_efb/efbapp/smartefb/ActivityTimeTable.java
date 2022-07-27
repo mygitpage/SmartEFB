@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 
 import android.text.Html;
 import android.view.Gravity;
@@ -127,8 +128,7 @@ public class ActivityTimeTable extends AppCompatActivity {
                 tmpTextAuthorNameAndDate = this.getResources().getString(R.string.timeTableChangeNoValuetoday);
             }
 
-            txtAuthorAndDate.setText(Html.fromHtml(tmpTextAuthorNameAndDate));
-
+            txtAuthorAndDate.setText(HtmlCompat.fromHtml(tmpTextAuthorNameAndDate, HtmlCompat.FROM_HTML_MODE_LEGACY));
             // set textfield
             txtProgress.setText(timeTableValue + "%\nerreicht");
 
@@ -139,7 +139,7 @@ public class ActivityTimeTable extends AppCompatActivity {
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
-    private BroadcastReceiver timeTableBrodcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver timeTableBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {

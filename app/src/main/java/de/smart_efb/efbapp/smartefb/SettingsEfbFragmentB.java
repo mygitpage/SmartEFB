@@ -80,7 +80,7 @@ public class SettingsEfbFragmentB extends Fragment {
 
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from alarmmanager ourArrangement or from ExchangeJobIntentServiceEfb
-    private BroadcastReceiver settingsFragmentBBrodcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver settingsFragmentBBrodcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {

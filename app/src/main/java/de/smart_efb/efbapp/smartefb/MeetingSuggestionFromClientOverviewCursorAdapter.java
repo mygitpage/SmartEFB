@@ -21,6 +21,9 @@ import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.text.HtmlCompat;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,7 +39,7 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
     Context meetingSuggestionOverviewCursorAdapterContext;
 
     // array of meeting places names (only 3 possible-> 0=nothing; 1=Werder(Havel); 2=Bad Belzig)
-    String  meetingPlaceNames[] = new String[3];
+    String[] meetingPlaceNames = new String[3];
 
     // for prefs
     SharedPreferences prefs;
@@ -156,21 +159,21 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
         TextView textViewSuggestionFromClientAuthorAndDate = (TextView) inflatedView.findViewById(R.id.suggestionFromClientAuthorAndDate);
         String actualSuggestionFromClientHeadline = "";
         String tmpTextAuthorAndDate = "";
-        String suggestionFromClientStartDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)), "dd.MM.yyyy");;
-        String suggestionFromClientStartTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)), "HH:mm");;
-        String suggestionFromClientEndDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)), "dd.MM.yyyy");;
-        String suggestionFromClientEndTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)), "HH:mm");;
+        String suggestionFromClientStartDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)), "dd.MM.yyyy");
+        String suggestionFromClientStartTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)), "HH:mm");
+        String suggestionFromClientEndDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)), "dd.MM.yyyy");
+        String suggestionFromClientEndTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)), "HH:mm");
         String suggestionFromClientTimezoneAuthor = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_AUTHOR));
-        String suggestionFromClientTimezoneCreationDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "dd.MM.yyyy");;
-        String suggestionFromClientTimezoneCreationTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "HH:mm");;
+        String suggestionFromClientTimezoneCreationDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "dd.MM.yyyy");
+        String suggestionFromClientTimezoneCreationTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CREATION_TIME)), "HH:mm");
 
         if (tmpSuggestionFromClientCanceled) { // suggestion from client canceled
             actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientTitleAndNumberTextCanceled);
             tmpTextAuthorAndDate = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionFromClientAuthorAndDateCanceled), suggestionFromClientStartDate, suggestionFromClientStartTime, suggestionFromClientEndDate, suggestionFromClientEndTime, suggestionFromClientTimezoneAuthor, suggestionFromClientTimezoneCreationDate, suggestionFromClientTimezoneCreationTime);
         }
         else if (tmpSuggestionFromClientMeetingFound) { // meeting found from suggestion from client
-            String suggestionFromClientMeetingFoundDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_DATE)), "dd.MM.yyyy");;
-            String suggestionFromClientMeetingFoundTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_DATE)), "HH:mm");;
+            String suggestionFromClientMeetingFoundDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_DATE)), "dd.MM.yyyy");
+            String suggestionFromClientMeetingFoundTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_DATE)), "HH:mm");
             String suggestionFromClientMeetingFoundAuthor = cursor.getString(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_SUGGESTION_FOUND_AUTHOR));
             actualSuggestionFromClientHeadline = context.getResources().getString(R.string.meetingOverviewSuggestionFromClientTitleAndNumberTextFoundMeeting);
             tmpTextAuthorAndDate = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionFromClientAuthorAndDateMeetingFound), suggestionFromClientMeetingFoundAuthor, suggestionFromClientMeetingFoundDate, suggestionFromClientMeetingFoundTime, suggestionFromClientStartDate, suggestionFromClientStartTime, suggestionFromClientEndDate, suggestionFromClientEndTime);
@@ -195,7 +198,7 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             tmpTextAuthorAndDate = String.format(context.getResources().getString(R.string.meetingOverviewSuggestionFromClientOutPostTimezone), suggestionFromClientStartDate, suggestionFromClientStartTime, suggestionFromClientEndDate, suggestionFromClientEndTime);
         }
         textViewSuggestionFromClientTitleAndNumber.setText(actualSuggestionFromClientHeadline);
-        textViewSuggestionFromClientAuthorAndDate.setText(Html.fromHtml(tmpTextAuthorAndDate));
+        textViewSuggestionFromClientAuthorAndDate.setText(HtmlCompat.fromHtml(tmpTextAuthorAndDate, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         // we are in canceled suggestion from client
         if (tmpSuggestionFromClientCanceled) { // suggestion from client canceled
@@ -265,7 +268,7 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             String tmpLinkClientDeleteEntry = context.getResources().getString(context.getResources().getIdentifier("suggestionFromClientLinkTextDeleteSuggestionEntry", "string", context.getPackageName()));
 
             // generate link for output
-            Spanned tmpDeleteEntrydLink = Html.fromHtml("<a href=\"" + meetingClientDeleteEntryLinkBuilder.build().toString() + "\">" + tmpLinkClientDeleteEntry + "</a>");
+            Spanned tmpDeleteEntrydLink = HtmlCompat.fromHtml("<a href=\"" + meetingClientDeleteEntryLinkBuilder.build().toString() + "\">" + tmpLinkClientDeleteEntry + "</a>", HtmlCompat.FROM_HTML_MODE_LEGACY);
 
             // and set to textview
             tmpTextViewClientDeleteEntry.setVisibility(View.VISIBLE);
@@ -325,7 +328,7 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             placeholderForTicTimerAskedFor.setText(tmpAskForText);
 
             // generate end date
-            String tmpResponseDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)), "dd.MM.yyyy");;
+            String tmpResponseDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)), "dd.MM.yyyy");
             String tmpResponseTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_ENDDATE)), "HH:mm");
             String tmpDateAndTimeForResponse = String.format(context.getResources().getString(R.string.suggestionFromClientEndDateAndTimeText), tmpResponseDate, tmpResponseTime);
             TextView placeholderForTicTimerEndDateInText = (TextView) inflatedView.findViewById(R.id.suggestionFromClientEndDateTicTimerInText);
@@ -477,7 +480,7 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
             placeholderForTicTimerAskedFor.setText(tmpAskForText);
 
             // generate start date
-            String tmpStartDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)), "dd.MM.yyyy");;
+            String tmpStartDate = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)), "dd.MM.yyyy");
             String tmpStartTime = EfbHelperClass.timestampToDateFormat(cursor.getLong(cursor.getColumnIndex(DBAdapter.MEETING_SUGGESTION_KEY_MEETING_CLIENT_SUGGESTION_STARTDATE)), "HH:mm");
             String tmpDateAndTimeForResponse = String.format(context.getResources().getString(R.string.suggestionFromClientStartDateAndTimeText), tmpStartDate, tmpStartTime);
             TextView placeholderForTicTimerEndStartInText = (TextView) inflatedView.findViewById(R.id.suggestionFromClientEndDateTicTimerInText);

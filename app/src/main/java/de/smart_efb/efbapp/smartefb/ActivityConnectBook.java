@@ -311,7 +311,7 @@ public class ActivityConnectBook extends AppCompatActivity {
     }
 
     // Broadcast receiver for action ACTIVITY_STATUS_UPDATE -> comes from ExchangeJobIntentServiceEfb
-    private BroadcastReceiver connectBookBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver connectBookBroadcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
