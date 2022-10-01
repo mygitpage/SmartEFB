@@ -17,7 +17,6 @@ import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AlertDialog;
-import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.Xml;
@@ -185,7 +184,7 @@ public class SettingsEfbFragmentA extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentConnectToServerContext.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
@@ -220,10 +219,10 @@ public class SettingsEfbFragmentA extends Fragment {
         if (prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
 
 
-            LinearLayout linearLayoutCaseCloseTextHolder = (LinearLayout) viewFragmentConnectToServer.findViewById(R.id.layoutHolderHintTextCaseClose);
+            LinearLayout linearLayoutCaseCloseTextHolder =  viewFragmentConnectToServer.findViewById(R.id.layoutHolderHintTextCaseClose);
             linearLayoutCaseCloseTextHolder.setVisibility(View.VISIBLE);
 
-            //TextView textViewCaseCloseHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.hintTextCaseCloseIntro);
+            //TextView textViewCaseCloseHeadlineText = viewFragmentConnectToServer.findViewById(R.id.hintTextCaseCloseIntro);
             //textViewCaseCloseHeadlineText.setVisibility(View.VISIBLE);
         }
 
@@ -231,19 +230,19 @@ public class SettingsEfbFragmentA extends Fragment {
         if (connectingStatus == 0) {
 
             // replace headline connect to server
-            TextView textViewConnectedWithServerHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
+            TextView textViewConnectedWithServerHeadlineText = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
             String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerIntroHeadingText);
             textViewConnectedWithServerHeadlineText.setText(tmpTextHeadline);
 
             // replace text and show connecting intro text
-            TextView textViewConnectToServerIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerIntro);
+            TextView textViewConnectToServerIntroText = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerIntro);
             String tmpTextIntroText = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerIntroText);
             textViewConnectToServerIntroText.setText(tmpTextIntroText);
             textViewConnectToServerIntroText.setVisibility(View.VISIBLE);
 
 
             // generate new connection number (5 digits)
-            TextView tmpTextViewGenerateNewConnectionNumber = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsEfbALinkGenerateNewConnectionNumber);
+            TextView tmpTextViewGenerateNewConnectionNumber = viewFragmentConnectToServer.findViewById(R.id.settingsEfbALinkGenerateNewConnectionNumber);
 
             final Uri.Builder newConnectionNumberLinkBuilder = new Uri.Builder();
             newConnectionNumberLinkBuilder.scheme("smart.efb.deeplink")
@@ -272,18 +271,18 @@ public class SettingsEfbFragmentA extends Fragment {
                 randomNumberForConnection = tmpNumber;
             }
 
-            TextView textViewRandomNumberText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingConnectToServerKeyNumber);
+            TextView textViewRandomNumberText = viewFragmentConnectToServer.findViewById(R.id.settingConnectToServerKeyNumber);
             textViewRandomNumberText.setVisibility(View.VISIBLE);
             textViewRandomNumberText.setText(""+randomNumberForConnection);
 
             // show remark for clicking button
-            TextView textViewConnectToServerRemarkClickButtonText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerRemarkClickButton);
+            TextView textViewConnectToServerRemarkClickButtonText = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerRemarkClickButton);
             String tmpTextRemarkClickButton = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerRemarkClickButtonText);
             textViewConnectToServerRemarkClickButtonText.setText(tmpTextRemarkClickButton);
             textViewConnectToServerRemarkClickButtonText.setVisibility(View.VISIBLE);
 
             // send button
-            Button tmpButton = (Button) viewFragmentConnectToServer.findViewById(R.id.buttonSendConnectToServerKeyNumber);
+            Button tmpButton = viewFragmentConnectToServer.findViewById(R.id.buttonSendConnectToServerKeyNumber);
             tmpButton.setVisibility(View.VISIBLE);
 
             // onClick listener send pin number
@@ -318,12 +317,12 @@ public class SettingsEfbFragmentA extends Fragment {
         if (connectingStatus == 1) {
 
             // replace headline no network available
-            TextView textViewConnectedWithServerHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
+            TextView textViewConnectedWithServerHeadlineText = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
             String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerHeadingNoInternetOrError);
             textViewConnectedWithServerHeadlineText.setText(tmpTextHeadline);
 
             // replace text and show info text try again
-            TextView textViewConnectToServerIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerIntro);
+            TextView textViewConnectToServerIntroText = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerIntro);
             String tmpTextIntroText = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerIntroTextNoInternetOrError);
             textViewConnectToServerIntroText.setText(tmpTextIntroText);
             textViewConnectToServerIntroText.setVisibility(View.VISIBLE);
@@ -331,17 +330,17 @@ public class SettingsEfbFragmentA extends Fragment {
             // get random number from prefs and show
             randomNumberForConnection = ((ActivitySettingsEfb)getActivity()).getRandomNumberForConnection();
 
-            TextView textViewRandomNumberText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingConnectToServerKeyNumber);
+            TextView textViewRandomNumberText = viewFragmentConnectToServer.findViewById(R.id.settingConnectToServerKeyNumber);
             textViewRandomNumberText.setVisibility(View.VISIBLE);
             textViewRandomNumberText.setText(""+randomNumberForConnection);
 
             // show remark for clicking button
-            TextView textViewConnectToServerRemarkClickButtonText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerRemarkClickButton);
+            TextView textViewConnectToServerRemarkClickButtonText = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerRemarkClickButton);
             String tmpTextRemarkClickButton = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerRemarkNoInternetClickButtonText);
             textViewConnectToServerRemarkClickButtonText.setText(tmpTextRemarkClickButton);
             textViewConnectToServerRemarkClickButtonText.setVisibility(View.VISIBLE);
 
-            Button tmpButton = (Button) viewFragmentConnectToServer.findViewById(R.id.buttonSendConnectToServerKeyNumber);
+            Button tmpButton = viewFragmentConnectToServer.findViewById(R.id.buttonSendConnectToServerKeyNumber);
             tmpButton.setVisibility(View.VISIBLE);
 
             // onClick listener send pin number
@@ -368,16 +367,16 @@ public class SettingsEfbFragmentA extends Fragment {
         if (connectingStatus == 2) {
 
             // replace headline connection error
-            TextView textViewConnectedWithServerHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
+            TextView textViewConnectedWithServerHeadlineText = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
             String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectedWithServerErrorIntroHeadingText);
             textViewConnectedWithServerHeadlineText.setText(tmpTextHeadline);
 
             // show error pre intro text
-            TextView textViewConnectedWithServerErrorPreIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerConnectionErrorPreIntro);
+            TextView textViewConnectedWithServerErrorPreIntroText = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerConnectionErrorPreIntro);
             textViewConnectedWithServerErrorPreIntroText.setVisibility(View.VISIBLE);
 
             // show error text
-            TextView textViewConnectedWithServerErrorTextError = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerConnectionErrorTextError);
+            TextView textViewConnectedWithServerErrorTextError = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerConnectionErrorTextError);
             // get last error text from prefs (ActivitySettingsEfb) and show
             String lastErrorText = ((ActivitySettingsEfb)getActivity()).getLastErrorText();
             textViewConnectedWithServerErrorTextError.setText(lastErrorText);
@@ -385,7 +384,7 @@ public class SettingsEfbFragmentA extends Fragment {
             ((ActivitySettingsEfb)getActivity()).deleteLastErrorText(); // delete last error text!!!
 
             // show error post intro text
-            TextView textViewConnectedWithServerErrorPostIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerConnectionErrorPostIntro);
+            TextView textViewConnectedWithServerErrorPostIntroText = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerConnectionErrorPostIntro);
             textViewConnectedWithServerErrorPostIntroText.setVisibility(View.VISIBLE);
 
             // set connection status to not connected so far
@@ -398,12 +397,12 @@ public class SettingsEfbFragmentA extends Fragment {
         if (connectingStatus == 3) {
 
             // replace headline connected with server
-            TextView textViewConnectedWithServerHeadlineText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
+            TextView textViewConnectedWithServerHeadlineText = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerHeadingIntro);
             String tmpTextHeadline = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectedWithServerIntroHeadingText);
             textViewConnectedWithServerHeadlineText.setText(tmpTextHeadline);
 
             // show connected to server intro text
-            TextView textViewConnectedWithServerIntroText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerSucsessfullIntro);
+            TextView textViewConnectedWithServerIntroText = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerSucsessfullIntro);
 
             String tmpTextIntroHeadingText;
             if (prefs.getLong(ConstansClassSettings.namePrefsFirstInitTimeInMills, 0L) > 0) {
@@ -446,18 +445,18 @@ public class SettingsEfbFragmentA extends Fragment {
                 }
 
                 // put involved person to view
-                LinearLayout linearLayoutInvolvedPersonCoaches = (LinearLayout) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonHeadline);
+                LinearLayout linearLayoutInvolvedPersonCoaches =  viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonHeadline);
                 linearLayoutInvolvedPersonCoaches.setVisibility(View.VISIBLE);
                 // explain text with date
                 String tmpExplainText = fragmentConnectToServerContext.getResources().getString(R.string.settingsConnectToServerInvolvedPersonHeadlineExplainText);
                 String tmpExplainTextWithTime = String.format(tmpExplainText, modifiedTime);
-                TextView textViewHeadlineExplainText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonHeadlineExplainText);
+                TextView textViewHeadlineExplainText = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonHeadlineExplainText);
                 textViewHeadlineExplainText.setText(tmpExplainTextWithTime);
                 // set border visible
-                TextView textViewBorder = (TextView) viewFragmentConnectToServer.findViewById(R.id.borderBetweenMessageAndInvolvedPerson);
+                TextView textViewBorder = viewFragmentConnectToServer.findViewById(R.id.borderBetweenMessageAndInvolvedPerson);
                 textViewBorder.setVisibility(View.VISIBLE);
                 // set coach and client names to view
-                TextView textViewInvolvedPersonCoaches = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonCoachesAndClients);
+                TextView textViewInvolvedPersonCoaches = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonCoachesAndClients);
                 textViewInvolvedPersonCoaches.setText(HtmlCompat.fromHtml(tmpAllCoachesForView, HtmlCompat.FROM_HTML_MODE_LEGACY));
                 textViewInvolvedPersonCoaches.setVisibility(View.VISIBLE);
             }
@@ -490,14 +489,14 @@ public class SettingsEfbFragmentA extends Fragment {
                 if (precense_text_found) {
 
                     // put involved person precense text to view
-                    LinearLayout linearLayoutInvolvedPersonPresenceContainer = (LinearLayout) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonPresenceContainer);
+                    LinearLayout linearLayoutInvolvedPersonPresenceContainer =  viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonPresenceContainer);
                     linearLayoutInvolvedPersonPresenceContainer.setVisibility(View.VISIBLE);
 
                     // set border visible
-                    TextView textViewBorder = (TextView) viewFragmentConnectToServer.findViewById(R.id.borderBetweenInvolvedPersonAndPresenceText);
+                    TextView textViewBorder = viewFragmentConnectToServer.findViewById(R.id.borderBetweenInvolvedPersonAndPresenceText);
                     textViewBorder.setVisibility(View.VISIBLE);
                     // set presence text to view
-                    TextView textViewInvolvedPersonPrecenseText = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonPresenceText);
+                    TextView textViewInvolvedPersonPrecenseText = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerInvolvedPersonPresenceText);
                     textViewInvolvedPersonPrecenseText.setText(HtmlCompat.fromHtml(tmpAllPresenceTextCoaches, HtmlCompat.FROM_HTML_MODE_LEGACY));
                     textViewInvolvedPersonPrecenseText.setVisibility(View.VISIBLE);
                 }
@@ -505,18 +504,18 @@ public class SettingsEfbFragmentA extends Fragment {
 
             // show last contact time to server, when set! and connection status, like communication error
             if (prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, 0L) > 0) {
-                LinearLayout linearLayoutLastContactContainer = (LinearLayout) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerLastContactTimeToServer);
+                LinearLayout linearLayoutLastContactContainer = viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerLastContactTimeToServer);
                 linearLayoutLastContactContainer.setVisibility(View.VISIBLE);
-                TextView textViewBorderLastContactTime = (TextView) viewFragmentConnectToServer.findViewById(R.id.borderBetweenInvolvedPersonAndLastContactTime);
+                TextView textViewBorderLastContactTime =  viewFragmentConnectToServer.findViewById(R.id.borderBetweenInvolvedPersonAndLastContactTime);
                 textViewBorderLastContactTime.setVisibility(View.VISIBLE);
-                TextView textViewLastContactTime = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerLastContactTimeToServerTimeText);
+                TextView textViewLastContactTime =  viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerLastContactTimeToServerTimeText);
                 String lastContactString = String.format(viewFragmentConnectToServer.getResources().getString(R.string.settingsSendingToServerLastContactTimeTimeText), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, System.currentTimeMillis()), "dd.MM.yyyy"), EfbHelperClass.timestampToDateFormat(prefs.getLong(ConstansClassMain.namePrefsLastContactTimeToServerInMills, System.currentTimeMillis()), "HH:mm"));
                 textViewLastContactTime.setText(lastContactString);
                 textViewLastContactTime.setVisibility(View.VISIBLE);
 
                 // show communication error
                 String lastCommunicationStatusServer;
-                TextView textViewCommunicationStatusServer = (TextView) viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerLastCommunicationStatusServer);
+                TextView textViewCommunicationStatusServer =  viewFragmentConnectToServer.findViewById(R.id.settingsConnectToServerLastCommunicationStatusServer);
                 if (errorCommunicationText.length() > 0) {
                     String preErrorCommunicationText = viewFragmentConnectToServer.getResources().getString(R.string.settingsSendingToServerLastCommunicationStatusTextPreErrorText);
                     lastCommunicationStatusServer = preErrorCommunicationText + " " +errorCommunicationText;

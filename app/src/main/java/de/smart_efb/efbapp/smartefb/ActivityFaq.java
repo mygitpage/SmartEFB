@@ -15,13 +15,11 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -283,14 +281,6 @@ public class ActivityFaq extends AppCompatActivity {
         // generate link for output
         return HtmlCompat.fromHtml(subText + "\n<a href=\"" + linkLessOrMoreTextLinkBuilder.build().toString() + "\"><b>" + linkLessOrMoreTextString + "</b></a>", HtmlCompat.FROM_HTML_MODE_LEGACY);
     }
-
-
-    // getter for expand text list
-    public String getExpandTextList () {
-
-        return expandTextList;
-    }
-
 
 
     // help dialog

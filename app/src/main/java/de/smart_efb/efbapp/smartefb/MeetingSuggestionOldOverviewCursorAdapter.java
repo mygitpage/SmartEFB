@@ -2,13 +2,11 @@ package de.smart_efb.efbapp.smartefb;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-
 import androidx.core.text.HtmlCompat;
 
 /**

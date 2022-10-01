@@ -4,16 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.CountDownTimer;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.core.text.HtmlCompat;
-
 import java.util.concurrent.TimeUnit;
 
 

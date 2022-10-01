@@ -15,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
-
-import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
@@ -87,7 +85,7 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
     private void initEmergencyHelp() {
 
         // init the toolbarEmergencyHelp
-        toolbarEmergencyHelp = (Toolbar) findViewById(R.id.toolbarEmergencyHelp);
+        toolbarEmergencyHelp = findViewById(R.id.toolbarEmergencyHelp);
         setSupportActionBar(toolbarEmergencyHelp);
         toolbarEmergencyHelp.setTitleTextColor(Color.WHITE);
 
@@ -111,7 +109,7 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
     // help dialog
     void createHelpDialog () {
 
-        Button tmpHelpButtonEmergencyHelp = (Button) findViewById(R.id.helpEmergencyHelp);
+        Button tmpHelpButtonEmergencyHelp = findViewById(R.id.helpEmergencyHelp);
 
         // add button listener to question mark in activity emergency help (toolbar)
         tmpHelpButtonEmergencyHelp.setOnClickListener(new View.OnClickListener() {
@@ -190,7 +188,7 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
                     // case close! -> show toast
                     String textCaseClose = ActivityEmergencyHelp.this.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    TextView v = toast.getView().findViewById(android.R.id.message);
                     if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 

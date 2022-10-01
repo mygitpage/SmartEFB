@@ -3,7 +3,6 @@ package de.smart_efb.efbapp.smartefb;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
