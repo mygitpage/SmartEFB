@@ -40,9 +40,6 @@ public class ActivityFaq extends AppCompatActivity {
     // context of activity
     Context contextFaq;
 
-    // expand text list
-    String expandTextList = "";
-
     // view pager adapter
     FaqViewPagerAdapter faqViewPagerAdapter;
 
@@ -138,7 +135,9 @@ public class ActivityFaq extends AppCompatActivity {
         setSupportActionBar(toolbarFaq);
         toolbarFaq.setTitleTextColor(Color.WHITE);
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         // set correct subtitle for first call
         String tmpSubtitleText = getResources().getString(getResources().getIdentifier("faqSubtitleSectionOne", "string", getPackageName()));
@@ -176,30 +175,29 @@ public class ActivityFaq extends AppCompatActivity {
         if (command != null && command.equals("show_section1")) { // Show fragment for overview
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(0);
-            tab.select();
+            if (tab != null ) {tab.select();}
         }
         else if (command != null && command.equals("show_section2")) { // Show fragment for Fragen zur App
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(1);
-            tab.select();
+            if (tab != null ) {tab.select();}
         }
         else if (command != null && command.equals("show_section3")) { // Show fragment for Erziehungsberatung
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(2);
-            tab.select();
+            if (tab != null ) {tab.select();}
         }
         else if (command != null && command.equals("show_section4")) { // Show fragment for Beratungsstellen
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(3);
-            tab.select();
+            if (tab != null ) {tab.select();}
         }
         else if (command != null && command.equals("show_section5")) { // Show fragment for Erziehungsfragen
 
             TabLayout.Tab tab = tabLayoutFaq.getTabAt(4);
-            tab.select();
+            if (tab != null ) {tab.select();}
         }
     }
-
 
 
     // generate hash value of string and check for sub or full string output

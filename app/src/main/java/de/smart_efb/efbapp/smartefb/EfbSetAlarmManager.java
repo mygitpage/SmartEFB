@@ -19,8 +19,6 @@ public class EfbSetAlarmManager {
 
     // point to shared preferences
     SharedPreferences prefs;
-    SharedPreferences.Editor prefsEditor;
-
 
     public EfbSetAlarmManager (Context mContext) {
 
@@ -28,7 +26,7 @@ public class EfbSetAlarmManager {
 
         // get the shared preferences
         prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, MODE_PRIVATE);
-        prefsEditor = prefs.edit();
+
     }
 
 

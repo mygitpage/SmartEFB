@@ -218,12 +218,9 @@ public class SettingsEfbFragmentA extends Fragment {
         // show hint text case close
         if (prefs.getBoolean(ConstansClassSettings.namePrefsCaseClose, false)) {
 
-
             LinearLayout linearLayoutCaseCloseTextHolder =  viewFragmentConnectToServer.findViewById(R.id.layoutHolderHintTextCaseClose);
             linearLayoutCaseCloseTextHolder.setVisibility(View.VISIBLE);
 
-            //TextView textViewCaseCloseHeadlineText = viewFragmentConnectToServer.findViewById(R.id.hintTextCaseCloseIntro);
-            //textViewCaseCloseHeadlineText.setVisibility(View.VISIBLE);
         }
 
         // connecting status 0 -> not connected to server

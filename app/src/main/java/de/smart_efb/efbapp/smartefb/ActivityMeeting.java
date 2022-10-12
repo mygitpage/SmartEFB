@@ -104,7 +104,7 @@ public class ActivityMeeting extends AppCompatActivity {
     private void initMeetingTabs () {
 
         // find viewpager in view
-        viewPagerMeeting = (ViewPager) findViewById(R.id.viewPagerMeeting);
+        viewPagerMeeting = findViewById(R.id.viewPagerMeeting);
 
         // new pager adapter for OurArrangement
         meetingViewPagerAdapter = new MeetingViewPagerAdapter(getSupportFragmentManager(), this);
@@ -113,7 +113,7 @@ public class ActivityMeeting extends AppCompatActivity {
         viewPagerMeeting.setAdapter(meetingViewPagerAdapter);
 
         //find tablayout and set gravity
-        tabLayoutMeeting = (TabLayout) findViewById(R.id.tabLayoutMeeting);
+        tabLayoutMeeting = findViewById(R.id.tabLayoutMeeting);
         tabLayoutMeeting.setTabGravity(TabLayout.GRAVITY_FILL);
 
         // and set tablayout with viewpager
@@ -125,7 +125,7 @@ public class ActivityMeeting extends AppCompatActivity {
         setTabTwoTitleAndColor();
 
         // init listener for tab selected
-        tabLayoutMeeting.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayoutMeeting.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
@@ -209,11 +209,8 @@ public class ActivityMeeting extends AppCompatActivity {
         toolbarMeeting.setTitleTextColor(Color.WHITE);
 
         actionBar = getSupportActionBar();
-        try {
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-        catch (NullPointerException e) {
-            // do nothing
         }
 
         // init DB
@@ -308,17 +305,17 @@ public class ActivityMeeting extends AppCompatActivity {
         if (command.equals("show_meeting")) {
             // set tab 1 (Meeting)
             TabLayout.Tab tab = tabLayoutMeeting.getTabAt(0);
-            tab.select();
+            if (tab != null) {tab.select();}
         }
         else if (command.equals("show_client_suggestion")) {
             // set tab 1 (client suggestion)
             TabLayout.Tab tab = tabLayoutMeeting.getTabAt(1);
-            tab.select();
+            if (tab != null) {tab.select();}
         }
         else if (command.equals("show_suggestion")) {
             // set tab 2 (client suggestion)
             TabLayout.Tab tab = tabLayoutMeeting.getTabAt(2);
-            tab.select();
+            if (tab != null) {tab.select();}
         }
         else if (command.equals("comment_from_client")) { // Show fragment client comment a meeting
 
@@ -643,7 +640,9 @@ public class ActivityMeeting extends AppCompatActivity {
         ActivityMeeting.this.lookNewEntryOnTabZero();
 
         String tmpTitleText = tabTitleTextTabZero + infoTextNewEntryPostFixTabZeroTitle;
-        tabLayoutMeeting.getTabAt(0).setText(tmpTitleText);
+        if (tabLayoutMeeting.getTabAt(0) != null) {
+            tabLayoutMeeting.getTabAt(0).setText(tmpTitleText);
+        }
         ActivityMeeting.this.setUnsetTextColorSignalNewTabZero(infoNewEntryOnTabZero);
     }
 
@@ -655,7 +654,9 @@ public class ActivityMeeting extends AppCompatActivity {
         ActivityMeeting.this.lookNewEntryOnTabOne();
 
         String tmpTitleText = tabTitleTextTabOne + infoTextNewEntryPostFixTabOneTitle;
-        tabLayoutMeeting.getTabAt(1).setText(tmpTitleText);
+        if (tabLayoutMeeting.getTabAt(1) != null) {
+            tabLayoutMeeting.getTabAt(1).setText(tmpTitleText);
+        }
         ActivityMeeting.this.setUnsetTextColorSignalNewTabOne(infoNewEntryOnTabOne);
     }
 
@@ -666,7 +667,9 @@ public class ActivityMeeting extends AppCompatActivity {
         ActivityMeeting.this.lookNewEntryOnTabTwo();
 
         String tmpTitleText = tabTitleTextTabTwo + infoTextNewEntryPostFixTabTwoTitle;
-        tabLayoutMeeting.getTabAt(2).setText(tmpTitleText);
+        if (tabLayoutMeeting.getTabAt(2) != null) {
+            tabLayoutMeeting.getTabAt(2).setText(tmpTitleText);
+        }
         ActivityMeeting.this.setUnsetTextColorSignalNewTabTwo(infoNewEntryOnTabTwo);
     }
 

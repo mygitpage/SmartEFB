@@ -90,7 +90,9 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
         toolbarEmergencyHelp.setTitleTextColor(Color.WHITE);
 
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         // open sharedPrefs
         prefs =  getApplicationContext().getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, getApplicationContext().MODE_PRIVATE);

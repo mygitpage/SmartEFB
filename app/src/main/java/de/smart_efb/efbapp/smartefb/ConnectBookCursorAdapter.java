@@ -21,8 +21,6 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
 
     private LayoutInflater cursorInflater;
 
-    private Context connectBookCursorAdapterContext;
-
     // previous date string of cursor element
     private String previousDateString = "";
 
@@ -36,7 +34,6 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
 
     // shared prefs for the settings
     SharedPreferences prefs;
-    SharedPreferences.Editor prefsEditor;
 
 
     // Default constructor
@@ -44,13 +41,11 @@ public class ConnectBookCursorAdapter extends CursorAdapter {
 
         super(context, cursor, flags);
 
-        connectBookCursorAdapterContext = context;
-
         cursorInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // init the prefs
         prefs = context.getSharedPreferences(ConstansClassMain.namePrefsMainNamePrefs, context.MODE_PRIVATE);
-        prefsEditor = prefs.edit();
+
     }
 
 

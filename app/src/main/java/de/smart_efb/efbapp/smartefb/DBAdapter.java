@@ -16,8 +16,6 @@ import java.util.ArrayList;
 
 public class DBAdapter extends SQLiteOpenHelper {
 
-    Context dbContext;
-
     // DB name
     private static final String DATABASE_NAME = "efbDb";
 
@@ -574,7 +572,6 @@ public class DBAdapter extends SQLiteOpenHelper {
 
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
-        dbContext = context;
     }
 
 

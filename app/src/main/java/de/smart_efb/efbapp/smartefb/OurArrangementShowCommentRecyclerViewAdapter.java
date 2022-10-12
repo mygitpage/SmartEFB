@@ -14,17 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-
-// Look at:
-// https://ekeitho.medium.com/dressing-up-recyclerview-with-a-hat-and-shoes-923d6a2fe450
-// Auf GitHub: https://github.com/ekeitho/RV-header-footer/tree/master/app/src/main/java/com/ekeitho/headerfooterview
-// for recycler view with header and footer
-
-// Look at:
-// datei auswahlmenue
-// https://o7planning.org/12725/create-a-simple-file-chooser-in-android
-
-
 public class OurArrangementShowCommentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     final Context contextForActivity;

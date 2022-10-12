@@ -117,7 +117,9 @@ public class ActivityConnectBook extends AppCompatActivity {
         toolbar.setSubtitle(tmpSubTitle);
 
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         // init the DB
         myDb = new DBAdapter(getApplicationContext());
