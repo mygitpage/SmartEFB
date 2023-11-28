@@ -179,8 +179,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentDebetableGoalsContext.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                 }
@@ -208,8 +206,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                     // reset debetable comment counter -> show toast and update view
                     String updateMessageCommentNow = fragmentDebetableGoalsContext.getString(R.string.toastMessageDebetableGoalsResetCommentCountComment);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // refresh fragments view
@@ -219,8 +215,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                     // sharing is disable -> show toast and update view
                     String updateMessageCommentNow = fragmentDebetableGoalsContext.getString(R.string.toastMessageDebetableGoalsCommentShareDisable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // refresh fragments view
@@ -230,8 +224,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                     // sharing is enable -> show toast and update view
                     String updateMessageCommentNow = fragmentDebetableGoalsContext.getString(R.string.toastMessageDebetableGoalsCommentShareEnable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // refresh fragments view
@@ -696,8 +688,6 @@ public class OurGoalsFragmentDebetableGoalsComment extends Fragment {
                     // case is closed -> show toast
                     String textCaseClose = fragmentDebetableGoalsContext.getString(R.string.toastDebetableGoalsCommentCaseCloseToastText);
                     Toast toast = Toast.makeText(fragmentDebetableGoalsContext, textCaseClose, Toast.LENGTH_LONG);
-                    TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) viewMessage.setGravity(Gravity.CENTER);
                     toast.show();
                 }
             }

@@ -132,7 +132,7 @@ public class AlarmReceiverOurGoals extends BroadcastReceiver {
             }
 
             // crealte pending intent
-            pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             // set alarm manager
             manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpAlarmTime, pendingIntentOurGoalsEvaluate);
 
@@ -155,7 +155,7 @@ public class AlarmReceiverOurGoals extends BroadcastReceiver {
                 stackBuilder.addNextIntent(notificationIntent);
 
                 // generate pending intent
-                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                 String subTitleNotification = "";
                 int evaluationPeriod = evaluatePauseTime / 3600; // make hours from seconds
@@ -198,7 +198,7 @@ public class AlarmReceiverOurGoals extends BroadcastReceiver {
             myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""),"delete");
 
             // create pending intent
-            pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             // delete alarm
             manager.cancel(pendingIntentOurGoalsEvaluate);
         }

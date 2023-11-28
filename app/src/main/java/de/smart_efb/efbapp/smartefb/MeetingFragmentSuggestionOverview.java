@@ -154,16 +154,12 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentSuggestionContext.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                 } else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraSuggestionNewSuggestion != null && tmpExtraSuggestionNewSuggestion.equals("1")) {
                     // new suggestion from coach on smartphone -> update suggestion view and show toast
                     String updateNewSuggestion = fragmentSuggestionContext.getString(R.string.toastMessageSuggestionOverviewNewSuggestion);
                     Toast toast = Toast.makeText(context, updateNewSuggestion, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // update data adapter
@@ -179,8 +175,6 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                     // suggestion canceled by coach -> update suggestion view -> show toast and update view
                     String updateNewSuggestion = fragmentSuggestionContext.getString(R.string.toastMessageSuggestionOverviewCanceledSuggestionByCoach);
                     Toast toast = Toast.makeText(context, updateNewSuggestion, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // update the view
@@ -190,8 +184,6 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                     // meeting found from suggestion by coach -> update suggestion view -> show toast and update view
                     String updateNewSuggestion = fragmentSuggestionContext.getString(R.string.toastMessageSuggestionOverviewMeetingFoundByCoach);
                     Toast toast = Toast.makeText(context, updateNewSuggestion, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // update the view
@@ -205,8 +197,6 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                         String successfullMessage = ((ActivityMeeting) getActivity()).getSuccessefullMessageForSending ();
                         if (successfullMessage.length() > 0) {
                             Toast toast = Toast.makeText(context, successfullMessage, Toast.LENGTH_LONG);
-                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                            if (v != null) v.setGravity(Gravity.CENTER);
                             toast.show();
                         }
 
@@ -222,16 +212,12 @@ public class MeetingFragmentSuggestionOverview extends Fragment {
                         String notSuccessfullMessage = ((ActivityMeeting) getActivity()).getNotSuccessefullMessageForSending ();
                         if (notSuccessfullMessage.length() > 0) {
                             Toast toast = Toast.makeText(context, notSuccessfullMessage, Toast.LENGTH_LONG);
-                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                            if (v != null) v.setGravity(Gravity.CENTER);
                             toast.show();
                         }
                     }
                     else if (tmpCommand.equals("look_message") && tmpMessage != null && tmpMessage.length() > 0) {
 
                         Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
-                        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                        if( v != null) v.setGravity(Gravity.CENTER);
                         toast.show();
                     }
 

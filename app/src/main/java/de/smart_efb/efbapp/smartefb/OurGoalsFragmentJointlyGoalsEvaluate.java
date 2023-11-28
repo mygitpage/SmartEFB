@@ -182,8 +182,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentEvaluateThisFragmentContext.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                 }
@@ -211,24 +209,18 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                     // reset now comment counter -> show toast and update view
                     String updateMessageCommentNow = fragmentEvaluateThisFragmentContext.getString(R.string.toastMessageJointlyGoalsResetCommentCountComment);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsCommentShareDisable  != null && tmpExtraOurGoalsCommentShareDisable.equals("1")) {
                     // sharing is disable -> show toast and update view
                     String updateMessageCommentNow = fragmentEvaluateThisFragmentContext.getString(R.string.toastMessageJointlyGoalsCommentShareDisable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
                 else if (tmpExtraOurGoals != null && tmpExtraOurGoals.equals("1") && tmpExtraOurGoalsSettings != null && tmpExtraOurGoalsSettings.equals("1") && tmpExtraOurGoalsCommentShareEnable  != null && tmpExtraOurGoalsCommentShareEnable.equals("1")) {
                     // sharing is enable -> show toast and update view
                     String updateMessageCommentNow = fragmentEvaluateThisFragmentContext.getString(R.string.toastMessageJointlyGoalsCommentShareEnable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
                 else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
@@ -524,8 +516,6 @@ public class OurGoalsFragmentJointlyGoalsEvaluate extends Fragment {
                         if (nextJointlyGoalDbIdToEvaluate == 0) {
                             String tmpEvaluationResultsSendSuccsessfull = fragmentEvaluateJointlyGoalsContext.getString(R.string.evaluateResultJointlyGoalSuccsesfulySend);
                             Toast toast = Toast.makeText(fragmentEvaluateJointlyGoalsContext, tmpEvaluationResultsSendSuccsessfull, Toast.LENGTH_LONG);
-                            TextView viewToast = toast.getView().findViewById(android.R.id.message);
-                            if (v != null) viewToast.setGravity(Gravity.CENTER);
                             toast.show();
                         }
 

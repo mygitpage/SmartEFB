@@ -294,8 +294,6 @@ public class ActivitySettingsEfb extends AppCompatActivity {
             catch (ActivityNotFoundException ex) {
                 String textCaseClose = ActivitySettingsEfb.this.getString(R.string.toastNoLinkGoalFound);
                 Toast toast = Toast.makeText(ActivitySettingsEfb.this, textCaseClose, Toast.LENGTH_LONG);
-                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                if( v != null) v.setGravity(Gravity.CENTER);
                 toast.show();
             }
 

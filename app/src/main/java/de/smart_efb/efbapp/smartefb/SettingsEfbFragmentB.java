@@ -100,8 +100,6 @@ public class SettingsEfbFragmentB extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentContactdetailsContext.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                 }

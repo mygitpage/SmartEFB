@@ -160,7 +160,7 @@
             <string name="settingsEfbFragmentBInformationText">Die App dient der Beratungsunterstützung in den Erziehungs- und Familienberatungsstellen \"Lichtblick\". Die Beraterinnen und Berater sprechen mit Ihnen ab, welche Funktionen für Ihre individuelle Beratung benötigt werden und schalten diese ein. Zurzeit ist die App noch in der Erprobung. Der Umgang mit der App wird wissenschaftlich begleitet, um deren Akzeptanz und Wirkung zu erfahren. Bei allen Fragen stehen Ihnen Ihre Beraterinnen und Berater zur Verfügung.</string>
             <string name="settingsEfbFragmentBContactPersonHeadline">Ansprechpartner</string>
             <string name="settingsEfbFragmentBContactPersonIntroText">Die Ansprechpartner zum Projekt</string>
-            <string name="settingsEfbFragmentBContactPersonA">Holger Robbers\n(Leiter Beratungsstelle \"Lichtblick\")\nholger.robbers@gfb-potsdam.de</string>
+            <string name="settingsEfbFragmentBContactPersonA">Beate Stapperfenne\n(Leiterin Beratungsstelle \"Lichtblick\")\n</string>
             <string name="settingsEfbFragmentBContactPersonB">Jens Hemker\n(Programmierung und wissenschaftliche Begleitung)\njens.hemker@gfb-potsdam.de</string>
             <string name="settingsEfbFragmentBAdviceCenterHeadline">Beratungsstellen</string>
             <string name="settingsEfbFragmentBAdviceCenterIntroText">Bei Fragen wenden Sie sich bitte an unsere Beratungsstellen</string>

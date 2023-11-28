@@ -247,8 +247,6 @@ public class OurArrangementFragmentSketch  extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentSketchContext.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                 } else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketch != null && tmpExtraOurArrangementSketch.equals("1")) {
@@ -274,8 +272,6 @@ public class OurArrangementFragmentSketch  extends Fragment {
                     // reset sketch comment counter -> show toast and update view
                     String updateMessageCommentSketch = fragmentSketchContext.getString(R.string.toastMessageArrangementResetSketchCommentCountComment);
                     Toast toast = Toast.makeText(context, updateMessageCommentSketch, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // update the view
@@ -285,30 +281,22 @@ public class OurArrangementFragmentSketch  extends Fragment {
                     // sharing is disable -> show toast and update view
                     String updateMessageCommentSketch = fragmentSketchContext.getString(R.string.toastMessageArrangementSketchCommentShareDisable);
                     Toast toast = Toast.makeText(context, updateMessageCommentSketch, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementSketchCommentShareEnable  != null && tmpExtraOurArrangementSketchCommentShareEnable.equals("1")) {
                     // sharing is enable -> show toast and update view
                     String updateMessageCommentSketch = fragmentSketchContext.getString(R.string.toastMessageArrangementSketchCommentShareEnable);
                     Toast toast = Toast.makeText(context, updateMessageCommentSketch, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
                 else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send successfull?
                     // show message send successefull; position center
                     Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
                 else if (tmpSendNotSuccessefull != null && tmpSendNotSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send not successfull?
                     // show message send not successefull; position center
                     Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1")) {

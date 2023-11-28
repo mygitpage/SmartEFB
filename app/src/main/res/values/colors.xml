@@ -5,34 +5,37 @@
     <color name="colorAccent">#FFFFFF</color>
 
 
-    // general background color fragments and activitys
+    <!-- general background color fragments and activitys -->
     <color name="body_background">#ffffff</color> <!-- 61def1 -->
 
-    // general text color fragments and activitys
+    <!-- general text color fragments and activitys -->
     <color name="text_color">#FF4D4D4D</color>
 
-    // general text color white fragments and activitys
+    <!-- general text color white fragments and activitys -->
     <color name="text_color_white">#ffffff</color>
 
-    // general text accent color fragments and activitys
+    <!-- general text accent color fragments and activitys -->
     <color name="text_accent_color">#e92f32</color>
 
-    // main menue element inactiv text color
+    <!-- main menue element inactiv text color -->
     <color name="main_menue_text_inactiv_color">#8d9393</color>
 
-    // general background color text input fields
+    <!-- general background color text input fields -->
     <color name="inputfield_background">#17a9ec</color>  // old color: #150656
 
     <color name="colorTextMainMenueElement">#FFFFFF</color>
 
-    // general background color list view elements (like arrangements, sketch, goals, meeting checkboxes, etc.)
+    <!-- general background color list view elements (like arrangements, sketch, goals, meeting checkboxes, etc.) -->
     <color name="listview_elements_background">#17a9ec</color>
 
-    // all tabs selected color
+    <!-- all tabs selected color -->
     <color name="all_tabs_selected_color">#150656</color>
 
-    // all tabs unselected color
+    <!-- all tabs unselected color -->
     <color name="all_tabs_unselected_color">#150656</color>
+
+    <!-- Background color for background picture: chat_background_dotte -->
+    <color name="chat_background_color">#c7e3ee</color>
 
     <!-- Colors for Connect Book -->
     <color name="title_gray">#434343</color>

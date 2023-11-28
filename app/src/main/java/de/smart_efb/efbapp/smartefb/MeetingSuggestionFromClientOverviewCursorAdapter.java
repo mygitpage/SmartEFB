@@ -453,8 +453,6 @@ public class MeetingSuggestionFromClientOverviewCursorAdapter extends CursorAdap
                         // case is closed -> show toast
                         String textCaseClose = context.getString(R.string.toastMessageSuggestionFromClientCaseCloseToastText);
                         Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                        TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
-                        if (v != null) viewMessage.setGravity(Gravity.CENTER);
                         toast.show();
                     }
                 }

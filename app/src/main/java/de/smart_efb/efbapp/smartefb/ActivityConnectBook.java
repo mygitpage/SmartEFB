@@ -263,8 +263,7 @@ public class ActivityConnectBook extends AppCompatActivity {
                             // to less letters in message
                             String textCaseClose = ActivityConnectBook.this.getString(R.string.toastConnectBookToLessLettersMessageInput);
                             Toast toast = Toast.makeText(contextOfConnectBook, textCaseClose, Toast.LENGTH_LONG);
-                            TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
-                            if (v != null) viewMessage.setGravity(Gravity.CENTER);
+
                             toast.show();
                         }
                     } else {
@@ -283,8 +282,6 @@ public class ActivityConnectBook extends AppCompatActivity {
                     // case is closed -> show toast
                     String textCaseClose = ActivityConnectBook.this.getString(R.string.toastConnectBookCaseCloseToastText);
                     Toast toast = Toast.makeText(contextOfConnectBook, textCaseClose, Toast.LENGTH_LONG);
-                    TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) viewMessage.setGravity(Gravity.CENTER);
                     toast.show();
                 }
             }
@@ -348,16 +345,12 @@ public class ActivityConnectBook extends AppCompatActivity {
                     // case close! -> show toast
                     String textCaseClose = ActivityConnectBook.this.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                 } else if (tmpExtraConnectBook != null && tmpExtraConnectBook.equals("1") && tmpExtraConnectBookSettings != null && tmpExtraConnectBookSettings.equals("1") && tmpExtraConnectBookMessageSharingEnable != null && tmpExtraConnectBookMessageSharingEnable.equals("1")) {
                     // sharing enable
                     String updateConnectBookShare = getResources().getString(R.string.toastConnectBookMessageSettingsSharingEnable);
                     Toast toast = Toast.makeText(context,updateConnectBookShare , Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // connect book settings have change -> refresh activity view
@@ -367,8 +360,6 @@ public class ActivityConnectBook extends AppCompatActivity {
                     // sharing disable
                     String updateConnectBookShare = getResources().getString(R.string.toastConnectBookMessageSettingsSharingDisable);
                     Toast toast = Toast.makeText(context,updateConnectBookShare , Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // connect book settings have change -> refresh activity view
@@ -378,8 +369,6 @@ public class ActivityConnectBook extends AppCompatActivity {
                     // connect book settings have change
                     String updateConnectBookSettings = getResources().getString(R.string.toastConnectBookMessageSettingsChangeMessageAndDelay);
                     Toast toast = Toast.makeText(context,updateConnectBookSettings , Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // connect book settings have change -> refresh activity view
@@ -392,8 +381,6 @@ public class ActivityConnectBook extends AppCompatActivity {
                 } else if (tmpSendSuccessefull != null && tmpSendSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send successfull?
                     // message send succsessfull
                     Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // update listview
@@ -402,8 +389,6 @@ public class ActivityConnectBook extends AppCompatActivity {
                 else if (tmpSendNotSuccessefull != null && tmpSendNotSuccessefull.equals("1") && tmpMessage != null && tmpMessage.length() > 0) { // send not successfull?
                     // message send not successfull
                     Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // update listview

@@ -419,7 +419,7 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
                 Intent rememberMeetingAlarmIntent = new Intent(mContext, AlarmReceiverMeeting.class);
 
                 // create call (pending intent) for alarm manager
-                pendingIntentRememberMeeting = PendingIntent.getBroadcast(mContext, 0, rememberMeetingAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                pendingIntentRememberMeeting = PendingIntent.getBroadcast(mContext, 0, rememberMeetingAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                 // set alarm
                 if (manager != null) {
@@ -454,7 +454,7 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         stackBuilder.addNextIntent(notificationIntent);
 
         // generate pending intent
-        PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         // set notification attributes (with or without sound)
         mBuilderSound.setContentTitle(notificationContentTitle);
@@ -497,7 +497,7 @@ public class AlarmReceiverMeeting extends BroadcastReceiver {
         stackBuilder.addNextIntent(notificationIntent);
 
         // generate pending intent
-        PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         // set notification attributes (with or without sound)
         mBuilderSound.setContentTitle(notificationContentTitle);

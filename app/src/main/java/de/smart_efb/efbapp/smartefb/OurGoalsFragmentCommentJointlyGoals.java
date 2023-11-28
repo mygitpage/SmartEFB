@@ -163,8 +163,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentCommentContextJointlyGoals.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                 }
@@ -192,8 +190,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     // reset now comment counter -> show toast and update view
                     String updateMessageCommentNow = fragmentCommentContextJointlyGoals.getString(R.string.toastMessageJointlyGoalsResetCommentCountComment);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // refresh fragments view
@@ -203,8 +199,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     // sharing is disable -> show toast and update view
                     String updateMessageCommentNow = fragmentCommentContextJointlyGoals.getString(R.string.toastMessageJointlyGoalsCommentShareDisable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // refresh fragments view
@@ -214,8 +208,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     // sharing is enable -> show toast and update view
                     String updateMessageCommentNow = fragmentCommentContextJointlyGoals.getString(R.string.toastMessageJointlyGoalsCommentShareEnable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // refresh fragments view
@@ -613,8 +605,6 @@ public class OurGoalsFragmentCommentJointlyGoals extends Fragment {
                     // case is closed -> show toast
                     String textCaseClose = fragmentCommentContextJointlyGoals.getString(R.string.toastJointlyGoalsCommentCaseCloseToastText);
                     Toast toast = Toast.makeText(fragmentCommentContextJointlyGoals, textCaseClose, Toast.LENGTH_LONG);
-                    TextView viewMessage = toast.getView().findViewById(android.R.id.message);
-                    if (v != null) viewMessage.setGravity(Gravity.CENTER);
                     toast.show();
                 }
 

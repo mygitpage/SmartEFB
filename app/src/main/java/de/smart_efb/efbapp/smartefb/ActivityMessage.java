@@ -407,8 +407,6 @@ public class ActivityMessage extends AppCompatActivity {
                                 // to less letters in message
                                 String textCaseClose = ActivityMessage.this.getString(R.string.messageToastErrorMessageToShort);
                                 Toast toast = Toast.makeText(contextMessage, textCaseClose, Toast.LENGTH_LONG);
-                                TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
-                                if (v != null) viewMessage.setGravity(Gravity.CENTER);
                                 toast.show();
                             }
                         } else {
@@ -426,8 +424,6 @@ public class ActivityMessage extends AppCompatActivity {
 
                         String textCaseClose = ActivityMessage.this.getString(R.string.toastTextMessageStopSendingMessagesDisable);
                         Toast toast = Toast.makeText(contextMessage, textCaseClose, Toast.LENGTH_LONG);
-                        TextView viewMessage = (TextView) toast.getView().findViewById(android.R.id.message);
-                        if (v != null) viewMessage.setGravity(Gravity.CENTER);
                         toast.show();
                     }
                 }
@@ -491,16 +487,12 @@ public class ActivityMessage extends AppCompatActivity {
                     // case close! -> show toast
                     String textCaseClose = ActivityMessage.this.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                 } else if (tmpMessagesMessage != null && tmpMessagesMessage.equals("1") && tmpMessagesMessageSettings != null && tmpMessagesMessageSettings.equals("1") && tmpExtraMessageStopSendingEnable != null && tmpExtraMessageStopSendingEnable.equals("1")) {
                     // stop sending enable
                     String updateConnectBookShare = getResources().getString(R.string.toastTextMessageStopSendingMessagesEnable);
                     Toast toast = Toast.makeText(context,updateConnectBookShare , Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // connect book settings have change -> refresh activity view
@@ -510,8 +502,6 @@ public class ActivityMessage extends AppCompatActivity {
                     // stop sending disable
                     String updateConnectBookShare = getResources().getString(R.string.toastTextMessageStopSendingMessagesDisable);
                     Toast toast = Toast.makeText(context,updateConnectBookShare , Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // connect book settings have change -> refresh activity view
@@ -521,8 +511,6 @@ public class ActivityMessage extends AppCompatActivity {
 
                     // message send succsessfull
                     Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // update listview
@@ -532,8 +520,6 @@ public class ActivityMessage extends AppCompatActivity {
 
                     // message send not successfull
                     Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // update listview

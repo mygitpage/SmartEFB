@@ -396,8 +396,6 @@ public class ActivityPrevention extends AppCompatActivity {
                     // case close! -> show toast
                     String textCaseClose = ActivityPrevention.this.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                 }
@@ -448,8 +446,6 @@ public class ActivityPrevention extends AppCompatActivity {
             catch (ActivityNotFoundException ex) {
                 String textCaseClose = ActivityPrevention.this.getString(R.string.toastNoLinkGoalFound);
                 Toast toast = Toast.makeText(ActivityPrevention.this, textCaseClose, Toast.LENGTH_LONG);
-                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                if( v != null) v.setGravity(Gravity.CENTER);
                 toast.show();
             }
 
@@ -462,8 +458,6 @@ public class ActivityPrevention extends AppCompatActivity {
             catch (ActivityNotFoundException ex) {
                 String textCaseClose = ActivityPrevention.this.getString(R.string.toastNoLinkGoalFound);
                 Toast toast = Toast.makeText(ActivityPrevention.this, textCaseClose, Toast.LENGTH_LONG);
-                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                if( v != null) v.setGravity(Gravity.CENTER);
                 toast.show();
             }
         }
@@ -475,8 +469,6 @@ public class ActivityPrevention extends AppCompatActivity {
             catch (ActivityNotFoundException ex) {
                 String textCaseClose = ActivityPrevention.this.getString(R.string.toastNoLinkGoalFound);
                 Toast toast = Toast.makeText(ActivityPrevention.this, textCaseClose, Toast.LENGTH_LONG);
-                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                if( v != null) v.setGravity(Gravity.CENTER);
                 toast.show();
             }
         }
@@ -488,8 +480,6 @@ public class ActivityPrevention extends AppCompatActivity {
             catch (ActivityNotFoundException ex) {
                 String textCaseClose = ActivityPrevention.this.getString(R.string.toastNoLinkGoalFound);
                 Toast toast = Toast.makeText(ActivityPrevention.this, textCaseClose, Toast.LENGTH_LONG);
-                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                if( v != null) v.setGravity(Gravity.CENTER);
                 toast.show();
             }
         }

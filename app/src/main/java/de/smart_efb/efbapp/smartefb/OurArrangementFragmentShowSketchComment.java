@@ -323,8 +323,6 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentShowSketchCommentContext.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                 } else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSketchComment != null && tmpExtraOurArrangementSketchComment.equals("1")) {
@@ -351,8 +349,6 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
                     // reset sketch comment counter -> show toast and update view
                     String updateMessageCommentNow = fragmentShowSketchCommentContext.getString(R.string.toastMessageArrangementResetSketchCommentCountComment);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     //update view
@@ -362,8 +358,6 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
                     // sharing is disable -> show toast and update view
                     String updateMessageCommentSketch = fragmentShowSketchCommentContext.getString(R.string.toastMessageArrangementSketchCommentShareDisable);
                     Toast toast = Toast.makeText(context, updateMessageCommentSketch, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     //update view
@@ -373,8 +367,6 @@ public class OurArrangementFragmentShowSketchComment extends Fragment {
                     // sharing is enable -> show toast and update view
                     String updateMessageCommentSketch = fragmentShowSketchCommentContext.getString(R.string.toastMessageArrangementSketchCommentShareEnable);
                     Toast toast = Toast.makeText(context, updateMessageCommentSketch, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     //update view

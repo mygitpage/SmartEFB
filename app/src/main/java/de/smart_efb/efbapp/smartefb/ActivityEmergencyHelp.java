@@ -190,8 +190,6 @@ public class ActivityEmergencyHelp extends AppCompatActivity {
                     // case close! -> show toast
                     String textCaseClose = ActivityEmergencyHelp.this.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                 }

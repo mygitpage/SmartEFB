@@ -45,7 +45,7 @@ public class EfbSetAlarmManager {
         Intent startIntentService = new Intent (context.getApplicationContext(), AlarmReceiverExchangeAndEventService.class);
 
         // make pending intent
-        final PendingIntent pIntentService = PendingIntent.getBroadcast(context, 0, startIntentService, PendingIntent.FLAG_UPDATE_CURRENT );
+        final PendingIntent pIntentService = PendingIntent.getBroadcast(context, 0, startIntentService, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         // get alarm manager service
         AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -75,7 +75,7 @@ public class EfbSetAlarmManager {
         Intent rememberMeetingAlarmIntent = new Intent(context, AlarmReceiverMeeting.class);
 
         // create call (pending intent) for alarm manager
-        pendingIntentRememberMeeting = PendingIntent.getBroadcast(context, 0, rememberMeetingAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntentRememberMeeting = PendingIntent.getBroadcast(context, 0, rememberMeetingAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         // set alarm
         manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstStartRememberMeeting, repeatingMeetingRemember, pendingIntentRememberMeeting);
@@ -163,7 +163,7 @@ public class EfbSetAlarmManager {
                 evaluateAlarmIntent.putExtra("evaluateState", tmpIntentExtra);
 
                 // create call (pending intent) for alarm manager
-                pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                 // set alarm
                 manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurArrangementEvaluate);
@@ -173,7 +173,7 @@ public class EfbSetAlarmManager {
                 // update table ourArrangement in db -> evaluation disable
                 myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""), "delete");
                 // create pending intent
-                pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                 // delete alarm
                 manager.cancel(pendingIntentOurArrangementEvaluate);
             }
@@ -264,7 +264,7 @@ public class EfbSetAlarmManager {
                 evaluateAlarmIntent.putExtra("evaluateState", tmpIntentExtra);
 
                 // create call (pending intent) for alarm manager
-                pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                 // set alarm
                 manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpEvalutePaAcTime, pendingIntentOurGoalsEvaluate);
@@ -273,8 +273,8 @@ public class EfbSetAlarmManager {
 
                 // update table ourGoals in db -> evaluation disable
                 myDb.changeStatusEvaluationPossibleAllOurGoals(prefs.getString(ConstansClassOurGoals.namePrefsCurrentBlockIdOfJointlyGoals, ""), "delete");
-                // crealte pending intent
-                pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                // create pending intent
+                pendingIntentOurGoalsEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                 // delete alarm
                 manager.cancel(pendingIntentOurGoalsEvaluate);
             }

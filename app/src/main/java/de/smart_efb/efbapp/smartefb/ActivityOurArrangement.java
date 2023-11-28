@@ -32,16 +32,6 @@ import java.util.Calendar;
  * Created by ich on 25.05.16.
  */
 
-
-// Android File browser example
-// https://www.christophbrill.de/en/posts/how-to-create-a-android-file-browser-in-15-minutes/
-
-// https://mobikul.com/how-file-chooser-works-in-android-studio/
-
-
-// https://thecodeprogram.com/build-your-own-file-selector-screen-on-android
-
-
 public class ActivityOurArrangement extends AppCompatActivity {
 
     // Set subtitle first time

@@ -56,7 +56,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-                // prevention depression
+                <!-- prevention depression-->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                     android:layout_marginTop="20dp"/>
 
 
-                // prevention media competence
+                <!-- prevention media competence -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -185,7 +185,7 @@
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"/>
 
-                // prevention pain
+                <!-- prevention pain -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -240,7 +240,7 @@
 
 
 
-                // finance help for family
+                <!-- finance help for family -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -293,7 +293,7 @@
 
 
 
-                // mobbing help
+                <!-- mobbing help -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

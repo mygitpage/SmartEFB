@@ -177,8 +177,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentEvaluateContext.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                 } else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementNowComment != null && tmpExtraOurArrangementNowComment.equals("1")) {
@@ -202,24 +200,18 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                     // reset now comment counter -> show toast
                     String updateMessageCommentNow = fragmentEvaluateContext.getString(R.string.toastMessageArrangementResetCommentCountComment);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementCommentShareDisable  != null && tmpExtraOurArrangementCommentShareDisable .equals("1")) {
                     // sharing is disable -> show toast
                     String updateMessageCommentNow = fragmentEvaluateContext.getString(R.string.toastMessageArrangementCommentShareDisable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
                 else if (tmpExtraOurArrangement != null && tmpExtraOurArrangement.equals("1") && tmpExtraOurArrangementSettings != null && tmpExtraOurArrangementSettings.equals("1") && tmpExtraOurArrangementCommentShareEnable  != null && tmpExtraOurArrangementCommentShareEnable .equals("1")) {
                     // sharing is enable -> show toast
                     String updateMessageCommentNow = fragmentEvaluateContext.getString(R.string.toastMessageArrangementCommentShareEnable);
                     Toast toast = Toast.makeText(context, updateMessageCommentNow, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
                 }
                 else if (tmpUpdateEvaluationLink != null && tmpUpdateEvaluationLink.equals("1")) {
@@ -513,8 +505,6 @@ public class OurArrangementFragmentEvaluate extends Fragment {
                         if (nextArrangementServerDbIdToEvaluate == 0) {
                             String messageThankYouForEvaluation = fragmentEvaluateContext.getResources().getString(R.string.evaluateResultSuccsesfulySend);
                             Toast toast = Toast.makeText(fragmentEvaluateContext, messageThankYouForEvaluation, Toast.LENGTH_LONG);
-                            TextView vt = toast.getView().findViewById(android.R.id.message);
-                            if (vt != null) vt.setGravity(Gravity.CENTER);
                             toast.show();
                         }
 

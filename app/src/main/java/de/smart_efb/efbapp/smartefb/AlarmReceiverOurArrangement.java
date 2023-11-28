@@ -133,7 +133,7 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
             }
 
             // create pending intent
-            pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             // set alarm manager
             manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), tmpAlarmTime, pendingIntentOurArrangementEvaluate);
 
@@ -156,7 +156,7 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
                 stackBuilder.addNextIntent(notificationIntent);
 
                 // generate pending intent
-                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                 String subTitleNotification = "";
                 int evaluationPeriod = evaluatePauseTime / 3600; // make hours from seconds
@@ -199,8 +199,8 @@ public class AlarmReceiverOurArrangement extends BroadcastReceiver {
             // update table ourArrangement in db -> evaluation disable
             myDb.changeStatusEvaluationPossibleAllOurArrangement(prefs.getString(ConstansClassOurArrangement.namePrefsCurrentBlockIdOfArrangement, ""),"delete");
 
-            // crealte pending intent
-            pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            // create pending intent
+            pendingIntentOurArrangementEvaluate = PendingIntent.getBroadcast(context, 0, evaluateAlarmIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             // delete alarm
             manager.cancel(pendingIntentOurArrangementEvaluate);
         }

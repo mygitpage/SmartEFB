@@ -597,7 +597,7 @@ public class ExchangeJobIntentServiceEfb extends JobIntentService {
                 stackBuilder.addNextIntent(notificationIntent);
 
                 // generate pending intent
-                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                 // set notification attributes (without or with sound)
                 mBuilderNoSound.setContentTitle(notificationContentTitle);
@@ -635,7 +635,7 @@ public class ExchangeJobIntentServiceEfb extends JobIntentService {
                 stackBuilder.addNextIntent(notificationIntent);
 
                 // generate pending intent
-                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                 // set notification attributes (without or with sound)
                 mBuilderNoSound.setContentTitle(notificationContentTitle);
@@ -673,7 +673,7 @@ public class ExchangeJobIntentServiceEfb extends JobIntentService {
                 stackBuilder.addNextIntent(notificationIntent);
 
                 // generate pending intent
-                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                 // set notification attributes (without or with sound)
                 mBuilderNoSound.setContentTitle(notificationContentTitle);
@@ -711,7 +711,7 @@ public class ExchangeJobIntentServiceEfb extends JobIntentService {
                 stackBuilder.addNextIntent(notificationIntent);
 
                 // generate pending intent
-                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                contentPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
                 // set notification attributes (without or with sound)
                 mBuilderNoSound.setContentTitle(notificationContentTitle);

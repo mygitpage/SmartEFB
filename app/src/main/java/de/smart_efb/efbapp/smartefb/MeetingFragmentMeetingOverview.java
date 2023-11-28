@@ -146,16 +146,12 @@ public class MeetingFragmentMeetingOverview extends Fragment {
                     // case close! -> show toast
                     String textCaseClose = fragmentMeetingContext.getString(R.string.toastCaseClose);
                     Toast toast = Toast.makeText(context, textCaseClose, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if (v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                 } else if (tmpExtraMeeting != null && tmpExtraMeeting.equals("1") && tmpExtraMeetingNewMeeting != null && tmpExtraMeetingNewMeeting.equals("1")) {
                     // new meeting on smartphone -> update meeting view and show toast
                     String updateNewMeeting = fragmentMeetingContext.getString(R.string.toastMessageMeetingNewMeeting);
                     Toast toast = Toast.makeText(context, updateNewMeeting, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // update the view
@@ -165,8 +161,6 @@ public class MeetingFragmentMeetingOverview extends Fragment {
                     // meeting canceled by coach -> update meeting view -> show toast and update view
                     String updateNewMeeting = fragmentMeetingContext.getString(R.string.toastMessageMeetingCanceledMeetingByCoach);
                     Toast toast = Toast.makeText(context, updateNewMeeting, Toast.LENGTH_LONG);
-                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                    if( v != null) v.setGravity(Gravity.CENTER);
                     toast.show();
 
                     // update the view
@@ -180,8 +174,6 @@ public class MeetingFragmentMeetingOverview extends Fragment {
                         String successfullMessage = ((ActivityMeeting) getActivity()).getSuccessefullMessageForSending ();
                         if (successfullMessage.length() > 0) {
                             Toast toast = Toast.makeText(context, successfullMessage, Toast.LENGTH_LONG);
-                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                            if (v != null) v.setGravity(Gravity.CENTER);
                             toast.show();
                         }
 
@@ -197,16 +189,11 @@ public class MeetingFragmentMeetingOverview extends Fragment {
                         String notSuccessfullMessage = ((ActivityMeeting) getActivity()).getNotSuccessefullMessageForSending ();
                         if (notSuccessfullMessage.length() > 0) {
                             Toast toast = Toast.makeText(context, notSuccessfullMessage, Toast.LENGTH_LONG);
-                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                            if (v != null) v.setGravity(Gravity.CENTER);
                             toast.show();
                         }
                     }
                     else if (tmpCommand.equals("look_message") && tmpMessage != null && tmpMessage.length() > 0) {
-
                         Toast toast = Toast.makeText(context, tmpMessage, Toast.LENGTH_LONG);
-                        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                        if( v != null) v.setGravity(Gravity.CENTER);
                         toast.show();
                     }
                 }
