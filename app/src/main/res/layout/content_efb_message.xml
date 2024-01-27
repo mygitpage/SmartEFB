@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_gravity="right"
-    android:background="@color/body_background">
+    android:layout_gravity="right">
 
     <ListView
         android:id="@+id/list_view_messages"
@@ -42,7 +41,7 @@
         android:id="@+id/llMsgCompose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/chat_background_color"
         android:orientation="horizontal">
 
         <EditText

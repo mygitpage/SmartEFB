@@ -7,8 +7,6 @@
     android:orientation="vertical"
     android:layout_gravity="right">
 
-    <!-- android:background="@color/body_background"> -->
-
     <ListView
         android:id="@+id/list_view_messages"
         android:layout_width="match_parent"
